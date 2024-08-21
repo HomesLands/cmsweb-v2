@@ -1,20 +1,14 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { StrictMode } from 'react'
+import { RouterProvider } from 'react-router-dom'
 
 import '@/assets/index.css'
-import Login from './views/auth/Login'
-// import Login from './layouts/Login/LoginLayout'
+import router from './router'
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          {/* <Route path='/' element={ Home} /> */}
-          <Route path="/auth/login" element={<Login />} />
-          {/* <Route path='/auth/register' element={<Login />} /> */}
-        </Routes>
-      </BrowserRouter>
-    </>
+    <StrictMode>
+      <RouterProvider router={router} />
+    </StrictMode>
   )
 }
 
