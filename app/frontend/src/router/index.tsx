@@ -1,31 +1,35 @@
-import { createBrowserRouter } from 'react-router-dom'
-import Login from '@/views/auth/Login'
-import Register from '@/views/auth/Register'
-import DashboardLayout from '@/layouts/AuthLayout/DashboardLayout'
+import React, { Suspense } from 'react'
+import { createBrowserRouter, RouteObject } from 'react-router-dom'
+import menuConfig from '@/hooks/useMenus' // Đảm bảo đúng đường dẫn
+import { Route } from '@/types/route'
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    children: [
-      {
-        path: 'dashboard',
-        element: <DashboardLayout />
-      }
-    ]
-  },
-  {
-    path: '/auth',
-    children: [
-      {
-        path: 'login',
-        element: <Login />
-      },
-      {
-        path: 'register',
-        element: <Register />
-      }
-    ]
+const createRouteObject = (route: {
+  title: string
+  path: string
+  component?: () => Promise<{ default: React.ComponentType }>
+  children?: Route[]
+}): RouteObject => {
+  const { component, children } = route
+
+  const Element = React.lazy(async () => {
+    const module = await component!()
+    return { default: module.default }
+  })
+
+  return {
+    path: route.path,
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Element />
+      </Suspense>
+    ),
+    children: children?.map(createRouteObject)
   }
-])
+}
 
-export default router
+// Trích xuất `routes` từ `menuConfig`
+const { routes } = menuConfig
+
+const routeObjects = routes.map(createRouteObject)
+
+export const router = createBrowserRouter(routeObjects)

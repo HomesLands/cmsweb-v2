@@ -52,6 +52,11 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      fontFamily: {
+        sans: ['Roboto', 'sans-serif'],
+        matemasie: ['Matemasie', 'sans-serif'],
+        // Bạn có thể thêm các font khác nếu cần
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
