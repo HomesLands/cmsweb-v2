@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { userInfo } from '@/types/user';
+import { userInfo } from '@/types/user.type';
 
 interface UserState {
   userInfo: userInfo | null;

@@ -3,8 +3,8 @@ import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 
 // Import các file JSON chứa bản dịch
-import enTranslation from './locales/en/translation.json'
-import viTranslation from './locales/vi/translation.json'
+import enTranslation from '@/locales/en.translation.json'
+import viTranslation from '@/locales/vi.translation.json'
 
 i18n
   .use(LanguageDetector) // Tự động phát hiện ngôn ngữ
@@ -18,7 +18,7 @@ i18n
           translation: viTranslation,
         },
       },
-    fallbackLng: 'en', // Ngôn ngữ mặc định
+    fallbackLng: 'vi', // Ngôn ngữ mặc định
     interpolation: {
       escapeValue: false, // React đã tự động bảo vệ trước XSS
     },

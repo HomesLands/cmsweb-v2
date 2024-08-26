@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 import { createBrowserRouter, RouteObject } from 'react-router-dom'
-import menuConfig from '@/hooks/useMenus' // Đảm bảo đúng đường dẫn
-import { Route } from '@/types/route'
+import menuConfig from '@/router/routes.router' // Đảm bảo đúng đường dẫn
+import { Route } from '@/types/route.type'
 
 const createRouteObject = (route: {
   title: string

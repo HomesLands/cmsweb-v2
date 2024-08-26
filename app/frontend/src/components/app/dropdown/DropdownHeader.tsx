@@ -2,33 +2,35 @@ import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { UserAvatar } from '../avatar/Avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { LogOut } from 'lucide-react'
 
 export function DropdownHeader() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button size="icon" className="rounded-full">
-          <UserAvatar />
+        <Button variant="secondary" size="icon" className="rounded-full">
+          <Avatar>
+            <AvatarImage src="https://github.com/shadcn.png" alt="Avatar" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+          <span className="sr-only">Toggle user menu</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent align="end">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>Thông tin tài khoản</DropdownMenuItem>
-        </DropdownMenuGroup>
+        <DropdownMenuItem>Settings</DropdownMenuItem>
+        <DropdownMenuItem>Support</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="flex items-center justify-start gap-2 text-red-500">
+        <DropdownMenuItem className="flex items-center justify-start gap-2 text-danger">
           <LogOut className="danger-icon" />
-          Log out
+          Logout
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

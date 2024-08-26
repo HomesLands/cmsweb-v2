@@ -1,4 +1,4 @@
-import type { Route, SidebarSubmenu } from '@/types/route';
+import type { Route, SidebarSubmenu } from '@/types/route.type';
 import { AlignJustify, SquareMenu, FolderOpenDot, Archive } from 'lucide-react';
 
 const routes: Route[] = [
