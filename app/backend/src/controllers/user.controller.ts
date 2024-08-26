@@ -1,18 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { plainToClass } from 'class-transformer';
+import { validate, ValidationError } from 'class-validator';
 
 import FileUploadService from "@services/image.service";
 import userService from "@services/user.service";
 import { UsersResponseDto } from '@dto/response/usersResponse.dto';
+import { sendResponse } from '@utils/response';
+import { RegisterUserRequestDto } from '@dto/request/registerUserRequest.dto';
+import { validateRequestData } from '@utils/request';
 
-
-
-interface dataRegister {
-  fistName: string;
-  lastName: string;
-  userName: string;
-  password: string;
-}
 
 class UserController {
   /**
@@ -30,12 +26,34 @@ class UserController {
     next: NextFunction
   ): Promise<any> {
     try {
-      // const { body: data} = req;
-      const data = req.body;
-      console.log({dataRegister: data});
-      const userData = await userService.createUser(data);
+      const { body: data} = req;
 
-      res.status(200).json(userData);
+      const validateData = await validateRequestData<RegisterUserRequestDto>(
+        RegisterUserRequestDto,
+        data
+      );
+
+      if(validateData.error) {
+        return sendResponse<RegisterUserRequestDto>(
+          req,
+          res,
+          true,
+          400,
+          validateData.message,
+          {} as RegisterUserRequestDto
+        );
+      }
+        
+      const userData = await userService.createUser(validateData.dto);
+
+      return sendResponse<UsersResponseDto>(
+        req,
+        res,
+        false,
+        200,
+        "Thành công",
+        userData
+      );
     } catch (error) {
       next(error);
     }
@@ -50,7 +68,14 @@ class UserController {
       const id = req.params.id;
       const userData = await userService.getUserById(id);
 
-      res.status(200).json(userData);
+      return sendResponse<UsersResponseDto>(
+        req,
+        res,
+        false,
+        200,
+        "Thành công",
+        userData
+      );
     } catch (error) {
       next(error);
     }

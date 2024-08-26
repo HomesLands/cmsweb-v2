@@ -120,6 +120,7 @@
         "@repositories/*": ["repositories/*"],
         "@dto/*": ["dto/*"],
         "@mappers/*": ["mappers/*"],
+        "@utils/*": ["utils/*"],
         "@repositories": ["repositories/index"],
         "@routes": ["routes/index"],
     },

@@ -12,22 +12,22 @@ createMap(
     mapper,
     User,
     UsersResponseDto,
-    // forMember(
-    //   (destination) => destination.id,
-    //   mapFrom((source) => source.id)
-    // ),
-    // forMember(
-    //   (destination) => destination.userName,
-    //   mapFrom((source) => source.userName)
-    // ),
-    // forMember(
-    //   (destination) => destination.firstName,
-    //   mapFrom((source) => source.firstName)
-    // ),
-    // forMember(
-    //   (destination) => destination.lastName,
-    //   mapFrom((source) => source.lastName)
-    // ),
+    forMember(
+      (destination) => destination.id,
+      mapFrom((source) => source.id)
+    ),
+    forMember(
+      (destination) => destination.userName,
+      mapFrom((source) => source.userName)
+    ),
+    forMember(
+      (destination) => destination.firstName,
+      mapFrom((source) => source.firstName)
+    ),
+    forMember(
+      (destination) => destination.lastName,
+      mapFrom((source) => source.lastName)
+    ),
     forMember(
       (destination) => destination.fullName,
       mapFrom((source) => source.firstName + ' ' + source.lastName)

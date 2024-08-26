@@ -1,19 +1,14 @@
 import { UserRepository } from '@repositories';
 import { mapper } from '@mappers/mapper';
 import { User } from '@entities/user.entity';
-import { UsersResponseDto} from '@dto/response/usersResponse.dto';
+import { UsersResponseDto } from '@dto/response/usersResponse.dto';
+import { RegisterUserRequestDto } from '@dto/request/registerUserRequest.dto';
 
-interface dataRegister {
-  firstName: string;
-  lastName: string;
-  userName: string;
-  password: string;
-}
 
 class UserService {
   private userRepo = new UserRepository();
 
-  public async createUser(data: dataRegister): Promise<UsersResponseDto> {
+  public async createUser(data: RegisterUserRequestDto): Promise<UsersResponseDto> {
 
     console.log({dataRegisterService: data});
     let userData = await this.userRepo.create({
@@ -32,6 +27,7 @@ class UserService {
   public async getUserById(id: string): Promise<UsersResponseDto> {
     let userData = await this.userRepo.findOneBy({ id: id});
     const userDto: UsersResponseDto = mapper.map(userData, User, UsersResponseDto);
+
     return userDto;
   }
 }
