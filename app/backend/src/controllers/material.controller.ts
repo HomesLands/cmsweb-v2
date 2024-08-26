@@ -1,1 +1,3 @@
-export default class MaterialController {}
+class MaterialController {};
+
+export default new MaterialController();

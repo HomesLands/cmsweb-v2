@@ -1,12 +1,12 @@
-import * as express from 'express';
+import { Express, Router } from 'express';
 
-import authRoute from '@routes/auth';
-import materialRoute from '@routes/material';
-import userRoute from '@routes/user';
+import authRoute from '@routes/auth.route';
+import materialRoute from '@routes/material.route';
+import userRoute from '@routes/user.route';
 
-const baseApi = express.Router();
+const baseApi: Router = Router();
 
-const registerRoutes = (app: express.Express) => {
+const registerRoutes = (app: Express) => {
   baseApi.use('/auth', authRoute);
 
   baseApi.use('/user', userRoute);
