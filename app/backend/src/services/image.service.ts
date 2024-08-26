@@ -1,7 +1,7 @@
-import multer, { FileFilterCallback } from 'multer';
-import { Request, Response } from 'express';
-import { ImageRepository } from '@repositories';
-import fs from 'fs';
+import multer, { FileFilterCallback } from "multer";
+import { Request, Response } from "express";
+import { ImageRepository } from "@repositories";
+import fs from "fs";
 
 interface ImageData {
   id: number;
@@ -10,49 +10,64 @@ interface ImageData {
 }
 
 const allowedTypes = [
-  'image/jpeg',
-  'image/png',
-  'image/gif',
-  'application/pdf',
-  'application/vnd.ms-excel', // Excel files (.xls)
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Excel files (.xlsx)
-  'application/msword',      // Word files (.doc)
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document' // Word files (.docx)
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "application/pdf",
+  "application/vnd.ms-excel", // Excel files (.xls)
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // Excel files (.xlsx)
+  "application/msword", // Word files (.doc)
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // Word files (.docx)
 ];
 const maxSize = 10 * 1024 * 1024; // 10 MB
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public/images');
+    cb(null, "public/images");
   },
   filename: (req, file, cb) => {
-    const fileName = file.originalname.split('.')[0];
-    const fileType = file.originalname.split('.')[1];
+    const fileName = file.originalname.split(".")[0];
+    const fileType = file.originalname.split(".")[1];
     cb(null, `${fileName}-${Date.now()}.${fileType}`);
   },
 });
 
 const memoryStorage = multer.memoryStorage();
 
-const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
+const fileFilter = (
+  req: Request,
+  file: Express.Multer.File,
+  cb: FileFilterCallback
+) => {
   if (!allowedTypes.includes(file.mimetype)) {
     return cb(null, false);
   }
   cb(null, true);
 };
 
-const uploadToDB = multer({ storage: memoryStorage }).single('file');
+const uploadToDB = multer({ storage: memoryStorage }).single("file");
 
 export class FileUploadService {
-
   private imageRepo = new ImageRepository();
 
   // vailidate + upload
-  public async validateAndUploadLocal(req: Request, res: Response, isMultiple: boolean): Promise<string[]> {
+  public async validateAndUploadLocal(
+    req: Request,
+    res: Response,
+    isMultiple: boolean
+  ): Promise<string[]> {
     return new Promise((resolve, reject) => {
       const uploadInstance = isMultiple
-        ? multer({ storage: storage, fileFilter: fileFilter, limits: { fileSize: maxSize } }).array('file', 20)
-        : multer({ storage: storage, fileFilter: fileFilter, limits: { fileSize: maxSize } }).single('file');
+        ? multer({
+            storage: storage,
+            fileFilter: fileFilter,
+            limits: { fileSize: maxSize },
+          }).array("file", 20)
+        : multer({
+            storage: storage,
+            fileFilter: fileFilter,
+            limits: { fileSize: maxSize },
+          }).single("file");
 
       uploadInstance(req, res, (err: any) => {
         if (err) {
@@ -63,7 +78,7 @@ export class FileUploadService {
         } else {
           const filePaths: string[] = [];
           if (isMultiple && req.files) {
-            (req.files as Express.Multer.File[]).forEach(file => {
+            (req.files as Express.Multer.File[]).forEach((file) => {
               filePaths.push(`/public/images/${file.filename}`);
             });
           } else if (req.file) {
@@ -76,13 +91,25 @@ export class FileUploadService {
   }
 
   // only validate
-  public async validateFiles(req: Request, res: Response, isMultiple: boolean): Promise<{ success: boolean; message?: string }> {
+  public async validateFiles(
+    req: Request,
+    res: Response,
+    isMultiple: boolean
+  ): Promise<{ success: boolean; message?: string }> {
     return new Promise((resolve, reject) => {
       const validateInstance = isMultiple
-        ? multer({ storage: memoryStorage, fileFilter: fileFilter, limits: { fileSize: maxSize } }).array('file', 20)
-        : multer({ storage: memoryStorage, fileFilter: fileFilter, limits: { fileSize: maxSize } }).single('file');
-  
-        console.log({fileeee: req.files})
+        ? multer({
+            storage: memoryStorage,
+            fileFilter: fileFilter,
+            limits: { fileSize: maxSize },
+          }).array("file", 20)
+        : multer({
+            storage: memoryStorage,
+            fileFilter: fileFilter,
+            limits: { fileSize: maxSize },
+          }).single("file");
+
+      console.log({ fileeee: req.files });
       validateInstance(req, res, (err: any) => {
         if (err) {
           resolve({
@@ -97,46 +124,58 @@ export class FileUploadService {
   }
 
   // only upload: have validate (validateFiles method) before upload
-  public async uploadFilesLocal(req: Request, res: Response, isMultiple: boolean): Promise<{ success: boolean, paths?: string[] }> {
+  public async uploadFilesLocal(
+    req: Request,
+    res: Response,
+    isMultiple: boolean
+  ): Promise<{ success: boolean; paths?: string[] }> {
     return new Promise((resolve, reject) => {
       if (isMultiple && req.files) {
         const filePaths: string[] = [];
 
-        (req.files as Express.Multer.File[]).forEach(file => {
-          const finalPath = `public/images/${file.originalname.split('.')[0]}-${Date.now()}.${file.originalname.split('.')[1]}`;
+        (req.files as Express.Multer.File[]).forEach((file) => {
+          const finalPath = `public/images/${
+            file.originalname.split(".")[0]
+          }-${Date.now()}.${file.originalname.split(".")[1]}`;
           fs.writeFileSync(finalPath, file.buffer);
           filePaths.push(`/${finalPath}`);
         });
         // resolve(filePaths);
-        resolve({ 
+        resolve({
           success: true,
           paths: filePaths,
-         });
+        });
       } else if (req.file) {
         const file = req.file;
-        const finalPath = `public/images/${file.originalname.split('.')[0]}-${Date.now()}.${file.originalname.split('.')[1]}`;
+        const finalPath = `public/images/${
+          file.originalname.split(".")[0]
+        }-${Date.now()}.${file.originalname.split(".")[1]}`;
         fs.writeFileSync(finalPath, file.buffer);
         // resolve([`/${finalPath}`]);
-        resolve({ 
+        resolve({
           success: true,
           paths: [finalPath],
-         });
+        });
       } else {
         resolve({ success: false });
       }
     });
   }
-  
-  public async uploadFilesDB(req: Request, res: Response, isMultiple: boolean): Promise<{ success: boolean, ids?: any[] }> {
+
+  public async uploadFilesDB(
+    req: Request,
+    res: Response,
+    isMultiple: boolean
+  ): Promise<{ success: boolean; ids?: any[] }> {
     return new Promise((resolve, reject) => {
       if (isMultiple && req.files) {
         const ids: any[] = [];
 
-        (req.files as Express.Multer.File[]).forEach(file => {
-          console.log({fileeee: file})
-          const base64String = file.buffer.toString('base64');
-          const fileName = file.originalname.split('.')[0];
-          const fileType = file.originalname.split('.')[1];
+        (req.files as Express.Multer.File[]).forEach((file) => {
+          console.log({ fileeee: file });
+          const base64String = file.buffer.toString("base64");
+          const fileName = file.originalname.split(".")[0];
+          const fileType = file.originalname.split(".")[1];
 
           const dataSaved = this.imageRepo.create({
             data: base64String,
@@ -146,50 +185,50 @@ export class FileUploadService {
 
           ids.push(dataSaved);
         });
-        resolve({ 
+        resolve({
           success: true,
           ids: ids,
-         });
+        });
         resolve({ success: true });
       } else if (req.file) {
         const file = req.file;
-        const base64String = file.buffer.toString('base64');
-        const fileName = file.originalname.split('.')[0];
-        const fileType = file.originalname.split('.')[1];
+        const base64String = file.buffer.toString("base64");
+        const fileName = file.originalname.split(".")[0];
+        const fileType = file.originalname.split(".")[1];
 
         const dataSaved = this.imageRepo.create({
           data: base64String,
           // data: file.mimetype,
           fileName: `${fileName}-${Date.now()}.${fileType}`,
         });
-        resolve({ 
+        resolve({
           success: true,
           ids: [dataSaved],
-         });
+        });
       } else {
         resolve({ success: false });
       }
     });
   }
 
-  
-  public async getImgFromDB(id: string): Promise<string | undefined>{
-    const imageData: ImageData | null = await this.imageRepo.findOneBy({ id: id});
-    if(!imageData) {
+  public async getImgFromDB(id: string): Promise<string | undefined> {
+    const imageData: ImageData | null = await this.imageRepo.findOneBy({
+      id: id,
+    });
+    if (!imageData) {
       return;
     }
 
     const base64Data: string = imageData.data;
 
-    console.log({base64Data})
+    console.log({ base64Data });
 
-    const imageBuffer = Buffer.from(base64Data, 'base64');
-    console.log({imageBuffer})
+    const imageBuffer = Buffer.from(base64Data, "base64");
+    console.log({ imageBuffer });
 
-    return base64Data; 
+    return base64Data;
     // return base64Data;
-  } 
+  }
 }
 
-
-export default new FileUploadService();
+export const fileUploadService = new FileUploadService();

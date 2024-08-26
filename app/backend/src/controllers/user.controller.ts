@@ -1,18 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { plainToClass } from 'class-transformer';
 
-import FileUploadService from "@services/image.service";
-import userService from "@services/user.service";
-import { UsersResponseDto } from '@dto/response/usersResponse.dto';
-
-
-
-interface dataRegister {
-  fistName: string;
-  lastName: string;
-  userName: string;
-  password: string;
-}
+import { userService, fileUploadService } from "@services";
 
 class UserController {
   /**
@@ -22,8 +10,6 @@ class UserController {
    *     description: User Control
    */
 
-  
-
   public async registerUser(
     req: Request,
     res: Response,
@@ -32,7 +18,7 @@ class UserController {
     try {
       // const { body: data} = req;
       const data = req.body;
-      console.log({dataRegister: data});
+      console.log({ dataRegister: data });
       const userData = await userService.createUser(data);
 
       res.status(200).json(userData);
@@ -62,7 +48,7 @@ class UserController {
    *   get:
    *     description: test user
    *     tags: [User]
-   *     produces:  
+   *     produces:
    *       - application/json
    *       - multipart/form-data
    *     parameters:
@@ -83,10 +69,10 @@ class UserController {
    *     security:
    *          - auth: []
    */
-  public async firstC (
+  public async firstC(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<any> {
     try {
       const id: string = req.params.id;
@@ -100,64 +86,76 @@ class UserController {
     }
   }
 
-  public async uploadTestSaveLocal (
+  public async uploadTestSaveLocal(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<any> {
     const isMultiple: boolean = true;
     try {
-      const validate = await FileUploadService.validateFiles(req, res, isMultiple);
-      console.log({validate})
-      if(validate.success) {
-        const b = await FileUploadService.uploadFilesLocal(req, res, isMultiple);
-        if(!b.success) {
-          res.status(400).json({ error: "Lỗi lưu file"});
+      const validate = await fileUploadService.validateFiles(
+        req,
+        res,
+        isMultiple
+      );
+      console.log({ validate });
+      if (validate.success) {
+        const b = await fileUploadService.uploadFilesLocal(
+          req,
+          res,
+          isMultiple
+        );
+        if (!b.success) {
+          res.status(400).json({ error: "Lỗi lưu file" });
         }
       } else {
-        res.status(400).json({ error: "Lỗi validate file"});
+        res.status(400).json({ error: "Lỗi validate file" });
       }
 
-      res.status(200).json({ success: "success"});
+      res.status(200).json({ success: "success" });
     } catch (error) {
       next(error);
     }
   }
 
-  public async uploadTestSaveDB (
+  public async uploadTestSaveDB(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<any> {
     const isMultiple: boolean = true;
     try {
-      const validate = await FileUploadService.validateFiles(req, res, isMultiple);
-      console.log({validate})
-      if(validate.success) {
-        console.log("Thành công")
-        const b = await FileUploadService.uploadFilesDB(req, res, isMultiple);
-        if(!b.success) {
-          res.status(400).json({ error: "Lỗi lưu file"});
+      const validate = await fileUploadService.validateFiles(
+        req,
+        res,
+        isMultiple
+      );
+      console.log({ validate });
+      if (validate.success) {
+        console.log("Thành công");
+        const b = await fileUploadService.uploadFilesDB(req, res, isMultiple);
+        if (!b.success) {
+          res.status(400).json({ error: "Lỗi lưu file" });
         }
       } else {
-        res.status(400).json({ error: "Lỗi validate file"});
+        res.status(400).json({ error: "Lỗi validate file" });
       }
 
-      res.status(200).json({ success: "success"});
+      res.status(200).json({ success: "success" });
     } catch (error) {
       next(error);
     }
   }
 
-  public async getImage (
+  public async getImage(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<any> {
     try {
-      const bufferImg = await FileUploadService.getImgFromDB(req.params.id);
-      // res.setHeader('Content-Type', 'image/jpeg'); 
-      res.setHeader('Content-Type', 'image/jpg'); 
+      const bufferImg = await fileUploadService.getImgFromDB(req.params.id);
+      // res.setHeader('Content-Type', 'image/jpeg');
+      res.setHeader("Content-Type", "image/jpg");
       // res.setHeader('Content-Type', imageData.mimeType || 'application/octet-stream');
 
       res.end(bufferImg);
@@ -168,4 +166,4 @@ class UserController {
   }
 }
 
-export default new UserController();
+export const userController = new UserController();

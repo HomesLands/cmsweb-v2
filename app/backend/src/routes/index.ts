@@ -1,19 +1,17 @@
-import { Express, Router } from 'express';
+import { Express, Router } from "express";
 
-import authRoute from '@routes/auth.route';
-import materialRoute from '@routes/material.route';
-import userRoute from '@routes/user.route';
+import { authRoute } from "@routes/auth.route";
+import { productRoute } from "@routes/product.route";
+import { userRoute } from "@routes/user.route";
 
 const baseApi: Router = Router();
 
-const registerRoutes = (app: Express) => {
-  baseApi.use('/auth', authRoute);
+export const registerRoutes = (app: Express) => {
+  baseApi.use("/auth", authRoute);
 
-  baseApi.use('/user', userRoute);
-  
-  baseApi.use('/material', materialRoute);
+  baseApi.use("/user", userRoute);
 
-  app.use('/api/v1', baseApi);
+  baseApi.use("/material", productRoute);
+
+  app.use("/api/v1", baseApi);
 };
-
-export default registerRoutes;

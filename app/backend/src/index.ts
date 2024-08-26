@@ -1,58 +1,55 @@
-import 'reflect-metadata';
-import 'tsconfig-paths/register';
+import "reflect-metadata";
+import "tsconfig-paths/register";
 
 import express, { Express, Request, Response, NextFunction } from "express";
-
 import dotenv from "dotenv";
-import morgan from 'morgan';
-import swaggerUi from 'swagger-ui-express';
+import morgan from "morgan";
+import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
-import path from 'path';
-import fs from 'fs';
-import cors from 'cors';
-import bodyParser from 'body-parser';
+import path from "path";
+import fs from "fs";
+import cors from "cors";
+import bodyParser from "body-parser";
 
-import registerRoutes from '@routes';
-import globalErrorHandler from '@middlewares/globalErrorHandler';
-import myDataSource from '@configs/database';
-
-
+import { registerRoutes } from "@routes";
+import { globalErrorHandler } from "@middlewares";
+import { dataSource } from "@configs/index";
 
 dotenv.config();
 
 (async () => {
   const app: Express = express();
-  app.use(express.json())
   const port: number | string = process.env.PORT || 3000;
 
-  app.use(express.static(path.join(__dirname, '../public')));
-  // app.use(express.static('public'));
-
+  app.use(express.json());
+  app.use(express.static(path.join(__dirname, "../public")));
   app.use(express.urlencoded({ extended: true }));
 
-
-  await myDataSource
+  // Config database
+  await dataSource
     .initialize()
     .then(() => {
-        console.log("Data Source has been initialized!")
+      console.log("Data Source has been initialized!");
     })
     .catch((err: any) => {
-        console.error("Error during Data Source initialization:", err)
+      console.error("Error during Data Source initialization:", err);
     });
 
   // Config CORS
-  app.use(cors({
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: false,
-    optionsSuccessStatus: 200,
-  }));
+  app.use(
+    cors({
+      origin: "*",
+      methods: "*",
+      preflightContinue: false,
+      optionsSuccessStatus: 200,
+    })
+  );
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
   // Config logger
-  if ( process.env.NODE_ENV === "production" ) {
+  if (process.env.NODE_ENV === "production") {
     const logDirectory = path.resolve("logs");
     if (!fs.existsSync(logDirectory)) {
       fs.mkdirSync(logDirectory);
@@ -60,9 +57,12 @@ dotenv.config();
     const logPath = path.join(process.cwd(), "/logs/access.log");
     const accessLogStream = fs.createWriteStream(logPath, { flags: "a" });
     app.use(morgan("combined", { stream: accessLogStream }));
-
-  } else if ( process.env.NODE_ENV === "development" ) {
-    app.use(morgan(':date[iso] :method :url :status :res[content-length] - :response-time ms'));
+  } else if (process.env.NODE_ENV === "development") {
+    app.use(
+      morgan(
+        ":date[iso] :method :url :status :res[content-length] - :response-time ms"
+      )
+    );
   }
 
   const swaggerOptions = {
@@ -80,18 +80,17 @@ dotenv.config();
     },
     apis: ["./src/controllers/*.ts"],
   };
-  
+
   const swaggerDocs = swaggerJsdoc(swaggerOptions);
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
   registerRoutes(app);
 
-  app.all("*", ( req: Request, res: Response, next: NextFunction) => {
+  app.all("*", (req: Request, res: Response, next: NextFunction) => {
     let err = new Error(`Can't not find ${req.originalUrl}`);
     next(err);
-  })
+  });
 
-  
   // Global error handling
   app.use(globalErrorHandler);
 

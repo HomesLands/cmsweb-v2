@@ -1,13 +1,10 @@
 import { Router } from "express";
-import UserController from "@controllers/user.controller";
+import { userController } from "@controllers";
 
-const userRoute: Router = Router();
+export const userRoute: Router = Router();
 
-// userRoute.route('/:id').get(UserController.firstC);
-userRoute.route('/upload').post(UserController.uploadTestSaveLocal);
-userRoute.route('/uploadDB').post(UserController.uploadTestSaveDB);
-userRoute.route('/img/:id').get(UserController.getImage);
-
-userRoute.route('/register').post(UserController.registerUser);
-userRoute.route('/:id').get(UserController.getUser);
-export default userRoute;
+userRoute.route("/upload").post(userController.uploadTestSaveLocal);
+userRoute.route("/uploadDB").post(userController.uploadTestSaveDB);
+userRoute.route("/img/:id").get(userController.getImage);
+userRoute.route("/register").post(userController.registerUser);
+userRoute.route("/:id").get(userController.getUser);
