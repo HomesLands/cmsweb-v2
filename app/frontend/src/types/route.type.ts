@@ -1,6 +1,7 @@
 export interface Route {
     title: string;
     path: string;
+    redirect?: string;
     component?: () => Promise<{ default: React.ComponentType }>;
     children?: Route[]; 
 }
@@ -18,6 +19,8 @@ export interface Submenu{
 
 export interface SidebarSubmenu {
     title: string;
+    path: string;
     icon: React.ComponentType;
+    component?: () => Promise<{ default: React.ComponentType }>;
     children?: Submenu[];
 }

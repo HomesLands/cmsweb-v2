@@ -1,9 +1,10 @@
+import { NavLink } from 'react-router-dom'
 import { CustomAccordionTrigger } from './CustomAccordion'
 import { Accordion, AccordionContent, AccordionItem } from '@/components/ui/accordion'
 import useMenus from '@/router/routes.router'
-import { NavLink } from 'react-router-dom'
 import { CustomCard } from './CustomCard'
-import IconWrapper from './IconWrapper' // Thay đổi đường dẫn nếu cần
+import IconWrapper from './IconWrapper'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 interface SidebarDrawerProps {
   minimized?: boolean
@@ -18,7 +19,16 @@ export function SidebarDrawer({ minimized }: SidebarDrawerProps) {
         <AccordionItem key={submenu.title} value={submenu.title}>
           <CustomAccordionTrigger minimized={minimized}>
             <div className="flex items-center justify-between gap-2 transition-all duration-300">
-              <IconWrapper Icon={submenu.icon} className="w-4 h-4" />
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <IconWrapper Icon={submenu.icon} className="w-4 h-4" />
+                  </TooltipTrigger>
+                  <TooltipContent side="right">
+                    <span className="font-sans text-xs">{submenu.title}</span>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
               {minimized ? null : (
                 <span className={`whitespace-nowrap font-sans`}>{submenu.title}</span>
               )}
@@ -32,7 +42,11 @@ export function SidebarDrawer({ minimized }: SidebarDrawerProps) {
                     <NavLink
                       key={item.title}
                       to={item.path}
-                      className="flex items-center gap-2 py-2 ml-8 duration-300 rounded-lg hover:text-primary"
+                      className={({ isActive }) =>
+                        `flex items-center gap-2 py-2 ml-8 duration-300 rounded-lg hover:text-primary ${
+                          isActive ? 'text-primary' : ''
+                        }`
+                      }
                     >
                       <span className="font-sans font-normal">{item.title}</span>
                     </NavLink>

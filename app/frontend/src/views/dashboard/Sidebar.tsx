@@ -1,15 +1,15 @@
 import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
-import { Package2 } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Package2 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import LanguageSwitcher from '@/components/app/switcher/LanguageSwitcher'
 import useMenus from '@/router/routes.router'
 import { SidebarDrawer } from '@/components/app/drawer/SidebarDrawer'
 import { DropdownHeader } from '@/components/app/dropdown/DropdownHeader'
 import { SidebarDrawerMobile } from '@/components/app/drawer/SidebarDrawerMobile'
 import { useState } from 'react'
+import LanguageSelect from '@/components/app/select/LanguageSelect'
 
 export function Sidebar() {
   const { t } = useTranslation()
@@ -33,7 +33,15 @@ export function Sidebar() {
             className="absolute flex items-center justify-center w-8 h-8 transition-all duration-300 rounded-full bottom-3 -right-4 bg-primary"
             onClick={handleMinimize}
           >
-            {isMinimized ? '>' : '<'}
+            {isMinimized ? (
+              <div>
+                <ChevronRight className="w-4 h-4 text-white" />
+              </div>
+            ) : (
+              <div>
+                <ChevronLeft className="w-4 h-4 text-white" />
+              </div>
+            )}
           </Button>
           <div
             className={`flex h-14 items-center border-b px-4 ${isMinimized ? 'justify-center' : 'lg:h-[60px] lg:px-6'}`}
@@ -57,23 +65,12 @@ export function Sidebar() {
       <div className="flex flex-col transition-all duration-300">
         <header className="flex h-14 items-center justify-end gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
           <SidebarDrawerMobile />
-          <LanguageSwitcher />
+          {/* <LanguageSwitcher /> */}
+          <div className="w-[6rem]">
+            <LanguageSelect />
+          </div>
           <DropdownHeader />
         </header>
-        <main className="flex flex-col flex-1 gap-4 p-4 lg:gap-6 lg:p-6">
-          <div
-            className="flex items-center justify-center flex-1 border border-dashed rounded-lg shadow-sm"
-            x-chunk="dashboard-02-chunk-1"
-          >
-            <div className="flex flex-col items-center gap-1 text-center">
-              <h3 className="text-2xl font-bold tracking-tight">You have no products</h3>
-              <p className="text-sm text-muted-foreground">
-                You can start selling as soon as you add a product.
-              </p>
-              <Button className="mt-4">Add Product</Button>
-            </div>
-          </div>
-        </main>
       </div>
     </div>
   )
