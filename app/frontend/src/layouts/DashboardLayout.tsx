@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+// import { useTranslation } from 'react-i18next'
 
 import { ChevronLeft, ChevronRight, Package2 } from 'lucide-react'
 
@@ -12,7 +12,7 @@ import { useState } from 'react'
 import LanguageSelect from '@/components/app/select/LanguageSelect'
 
 const DashboardLayout = () => {
-  const { t } = useTranslation()
+  // const { t } = useTranslation()
   const { sidebarSubmenus } = useMenus
   console.log(sidebarSubmenus)
   const [isMinimized, setIsMinimized] = useState(false)
@@ -26,20 +26,21 @@ const DashboardLayout = () => {
       className={`grid min-h-screen w-full transition-all duration-300 ${isMinimized ? 'grid-cols-[80px_1fr]' : 'md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]'}`}
     >
       <div
-        className={`relative border-r transition-all duration-300 ${isMinimized ? 'w-[80px]' : 'w-[220px] md:w-[280px]'}`}
+        className={`hidden md:block border-r transition-all duration-300 ${isMinimized ? 'w-[80px]' : 'w-[220px] md:w-[280px]'}`}
       >
         <div className="relative flex flex-col h-full">
           <Button
-            className="absolute flex items-center justify-center w-8 h-8 transition-all duration-300 rounded-full bottom-3 -right-4 bg-primary"
+            variant="outline"
+            className="absolute flex items-center justify-center w-8 h-8 transition-all duration-300 rounded-full bottom-3 -right-4"
             onClick={handleMinimize}
           >
             {isMinimized ? (
               <div>
-                <ChevronRight className="w-4 h-4 text-white" />
+                <ChevronRight className="w-4 h-4 text-normal" />
               </div>
             ) : (
               <div>
-                <ChevronLeft className="w-4 h-4 text-white" />
+                <ChevronLeft className="w-4 h-4 text-normal" />
               </div>
             )}
           </Button>
@@ -65,12 +66,12 @@ const DashboardLayout = () => {
       <div className="flex flex-col transition-all duration-300">
         <header className="flex h-14 items-center justify-end gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
           <SidebarDrawerMobile />
-          <div className="w-[6rem]">
+          <div className="flex flex-row justify-end gap-2">
             <LanguageSelect />
+            <DropdownHeader />
           </div>
-          <DropdownHeader />
         </header>
-        <main className="flex flex-col flex-1 gap-4 p-4 lg:gap-6 lg:p-6">
+        <main className="flex flex-col flex-1 gap-4 p-2">
           <Outlet />
         </main>
       </div>

@@ -12,8 +12,8 @@ import { Button } from '@/components/ui/button'
 const Register: React.FC = () => {
   const {
     register,
-    handleSubmit,
-    formState: { errors }
+    handleSubmit
+    // formState: { errors }
   } = useForm({
     resolver: zodResolver(LoginSChema)
   })
@@ -64,7 +64,7 @@ const Register: React.FC = () => {
                   <span></span>
                 </div>
                 <div className="grid gap-2">
-                  <Label>Password</Label>
+                  <Label>Mật khẩu</Label>
                   <Input
                     {...register('password')}
                     type="password"
