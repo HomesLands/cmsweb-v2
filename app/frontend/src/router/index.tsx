@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react'
 import { createBrowserRouter, RouteObject } from 'react-router-dom'
-import menuConfig from '@/router/routes.router' // Đảm bảo đúng đường dẫn
+import menuConfig from '@/router/routes'
 import { Route } from '@/types/route.type'
 
 const createRouteObject = (route: {
@@ -27,7 +27,6 @@ const createRouteObject = (route: {
   }
 }
 
-// Trích xuất `routes` từ `menuConfig`
 const { routes } = menuConfig
 
 const routeObjects = routes.map(createRouteObject)
