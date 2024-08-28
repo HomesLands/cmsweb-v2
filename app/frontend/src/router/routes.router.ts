@@ -42,7 +42,7 @@ const routes: Route[] = [
         ]
     },
     {
-        title: 'YCVT Subsystem',
+        title: 'Phân hệ YCVT',
         path: '/ycvt-subsystem',
         component: () => import('@/layouts/DashboardLayout'),
         children: [

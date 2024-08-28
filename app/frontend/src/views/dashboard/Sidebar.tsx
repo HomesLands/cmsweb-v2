@@ -35,7 +35,7 @@ export function Sidebar() {
           >
             {isMinimized ? (
               <div>
-                <ChevronRight className="w-4 h-4 text-white" />
+                <ChevronRight className="w-4 h-4 text-red-300" />
               </div>
             ) : (
               <div>
