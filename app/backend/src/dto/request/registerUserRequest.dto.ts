@@ -21,6 +21,7 @@ export class RegisterUserRequestDto {
   @IsDefined()
   @IsString()
   @IsNotEmpty()
+  @Length(6, 20)
   userName!: string;
 
   @IsDefined()
@@ -28,4 +29,10 @@ export class RegisterUserRequestDto {
   @IsNotEmpty()
   @Length(6, 12)
   password!: string;
+
+  @IsDefined()
+  @IsString()
+  @IsNotEmpty()
+  @Length(6, 12)
+  confirmPassword!: string;
 }

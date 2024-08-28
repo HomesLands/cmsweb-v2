@@ -24,11 +24,20 @@ class UserService {
     return userDto;
   }
 
-  public async getUserById(id: string): Promise<UsersResponseDto> {
+  public async getUserById(id: string): Promise<UsersResponseDto | null> {
     let userData = await this.userRepo.findOneBy({ id: id});
-    const userDto: UsersResponseDto = mapper.map(userData, User, UsersResponseDto);
+    console.log({userData})
 
+    if(!userData) {
+      return null;
+    }
+    const userDto = mapper.map(userData, User, UsersResponseDto);
     return userDto;
+  }
+
+  public async getUserByUserName(userName: string): Promise<any | null> {
+    let userData = await this.userRepo.findOneBy({ userName: userName});
+    return userData;
   }
 }
 

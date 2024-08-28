@@ -1,7 +1,7 @@
 import { Length } from 'class-validator';
 import { AutoMap } from '@automapper/classes';
 
-export class UsersResponseDto {
+export class LoginResponseDto {
   @AutoMap()
   @Length(2, 50)
   firstName: string | undefined;
@@ -18,4 +18,7 @@ export class UsersResponseDto {
 
   @AutoMap()
   id: string | undefined;
+
+  @AutoMap()
+  token: string | undefined;
 }

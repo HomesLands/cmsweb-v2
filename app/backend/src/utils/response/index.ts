@@ -20,7 +20,7 @@ export function sendResponse<T extends object>(
         errorSent = true;
         codeSent = 400;
         messageSent = errors
-        .flatMap(error => Object.values(error.constraints || {}))
+        .map(error => Object.values(error.constraints || {}))
         .join(', ');
   
         const response = new ApiResponseDto<T>(

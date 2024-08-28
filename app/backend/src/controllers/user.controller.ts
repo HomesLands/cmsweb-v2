@@ -9,6 +9,8 @@ import { sendResponse } from '@utils/response';
 import { RegisterUserRequestDto } from '@dto/request/registerUserRequest.dto';
 import { validateRequestData } from '@utils/request';
 
+import jwtHelper from '@utils/jwt';
+
 
 class UserController {
   /**
@@ -17,8 +19,6 @@ class UserController {
    *   - name: User
    *     description: User Control
    */
-
-  
 
   public async registerUser(
     req: Request,
@@ -68,6 +68,20 @@ class UserController {
       const id = req.params.id;
       const userData = await userService.getUserById(id);
 
+      const token = jwtHelper.signToken(id, 'local');
+      console.log({token})
+
+      if(!userData) {
+        return sendResponse<UsersResponseDto>(
+          req,
+          res,
+          true,
+          400,
+          "Không tìm thấy thông tin người dùng",
+          {} as UsersResponseDto
+        );
+      }
+
       return sendResponse<UsersResponseDto>(
         req,
         res,
@@ -114,11 +128,41 @@ class UserController {
     next: NextFunction,
   ): Promise<any> {
     try {
-      const id: string = req.params.id;
+      const id: string = "ddd";
       const obj = {
         id: 1,
         content: id,
       };
+
+      const errors = [
+        {
+          target: [RegisterUserRequestDto],
+          value: '124',
+          property: 'password',
+          children: [],
+          constraints: 
+          { isLength: 'password must be longer than or equal to 6 characters' }
+        },
+        {
+          target: [RegisterUserRequestDto],
+          value: '44444',
+          property: 'dđ',
+          children: [],
+          constraints: 
+          { 
+            isLength: 'xxxxx',
+            b : "cc", 
+            d: "ssss"
+           },
+        }
+      ]
+
+      const message: string = errors
+      .map(error => Object.values(error.constraints || {}))
+      .join(', ');
+
+      console.log({message})
+
       res.status(200).json(obj);
     } catch (error) {
       next(error);
