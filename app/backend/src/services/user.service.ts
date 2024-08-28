@@ -3,16 +3,17 @@ import { mapper } from "@mappers/mapper";
 import { User } from "@entities";
 import { UserResponseDto } from "@dto/response";
 import { ICreateUserRequestDto } from "types";
+import { SaveOptions, RemoveOptions } from "typeorm";
 
 class UserService {
-  // private userRepo = new UserRepository();
+  private userRepo = new UserRepository();
   // public async createUser(
   //   requestData: ICreateUserRequestDto
   // ): Promise<UserResponseDto> {
-  //   let userData = await this.userRepo.create({
+  //   let userData: User = await this.userRepo.save({
   //     firstName: requestData.firstName,
   //     lastName: requestData.lastName,
-  //     userName: requestData.username,
+  //     username: requestData.username,
   //     password: requestData.password,
   //   });
   //   const userDto: UserResponseDto = mapper.map(
@@ -22,33 +23,22 @@ class UserService {
   //   );
   //   return userDto;
   // }
-  // public async getUserById(id: string): Promise<UserResponseDto> {
-  //   // let userData = await this.userRepo.findOneBy({ id: id });
-  //   // const userDto: UserResponseDto = mapper.map(
-  //   //   userData,
-  //   //   User,
-  //   //   UserResponseDto
-  //   // );
-  //   // if(!userData) {
-  //   //   return null;
-  //   // }
-  //   // const userDto = mapper.map(userData, User, UsersResponseDto);
-  //   // return userDto;
-  //   return new Promise((reslove) => {
-  //     const user: UserResponseDto = {
-  //       firstName: "",
-  //       fullName: "",
-  //       id: "",
-  //       lastName: "",
-  //       username: "",
-  //     };
-  //     reslove(user);
-  //   });
-  // }
-  // public async getUserByUserName(userName: string): Promise<any | null> {
-  //   let userData = await this.userRepo.findOneBy({ userName: userName });
-  //   return userData;
-  // }
+  public async getUserById(id: string): Promise<UserResponseDto | null> {
+    let userData = await this.userRepo.findById(id);
+    if(!userData) {
+      return null;
+    }
+    const userDto: UserResponseDto = mapper.map(
+      userData,
+      User,
+      UserResponseDto
+    );
+    return userDto;
+  }
+
+  public async getUserByUserName(username: string): Promise<User | null> {
+    return await this.userRepo.findOnByUsername(username);
+  }
 }
 
 export default new UserService();

@@ -9,6 +9,9 @@ export interface IEnv {
     hashSalt: string;
     jwtSecret: string;
   };
+  passport: {
+    passportSecret: string;
+  };
 }
 
 export interface IApiResponse<T> {

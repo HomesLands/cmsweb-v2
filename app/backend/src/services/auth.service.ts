@@ -1,8 +1,11 @@
 import { Request } from "express";
 import passport from "passport";
+import bcrypt from 'bcrypt';
 
 import { UserRepository } from "@repositories";
 import { IAuthenticateResponseDto } from "types";
+import { User } from "@entities";
+import { SaveOptions, RemoveOptions } from "typeorm";
 
 class AuthService {
   private userRepository: UserRepository;
@@ -11,31 +14,39 @@ class AuthService {
     this.userRepository = new UserRepository();
   }
 
-  // public async signUp(data: RegisterUserRequestDto): Promise<LoginResponseDto> {
+  // public async signUp(data: any): Promise<User> {
+
   //   const passwordHashed: string = await bcrypt.hash(
   //     data.password,
-  //     parseInt(env.token.hashSalt)
+  //     10
   //   );
 
-  //   let userData = await this.userRepo.create({
+  //   let userData = await this.userRepository.save({
   //     firstName: data.firstName,
   //     lastName: data.lastName,
-  //     userName: data.userName,
+  //     username: data.userName,
   //     password: passwordHashed,
+  //     hasId: function (): boolean {
+  //       throw new Error("Function not implemented.");
+  //     },
+  //     save: function (options?: SaveOptions): Promise<User> {
+  //       throw new Error("Function not implemented.");
+  //     },
+  //     remove: function (options?: RemoveOptions): Promise<User> {
+  //       throw new Error("Function not implemented.");
+  //     },
+  //     softRemove: function (options?: SaveOptions): Promise<User> {
+  //       throw new Error("Function not implemented.");
+  //     },
+  //     recover: function (options?: SaveOptions): Promise<User> {
+  //       throw new Error("Function not implemented.");
+  //     },
+  //     reload: function (): Promise<void> {
+  //       throw new Error("Function not implemented.");
+  //     }
   //   });
 
-  //   // add token
-  //   const token = generateToken(userData.id, "local");
-
-  //   userData = await this.userRepo.findOneAndUpdateById(userData.id, {
-  //     token,
-  //   });
-  //   const userDto: LoginResponseDto = mapper.map(
-  //     userData,
-  //     User,
-  //     LoginResponseDto
-  //   );
-  //   return userDto;
+  //   return userData;
   // }
 
   public async authenticate(req: Request): Promise<IAuthenticateResponseDto> {
