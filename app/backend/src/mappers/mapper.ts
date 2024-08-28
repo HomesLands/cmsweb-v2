@@ -1,7 +1,7 @@
 import { createMapper, createMap, forMember, mapFrom } from "@automapper/core";
 import { classes } from "@automapper/classes";
 
-import { User } from "@entities/user.entity";
+import { User } from "@entities";
 import { LoginResponseDto } from "@dto/response/loginResponse.dto";
 import { UserResponseDto } from "@dto/response";
 
@@ -20,7 +20,7 @@ createMap(
   ),
   forMember(
     (destination) => destination.username,
-    mapFrom((source) => source.userName)
+    mapFrom((source) => source.username)
   ),
   forMember(
     (destination) => destination.firstName,
@@ -46,12 +46,8 @@ createMap(
     mapFrom((source) => source.id)
   ),
   forMember(
-    (destination) => destination.token,
-    mapFrom((source) => source.token)
-  ),
-  forMember(
     (destination) => destination.userName,
-    mapFrom((source) => source.userName)
+    mapFrom((source) => source.username)
   ),
   forMember(
     (destination) => destination.firstName,

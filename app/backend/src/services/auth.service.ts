@@ -5,7 +5,11 @@ import { UserRepository } from "@repositories";
 import { IAuthenticateResponseDto } from "types";
 
 class AuthService {
-  private userRepo = new UserRepository();
+  private userRepository: UserRepository;
+
+  constructor() {
+    this.userRepository = new UserRepository();
+  }
 
   // public async signUp(data: RegisterUserRequestDto): Promise<LoginResponseDto> {
   //   const passwordHashed: string = await bcrypt.hash(

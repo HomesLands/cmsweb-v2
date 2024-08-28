@@ -1,4 +1,8 @@
-import { User } from "@entities/user.entity";
-import { Repository } from "typeorm";
+import { User } from "@entities";
+import { BaseRepository } from "./base.repository";
 
-export class UserRepository extends Repository<User> {}
+export class UserRepository extends BaseRepository<User> {
+  constructor() {
+    super(User);
+  }
+}

@@ -4,18 +4,18 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity as TypeORMBaseEntity,
-} from 'typeorm';
-import { AutoMap } from '@automapper/classes';
+} from "typeorm";
+import { AutoMap } from "@automapper/classes";
 
 @Entity()
 export class BaseEntity extends TypeORMBaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid", { name: "id_column" })
   @AutoMap()
-  id!: string;
+  id?: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  createdAt!: Date;
+  @CreateDateColumn({ type: "timestamp", name: "created_at_column" })
+  createdAt?: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
-  updatedAt!: Date;
+  @UpdateDateColumn({ type: "timestamp", name: "updated_at_column" })
+  updatedAt?: Date;
 }

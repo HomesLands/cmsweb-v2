@@ -1,11 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
-import { BaseEntity } from '@entities/base.entity'
+import { Entity, Column } from "typeorm";
+import { BaseEntity } from "@entities/base.entity";
 
-@Entity()
-export class Image extends BaseEntity{
-    @Column({ type: 'mediumblob' })
-    data: Blob | undefined
+@Entity("image_tbl")
+export class Image extends BaseEntity {
+  @Column({ type: "mediumblob", name: "data_column" })
+  data?: Blob;
 
-    @Column({ type: 'varchar' })
-    fileName: string | undefined
+  @Column({ type: "varchar", name: "file_name_column" })
+  fileName?: string;
 }
