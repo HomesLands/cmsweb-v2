@@ -9,9 +9,9 @@ const baseApi: Router = Router();
 export const registerRoutes = (app: Express) => {
   baseApi.use("/auth", authRoute);
 
-  baseApi.use("/user", userRoute);
+  baseApi.use("/users", userRoute);
 
-  baseApi.use("/material", productRoute);
+  baseApi.use("/products", productRoute);
 
   app.use("/api/v1", baseApi);
 };

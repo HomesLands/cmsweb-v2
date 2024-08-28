@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
 import { userService, fileUploadService } from "@services";
+import { IApiResponse } from "types";
+import { UserResponseDto } from "@dto/response";
 
 class UserController {
   /**
@@ -16,9 +18,7 @@ class UserController {
     next: NextFunction
   ): Promise<any> {
     try {
-      // const { body: data} = req;
       const data = req.body;
-      console.log({ dataRegister: data });
       const userData = await userService.createUser(data);
 
       res.status(200).json(userData);
