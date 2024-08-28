@@ -3,12 +3,6 @@ import { Request, Response } from "express";
 import { ImageRepository } from "@repositories";
 import fs from "fs";
 
-interface ImageData {
-  id: number;
-  data: string;
-  fileName: string;
-}
-
 const allowedTypes = [
   "image/jpeg",
   "image/png",
@@ -162,73 +156,62 @@ export class FileUploadService {
     });
   }
 
-  public async uploadFilesDB(
-    req: Request,
-    res: Response,
-    isMultiple: boolean
-  ): Promise<{ success: boolean; ids?: any[] }> {
-    return new Promise((resolve, reject) => {
-      if (isMultiple && req.files) {
-        const ids: any[] = [];
+  // public async uploadFilesDB(
+  //   req: Request,
+  //   res: Response,
+  //   isMultiple: boolean
+  // ): Promise<{ success: boolean; ids?: any[] }> {
+  //   return new Promise((resolve, reject) => {
+  //     if (isMultiple && req.files) {
+  //       const ids: any[] = [];
 
-        (req.files as Express.Multer.File[]).forEach((file) => {
-          console.log({ fileeee: file });
-          const base64String = file.buffer.toString("base64");
-          const fileName = file.originalname.split(".")[0];
-          const fileType = file.originalname.split(".")[1];
+  //       (req.files as Express.Multer.File[]).forEach((file) => {
+  //         const base64String = file.buffer.toString("base64");
+  //         const fileName = file.originalname.split(".")[0];
+  //         const fileType = file.originalname.split(".")[1];
 
-          const dataSaved = this.imageRepo.create({
-            data: base64String,
-            // data: file.mimetype,
-            fileName: `${fileName}-${Date.now()}.${fileType}`,
-          });
+  //         const dataSaved = this.imageRepo.save({
+  //           data: ,
+  //           // data: file.mimetype,
+  //           fileName: `${fileName}-${Date.now()}.${fileType}`,
+  //         });
 
-          ids.push(dataSaved);
-        });
-        resolve({
-          success: true,
-          ids: ids,
-        });
-        resolve({ success: true });
-      } else if (req.file) {
-        const file = req.file;
-        const base64String = file.buffer.toString("base64");
-        const fileName = file.originalname.split(".")[0];
-        const fileType = file.originalname.split(".")[1];
+  //         ids.push(dataSaved);
+  //       });
+  //       resolve({
+  //         success: true,
+  //         ids: ids,
+  //       });
+  //       resolve({ success: true });
+  //     } else if (req.file) {
+  //       const file = req.file;
+  //       const base64String = file.buffer;
+  //       const fileName = file.originalname.split(".")[0];
+  //       const fileType = file.originalname.split(".")[1];
 
-        const dataSaved = this.imageRepo.create({
-          data: base64String,
-          // data: file.mimetype,
-          fileName: `${fileName}-${Date.now()}.${fileType}`,
-        });
-        resolve({
-          success: true,
-          ids: [dataSaved],
-        });
-      } else {
-        resolve({ success: false });
-      }
-    });
-  }
+  //       const dataSaved = this.imageRepo.save({
+  //         data: base64String,
+  //         // data: file.mimetype,
+  //         fileName: `${fileName}-${Date.now()}.${fileType}`,
+  //       });
+  //       resolve({
+  //         success: true,
+  //         ids: [dataSaved],
+  //       });
+  //     } else {
+  //       resolve({ success: false });
+  //     }
+  //   });
+  // }
 
-  public async getImgFromDB(id: string): Promise<string | undefined> {
-    const imageData: ImageData | null = await this.imageRepo.findOneBy({
-      id: id,
-    });
+  public async getImgFromDB(id: string): Promise<Blob | undefined> {
+    const imageData = await this.imageRepo.findById(id);
     if (!imageData) {
       return;
     }
-
-    const base64Data: string = imageData.data;
-
-    console.log({ base64Data });
-
-    const imageBuffer = Buffer.from(base64Data, "base64");
-    console.log({ imageBuffer });
-
+    const base64Data = imageData.data;
     return base64Data;
-    // return base64Data;
   }
 }
 
-export const fileUploadService = new FileUploadService();
+export default new FileUploadService();

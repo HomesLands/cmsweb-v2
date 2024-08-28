@@ -1,42 +1,53 @@
 import { dataSource } from "@configs/index";
-import { EntityTarget, ObjectLiteral, Repository } from "typeorm";
-
-// note: Tạo thêm interface chung cho các trường dữ liệu lấy ra từ T để định nghĩa kiểu trả về
-type EntityColumnsOnly<T> = {
-  [P in keyof T as T[P] extends Function ? never : P]: T[P];
-};
+import {
+  EntityTarget,
+  FindOptionsWhere,
+  ObjectId,
+  ObjectLiteral,
+  Repository,
+} from "typeorm";
+import { IPageOption } from "types";
 
 export class BaseRepository<T extends ObjectLiteral> {
-  private repository: Repository<T>;
+  protected repository: Repository<T>;
 
-  constructor(entity: EntityTarget<T>) {
-    this.repository = dataSource.getRepository(entity);
+  constructor(entityTarget: EntityTarget<T>) {
+    this.repository = dataSource.getRepository(entityTarget);
   }
 
-  public async create(data: any): Promise<any | undefined> {
-    console.log({ dataRegisterRespo: data });
-    const dataCreated = await this.repository.create(data);
-    const dataSaved = await this.repository.save(dataCreated);
-    return dataSaved;
+  public async save(data: T): Promise<T> {
+    const createdData = this.repository.create(data);
+    return await this.repository.save(createdData);
   }
 
-  public async findAll(): Promise<any | undefined> {
+  public async findAll(option?: IPageOption): Promise<T[]> {
+    if (option) {
+      return await this.repository
+        .createQueryBuilder(option.builderFor)
+        .orderBy(option.orderBy)
+        .skip(option.skip)
+        .take(option.take)
+        .getMany();
+    }
     return await this.repository.find();
   }
 
-  public async findOneBy(data: any): Promise<any | undefined> {
-    return await this.repository.findOneBy(data);
+  public async findById(id: any): Promise<T | null> {
+    return await this.repository.findOneBy({ id });
   }
 
-  public async findOneAndUpdateById(
-    idQuery: any,
-    dataUpdate: any
-  ): Promise<any | undefined> {
-    await this.repository.update(idQuery, dataUpdate);
-    return await this.repository.findOneBy({ id: idQuery });
-  }
-
-  public async delete(data: any): Promise<any | undefined> {
-    return await this.repository.delete(data);
+  public async delete(
+    criteria:
+      | string
+      | string[]
+      | number
+      | number[]
+      | Date
+      | Date[]
+      | ObjectId
+      | ObjectId[]
+      | FindOptionsWhere<T>
+  ): Promise<void> {
+    await this.repository.delete(criteria);
   }
 }

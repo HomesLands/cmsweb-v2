@@ -1,6 +1,6 @@
-import { BaseRepository } from '@repositories/base.repository';
-import { User } from '@entities/user.entity';
-import { Image } from '@entities/image.entity';
+import { BaseRepository } from "@repositories/base.repository";
+import { User } from "@entities/user.entity";
+import { Image } from "@entities/image.entity";
 
 export class UserRepository extends BaseRepository<User> {
   constructor() {
@@ -13,4 +13,3 @@ export class ImageRepository extends BaseRepository<Image> {
     super(Image);
   }
 }
-

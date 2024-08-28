@@ -14,6 +14,7 @@ import bodyParser from "body-parser";
 import { registerRoutes } from "@routes";
 import { globalErrorHandler } from "@middlewares";
 import { dataSource } from "@configs/index";
+import { passportStrategies } from "@configs";
 
 dotenv.config();
 
@@ -84,6 +85,10 @@ dotenv.config();
   const swaggerDocs = swaggerJsdoc(swaggerOptions);
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
+  // Passport initialization
+  passportStrategies(app);
+
+  // routes
   registerRoutes(app);
 
   app.all("*", (req: Request, res: Response, next: NextFunction) => {
