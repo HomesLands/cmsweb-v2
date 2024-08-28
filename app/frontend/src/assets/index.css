@@ -90,3 +90,24 @@
     @apply w-3.5 h-3.5 text-red-500;
   }
 }
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('./font/Roboto/Roboto-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'BeVietnam';
+  src: url('./font/Be_Vietnam_Pro/BeVietnamPro-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Matemasie';
+  src: url('./font/Matemasie/Matemasie-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}

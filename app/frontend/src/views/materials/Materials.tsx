@@ -52,7 +52,7 @@ const Projects: React.FC = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between w-full px-4 py-6 border-b">
               <div className="flex flex-col items-start gap-2 py-2">
-                <CardTitle>Yêu cầu vật tư</CardTitle>
+                <CardTitle className="font-beVietNam">Yêu cầu vật tư</CardTitle>
                 <CardDescription>Quản lý thông tin chi tiết yêu cầu vật tư</CardDescription>
               </div>
             </CardHeader>
