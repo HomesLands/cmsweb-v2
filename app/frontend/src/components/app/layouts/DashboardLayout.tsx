@@ -6,7 +6,7 @@ import { SidebarDrawer } from '@/components/app/drawer/SidebarDrawer'
 import { DropdownHeader } from '@/components/app/dropdown/DropdownHeader'
 import { SidebarDrawerMobile } from '@/components/app/drawer/SidebarDrawerMobile'
 import LanguageSelect from '@/components/app/select/LanguageSelect'
-import useLayoutStore from '@/stores/useLayoutStore'
+import { useLayoutStore } from '@/stores'
 
 const DashboardLayout = () => {
   const { isMinimized, toggleMinimized } = useLayoutStore()

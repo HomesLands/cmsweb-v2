@@ -5,7 +5,7 @@ import { DataTable } from './DataTable/DataTable'
 import { columns } from './DataTable/columns'
 import SpinnerLoading from '@/components/app/spinner/SpinnerLoading'
 import { MaterialInfo } from '@/types/material.type'
-import useLayoutStore from '@/stores/useLayoutStore'
+import { useLayoutStore } from '@/stores'
 
 const Projects: React.FC = () => {
   const { isMinimized } = useLayoutStore()
@@ -17,8 +17,8 @@ const Projects: React.FC = () => {
       {
         id: '728ed52f',
         createdBy: 'Lê Thành Nghĩa',
-        created_at: new Date(),
-        updated_at: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
         commanderApprovalStatus: 'Đã duyệt',
         commanderApprovalContent: 'Hợp lệ',
         projectManagerApprovalStatus: 'Đã duyệt',

@@ -42,10 +42,10 @@ export const columns: ColumnDef<MaterialInfo>[] = [
     header: 'Người tạo'
   },
   {
-    accessorKey: 'created_at',
+    accessorKey: 'createdAt',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày tạo" />,
     cell: ({ row }) => {
-      const dateValue = row.getValue('created_at') as string | number | Date
+      const dateValue = row.getValue('createdAt') as string | number | Date
       const date = new Date(dateValue)
       const formattedDate = date
         ? new Intl.DateTimeFormat('vi-VN', {

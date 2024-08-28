@@ -1,5 +1,5 @@
-import useMenus from '@/router/routes.router'
 import { NavLink } from 'react-router-dom'
+import { Menu } from 'lucide-react'
 import IconWrapper from './IconWrapper'
 import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet'
 import {
@@ -9,11 +9,9 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
-import { Menu } from 'lucide-react'
+import { sidebarSubmenus } from '@/router/routes'
 
 export function SidebarDrawerMobile() {
-  const { sidebarSubmenus } = useMenus
-
   return (
     <Sheet>
       <SheetTrigger asChild>
