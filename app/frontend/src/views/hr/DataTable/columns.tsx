@@ -1,18 +1,18 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontal } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+  DropdownMenuTrigger,
+  Button,
+  Checkbox
+} from '@/components/ui'
 
-import { DataTableColumnHeader } from './DataTableColumnHeader'
+import { DataTableColumnHeader } from '@/components/ui'
 import { userInfo } from '@/types/user.type'
 
 export const columns: ColumnDef<userInfo>[] = [

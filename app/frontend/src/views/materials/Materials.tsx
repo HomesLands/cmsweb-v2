@@ -1,7 +1,15 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import React, { useEffect, useState } from 'react'
-import { DataTable } from './DataTable/DataTable'
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  ScrollArea,
+  ScrollBar
+} from '@/components/ui'
+import { DataTable } from '@/components/ui'
 import { columns } from './DataTable/columns'
 import SpinnerLoading from '@/components/app/spinner/SpinnerLoading'
 import { MaterialInfo } from '@/types/material.type'

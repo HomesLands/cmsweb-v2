@@ -4,10 +4,16 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { NavLink } from 'react-router-dom'
 
 import { LoginSChema } from '@/schemas/auth/auth.schema'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Button,
+  Label,
+  Input
+} from '@/components/ui'
 
 const Login: React.FC = () => {
   const {
