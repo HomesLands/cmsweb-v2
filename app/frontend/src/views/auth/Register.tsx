@@ -4,16 +4,22 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { NavLink } from 'react-router-dom'
 
 import { LoginSChema } from '@/schemas/auth/auth.schema'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Label,
+  Input,
+  Button
+} from '@/components/ui'
 
 const Register: React.FC = () => {
   const {
     register,
-    handleSubmit,
-    formState: { errors }
+    handleSubmit
+    // formState: { errors }
   } = useForm({
     resolver: zodResolver(LoginSChema)
   })
@@ -64,7 +70,7 @@ const Register: React.FC = () => {
                   <span></span>
                 </div>
                 <div className="grid gap-2">
-                  <Label>Password</Label>
+                  <Label>Mật khẩu</Label>
                   <Input
                     {...register('password')}
                     type="password"

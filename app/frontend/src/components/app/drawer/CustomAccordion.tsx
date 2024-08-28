@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AccordionTrigger } from '@/components/ui/accordion'
+import { AccordionTrigger } from '@/components/ui'
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
 
 import { cn } from '@/lib/utils'
@@ -18,8 +18,8 @@ export const CustomAccordionTrigger = React.forwardRef<
     <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
-        'flex flex-1 items-center py-4 font-medium text-base mt-3 transition-all duration-200 hover:text-primary hover:no-underline',
-        minimized ? 'justify-center' : '[&[data-state=open]>svg]:rotate-180 px-3 justify-between',
+        'flex flex-1 w-full items-center py-4 font-medium text-base mt-3 transition-all duration-200 hover:text-primary hover:no-underline',
+        minimized ? 'justify-center' : '[&[data-state=open]>svg]:rotate-180 px-2 justify-between',
         className
       )}
       {...props}
