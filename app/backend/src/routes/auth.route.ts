@@ -1,10 +1,7 @@
 import { Router } from "express";
 
-import AuthController from '@controllers/auth.controller';
+import { authController } from "@controllers";
 
-const authRoute: Router = Router();
-
-authRoute.route('/signUp').post(AuthController.signUp);
-authRoute.route('/signIn').post(AuthController.signIn);
-
-export default authRoute;
+export const authRoute: Router = Router();
+// authRoute.route("/signUp").post(authController.signUp);
+authRoute.route("/authenticate").post(authController.authenticate);

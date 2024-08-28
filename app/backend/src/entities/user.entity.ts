@@ -1,28 +1,21 @@
 import { Entity, Column } from "typeorm";
-import { BaseEntity } from '@entities/base.entity';
-import { AutoMap } from '@automapper/classes';
+import { BaseEntity } from "@entities/base.entity";
+import { AutoMap } from "@automapper/classes";
 
-@Entity()
+@Entity("user_tbl")
 export class User extends BaseEntity {
-    @AutoMap()
-    @Column({ type: 'varchar' })
-    firstName: string | undefined
+  @AutoMap()
+  @Column({ name: "first_name_column" })
+  firstName?: string;
 
-    @AutoMap()
-    @Column({ type: 'varchar' })
-    lastName: string | undefined
+  @AutoMap()
+  @Column({ name: "last_name_column" })
+  lastName?: string;
 
-    @AutoMap()
-    @Column({ type: 'varchar' })
-    userName: string | undefined
+  @AutoMap()
+  @Column({ name: "username_column" })
+  username?: string;
 
-    @Column({ type: 'varchar' })
-    password: string | undefined
-
-    @AutoMap()
-    @Column({ 
-        type: 'varchar',
-        default: ''
-    })
-    token: string | undefined;
+  @Column({ name: "password_column" })
+  password?: string;
 }
