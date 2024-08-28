@@ -30,7 +30,9 @@ export function SidebarDrawer({ minimized }: SidebarDrawerProps) {
                 </Tooltip>
               </TooltipProvider>
               {minimized ? null : (
-                <span className={`whitespace-nowrap font-sans`}>{submenu.title}</span>
+                <span className={`whitespace-nowrap text-sm font-normal font-sans`}>
+                  {submenu.title}
+                </span>
               )}
             </div>
           </CustomAccordionTrigger>

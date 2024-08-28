@@ -2,6 +2,7 @@ import React, { Suspense } from 'react'
 import { createBrowserRouter, RouteObject } from 'react-router-dom'
 import menuConfig from '@/router/routes.router' // Đảm bảo đúng đường dẫn
 import { Route } from '@/types/route.type'
+import SpinnerLoading from '@/components/app/spinner/SpinnerLoading'
 
 const createRouteObject = (route: {
   title: string
@@ -19,7 +20,7 @@ const createRouteObject = (route: {
   return {
     path: route.path,
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<SpinnerLoading />}>
         <Element />
       </Suspense>
     ),

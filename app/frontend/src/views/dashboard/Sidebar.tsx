@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+// import { useTranslation } from 'react-i18next'
 
 import { ChevronLeft, ChevronRight, Package2 } from 'lucide-react'
 
@@ -12,7 +12,7 @@ import { useState } from 'react'
 import LanguageSelect from '@/components/app/select/LanguageSelect'
 
 export function Sidebar() {
-  const { t } = useTranslation()
+  // const { t } = useTranslation()
   const { sidebarSubmenus } = useMenus
   console.log(sidebarSubmenus)
   const [isMinimized, setIsMinimized] = useState(false)
@@ -35,7 +35,7 @@ export function Sidebar() {
           >
             {isMinimized ? (
               <div>
-                <ChevronRight className="w-4 h-4 text-white" />
+                <ChevronRight className="w-4 h-4 text-red-300" />
               </div>
             ) : (
               <div>

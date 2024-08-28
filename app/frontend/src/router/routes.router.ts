@@ -15,7 +15,6 @@ const routes: Route[] = [
     {
         title: 'Home',
         path: '/',
-        redirect: '/hr-subsystem',
         component: () => import('@/layouts/DashboardLayout'),
     },
     {
@@ -24,10 +23,10 @@ const routes: Route[] = [
         component: () => import('@/layouts/DashboardLayout'),
         children: [
             {
-                title: 'Dashboard',
-                path: '/hr-subsystem',
-                component: () => import ('@/views/hr/Hr')
-            }
+                title: 'User List',
+                path: 'user-list',
+                component: () => import('@/views/hr/UserList'),
+            },
         ]
     },
     {
@@ -37,20 +36,20 @@ const routes: Route[] = [
         children: [
             {
                 title: 'Projects',
-                path: '/project-subsystem',
+                path: 'projects',
                 component: () => import('@/views/projects/Projects')
             }
         ]
     },
     {
-        title: 'YCVT Subsystem',
+        title: 'Phân hệ YCVT',
         path: '/ycvt-subsystem',
         component: () => import('@/layouts/DashboardLayout'),
         children: [
             {
                 title: 'Materials',
-                path: '/ycvt-subsystem',
-                component: () => import('@/views/materials/materials')
+                path: 'materials',
+                component: () => import('@/views/materials/Materials')
             }
         ]
     }
@@ -64,10 +63,10 @@ const sidebarSubmenus: SidebarSubmenu[] = [
         component: () => import('@/layouts/DashboardLayout'),
         children: [
             {
-                title: 'HR Subsystem',
-                path: '/hr-subsystem',
+                title: 'User List',
+                path: '/hr-subsystem/user-list',
                 icon: AlignJustify,
-                component: () => import('@/views/hr/Hr')
+                component: () => import('@/views/hr/UserList')
             }
         ]
     },
@@ -79,7 +78,7 @@ const sidebarSubmenus: SidebarSubmenu[] = [
         children: [
             {
                 title: 'Project Subsystem',
-                path: '/project-subsystem',
+                path: '/project-subsystem/projects',
                 icon: Archive,
                 component: () => import('@/views/projects/Projects')
             }
@@ -93,9 +92,9 @@ const sidebarSubmenus: SidebarSubmenu[] = [
         children: [
             {
                 title: 'YCVT Subsystem',
-                path: '/ycvt-subsystem',
+                path: '/ycvt-subsystem/materials',
                 icon: Archive,
-                component: () => import('@/views/materials/materials')
+                component: () => import('@/views/materials/Materials')
             }
         ]
     }
