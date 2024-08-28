@@ -1,2 +1,5 @@
 export * from './material.type'
 export * from './user.type'
+export * from './component.type'
+export * from './route.type'
+export * from './pagingResponse.type'

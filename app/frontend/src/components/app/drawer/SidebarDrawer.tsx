@@ -5,10 +5,7 @@ import { Accordion, AccordionContent, AccordionItem, Card } from '@/components/u
 import { sidebarSubmenus } from '@/router/routes'
 import IconWrapper from './IconWrapper'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-
-interface SidebarDrawerProps {
-  minimized?: boolean
-}
+import { SidebarDrawerProps } from '@/types/component.type'
 
 export function SidebarDrawer({ minimized }: SidebarDrawerProps) {
   return (
