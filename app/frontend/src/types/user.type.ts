@@ -1,9 +1,22 @@
 export interface userInfo {
-    id: string
-    first_name: string
-    last_name: string
-    email: string
-    role: string
-    created_at: Date
-    updated_at?: Date
-  }
+  id: string
+  avatar: string
+  fullName: string
+  email: string
+  phoneNumber: string
+  role: string
+  dob: string
+  address: string
+  department: string
+  site: string
+  created_at?: Date
+  updated_at?: Date
+}
+
+// export interface PagingResponse<T> {
+//   items: T[]
+//   total: number
+//   page: number
+//   page_size: number
+//   pages: number
+// }

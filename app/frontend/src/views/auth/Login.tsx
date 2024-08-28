@@ -12,8 +12,8 @@ import { Button } from '@/components/ui/button'
 const Login: React.FC = () => {
   const {
     register,
-    handleSubmit,
-    formState: { errors }
+    handleSubmit
+    // formState: { errors }
   } = useForm({
     resolver: zodResolver(LoginSChema)
   })

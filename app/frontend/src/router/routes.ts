@@ -16,41 +16,47 @@ const routes: Route[] = [
     title: 'Home',
     path: '/',
     redirect: '/hr-subsystem',
-    component: () => import('@/components/app/layouts/DashboardLayout')
+    component: () =>
+      import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout }))
   },
   {
     title: 'Dashboard',
     path: '/hr-subsystem',
-    component: () => import('@/components/app/layouts/DashboardLayout'),
+    component: () =>
+      import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
       {
-        title: 'Dashboard',
-        path: '/hr-subsystem',
-        component: () => import('@/views/hr/Hr')
+        title: 'User List',
+        path: 'user-list',
+        component: () => import('@/views/hr/UserList')
       }
     ]
   },
   {
     title: 'Project Subsystem',
     path: '/project-subsystem',
-    component: () => import('@/components/app/layouts/DashboardLayout'),
+    component: () =>
+      import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
       {
         title: 'Projects',
-        path: '/project-subsystem',
+        path: 'projects',
         component: () => import('@/views/projects/Projects')
       }
     ]
   },
   {
-    title: 'YCVT Subsystem',
+    title: 'Phân hệ YCVT',
     path: '/ycvt-subsystem',
-    component: () => import('@/components/app/layouts/DashboardLayout'),
+    component: () =>
+      import('@/components/app/layouts').then((module) => ({
+        default: module.DashboardLayout
+      })),
     children: [
       {
         title: 'Materials',
-        path: '/ycvt-subsystem',
-        component: () => import('@/views/materials/materials')
+        path: 'materials',
+        component: () => import('@/views/materials/Materials')
       }
     ]
   }
@@ -61,13 +67,14 @@ const sidebarSubmenus: SidebarSubmenu[] = [
     title: 'Phân hệ HR',
     path: '/hr-subsystem',
     icon: SquareMenu,
-    component: () => import('@/components/app/layouts/DashboardLayout'),
+    component: () =>
+      import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
       {
-        title: 'HR Subsystem',
-        path: '/hr-subsystem',
+        title: 'User List',
+        path: '/hr-subsystem/user-list',
         icon: AlignJustify,
-        component: () => import('@/views/hr/Hr')
+        component: () => import('@/views/hr/UserList')
       }
     ]
   },
@@ -75,11 +82,12 @@ const sidebarSubmenus: SidebarSubmenu[] = [
     title: 'Phân hệ dự án',
     path: '/project-subsystem',
     icon: FolderOpenDot,
-    component: () => import('@/components/app/layouts/DashboardLayout'),
+    component: () =>
+      import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
       {
         title: 'Project Subsystem',
-        path: '/project-subsystem',
+        path: '/project-subsystem/projects',
         icon: Archive,
         component: () => import('@/views/projects/Projects')
       }
@@ -89,16 +97,17 @@ const sidebarSubmenus: SidebarSubmenu[] = [
     title: 'Phân hệ YCVT',
     path: '/ycvt-subsystem',
     icon: Archive,
-    component: () => import('@/components/app/layouts/DashboardLayout'),
+    component: () =>
+      import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
       {
         title: 'YCVT Subsystem',
-        path: '/ycvt-subsystem',
+        path: '/ycvt-subsystem/materials',
         icon: Archive,
-        component: () => import('@/views/materials/materials')
+        component: () => import('@/views/materials/Materials')
       }
     ]
   }
 ]
 
-export default { routes, sidebarSubmenus }
+export { routes, sidebarSubmenus }

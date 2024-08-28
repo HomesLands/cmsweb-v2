@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router-dom'
+
 import { CustomAccordionTrigger } from './CustomAccordion'
-import { Accordion, AccordionContent, AccordionItem } from '@/components/ui/accordion'
-import useMenus from '@/router/routes.router'
-import { CustomCard } from './CustomCard'
+import { Accordion, AccordionContent, AccordionItem, Card } from '@/components/ui'
+import { sidebarSubmenus } from '@/router/routes'
 import IconWrapper from './IconWrapper'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
@@ -11,8 +11,6 @@ interface SidebarDrawerProps {
 }
 
 export function SidebarDrawer({ minimized }: SidebarDrawerProps) {
-  const { sidebarSubmenus } = useMenus
-
   return (
     <Accordion type="single" collapsible className="w-full">
       {sidebarSubmenus.map((submenu) => (
@@ -30,14 +28,16 @@ export function SidebarDrawer({ minimized }: SidebarDrawerProps) {
                 </Tooltip>
               </TooltipProvider>
               {minimized ? null : (
-                <span className={`whitespace-nowrap font-sans`}>{submenu.title}</span>
+                <span className={`whitespace-nowrap text-sm font-normal font-sans`}>
+                  {submenu.title}
+                </span>
               )}
             </div>
           </CustomAccordionTrigger>
           {minimized ? null : (
             <AccordionContent>
               {submenu.children && submenu.children.length > 0 && (
-                <CustomCard>
+                <Card>
                   {submenu.children.map((item) => (
                     <NavLink
                       key={item.title}
@@ -51,7 +51,7 @@ export function SidebarDrawer({ minimized }: SidebarDrawerProps) {
                       <span className="font-sans font-normal">{item.title}</span>
                     </NavLink>
                   ))}
-                </CustomCard>
+                </Card>
               )}
             </AccordionContent>
           )}

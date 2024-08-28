@@ -1,7 +1,8 @@
 import React, { Suspense } from 'react'
 import { createBrowserRouter, RouteObject } from 'react-router-dom'
-import menuConfig from '@/router/routes'
+import { routes } from '@/router/routes'
 import { Route } from '@/types/route.type'
+import SpinnerLoading from '@/components/app/spinner/SpinnerLoading'
 
 const createRouteObject = (route: {
   title: string
@@ -19,15 +20,13 @@ const createRouteObject = (route: {
   return {
     path: route.path,
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<SpinnerLoading />}>
         <Element />
       </Suspense>
     ),
     children: children?.map(createRouteObject)
   }
 }
-
-const { routes } = menuConfig
 
 const routeObjects = routes.map(createRouteObject)
 
