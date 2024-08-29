@@ -55,8 +55,7 @@ module.exports = {
       fontFamily: {
         sans: ['Roboto', 'sans-serif'],
         matemasie: ['Matemasie', 'sans-serif'],
-        beVietNam: ['Be Vietnam Pro', 'sans-serif'],
-        // Bạn có thể thêm các font khác nếu cần
+        beVietNam: ['BeVietnam', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -1,23 +1,23 @@
 import { create } from 'zustand';
-import { userInfo } from '@/types/user.type';
+import { userInfo, UserState } from '@/types/user.type';
 
-interface UserState {
-  userInfo: userInfo | null;
-  accessToken: string | null;
-  isAuthenticated: () => boolean;
-  setUserInfo: (userInfo: userInfo) => void;
-  setAccessToken: (token: string) => void;
-  logout: () => void;
-}
+const encodeToken = (token: string): string => {
+  return btoa(token);
+};
+
+const decodeToken = (token: string | null): string | null => {
+  return token ? atob(token) : null;
+};
 
 export const useUserStore = create<UserState>((set) => ({
   userInfo: null,
-  accessToken: localStorage.getItem('accessToken'),
+  accessToken: decodeToken(localStorage.getItem('accessToken')),
   isAuthenticated: () => !!localStorage.getItem('accessToken'),
   setUserInfo: (userInfo: userInfo) => set({ userInfo }),
   setAccessToken: (token: string) => {
-    localStorage.setItem('accessToken', token);
-    set({ accessToken: token });
+    const encodedToken = encodeToken(token);
+    localStorage.setItem('accessToken', encodedToken);
+    set({ accessToken: encodedToken });
   },
   logout: () => {
     localStorage.removeItem('accessToken');

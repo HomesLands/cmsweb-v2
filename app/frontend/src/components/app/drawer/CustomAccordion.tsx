@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AccordionTrigger } from '@/components/ui/accordion'
+import { AccordionTrigger } from '@/components/ui'
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
 
 import { cn } from '@/lib/utils'

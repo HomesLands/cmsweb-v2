@@ -1,7 +1,15 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import React, { useEffect, useState } from 'react'
-import { DataTable } from './DataTable/DataTable'
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  ScrollArea,
+  ScrollBar
+} from '@/components/ui'
+import { DataTable } from '@/components/ui'
 import { columns } from './DataTable/columns'
 import SpinnerLoading from '@/components/app/spinner/SpinnerLoading'
 import { MaterialInfo } from '@/types/material.type'
@@ -44,7 +52,7 @@ const Projects: React.FC = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between w-full px-4 py-6 border-b">
               <div className="flex flex-col items-start gap-2 py-2">
-                <CardTitle>Yêu cầu vật tư</CardTitle>
+                <CardTitle className="font-beVietNam">Yêu cầu vật tư</CardTitle>
                 <CardDescription>Quản lý thông tin chi tiết yêu cầu vật tư</CardDescription>
               </div>
             </CardHeader>

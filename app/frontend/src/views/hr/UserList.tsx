@@ -1,6 +1,7 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import React, { useEffect, useState } from 'react'
-import { DataTable } from './DataTable/DataTable'
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { DataTable } from '@/components/ui'
 import { columns } from './DataTable/columns'
 import SpinnerLoading from '@/components/app/spinner/SpinnerLoading'
 import { userInfo } from '@/types/user.type'
@@ -34,7 +35,11 @@ const Projects: React.FC = () => {
   }, [])
 
   return (
-    <div className="flex items-start flex-1 rounded-lg shadow-none" x-chunk="dashboard-02-chunk-1">
+    <div
+      className="relative flex items-start flex-1 rounded-lg shadow-none"
+      x-chunk="dashboard-02-chunk-1"
+    >
+      {loading && <SpinnerLoading />}
       <div className="grid items-start w-full gap-6 mx-auto">
         <div className="grid w-full gap-6">
           <Card>
@@ -45,7 +50,7 @@ const Projects: React.FC = () => {
               </div>
             </CardHeader>
             <CardContent className="flex flex-col mt-6">
-              {loading ? <SpinnerLoading /> : <DataTable columns={columns} data={data} />}
+              <DataTable columns={columns} data={data} />
             </CardContent>
           </Card>
         </div>
