@@ -1,12 +1,13 @@
 import { StatusCodes } from 'http-status-codes';
 
 export enum StatusCode {
+  UNAUTHORIZED = 401,
+  PATH_NOT_FOUND = 404,
   USER_NOT_FOUND = 1001,
   INVALID_EMAIL,
   INVALID_USER_NAME,
   USER_ID_NOT_FOUND,
   SESSION_STORE_ERROR,
-  UNAUTHORIZED,
 }
 
 export const StatusMessage = {
@@ -16,6 +17,7 @@ export const StatusMessage = {
   [StatusCode.USER_ID_NOT_FOUND ] : "User id not found in database",
   [StatusCode.SESSION_STORE_ERROR ] : "Fail in store session when login",
   [StatusCode.UNAUTHORIZED ] : "Unauthorized",
+  [StatusCode.PATH_NOT_FOUND ] : "Can't find path",
 }
 
 export const StatusCodeToHttpStatus: Record<StatusCode, number> = {
@@ -25,4 +27,5 @@ export const StatusCodeToHttpStatus: Record<StatusCode, number> = {
   [StatusCode.USER_ID_NOT_FOUND]: StatusCodes.BAD_REQUEST,
   [StatusCode.SESSION_STORE_ERROR]: StatusCodes.INTERNAL_SERVER_ERROR,
   [StatusCode.UNAUTHORIZED]: StatusCodes.UNAUTHORIZED,
+  [StatusCode.PATH_NOT_FOUND]: StatusCodes.NOT_FOUND,
 };
