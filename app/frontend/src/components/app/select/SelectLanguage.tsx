@@ -8,9 +8,9 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue
-} from '@/components/ui/select'
+} from '@/components/ui'
 
-const LanguageSelect: React.FC = () => {
+export const SelectLanguage: React.FC = () => {
   const { i18n } = useTranslation()
 
   const handleLanguageChange = (value: string) => {
@@ -33,5 +33,3 @@ const LanguageSelect: React.FC = () => {
     </Select>
   )
 }
-
-export default LanguageSelect

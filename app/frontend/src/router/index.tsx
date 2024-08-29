@@ -1,14 +1,14 @@
 import React, { Suspense } from 'react'
 import { createBrowserRouter, RouteObject } from 'react-router-dom'
 import { routes } from '@/router/routes'
-import { Route } from '@/types/route.type'
-import SpinnerLoading from '@/components/app/spinner/SpinnerLoading'
+import { IRoute } from '@/types'
+import { SpinnerLoading } from '@/components/app/loading'
 
 const createRouteObject = (route: {
   title: string
   path: string
   component?: () => Promise<{ default: React.ComponentType }>
-  children?: Route[]
+  children?: IRoute[]
 }): RouteObject => {
   const { component, children } = route
 
