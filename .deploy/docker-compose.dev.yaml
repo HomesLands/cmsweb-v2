@@ -9,7 +9,8 @@ services:
       context: ../app/backend
       dockerfile: ../../.build/backend/Dockerfile # Adjusted to be relative to the context
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/v1/healthCheck"]
+      test:
+        ["CMD", "curl", "-f", "http://localhost:3000/api/v1/healthCheck/status"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -23,6 +24,7 @@ services:
       DATABASE_MYSQL: ${DATABASE_MYSQL}
       HASH_SALT: ${HASH_SALT}
       JWT_SECRET: ${JWT_SECRET}
+      PASSPORT_SECRET: ${PASSPORT_SECRET}
       TZ: Asia/Ho_Chi_Minh
     ports:
       - "3001:3000"
