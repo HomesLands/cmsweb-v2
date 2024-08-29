@@ -1,6 +1,6 @@
 import { Request } from "express";
 import passport from "passport";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 import { GlobalException } from "@exception/global-exception";
 import { UserRepository } from "@repositories";

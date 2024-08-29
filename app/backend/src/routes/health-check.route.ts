@@ -3,4 +3,4 @@ import { Router } from "express";
 
 export const healthCheckRoute: Router = Router();
 
-healthCheckRoute.get("/", healthCheckController.healthCheck);
+healthCheckRoute.get("/status", healthCheckController.healthCheck);

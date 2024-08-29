@@ -1,6 +1,6 @@
 import localPassport from "passport-local";
 import passport from "passport";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 import { userService } from "@services";
 import { IUser } from "@types";
