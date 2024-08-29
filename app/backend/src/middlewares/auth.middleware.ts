@@ -6,6 +6,8 @@ import { StatusCode } from "@exception/error-code";
 import { env } from "@constants";
 import userService from "@services/user.service";
 import { UserResponseDto } from "@dto/response/user.response.dto"
+
+// public api
 const publicApis: string[] = [
   "/api/v1/users/test1"
 ];
@@ -24,8 +26,6 @@ class AuthMiddleware {
           return next(new GlobalException(StatusCode.UNAUTHORIZED));
         } else {
           if (typeof decoded === "object" && "id" in decoded) {
-            console.log({decodedId: decoded.id});
-
             const userData: UserResponseDto | null = await userService.getUserById(decoded.id);
             if(!userData) {
               return next(new GlobalException(StatusCode.USER_NOT_FOUND));
