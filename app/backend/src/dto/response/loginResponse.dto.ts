@@ -1,5 +1,5 @@
-import { Length } from 'class-validator';
-import { AutoMap } from '@automapper/classes';
+import { Length } from "class-validator";
+import { AutoMap } from "@automapper/classes";
 
 export class LoginResponseDto {
   @AutoMap()

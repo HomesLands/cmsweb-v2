@@ -5,7 +5,6 @@ import bcrypt from "bcrypt";
 import { userService } from "@services";
 import { IUser } from "@types";
 
-
 export const customLocalStrategy = (): void => {
   const LocalStrategy = localPassport.Strategy;
 
@@ -32,7 +31,7 @@ export const customLocalStrategy = (): void => {
       async (userName: string, password: string, done) => {
         try {
           const user = await userService.getUserByUserName(userName);
-          
+
           if (!user) {
             return done(null, false, { message: "Incorrect username." });
           }

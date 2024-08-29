@@ -7,7 +7,11 @@ import { customLocalStrategy } from "@configs/passport/index";
 
 export const passportStrategies = (app: Application): void => {
   app.use(
-    session({ secret: env.passport.passportSecret, resave: true, saveUninitialized: false })
+    session({
+      secret: env.passport.passportSecret,
+      resave: true,
+      saveUninitialized: false,
+    })
   );
   app.use(passport.initialize());
 

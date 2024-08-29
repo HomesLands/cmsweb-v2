@@ -24,8 +24,8 @@ class UserService {
   //   return userDto;
   // }
   public async getUserById(id: string): Promise<UserResponseDto | null> {
-    let userData = await this.userRepo.findById(id);
-    if(!userData) {
+    const userData = await this.userRepo.findById(id);
+    if (!userData) {
       return null;
     }
     const userDto: UserResponseDto = mapper.map(
