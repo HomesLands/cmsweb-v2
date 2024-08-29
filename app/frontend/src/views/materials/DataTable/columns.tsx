@@ -9,13 +9,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   Button,
-  Checkbox
+  Checkbox,
+  DataTableColumnHeader
 } from '@/components/ui'
+import { IMaterialInfo } from '@/types'
 
-import { DataTableColumnHeader } from '@/components/ui'
-import { MaterialInfo } from '@/types/material.type'
-
-export const columns: ColumnDef<MaterialInfo>[] = [
+export const columns: ColumnDef<IMaterialInfo>[] = [
   {
     id: 'select',
     header: ({ table }) => (

@@ -1,10 +1,10 @@
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { useFormContext } from 'react-hook-form'
-import { ValidationSchema } from '@/schemas/auth/auth.schema'
+
+import { FormField, FormItem, FormLabel, FormControl, FormMessage, Input } from '@/components/ui'
+import { TValidationSchema } from '@/schemas'
 
 export function FormFullName() {
-  const { control } = useFormContext<ValidationSchema>()
+  const { control } = useFormContext<TValidationSchema>()
 
   return (
     <FormField

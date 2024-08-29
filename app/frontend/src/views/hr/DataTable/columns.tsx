@@ -9,13 +9,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   Button,
-  Checkbox
+  Checkbox,
+  DataTableColumnHeader
 } from '@/components/ui'
+import { IUserInfo } from '@/types'
 
-import { DataTableColumnHeader } from '@/components/ui'
-import { userInfo } from '@/types/user.type'
-
-export const columns: ColumnDef<userInfo>[] = [
+export const columns: ColumnDef<IUserInfo>[] = [
   {
     id: 'select',
     header: ({ table }) => (

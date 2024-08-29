@@ -1,7 +1,7 @@
-import type { Route, SidebarSubmenu } from '@/types/route.type'
 import { AlignJustify, SquareMenu, FolderOpenDot, Archive } from 'lucide-react'
+import type { IRoute, SidebarSubmenu } from '@/types'
 
-const routes: Route[] = [
+const routes: IRoute[] = [
   {
     title: 'Login',
     path: '/auth/login',

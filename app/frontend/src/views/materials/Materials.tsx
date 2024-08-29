@@ -11,16 +11,16 @@ import {
 } from '@/components/ui'
 import { DataTable } from '@/components/ui'
 import { columns } from './DataTable/columns'
-import SpinnerLoading from '@/components/app/spinner/SpinnerLoading'
-import { MaterialInfo } from '@/types/material.type'
+import { SpinnerLoading } from '@/components/app/loading'
+import { IMaterialInfo } from '@/types'
 import { useLayoutStore } from '@/stores'
 
 const Projects: React.FC = () => {
   const { isMinimized } = useLayoutStore()
-  const [data, setData] = useState<MaterialInfo[]>([])
+  const [data, setData] = useState<IMaterialInfo[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
-  async function getData(): Promise<[MaterialInfo]> {
+  async function getData(): Promise<[IMaterialInfo]> {
     return [
       {
         id: '728ed52f',
