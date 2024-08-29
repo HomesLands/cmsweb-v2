@@ -1,9 +1,6 @@
 import { useForm, FormProvider } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import toast from 'react-hot-toast'
-
 import { CirclePlus } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -11,14 +8,15 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
+  DialogTrigger,
+  Button
+} from '@/components/ui'
 
-import { FormFullName } from '@/components/app/form/FormFullName'
-import { validationSchema, ValidationSchema } from '@/schemas/auth/auth.schema'
+import { FormFullName } from '@/components/app/form'
+import { validationSchema, TValidationSchema } from '@/schemas'
 
 export function DialogCreateUser() {
-  const form = useForm<ValidationSchema>({
+  const form = useForm<TValidationSchema>({
     resolver: zodResolver(validationSchema),
     defaultValues: {
       fullName: '',
@@ -31,10 +29,8 @@ export function DialogCreateUser() {
   })
 
   // Handle form submission
-  const onSubmit = (values: ValidationSchema) => {
-    console.log('Clicked')
-    console.log('values', values)
-    toast.success('User created successfully')
+  const onSubmit = (values: TValidationSchema) => {
+    console.log({ values })
   }
 
   return (

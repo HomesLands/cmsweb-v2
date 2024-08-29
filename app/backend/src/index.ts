@@ -13,8 +13,7 @@ import bodyParser from "body-parser";
 
 import { registerRoutes } from "@routes";
 import { globalErrorHandler } from "@middlewares";
-import { dataSource } from "@configs/index";
-import { passportStrategies } from "@configs";
+import { passportStrategies, dataSource } from "@configs";
 
 dotenv.config();
 

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { NavLink } from 'react-router-dom'
 
-import { LoginSChema } from '@/schemas/auth/auth.schema'
+import { loginSChema } from '@/schemas'
 import {
   Card,
   CardContent,
@@ -21,7 +21,7 @@ const Login: React.FC = () => {
     handleSubmit
     // formState: { errors }
   } = useForm({
-    resolver: zodResolver(LoginSChema)
+    resolver: zodResolver(loginSChema)
   })
 
   const onSubmit = handleSubmit((data) => {

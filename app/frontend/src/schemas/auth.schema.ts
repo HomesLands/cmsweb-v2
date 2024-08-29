@@ -1,8 +1,8 @@
 import * as z from 'zod'
 
-import {USERNAME_REGEX, PASSWORD_REGEX } from '@/constants/regex'
+import { USERNAME_REGEX, PASSWORD_REGEX } from '@/constants/regex'
 
-const LoginSChema = z.object({
+export const loginSChema = z.object({
   username: z.string().regex(USERNAME_REGEX, 'Only letters allowed'),
   password: z
     .string()
@@ -12,7 +12,7 @@ const LoginSChema = z.object({
     )
 })
 
-const RegisterSchema = LoginSChema.extend({
+export const registerSchema = loginSChema.extend({
   first_name: z
     .string()
     .min(1, 'First name is required')
@@ -25,7 +25,7 @@ const RegisterSchema = LoginSChema.extend({
     .regex(USERNAME_REGEX, 'Only letters allowed')
 })
 
-const CreateUserSchema = RegisterSchema.extend({
+export const createUserSchema = registerSchema.extend({
   address: z.string().min(1, 'Address is required'),
   phoneNumber: z.string().min(1, 'Phone number is required'),
   citizenIdentity: z.string().min(1, 'Citizen Identity is required'), //CCCD
@@ -51,6 +51,4 @@ export const validationSchema = z.object({
   address: z.string().min(1, 'Address is required')
 })
 
-export type ValidationSchema = z.infer<typeof validationSchema>
-
-export { LoginSChema, RegisterSchema, CreateUserSchema }
+export type TValidationSchema = z.infer<typeof validationSchema>
