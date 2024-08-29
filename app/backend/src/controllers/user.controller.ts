@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { generateToken } from "@lib/token";
 
+
 class UserController {
   /**
    * @swagger
@@ -18,6 +19,7 @@ class UserController {
         console.log("userrrr")
         console.log({userId: req["userId"]});
       }
+
       const a = generateToken("4160a259-1119-4e1c-bccb-2304270b77f7", "local");
       console.log({a})
       return res.status(200).json({success: "success"});

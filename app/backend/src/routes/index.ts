@@ -5,7 +5,7 @@ import { productRoute } from "@routes/product.route";
 import { userRoute } from "@routes/user.route";
 import { authMiddleware } from "@middlewares/auth.middleware";
 import { GlobalException } from "@exception/global-exception";
-import { StatusCode } from "@exception/error-code";
+import { StatusResponseRecord } from "@exception/error-code";
 
 
 const baseApi: Router = Router();
@@ -18,7 +18,7 @@ export const registerRoutes = (app: Express) => {
   baseApi.use("/products", authMiddleware.authenticate, productRoute);
 
   baseApi.use((req: Request, res: Response, next: NextFunction) => {
-    return next(new GlobalException(StatusCode.PATH_NOT_FOUND));
+    return next(new GlobalException(StatusResponseRecord.PATH_NOT_FOUND));
   });
 
   app.use("/api/v1", baseApi);
