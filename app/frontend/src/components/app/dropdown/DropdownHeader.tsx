@@ -1,24 +1,22 @@
-import { Button } from '@/components/ui/button'
+import { LogOut } from 'lucide-react'
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { LogOut } from 'lucide-react'
+  DropdownMenuTrigger,
+  Button,
+  UserAvatar
+} from '@/components/ui'
 
 export function DropdownHeader() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="secondary" size="icon" className="rounded-full">
-          <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" alt="Avatar" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          <UserAvatar />
           <span className="sr-only">Toggle user menu</span>
         </Button>
       </DropdownMenuTrigger>

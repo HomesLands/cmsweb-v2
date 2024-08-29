@@ -11,15 +11,17 @@ import {
 } from '@/components/ui'
 import { DataTable } from '@/components/ui'
 import { columns } from './DataTable/columns'
-import Loading from '@/components/app/spinner/Loading'
-import { IMaterialInfo } from '@/types/material.type'
+import { SpinnerLoading, OverlayLoading } from '@/components/app/loading'
+import { IMaterialInfo } from '@/types'
 import { useLayoutStore } from '@/stores'
 
 const Projects: React.FC = () => {
   const { isMinimized } = useLayoutStore()
   const [data, setData] = useState<IMaterialInfo[]>([])
+  const [data, setData] = useState<IMaterialInfo[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
+  async function getData(): Promise<[IMaterialInfo]> {
   async function getData(): Promise<IMaterialInfo[]> {
     return [
       {
@@ -46,7 +48,7 @@ const Projects: React.FC = () => {
   }, [])
 
   return (
-    <Loading isActive={loading}>
+    <OverlayLoading isActive={loading}>
       <Card x-chunk="dashboard-02-chunk-1">
         <div className="grid items-start mx-auto">
           <div className="grid w-full">
@@ -67,7 +69,7 @@ const Projects: React.FC = () => {
           </div>
         </div>
       </Card>
-    </Loading>
+    </OverlayLoading>
   )
 }
 

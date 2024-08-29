@@ -9,10 +9,13 @@ export interface IEnv {
     hashSalt: string;
     jwtSecret: string;
   };
+  passport: {
+    passportSecret: string;
+  };
 }
 
 export interface IApiResponse<T> {
-  result: T;
+  result?: T;
   code: number;
   message: string;
   error: boolean;
@@ -43,3 +46,9 @@ export interface IAuthenticateResponseDto {
   token: string;
   expireTime: Date;
 }
+
+export interface IUser {
+  id?: string;
+  password?: string;
+  username?: string;
+};

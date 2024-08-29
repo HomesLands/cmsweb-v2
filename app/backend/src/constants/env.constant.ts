@@ -14,4 +14,7 @@ export const env: IEnv = {
     hashSalt: process.env.HASH_SALT || "",
     jwtSecret: process.env.JWT_SECRET || "",
   },
+  passport: {
+    passportSecret: process.env.PASSPORT_SECRET || "",
+  }
 };

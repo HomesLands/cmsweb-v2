@@ -1,15 +1,18 @@
 import { NavLink } from 'react-router-dom'
 import { Menu } from 'lucide-react'
-import IconWrapper from './IconWrapper'
-import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet'
 import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
   Accordion,
   AccordionContent,
   AccordionItem,
-  AccordionTrigger
-} from '@/components/ui/accordion'
-import { Button } from '@/components/ui/button'
+  AccordionTrigger,
+  Button
+} from '@/components/ui'
+
 import { sidebarSubmenus } from '@/router/routes'
+import { IconWrapper } from './IconWrapper'
 
 export function SidebarDrawerMobile() {
   return (

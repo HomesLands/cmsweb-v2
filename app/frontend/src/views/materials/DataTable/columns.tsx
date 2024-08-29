@@ -9,11 +9,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   Button,
-  Checkbox
+  Checkbox,
+  DataTableColumnHeader
 } from '@/components/ui'
-
-import { DataTableColumnHeader } from '@/components/ui'
-import { IMaterialInfo } from '@/types/material.type'
+import { IMaterialInfo } from '@/types'
 
 export const columns: ColumnDef<IMaterialInfo>[] = [
   {

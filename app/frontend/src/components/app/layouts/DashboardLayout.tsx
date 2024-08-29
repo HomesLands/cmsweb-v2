@@ -1,11 +1,10 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { ArrowLeftFromLine, ArrowRightFromLine } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Package2 } from 'lucide-react'
+import { Button } from '@/components/ui'
 
-import { Button } from '@/components/ui/button'
-import { SidebarDrawer } from '@/components/app/drawer/SidebarDrawer'
-import { DropdownHeader } from '@/components/app/dropdown/DropdownHeader'
-import { SidebarDrawerMobile } from '@/components/app/drawer/SidebarDrawerMobile'
-import LanguageSelect from '@/components/app/select/LanguageSelect'
+import { DropdownHeader } from '@/components/app/dropdown'
+import { SidebarDrawerMobile, SidebarDrawer } from '@/components/app/drawer'
+import { SelectLanguage } from '@/components/app/select'
 import { useLayoutStore } from '@/stores'
 import tbeLogo from '@/assets/images/tbe-logo.png'
 

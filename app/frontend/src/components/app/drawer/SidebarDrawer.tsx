@@ -1,18 +1,34 @@
 import { NavLink } from 'react-router-dom'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Card,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from '@/components/ui'
 
-import { CustomAccordionTrigger } from './CustomAccordion'
-import { Accordion, AccordionContent, AccordionItem, Card } from '@/components/ui'
+import { cn } from '@/lib/utils'
 import { sidebarSubmenus } from '@/router/routes'
-import IconWrapper from './IconWrapper'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { ISidebarDrawerProps } from '@/types/component.type'
+import { IconWrapper } from './IconWrapper'
+import { ISidebarDrawerProps } from '@/types'
 
 export function SidebarDrawer({ minimized }: ISidebarDrawerProps) {
   return (
     <Accordion type="single" collapsible className="w-full">
       {sidebarSubmenus.map((submenu) => (
         <AccordionItem key={submenu.title} value={submenu.title}>
-          <CustomAccordionTrigger minimized={minimized}>
+          <AccordionTrigger
+            className={cn(
+              'flex flex-1 w-full items-center py-4 font-medium text-base mt-3 transition-all duration-200 hover:text-primary hover:no-underline',
+              minimized
+                ? 'justify-center'
+                : '[&[data-state=open]>svg]:rotate-180 px-2 justify-between'
+            )}
+          >
             <div className="flex items-center justify-between gap-2 transition-all duration-300">
               <TooltipProvider>
                 <Tooltip>
@@ -30,7 +46,7 @@ export function SidebarDrawer({ minimized }: ISidebarDrawerProps) {
                 </span>
               )}
             </div>
-          </CustomAccordionTrigger>
+          </AccordionTrigger>
           {minimized ? null : (
             <AccordionContent>
               {submenu.children && submenu.children.length > 0 && (
