@@ -2,8 +2,13 @@ import { Request } from "express";
 import passport from "passport";
 import bcrypt from 'bcrypt';
 
+import { GlobalException } from "@exception/global-exception";
 import { UserRepository } from "@repositories";
 import { IAuthenticateResponseDto } from "types";
+import { generateToken } from "@lib";
+import { StatusCode } from "@exception/error-code";
+import { IUser } from "@types";
+
 import { User } from "@entities";
 import { SaveOptions, RemoveOptions } from "typeorm";
 
@@ -53,18 +58,21 @@ class AuthService {
     return new Promise((resolve, reject) => {
       passport.authenticate(
         "local",
-        (err: any, user: Express.User, info: { message: any }) => {
-          if (err) return reject(err);
+        (err: any, user: IUser, info: { message: any }) => {
+          if (err) return reject(new GlobalException(StatusCode.UNAUTHORIZED));
 
-          if (!user) return reject(new Error("User not found"));
+          if (!user) return reject(new GlobalException(StatusCode.INVALID_USER_NAME));
 
           req.logIn(user, (err) => {
             if (err) {
-              console.log({ err });
-              return reject(err);
+              return reject(new GlobalException(StatusCode.SESSION_STORE_ERROR));
             }
-
-            return resolve({ expireTime: new Date(), token: "" });
+            
+            if(!user.id) {
+              return reject(new GlobalException(StatusCode.USER_ID_NOT_FOUND));
+            }
+  
+            return resolve({ expireTime: new Date(), token: generateToken(user.id, 'local')});
           });
         }
       )(req, null, null);

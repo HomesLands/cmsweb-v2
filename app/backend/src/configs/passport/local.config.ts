@@ -3,17 +3,13 @@ import passport from "passport";
 import bcrypt from "bcrypt";
 
 import { userService } from "@services";
+import { IUser } from "@types";
 
-export type User = {
-  id?: string;
-  password?: string;
-  username?: string;
-};
 
 export const customLocalStrategy = (): void => {
   const LocalStrategy = localPassport.Strategy;
 
-  passport.serializeUser(function (user: User, done) {
+  passport.serializeUser(function (user: IUser, done) {
     done(null, user.id);
   });
 

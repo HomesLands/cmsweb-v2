@@ -19,7 +19,6 @@ class AuthController {
     try {
       const data = await authService.authenticate(req);
 
-      console.log({dataAuth: data});
       const response: IApiResponse<IAuthenticateResponseDto> = {
         code: StatusCodes.OK,
         error: false,

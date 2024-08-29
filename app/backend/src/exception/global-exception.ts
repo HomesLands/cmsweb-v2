@@ -1,8 +1,11 @@
-class GlobalException extends Error {
-  private statusCode?: number;
+import { StatusCode, StatusMessage } from '@exception/error-code';
 
-  constructor(statusCode: number, message: string) {
-    super(message);
+export class GlobalException extends Error {
+  public statusCode: StatusCode;
+
+  constructor(statusCode: StatusCode) {
+    super();
     this.statusCode = statusCode;
+    this.message = StatusMessage[statusCode];
   }
 }

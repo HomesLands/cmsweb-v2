@@ -1,20 +1,21 @@
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import { IApiResponse, IAuthenticateResponseDto } from "types";
+import { GlobalException } from '@exception/global-exception';
+import { StatusCodeToHttpStatus } from '@exception/error-code';
 
 export function globalErrorHandler(
-  err: any,
+  error: GlobalException,
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
-  const response: IApiResponse<IAuthenticateResponseDto> = {
-    code: err.name || StatusCodes.INTERNAL_SERVER_ERROR,
+  const response: IApiResponse<void> = {
+    code: error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
     error: true,
-    message: err.message || 'Internal Server Error',
+    message: error.message || 'Internal Server Error',
     method: req.method,
     path: req.originalUrl,
-    result: {} as IAuthenticateResponseDto,
   };
-  res.status(err.status || StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+  res.status(StatusCodeToHttpStatus[error.statusCode] || StatusCodes.INTERNAL_SERVER_ERROR).json(response);
 }
