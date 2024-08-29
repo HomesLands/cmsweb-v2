@@ -1,4 +1,4 @@
-import { StatusCode, StatusMessage } from '@exception/error-code';
+import { StatusCode, StatusMessage } from "@exception/error-code";
 
 export class GlobalException extends Error {
   public statusCode: StatusCode;

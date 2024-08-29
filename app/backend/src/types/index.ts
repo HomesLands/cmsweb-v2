@@ -1,4 +1,5 @@
 export interface IEnv {
+  port: string;
   dataSource: {
     hostMySql: string;
     userMySql: string;
@@ -51,4 +52,4 @@ export interface IUser {
   id?: string;
   password?: string;
   username?: string;
-};
+}
