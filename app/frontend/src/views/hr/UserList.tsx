@@ -14,8 +14,10 @@ import { IUserInfo } from '@/types'
 
 const Projects: React.FC = () => {
   const [data, setData] = useState<IUserInfo[]>([])
+  const [data, setData] = useState<IUserInfo[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
+  async function getData(): Promise<IUserInfo[]> {
   async function getData(): Promise<IUserInfo[]> {
     return [
       {
