@@ -4,13 +4,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { DataTable } from '@/components/ui'
 import { columns } from './DataTable/columns'
 import SpinnerLoading from '@/components/app/spinner/SpinnerLoading'
-import { userInfo } from '@/types/user.type'
+import { IUserInfo } from '@/types/user.type'
 
 const Projects: React.FC = () => {
-  const [data, setData] = useState<userInfo[]>([])
+  const [data, setData] = useState<IUserInfo[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
-  async function getData(): Promise<userInfo[]> {
+  async function getData(): Promise<IUserInfo[]> {
     return [
       {
         id: '728ed52f',

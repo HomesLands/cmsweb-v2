@@ -11,16 +11,16 @@ import {
 } from '@/components/ui'
 import { DataTable } from '@/components/ui'
 import { columns } from './DataTable/columns'
-import SpinnerLoading from '@/components/app/spinner/SpinnerLoading'
-import { MaterialInfo } from '@/types/material.type'
+import Loading from '@/components/app/spinner/Loading'
+import { IMaterialInfo } from '@/types/material.type'
 import { useLayoutStore } from '@/stores'
 
 const Projects: React.FC = () => {
   const { isMinimized } = useLayoutStore()
-  const [data, setData] = useState<MaterialInfo[]>([])
+  const [data, setData] = useState<IMaterialInfo[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
-  async function getData(): Promise<[MaterialInfo]> {
+  async function getData(): Promise<IMaterialInfo[]> {
     return [
       {
         id: '728ed52f',
@@ -46,30 +46,28 @@ const Projects: React.FC = () => {
   }, [])
 
   return (
-    <div className="flex items-start shadow-none flex-1rounded-lg" x-chunk="dashboard-02-chunk-1">
-      <div className="grid items-start w-full mx-auto">
-        <div className="grid w-full">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between w-full px-4 py-6 border-b">
-              <div className="flex flex-col items-start gap-2 py-2">
-                <CardTitle className="font-beVietNam">Yêu cầu vật tư</CardTitle>
-                <CardDescription>Quản lý thông tin chi tiết yêu cầu vật tư</CardDescription>
-              </div>
-            </CardHeader>
-            <CardContent className="flex flex-col px-2 mt-4">
-              {loading ? (
-                <SpinnerLoading />
-              ) : (
-                <ScrollArea className={`whitespace-nowrap ${isMinimized ? 'w-11/12' : 'w-5/6'}`}>
-                  <DataTable columns={columns} data={data} />
+    <Loading isActive={loading}>
+      <Card x-chunk="dashboard-02-chunk-1">
+        <div className="grid items-start mx-auto">
+          <div className="grid w-full">
+            <Card className="w-full">
+              <CardHeader className="flex flex-row items-center justify-between w-full px-4 py-6 border-b">
+                <div className="flex flex-col items-start gap-2 py-2">
+                  <CardTitle className="font-beVietNam">Yêu cầu vật tư</CardTitle>
+                  <CardDescription>Quản lý thông tin chi tiết yêu cầu vật tư</CardDescription>
+                </div>
+              </CardHeader>
+              <CardContent className="flex flex-col px-2 mt-4 max-w-5/6">
+                <ScrollArea className={`whitespace-nowrap ${isMinimized ? 'w-5/6' : 'w-full'}`}>
+                  {/* <DataTable columns={columns} data={data} /> */}
                   <ScrollBar orientation="horizontal" />
                 </ScrollArea>
-              )}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
         </div>
-      </div>
-    </div>
+      </Card>
+    </Loading>
   )
 }
 

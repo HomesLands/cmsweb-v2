@@ -5,9 +5,9 @@ import { Accordion, AccordionContent, AccordionItem, Card } from '@/components/u
 import { sidebarSubmenus } from '@/router/routes'
 import IconWrapper from './IconWrapper'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { SidebarDrawerProps } from '@/types/component.type'
+import { ISidebarDrawerProps } from '@/types/component.type'
 
-export function SidebarDrawer({ minimized }: SidebarDrawerProps) {
+export function SidebarDrawer({ minimized }: ISidebarDrawerProps) {
   return (
     <Accordion type="single" collapsible className="w-full">
       {sidebarSubmenus.map((submenu) => (
@@ -34,8 +34,8 @@ export function SidebarDrawer({ minimized }: SidebarDrawerProps) {
           {minimized ? null : (
             <AccordionContent>
               {submenu.children && submenu.children.length > 0 && (
-                <Card>
-                  {submenu.children.map((item) => (
+                <Card className="border-none">
+                  {submenu.children.map((item: { title: string; path: string }) => (
                     <NavLink
                       key={item.title}
                       to={item.path}

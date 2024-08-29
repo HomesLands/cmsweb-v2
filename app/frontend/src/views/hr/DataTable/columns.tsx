@@ -13,9 +13,9 @@ import {
 } from '@/components/ui'
 
 import { DataTableColumnHeader } from '@/components/ui'
-import { userInfo } from '@/types/user.type'
+import { IUserInfo } from '@/types/user.type'
 
-export const columns: ColumnDef<userInfo>[] = [
+export const columns: ColumnDef<IUserInfo>[] = [
   {
     id: 'select',
     header: ({ table }) => (

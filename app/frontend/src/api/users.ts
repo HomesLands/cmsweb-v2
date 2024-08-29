@@ -1,13 +1,14 @@
-import { PagingResponse, userInfo } from "@/types/user.type";
+import { IUserInfo } from "@/types/user.type";
+import { IPagingResponse } from "@/types/pagingResponse.type";
 
 import userData from "./users.json";
 
 export async function getUsers(params: {
     page: number;
     pageSize: number;
-}): Promise<PagingResponse<userInfo>> {
+}): Promise<IPagingResponse<IUserInfo>> {
     try {
-        const users: userInfo[] = await new Promise((resolve) => {
+        const users: IUserInfo[] = await new Promise((resolve) => {
             setTimeout(() => {
                 resolve(userData.items)
             }, 1000)

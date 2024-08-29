@@ -1,4 +1,4 @@
-export interface PagingResponse<T> {
+export interface IPagingResponse<T> {
   items: T[]
   total: number
   page: number

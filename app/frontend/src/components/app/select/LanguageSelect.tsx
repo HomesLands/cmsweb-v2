@@ -19,15 +19,15 @@ const LanguageSelect: React.FC = () => {
   }
 
   return (
-    <Select onValueChange={handleLanguageChange}>
-      <SelectTrigger>
+    <Select onValueChange={handleLanguageChange} defaultValue="vi">
+      <SelectTrigger className="w-[80px]">
         <SelectValue placeholder="Select a language" />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="w-[80px]">
         <SelectGroup>
           <SelectLabel>Languages</SelectLabel>
-          <SelectItem value="en">English</SelectItem>
-          <SelectItem value="vi">Vietnamese</SelectItem>
+          <SelectItem value="en">EN</SelectItem>
+          <SelectItem value="vi">VN</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

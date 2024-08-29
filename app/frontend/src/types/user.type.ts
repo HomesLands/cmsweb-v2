@@ -1,4 +1,4 @@
-export interface userInfo {
+export interface IUserInfo {
   id: string
   avatar: string
   fullName: string
@@ -13,11 +13,11 @@ export interface userInfo {
   updated_at?: Date
 }
 
-export interface UserState {
-  userInfo: userInfo | null;
+export interface IUserState {
+  userInfo: IUserInfo | null;
   accessToken: string | null;
   isAuthenticated: () => boolean;
-  setUserInfo: (userInfo: userInfo) => void;
+  setUserInfo: (userInfo: IUserInfo) => void;
   setAccessToken: (token: string) => void;
   logout: () => void;
 }

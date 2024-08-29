@@ -1,4 +1,4 @@
-export interface MaterialInfo {
+export interface IMaterialInfo {
   id: string
   createdBy: string
 

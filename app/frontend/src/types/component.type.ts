@@ -1,4 +1,4 @@
-export interface SidebarDrawerProps {
+export interface ISidebarDrawerProps {
     minimized?: boolean
 }
   

@@ -13,9 +13,9 @@ import {
 } from '@/components/ui'
 
 import { DataTableColumnHeader } from '@/components/ui'
-import { MaterialInfo } from '@/types/material.type'
+import { IMaterialInfo } from '@/types/material.type'
 
-export const columns: ColumnDef<MaterialInfo>[] = [
+export const columns: ColumnDef<IMaterialInfo>[] = [
   {
     id: 'select',
     header: ({ table }) => (

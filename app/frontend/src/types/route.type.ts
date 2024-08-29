@@ -1,15 +1,15 @@
-export interface Route {
+export interface IRoute {
     title: string;
     path: string;
     redirect?: string;
     component?: () => Promise<{ default: React.ComponentType }>;
-    children?: Route[]; 
+    children?: IRoute[]; 
 }
 
-export interface Routes {
-    routes: Route[];
+export interface IRoutes {
+    routes: IRoute[];
 }
-export interface Submenu{
+export interface ISubmenu{
     title: string;
     path: string;
     component?: () => Promise<{ default: React.ComponentType }>;
@@ -17,10 +17,10 @@ export interface Submenu{
     
 }
 
-export interface SidebarSubmenu {
+export interface ISidebarSubmenu {
     title: string;
     path: string;
     icon: React.ComponentType;
     component?: () => Promise<{ default: React.ComponentType }>;
-    children?: Submenu[];
+    children?: ISubmenu[];
 }
