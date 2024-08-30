@@ -20,7 +20,7 @@ class AuthMiddleware {
 
     const token = req.headers["authorization"];
     if(token) {
-      let authToken = (<string>token).split(" ")[1];
+      const authToken = (<string>token).split(" ")[1];
       JWT.verify(authToken, env.token.jwtSecret, async (err, decoded) => {
         if (err) {
           return next(new GlobalException(StatusResponseRecord.UNAUTHORIZED));
