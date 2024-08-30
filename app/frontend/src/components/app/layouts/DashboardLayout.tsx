@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { ArrowLeftFromLine, ArrowRightFromLine } from 'lucide-react'
+import { PinLeftIcon, PinRightIcon } from '@radix-ui/react-icons'
 import { Button } from '@/components/ui'
 
 import { DropdownHeader } from '@/components/app/dropdown'
@@ -7,6 +7,7 @@ import { SidebarDrawerMobile, SidebarDrawer } from '@/components/app/drawer'
 import { useLayoutStore } from '@/stores'
 import tbeLogo from '@/assets/images/tbe-logo.png'
 import { SelectLanguage } from '@/components/app/select'
+import { PopoverNotification } from '@/components/app/popover'
 
 const DashboardLayout = () => {
   const { isMinimized, toggleMinimized } = useLayoutStore()
@@ -25,11 +26,11 @@ const DashboardLayout = () => {
           >
             {isMinimized ? (
               <div>
-                <ArrowRightFromLine className="w-3.5 h-3.5" />
+                <PinRightIcon className="w-3.5 h-3.5" />
               </div>
             ) : (
               <div>
-                <ArrowLeftFromLine className="w-3.5 h-3.5" />
+                <PinLeftIcon className="w-3.5 h-3.5" />
               </div>
             )}
           </Button>
@@ -63,6 +64,7 @@ const DashboardLayout = () => {
           <SidebarDrawerMobile />
           <div className="flex flex-row justify-end gap-2">
             <SelectLanguage />
+            <PopoverNotification />
             <DropdownHeader />
           </div>
         </header>

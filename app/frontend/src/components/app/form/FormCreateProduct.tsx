@@ -30,81 +30,83 @@ export function FormCreateProduct() {
     console.log(values)
   }
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-2 gap-2">
+    <div className="mt-3">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <div className="grid grid-cols-2 gap-2">
+            <FormField
+              control={form.control}
+              name="requester"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Người yêu cầu</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Nhập tên người yêu cầu" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="project"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tên dự án</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Nhập tên dự án" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <FormField
+              control={form.control}
+              name="construction"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tên công trình</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Nhập tên công trình" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="approver"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tên người duyệt</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Nhập tên người duyệt" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
-            name="requester"
+            name="note"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Người yêu cầu</FormLabel>
+                <FormLabel>Ghi chú</FormLabel>
                 <FormControl>
-                  <Input placeholder="Nhập tên người yêu cầu" {...field} />
+                  <Input placeholder="Nhập ghi chú" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="project"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Tên dự án</FormLabel>
-                <FormControl>
-                  <Input placeholder="Nhập tên dự án" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="grid grid-cols-2 gap-2">
-          <FormField
-            control={form.control}
-            name="construction"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Tên công trình</FormLabel>
-                <FormControl>
-                  <Input placeholder="Nhập tên công trình" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="approver"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Tên người duyệt</FormLabel>
-                <FormControl>
-                  <Input placeholder="Nhập tên người duyệt" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <FormField
-          control={form.control}
-          name="note"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Ghi chú</FormLabel>
-              <FormControl>
-                <Input placeholder="Nhập ghi chú" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex justify-end w-full">
-          <Button type="submit">Tiếp theo</Button>
-        </div>
-      </form>
-    </Form>
+          <div className="flex justify-end w-full">
+            <Button type="submit">Tiếp theo</Button>
+          </div>
+        </form>
+      </Form>
+    </div>
   )
 }

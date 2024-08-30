@@ -1,6 +1,6 @@
 import { useForm, FormProvider } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CirclePlus } from 'lucide-react'
+import { PlusCircledIcon } from '@radix-ui/react-icons'
 import {
   Dialog,
   DialogContent,
@@ -37,7 +37,7 @@ export function DialogCreateUser() {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" className="gap-1 text-normal font-beVietNam">
-          <CirclePlus className="icon" />
+          <PlusCircledIcon className="icon" />
           Tạo tài khoản
         </Button>
       </DialogTrigger>
@@ -53,10 +53,6 @@ export function DialogCreateUser() {
                 <div className="flex flex-col justify-start gap-2 text-normal">
                   <FormFullName />
                 </div>
-                <div className="flex flex-col justify-start gap-2 text-normal">
-                  {/* <FormEmail /> */}
-                </div>
-                {/* Add other fields here... */}
               </div>
             </div>
             <DialogFooter>
