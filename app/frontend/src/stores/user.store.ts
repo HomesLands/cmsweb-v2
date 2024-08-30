@@ -14,7 +14,6 @@ export const useUserStore = create<IUserState>((set) => ({
   accessToken: decodeToken(localStorage.getItem('accessToken')) || undefined,
   isAuthenticated: () => !!localStorage.getItem('accessToken'),
   setUserInfo: (userInfo: IUserInfo) => set({ userInfo }),
-  setUserInfo: (userInfo: IUserInfo) => set({ userInfo }),
   setAccessToken: (token: string) => {
     const encodedToken = encodeToken(token)
     localStorage.setItem('accessToken', encodedToken)

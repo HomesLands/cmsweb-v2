@@ -1,12 +1,12 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { ChevronLeft, ChevronRight, Package2 } from 'lucide-react'
+import { ArrowLeftFromLine, ArrowRightFromLine } from 'lucide-react'
 import { Button } from '@/components/ui'
 
 import { DropdownHeader } from '@/components/app/dropdown'
 import { SidebarDrawerMobile, SidebarDrawer } from '@/components/app/drawer'
-import { SelectLanguage } from '@/components/app/select'
 import { useLayoutStore } from '@/stores'
 import tbeLogo from '@/assets/images/tbe-logo.png'
+import { SelectLanguage } from '@/components/app/select'
 
 const DashboardLayout = () => {
   const { isMinimized, toggleMinimized } = useLayoutStore()
@@ -36,11 +36,13 @@ const DashboardLayout = () => {
 
           <div className="flex-1">
             <div
-              className={`flex h-14 items-center border-b px-4 ${isMinimized ? 'justify-center' : 'lg:px-6'}`}
+              className={`flex h-14 items-center border-b px-4 ${isMinimized ? 'justify-center text-normal' : 'lg:px-6'}`}
             >
               <NavLink to={'/'} className="flex items-center gap-2 font-semibold whitespace-nowrap">
                 <img src={tbeLogo} height={28} width={28} />
-                <span className={`whitespace-nowrap ${isMinimized ? 'hidden' : 'block'}`}>
+                <span
+                  className={`whitespace-nowrap ${isMinimized ? 'hidden' : 'block text-normal'}`}
+                >
                   TBE CMS
                 </span>
               </NavLink>
@@ -48,7 +50,7 @@ const DashboardLayout = () => {
             <nav
               className={`px-3 flex flex-col gap-2 text-sm font-medium ${isMinimized ? 'justify-center items-center' : 'items-start'}`}
             >
-              <SidebarDrawer minimized={isMinimized} />
+              <SidebarDrawer />
             </nav>
           </div>
         </div>
@@ -60,7 +62,7 @@ const DashboardLayout = () => {
         <header className="sticky top-0 flex items-center justify-end gap-4 px-4 transition-all duration-300 border-b backdrop-blur-3xl h-14 lg:px-6">
           <SidebarDrawerMobile />
           <div className="flex flex-row justify-end gap-2">
-            <LanguageSelect />
+            <SelectLanguage />
             <DropdownHeader />
           </div>
         </header>
