@@ -1,4 +1,4 @@
-import { LogOut } from 'lucide-react'
+import { ExitIcon } from '@radix-ui/react-icons'
 
 import {
   DropdownMenu,
@@ -27,7 +27,7 @@ export function DropdownHeader() {
         <DropdownMenuItem>Support</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="flex items-center justify-start gap-2 text-danger">
-          <LogOut className="danger-icon" />
+          <ExitIcon className="danger-icon" />
           Logout
         </DropdownMenuItem>
       </DropdownMenuContent>

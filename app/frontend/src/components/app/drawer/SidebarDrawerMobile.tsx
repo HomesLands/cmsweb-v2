@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Menu } from 'lucide-react'
+import { HamburgerMenuIcon } from '@radix-ui/react-icons'
 import {
   Sheet,
   SheetTrigger,
@@ -19,7 +19,7 @@ export function SidebarDrawerMobile() {
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="outline" size="icon" className="shrink-0 md:hidden">
-          <Menu className="w-5 h-5" />
+          <HamburgerMenuIcon className="icon" />
           <span className="sr-only">Toggle navigation menu</span>
         </Button>
       </SheetTrigger>

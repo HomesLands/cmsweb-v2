@@ -1,0 +1,142 @@
+[
+  {
+    "id": "1",
+    "title": "Phê duyệt đơn",
+    "content": "Đơn của bạn đã được phê duyệt. Xin chúc mừng!",
+    "read": false,
+    "createdAt": "2024-07-31T09:00:00Z"
+  },
+  {
+    "id": "2",
+    "title": "Cuộc họp sắp tới",
+    "content": "Bạn có một cuộc họp vào lúc 14:00 hôm nay. Vui lòng kiểm tra lịch trình.",
+    "read": true,
+    "createdAt": "2024-08-01T10:30:00Z"
+  },
+  {
+    "id": "3",
+    "title": "Báo cáo hàng tháng",
+    "content": "Báo cáo hàng tháng đã được gửi cho bạn qua email.",
+    "read": false,
+    "createdAt": "2024-08-02T11:15:00Z"
+  },
+  {
+    "id": "4",
+    "title": "Cập nhật phần mềm",
+    "content": "Cập nhật phần mềm mới đã được cài đặt thành công.",
+    "read": true,
+    "createdAt": "2024-08-03T08:45:00Z"
+  },
+  {
+    "id": "5",
+    "title": "Tin nhắn mới",
+    "content": "Bạn đã nhận được một tin nhắn mới từ quản lý.",
+    "read": false,
+    "createdAt": "2024-08-04T13:00:00Z"
+  },
+  {
+    "id": "6",
+    "title": "Thông báo bảo trì",
+    "content": "Hệ thống sẽ được bảo trì vào tối nay từ 23:00.",
+    "read": true,
+    "createdAt": "2024-08-05T09:20:00Z"
+  },
+  {
+    "id": "7",
+    "title": "Hoàn thành báo cáo tuần",
+    "content": "Bạn cần hoàn thành báo cáo tuần trước ngày thứ Sáu.",
+    "read": false,
+    "createdAt": "2024-08-06T07:50:00Z"
+  },
+  {
+    "id": "8",
+    "title": "Yêu cầu hỗ trợ",
+    "content": "Yêu cầu hỗ trợ của bạn đã được giải quyết.",
+    "read": true,
+    "createdAt": "2024-08-07T15:30:00Z"
+  },
+  {
+    "id": "9",
+    "title": "Cuộc họp nhóm",
+    "content": "Cuộc họp nhóm đã được lên lịch vào ngày mai lúc 09:00.",
+    "read": false,
+    "createdAt": "2024-08-08T10:00:00Z"
+  },
+  {
+    "id": "10",
+    "title": "Thông báo từ HR",
+    "content": "Có một thông báo mới từ bộ phận nhân sự.",
+    "read": true,
+    "createdAt": "2024-08-09T14:00:00Z"
+  },
+  {
+    "id": "11",
+    "title": "Hoàn thành mục tiêu",
+    "content": "Bạn đã hoàn thành mục tiêu hàng tháng. Chúc mừng!",
+    "read": false,
+    "createdAt": "2024-08-10T12:15:00Z"
+  },
+  {
+    "id": "12",
+    "title": "Tài liệu mới",
+    "content": "Một tài liệu mới đã được thêm vào thư mục của bạn.",
+    "read": true,
+    "createdAt": "2024-08-11T09:40:00Z"
+  },
+  {
+    "id": "13",
+    "title": "Cuộc họp video",
+    "content": "Bạn có một cuộc họp video với khách hàng lúc 16:00.",
+    "read": false,
+    "createdAt": "2024-08-12T11:25:00Z"
+  },
+  {
+    "id": "14",
+    "title": "Đổi mật khẩu",
+    "content": "Mật khẩu của bạn sẽ hết hạn trong 7 ngày. Vui lòng đổi mật khẩu.",
+    "read": true,
+    "createdAt": "2024-08-13T08:10:00Z"
+  },
+  {
+    "id": "15",
+    "title": "Yêu cầu mới",
+    "content": "Bạn có một yêu cầu hỗ trợ mới từ khách hàng.",
+    "read": false,
+    "createdAt": "2024-08-14T14:50:00Z"
+  },
+  {
+    "id": "16",
+    "title": "Khảo sát",
+    "content": "Một cuộc khảo sát đã được gửi tới bạn. Xin vui lòng hoàn thành.",
+    "read": true,
+    "createdAt": "2024-08-15T10:35:00Z"
+  },
+  {
+    "id": "17",
+    "title": "Email mới",
+    "content": "Bạn đã nhận được một email mới từ đối tác.",
+    "read": false,
+    "createdAt": "2024-08-16T09:05:00Z"
+  },
+  {
+    "id": "18",
+    "title": "Cuộc họp dự án X",
+    "content": "Cuộc họp về dự án X đã được dời lại sang ngày mai.",
+    "read": true,
+    "createdAt": "2024-08-17T13:20:00Z"
+  },
+  {
+    "id": "19",
+    "title": "Duyệt đơn nghỉ phép",
+    "content": "Bạn cần duyệt đơn nghỉ phép của nhân viên trước 17:00 hôm nay.",
+    "read": false,
+    "createdAt": "2024-08-18T08:00:00Z"
+  },
+  {
+    "id": "20",
+    "title": "Hợp đồng mới",
+    "content": "Hợp đồng mới đã được ký kết. Vui lòng kiểm tra chi tiết.",
+    "read": true,
+    "createdAt": "2024-08-19T12:45:00Z"
+  }
+]
