@@ -46,7 +46,6 @@ export function SidebarDrawerMobile() {
                           }`
                         }
                       >
-                        {/* <IconWrapper Icon={item.icon} className="w-5 h-5" /> */}
                         <span>{item.title}</span>
                       </NavLink>
                     ))}

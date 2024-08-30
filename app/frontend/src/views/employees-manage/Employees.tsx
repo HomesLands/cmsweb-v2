@@ -12,12 +12,10 @@ import { columns } from './DataTable/columns'
 import { SpinnerLoading } from '@/components/app/loading'
 import { IUserInfo } from '@/types'
 
-const Projects: React.FC = () => {
-  const [data, setData] = useState<IUserInfo[]>([])
+const Employees: React.FC = () => {
   const [data, setData] = useState<IUserInfo[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
-  async function getData(): Promise<IUserInfo[]> {
   async function getData(): Promise<IUserInfo[]> {
     return [
       {
@@ -67,4 +65,4 @@ const Projects: React.FC = () => {
   )
 }
 
-export default Projects
+export default Employees

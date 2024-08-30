@@ -1,7 +1,6 @@
 import { AlignJustify, SquareMenu, FolderOpenDot, Archive } from 'lucide-react'
-import type { IRoute, SidebarSubmenu } from '@/types'
+import type { IRoute, ISidebarSubmenu } from '@/types'
 
-const routes: IRoute[] = [
 const routes: IRoute[] = [
   {
     title: 'Login',
@@ -21,15 +20,15 @@ const routes: IRoute[] = [
       import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout }))
   },
   {
-    title: 'Dashboard',
+    title: 'Quản lý nhân viên',
     path: '/employees',
     component: () =>
       import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
       {
-        title: 'User List',
+        title: 'Danh sách nhân viên',
         path: 'employee-list',
-        component: () => import('@/views/hr/UserList')
+        component: () => import('@/views/employees-manage/Employees')
       }
     ]
   },
@@ -41,7 +40,7 @@ const routes: IRoute[] = [
     children: [
       {
         title: 'Projects',
-        path: 'projects',
+        path: 'project-list',
         component: () => import('@/views/projects/Projects')
       }
     ]
@@ -55,9 +54,14 @@ const routes: IRoute[] = [
       })),
     children: [
       {
-        title: 'Products List',
-        path: 'product-list',
-        component: () => import('@/views/materials/Materials')
+        title: 'Danh sách yêu cầu vật tư',
+        path: 'list',
+        component: () => import('@/views/products/Products')
+      },
+      {
+        title: 'Thêm yêu cầu vật tư',
+        path: 'add',
+        component: () => import('@/views/products/Products')
       }
     ]
   }
@@ -75,7 +79,7 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
         title: 'Danh sách nhân viên',
         path: '/employees/employee-list',
         icon: AlignJustify,
-        component: () => import('@/views/hr/UserList')
+        component: () => import('@/views/employees-manage/Employees')
       }
     ]
   },
@@ -103,9 +107,15 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
     children: [
       {
         title: 'Danh sách yêu cầu vật tư',
-        path: '/products/product-list',
+        path: '/products/list',
         icon: Archive,
-        component: () => import('@/views/materials/Materials')
+        component: () => import('@/views/products/Products')
+      },
+      {
+        title: 'Thêm yêu cầu vật tư',
+        path: '/products/add',
+        icon: Archive,
+        component: () => import('@/views/products/Products')
       }
     ]
   }

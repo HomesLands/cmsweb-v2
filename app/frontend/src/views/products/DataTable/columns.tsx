@@ -59,15 +59,15 @@ export const columns: ColumnDef<IMaterialInfo>[] = [
 
   {
     accessorKey: 'commanderApprovalStatus',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Trạng thái duyệt CHT" />
+    header: ({ column }) => <DataTableColumnHeader column={column} title="CHT" />
   },
   {
     accessorKey: 'commanderApprovalContent',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Nội dung duyệt" />
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Nội dung" />
   },
   {
     accessorKey: 'projectManagerApprovalStatus',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Trạng thái duyệt TPDA" />
+    header: ({ column }) => <DataTableColumnHeader column={column} title="TPDA" />
   },
   {
     accessorKey: 'projectManagerApprovalContent',
@@ -81,10 +81,10 @@ export const columns: ColumnDef<IMaterialInfo>[] = [
     accessorKey: 'directorApprovalContent',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Nội dung" />
   },
-  {
-    accessorKey: 'notes',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Ghi chú" />
-  },
+  // {
+  //   accessorKey: 'notes',
+  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Ghi chú" />
+  // },
   {
     id: 'actions',
     cell: ({ row }) => {
