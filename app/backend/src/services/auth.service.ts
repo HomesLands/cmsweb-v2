@@ -6,7 +6,7 @@ import { GlobalException } from "@exception/global-exception";
 import { UserRepository } from "@repositories";
 import { IAuthenticateResponseDto } from "types";
 import { generateToken } from "@lib";
-import { StatusCode } from "@exception/error-code";
+import { StatusResponseRecord } from "@exception/error-code";
 import { IUser } from "@types";
 
 import { User } from "@entities";
@@ -59,20 +59,17 @@ class AuthService {
       passport.authenticate(
         "local",
         (err: any, user: IUser, info: { message: any }) => {
-          if (err) return reject(new GlobalException(StatusCode.UNAUTHORIZED));
+          if (err) return reject(new GlobalException(StatusResponseRecord.UNAUTHORIZED));
 
-          if (!user)
-            return reject(new GlobalException(StatusCode.INVALID_USER_NAME));
+          if (!user) return reject(new GlobalException(StatusResponseRecord.INVALID_USER_NAME));
 
           req.logIn(user, (err) => {
             if (err) {
-              return reject(
-                new GlobalException(StatusCode.SESSION_STORE_ERROR)
-              );
+              return reject(new GlobalException(StatusResponseRecord.SESSION_STORE_ERROR));
             }
-
-            if (!user.id) {
-              return reject(new GlobalException(StatusCode.USER_ID_NOT_FOUND));
+            
+            if(!user.id) {
+              return reject(new GlobalException(StatusResponseRecord.USER_ID_NOT_FOUND));
             }
 
             return resolve({

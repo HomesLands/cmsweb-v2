@@ -1,11 +1,11 @@
-import { StatusCode, StatusMessage } from "@exception/error-code";
+import { IStatusResponse } from "@types";
 
 export class GlobalException extends Error {
-  public statusCode: StatusCode;
+  public statusCode;
 
-  constructor(statusCode: StatusCode) {
+  constructor(result: IStatusResponse) {
     super();
-    this.statusCode = statusCode;
-    this.message = StatusMessage[statusCode];
+    this.statusCode = result.code;
+    this.message = result.message;
   }
 }
