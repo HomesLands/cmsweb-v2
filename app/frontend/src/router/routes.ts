@@ -1,5 +1,5 @@
 import { AlignJustify, SquareMenu, FolderOpenDot, Archive } from 'lucide-react'
-import type { IRoute, SidebarSubmenu } from '@/types'
+import type { IRoute, ISidebarSubmenu } from '@/types'
 
 const routes: IRoute[] = [
   {
@@ -15,96 +15,107 @@ const routes: IRoute[] = [
   {
     title: 'Home',
     path: '/',
-    redirect: '/hr-subsystem',
+    redirect: '/employees',
     component: () =>
       import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout }))
   },
   {
-    title: 'Dashboard',
-    path: '/hr-subsystem',
+    title: 'Quản lý nhân viên',
+    path: '/employees',
     component: () =>
       import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
       {
-        title: 'User List',
-        path: 'user-list',
-        component: () => import('@/views/hr/UserList')
+        title: 'Danh sách nhân viên',
+        path: 'employee-list',
+        component: () => import('@/views/employees-manage/Employees')
       }
     ]
   },
   {
     title: 'Project Subsystem',
-    path: '/project-subsystem',
+    path: '/projects-manage',
     component: () =>
       import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
       {
         title: 'Projects',
-        path: 'projects',
+        path: 'project-list',
         component: () => import('@/views/projects/Projects')
       }
     ]
   },
   {
-    title: 'Phân hệ YCVT',
-    path: '/ycvt-subsystem',
+    title: 'Yêu cầu vật tư',
+    path: '/products',
     component: () =>
       import('@/components/app/layouts').then((module) => ({
         default: module.DashboardLayout
       })),
     children: [
       {
-        title: 'Materials',
-        path: 'materials',
-        component: () => import('@/views/materials/Materials')
+        title: 'Danh sách yêu cầu vật tư',
+        path: 'list',
+        component: () => import('@/views/products/Products')
+      },
+      {
+        title: 'Thêm yêu cầu vật tư',
+        path: 'add',
+        component: () => import('@/views/products/Products')
       }
     ]
   }
 ]
 
-const sidebarSubmenus: SidebarSubmenu[] = [
+const sidebarSubmenus: ISidebarSubmenu[] = [
   {
-    title: 'Phân hệ HR',
-    path: '/hr-subsystem',
+    title: 'Quản lý nhân viên',
+    path: '/employees',
     icon: SquareMenu,
     component: () =>
       import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
       {
-        title: 'User List',
-        path: '/hr-subsystem/user-list',
+        title: 'Danh sách nhân viên',
+        path: '/employees/employee-list',
         icon: AlignJustify,
-        component: () => import('@/views/hr/UserList')
+        component: () => import('@/views/employees-manage/Employees')
       }
     ]
   },
   {
-    title: 'Phân hệ dự án',
-    path: '/project-subsystem',
+    title: 'Quản lý dự án',
+    path: '/projects-manage',
     icon: FolderOpenDot,
     component: () =>
       import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
       {
-        title: 'Project Subsystem',
-        path: '/project-subsystem/projects',
+        title: 'Danh sách dự án',
+        path: '/projects-manage/projects',
         icon: Archive,
         component: () => import('@/views/projects/Projects')
       }
     ]
   },
   {
-    title: 'Phân hệ YCVT',
-    path: '/ycvt-subsystem',
+    title: 'Yêu cầu vật tư',
+    path: '/products',
     icon: Archive,
     component: () =>
       import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
       {
-        title: 'YCVT Subsystem',
-        path: '/ycvt-subsystem/materials',
+        title: 'Danh sách yêu cầu vật tư',
+        path: '/products/list',
         icon: Archive,
-        component: () => import('@/views/materials/Materials')
+        component: () => import('@/views/products/Products')
+      },
+      {
+        title: 'Thêm yêu cầu vật tư',
+        path: '/products/add',
+        icon: Archive,
+        component: () => import('@/views/products/Products')
       }
     ]
   }

@@ -16,7 +16,7 @@ export interface ISubmenu {
   icon: React.ComponentType
 }
 
-export interface SidebarSubmenu {
+export interface ISidebarSubmenu {
   title: string
   path: string
   icon: React.ComponentType
