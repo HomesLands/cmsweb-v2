@@ -49,7 +49,7 @@ services:
       context: ../app/frontend
       dockerfile: ../../.build/frontend/Dockerfile # Adjusted to be relative to the context
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      test: ["CMD", "curl", "-f", "http://localhost:3001"]
       interval: 5s
       timeout: 5s
       retries: 5
