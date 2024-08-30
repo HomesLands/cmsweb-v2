@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  DataTableProduct
-} from '@/components/ui'
-import { columns } from './DataTable/columns'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
 import { SpinnerLoading } from '@/components/app/loading'
 import { IMaterialInfo } from '@/types'
 import { FormCreateProduct } from '@/components/app/form'
 import { ProgressBar } from '@/components/app/progress/progress-bar'
 
 const Products: React.FC = () => {
-  const [data, setData] = useState<IMaterialInfo[]>([])
+  const [, setData] = useState<IMaterialInfo[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
   async function getData(): Promise<IMaterialInfo[]> {

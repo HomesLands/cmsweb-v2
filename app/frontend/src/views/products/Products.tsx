@@ -11,7 +11,6 @@ import {
 import { columns } from './DataTable/columns'
 import { SpinnerLoading } from '@/components/app/loading'
 import { IMaterialInfo } from '@/types'
-import { FormCreateProduct } from '@/components/app/form'
 
 const Products: React.FC = () => {
   const [data, setData] = useState<IMaterialInfo[]>([])
