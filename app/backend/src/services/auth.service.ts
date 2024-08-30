@@ -1,6 +1,6 @@
 import { Request } from "express";
 import passport from "passport";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcryptjs";
 
 import { GlobalException } from "@exception/global-exception";
 import { UserRepository } from "@repositories";
@@ -71,8 +71,11 @@ class AuthService {
             if(!user.id) {
               return reject(new GlobalException(StatusResponseRecord.USER_ID_NOT_FOUND));
             }
-  
-            return resolve({ expireTime: new Date(), token: generateToken(user.id, 'local')});
+
+            return resolve({
+              expireTime: new Date(),
+              token: generateToken(user.id, "local"),
+            });
           });
         }
       )(req, null, null);

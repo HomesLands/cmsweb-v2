@@ -7,7 +7,7 @@ export function globalErrorHandler(
   error: GlobalException,
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   const response: IApiResponse<void> = {
     code: error.statusCode || StatusResponseRecord.INTERNAL_SERVER_ERROR.code,

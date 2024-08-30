@@ -1,9 +1,4 @@
-import { 
-  IsString,
-  IsNotEmpty,
-  Length,
-  IsDefined,
-} from 'class-validator';
+import { IsString, IsNotEmpty, Length, IsDefined } from "class-validator";
 
 export class RegisterUserRequestDto {
   @IsDefined()

@@ -50,8 +50,8 @@ export function SidebarDrawer({ minimized }: ISidebarDrawerProps) {
           {minimized ? null : (
             <AccordionContent>
               {submenu.children && submenu.children.length > 0 && (
-                <Card>
-                  {submenu.children.map((item) => (
+                <Card className="border-none">
+                  {submenu.children.map((item: { title: string; path: string }) => (
                     <NavLink
                       key={item.title}
                       to={item.path}

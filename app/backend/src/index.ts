@@ -91,7 +91,7 @@ dotenv.config();
   registerRoutes(app);
 
   app.all("*", (req: Request, res: Response, next: NextFunction) => {
-    let err = new Error(`Can't not find ${req.originalUrl}`);
+    const err = new Error(`Can't not find ${req.originalUrl}`);
     next(err);
   });
 

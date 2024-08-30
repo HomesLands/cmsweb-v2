@@ -8,13 +8,13 @@ services:
     build:
       context: ../app/backend
       dockerfile: ../../.build/backend/Dockerfile # Adjusted to be relative to the context
-    # healthcheck:
-    #   test:
-    #     ["CMD", "curl", "-f", "http://localhost:8080/v1.0.0/healthcheck/status"]
-    #   interval: 5s
-    #   timeout: 5s
-    #   retries: 10
-    #   start_period: 10s
+    healthcheck:
+      test:
+        ["CMD", "curl", "-f", "http://localhost:3000/api/v1/healthCheck/status"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     environment:
       NODE_ENV: ${NODE_ENV}
       HOST_MYSQL: ${HOST_MYSQL}
@@ -24,6 +24,7 @@ services:
       DATABASE_MYSQL: ${DATABASE_MYSQL}
       HASH_SALT: ${HASH_SALT}
       JWT_SECRET: ${JWT_SECRET}
+      PASSPORT_SECRET: ${PASSPORT_SECRET}
       TZ: Asia/Ho_Chi_Minh
     ports:
       - "3001:3000"

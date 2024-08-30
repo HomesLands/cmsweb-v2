@@ -9,6 +9,7 @@ const createRouteObject = (route: {
   path: string
   component?: () => Promise<{ default: React.ComponentType }>
   children?: IRoute[]
+  children?: IRoute[]
 }): RouteObject => {
   const { component, children } = route
 
@@ -20,7 +21,7 @@ const createRouteObject = (route: {
   return {
     path: route.path,
     element: (
-      <Suspense fallback={<SpinnerLoading />}>
+      <Suspense>
         <Element />
       </Suspense>
     ),
