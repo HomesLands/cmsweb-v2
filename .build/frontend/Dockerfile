@@ -1,29 +1,35 @@
-# Use an official node image as the base image
+# Use an official Node.js runtime as a parent image
 FROM node:18-alpine AS build
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the package.json and package-lock.json
+# Copy the package.json and package-lock.json files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install the dependencies
+RUN npm install --force
 
-# Copy the rest of the application code
+# Copy the rest of the application code to the working directory
 COPY . .
 
 # Build the application
 RUN npm run build
 
-# Use a minimal server image to serve the built application
-FROM nginx:alpine AS production
+# Use a lightweight Node.js image to serve the application
+FROM node:18-alpine
 
-# Copy the build output to the Nginx html directory
-COPY --from=build /app/dist /usr/share/nginx/html
+# Set the working directory to /app
+WORKDIR /app
 
-# Expose port 80
-EXPOSE 80
+# Install the 'serve' package to serve the build files
+RUN npm install -g serve
 
-# Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+# Copy the build files from the previous stage
+COPY --from=build /app/dist ./dist
+
+# Expose port
+EXPOSE 3001
+
+# Serve the application on port 
+CMD ["serve", "-s", "dist", "-l", "3001"]
