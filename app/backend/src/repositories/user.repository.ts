@@ -7,6 +7,6 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   public async findOnByUsername(username: string): Promise<User | null> {
-    return this.repository.findOneBy({username});
+    return this.repository.findOneBy({ username });
   }
 }

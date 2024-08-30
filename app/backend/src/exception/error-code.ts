@@ -1,28 +1,37 @@
 import { StatusCodes } from 'http-status-codes';
+import {  IStatusResponse } from "@types";
 
-export enum StatusCode {
-  USER_NOT_FOUND = 1001,
-  INVALID_EMAIL,
-  INVALID_USER_NAME,
-  USER_ID_NOT_FOUND,
-  SESSION_STORE_ERROR,
-  UNAUTHORIZED,
+export const StatusResponseRecord: Record<string, IStatusResponse> = {
+  INVALID_EMAIL: {
+    code: StatusCodes.BAD_REQUEST,
+    message: "Email is not valid",
+  },
+  PATH_NOT_FOUND: {
+    code: StatusCodes.NOT_FOUND,
+    message: "Can't find path",
+  },
+  INVALID_USER_NAME: {
+    code: StatusCodes.BAD_REQUEST,
+    message: "User name is not valid",
+  },
+  USER_ID_NOT_FOUND: {
+    code: StatusCodes.BAD_REQUEST,
+    message: "User id not found",
+  },
+  USER_NOT_FOUND: {
+    code: StatusCodes.UNAUTHORIZED,
+    message: "User not found",
+  },
+  SESSION_STORE_ERROR: {
+    code: StatusCodes.INTERNAL_SERVER_ERROR,
+    message: "Fail in store session when login",
+  },
+  UNAUTHORIZED: {
+    code: StatusCodes.UNAUTHORIZED,
+    message: "Unauthorized",
+  },
+  INTERNAL_SERVER_ERROR: {
+    code: StatusCodes.INTERNAL_SERVER_ERROR,
+    message: "Internal Server Error",
+  },
 }
-
-export const StatusMessage = {
-  [StatusCode.INVALID_EMAIL] : "Email is not valid",
-  [StatusCode.INVALID_USER_NAME] : "User name is not valid",
-  [StatusCode.USER_NOT_FOUND ] : "User not found",
-  [StatusCode.USER_ID_NOT_FOUND ] : "User id not found in database",
-  [StatusCode.SESSION_STORE_ERROR ] : "Fail in store session when login",
-  [StatusCode.UNAUTHORIZED ] : "Unauthorized",
-}
-
-export const StatusCodeToHttpStatus: Record<StatusCode, number> = {
-  [StatusCode.INVALID_EMAIL]: StatusCodes.BAD_REQUEST,
-  [StatusCode.INVALID_USER_NAME]: StatusCodes.BAD_REQUEST,
-  [StatusCode.USER_NOT_FOUND]: StatusCodes.UNAUTHORIZED,
-  [StatusCode.USER_ID_NOT_FOUND]: StatusCodes.BAD_REQUEST,
-  [StatusCode.SESSION_STORE_ERROR]: StatusCodes.INTERNAL_SERVER_ERROR,
-  [StatusCode.UNAUTHORIZED]: StatusCodes.UNAUTHORIZED,
-};

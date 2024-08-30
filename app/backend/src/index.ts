@@ -31,7 +31,7 @@ dotenv.config();
     .then(() => {
       console.log("Data Source has been initialized!");
     })
-    .catch((err: any) => {
+    .catch((err) => {
       console.error("Error during Data Source initialization:", err);
     });
 
@@ -89,11 +89,6 @@ dotenv.config();
 
   // routes
   registerRoutes(app);
-
-  app.all("*", (req: Request, res: Response, next: NextFunction) => {
-    let err = new Error(`Can't not find ${req.originalUrl}`);
-    next(err);
-  });
 
   // Global error handling
   app.use(globalErrorHandler);

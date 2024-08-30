@@ -1,4 +1,5 @@
 export interface IEnv {
+  port: string;
   dataSource: {
     hostMySql: string;
     userMySql: string;
@@ -47,8 +48,13 @@ export interface IAuthenticateResponseDto {
   expireTime: Date;
 }
 
+export interface IStatusResponse {
+  code: number;
+  message: string;
+}
+
 export interface IUser {
   id?: string;
   password?: string;
   username?: string;
-};
+}
