@@ -12,7 +12,6 @@ import {
   Button
 } from '@/components/ui'
 
-import { FormFullName } from '@/components/app/form'
 import { validationSchema, TValidationSchema } from '@/schemas'
 
 export function DialogCreateUser() {
@@ -51,7 +50,7 @@ export function DialogCreateUser() {
             <div className="flex flex-col gap-3 py-2">
               <div className="grid grid-cols-3 gap-2">
                 <div className="flex flex-col justify-start gap-2 text-normal">
-                  <FormFullName />
+                  {/* <FormFullName /> */}
                 </div>
               </div>
             </div>

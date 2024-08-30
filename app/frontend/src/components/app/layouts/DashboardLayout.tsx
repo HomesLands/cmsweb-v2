@@ -42,7 +42,7 @@ const DashboardLayout = () => {
               <NavLink to={'/'} className="flex items-center gap-2 font-semibold whitespace-nowrap">
                 <img src={tbeLogo} height={28} width={28} />
                 <span
-                  className={`whitespace-nowrap ${isMinimized ? 'hidden' : 'block text-normal'}`}
+                  className={`whitespace-nowrap text-lg font-extrabold ${isMinimized ? 'hidden' : 'block text-normal'}`}
                 >
                   TBE CMS
                 </span>
@@ -70,7 +70,7 @@ const DashboardLayout = () => {
         </header>
 
         {/* Main Content (Outlet) */}
-        <main className="flex-1 w-full p-4 overflow-hidden overflow-x-auto">
+        <main className="flex-1 w-full p-4 overflow-hidden transition-all duration-300 hover:overflow-y-auto">
           <Outlet />
         </main>
       </div>

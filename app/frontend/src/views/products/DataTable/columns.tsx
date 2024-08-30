@@ -10,11 +10,16 @@ import {
   DropdownMenuTrigger,
   Button,
   Checkbox,
-  DataTableColumnHeader
+  DataTableColumnHeader,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
 } from '@/components/ui'
-import { IMaterialInfo } from '@/types'
+import { IProductApprovalInfo, IProductInfoSearch } from '@/types'
+import { PlusCircledIcon } from '@radix-ui/react-icons'
 
-export const columns: ColumnDef<IMaterialInfo>[] = [
+export const columns: ColumnDef<IProductApprovalInfo>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -107,6 +112,65 @@ export const columns: ColumnDef<IMaterialInfo>[] = [
             <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+      )
+    }
+  }
+]
+
+export const columnsSearch: ColumnDef<IProductInfoSearch>[] = [
+  {
+    accessorKey: 'productCode',
+    header: 'Mã sản phẩm'
+  },
+  {
+    accessorKey: 'productName',
+    header: 'Tên sản phẩm'
+  },
+  {
+    accessorKey: 'modelOrSerialNumber',
+    header: 'Model/Số Serial'
+  },
+  {
+    accessorKey: 'supplier',
+    header: 'Nhà cung cấp'
+  },
+  {
+    accessorKey: 'importDate',
+    header: 'Ngày nhập'
+  },
+  {
+    accessorKey: 'unit',
+    header: 'Đơn vị'
+  },
+  {
+    accessorKey: 'quantity',
+    header: 'Số lượng'
+  },
+  {
+    accessorKey: 'address',
+    header: 'Địa chỉ'
+  },
+  {
+    accessorKey: 'note',
+    header: 'Ghi chú'
+  },
+  {
+    accessorKey: 'actions',
+    cell: ({ row }) => {
+      const product = row.original
+      return (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" className="rounded-full">
+                <PlusCircledIcon className="" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Thêm vào phiếu vật tư</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       )
     }
   }
