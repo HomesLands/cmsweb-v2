@@ -1,4 +1,4 @@
-import express, { Express, Router, Request, Response, NextFunction } from "express";
+import  { Express, Router, Request, Response, NextFunction } from "express";
 
 import { authRoute } from "@routes/auth.route";
 import { productRoute } from "@routes/product.route";
@@ -17,11 +17,11 @@ export const registerRoutes = (app: Express) => {
 
   baseApi.use("/products", authMiddleware.authenticate, productRoute);
 
+  baseApi.use("/healthCheck", healthCheckRoute);
+
   baseApi.use((req: Request, res: Response, next: NextFunction) => {
     return next(new GlobalException(StatusResponseRecord.PATH_NOT_FOUND));
   });
-
-  baseApi.use("/healthCheck", healthCheckRoute);
 
   app.use("/api/v1", baseApi);
 };
