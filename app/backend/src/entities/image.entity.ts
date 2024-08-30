@@ -6,6 +6,6 @@ export class Image extends BaseEntity {
   @Column({ type: "mediumblob", name: "data_column" })
   data?: Blob;
 
-  @Column({ type: "varchar", name: "file_name_column" })
+  @Column({ name: "file_name_column" })
   fileName?: string;
 }
