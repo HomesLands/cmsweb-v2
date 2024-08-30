@@ -1,4 +1,4 @@
-import { LogOut } from 'lucide-react'
+import { ExitIcon } from '@radix-ui/react-icons'
 
 import {
   DropdownMenu,
@@ -21,14 +21,14 @@ export function DropdownHeader() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-[14rem]" align="end">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>Tài khoản của tôi</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuItem>Support</DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">Thông tin tài khoản</DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">Đổi mật khẩu</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="flex items-center justify-start gap-2 text-danger">
-          <LogOut className="danger-icon" />
-          Logout
+        <DropdownMenuItem className="flex items-center justify-start gap-2 text-danger cursor-pointer">
+          <ExitIcon className="danger-icon" />
+          Đăng xuất
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

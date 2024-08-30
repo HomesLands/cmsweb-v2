@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Menu } from 'lucide-react'
+import { HamburgerMenuIcon } from '@radix-ui/react-icons'
 import {
   Sheet,
   SheetTrigger,
@@ -19,7 +19,7 @@ export function SidebarDrawerMobile() {
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="outline" size="icon" className="shrink-0 md:hidden">
-          <Menu className="w-5 h-5" />
+          <HamburgerMenuIcon className="icon" />
           <span className="sr-only">Toggle navigation menu</span>
         </Button>
       </SheetTrigger>
@@ -27,7 +27,7 @@ export function SidebarDrawerMobile() {
         <Accordion type="single" collapsible className="w-full">
           {sidebarSubmenus.map((submenu) => (
             <AccordionItem key={submenu.title} value={submenu.title}>
-              <AccordionTrigger className="flex items-center justify-start">
+              <AccordionTrigger className="flex items-center justify-start" minimized={false}>
                 <div className="flex items-center gap-2">
                   <IconWrapper Icon={submenu.icon} className="w-5 h-5 text-normal" />
                   <span className="font-sans">{submenu.title}</span>

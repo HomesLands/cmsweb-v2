@@ -1,4 +1,5 @@
-import { AlignJustify, SquareMenu, FolderOpenDot, Archive } from 'lucide-react'
+import { AlignJustify, Archive } from 'lucide-react'
+import { PersonIcon, ArchiveIcon, FileTextIcon } from '@radix-ui/react-icons'
 import type { IRoute, ISidebarSubmenu } from '@/types'
 
 const routes: IRoute[] = [
@@ -61,7 +62,7 @@ const routes: IRoute[] = [
       {
         title: 'Thêm yêu cầu vật tư',
         path: 'add',
-        component: () => import('@/views/products/Products')
+        component: () => import('@/views/products/CreateNewProductRequirement')
       }
     ]
   }
@@ -71,7 +72,7 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
   {
     title: 'Quản lý nhân viên',
     path: '/employees',
-    icon: SquareMenu,
+    icon: PersonIcon,
     component: () =>
       import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
@@ -86,7 +87,7 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
   {
     title: 'Quản lý dự án',
     path: '/projects-manage',
-    icon: FolderOpenDot,
+    icon: FileTextIcon,
     component: () =>
       import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
@@ -101,7 +102,7 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
   {
     title: 'Yêu cầu vật tư',
     path: '/products',
-    icon: Archive,
+    icon: ArchiveIcon,
     component: () =>
       import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [

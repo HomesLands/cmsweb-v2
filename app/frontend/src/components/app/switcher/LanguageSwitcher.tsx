@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button'
-import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { Button } from '@/components/ui'
+import React from 'react'
 
 const LanguageSwitcher: React.FC = () => {
   const { i18n } = useTranslation()

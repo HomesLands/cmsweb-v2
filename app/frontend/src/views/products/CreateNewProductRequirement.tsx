@@ -12,6 +12,7 @@ import { columns } from './DataTable/columns'
 import { SpinnerLoading } from '@/components/app/loading'
 import { IMaterialInfo } from '@/types'
 import { FormCreateProduct } from '@/components/app/form'
+import { ProgressBar } from '@/components/app/progress/progress-bar'
 
 const Products: React.FC = () => {
   const [data, setData] = useState<IMaterialInfo[]>([])
@@ -47,18 +48,19 @@ const Products: React.FC = () => {
       x-chunk="dashboard-02-chunk-1"
     >
       {loading && <SpinnerLoading />}
-      <div className="grid items-start w-full gap-4 mx-auto">
+      <div className="grid items-start w-full gap-8 mx-auto">
+        <ProgressBar />
         <div className="grid w-full gap-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between w-full border-b">
               <div className="flex flex-col items-start gap-2">
-                <CardTitle>Danh sách yêu cầu vật tư</CardTitle>
-                <CardDescription>Quản lý thông tin chi tiết các yêu cầu vật tư</CardDescription>
+                <CardTitle>Yêu cầu vật tư</CardTitle>
+                <CardDescription>Công ty Cổ phần Công nghệ Mekong</CardDescription>
               </div>
             </CardHeader>
             <CardContent className="flex flex-col">
-              <DataTableProduct columns={columns} data={data} />
-              {/* <FormCreateProduct /> */}
+              {/* <DataTableProduct columns={columns} data={data} /> */}
+              <FormCreateProduct />
             </CardContent>
           </Card>
         </div>

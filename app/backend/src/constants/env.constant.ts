@@ -17,5 +17,5 @@ export const env: IEnv = {
   passport: {
     passportSecret: process.env.PASSPORT_SECRET || "",
   },
-  port: process.env.PORT || "",
+  port: process.env.PORT || "3000",
 };
