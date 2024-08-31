@@ -14,7 +14,11 @@ import { productSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-export function FormCreateProduct() {
+interface IFormCreateProductProps {
+  onSubmit: (data: z.infer<typeof productSchema>) => void
+}
+
+export const CreateProductForm: React.FC<IFormCreateProductProps> = ({ onSubmit }) => {
   const form = useForm<z.infer<typeof productSchema>>({
     resolver: zodResolver(productSchema),
     defaultValues: {
@@ -26,13 +30,13 @@ export function FormCreateProduct() {
     }
   })
 
-  function onSubmit(values: z.infer<typeof productSchema>) {
-    console.log(values)
+  const handleSubmit = (values: z.infer<typeof productSchema>) => {
+    onSubmit(values)
   }
   return (
     <div className="mt-3">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="grid grid-cols-2 gap-2">
             <FormField
               control={form.control}
