@@ -1,7 +1,6 @@
 import { DataSource } from "typeorm";
 import { env } from "@constants";
 import { join } from "path";
-import { Image } from "@entities/image.entity";
 
 const config = {
   HOST: env.dataSource.hostMySql,
@@ -24,8 +23,8 @@ export const dataSource = new DataSource({
   password: config.PASSWORD,
   database: config.DB,
   // entities: [join(__dirname, "**", "*.entity.{ts,js}")],
-  entities: ["src/entities/*.entity.ts"],
-  // entities: [ Image ],
+  // entities: ["src/entities/*.entity.ts"],
+  entities: [join(__dirname, "../entities", "*.entity.{ts,js}")],
   logging: false,
   synchronize: true,
 });
