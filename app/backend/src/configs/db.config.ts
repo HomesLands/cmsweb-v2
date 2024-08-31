@@ -22,7 +22,10 @@ export const dataSource = new DataSource({
   username: config.USER,
   password: config.PASSWORD,
   database: config.DB,
-  entities: [join(__dirname, "**", "*.entity.{ts,js}")],
+  // entities: [join(__dirname, "**", "*.entity.{ts,js}")],
+  // entities: ["src/entities/*.entity.ts"],
+  // entities: [join(__dirname, "../entities", "*.entity.{ts,js}")],
+  entities: [join(__dirname, "../entities", "!(*base).entity.{ts,js}")],
   logging: false,
   synchronize: true,
 });
