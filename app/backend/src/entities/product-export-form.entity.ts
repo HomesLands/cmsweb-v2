@@ -2,7 +2,7 @@ import { Entity, Column, JoinColumn, OneToOne } from "typeorm";
 import { BaseEntity } from "@entities/base.entity";
 import { User } from "@entities/user.entity";
 
-@Entity("product_export_form")
+@Entity("product_export_form_tbl")
 export class ProductExportForm extends BaseEntity {
   @OneToOne(() => User)
   @JoinColumn({ name: "recipient_column" })
