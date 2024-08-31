@@ -30,14 +30,14 @@ export interface IProductNameSearch{
 
 export interface IProductInfoSearch {
   productCode: string
-  productName: string;          
-  modelOrSerialNumber: string;   
-  supplier: string;              
-  importDate: Date;              
-  unit: string;                  
-  quantity: number;             
-  address: string;               
-  note?: string;                 
-  
+  productName: string
+  modelOrSerialNumber: string
+  supplier: string
+  importDate: string // Change this to string
+  unit: string
+  quantity: number
+  address: string
+  note?: string
 }
+
 

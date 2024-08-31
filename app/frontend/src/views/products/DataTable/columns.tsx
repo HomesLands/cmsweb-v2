@@ -156,8 +156,8 @@ export const columnsSearch: ColumnDef<IProductInfoSearch>[] = [
   },
   {
     accessorKey: 'actions',
-    cell: ({ row }) => {
-      const product = row.original
+    cell: () => {
+      // const product = row.original
       return (
         <TooltipProvider>
           <Tooltip>

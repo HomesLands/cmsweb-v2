@@ -28,7 +28,7 @@ const Products: React.FC = () => {
         productName: 'Máy in',
         modelOrSerialNumber: '123456',
         supplier: 'HP',
-        importDate: new Date(),
+        importDate: new Date().toISOString(), // Save as ISO string
         unit: 'Cái',
         quantity: 10,
         address: 'HCM',
@@ -37,21 +37,23 @@ const Products: React.FC = () => {
     ]
   }
 
-  const formatDate = (date: Date) => {
-    const day = String(date.getDate()).padStart(2, '0')
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const year = date.getFullYear()
-    const hours = String(date.getHours()).padStart(2, '0')
-    const minutes = String(date.getMinutes()).padStart(2, '0')
+  const formatDate = (date: string) => {
+    const d = new Date(date)
+    const day = String(d.getDate()).padStart(2, '0')
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const year = d.getFullYear()
+    const hours = String(d.getHours()).padStart(2, '0')
+    const minutes = String(d.getMinutes()).padStart(2, '0')
 
     return `${day}/${month}/${year} ${hours}:${minutes}`
   }
 
   useEffect(() => {
+    setLoading(true)
     getData().then((data) => {
       const formattedData = data.map((item) => ({
         ...item,
-        importDate: formatDate(item.importDate)
+        importDate: formatDate(item.importDate) // Format the date string
       }))
       setData(formattedData)
       setLoading(false)
@@ -76,16 +78,16 @@ const Products: React.FC = () => {
 
   return (
     <div className="relative flex items-start flex-1 rounded-lg shadow-none">
-      <div className="grid items-start w-full gap-8 mx-auto">
+      <div className="grid items-start w-full mx-auto gap68">
         <div className="flex justify-center w-full my-2">
           <div className="w-1/2">
             <ProgressBar step={step} /> {/* Pass step to ProgressBar */}
           </div>
         </div>
-        <div className="grid w-full gap-4">
+        <div className="grid w-full">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between w-full border-b">
-              <div className="flex flex-col items-start gap-2">
+              <div className="flex flex-col items-start gap-2 py-2">
                 <CardTitle>Yêu cầu vật tư</CardTitle>
                 <CardDescription>Công ty Cổ phần Công nghệ Mekong</CardDescription>
               </div>
