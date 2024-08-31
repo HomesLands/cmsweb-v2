@@ -1,6 +1,6 @@
 import { IPagingResponse, IUserInfo } from '@/types'
 
-import userData from './users.json'
+import userData from '../data/users.json'
 
 export async function getUsers(params: {
   page: number
