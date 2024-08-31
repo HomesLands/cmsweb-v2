@@ -7,7 +7,6 @@ import {
 } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 
-@Entity()
 export class BaseEntity extends TypeORMBaseEntity {
   @PrimaryGeneratedColumn("uuid", { name: "id_column" })
   @AutoMap()
