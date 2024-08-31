@@ -82,7 +82,7 @@ dotenv.config();
   };
 
   const swaggerDocs = swaggerJsdoc(swaggerOptions);
-  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+  app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
   // Passport initialization
   passportStrategies(app);
@@ -95,5 +95,8 @@ dotenv.config();
 
   app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
+    console.log(
+      `[server]: Swagger is running at http://localhost:${port}/api/api-docs`
+    );
   });
 })();
