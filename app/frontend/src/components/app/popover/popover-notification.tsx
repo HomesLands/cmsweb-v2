@@ -38,7 +38,7 @@ export function PopoverNotification() {
           <div className="space-y-2">
             <Label className="text-lg font-bold leading-none">Thông báo</Label>
           </div>
-          <ScrollArea className="mt-2 sm:max-w-[25rem] sm:max-h-[26rem]">
+          <ScrollArea className="mt-2 sm:max-w-[25rem] sm:max-h-[22rem]">
             <div className="grid gap-1">
               {notifications.length > 0 ? (
                 notifications.map((notification) => (

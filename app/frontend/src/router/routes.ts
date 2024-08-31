@@ -28,7 +28,7 @@ const routes: IRoute[] = [
     children: [
       {
         title: 'Danh sách nhân viên',
-        path: 'employee-list',
+        path: 'list',
         component: () => import('@/views/employees-manage/Employees')
       }
     ]
@@ -78,7 +78,7 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
     children: [
       {
         title: 'Danh sách nhân viên',
-        path: '/employees/employee-list',
+        path: '/employees/list',
         icon: AlignJustify,
         component: () => import('@/views/employees-manage/Employees')
       }

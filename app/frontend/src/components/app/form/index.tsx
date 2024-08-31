@@ -1,3 +1,3 @@
 /* eslint-disable react-refresh/only-export-components */
-export * from './FormFullName'
-export * from './FormCreateProduct'
+export * from './create-product-form'
+export * from './search-product-form'

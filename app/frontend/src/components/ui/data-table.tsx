@@ -45,7 +45,6 @@ import {
   ChevronsRightIcon
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { DialogCreateProducts } from '@/components/app/dialog'
 
 // DataTable Component
 interface DataTableProps<TData, TValue> {
@@ -161,6 +160,91 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   )
 }
 
+export function DataTableSearchProduct<TData, TValue>({
+  columns,
+  data
+}: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = useState({})
+
+  const table = useReactTable({
+    data,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection
+    }
+  })
+
+  return (
+    <div>
+      <div className="flex items-center justify-end py-4">
+        {/* <Input
+          placeholder="Nhập email.."
+          value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
+          onChange={(event) => table.getColumn('email')?.setFilterValue(event.target.value)}
+          className="max-w-sm"
+        /> */}
+      </div>
+      <div className="border rounded-md">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id} data-state={row.getIsSelected() ? 'selected' : undefined}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  Không có dữ liệu.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <div className="flex-1 mt-2 text-sm text-muted-foreground">
+        {table.getFilteredSelectedRowModel().rows.length} trong{' '}
+        {table.getFilteredRowModel().rows.length} hàng được chọn
+      </div>
+      <div className="flex items-center justify-end py-4 space-x-2">
+        <DataTablePagination table={table} />
+      </div>
+    </div>
+  )
+}
+
 export function DataTableProduct<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -219,7 +303,6 @@ export function DataTableProduct<TData, TValue>({ columns, data }: DataTableProp
                 ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          <DialogCreateProducts />
         </div>
       </div>
       <div className="border rounded-md">

@@ -10,13 +10,14 @@ import {
 } from '@/components/ui'
 import { columns } from './DataTable/columns'
 import { SpinnerLoading } from '@/components/app/loading'
-import { IMaterialInfo } from '@/types'
+import { IProductApprovalInfo } from '@/types'
+// import { CreateProductForm } from '@/components/app/form'
 
 const Products: React.FC = () => {
-  const [data, setData] = useState<IMaterialInfo[]>([])
+  const [data, setData] = useState<IProductApprovalInfo[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
-  async function getData(): Promise<IMaterialInfo[]> {
+  async function getData(): Promise<IProductApprovalInfo[]> {
     return [
       {
         id: '728ed52f',
