@@ -8,14 +8,12 @@ import {
   CardTitle,
   DataTableSearchProduct
 } from '@/components/ui'
-import { SpinnerLoading } from '@/components/app/loading'
 import { IProductRequirementInfoCreate, IProductNameSearch, IProductInfoSearch } from '@/types'
 import { CreateProductForm, FormSearchProduct } from '@/components/app/form'
 import { ProgressBar } from '@/components/app/progress/progress-bar'
 import { columnsSearch } from './DataTable/columns'
 
 const Products: React.FC = () => {
-  const [loading, setLoading] = useState<boolean>(false)
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [step, setStep] = useState<number>(0) // Start with step 0
   const [formSubmitted, setFormSubmitted] = useState<boolean>(false)
@@ -49,22 +47,18 @@ const Products: React.FC = () => {
   }
 
   useEffect(() => {
-    setLoading(true)
     getData().then((data) => {
       const formattedData = data.map((item) => ({
         ...item,
         importDate: formatDate(item.importDate) // Format the date string
       }))
       setData(formattedData)
-      setLoading(false)
     })
   }, [])
 
   const handleFormCreateSubmit = (data: IProductRequirementInfoCreate) => {
-    setLoading(true)
     console.log(data)
     setTimeout(() => {
-      setLoading(false)
       setShowSearch(true)
       setStep(1) // Move to step 1 after the first form submission
       setFormSubmitted(true)
@@ -96,7 +90,7 @@ const Products: React.FC = () => {
               {!formSubmitted && !showSearch && (
                 <CreateProductForm onSubmit={handleFormCreateSubmit} />
               )}
-              {loading && <SpinnerLoading />}
+              {/* {loading && <SpinnerLoading />} */}
               {showSearch && (
                 <div>
                   <FormSearchProduct onSubmit={handleFormSearchSubmit} />

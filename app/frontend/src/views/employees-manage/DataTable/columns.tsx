@@ -86,7 +86,7 @@ export const columns: ColumnDef<IUserInfo>[] = [
               Copy payment ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Cập nhật</DropdownMenuItem>
+            <DropdownMenuItem>Xem chi tiết</DropdownMenuItem>
             <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
