@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import {
+  Button,
   Card,
   CardContent,
   CardDescription,
@@ -9,14 +10,14 @@ import {
   DataTableProduct
 } from '@/components/ui'
 import { columns } from './DataTable/columns'
-import { SpinnerLoading } from '@/components/app/loading'
+import NProgress from 'nprogress'
 import { IProductApprovalInfo } from '@/types'
 // import { CreateProductForm } from '@/components/app/form'
 
 const Products: React.FC = () => {
+  NProgress.configure({ showSpinner: false, trickleSpeed: 200 })
+  NProgress.start()
   const [data, setData] = useState<IProductApprovalInfo[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
-
   async function getData(): Promise<IProductApprovalInfo[]> {
     return [
       {
@@ -37,7 +38,6 @@ const Products: React.FC = () => {
   useEffect(() => {
     getData().then((data) => {
       setData(data)
-      setLoading(false)
     })
   }, [])
 
@@ -46,7 +46,8 @@ const Products: React.FC = () => {
       className="relative flex items-start flex-1 rounded-lg shadow-none"
       x-chunk="dashboard-02-chunk-1"
     >
-      {loading && <SpinnerLoading />}
+      <Button onClick={() => NProgress.done()}>Done</Button>
+      {/* {loading && <SpinnerLoading />} */}
       <div className="grid items-start w-full gap-4 mx-auto">
         <div className="grid w-full gap-4">
           <Card>
