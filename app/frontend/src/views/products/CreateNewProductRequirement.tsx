@@ -6,16 +6,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  DataTable,
   DataTableSearchProduct
 } from '@/components/ui'
 import { SpinnerLoading } from '@/components/app/loading'
-import {
-  IProductRequirementInfoCreate,
-  IProductNameSearch,
-  IUserInfo,
-  IProductInfoSearch
-} from '@/types'
+import { IProductRequirementInfoCreate, IProductNameSearch, IProductInfoSearch } from '@/types'
 import { CreateProductForm, FormSearchProduct } from '@/components/app/form'
 import { ProgressBar } from '@/components/app/progress/progress-bar'
 import { columnsSearch } from './DataTable/columns'
@@ -23,8 +17,8 @@ import { columnsSearch } from './DataTable/columns'
 const Products: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [showSearch, setShowSearch] = useState<boolean>(false)
+  const [step, setStep] = useState<number>(0) // Start with step 0
   const [formSubmitted, setFormSubmitted] = useState<boolean>(false)
-
   const [data, setData] = useState<IProductInfoSearch[]>([])
 
   async function getData(): Promise<IProductInfoSearch[]> {
@@ -55,10 +49,9 @@ const Products: React.FC = () => {
 
   useEffect(() => {
     getData().then((data) => {
-      // Format the importDate field in the data
       const formattedData = data.map((item) => ({
         ...item,
-        importDate: formatDate(item.importDate) // Format date here
+        importDate: formatDate(item.importDate)
       }))
       setData(formattedData)
       setLoading(false)
@@ -67,17 +60,18 @@ const Products: React.FC = () => {
 
   const handleFormCreateSubmit = (data: IProductRequirementInfoCreate) => {
     setLoading(true)
-    console.log(data) // Log dữ liệu từ FormCreateProduct
+    console.log(data)
     setTimeout(() => {
-      // Giả lập xử lý bất đồng bộ
       setLoading(false)
       setShowSearch(true)
-      setFormSubmitted(true) // Đặt formSubmitted thành true sau khi log xong
-    }, 1000) // Thay đổi giá trị thời gian tùy thuộc vào yêu cầu xử lý thực tế
+      setStep(1) // Move to step 1 after the first form submission
+      setFormSubmitted(true)
+    }, 1000)
   }
 
   const handleFormSearchSubmit = (data: IProductNameSearch) => {
     console.log(data)
+    setStep(2) // Move to step 2 after search
   }
 
   return (
@@ -85,7 +79,7 @@ const Products: React.FC = () => {
       <div className="grid items-start w-full gap-8 mx-auto">
         <div className="flex justify-center w-full my-2">
           <div className="w-1/2">
-            <ProgressBar />
+            <ProgressBar step={step} /> {/* Pass step to ProgressBar */}
           </div>
         </div>
         <div className="grid w-full gap-4">
