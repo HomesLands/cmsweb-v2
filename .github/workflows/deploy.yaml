@@ -5,11 +5,13 @@ on:
     branches:
       - main  # Change this to your deployment branch
   pull_request:
+    types: [closed]
     branches:
       - main  # Specify the branches you want to trigger the workflow on PRs
 
 jobs:
   build-and-test:
+    if: github.event_name == 'push'  # Run this job only on push events
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -50,7 +52,8 @@ jobs:
         run: npm run test  # Change to your test command if different
 
   deploy:
-    needs: build-and-test  # This ensures the build job runs only if the test job is successful
+    # needs: build-and-test  # This ensures the build job runs only if the test job is successful
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true  # Run this job only on pull request merge
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
