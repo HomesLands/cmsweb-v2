@@ -59,7 +59,7 @@ jobs:
           echo "REMOTE_HOST: ${{ secrets.REMOTE_HOST }}"
           echo "REMOTE_USER: ${{ secrets.REMOTE_USER }}"
           echo "SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}"
-          echo "SSH_PORT: ${{ secrets.SSH_PORT }}
+          echo "SSH_PORT: ${{ secrets.SSH_PORT }}"
 
       - name: Deploy to Remote Host using Docker
         uses: appleboy/ssh-action@v0.1.2
@@ -77,4 +77,4 @@ jobs:
             git pull origin main  # Pull latest changes
             docker compose -f .deploy/docker-compose.dev.yaml down
             docker compose -f .deploy/docker-compose.dev.yaml up -d --build
-            docker system prune -f  # clean up after build docker compose
+            docker image prune -f  # clean up none image after built
