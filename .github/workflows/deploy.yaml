@@ -1,14 +1,13 @@
 name: CI/CD Pipeline
 
 on:
-  # pull_request:
-  push:
+  pull_request_target:
     branches: [ main ]
-    # types: [opened, closed]
+    types: [opened, closed]
 
 jobs:
   build-and-test:
-    if: github.event.pull_request.merged
+    if: github.event.pull_request.merged == false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -49,7 +48,7 @@ jobs:
         run: npm run test  # Change to your test command if different
 
   deploy:
-    # if: github.event.pull_request.merged
+    if: github.event.pull_request.merged
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
