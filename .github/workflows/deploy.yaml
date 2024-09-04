@@ -1,9 +1,10 @@
 name: CI/CD Pipeline
 
 on:
-  pull_request:
+  # pull_request:
+  push:
     branches: [ main ]
-    types: [opened, closed]
+    # types: [opened, closed]
 
 jobs:
   build-and-test:
@@ -48,7 +49,7 @@ jobs:
         run: npm run test  # Change to your test command if different
 
   deploy:
-    if: github.event.pull_request.merged
+    # if: github.event.pull_request.merged
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -56,16 +57,11 @@ jobs:
 
       - name: Deploy to Remote Host using Docker
         uses: appleboy/ssh-action@v0.1.2
-        env:
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
-          SSH_PORT: ${{ secrets.SSH_PORT }}
         with:
-          host: ${#REMOTE_HOST}
-          username: ${#REMOTE_USER}
-          password: ${#SSH_PASSWORD}
-          port: ${#SSH_PORT}  # Specify your SSH port here
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}  # Specify your SSH port here
           # host: 115.73.215.28
           # username: pcs
           # password: 123456
