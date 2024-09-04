@@ -1,0 +1,13 @@
+{
+  "coverageDirectory": "./coverage",
+  "testMatch": ["**/?(*.)+(spec).ts"],
+  "resetMocks": true,
+  "clearMocks": true,
+  "collectCoverage": true,
+  "coverageProvider": "v8",
+  "coverageReporters": ["clover"],
+  "moduleNameMapper": {
+    "^@/(.*)$": "<rootDir>/src/$1"
+  },
+  "testEnvironment": "node"
+}
