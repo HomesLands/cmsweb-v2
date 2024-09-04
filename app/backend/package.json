@@ -4,7 +4,6 @@
   "description": "",
   "type": "commonjs",
   "scripts": {
-    "test": "jest -c jest.config.json --passWithNoTests",
     "build": "tsc && tsc-alias",
     "postbuild": "echo build successfully!",
     "start": "node build/index.js",
@@ -12,7 +11,9 @@
     "format:check": "prettier --check ./src",
     "format:write": "prettier --write ./src",
     "lint:check": "eslint ./src",
-    "lint:fix": "eslint --fix ./src"
+    "lint:fix": "eslint --fix ./src",
+    "test": "jest -c jest.config.json --passWithNoTests",
+    "test:coverage": "jest --coverage --passWithNoTests"
   },
   "keywords": [],
   "author": "",
