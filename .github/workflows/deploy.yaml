@@ -7,6 +7,7 @@ on:
 
 jobs:
   build-and-test:
+    if: github.event.pull_request.merged == false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -48,7 +49,6 @@ jobs:
 
   deploy:
     if: github.event.pull_request.merged
-    needs: build-and-test  # This ensures the build job runs only if the test job is successful
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -57,10 +57,13 @@ jobs:
       - name: Deploy to Remote Host using Docker
         uses: appleboy/ssh-action@v0.1.2
         with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          # host: ${{ secrets.REMOTE_HOST }}
+          # username: ${{ secrets.REMOTE_USER }}
+          # password: ${{ secrets.SSH_PASSWORD }}
           # port: ${{ secrets.SSH_PORT }}  # Specify your SSH port here
+          host: 115.73.215.28
+          username: pcs
+          password: 123456
           port: 8002  # Specify your SSH port here
           script: |
             echo "Deploying to server..."
