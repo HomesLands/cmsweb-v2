@@ -1,2 +1,2 @@
 export * from "./image.repository";
-export * from "./user.repository";
+export { default as userRepository } from "./user.repository";

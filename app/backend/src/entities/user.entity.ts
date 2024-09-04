@@ -1,5 +1,5 @@
 import { Entity, Column, JoinColumn, OneToOne, OneToMany } from "typeorm";
-import { BaseEntity } from "@entities/base.entity";
+import { Base } from "@entities/base.entity";
 import { AutoMap } from "@automapper/classes";
 
 import { File } from "@entities/file.entity";
@@ -8,11 +8,11 @@ import { Site } from "@entities/site.entity";
 
 enum Gender {
   male = "male",
-  female = "female"
+  female = "female",
 }
 
 @Entity("user_tbl")
-export class User extends BaseEntity {
+export class User extends Base {
   @AutoMap()
   @Column({ name: "first_name_column" })
   firstName?: string;
@@ -33,14 +33,14 @@ export class User extends BaseEntity {
 
   @Column({ name: "gender_column" })
   gender?: Gender;
-  
+
   @Column({ name: "address_column" })
   address?: string;
 
   @Column({ name: "phone_number_column" })
   phoneNumber?: string;
 
-  @OneToOne(() => File )
+  @OneToOne(() => File)
   @JoinColumn({ name: "avatar_column" })
   avatar?: File;
 
@@ -58,5 +58,5 @@ export class User extends BaseEntity {
   position?: Position;
 
   @OneToMany(() => Site, (site) => site.users)
-  sites?: Site[]
+  sites?: Site[];
 }

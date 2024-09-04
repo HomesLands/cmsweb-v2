@@ -1,5 +1,5 @@
-import { StatusCodes } from 'http-status-codes';
-import {  IStatusResponse } from "@types";
+import { StatusCodes } from "http-status-codes";
+import { IStatusResponse } from "@types";
 
 export const StatusResponseRecord: Record<string, IStatusResponse> = {
   INVALID_EMAIL: {
@@ -10,9 +10,9 @@ export const StatusResponseRecord: Record<string, IStatusResponse> = {
     code: StatusCodes.NOT_FOUND,
     message: "Can't find path",
   },
-  INVALID_USER_NAME: {
+  INVALID_USERNAME: {
     code: StatusCodes.BAD_REQUEST,
-    message: "User name is not valid",
+    message: "username is not valid",
   },
   USER_ID_NOT_FOUND: {
     code: StatusCodes.BAD_REQUEST,
@@ -34,4 +34,4 @@ export const StatusResponseRecord: Record<string, IStatusResponse> = {
     code: StatusCodes.INTERNAL_SERVER_ERROR,
     message: "Internal Server Error",
   },
-}
+};

@@ -74,7 +74,12 @@ dotenv.config();
       },
       servers: [
         {
-          url: `http://localhost:${port}`,
+          name: "localhost",
+          url: `http://localhost:${port}/api/v1`,
+        },
+        {
+          name: "development",
+          url: `https://tbecms.cmsiot.online/api/v1`,
         },
       ],
     },

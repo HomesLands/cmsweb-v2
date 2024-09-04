@@ -1,30 +1,11 @@
-import { UserRepository } from "@repositories";
+import { userRepository } from "@repositories";
 import { mapper } from "@mappers/mapper";
 import { User } from "@entities";
 import { UserResponseDto } from "@dto/response";
-import { ICreateUserRequestDto } from "types";
-import { SaveOptions, RemoveOptions } from "typeorm";
 
 class UserService {
-  private userRepo = new UserRepository();
-  // public async createUser(
-  //   requestData: ICreateUserRequestDto
-  // ): Promise<UserResponseDto> {
-  //   let userData: User = await this.userRepo.save({
-  //     firstName: requestData.firstName,
-  //     lastName: requestData.lastName,
-  //     username: requestData.username,
-  //     password: requestData.password,
-  //   });
-  //   const userDto: UserResponseDto = mapper.map(
-  //     userData,
-  //     User,
-  //     UserResponseDto
-  //   );
-  //   return userDto;
-  // }
   public async getUserById(id: string): Promise<UserResponseDto | null> {
-    const userData = await this.userRepo.findById(id);
+    const userData = await userRepository.findOneBy({ id });
     if (!userData) {
       return null;
     }
@@ -34,10 +15,6 @@ class UserService {
       UserResponseDto
     );
     return userDto;
-  }
-
-  public async getUserByUserName(username: string): Promise<User | null> {
-    return await this.userRepo.findOnByUsername(username);
   }
 }
 

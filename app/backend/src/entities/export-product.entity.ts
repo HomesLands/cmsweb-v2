@@ -1,8 +1,8 @@
 import { Entity, Column } from "typeorm";
-import { BaseEntity } from "@entities/base.entity";
+import { Base } from "@entities/base.entity";
 
 @Entity("export_product_tbl")
-export class ExportProduct extends BaseEntity {
+export class ExportProduct extends Base {
   @Column({ name: "available_quantity_column" })
   availableQuantity?: number;
 

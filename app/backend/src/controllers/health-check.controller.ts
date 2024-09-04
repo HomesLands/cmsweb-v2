@@ -5,7 +5,7 @@ import { env } from "@constants";
 import { IApiResponse } from "@types";
 
 class HealthCheckController {
-  public healthCheck(req: Request, res: Response) {
+  public status(req: Request, res: Response) {
     const response: IApiResponse<void> = {
       code: StatusCodes.OK,
       error: false,

@@ -38,16 +38,6 @@ export interface ICreateUserRequestDto {
   password: string;
 }
 
-export interface IAuthenticateRequestDto {
-  username: string;
-  password: string;
-}
-
-export interface IAuthenticateResponseDto {
-  token: string;
-  expireTime: Date;
-}
-
 export interface IStatusResponse {
   code: number;
   message: string;

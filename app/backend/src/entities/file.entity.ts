@@ -1,9 +1,9 @@
 import { Entity, Column } from "typeorm";
-import { BaseEntity } from "@entities/base.entity";
+import { Base } from "@entities/base.entity";
 
 @Entity("file_tbl")
-export class File extends BaseEntity {
-  @Column({ name: "name_column"})
+export class File extends Base {
+  @Column({ name: "name_column" })
   name?: string;
 
   @Column({ name: "type_column" })

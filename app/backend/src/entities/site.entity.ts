@@ -1,9 +1,9 @@
 import { Entity, Column, OneToMany } from "typeorm";
-import { BaseEntity } from "@entities/base.entity";
+import { Base } from "@entities/base.entity";
 import { User } from "@entities/user.entity";
 
 @Entity("site_tbl")
-export class Site extends BaseEntity {
+export class Site extends Base {
   @Column({ name: "name_column" })
   name?: string;
 
@@ -12,4 +12,4 @@ export class Site extends BaseEntity {
 
   @OneToMany(() => User, (user) => user.sites)
   users?: User[];
-} 
+}

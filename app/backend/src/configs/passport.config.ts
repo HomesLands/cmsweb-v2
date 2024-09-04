@@ -3,7 +3,7 @@ import { Application } from "express";
 import session from "cookie-session";
 import { env } from "@constants";
 
-import { customLocalStrategy } from "@configs/passport/index";
+import { customLocalStrategy } from "@configs/passport";
 
 export const passportStrategies = (app: Application): void => {
   app.use(

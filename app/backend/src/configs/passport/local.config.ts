@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 
 import { userService } from "@services";
 import { IUser } from "@types";
+import userRepository from "@repositories/user.repository";
 
 export const customLocalStrategy = (): void => {
   const LocalStrategy = localPassport.Strategy;
@@ -28,9 +29,9 @@ export const customLocalStrategy = (): void => {
         usernameField: "username",
         passwordField: "password",
       },
-      async (userName: string, password: string, done) => {
+      async (username: string, password: string, done) => {
         try {
-          const user = await userService.getUserByUserName(userName);
+          const user = await userRepository.findByUsername(username);
 
           if (!user) {
             return done(null, false, { message: "Incorrect username." });

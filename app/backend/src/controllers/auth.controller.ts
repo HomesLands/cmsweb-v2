@@ -2,14 +2,59 @@ import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { authService } from "@services";
-import { IApiResponse, IAuthenticateResponseDto } from "types";
+import { IApiResponse } from "types";
+import { AuthenticationResponseDto } from "@dto/response";
 
 class AuthController {
   /**
    * @swagger
+   * components:
+   *   schemas:
+   *     AuthenticateRequest:
+   *       type: object
+   *       required:
+   *         - username
+   *         - password
+   *       properties:
+   *         username:
+   *           type: string
+   *           description: username of user
+   *         password:
+   *           type: string
+   *           description: password of user
+   *       example:
+   *         username: username
+   *         password: Pass@1234
+   */
+
+  /**
+   * @swagger
    * tags:
    *   - name: Auth
-   *     description: Auth Control
+   *     description: The auth managing API
+   */
+
+  /**
+   * @swagger
+   * /auth/authenticate:
+   *   post:
+   *     summary: Authentication
+   *     tags: [Auth]
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/AuthenticateRequest'
+   *     responses:
+   *       200:
+   *         description: User authenticated.
+   *         content:
+   *           application/json:
+   *             schema:
+   *       500:
+   *         description: Server error
+   *
    */
   public async authenticate(
     req: Request,
@@ -17,15 +62,15 @@ class AuthController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const data = await authService.authenticate(req);
+      const result = await authService.authenticate(req);
 
-      const response: IApiResponse<IAuthenticateResponseDto> = {
+      const response: IApiResponse<AuthenticationResponseDto> = {
         code: StatusCodes.OK,
         error: false,
         message: "",
         method: req.method,
         path: req.originalUrl,
-        result: data,
+        result,
       };
       res.status(StatusCodes.OK).json(response);
     } catch (error) {
