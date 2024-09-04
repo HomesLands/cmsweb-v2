@@ -2,8 +2,8 @@ name: CI/CD Pipeline
 
 on:
   pull_request:
-    branches:
-      - main  # Specify the branches you want to trigger the workflow on PRs
+    branches: [ main ]
+    types: [opened, closed]
 
 jobs:
   build-and-test:
@@ -47,7 +47,7 @@ jobs:
         run: npm run test  # Change to your test command if different
 
   deploy:
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged
     needs: build-and-test  # This ensures the build job runs only if the test job is successful
     runs-on: ubuntu-latest
     steps:
