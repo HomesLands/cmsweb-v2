@@ -4,14 +4,16 @@
   "description": "",
   "type": "commonjs",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
     "build": "tsc && tsc-alias",
+    "postbuild": "echo build successfully!",
     "start": "node build/index.js",
     "dev": "nodemon src/index.ts",
     "format:check": "prettier --check ./src",
     "format:write": "prettier --write ./src",
     "lint:check": "eslint ./src",
-    "lint:fix": "eslint --fix ./src"
+    "lint:fix": "eslint --fix ./src",
+    "test": "jest -c jest.config.json --passWithNoTests",
+    "test:coverage": "jest --coverage --passWithNoTests"
   },
   "keywords": [],
   "author": "",
@@ -26,7 +28,6 @@
     "class-validator": "^0.14.1",
     "cookie-session": "^2.1.0",
     "cors": "^2.8.5",
-    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "fs": "^0.0.1-security",
@@ -40,7 +41,6 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "reflect-metadata": "^0.1.14",
-    "supertest": "^7.0.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "typeorm": "^0.3.20"
@@ -68,14 +68,5 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.3.0"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "setupFilesAfterEnv": [
-      
-    ]
   }
 }
