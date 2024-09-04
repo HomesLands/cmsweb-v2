@@ -52,8 +52,8 @@ jobs:
         run: npm run test  # Change to your test command if different
 
   deploy:
-    # needs: build-and-test  # This ensures the build job runs only if the test job is successful
     if: github.event.pull_request.merged == true && github.repository == 'HomesLands/cmsweb-v2'
+    needs: build-and-test  # This ensures the build job runs only if the test job is successful
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -65,7 +65,8 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
-          port: ${{ secrets.SSH_PORT }}  # Specify your SSH port here
+          # port: ${{ secrets.SSH_PORT }}  # Specify your SSH port here
+          port: 8002  # Specify your SSH port here
           script: |
             echo "Deploying to server..."
             cd /cmsweb-v2  # Change to your application directory on the remote host
