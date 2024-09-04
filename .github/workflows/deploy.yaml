@@ -64,10 +64,13 @@ jobs:
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}  # Specify your SSH port here
           script: |
+            echo "Deploying to server..."
             cd /cmsweb-v2  # Change to your application directory on the remote host
             git pull origin main  # Pull latest changes (if using Git)
             docker compose -f .deploy/docker-compose.dev.yaml down
             docker compose -f .deploy/docker-compose.dev.yaml up -d --build
+            echo "Cleaning server...""
             docker system prune -f  # clean up after build docker compose
