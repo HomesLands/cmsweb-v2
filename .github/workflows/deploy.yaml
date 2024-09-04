@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Deploy
 
 on:
   pull_request_target:
@@ -6,47 +6,6 @@ on:
     types: [opened, closed]
 
 jobs:
-  build-and-test:
-    if: github.event.pull_request.merged == false
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js for FE
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'  # Specify your Node.js version
-
-      - name: Install FE dependencies
-        working-directory: ./app/frontend  # Change to your front-end directory
-        run: npm install
-
-      - name: Build FE
-        working-directory: ./app/frontend # Change to your front-end directory
-        run: npm run build  # Change to your build command if different
-
-      # - name: Run FE tests
-      #   working-directory: ./app/frontend  # Change to your front-end directory
-      #   run: npm run test  # Change to your test command if different
-
-      - name: Set up Node.js for BE
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'  # Specify your Node.js version
-
-      - name: Install BE dependencies
-        working-directory: ./app/backend  # Change to your back-end directory
-        run: npm install
-
-      - name: Build BE
-        working-directory: ./app/backend  # Change to your back-end directory
-        run: npm run build  # Change to your build command if different
-
-      - name: Run BE tests
-        working-directory: ./app/backend  # Change to your back-end directory
-        run: npm run test  # Change to your test command if different
-
   deploy:
     if: github.event.pull_request.merged
     runs-on: ubuntu-latest
@@ -61,10 +20,6 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}  # Specify your SSH port here
-          # host: 115.73.215.28
-          # username: pcs
-          # password: 123456
-          # port: 8002  # Specify your SSH port here
           script: |
             cd cmsweb-v2/  # Change to your application directory on the remote host
             git pull origin main  # Pull latest changes

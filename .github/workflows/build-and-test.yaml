@@ -1,0 +1,46 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js for FE
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install FE dependencies
+        working-directory: ./app/frontend
+        run: npm install
+
+      - name: Build FE
+        working-directory: ./app/frontend
+        run: npm run build
+
+      # - name: Run FE tests
+      #   working-directory: ./app/frontend
+      #   run: npm run test
+
+      - name: Set up Node.js for BE
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install BE dependencies
+        working-directory: ./app/backend
+        run: npm install
+
+      - name: Build BE
+        working-directory: ./app/backend
+        run: npm run build
+
+      - name: Run BE tests
+        working-directory: ./app/backend
+        run: npm run test
