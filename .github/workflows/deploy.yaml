@@ -54,20 +54,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Test SSH Connection
-        run: |
-          echo "REMOTE_HOST: ${{ secrets.REMOTE_HOST }}"
-          echo "REMOTE_USER: ${{ secrets.REMOTE_USER }}"
-          echo "SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}"
-          echo "SSH_PORT: ${{ secrets.SSH_PORT }}"
-
       - name: Deploy to Remote Host using Docker
         uses: appleboy/ssh-action@v0.1.2
+        env:
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
         with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: ${{ secrets.SSH_PORT }}  # Specify your SSH port here
+          host: ${#REMOTE_HOST}
+          username: ${#REMOTE_USER}
+          password: ${#SSH_PASSWORD}
+          port: ${#SSH_PORT}  # Specify your SSH port here
           # host: 115.73.215.28
           # username: pcs
           # password: 123456
