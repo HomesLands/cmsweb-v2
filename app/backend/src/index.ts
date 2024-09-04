@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import "tsconfig-paths/register";
 
-import express, { Express, Request, Response, NextFunction } from "express";
+import express, { Express } from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
