@@ -57,19 +57,17 @@ jobs:
       - name: Deploy to Remote Host using Docker
         uses: appleboy/ssh-action@v0.1.2
         with:
-          # host: ${{ secrets.REMOTE_HOST }}
-          # username: ${{ secrets.REMOTE_USER }}
-          # password: ${{ secrets.SSH_PASSWORD }}
-          # port: ${{ secrets.SSH_PORT }}  # Specify your SSH port here
-          host: 115.73.215.28
-          username: pcs
-          password: 123456
-          port: 8002  # Specify your SSH port here
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}  # Specify your SSH port here
+          # host: 115.73.215.28
+          # username: pcs
+          # password: 123456
+          # port: 8002  # Specify your SSH port here
           script: |
-            echo "Deploying to server..."
             cd cmsweb-v2/  # Change to your application directory on the remote host
             git pull origin main  # Pull latest changes
             docker compose -f .deploy/docker-compose.dev.yaml down
             docker compose -f .deploy/docker-compose.dev.yaml up -d --build
-            echo "Cleaning server...""
             docker system prune -f  # clean up after build docker compose
