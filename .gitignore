@@ -1,8 +1,0 @@
-
-.vscode/
-
-.env
-
-app/backend/build/
-app/backend/node_modules/
-app/backend/logs/
