@@ -1,1 +1,1 @@
-export * from "./authentication-request.dto";
+export * from "./auth-request.dto";

@@ -12,7 +12,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 
 import { registerRoutes } from "@routes";
-import { globalErrorHandler } from "@middlewares";
+import { errorHandlerMiddleware } from "@middlewares";
 import { passportStrategies, dataSource } from "@configs";
 
 dotenv.config();
@@ -96,7 +96,7 @@ dotenv.config();
   registerRoutes(app);
 
   // Global error handling
-  app.use(globalErrorHandler);
+  app.use(errorHandlerMiddleware.handleGlobalException);
 
   app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);

@@ -9,3 +9,10 @@ export class AuthenticationRequestDto {
   @IsNotEmpty()
   password?: string;
 }
+
+export class RegistrationRequestDto {
+  username?: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+}

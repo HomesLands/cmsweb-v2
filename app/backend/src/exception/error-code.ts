@@ -1,37 +1,30 @@
 import { StatusCodes } from "http-status-codes";
-import { IStatusResponse } from "@types";
+import type { TErrorCode } from "@types";
 
-export const StatusResponseRecord: Record<string, IStatusResponse> = {
+export const ErrorCodes: TErrorCode = {
   INVALID_EMAIL: {
-    code: StatusCodes.BAD_REQUEST,
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1001,
     message: "Email is not valid",
   },
   PATH_NOT_FOUND: {
-    code: StatusCodes.NOT_FOUND,
-    message: "Can't find path",
+    httpStatusCode: StatusCodes.NOT_FOUND,
+    code: 1002,
+    message: "Can not find path",
   },
   INVALID_USERNAME: {
-    code: StatusCodes.BAD_REQUEST,
-    message: "username is not valid",
-  },
-  USER_ID_NOT_FOUND: {
-    code: StatusCodes.BAD_REQUEST,
-    message: "User id not found",
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1003,
+    message: "Username is not valid",
   },
   USER_NOT_FOUND: {
-    code: StatusCodes.UNAUTHORIZED,
+    httpStatusCode: StatusCodes.UNAUTHORIZED,
+    code: 1004,
     message: "User not found",
   },
   SESSION_STORE_ERROR: {
-    code: StatusCodes.INTERNAL_SERVER_ERROR,
+    httpStatusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+    code: 1005,
     message: "Fail in store session when login",
-  },
-  UNAUTHORIZED: {
-    code: StatusCodes.UNAUTHORIZED,
-    message: "Unauthorized",
-  },
-  INTERNAL_SERVER_ERROR: {
-    code: StatusCodes.INTERNAL_SERVER_ERROR,
-    message: "Internal Server Error",
   },
 };

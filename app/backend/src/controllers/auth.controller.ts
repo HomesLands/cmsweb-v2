@@ -4,6 +4,8 @@ import { StatusCodes } from "http-status-codes";
 import { authService } from "@services";
 import { IApiResponse } from "types";
 import { AuthenticationResponseDto } from "@dto/response";
+import { RegistrationRequestDto } from "@dto/request";
+import { GlobalException } from "@exception/global-exception";
 
 class AuthController {
   /**
@@ -18,10 +20,10 @@ class AuthController {
    *       properties:
    *         username:
    *           type: string
-   *           description: username of user
+   *           description: username
    *         password:
    *           type: string
-   *           description: password of user
+   *           description: password
    *       example:
    *         username: username
    *         password: Pass@1234
@@ -78,19 +80,20 @@ class AuthController {
     }
   }
 
-  // public async signUp(
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction
-  // ): Promise<any> {
-  //   try {
-  //     const { body: data } = req;
-  //     const response = await authService.signUp(data);
-  //     res.status(StatusCodes.OK).json(response);
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
+  public async register(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const requestData = req.body as RegistrationRequestDto;
+      const result = await authService.register(requestData);
+
+      res.status(StatusCodes.OK).json({ message: "Signup successfully!" });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new AuthController();

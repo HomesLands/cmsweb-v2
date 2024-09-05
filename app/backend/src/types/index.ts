@@ -38,13 +38,10 @@ export interface ICreateUserRequestDto {
   password: string;
 }
 
-export interface IStatusResponse {
+export type TErrorCodeValue = {
   code: number;
   message: string;
-}
+  httpStatusCode: number;
+};
 
-export interface IUser {
-  id?: string;
-  password?: string;
-  username?: string;
-}
+export type TErrorCode = Record<string, TErrorCodeValue>;
