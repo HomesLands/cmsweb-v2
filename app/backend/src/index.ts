@@ -10,10 +10,13 @@ import path from "path";
 import fs from "fs";
 import cors from "cors";
 import bodyParser from "body-parser";
+import moment from "moment";
 
 import { registerRoutes } from "@routes";
 import { errorHandlerMiddleware } from "@middlewares";
 import { passportStrategies, dataSource } from "@configs";
+import { isDevEnvironment } from "heppers";
+import { logger } from "@lib";
 
 dotenv.config();
 
@@ -29,10 +32,10 @@ dotenv.config();
   await dataSource
     .initialize()
     .then(() => {
-      console.log("Data Source has been initialized!");
+      logger.info("Data Source has been initialized!");
     })
     .catch((err) => {
-      console.error("Error during Data Source initialization:", err);
+      logger.error("Error during Data Source initialization:", err);
     });
 
   // Config CORS
@@ -49,7 +52,7 @@ dotenv.config();
   app.use(bodyParser.urlencoded({ extended: true }));
 
   // Config logger
-  if (process.env.NODE_ENV === "production") {
+  if (!isDevEnvironment()) {
     const logDirectory = path.resolve("logs");
     if (!fs.existsSync(logDirectory)) {
       fs.mkdirSync(logDirectory);
@@ -57,12 +60,13 @@ dotenv.config();
     const logPath = path.join(process.cwd(), "/logs/access.log");
     const accessLogStream = fs.createWriteStream(logPath, { flags: "a" });
     app.use(morgan("combined", { stream: accessLogStream }));
-  } else if (process.env.NODE_ENV === "development") {
-    app.use(
-      morgan(
-        ":date[iso] :method :url :status :res[content-length] - :response-time ms"
-      )
-    );
+  } else if (isDevEnvironment()) {
+    // Custom token for date formatting
+    morgan.token("custom-date", () => {
+      return moment().format("YYYY-MM-DD HH:mm:ss");
+    });
+
+    app.use(morgan(":custom-date [:method] :url :status"));
   }
 
   const swaggerOptions = {
@@ -96,11 +100,11 @@ dotenv.config();
   registerRoutes(app);
 
   // Global error handling
-  app.use(errorHandlerMiddleware.handleGlobalException);
+  app.use(errorHandlerMiddleware.handler);
 
   app.listen(port, () => {
-    console.log(`[server]: Server is running at http://localhost:${port}`);
-    console.log(
+    logger.info(`[server]: Server is running at http://localhost:${port}`);
+    logger.info(
       `[server]: Swagger is running at http://localhost:${port}/api/api-docs`
     );
   });

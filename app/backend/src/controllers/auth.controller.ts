@@ -5,14 +5,14 @@ import { authService } from "@services";
 import { IApiResponse } from "types";
 import { AuthenticationResponseDto } from "@dto/response";
 import { RegistrationRequestDto } from "@dto/request";
-import { GlobalException } from "@exception/global-exception";
+import { logger } from "@lib";
 
 class AuthController {
   /**
    * @swagger
    * components:
    *   schemas:
-   *     AuthenticateRequest:
+   *     AuthenticationRequestDto:
    *       type: object
    *       required:
    *         - username
@@ -27,6 +27,32 @@ class AuthController {
    *       example:
    *         username: username
    *         password: Pass@1234
+   *
+   *     RegistrationRequestDto:
+   *       type: object
+   *       required:
+   *         - username
+   *         - password
+   *         - firstName
+   *         - lastName
+   *       properties:
+   *         username:
+   *           type: string
+   *           description: username
+   *         password:
+   *           type: string
+   *           description: password
+   *         firstName:
+   *           type: string
+   *           description: firstName
+   *         lastName:
+   *           type: string
+   *           description: lastName
+   *       example:
+   *         username: username
+   *         password: Pass@1234
+   *         firstName: John
+   *         lastName: Doe
    */
 
   /**
@@ -47,7 +73,7 @@ class AuthController {
    *       content:
    *         application/json:
    *           schema:
-   *              $ref: '#/components/schemas/AuthenticateRequest'
+   *              $ref: '#/components/schemas/AuthenticationRequestDto'
    *     responses:
    *       200:
    *         description: User authenticated.
@@ -65,7 +91,6 @@ class AuthController {
   ): Promise<void> {
     try {
       const result = await authService.authenticate(req);
-
       const response: IApiResponse<AuthenticationResponseDto> = {
         code: StatusCodes.OK,
         error: false,
@@ -80,6 +105,28 @@ class AuthController {
     }
   }
 
+  /**
+   * @swagger
+   * /auth/register:
+   *   post:
+   *     summary: Register new account
+   *     tags: [Auth]
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/RegistrationRequestDto'
+   *     responses:
+   *       200:
+   *         description: New account created successfully.
+   *         content:
+   *           application/json:
+   *             schema:
+   *       500:
+   *         description: Server error
+   *
+   */
   public async register(
     req: Request,
     res: Response,
@@ -87,9 +134,16 @@ class AuthController {
   ): Promise<void> {
     try {
       const requestData = req.body as RegistrationRequestDto;
-      const result = await authService.register(requestData);
+      await authService.register(requestData);
 
-      res.status(StatusCodes.OK).json({ message: "Signup successfully!" });
+      const response: IApiResponse<void> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "Registration successfully",
+        method: req.method,
+        path: req.originalUrl,
+      };
+      res.status(StatusCodes.OK).json(response);
     } catch (error) {
       next(error);
     }

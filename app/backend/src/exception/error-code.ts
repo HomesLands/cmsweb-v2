@@ -27,4 +27,9 @@ export const ErrorCodes: TErrorCode = {
     code: 1005,
     message: "Fail in store session when login",
   },
+  USER_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1006,
+    message: "User exist",
+  },
 };

@@ -4,6 +4,7 @@ import session from "cookie-session";
 import { env } from "@constants";
 
 import { customLocalStrategy } from "@configs/passport";
+import { logger } from "@lib";
 
 export const passportStrategies = (app: Application): void => {
   app.use(
@@ -21,5 +22,5 @@ export const passportStrategies = (app: Application): void => {
 
   customLocalStrategy();
 
-  console.log("Passport created!");
+  logger.info("Passport created!");
 };

@@ -1,22 +1,36 @@
-import { Request, Response } from "express";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { NextFunction, Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
+
 import { IApiResponse } from "types";
-import { GlobalException } from "@exception";
+import { GlobalError, ValidationError } from "@exception";
 
 class ErrorHandlerMiddleware {
-  public handleGlobalException(
-    error: GlobalException,
+  public handler(
+    error: Error,
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction // Don't remove, this function will be called with 4 params
   ): void {
-    console.log("Here");
-    // const response: IApiResponse<void> = {
-    //   code: error.errorCodeValue.code,
-    //   error: true,
-    //   message: error.errorCodeValue.message,
-    //   method: req.method,
-    //   path: req.originalUrl,
-    // };
-    res.status(500).json({ message: "error" });
+    if (error instanceof GlobalError || error instanceof ValidationError) {
+      const response: IApiResponse<void> = {
+        code: error.errorCodeValue.code,
+        error: true,
+        message: error.errorCodeValue.message,
+        method: req.method,
+        path: req.originalUrl,
+      };
+      res.status(error.errorCodeValue.httpStatusCode).json(response);
+    } else {
+      const response: IApiResponse<void> = {
+        code: StatusCodes.INTERNAL_SERVER_ERROR.valueOf(),
+        error: true,
+        message: error.message,
+        method: req.method,
+        path: req.originalUrl,
+      };
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    }
   }
 }
 

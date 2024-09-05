@@ -1,2 +1,3 @@
 export * from "./error-code";
-export * from "./global-exception";
+export * from "./global-error";
+export * from "./validation-error";

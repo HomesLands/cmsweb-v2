@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import JWT from "jsonwebtoken";
 import _ from "lodash";
 
-import { ErrorCodes, GlobalException } from "@exception";
+import { ErrorCodes, GlobalError } from "@exception";
 import { env } from "@constants";
 import { userRepository } from "@repositories";
 import { StatusCodes } from "http-status-codes";
@@ -17,21 +17,21 @@ class AuthMiddleware {
 
     // Get token
     const token = req.headers["authorization"] as string;
-    if (!token) return next(new GlobalException(StatusCodes.UNAUTHORIZED));
+    if (!token) return next(new GlobalError(StatusCodes.UNAUTHORIZED));
 
     const authToken = token.split(" ")[1];
     JWT.verify(authToken, env.token.jwtSecret, async (err, decoded) => {
-      if (err) return next(new GlobalException(StatusCodes.UNAUTHORIZED));
+      if (err) return next(new GlobalError(StatusCodes.UNAUTHORIZED));
       if (typeof decoded === "object" && _.has(decoded, "id")) {
         // Get user
         const user = await userRepository.findOneBy({ id: decoded.id });
-        if (!user) return next(new GlobalException(ErrorCodes.USER_NOT_FOUND));
+        if (!user) return next(new GlobalError(ErrorCodes.USER_NOT_FOUND));
 
         // Attached decoded user id to request
         Object.assign(req, { userId: user.id });
         next();
       } else {
-        return next(new GlobalException(StatusCodes.UNAUTHORIZED));
+        return next(new GlobalError(StatusCodes.UNAUTHORIZED));
       }
     });
   }

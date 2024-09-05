@@ -1,18 +1,30 @@
-import { IsString, IsNotEmpty } from "class-validator";
+import { IsString, IsNotEmpty, MinLength } from "class-validator";
 
 export class AuthenticationRequestDto {
   @IsString()
   @IsNotEmpty()
-  username?: string;
+  username: string;
 
   @IsString()
   @IsNotEmpty()
-  password?: string;
+  password: string;
 }
 
 export class RegistrationRequestDto {
-  username?: string;
-  password?: string;
-  firstName?: string;
-  lastName?: string;
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(10)
+  username: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  firstName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
 }
