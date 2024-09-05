@@ -15,4 +15,18 @@ export const productSearchSchema = z.object({
     productName: z.string().optional().default(''),
 })
 
+export const addNewProductSchema = z.object({
+    id: z.string().optional().default(''),
+    createdBy: z.string().optional().default(''),
+    productCode: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
+    productName: z.string().min(1, 'Tên sản phẩm không hợp lệ'),
+    modelOrSerialNumber: z.string().min(1, 'Model hoặc Serial không hợp lệ'),
+    supplier: z.string().min(1, 'Nhà cung cấp không hợp lệ'),
+    // importDate: z.string().min(1, 'Ngày nhập không hợp lệ'),
+    unit: z.string().min(1, 'Đơn vị không hợp lệ'),
+    quantity: z.number().optional().default(0),
+    address: z.string().min(1, 'Địa chỉ không hợp lệ'),
+    note: z.string().optional().default(''),
+})
+
 export type TProductSchema = z.infer<typeof productSchema>

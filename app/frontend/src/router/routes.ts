@@ -1,5 +1,5 @@
 import { AlignJustify, Archive } from 'lucide-react'
-import { PersonIcon, ArchiveIcon, FileTextIcon } from '@radix-ui/react-icons'
+import { PersonIcon, ArchiveIcon, FileTextIcon, CubeIcon } from '@radix-ui/react-icons'
 import type { IRoute, ISidebarSubmenu } from '@/types'
 
 const routes: IRoute[] = [
@@ -65,6 +65,24 @@ const routes: IRoute[] = [
         component: () => import('@/views/products/CreateNewProductRequirement')
       }
     ]
+  },
+  {
+    title: 'Warehouse',
+    path: '/warehouse',
+    component: () =>
+      import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
+    children: [
+      {
+        title: 'Add Product',
+        path: 'add',
+        component: () => import('@/views/warehouse/AddProduct')
+      },
+      {
+        title: 'Product List',
+        path: 'list',
+        component: () => import('@/views/warehouse/Warehouse')
+      }
+    ]
   }
 ]
 
@@ -119,6 +137,28 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
         component: () => import('@/views/products/Products')
       }
     ]
+  },
+  {
+    title: 'Kho',
+    path: '/warehouse',
+    icon: CubeIcon,
+    component: () =>
+      import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
+    children: [
+      {
+        title: 'Thêm vật tư',
+        path: '/warehouse/add',
+        icon: Archive,
+        component: () => import('@/views/warehouse/AddProduct')
+      },
+      {
+        title: 'Danh sách vật tư',
+        path: '/warehouse/list',
+        icon: Archive,
+        component: () => import('@/views/warehouse/Warehouse')
+      }
+    ]
+
   }
 ]
 

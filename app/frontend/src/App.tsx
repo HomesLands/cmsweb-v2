@@ -1,14 +1,19 @@
 import { StrictMode } from 'react'
 import { RouterProvider } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import '@/assets/index.css'
 import { router } from '@/router'
 import './i18n'
 
+const queryClient = new QueryClient()
+
 function App() {
   return (
     <StrictMode>
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </StrictMode>
   )
 }

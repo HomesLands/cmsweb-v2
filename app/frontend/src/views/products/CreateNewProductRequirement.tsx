@@ -50,7 +50,7 @@ const Products: React.FC = () => {
     getData().then((data) => {
       const formattedData = data.map((item) => ({
         ...item,
-        importDate: formatDate(item.importDate) // Format the date string
+        importDate: formatDate(item.importDate)
       }))
       setData(formattedData)
     })
@@ -60,14 +60,14 @@ const Products: React.FC = () => {
     console.log(data)
     setTimeout(() => {
       setShowSearch(true)
-      setStep(1) // Move to step 1 after the first form submission
+      setStep(1)
       setFormSubmitted(true)
     }, 1000)
   }
 
   const handleFormSearchSubmit = (data: IProductNameSearch) => {
     console.log(data)
-    setStep(2) // Move to step 2 after search
+    setStep(2)
   }
 
   return (
@@ -75,7 +75,7 @@ const Products: React.FC = () => {
       <div className="grid items-start w-full mx-auto gap68">
         <div className="flex justify-center w-full my-2">
           <div className="w-1/2">
-            <ProgressBar step={step} /> {/* Pass step to ProgressBar */}
+            <ProgressBar step={step} />
           </div>
         </div>
         <div className="grid w-full">
@@ -90,7 +90,6 @@ const Products: React.FC = () => {
               {!formSubmitted && !showSearch && (
                 <CreateProductForm onSubmit={handleFormCreateSubmit} />
               )}
-              {/* {loading && <SpinnerLoading />} */}
               {showSearch && (
                 <div>
                   <FormSearchProduct onSubmit={handleFormSearchSubmit} />
