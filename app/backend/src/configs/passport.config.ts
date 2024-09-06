@@ -10,7 +10,7 @@ export const passportStrategies = (app: Application): void => {
   app.use(
     session({
       maxAge: 86400000, // 1 day
-      secret: env.passport.passportSecret,
+      secret: env.passportSecret,
 
       // resave: true,
       // saveUninitialized: false,

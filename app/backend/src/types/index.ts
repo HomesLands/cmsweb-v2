@@ -6,13 +6,9 @@ export type TEnv = {
     passwordMySql: string;
     databaseMySql: string;
   };
-  token: {
-    hashSalt: string;
-    jwtSecret: string;
-  };
-  passport: {
-    passportSecret: string;
-  };
+  hashSalt: string;
+  jwtSecret: string;
+  passportSecret: string;
 };
 
 export type TApiResponse<T> = {

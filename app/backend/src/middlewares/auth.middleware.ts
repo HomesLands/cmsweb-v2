@@ -20,7 +20,7 @@ class AuthMiddleware {
     if (!token) return next(new GlobalError(StatusCodes.UNAUTHORIZED));
 
     const authToken = token.split(" ")[1];
-    JWT.verify(authToken, env.token.jwtSecret, async (err, decoded) => {
+    JWT.verify(authToken, env.jwtSecret, async (err, decoded) => {
       if (err) return next(new GlobalError(StatusCodes.UNAUTHORIZED));
       if (typeof decoded === "object" && _.has(decoded, "id")) {
         // Get user

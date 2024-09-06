@@ -37,4 +37,19 @@ export const ErrorCodes: TErrorCode = {
     code: 1007,
     message: "Unindentified error",
   },
+  INVALID_PASSWORD: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1008,
+    message: "Password is not valid",
+  },
+  INVALID_FIRSTNAME: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1009,
+    message: "Firstname is not valid",
+  },
+  INVALID_LASTNAME: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1010,
+    message: "Lastname is not valid",
+  },
 };

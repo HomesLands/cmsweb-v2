@@ -1,6 +1,7 @@
 import { Request } from "express";
 import passport from "passport";
 import { StatusCodes } from "http-status-codes";
+import bcrypt from "bcryptjs";
 
 import { generateToken, logger } from "@lib";
 import { ErrorCodes, GlobalError, ValidationError } from "@exception";
@@ -9,9 +10,10 @@ import { RegistrationRequestDto } from "@dto/request";
 import { userRepository } from "@repositories";
 import { User } from "@entities";
 import { validate } from "class-validator";
-import { Gender } from "enums";
 import { TRegistrationRequestDto } from "@types";
 import { plainToClass } from "class-transformer";
+import { mapper } from "@mappers";
+import { env } from "@constants";
 
 class AuthService {
   public async authenticate(req: Request): Promise<AuthenticationResponseDto> {
@@ -44,11 +46,9 @@ class AuthService {
   public async register(plainData: TRegistrationRequestDto): Promise<void> {
     // Map plain object to request dto
     const requestData = plainToClass(RegistrationRequestDto, plainData);
-    console.log(requestData);
 
     // Validate the class instance
     const errors = await validate(requestData);
-    console.log(errors);
     if (errors.length > 0) throw new ValidationError(errors);
 
     // Find exist
@@ -58,12 +58,14 @@ class AuthService {
     if (hasExisted) throw new GlobalError(ErrorCodes.USER_EXIST);
 
     // Create new account
-    const user: User = {
-      firstName: requestData.firstName,
-      lastName: requestData.lastName,
-      username: requestData.username,
-      password: requestData.password,
-    };
+    const user = mapper.map(requestData, RegistrationRequestDto, User);
+    // Hash password
+    const hashedPassword = await bcrypt.hash(
+      requestData.password,
+      env.hashSalt
+    );
+    user.password = hashedPassword;
+
     await userRepository.createAndSave(user);
   }
 }
