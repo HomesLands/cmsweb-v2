@@ -1,85 +1,72 @@
 import { Request } from "express";
 import passport from "passport";
+import { StatusCodes } from "http-status-codes";
 import bcrypt from "bcryptjs";
 
-import { GlobalException } from "@exception/global-exception";
-import { UserRepository } from "@repositories";
-import { IAuthenticateResponseDto } from "types";
-import { generateToken } from "@lib";
-import { StatusResponseRecord } from "@exception/error-code";
-import { IUser } from "@types";
-
+import { generateToken, logger } from "@lib";
+import { ErrorCodes, GlobalError, ValidationError } from "@exception";
+import { AuthenticationResponseDto } from "@dto/response";
+import { RegistrationRequestDto } from "@dto/request";
+import { userRepository } from "@repositories";
 import { User } from "@entities";
-import { SaveOptions, RemoveOptions } from "typeorm";
+import { validate } from "class-validator";
+import { TRegistrationRequestDto } from "@types";
+import { plainToClass } from "class-transformer";
+import { mapper } from "@mappers";
+import { env } from "@constants";
 
 class AuthService {
-  private userRepository: UserRepository;
+  public async authenticate(req: Request): Promise<AuthenticationResponseDto> {
+    return new Promise((resolve, reject) => {
+      passport.authenticate("local", (err: unknown, user: User | false) => {
+        if (err) return reject(new GlobalError(StatusCodes.UNAUTHORIZED));
 
-  constructor() {
-    this.userRepository = new UserRepository();
+        if (!user) {
+          return reject(new GlobalError(ErrorCodes.INVALID_USERNAME));
+        }
+
+        req.logIn(user, (err) => {
+          if (err) {
+            return reject(new GlobalError(ErrorCodes.SESSION_STORE_ERROR));
+          }
+
+          if (!user.id) {
+            return reject(new GlobalError(ErrorCodes.USER_NOT_FOUND));
+          }
+
+          return resolve({
+            expireTime: new Date(),
+            token: generateToken(user.id, "local"),
+          });
+        });
+      })(req, null, null);
+    });
   }
 
-  // public async signUp(data: any): Promise<User> {
+  public async register(plainData: TRegistrationRequestDto): Promise<void> {
+    // Map plain object to request dto
+    const requestData = plainToClass(RegistrationRequestDto, plainData);
 
-  //   const passwordHashed: string = await bcrypt.hash(
-  //     data.password,
-  //     10
-  //   );
+    // Validate the class instance
+    const errors = await validate(requestData);
+    if (errors.length > 0) throw new ValidationError(errors);
 
-  //   let userData = await this.userRepository.save({
-  //     firstName: data.firstName,
-  //     lastName: data.lastName,
-  //     username: data.userName,
-  //     password: passwordHashed,
-  //     hasId: function (): boolean {
-  //       throw new Error("Function not implemented.");
-  //     },
-  //     save: function (options?: SaveOptions): Promise<User> {
-  //       throw new Error("Function not implemented.");
-  //     },
-  //     remove: function (options?: RemoveOptions): Promise<User> {
-  //       throw new Error("Function not implemented.");
-  //     },
-  //     softRemove: function (options?: SaveOptions): Promise<User> {
-  //       throw new Error("Function not implemented.");
-  //     },
-  //     recover: function (options?: SaveOptions): Promise<User> {
-  //       throw new Error("Function not implemented.");
-  //     },
-  //     reload: function (): Promise<void> {
-  //       throw new Error("Function not implemented.");
-  //     }
-  //   });
-
-  //   return userData;
-  // }
-
-  public async authenticate(req: Request): Promise<IAuthenticateResponseDto> {
-    return new Promise((resolve, reject) => {
-      passport.authenticate(
-        "local",
-        (err: any, user: IUser, info: { message: any }) => {
-          if (err) return reject(new GlobalException(StatusResponseRecord.UNAUTHORIZED));
-
-          if (!user) return reject(new GlobalException(StatusResponseRecord.INVALID_USER_NAME));
-
-          req.logIn(user, (err) => {
-            if (err) {
-              return reject(new GlobalException(StatusResponseRecord.SESSION_STORE_ERROR));
-            }
-            
-            if(!user.id) {
-              return reject(new GlobalException(StatusResponseRecord.USER_ID_NOT_FOUND));
-            }
-
-            return resolve({
-              expireTime: new Date(),
-              token: generateToken(user.id, "local"),
-            });
-          });
-        }
-      )(req, null, null);
+    // Find exist
+    const hasExisted = await userRepository.existsBy({
+      username: requestData.username,
     });
+    if (hasExisted) throw new GlobalError(ErrorCodes.USER_EXIST);
+
+    // Create new account
+    const user = mapper.map(requestData, RegistrationRequestDto, User);
+    // Hash password
+    const hashedPassword = await bcrypt.hash(
+      requestData.password,
+      env.hashSalt
+    );
+    user.password = hashedPassword;
+
+    await userRepository.createAndSave(user);
   }
 }
 

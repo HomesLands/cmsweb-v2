@@ -1,8 +1,8 @@
 import { Entity, Column } from "typeorm";
-import { BaseEntity } from "@entities/base.entity";
+import { Base } from "@entities/base.entity";
 
 @Entity("provider_tbl")
-export class Provider extends BaseEntity {
+export class Provider extends Base {
   @Column({ name: "name_column" })
   name?: string;
 

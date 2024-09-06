@@ -1,8 +1,12 @@
-import { Entity, Column } from "typeorm";
-import { BaseEntity } from "@entities/base.entity";
+import { Entity, Column, OneToMany } from "typeorm";
+import { Base } from "@entities/base.entity";
+import { Product } from "./product.entity";
 
 @Entity("unit_tbl")
-export class Unit extends BaseEntity {
-  @Column({ name: "name_column"})
+export class Unit extends Base {
+  @Column({ name: "name_column" })
   name?: string;
+
+  @OneToMany(() => Product, (product) => product.unit)
+  products?: Product[];
 }

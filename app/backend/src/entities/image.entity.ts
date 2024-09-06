@@ -1,8 +1,8 @@
 import { Entity, Column } from "typeorm";
-import { BaseEntity } from "@entities/base.entity";
+import { Base } from "@entities/base.entity";
 
 @Entity("image_tbl")
-export class Image extends BaseEntity {
+export class Image extends Base {
   @Column({ type: "mediumblob", name: "data_column" })
   data?: Blob;
 

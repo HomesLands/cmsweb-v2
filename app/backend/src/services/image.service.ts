@@ -205,7 +205,7 @@ export class FileUploadService {
   // }
 
   public async getImgFromDB(id: string): Promise<Blob | undefined> {
-    const imageData = await this.imageRepo.findById(id);
+    const imageData = await this.imageRepo.findOneBy({ id });
     if (!imageData) {
       return;
     }

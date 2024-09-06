@@ -1,4 +1,4 @@
-export interface IEnv {
+export type TEnv = {
   port: string;
   dataSource: {
     hostMySql: string;
@@ -6,55 +6,33 @@ export interface IEnv {
     passwordMySql: string;
     databaseMySql: string;
   };
-  token: {
-    hashSalt: string;
-    jwtSecret: string;
-  };
-  passport: {
-    passportSecret: string;
-  };
-}
+  hashSalt: string;
+  jwtSecret: string;
+  passportSecret: string;
+};
 
-export interface IApiResponse<T> {
+export type TApiResponse<T> = {
   result?: T;
   code: number;
   message: string;
   error: boolean;
   method: string;
   path: string;
-}
+};
 
-export interface IPageOption {
-  builderFor: string;
-  orderBy: string;
-  skip: number;
-  take: number;
-}
+// export interface IPageOption {
+//   builderFor: string;
+//   orderBy: string;
+//   skip: number;
+//   take: number;
+// }
 
-export interface ICreateUserRequestDto {
-  firstName: string;
-  lastName: string;
-  username: string;
-  password: string;
-}
-
-export interface IAuthenticateRequestDto {
-  username: string;
-  password: string;
-}
-
-export interface IAuthenticateResponseDto {
-  token: string;
-  expireTime: Date;
-}
-
-export interface IStatusResponse {
+export type TErrorCodeValue = {
   code: number;
   message: string;
-}
+  httpStatusCode: number;
+};
 
-export interface IUser {
-  id?: string;
-  password?: string;
-  username?: string;
-}
+export type TErrorCode = Record<string, TErrorCodeValue>;
+
+export * from "./auth.type";

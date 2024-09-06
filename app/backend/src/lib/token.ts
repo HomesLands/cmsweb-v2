@@ -10,7 +10,7 @@ export function generateToken(id: string, provider: string): string {
       iat: Date.now(), // time sign
       exp: Math.floor(Date.now() / 1000) + 60 * 60,
     },
-    env.token.jwtSecret
+    env.jwtSecret
   );
 }
 

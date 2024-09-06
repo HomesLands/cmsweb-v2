@@ -1,12 +1,13 @@
 import { Router } from "express";
 
-import AuthController from "@controllers/auth.controller";
+import { authController } from "@controllers";
 
 export const authRoute: Router = Router();
 
-//h
-// authRoute.route('/signUp').post(AuthController.signUp);
-authRoute.route("/signIn").post(AuthController.authenticate);
+// [POST] /api/v1/auth/authenticate
+authRoute.route("/authenticate").post(authController.authenticate);
 
-//
+// [POST] /api/v1/auth/register
+authRoute.route("/register").post(authController.register);
+
 export default authRoute;

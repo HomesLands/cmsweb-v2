@@ -2,11 +2,11 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { env } from "@constants";
-import { IApiResponse } from "@types";
+import { TApiResponse } from "@types";
 
 class HealthCheckController {
-  public healthCheck(req: Request, res: Response) {
-    const response: IApiResponse<void> = {
+  public status(req: Request, res: Response) {
+    const response: TApiResponse<void> = {
       code: StatusCodes.OK,
       error: false,
       message: `[server]: Server is running at http://localhost:${env.port}`,

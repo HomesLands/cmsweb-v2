@@ -1,8 +1,8 @@
 import { Entity, Column } from "typeorm";
-import { BaseEntity } from "@entities/base.entity";
+import { Base } from "@entities/base.entity";
 
 @Entity("project_tbl")
-export class Project extends BaseEntity {
+export class Project extends Base {
   @Column({ name: "name_column" })
   name?: string;
 

@@ -1,21 +1,17 @@
 import dotenv from "dotenv";
-import { IEnv } from "types";
+import { TEnv } from "types";
 
 dotenv.config();
 
-export const env: IEnv = {
+export const env: TEnv = {
   dataSource: {
     hostMySql: process.env.HOST_MYSQL || "",
     userMySql: process.env.USER_MYSQL || "",
     passwordMySql: process.env.PASSWORD_MYSQL || "",
     databaseMySql: process.env.DATABASE_MYSQL || "",
   },
-  token: {
-    hashSalt: process.env.HASH_SALT || "",
-    jwtSecret: process.env.JWT_SECRET || "",
-  },
-  passport: {
-    passportSecret: process.env.PASSPORT_SECRET || "",
-  },
+  hashSalt: process.env.HASH_SALT || "",
+  jwtSecret: process.env.JWT_SECRET || "",
+  passportSecret: process.env.PASSPORT_SECRET || "",
   port: process.env.PORT || "3000",
 };

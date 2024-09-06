@@ -1,37 +1,55 @@
-import { StatusCodes } from 'http-status-codes';
-import {  IStatusResponse } from "@types";
+import { StatusCodes } from "http-status-codes";
+import type { TErrorCode } from "@types";
 
-export const StatusResponseRecord: Record<string, IStatusResponse> = {
+export const ErrorCodes: TErrorCode = {
   INVALID_EMAIL: {
-    code: StatusCodes.BAD_REQUEST,
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1001,
     message: "Email is not valid",
   },
   PATH_NOT_FOUND: {
-    code: StatusCodes.NOT_FOUND,
-    message: "Can't find path",
+    httpStatusCode: StatusCodes.NOT_FOUND,
+    code: 1002,
+    message: "Can not find path",
   },
-  INVALID_USER_NAME: {
-    code: StatusCodes.BAD_REQUEST,
-    message: "User name is not valid",
-  },
-  USER_ID_NOT_FOUND: {
-    code: StatusCodes.BAD_REQUEST,
-    message: "User id not found",
+  INVALID_USERNAME: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1003,
+    message: "Username is not valid",
   },
   USER_NOT_FOUND: {
-    code: StatusCodes.UNAUTHORIZED,
+    httpStatusCode: StatusCodes.UNAUTHORIZED,
+    code: 1004,
     message: "User not found",
   },
   SESSION_STORE_ERROR: {
-    code: StatusCodes.INTERNAL_SERVER_ERROR,
+    httpStatusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+    code: 1005,
     message: "Fail in store session when login",
   },
-  UNAUTHORIZED: {
-    code: StatusCodes.UNAUTHORIZED,
-    message: "Unauthorized",
+  USER_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1006,
+    message: "User exist",
   },
-  INTERNAL_SERVER_ERROR: {
-    code: StatusCodes.INTERNAL_SERVER_ERROR,
-    message: "Internal Server Error",
+  UNIDENTIFIED_ERROR: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1007,
+    message: "Unindentified error",
   },
-}
+  INVALID_PASSWORD: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1008,
+    message: "Password is not valid",
+  },
+  INVALID_FIRSTNAME: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1009,
+    message: "Firstname is not valid",
+  },
+  INVALID_LASTNAME: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1010,
+    message: "Lastname is not valid",
+  },
+};
