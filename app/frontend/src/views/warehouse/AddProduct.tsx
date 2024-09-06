@@ -5,7 +5,7 @@ import { IProductInfo } from '@/types'
 import { AddNewProductForm } from '@/components/app/form'
 
 const AddNewProduct: React.FC = () => {
-  const [formSubmitted, setFormSubmitted] = useState<boolean>(false)
+  const [, setFormSubmitted] = useState<boolean>(false)
 
   const handleFormCreateSubmit = (formData: IProductInfo) => {
     console.log('Submitted Data:', formData) // Log form data

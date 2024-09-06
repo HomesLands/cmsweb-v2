@@ -1,14 +1,7 @@
 import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  DataTable
-} from '@/components/ui'
+import { DataTable } from '@/components/ui'
 import { columns } from './DataTable/columns'
 import { getUsers } from '@/api/users'
 import NProgress from 'nprogress'
