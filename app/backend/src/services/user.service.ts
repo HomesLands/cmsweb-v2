@@ -1,5 +1,5 @@
 import { userRepository } from "@repositories";
-import { mapper } from "@mappers/mapper";
+import { mapper } from "@mappers";
 import { User } from "@entities";
 import { UserResponseDto } from "@dto/response";
 

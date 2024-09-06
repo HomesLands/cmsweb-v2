@@ -1,7 +1,8 @@
 import { ValidationError as ClassValidatorError } from "class-validator";
-import { StatusCodes } from "http-status-codes";
+import _ from "lodash";
 
 import { TErrorCodeValue } from "@types";
+import { ErrorCodes } from "./error-code";
 
 export class ValidationError extends Error {
   private _errorCodeValue: TErrorCodeValue;
@@ -40,16 +41,13 @@ export class ValidationError extends Error {
   private transformErrorToErrorCode(
     error: ClassValidatorError
   ): TErrorCodeValue {
-    const constraintMessages = error.constraints
-      ? Object.values(error.constraints).join(", ")
-      : "Validation error";
-
-    return {
-      code: 2000, // You can define your own error codes for validation failures
-      message: `Property ${error.property}: ${constraintMessages}`,
-      httpStatusCode: StatusCodes.BAD_REQUEST,
-    };
+    const constraintKey =
+      error.constraints && Object.values(error.constraints)[0];
+    if (!constraintKey) return ErrorCodes.UNIDENTIFIED_ERROR;
+    if (!_.has(ErrorCodes, constraintKey)) return ErrorCodes.UNIDENTIFIED_ERROR;
+    return ErrorCodes[constraintKey];
   }
+
   public get errorCodeValue() {
     return this._errorCodeValue;
   }

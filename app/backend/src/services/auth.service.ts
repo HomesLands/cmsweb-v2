@@ -9,6 +9,9 @@ import { RegistrationRequestDto } from "@dto/request";
 import { userRepository } from "@repositories";
 import { User } from "@entities";
 import { validate } from "class-validator";
+import { Gender } from "enums";
+import { TRegistrationRequestDto } from "@types";
+import { plainToClass } from "class-transformer";
 
 class AuthService {
   public async authenticate(req: Request): Promise<AuthenticationResponseDto> {
@@ -38,16 +41,14 @@ class AuthService {
     });
   }
 
-  public async register(requestData: RegistrationRequestDto): Promise<void> {
-    // Validation
-    const registrationDto = new RegistrationRequestDto();
-    registrationDto.username = requestData.username;
-    registrationDto.password = requestData.password;
-    registrationDto.firstName = requestData.firstName;
-    registrationDto.lastName = requestData.lastName;
+  public async register(plainData: TRegistrationRequestDto): Promise<void> {
+    // Map plain object to request dto
+    const requestData = plainToClass(RegistrationRequestDto, plainData);
+    console.log(requestData);
 
     // Validate the class instance
-    const errors = await validate(registrationDto);
+    const errors = await validate(requestData);
+    console.log(errors);
     if (errors.length > 0) throw new ValidationError(errors);
 
     // Find exist
@@ -55,13 +56,13 @@ class AuthService {
       username: requestData.username,
     });
     if (hasExisted) throw new GlobalError(ErrorCodes.USER_EXIST);
+
     // Create new account
     const user: User = {
       firstName: requestData.firstName,
       lastName: requestData.lastName,
       username: requestData.username,
       password: requestData.password,
-      dob: "1998/02/20",
     };
     await userRepository.createAndSave(user);
   }

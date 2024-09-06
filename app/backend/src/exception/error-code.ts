@@ -32,4 +32,9 @@ export const ErrorCodes: TErrorCode = {
     code: 1006,
     message: "User exist",
   },
+  UNIDENTIFIED_ERROR: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1007,
+    message: "Unindentified error",
+  },
 };

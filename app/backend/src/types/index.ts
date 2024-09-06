@@ -1,4 +1,4 @@
-export interface IEnv {
+export type TEnv = {
   port: string;
   dataSource: {
     hostMySql: string;
@@ -13,30 +13,23 @@ export interface IEnv {
   passport: {
     passportSecret: string;
   };
-}
+};
 
-export interface IApiResponse<T> {
+export type TApiResponse<T> = {
   result?: T;
   code: number;
   message: string;
   error: boolean;
   method: string;
   path: string;
-}
+};
 
-export interface IPageOption {
-  builderFor: string;
-  orderBy: string;
-  skip: number;
-  take: number;
-}
-
-export interface ICreateUserRequestDto {
-  firstName: string;
-  lastName: string;
-  username: string;
-  password: string;
-}
+// export interface IPageOption {
+//   builderFor: string;
+//   orderBy: string;
+//   skip: number;
+//   take: number;
+// }
 
 export type TErrorCodeValue = {
   code: number;
@@ -45,3 +38,5 @@ export type TErrorCodeValue = {
 };
 
 export type TErrorCode = Record<string, TErrorCodeValue>;
+
+export * from "./auth.type";

@@ -2,10 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { authService } from "@services";
-import { IApiResponse } from "types";
+import { TApiResponse, TRegistrationRequestDto } from "types";
 import { AuthenticationResponseDto } from "@dto/response";
-import { RegistrationRequestDto } from "@dto/request";
-import { logger } from "@lib";
 
 class AuthController {
   /**
@@ -91,7 +89,7 @@ class AuthController {
   ): Promise<void> {
     try {
       const result = await authService.authenticate(req);
-      const response: IApiResponse<AuthenticationResponseDto> = {
+      const response: TApiResponse<AuthenticationResponseDto> = {
         code: StatusCodes.OK,
         error: false,
         message: "",
@@ -133,10 +131,10 @@ class AuthController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const requestData = req.body as RegistrationRequestDto;
+      const requestData = req.body as TRegistrationRequestDto;
       await authService.register(requestData);
 
-      const response: IApiResponse<void> = {
+      const response: TApiResponse<void> = {
         code: StatusCodes.OK,
         error: false,
         message: "Registration successfully",

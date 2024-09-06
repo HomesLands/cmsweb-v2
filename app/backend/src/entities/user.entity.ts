@@ -5,11 +5,7 @@ import { AutoMap } from "@automapper/classes";
 import { File } from "@entities/file.entity";
 import { Position } from "@entities/position.entity";
 import { Site } from "@entities/site.entity";
-
-enum Gender {
-  male = "male",
-  female = "female",
-}
+import { Gender } from "enums";
 
 @Entity("user_tbl")
 export class User extends Base {
@@ -28,29 +24,29 @@ export class User extends Base {
   @Column({ name: "password_column" })
   password?: string;
 
-  @Column({ name: "dob_column" })
+  @Column({ name: "dob_column", nullable: true })
   dob?: string;
 
-  @Column({ name: "gender_column" })
+  @Column({ name: "gender_column", nullable: true })
   gender?: Gender;
 
-  @Column({ name: "address_column" })
+  @Column({ name: "address_column", nullable: true })
   address?: string;
 
-  @Column({ name: "phone_number_column" })
+  @Column({ name: "phone_number_column", nullable: true })
   phoneNumber?: string;
 
   @OneToOne(() => File)
   @JoinColumn({ name: "avatar_column" })
   avatar?: File;
 
-  @Column({ name: "status_column" })
+  @Column({ name: "status_column", nullable: true })
   status?: string;
 
-  @Column({ name: "is_approver_column" })
+  @Column({ name: "is_approver_column", nullable: true })
   isApprover?: string;
 
-  @Column({ name: "approval_level_column" })
+  @Column({ name: "approval_level_column", nullable: true })
   approvalLevel?: number;
 
   @OneToOne(() => Position)
