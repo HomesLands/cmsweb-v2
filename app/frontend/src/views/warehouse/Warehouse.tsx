@@ -6,26 +6,28 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  DataTableProduct
+  DataTableWarehouse
 } from '@/components/ui'
 import { columns } from './DataTable/columns'
-import { IProductApprovalInfo } from '@/types'
+import { IProductInfo } from '@/types'
 
-const Products: React.FC = () => {
-  const [data, setData] = useState<IProductApprovalInfo[]>([])
-  async function getData(): Promise<IProductApprovalInfo[]> {
+const Warehouse: React.FC = () => {
+  const [data, setData] = useState<IProductInfo[]>([])
+  async function getData(): Promise<IProductInfo[]> {
     return [
       {
         id: '728ed52f',
         createdBy: 'Lê Thành Nghĩa',
-        createdAt: new Date('2021-09-01T00:00:00Z'),
-        commanderApprovalStatus: 'Đã duyệt',
-        commanderApprovalContent: 'Duyệt yêu cầu vật tư',
-        projectManagerApprovalStatus: 'Đã duyệt',
-        projectManagerApprovalContent: 'Duyệt yêu cầu vật tư',
-        directorApprovalStatus: 'Đã duyệt',
-        directorApprovalContent: 'Duyệt yêu cầu vật tư',
-        notes: 'Yêu cầu vật tư gấp'
+        productCode: '123456',
+        productName: 'Máy in',
+        modelOrSerialNumber: '123456',
+        supplier: 'HP',
+        // importDate: new Date().toISOString(), // Save as ISO string
+        unit: 'Cái',
+        quantity: 10,
+        address: 'HCM',
+        note: 'Ghi chú',
+        createdAt: new Date()
       }
     ]
   }
@@ -46,12 +48,12 @@ const Products: React.FC = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between w-full border-b">
               <div className="flex flex-col items-start gap-2">
-                <CardTitle>Danh sách yêu cầu vật tư</CardTitle>
-                <CardDescription>Quản lý thông tin chi tiết các yêu cầu vật tư</CardDescription>
+                <CardTitle>Danh sách vật tư</CardTitle>
+                <CardDescription>Quản lý thông tin chi tiết vật tư</CardDescription>
               </div>
             </CardHeader>
             <CardContent className="flex flex-col">
-              <DataTableProduct columns={columns} data={data} />
+              <DataTableWarehouse columns={columns} data={data} />
               {/* <FormCreateProduct /> */}
             </CardContent>
           </Card>
@@ -61,4 +63,4 @@ const Products: React.FC = () => {
   )
 }
 
-export default Products
+export default Warehouse

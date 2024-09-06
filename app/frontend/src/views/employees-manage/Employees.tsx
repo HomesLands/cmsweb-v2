@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useQuery } from '@tanstack/react-query'
 
 import {
   Card,
@@ -9,46 +10,32 @@ import {
   DataTable
 } from '@/components/ui'
 import { columns } from './DataTable/columns'
-import { SpinnerLoading } from '@/components/app/loading'
-import { IUserInfo } from '@/types'
+import { getUsers } from '@/api/users'
+import NProgress from 'nprogress'
 
 const Employees: React.FC = () => {
-  const [data, setData] = useState<IUserInfo[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['users', { page: 1, pageSize: 10 }],
+    queryFn: () => {
+      console.log('Querying users...')
+      return getUsers({ page: 1, pageSize: 10 })
+    }
+  })
 
-  async function getData(): Promise<IUserInfo[]> {
-    return [
-      {
-        id: '728ed52f',
-        avatar: 'SN',
-        fullName: 'Lê Thành Nghĩa',
-        email: 'thanhnghia1991@gmail.com',
-        role: 'Admin',
-        dob: '1991-05-25',
-        phoneNumber: '1234567890',
-        department: 'IT',
-        site: 'Văn phòng',
-        address: 'New York, USA'
-      }
-    ]
+  if (isLoading) {
+    NProgress.start()
+  } else {
+    NProgress.done()
   }
-
-  useEffect(() => {
-    getData().then((data) => {
-      setData(data)
-      setLoading(false)
-    })
-  }, [])
 
   return (
     <div
       className="relative flex items-start flex-1 rounded-lg shadow-none"
       x-chunk="dashboard-02-chunk-1"
     >
-      {loading && <SpinnerLoading />}
       <div className="grid items-start w-full gap-6 mx-auto">
         <div className="grid w-full gap-6">
-          <Card>
+          {/* <Card>
             <CardHeader className="flex flex-row items-center justify-between w-full p-6 border-b">
               <div className="flex flex-col items-start gap-2 py-2">
                 <CardTitle>Danh sách nhân viên</CardTitle>
@@ -56,9 +43,22 @@ const Employees: React.FC = () => {
               </div>
             </CardHeader>
             <CardContent className="flex flex-col mt-6">
-              <DataTable columns={columns} data={data} />
+              {data && data.items ? (
+                <DataTable columns={columns} data={data.items} />
+              ) : (
+                <div className="flex items-center justify-center w-full h-64">
+                  {error && <div className="text-red-500">Không có dữ liệu</div>}
+                </div>
+              )}
             </CardContent>
-          </Card>
+          </Card> */}
+          {data && data.items ? (
+            <DataTable columns={columns} data={data.items} />
+          ) : (
+            <div className="flex items-center justify-center">
+              {error && <div className="text-red-500">Không có dữ liệu</div>}
+            </div>
+          )}
         </div>
       </div>
     </div>

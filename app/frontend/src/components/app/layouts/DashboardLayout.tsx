@@ -16,7 +16,7 @@ const DashboardLayout = () => {
     <div className="box-border flex h-screen">
       {/* Sidebar */}
       <aside
-        className={`hidden md:flex flex-col border-r transition-all duration-300 ${isMinimized ? 'min-w-[80px]' : 'min-w-[250px]'}`}
+        className={`hidden md:flex flex-col border-r transition-all duration-300 ${isMinimized ? 'w-[80px]' : 'w-1/6'}`}
       >
         <div className="relative flex flex-col h-full">
           <Button
@@ -58,7 +58,7 @@ const DashboardLayout = () => {
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 w-5/6">
         {/* Header */}
         <header className="sticky top-0 flex items-center justify-end gap-4 px-4 transition-all duration-300 border-b backdrop-blur-3xl h-14 lg:px-6">
           <SidebarDrawerMobile />
@@ -70,7 +70,7 @@ const DashboardLayout = () => {
         </header>
 
         {/* Main Content (Outlet) */}
-        <main className="flex-1 w-full p-4 overflow-hidden transition-all duration-300 hover:overflow-y-auto">
+        <main className="p-4 transition-all duration-300 ">
           <Outlet />
         </main>
       </div>

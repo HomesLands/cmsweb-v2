@@ -40,4 +40,19 @@ export interface IProductInfoSearch {
   note?: string
 }
 
+//ADD NEW PRODUCT
+export interface IProductInfo {
+  id: string
+  createdBy: string
+  productCode: string
+  productName: string
+  modelOrSerialNumber: string
+  supplier: string
+  // importDate: string // Change this to string
+  unit: string
+  quantity?: number
+  address: string
+  note?: string
+  createdAt?: Date
+}
 
