@@ -1,13 +1,11 @@
 import {
-  Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  BaseEntity as TypeORMBaseEntity,
 } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 
-export class BaseEntity extends TypeORMBaseEntity {
+export abstract class Base {
   @PrimaryGeneratedColumn("uuid", { name: "id_column" })
   @AutoMap()
   id?: string;

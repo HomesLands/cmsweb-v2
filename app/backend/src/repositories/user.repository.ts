@@ -1,12 +1,15 @@
 import { User } from "@entities";
-import { BaseRepository } from "./base.repository";
+import BaseRepository from "./base.repository";
+import { dataSource } from "@configs";
 
-export class UserRepository extends BaseRepository<User> {
+class UserRepository extends BaseRepository<User> {
   constructor() {
-    super(User);
+    super(User, dataSource);
   }
 
-  public async findOnByUsername(username: string): Promise<User | null> {
-    return this.repository.findOneBy({ username });
+  public async findByUsername(username: string): Promise<User | null> {
+    return this.findOneBy({ username });
   }
 }
+
+export default new UserRepository();

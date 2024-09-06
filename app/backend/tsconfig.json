@@ -84,9 +84,9 @@
     "strict": true,                                      /* Enable all strict type-checking options. */
     // "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
     // "strictNullChecks": true,                         /* When type checking, take into account 'null' and 'undefined'. */
-    // "strictFunctionTypes": true,                      /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
+    "strictFunctionTypes": true,                      /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
     // "strictBindCallApply": true,                      /* Check that the arguments for 'bind', 'call', and 'apply' methods match the original function. */
-    "strictPropertyInitialization": true,             /* Check for class properties that are declared but not set in the constructor. */
+    "strictPropertyInitialization": false,             /* Check for class properties that are declared but not set in the constructor. */
     // "noImplicitThis": true,                           /* Enable error reporting when 'this' is given the type 'any'. */
     // "useUnknownInCatchVariables": true,               /* Default catch clause variables as 'unknown' instead of 'any'. */
     // "alwaysStrict": true,                             /* Ensure 'use strict' is always emitted. */
@@ -110,27 +110,40 @@
     "paths": {
         "@controllers/*": ["controllers/*"],
         "@controllers": ["controllers/index"],
+
         "@services/*": ["services/*"],
         "@services": ["services/index"],
+
         "@middlewares/*": ["middlewares/*"],
         "@middlewares": ["middlewares/index"],
+
         "@configs/*": ["configs/*"],
         "@configs": ["configs/index"],
+
         "@entities/*": ["entities/*"],
         "@entities": ["entities/index"],
-        "@dto/*": ["dto/*"],
-        "@mappers/*": ["mappers/*"],
+
         "@repositories/*": ["repositories/*"],
-        "@utils/*": ["utils/*"],
         "@repositories": ["repositories/index"],
-        "@routes/*": ["routes/*"],
+
         "@exception/*": ["exception/*"],
+        "@exception": ["exception/index"],
+
         "@lib/*": ["lib/*"],
+        "@lib": ["lib/index"],
+
+        "@routes": ["routes/index"],
+        "@routes/*": ["routes/*"],
+
         "@types/*": ["types/*"],
         "@types": ["types/index"],
-        "@lib": ["lib/index"],
-        "@routes": ["routes/index"],
+
+        "@mappers/*": ["mappers/*"],
+        "@mappers": ["mappers/index"],
+
         "@constants": ["constants/index"],
+        "@dto/*": ["dto/*"],
+        "@utils/*": ["utils/*"],
     },
   },
   "include": ["src/**/*"],
