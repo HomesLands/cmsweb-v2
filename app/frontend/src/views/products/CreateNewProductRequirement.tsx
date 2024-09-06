@@ -1,60 +1,52 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  DataTableSearchProduct
-} from '@/components/ui'
-import { IProductRequirementInfoCreate, IProductNameSearch, IProductInfoSearch } from '@/types'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
+import { IProductRequirementInfoCreate, IProductNameSearch } from '@/types'
 import { CreateProductForm, FormSearchProduct } from '@/components/app/form'
 import { ProgressBar } from '@/components/app/progress/progress-bar'
-import { columnsSearch } from './DataTable/columns'
 
 const Products: React.FC = () => {
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [step, setStep] = useState<number>(0) // Start with step 0
   const [formSubmitted, setFormSubmitted] = useState<boolean>(false)
-  const [data, setData] = useState<IProductInfoSearch[]>([])
+  // const [setData] = useState<IProductInfoSearch[]>([])
 
-  async function getData(): Promise<IProductInfoSearch[]> {
-    return [
-      {
-        productCode: '123456',
-        productName: 'Máy in',
-        modelOrSerialNumber: '123456',
-        supplier: 'HP',
-        importDate: new Date().toISOString(), // Save as ISO string
-        unit: 'Cái',
-        quantity: 10,
-        address: 'HCM',
-        note: 'Ghi chú'
-      }
-    ]
-  }
+  // async function getData(): Promise<IProductInfoSearch[]> {
+  //   return [
+  //     {
+  //       productCode: '123456',
+  //       productName: 'Máy in',
+  //       modelOrSerialNumber: '123456',
+  //       supplier: 'HP',
+  //       importDate: new Date().toISOString(), // Save as ISO string
+  //       unit: 'Cái',
+  //       quantity: 10,
+  //       address: 'HCM',
+  //       note: 'Ghi chú'
+  //     }
+  //   ]
+  // }
 
-  const formatDate = (date: string) => {
-    const d = new Date(date)
-    const day = String(d.getDate()).padStart(2, '0')
-    const month = String(d.getMonth() + 1).padStart(2, '0')
-    const year = d.getFullYear()
-    const hours = String(d.getHours()).padStart(2, '0')
-    const minutes = String(d.getMinutes()).padStart(2, '0')
+  // const formatDate = (date: string) => {
+  //   const d = new Date(date)
+  //   const day = String(d.getDate()).padStart(2, '0')
+  //   const month = String(d.getMonth() + 1).padStart(2, '0')
+  //   const year = d.getFullYear()
+  //   const hours = String(d.getHours()).padStart(2, '0')
+  //   const minutes = String(d.getMinutes()).padStart(2, '0')
 
-    return `${day}/${month}/${year} ${hours}:${minutes}`
-  }
+  //   return `${day}/${month}/${year} ${hours}:${minutes}`
+  // }
 
-  useEffect(() => {
-    getData().then((data) => {
-      const formattedData = data.map((item) => ({
-        ...item,
-        importDate: formatDate(item.importDate)
-      }))
-      setData(formattedData)
-    })
-  }, [])
+  // useEffect(() => {
+  //   getData().then((data) => {
+  //     const formattedData = data.map((item) => ({
+  //       ...item,
+  //       importDate: formatDate(item.importDate)
+  //     }))
+  //     setData(formattedData)
+  //   })
+  // }, [])
 
   const handleFormCreateSubmit = (data: IProductRequirementInfoCreate) => {
     console.log(data)
@@ -93,7 +85,7 @@ const Products: React.FC = () => {
               {showSearch && (
                 <div>
                   <FormSearchProduct onSubmit={handleFormSearchSubmit} />
-                  <DataTableSearchProduct columns={columnsSearch} data={data} />
+                  {/* <DataTableSearchProduct columns={columnsSearch} data={data} /> */}
                 </div>
               )}
             </CardContent>

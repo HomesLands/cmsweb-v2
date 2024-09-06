@@ -18,6 +18,7 @@ import {
 } from '@/components/ui'
 import { IProductApprovalInfo, IProductInfoSearch } from '@/types'
 import { PlusCircledIcon } from '@radix-ui/react-icons'
+import { RequestStatusBadge } from '@/components/app/badge/RequestStatusBadge'
 
 export const columns: ColumnDef<IProductApprovalInfo>[] = [
   {
@@ -43,36 +44,25 @@ export const columns: ColumnDef<IProductApprovalInfo>[] = [
   },
   {
     accessorKey: 'createdBy',
-    header: 'Người tạo'
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Người tạo" />
   },
-  {
-    accessorKey: 'createdAt',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày tạo" />,
-    cell: ({ row }) => {
-      const dateValue = row.getValue('createdAt') as string | number | Date
-      const date = new Date(dateValue)
-      const formattedDate = date
-        ? new Intl.DateTimeFormat('vi-VN', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-          }).format(date)
-        : ''
-      return formattedDate
-    }
-  },
-
   {
     accessorKey: 'commanderApprovalStatus',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="CHT" />
+    header: ({ column }) => <DataTableColumnHeader column={column} title="CHT" />,
+    cell: ({ row }) => {
+      return <RequestStatusBadge status={row.original.commanderApprovalStatus} />
+    }
   },
   {
     accessorKey: 'commanderApprovalContent',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Nội dung" />
+    header: 'Nội dung'
   },
   {
     accessorKey: 'projectManagerApprovalStatus',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="TPDA" />
+    header: ({ column }) => <DataTableColumnHeader column={column} title="TPDA" />,
+    cell: ({ row }) => {
+      return <RequestStatusBadge status={row.original.projectManagerApprovalStatus} />
+    }
   },
   {
     accessorKey: 'projectManagerApprovalContent',
@@ -80,16 +70,15 @@ export const columns: ColumnDef<IProductApprovalInfo>[] = [
   },
   {
     accessorKey: 'directorApprovalStatus',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="GD" />
+    header: ({ column }) => <DataTableColumnHeader column={column} title="GD" />,
+    cell: ({ row }) => {
+      return <RequestStatusBadge status={row.original.directorApprovalStatus} />
+    }
   },
   {
     accessorKey: 'directorApprovalContent',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Nội dung" />
   },
-  // {
-  //   accessorKey: 'notes',
-  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Ghi chú" />
-  // },
   {
     id: 'actions',
     cell: ({ row }) => {

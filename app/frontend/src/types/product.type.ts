@@ -1,16 +1,18 @@
+import { RequestStatus } from "./request.type"
+
 export interface IProductApprovalInfo {
   id: string
   createdBy: string
-  createdAt?: Date
-  updatedAt?: Date
+  createdAt?: string
+  updatedAt?: string
   //CHT
-  commanderApprovalStatus?: string
+  commanderApprovalStatus: RequestStatus
   commanderApprovalContent?: string
   // TPDA
-  projectManagerApprovalStatus?: string
+  projectManagerApprovalStatus: RequestStatus
   projectManagerApprovalContent?: string
   // GD
-  directorApprovalStatus?: string
+  directorApprovalStatus: RequestStatus
   directorApprovalContent?: string
   notes?: string
 }

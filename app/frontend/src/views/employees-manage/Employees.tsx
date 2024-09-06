@@ -1,26 +1,45 @@
-import React from 'react'
-import { useQuery } from '@tanstack/react-query'
+import React, { useEffect, useState } from 'react'
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  DataTable
-} from '@/components/ui'
+import { DataTable } from '@/components/ui'
 import { columns } from './DataTable/columns'
-import { getUsers } from '@/api/users'
 import NProgress from 'nprogress'
+import { useUsers } from '@/hooks/useUsers'
+import { useSearchParams } from 'react-router-dom'
+import { PaginationState } from '@tanstack/react-table'
 
 const Employees: React.FC = () => {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['users', { page: 1, pageSize: 10 }],
-    queryFn: () => {
-      console.log('Querying users...')
-      return getUsers({ page: 1, pageSize: 10 })
-    }
+  const [searchParams, setSearchParams] = useSearchParams()
+  const page = parseInt(searchParams.get('page') || '1', 10)
+  const pageSize = parseInt(searchParams.get('pageSize') || '10', 10)
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: page - 1,
+    pageSize
   })
+
+  const { data, isLoading } = useUsers(pagination.pageIndex + 1, pagination.pageSize)
+
+  useEffect(() => {
+    setSearchParams({
+      page: (pagination.pageIndex + 1).toString(),
+      pageSize: pagination.pageSize.toString()
+    })
+  }, [pagination, setSearchParams])
+
+  const handlePageChange = (pageIndex: number) => {
+    setPagination((prev) => ({ ...prev, pageIndex: pageIndex - 1 }))
+    setSearchParams({
+      page: pageIndex.toString(),
+      pageSize: pagination.pageSize.toString()
+    })
+  }
+
+  const handlePageSizeChange = (pageSize: number) => {
+    setPagination((prev) => ({ ...prev, pageSize }))
+    setSearchParams({
+      page: (pagination.pageIndex + 1).toString(),
+      pageSize: pageSize.toString()
+    })
+  }
 
   if (isLoading) {
     NProgress.start()
@@ -35,30 +54,16 @@ const Employees: React.FC = () => {
     >
       <div className="grid items-start w-full gap-6 mx-auto">
         <div className="grid w-full gap-6">
-          {/* <Card>
-            <CardHeader className="flex flex-row items-center justify-between w-full p-6 border-b">
-              <div className="flex flex-col items-start gap-2 py-2">
-                <CardTitle>Danh sách nhân viên</CardTitle>
-                <CardDescription>Quản lý thông tin chi tiết của tất cả nhân viên</CardDescription>
-              </div>
-            </CardHeader>
-            <CardContent className="flex flex-col mt-6">
-              {data && data.items ? (
-                <DataTable columns={columns} data={data.items} />
-              ) : (
-                <div className="flex items-center justify-center w-full h-64">
-                  {error && <div className="text-red-500">Không có dữ liệu</div>}
-                </div>
-              )}
-            </CardContent>
-          </Card> */}
-          {data && data.items ? (
-            <DataTable columns={columns} data={data.items} />
-          ) : (
-            <div className="flex items-center justify-center">
-              {error && <div className="text-red-500">Không có dữ liệu</div>}
-            </div>
-          )}
+          <DataTable
+            columns={columns}
+            data={data?.items || []}
+            total={data?.total || 0}
+            pages={data?.pages || 0}
+            page={pagination.pageIndex + 1}
+            pageSize={pagination.pageSize}
+            onPageChange={handlePageChange}
+            onPageSizeChange={handlePageSizeChange}
+          />
         </div>
       </div>
     </div>
