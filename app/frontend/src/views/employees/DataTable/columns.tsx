@@ -49,6 +49,10 @@ export const columns: ColumnDef<IUserInfo>[] = [
     header: 'Tên nhân sự'
   },
   {
+    accessorKey: 'fullName',
+    header: 'Tên nhân sự'
+  },
+  {
     accessorKey: 'avatar',
     header: 'Ảnh'
   },

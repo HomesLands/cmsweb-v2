@@ -17,9 +17,13 @@ const DashboardLayout = () => {
     <div className="box-border flex h-screen">
       {/* Sidebar */}
       <aside
-        className={`hidden md:flex flex-col border-r transition-all duration-300 ${isMinimized ? 'w-[60px]' : 'w-1/6'}`}
+        className={`hidden md:flex flex-col border-r transition-all duration-300 ${isMinimized ? 'w-16' : 'w-1/6'}`}
       >
-        <div className="relative flex flex-col h-full">
+        <div
+          className={`fixed top-0 left-0 flex flex-col h-full transition-all duration-300 ${
+            isMinimized ? 'w-16' : 'w-1/6'
+          } bg-white border-r z-50`}
+        >
           <Button
             variant="outline"
             className="absolute flex items-center justify-center w-8 h-8 transition-all duration-300 rounded-full text-normal hover:bg-primary hover:text-white bottom-3 -right-4"
@@ -64,11 +68,11 @@ const DashboardLayout = () => {
         <header
           className={cn(
             'fixed top-0 right-0 flex items-center justify-end gap-4 p-4 h-14 lg:p-6 bg-white border-b z-10',
-            isMinimized ? 'left-[60px]' : 'left-[16.666667%]'
+            isMinimized ? 'left-[64px]' : 'left-[16.666667%]'
           )}
         >
           <SidebarDrawerMobile />
-          <div className="flex flex-row justify-end gap-2">
+          <div className="flex flex-row items-center justify-end gap-2 h-14">
             <SelectLanguage />
             <PopoverNotification />
             <DropdownHeader />

@@ -1,18 +1,18 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
 import { IProductInfo } from '@/types'
 import { AddNewProductForm } from '@/components/app/form'
 
 const AddNewProduct: React.FC = () => {
-  const [, setFormSubmitted] = useState<boolean>(false)
+  // const [ setFormSubmitted] = useState<boolean>(false)
 
   const handleFormCreateSubmit = (formData: IProductInfo) => {
     console.log('Submitted Data:', formData) // Log form data
     setTimeout(() => {
       // setShowSearch(true)
       // setStep(1)
-      setFormSubmitted(true)
+      // setFormSubmitted(true)
     }, 1000)
   }
 
