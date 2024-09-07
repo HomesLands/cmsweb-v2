@@ -80,8 +80,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 
   return (
     <div className="">
-      <div className="border rounded-md">
-        <Table>
+      <div className="border rounded-sm">
+        <Table className="">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
