@@ -41,7 +41,7 @@ const routes: IRoute[] = [
     children: [
       {
         title: 'Projects',
-        path: 'project-list',
+        path: 'list',
         component: () => import('@/views/projects/Projects')
       }
     ]
@@ -111,7 +111,7 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
     children: [
       {
         title: 'Danh sách dự án',
-        path: '/projects-manage/projects',
+        path: '/projects-manage/list',
         icon: Archive,
         component: () => import('@/views/projects/Projects')
       }
