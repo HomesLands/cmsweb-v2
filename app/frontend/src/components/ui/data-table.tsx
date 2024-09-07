@@ -106,7 +106,7 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex justify-between gap-2">
         <Input
-          placeholder="Nhập tên người tạo..."
+          placeholder="Nhập họ tên..."
           value={table.getColumn('createdBy')?.getFilterValue() as string}
           onChange={(event) => table.getColumn('createdBy')?.setFilterValue(event.target.value)}
           className="max-w-sm"

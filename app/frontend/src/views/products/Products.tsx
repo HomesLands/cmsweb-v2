@@ -43,29 +43,22 @@ const Projects: React.FC = () => {
   }
 
   return (
-    <div
-      className="relative flex items-start flex-1 rounded-lg shadow-none"
-      x-chunk="dashboard-02-chunk-1"
-    >
-      <div className="grid items-start w-full gap-6 mx-auto">
-        <div className="grid w-full gap-6">
-          <Label className="flex items-center gap-1 font-semibold text-normal text-md font-beVietNam">
-            <ReaderIcon className="header-icon" />
-            Danh sách yêu cầu vật tư
-          </Label>
-          <DataTable
-            columns={columns}
-            data={data?.items || []}
-            total={data?.total || 0}
-            pages={data?.pages || 0}
-            page={pagination.pageIndex + 1}
-            pageSize={pagination.pageSize}
-            onPageChange={handlePageChange}
-            onPageSizeChange={handlePageSizeChange}
-            CustomComponent={CustomComponent}
-          />
-        </div>
-      </div>
+    <div className="flex flex-col gap-2">
+      <Label className="flex items-center gap-1 font-semibold text-normal text-md font-beVietNam">
+        <ReaderIcon className="header-icon" />
+        Danh sách yêu cầu vật tư
+      </Label>
+      <DataTable
+        columns={columns}
+        data={data?.items || []}
+        total={data?.total || 0}
+        pages={data?.pages || 0}
+        page={pagination.pageIndex + 1}
+        pageSize={pagination.pageSize}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
+        CustomComponent={CustomComponent}
+      />
     </div>
   )
 }

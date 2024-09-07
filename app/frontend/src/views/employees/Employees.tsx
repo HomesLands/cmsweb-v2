@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
-import { DataTable } from '@/components/ui'
+import { DataTable, Label } from '@/components/ui'
 import { columns } from './DataTable/columns'
 import NProgress from 'nprogress'
 import { useUsers } from '@/hooks/useUsers'
 import { useSearchParams } from 'react-router-dom'
 import { PaginationState } from '@tanstack/react-table'
+import { ReaderIcon } from '@radix-ui/react-icons'
+import { CustomComponent } from './CustomComponent'
 
 const Employees: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -16,7 +18,7 @@ const Employees: React.FC = () => {
     pageSize
   })
 
-  const { data, isLoading, error } = useUsers(pagination.pageIndex + 1, pagination.pageSize)
+  const { data, isLoading } = useUsers(pagination.pageIndex + 1, pagination.pageSize)
 
   useEffect(() => {
     setSearchParams({
@@ -48,23 +50,22 @@ const Employees: React.FC = () => {
   }
 
   return (
-    <div className="w-full gap-6">
-      {data && data.items ? (
-        <DataTable
-          columns={columns}
-          data={data?.items || []}
-          total={data?.total || 0}
-          pages={data?.pages || 0}
-          page={pagination.pageIndex + 1}
-          pageSize={pagination.pageSize}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-        />
-      ) : (
-        <div className="flex items-center justify-center">
-          {error && <div className="text-red-500">Không có dữ liệu</div>}
-        </div>
-      )}
+    <div className="flex flex-col gap-2">
+      <Label className="flex items-center gap-1 font-semibold text-normal text-md font-beVietNam">
+        <ReaderIcon className="header-icon" />
+        Danh sách nhân viên
+      </Label>
+      <DataTable
+        columns={columns}
+        data={data?.items || []}
+        total={data?.total || 0}
+        pages={data?.pages || 0}
+        page={pagination.pageIndex + 1}
+        pageSize={pagination.pageSize}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
+        CustomComponent={CustomComponent}
+      />
     </div>
   )
 }
