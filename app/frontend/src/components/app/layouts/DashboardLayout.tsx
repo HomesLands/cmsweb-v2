@@ -8,6 +8,7 @@ import { useLayoutStore } from '@/stores'
 import tbeLogo from '@/assets/images/tbe-logo.png'
 import { SelectLanguage } from '@/components/app/select'
 import { PopoverNotification } from '@/components/app/popover'
+import { cn } from '@/lib/utils'
 
 const DashboardLayout = () => {
   const { isMinimized, toggleMinimized } = useLayoutStore()
@@ -16,11 +17,11 @@ const DashboardLayout = () => {
     <div className="box-border flex h-screen">
       {/* Sidebar */}
       <aside
-        className={`hidden md:flex flex-col border-r transition-all duration-300 ${isMinimized ? 'w-20' : 'w-1/6'}`}
+        className={`hidden md:flex flex-col border-r transition-all duration-300 ${isMinimized ? 'w-16' : 'w-1/6'}`}
       >
         <div
           className={`fixed top-0 left-0 flex flex-col h-full transition-all duration-300 ${
-            isMinimized ? 'w-20' : 'w-1/6'
+            isMinimized ? 'w-16' : 'w-1/6'
           } bg-white border-r z-50`}
         >
           <Button
@@ -64,7 +65,12 @@ const DashboardLayout = () => {
       {/* Main Content Area */}
       <div className="flex flex-col flex-1 w-5/6">
         {/* Header */}
-        <header className="sticky top-0 flex items-center justify-end gap-4 px-4 transition-all duration-300 border-b z-99 h-14 lg:px-6">
+        <header
+          className={cn(
+            'fixed top-0 right-0 flex items-center justify-end gap-4 p-4 h-14 lg:p-6 bg-white border-b z-10',
+            isMinimized ? 'left-[64px]' : 'left-[16.666667%]'
+          )}
+        >
           <SidebarDrawerMobile />
           <div className="flex flex-row items-center justify-end gap-2 h-14">
             <SelectLanguage />
@@ -74,7 +80,7 @@ const DashboardLayout = () => {
         </header>
 
         {/* Main Content (Outlet) */}
-        <main className="p-4 transition-all duration-300 ">
+        <main className="p-4 transition-all duration-300 mt-14">
           <Outlet />
         </main>
       </div>

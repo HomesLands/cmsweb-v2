@@ -29,7 +29,7 @@ const routes: IRoute[] = [
       {
         title: 'Danh sách nhân viên',
         path: 'list',
-        component: () => import('@/views/employees-manage/Employees')
+        component: () => import('@/views/employees/Employees')
       }
     ]
   },
@@ -98,7 +98,7 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
         title: 'Danh sách nhân viên',
         path: '/employees/list',
         icon: AlignJustify,
-        component: () => import('@/views/employees-manage/Employees')
+        component: () => import('@/views/employees/Employees')
       }
     ]
   },
@@ -158,7 +158,6 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
         component: () => import('@/views/warehouse/Warehouse')
       }
     ]
-
   }
 ]
 
