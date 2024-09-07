@@ -86,6 +86,9 @@
   .icon{
     @apply w-3.5 h-3.5 text-gray-500;
   }
+  .header-icon{
+    @apply w-4 h-4 text-gray-500;
+  }
   .danger-icon{
     @apply w-3.5 h-3.5 text-red-500;
   }
