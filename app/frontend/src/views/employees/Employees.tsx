@@ -16,7 +16,7 @@ const Employees: React.FC = () => {
     pageSize
   })
 
-  const { data, isLoading } = useUsers(pagination.pageIndex + 1, pagination.pageSize)
+  const { data, isLoading, error } = useUsers(pagination.pageIndex + 1, pagination.pageSize)
 
   useEffect(() => {
     setSearchParams({
@@ -48,24 +48,23 @@ const Employees: React.FC = () => {
   }
 
   return (
-    <div
-      className="relative flex items-start flex-1 rounded-lg shadow-none"
-      x-chunk="dashboard-02-chunk-1"
-    >
-      <div className="grid items-start w-full gap-6 mx-auto">
-        <div className="grid w-full gap-6">
-          <DataTable
-            columns={columns}
-            data={data?.items || []}
-            total={data?.total || 0}
-            pages={data?.pages || 0}
-            page={pagination.pageIndex + 1}
-            pageSize={pagination.pageSize}
-            onPageChange={handlePageChange}
-            onPageSizeChange={handlePageSizeChange}
-          />
+    <div className="w-full gap-6">
+      {data && data.items ? (
+        <DataTable
+          columns={columns}
+          data={data?.items || []}
+          total={data?.total || 0}
+          pages={data?.pages || 0}
+          page={pagination.pageIndex + 1}
+          pageSize={pagination.pageSize}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+        />
+      ) : (
+        <div className="flex items-center justify-center">
+          {error && <div className="text-red-500">Không có dữ liệu</div>}
         </div>
-      </div>
+      )}
     </div>
   )
 }
