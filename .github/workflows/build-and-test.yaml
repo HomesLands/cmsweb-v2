@@ -2,7 +2,7 @@ name: Build and Test
 
 on:
   push:
-    branches: [main]
+    branches: [dev]
   pull_request:  # Trigger on pull request creation and updates
     branches: [main]
 
