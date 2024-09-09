@@ -31,8 +31,7 @@ class AuthController {
    *       required:
    *         - username
    *         - password
-   *         - firstName
-   *         - lastName
+   *         - fullname
    *       properties:
    *         username:
    *           type: string
@@ -40,17 +39,13 @@ class AuthController {
    *         password:
    *           type: string
    *           description: password
-   *         firstName:
+   *         fullname:
    *           type: string
    *           description: firstName
-   *         lastName:
-   *           type: string
-   *           description: lastName
    *       example:
-   *         username: username
+   *         username: johndoe
    *         password: Pass@1234
-   *         firstName: John
-   *         lastName: Doe
+   *         fullname: John Doe
    */
 
   /**
