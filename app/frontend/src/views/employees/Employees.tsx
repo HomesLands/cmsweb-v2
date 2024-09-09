@@ -21,6 +21,22 @@ const Employees: React.FC = () => {
     pageSize: pagination.pageSize
   })
 
+  fetch('http://localhost:3000/api/v1/auth/register', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      username: 'johndoe',
+      password: 'Pass@1234',
+      fullname: 'John Doe'
+    })
+  })
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((error) => console.error('Error:', error))
+
   useEffect(() => {
     setSearchParams({
       page: (pagination.pageIndex + 1).toString(),
