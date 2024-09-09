@@ -4,7 +4,7 @@ import { PaginationState } from '@tanstack/react-table'
 import { DataTable } from '@/components/ui'
 import { columns } from './DataTable/columns'
 import { useSearchParams } from 'react-router-dom'
-import { useProducts } from '@/hooks/useUsers'
+import { useProducts } from '@/hooks'
 
 const Projects: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -15,7 +15,10 @@ const Projects: React.FC = () => {
     pageSize
   })
 
-  const { data } = useProducts(pagination.pageIndex + 1, pagination.pageSize)
+  const { data } = useProducts({
+    page: pagination.pageIndex + 1,
+    pageSize: pagination.pageSize
+  })
 
   useEffect(() => {
     setSearchParams({

@@ -21,3 +21,8 @@ export interface IUserState {
   setAccessToken: (token: string) => void
   logout: () => void
 }
+
+export interface IUserQuery {
+  page: number
+  pageSize: number
+}

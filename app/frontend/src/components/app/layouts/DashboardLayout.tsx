@@ -5,7 +5,7 @@ import { Button } from '@/components/ui'
 import { DropdownHeader } from '@/components/app/dropdown'
 import { SidebarDrawerMobile, SidebarDrawer } from '@/components/app/drawer'
 import { useLayoutStore } from '@/stores'
-import tbeLogo from '@/assets/images/tbe-logo.png'
+import { TbeLogo } from '@/assets/images'
 import { SelectLanguage } from '@/components/app/select'
 import { PopoverNotification } from '@/components/app/popover'
 import { cn } from '@/lib/utils'
@@ -45,7 +45,7 @@ const DashboardLayout = () => {
               className={`flex h-14 items-center border-b px-4 ${isMinimized ? 'justify-center text-normal' : 'lg:px-6'}`}
             >
               <NavLink to={'/'} className="flex items-center gap-2 font-semibold whitespace-nowrap">
-                <img src={tbeLogo} height={28} width={28} />
+                <img src={TbeLogo} height={28} width={28} />
                 <span
                   className={`whitespace-nowrap text-lg font-extrabold ${isMinimized ? 'hidden' : 'block text-normal'}`}
                 >
