@@ -2,13 +2,12 @@ name: Build and Test
 
 on:
   push:
-    branches: [main]
+    branches: [dev]
   pull_request:  # Trigger on pull request creation and updates
     branches: [main]
 
 jobs:
   build-and-test:
-    if: github.event.pull_request.merged == false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
