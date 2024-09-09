@@ -30,6 +30,11 @@ const routes: IRoute[] = [
         title: 'Danh sách nhân viên',
         path: 'list',
         component: () => import('@/views/employees/Employees')
+      },
+      {
+        title: 'Thêm nhân viên',
+        path: 'add',
+        component: () => import('@/views/employees/AddEmployee')
       }
     ]
   },
@@ -99,6 +104,12 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
         path: '/employees/list',
         icon: AlignJustify,
         component: () => import('@/views/employees/Employees')
+      },
+      {
+        title: 'Thêm nhân viên',
+        path: '/employees/add',
+        icon: Archive,
+        component: () => import('@/views/employees/AddEmployee')
       }
     ]
   },

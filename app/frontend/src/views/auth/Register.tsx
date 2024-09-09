@@ -15,6 +15,8 @@ import {
   Button
 } from '@/components/ui'
 
+import backgroundImage from '@/assets/images/login-background.png'
+
 const Register: React.FC = () => {
   const {
     register,
@@ -29,18 +31,17 @@ const Register: React.FC = () => {
   })
 
   return (
-    <div className="auth-layout ">
-      {/* <img
-        src="@/assets/login-background.png"
-        alt="login image"
-        className="absolute inset-0 z-10 object-cover w-full h-full"
-      /> */}
-      <div className="flex items-center justify-center">
-        <form onSubmit={onSubmit}>
-          <Card className="max-w-sm md:min-w-[600px] md:min-h-[400px] mx-auto border-none">
+    <div className="relative flex items-center justify-center min-h-screen bg-gray-100">
+      <img src={backgroundImage} className="absolute top-0 left-0 object-fill w-full h-full" />
+      <div className="relative z-10 flex items-center justify-center w-full h-full ">
+        <form onSubmit={onSubmit} className="w-full max-w-md ">
+          <Card className="mx-auto border-none shadow-xl backdrop-blur-xl">
             <CardHeader title="Login">
               <CardTitle className="text-xl"> Đăng ký tài khoản </CardTitle>
-              <CardDescription> Nhập thông tin của bạn để tạo tài khoản </CardDescription>
+              <CardDescription className="">
+                {' '}
+                Nhập thông tin của bạn để tạo tài khoản{' '}
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid gap-4">
@@ -79,7 +80,7 @@ const Register: React.FC = () => {
                   <span></span>
                 </div>
                 <Button type="submit">Tạo tài khoản</Button>
-                <Button variant="outline"> Đăng nhập với Google </Button>
+                {/* <Button variant="outline"> Đăng nhập với Google </Button> */}
               </div>
               <div className="mt-4 text-sm text-center">
                 Bạn đã có tài khoản?
