@@ -66,30 +66,38 @@ const Products: React.FC = () => {
     <div className="relative flex items-start flex-1 rounded-lg shadow-none">
       <div className="grid items-start w-full mx-auto gap68">
         <div className="flex justify-center w-full my-2">
-          <div className="w-1/2">
+          <div className="w-full md:w-1/2">
             <ProgressBar step={step} />
           </div>
         </div>
         <div className="grid w-full">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between w-full border-b">
-              <div className="flex flex-col items-start gap-2 py-2">
-                <CardTitle>Yêu cầu vật tư</CardTitle>
-                <CardDescription>Công ty Cổ phần Công nghệ Mekong</CardDescription>
-              </div>
-            </CardHeader>
-            <CardContent className="flex flex-col">
-              {!formSubmitted && !showSearch && (
-                <CreateProductForm onSubmit={handleFormCreateSubmit} />
-              )}
-              {showSearch && (
-                <div>
-                  <FormSearchProduct onSubmit={handleFormSearchSubmit} />
-                  {/* <DataTableSearchProduct columns={columnsSearch} data={data} /> */}
+          {!showSearch ? (
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between w-full border-b">
+                <div className="flex flex-col items-start gap-2 py-2">
+                  <CardTitle>Yêu cầu vật tư</CardTitle>
+                  <CardDescription>Công ty Cổ phần Công nghệ Mekong</CardDescription>
                 </div>
-              )}
-            </CardContent>
-          </Card>
+              </CardHeader>
+              <CardContent className="flex flex-col">
+                {!formSubmitted && !showSearch && (
+                  <CreateProductForm onSubmit={handleFormCreateSubmit} />
+                )}
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between w-full border-b">
+                <div className="flex flex-col items-start gap-2 py-2">
+                  <CardTitle>Thêm vật tư vào yêu cầu</CardTitle>
+                  <CardDescription>Công ty Cổ phần Công nghệ Mekong</CardDescription>
+                </div>
+              </CardHeader>
+              <CardContent className="flex flex-col">
+                <FormSearchProduct onSubmit={handleFormSearchSubmit} />
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </div>

@@ -12,24 +12,18 @@ export const loginSChema = z.object({
     )
 })
 
-export const registerSchema = loginSChema.extend({
-  firstName: z
+export const registerSchema = z.object({
+  fullname: z
     .string()
-    .min(1, 'First name is required')
-    .max(20, 'Max 20 characters')
+    .min(1, 'Full name is required')
+    .max(30, 'Max 30 characters')
     .regex(USERNAME_REGEX, 'Only letters allowed'),
-  lastName: z
-    .string()
-    .min(1, 'Last name is required')
-    .max(20, 'Max 20 characters')
-    .regex(USERNAME_REGEX, 'Only letters allowed'),
-  email: z.string().email('Invalid email address'),
-  password: z
-    .string()
-    .regex(
-      PASSWORD_REGEX,
-      'Password must be 8-20 characters, include a number and a special character'
-    )
+  username: z.string(),
+  password: z.string()
+  // .regex(
+  //   PASSWORD_REGEX,
+  //   'Password must be 8-20 characters, include a number and a special character'
+  // )
 })
 
 export const createUserSchema = z.object({

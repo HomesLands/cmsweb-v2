@@ -1,5 +1,6 @@
-import { IPagingResponse, IProductApprovalInfo } from "@/types"
+import { IPagingResponse, IProductApprovalInfo, IProductInfoSearch } from "@/types"
 import productData from '@/data/product.request'
+import productList from '@/data/product.list'
 
 export async function getProducts(params: {
   page: number
@@ -31,4 +32,14 @@ export async function getProducts(params: {
     console.log('Failed to fetch products:', error)
     throw new Error('Failed to fetch products')
   }
+}
+
+export async function searchProduct(params: {
+  productName: string
+}): Promise<IProductInfoSearch[]> {
+  const { productName } = params
+  const products = productList.items.filter((product) =>
+    product.productName.toLowerCase().includes(productName.toLowerCase())
+  )
+  return products
 }

@@ -2,11 +2,12 @@ name: Build and Test
 
 on:
   push:
+    branches: [dev]
+  pull_request:  # Trigger on pull request creation and updates
     branches: [main]
 
 jobs:
   build-and-test:
-    if: github.repository_owner == github.actor
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

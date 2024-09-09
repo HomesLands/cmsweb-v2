@@ -30,11 +30,6 @@ const routes: IRoute[] = [
         title: 'Danh sách nhân viên',
         path: 'list',
         component: () => import('@/views/employees/Employees')
-      },
-      {
-        title: 'Thêm nhân viên',
-        path: 'add',
-        component: () => import('@/views/employees/AddEmployee')
       }
     ]
   },
@@ -67,7 +62,7 @@ const routes: IRoute[] = [
       {
         title: 'Thêm yêu cầu vật tư',
         path: 'add',
-        component: () => import('@/views/products/CreateNewProductRequirement')
+        component: () => import('@/views/products/ProductRequest')
       }
     ]
   },
@@ -104,12 +99,6 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
         path: '/employees/list',
         icon: AlignJustify,
         component: () => import('@/views/employees/Employees')
-      },
-      {
-        title: 'Thêm nhân viên',
-        path: '/employees/add',
-        icon: Archive,
-        component: () => import('@/views/employees/AddEmployee')
       }
     ]
   },

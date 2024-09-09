@@ -1,26 +1,20 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { DataTable, Label } from '@/components/ui'
 import { columns } from './DataTable/columns'
-import NProgress from 'nprogress'
-import { useUsers } from '@/hooks/useUsers'
+import { useUsers } from '@/hooks/use-users'
 import { ReaderIcon } from '@radix-ui/react-icons'
 import { CustomComponent } from './CustomComponent'
-import usePaging from '@/hooks/usePaging'
+import usePaging from '@/hooks/use-paging'
 
 const Employees: React.FC = () => {
   const { pagination, handlePageChange, handlePageSizeChange } = usePaging()
-  const { data, isLoading } = useUsers(pagination.pageIndex + 1, pagination.pageSize)
-
-  useEffect(() => {
-    if (isLoading) {
-      NProgress.start()
-    } else {
-      NProgress.done()
-    }
-  }, [isLoading])
+  const { data } = useUsers({
+    page: pagination.pageIndex + 1,
+    pageSize: pagination.pageSize
+  })
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
       <Label className="flex items-center gap-1 font-semibold text-normal text-md font-beVietNam">
         <ReaderIcon className="header-icon" />
         Danh sách nhân viên

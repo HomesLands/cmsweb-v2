@@ -59,7 +59,7 @@ export function PopoverNotification() {
                         <p className="text-xs text-gray-500">{notification.content}</p>
                         <div className="flex flex-row items-center justify-start gap-1 mt-1">
                           <ClockIcon className="w-2.5 h-2.5" />
-                          <p className="text-[0.5rem] text-normal">
+                          <p className="text-[0.7rem] text-normal">
                             {formatDate(notification.createdAt)}
                           </p>
                         </div>
