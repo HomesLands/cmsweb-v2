@@ -43,7 +43,7 @@ dotenv.config();
     cors({
       origin: "*",
       methods: "*",
-      preflightContinue: false,
+      preflightContinue: true,
       optionsSuccessStatus: 200,
     })
   );
