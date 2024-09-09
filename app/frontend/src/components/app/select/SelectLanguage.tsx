@@ -3,12 +3,12 @@ import { useTranslation } from 'react-i18next'
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
-  SelectValue
+  SelectValue,
+  SelectGroup
 } from '@/components/ui'
+import { USFlag, VIFlag } from '@/assets/images'
 
 export const SelectLanguage: React.FC = () => {
   const { i18n } = useTranslation()
@@ -23,12 +23,13 @@ export const SelectLanguage: React.FC = () => {
       <SelectTrigger className="w-[80px]">
         <SelectValue placeholder="Select a language" />
       </SelectTrigger>
-      <SelectContent className="w-[80px]">
-        <SelectGroup>
-          <SelectLabel>Languages</SelectLabel>
-          <SelectItem value="en">EN</SelectItem>
-          <SelectItem value="vi">VN</SelectItem>
-        </SelectGroup>
+      <SelectContent className="">
+        <SelectItem value="en">
+          <img src={USFlag} className="w-10" />
+        </SelectItem>
+        <SelectItem value="vi">
+          <img src={VIFlag} className="w-10" />
+        </SelectItem>
       </SelectContent>
     </Select>
   )

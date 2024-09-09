@@ -1,4 +1,4 @@
-import { RequestStatus } from "./request.type"
+import { RequestStatus } from './request.type'
 
 export interface IProductApprovalInfo {
   id: string
@@ -26,7 +26,7 @@ export interface IProductRequirementInfoCreate {
   note: string
 }
 
-export interface IProductNameSearch{
+export interface IProductNameSearch {
   productName: string
 }
 
@@ -58,3 +58,7 @@ export interface IProductInfo {
   createdAt?: Date
 }
 
+export interface IProductQuery {
+  page: number
+  pageSize: number
+}

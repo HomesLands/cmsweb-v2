@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { DataTable } from '@/components/ui'
 import { columns } from './DataTable/columns'
 import NProgress from 'nprogress'
-import { useUsers } from '@/hooks/useUsers'
+import { useUsers } from '@/hooks'
 import { useSearchParams } from 'react-router-dom'
 import { PaginationState } from '@tanstack/react-table'
 
@@ -16,7 +16,10 @@ const Employees: React.FC = () => {
     pageSize
   })
 
-  const { data, isLoading, error } = useUsers(pagination.pageIndex + 1, pagination.pageSize)
+  const { data, isLoading, error } = useUsers({
+    page: pagination.pageIndex + 1,
+    pageSize: pagination.pageSize
+  })
 
   useEffect(() => {
     setSearchParams({
