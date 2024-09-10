@@ -23,7 +23,7 @@ class AuthController {
    *           type: string
    *           description: password
    *       example:
-   *         username: username
+   *         username: johndoe
    *         password: Pass@1234
    *
    *     RegistrationRequestDto:
@@ -46,6 +46,17 @@ class AuthController {
    *         username: johndoe
    *         password: Pass@1234
    *         fullname: John Doe
+   *
+   *     RefreshTokenRequestDto:
+   *       type: object
+   *       required:
+   *         - token
+   *       properties:
+   *         token:
+   *           type: string
+   *           description: token
+   *       example:
+   *         token: ""
    */
 
   /**
@@ -83,11 +94,11 @@ class AuthController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const result = await authService.authenticate(req);
+      const result = await authService.authenticate(req, res, next);
       const response: TApiResponse<AuthenticationResponseDto> = {
         code: StatusCodes.OK,
         error: false,
-        message: "",
+        message: "User authenticated",
         method: req.method,
         path: req.originalUrl,
         result,
@@ -140,6 +151,35 @@ class AuthController {
     } catch (error) {
       next(error);
     }
+  }
+
+  /**
+   * @swagger
+   * /auth/refresh:
+   *   post:
+   *     summary: Refresh token
+   *     tags: [Auth]
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/RefreshTokenRequestDto'
+   *     responses:
+   *       200:
+   *         description: token renew successfully.
+   *         content:
+   *           application/json:
+   *             schema:
+   *       500:
+   *         description: Server error
+   */
+  public async refreshToken(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    res.status(StatusCodes.OK).json({ message: "OK" });
   }
 }
 

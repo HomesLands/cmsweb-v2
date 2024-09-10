@@ -10,4 +10,7 @@ authRoute.route("/authenticate").post(authController.authenticate);
 // [POST] /api/v1/auth/register
 authRoute.route("/register").post(authController.register);
 
+// [POST] /api/v1/auth/refresh
+authRoute.route("/refresh").post(authController.refreshToken);
+
 export default authRoute;

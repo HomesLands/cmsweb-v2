@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 
 import { userRepository } from "@repositories";
 import { User } from "@entities";
+import { logger } from "@lib/logger";
 
 export const customLocalStrategy = (): void => {
   const LocalStrategy = localPassport.Strategy;
@@ -17,7 +18,7 @@ export const customLocalStrategy = (): void => {
       const user = await userRepository.findOneBy({ id });
       done(null, user);
     } catch (error) {
-      done(error, null);
+      done(error, undefined);
     }
   });
 
@@ -29,13 +30,16 @@ export const customLocalStrategy = (): void => {
       },
       async (username: string, password: string, done) => {
         try {
+          // Find user
           const user = await userRepository.findOneBy({ username });
           if (!user?.password)
-            return done(null, false, { message: "Password is empty." });
+            return done(null, undefined, { message: "Password is empty." });
 
-          const isMatch = bcrypt.compare(password, user.password);
+          // Validate pass
+          const isMatch = await bcrypt.compare(password, user.password);
           if (!isMatch) {
-            return done(null, false, { message: "Password is not match." });
+            logger.info("Password is not match.");
+            return done(null, undefined, { message: "Password is not match." });
           }
           return done(null, user);
         } catch (err) {

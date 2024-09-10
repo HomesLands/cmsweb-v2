@@ -28,10 +28,7 @@ const Register: React.FC = () => {
         <Card className="mx-auto border-none shadow-xl backdrop-blur-xl">
           <CardHeader title="Login">
             <CardTitle className="text-xl"> Đăng ký tài khoản </CardTitle>
-            <CardDescription className="">
-              {' '}
-              Nhập thông tin của bạn để tạo tài khoản{' '}
-            </CardDescription>
+            <CardDescription className="">Nhập thông tin của bạn để tạo tài khoản </CardDescription>
           </CardHeader>
           <CardContent>
             <RegisterForm onSubmit={handleSubmit} />

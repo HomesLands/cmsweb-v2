@@ -3,9 +3,8 @@ import React from 'react'
 import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
-// import { columns } from '../employees/DataTable/columns'
 import { columns } from './DataTable/columns'
-import { useUsers, useProducts } from '@/hooks'
+import { useProducts } from '@/hooks'
 import { CustomComponent } from './CustomComponent'
 import usePaging from '@/hooks/use-paging'
 
