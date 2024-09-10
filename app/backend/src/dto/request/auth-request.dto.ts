@@ -24,13 +24,8 @@ export class RegistrationRequestDto {
   @Expose()
   password: string;
 
-  @IsNotEmpty({ message: "INVALID_FIRSTNAME" })
+  @IsNotEmpty({ message: "INVALID_FULLNAME" })
   @AutoMap()
   @Expose()
-  firstName: string;
-
-  @IsNotEmpty({ message: "INVALID_LASTNAME" })
-  @AutoMap()
-  @Expose()
-  lastName: string;
+  fullname: string;
 }

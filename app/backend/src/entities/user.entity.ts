@@ -10,12 +10,8 @@ import { Gender } from "enums";
 @Entity("user_tbl")
 export class User extends Base {
   @AutoMap()
-  @Column({ name: "first_name_column" })
-  firstName?: string;
-
-  @AutoMap()
-  @Column({ name: "last_name_column" })
-  lastName?: string;
+  @Column({ name: "full_name_column" })
+  fullname?: string;
 
   @AutoMap()
   @Column({ name: "username_column" })

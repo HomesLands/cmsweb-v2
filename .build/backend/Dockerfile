@@ -4,6 +4,9 @@ FROM node:18.17
 # Step 2: Set the working directory in the container
 WORKDIR /usr/src/app
 
+RUN apt-get update
+RUN apt-get install -y iputils-ping
+
 # Step 3: Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 

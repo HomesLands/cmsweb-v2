@@ -1,6 +1,4 @@
 volumes:
-  # nginx_proxy_manager_data:
-  # letsencrypt:
   mysql:
 
 services:
@@ -39,7 +37,7 @@ services:
       MYSQL_DATABASE: ${DATABASE_MYSQL}
       TZ: Asia/Ho_Chi_Minh
     healthcheck:
-      test: ["CMD-SHELL", "sh", "-c", "../.build/mysql/wait-for-mysql.sh"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 5s
       timeout: 30s
       retries: 3
