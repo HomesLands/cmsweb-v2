@@ -67,7 +67,8 @@ const DashboardLayout = () => {
         {/* Header */}
         <header
           className={cn(
-            'fixed top-0 w-full left-0 flex items-center justify-between gap-4 px-2 h-14 lg:p-0 border-b z-10'
+            'sticky top-0 left-0 w-full flex items-center justify-between gap-4 px-2 h-14 border-b z-10',
+            'sm:gap-0 sm:px-0 sm:h-auto sm:justify-end'
           )}
         >
           <SidebarDrawerMobile />
@@ -79,7 +80,7 @@ const DashboardLayout = () => {
         </header>
 
         {/* Main Content (Outlet) */}
-        <main className="p-4 transition-all duration-300 mt-14">
+        <main className="p-4 transition-all duration-300">
           <Outlet />
         </main>
       </div>

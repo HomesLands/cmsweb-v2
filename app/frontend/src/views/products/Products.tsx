@@ -1,13 +1,15 @@
 import React from 'react'
 
-import { DataTable, Label } from '@/components/ui'
-import { columns } from './DataTable/columns'
-import { useProducts } from '@/hooks'
 import { ReaderIcon } from '@radix-ui/react-icons'
+
+import { DataTable, Label } from '@/components/ui'
+// import { columns } from '../employees/DataTable/columns'
+import { columns } from './DataTable/columns'
+import { useUsers, useProducts } from '@/hooks'
 import { CustomComponent } from './CustomComponent'
 import usePaging from '@/hooks/use-paging'
 
-const Projects: React.FC = () => {
+const ProductList: React.FC = () => {
   const { pagination, handlePageChange, handlePageSizeChange } = usePaging()
 
   const { data } = useProducts({
@@ -36,4 +38,4 @@ const Projects: React.FC = () => {
   )
 }
 
-export default Projects
+export default ProductList

@@ -6,7 +6,7 @@ import { ReaderIcon } from '@radix-ui/react-icons'
 import { CustomComponent } from './CustomComponent'
 import usePaging from '@/hooks/use-paging'
 
-const Employees: React.FC = () => {
+const Warehouse: React.FC = () => {
   const { pagination, handlePageChange, handlePageSizeChange } = usePaging()
   const { data } = useUsers({
     page: pagination.pageIndex + 1,
@@ -34,4 +34,4 @@ const Employees: React.FC = () => {
   )
 }
 
-export default Employees
+export default Warehouse

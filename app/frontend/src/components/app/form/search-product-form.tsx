@@ -7,17 +7,28 @@ import {
   FormMessage,
   Input,
   Form,
-  Button
+  Button,
+  DataTable
 } from '@/components/ui'
 import { productSearchSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import usePaging from '@/hooks/use-paging'
+import { useProducts } from '@/hooks'
+import { columns } from '@/views/products/DataTable/columns'
 
 interface IFormCreateProductProps {
   onSubmit: (data: z.infer<typeof productSearchSchema>) => void
 }
 
 export const FormSearchProduct: React.FC<IFormCreateProductProps> = ({ onSubmit }) => {
+  const { pagination, handlePageChange, handlePageSizeChange } = usePaging()
+
+  const { data } = useProducts({
+    page: pagination.pageIndex + 1,
+    pageSize: pagination.pageSize
+  })
+
   const form = useForm<z.infer<typeof productSearchSchema>>({
     resolver: zodResolver(productSearchSchema),
     defaultValues: {
@@ -51,6 +62,16 @@ export const FormSearchProduct: React.FC<IFormCreateProductProps> = ({ onSubmit 
           </Button>
         </form>
       </Form>
+      <DataTable
+        columns={columns}
+        data={data?.items || []}
+        total={data?.total || 0}
+        pages={data?.pages || 0}
+        page={pagination.pageIndex + 1}
+        pageSize={pagination.pageSize}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
+      />
     </div>
   )
 }

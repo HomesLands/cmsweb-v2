@@ -5,13 +5,10 @@ export interface IProductApprovalInfo {
   createdBy: string
   createdAt?: string
   updatedAt?: string
-  //CHT
   commanderApprovalStatus: RequestStatus
   commanderApprovalContent?: string
-  // TPDA
   projectManagerApprovalStatus: RequestStatus
   projectManagerApprovalContent?: string
-  // GD
   directorApprovalStatus: RequestStatus
   directorApprovalContent?: string
   notes?: string
