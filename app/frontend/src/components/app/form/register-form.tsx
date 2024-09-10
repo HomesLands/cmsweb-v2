@@ -58,7 +58,7 @@ export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nhập email" {...field} />
+                    <Input placeholder="Nhập tên đăng nhập" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -71,7 +71,7 @@ export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
                 <FormItem>
                   <FormLabel>Mật khẩu</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nhập mật khẩu" {...field} />
+                    <Input placeholder="Nhập mật khẩu" {...field} type="password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
