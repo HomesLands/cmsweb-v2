@@ -20,6 +20,8 @@ const Projects: React.FC = () => {
     pageSize: pagination.pageSize
   })
 
+  const test = '10'
+
   useEffect(() => {
     setSearchParams({
       page: (pagination.pageIndex + 1).toString(),
