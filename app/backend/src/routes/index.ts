@@ -6,6 +6,7 @@ import { userRoute } from "@routes/user.route";
 import { healthCheckRoute } from "@routes/health-check.route";
 import { authMiddleware } from "@middlewares";
 import { ErrorCodes, GlobalError } from "@exception";
+import { StatusCodes } from "http-status-codes";
 
 const baseApi: Router = Router();
 
@@ -19,6 +20,8 @@ export const registerRoutes = (app: Express) => {
   baseApi.use("/healthCheck", healthCheckRoute);
 
   app.use("/api/v1", baseApi);
+
+  app.options("*", (req: Request, res: Response) => res.status(StatusCodes.OK));
 
   app.all("*", (req: Request, res: Response, next: NextFunction) => {
     const err = new GlobalError(ErrorCodes.PATH_NOT_FOUND);

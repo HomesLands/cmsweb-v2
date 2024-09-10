@@ -3,7 +3,7 @@ import passport from "passport";
 import { StatusCodes } from "http-status-codes";
 import bcrypt from "bcryptjs";
 
-import { generateToken, logger } from "@lib";
+import { generateToken } from "@lib";
 import { ErrorCodes, GlobalError, ValidationError } from "@exception";
 import { AuthenticationResponseDto } from "@dto/response";
 import { RegistrationRequestDto } from "@dto/request";

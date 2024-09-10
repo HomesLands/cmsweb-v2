@@ -52,4 +52,10 @@ export const ErrorCodes: TErrorCode = {
     code: 1010,
     message: "Lastname is not valid",
   },
+
+  INVALID_FULLNAME: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1011,
+    message: "Fullname is not valid",
+  },
 };
