@@ -105,12 +105,6 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <div className="flex justify-between gap-2">
-        <Input
-          placeholder="Nhập họ tên..."
-          value={table.getColumn('createdBy')?.getFilterValue() as string}
-          onChange={(event) => table.getColumn('createdBy')?.setFilterValue(event.target.value)}
-          className="max-w-sm"
-        />
         {CustomComponent && <CustomComponent table={table} />}
       </div>
       <div className="mt-3 border rounded-md">
@@ -193,6 +187,94 @@ export function DataTableColumnHeader<TData, TValue>({
 
   return (
     <div className={cn('flex items-center w-fit space-x-2 text-[0.8rem]', className)}>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="sm" className="-ml-3 h-8 data-[state=open]:bg-accent">
+            <span className="text-[0.8rem]">{title}</span>
+            {column.getIsSorted() === 'desc' ? (
+              <ArrowDownIcon className="w-3 h-3 ml-2" />
+            ) : column.getIsSorted() === 'asc' ? (
+              <ArrowUpIcon className="w-3 h-3 ml-2" />
+            ) : (
+              <ArrowDownIcon className="w-3 h-3 ml-2" />
+            )}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
+            <ArrowUpIcon className="w-3 h-3 mr-2 text-muted-foreground/70" />
+            Asc
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
+            <ArrowDownIcon className="w-3 h-3 mr-2 text-muted-foreground/70" />
+            Desc
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
+            <ArrowUpIcon className="w-3 h-3 mr-2 text-muted-foreground/70" />
+            Hide
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  )
+}
+
+export function DataTableColumnAddressHeader<TData, TValue>({
+  column,
+  title,
+  className
+}: DataTableColumnHeaderProps<TData, TValue>) {
+  if (!column.getCanSort()) {
+    return <div className="text-[0.8rem]">{title}</div>
+  }
+
+  return (
+    <div className={cn('flex items-center min-w-[12rem] space-x-2 text-[0.8rem]', className)}>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="sm" className="-ml-3 h-8 data-[state=open]:bg-accent">
+            <span className="text-[0.8rem]">{title}</span>
+            {column.getIsSorted() === 'desc' ? (
+              <ArrowDownIcon className="w-3 h-3 ml-2" />
+            ) : column.getIsSorted() === 'asc' ? (
+              <ArrowUpIcon className="w-3 h-3 ml-2" />
+            ) : (
+              <ArrowDownIcon className="w-3 h-3 ml-2" />
+            )}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
+            <ArrowUpIcon className="w-3 h-3 mr-2 text-muted-foreground/70" />
+            Asc
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
+            <ArrowDownIcon className="w-3 h-3 mr-2 text-muted-foreground/70" />
+            Desc
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
+            <ArrowUpIcon className="w-3 h-3 mr-2 text-muted-foreground/70" />
+            Hide
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  )
+}
+
+export function DataTableColumnActionHeader<TData, TValue>({
+  column,
+  title,
+  className
+}: DataTableColumnHeaderProps<TData, TValue>) {
+  if (!column.getCanSort()) {
+    return <div className="text-[0.8rem]">{title}</div>
+  }
+
+  return (
+    <div className={cn('flex items-center justify-center space-x-2 text-[0.8rem]', className)}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="sm" className="-ml-3 h-8 data-[state=open]:bg-accent">

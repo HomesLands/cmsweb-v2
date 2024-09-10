@@ -68,11 +68,11 @@ const DashboardLayout = () => {
         <header
           className={cn(
             'sticky top-0 left-0 w-full flex items-center justify-between gap-4 px-2 h-14 border-b z-10',
-            'sm:gap-0 sm:px-0 sm:h-auto sm:justify-end'
+            'sm:justify-end sm:sticky sm:top-0 sm:h-14'
           )}
         >
           <SidebarDrawerMobile />
-          <div className="flex flex-row items-center justify-end h-12 gap-2">
+          <div className="flex flex-row items-center justify-end gap-2 h-14">
             <SelectLanguage />
             <PopoverNotification />
             <DropdownHeader />

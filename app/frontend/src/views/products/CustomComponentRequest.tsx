@@ -1,3 +1,6 @@
+import { Table } from '@tanstack/react-table'
+import { ChevronDown } from 'lucide-react'
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -6,20 +9,16 @@ import {
   Button,
   Input
 } from '@/components/ui'
-import { ChevronDown } from 'lucide-react'
-import { Table } from '@tanstack/react-table'
-// import { NavLink } from 'react-router-dom'
-import { DialogAddUser } from '@/components/app/dialog'
 
 interface ColumnVisibilityDropdownProps<TData> {
   table: Table<TData>
 }
 
-export function CustomComponent<TData>({ table }: ColumnVisibilityDropdownProps<TData>) {
+export function CustomComponentRequest<TData>({ table }: ColumnVisibilityDropdownProps<TData>) {
   return (
     <>
       <Input
-        placeholder="Nhập họ tên..."
+        placeholder="Nhập tên vật tư..."
         value={table.getColumn('createdBy')?.getFilterValue() as string}
         onChange={(event) => table.getColumn('createdBy')?.setFilterValue(event.target.value)}
         className="max-w-sm"
@@ -47,7 +46,6 @@ export function CustomComponent<TData>({ table }: ColumnVisibilityDropdownProps<
             ))}
         </DropdownMenuContent>
       </DropdownMenu>
-      <DialogAddUser />
     </>
   )
 }
