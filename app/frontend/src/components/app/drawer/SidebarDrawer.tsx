@@ -17,7 +17,7 @@ import { IconWrapper } from './IconWrapper'
 import { useLayoutStore } from '@/stores'
 
 export function SidebarDrawer() {
-  const { isMinimized } = useLayoutStore()
+  const { isMinimized, toggleMinimized } = useLayoutStore() // Add toggleMinimized
   const location = useLocation()
 
   return (
@@ -42,7 +42,9 @@ export function SidebarDrawer() {
               <div className="flex items-center justify-between gap-2 transition-all duration-300">
                 <TooltipProvider>
                   <Tooltip>
-                    <TooltipTrigger>
+                    <TooltipTrigger onClick={isMinimized ? toggleMinimized : undefined}>
+                      {' '}
+                      {/* Add onClick */}
                       <IconWrapper Icon={submenu.icon} className="w-4 h-4" />
                     </TooltipTrigger>
                     <TooltipContent side="right">

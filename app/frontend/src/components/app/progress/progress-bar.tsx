@@ -18,7 +18,7 @@ export function ProgressBar({ step }: ProgressBarProps) {
         >
           1
         </span>
-        <span className="text-sm sm:inline-flex sm:ms-1">Tạo phiếu vật tư</span>
+        <span className="hidden sm:text-sm sm:inline-flex sm:ms-1">Tạo phiếu vật tư</span>
         <DoubleArrowRightIcon className="w-4 h-4 ms-2 sm:ms-4 rtl:rotate-180" />
       </li>
 
@@ -33,7 +33,7 @@ export function ProgressBar({ step }: ProgressBarProps) {
         >
           2
         </span>
-        <span className="text-sm sm:inline-flex sm:ms-2">Thêm vật tư</span>
+        <span className="hidden sm:text-sm sm:inline-flex sm:ms-2">Thêm vật tư</span>
         <DoubleArrowRightIcon className="w-4 h-4 ms-2 sm:ms-4 rtl:rotate-180" />
       </li>
 
@@ -48,7 +48,7 @@ export function ProgressBar({ step }: ProgressBarProps) {
         >
           3
         </span>
-        <span className="text-sm sm:inline-flex sm:ms-2">Xác nhận</span>
+        <span className="hidden sm:text-sm sm:inline-flex sm:ms-2">Xác nhận</span>
       </li>
     </ol>
   )

@@ -10,15 +10,9 @@ import {
   DropdownMenuTrigger,
   Button,
   Checkbox,
-  DataTableColumnHeader,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
+  DataTableColumnHeader
 } from '@/components/ui'
-import { IProductApprovalInfo, IProductInfoSearch } from '@/types'
-import { PlusCircledIcon } from '@radix-ui/react-icons'
-import { RequestStatusBadge } from '@/components/app/badge/RequestStatusBadge'
+import { IProductApprovalInfo } from '@/types'
 
 export const columns: ColumnDef<IProductApprovalInfo>[] = [
   {
@@ -44,25 +38,19 @@ export const columns: ColumnDef<IProductApprovalInfo>[] = [
   },
   {
     accessorKey: 'createdBy',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Người tạo" />
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Người yêu cầu" />
   },
   {
     accessorKey: 'commanderApprovalStatus',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="CHT" />,
-    cell: ({ row }) => {
-      return <RequestStatusBadge status={row.original.commanderApprovalStatus} />
-    }
+    header: ({ column }) => <DataTableColumnHeader column={column} title="CHT" />
   },
   {
     accessorKey: 'commanderApprovalContent',
-    header: 'Nội dung'
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Nội dung" />
   },
   {
     accessorKey: 'projectManagerApprovalStatus',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="TPDA" />,
-    cell: ({ row }) => {
-      return <RequestStatusBadge status={row.original.projectManagerApprovalStatus} />
-    }
+    header: ({ column }) => <DataTableColumnHeader column={column} title="TPDA" />
   },
   {
     accessorKey: 'projectManagerApprovalContent',
@@ -70,19 +58,19 @@ export const columns: ColumnDef<IProductApprovalInfo>[] = [
   },
   {
     accessorKey: 'directorApprovalStatus',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="GD" />,
-    cell: ({ row }) => {
-      return <RequestStatusBadge status={row.original.directorApprovalStatus} />
-    }
+    header: ({ column }) => <DataTableColumnHeader column={column} title="GĐ" />
   },
   {
     accessorKey: 'directorApprovalContent',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Nội dung" />
   },
   {
+    accessorKey: 'notes',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Ghi chú" />
+  },
+  {
     id: 'actions',
-    cell: ({ row }) => {
-      const payment = row.original
+    cell: () => {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -93,73 +81,11 @@ export const columns: ColumnDef<IProductApprovalInfo>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>
-              Copy payment ID
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Cập nhật</DropdownMenuItem>
+            <DropdownMenuItem>Xem chi tiết</DropdownMenuItem>
             <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
-    }
-  }
-]
-
-export const columnsSearch: ColumnDef<IProductInfoSearch>[] = [
-  {
-    accessorKey: 'productCode',
-    header: 'Mã sản phẩm'
-  },
-  {
-    accessorKey: 'productName',
-    header: 'Tên sản phẩm'
-  },
-  {
-    accessorKey: 'modelOrSerialNumber',
-    header: 'Model/Số Serial'
-  },
-  {
-    accessorKey: 'supplier',
-    header: 'Nhà cung cấp'
-  },
-  {
-    accessorKey: 'importDate',
-    header: 'Ngày nhập'
-  },
-  {
-    accessorKey: 'unit',
-    header: 'Đơn vị'
-  },
-  {
-    accessorKey: 'quantity',
-    header: 'Số lượng'
-  },
-  {
-    accessorKey: 'address',
-    header: 'Địa chỉ'
-  },
-  {
-    accessorKey: 'note',
-    header: 'Ghi chú'
-  },
-  {
-    accessorKey: 'actions',
-    cell: () => {
-      // const product = row.original
-      return (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" className="rounded-full">
-                <PlusCircledIcon className="" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Thêm vào phiếu vật tư</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
       )
     }
   }

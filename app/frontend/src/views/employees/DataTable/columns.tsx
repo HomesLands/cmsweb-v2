@@ -49,10 +49,6 @@ export const columns: ColumnDef<IUserInfo>[] = [
     header: 'Tên nhân sự'
   },
   {
-    accessorKey: 'fullName',
-    header: 'Tên nhân sự'
-  },
-  {
     accessorKey: 'avatar',
     header: 'Ảnh'
   },
@@ -82,8 +78,7 @@ export const columns: ColumnDef<IUserInfo>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => {
-      const payment = row.original
+    cell: () => {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -94,9 +89,6 @@ export const columns: ColumnDef<IUserInfo>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>
-              Copy payment ID
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Xem chi tiết</DropdownMenuItem>
             <DropdownMenuItem>View payment details</DropdownMenuItem>

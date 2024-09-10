@@ -16,7 +16,7 @@ const routes: IRoute[] = [
   {
     title: 'Home',
     path: '/',
-    redirect: '/employees',
+    redirect: 'employees',
     component: () =>
       import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout }))
   },
@@ -29,7 +29,7 @@ const routes: IRoute[] = [
       {
         title: 'Danh sách nhân viên',
         path: 'list',
-        component: () => import('@/views/employees/Employees')
+        component: () => import('@/views/employees/EmployeesList')
       }
     ]
   },
@@ -62,7 +62,7 @@ const routes: IRoute[] = [
       {
         title: 'Thêm yêu cầu vật tư',
         path: 'add',
-        component: () => import('@/views/products/CreateNewProductRequirement')
+        component: () => import('@/views/products/ProductRequest')
       }
     ]
   },
@@ -73,12 +73,12 @@ const routes: IRoute[] = [
       import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
       {
-        title: 'Add Product',
+        title: 'Thêm vật tư',
         path: 'add',
         component: () => import('@/views/warehouse/AddProduct')
       },
       {
-        title: 'Product List',
+        title: 'Danh sách vật tư',
         path: 'list',
         component: () => import('@/views/warehouse/Warehouse')
       }
@@ -98,7 +98,7 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
         title: 'Danh sách nhân viên',
         path: '/employees/list',
         icon: AlignJustify,
-        component: () => import('@/views/employees/Employees')
+        component: () => import('@/views/employees/EmployeesList')
       }
     ]
   },

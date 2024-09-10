@@ -1,13 +1,16 @@
 import React from 'react'
+
+import { ReaderIcon } from '@radix-ui/react-icons'
+
 import { DataTable, Label } from '@/components/ui'
 import { columns } from './DataTable/columns'
-import { useUsers } from '@/hooks/use-users'
-import { ReaderIcon } from '@radix-ui/react-icons'
+import { useUsers } from '@/hooks'
 import { CustomComponent } from './CustomComponent'
 import usePaging from '@/hooks/use-paging'
 
-const Warehouse: React.FC = () => {
+const Employees: React.FC = () => {
   const { pagination, handlePageChange, handlePageSizeChange } = usePaging()
+
   const { data } = useUsers({
     page: pagination.pageIndex + 1,
     pageSize: pagination.pageSize
@@ -34,4 +37,4 @@ const Warehouse: React.FC = () => {
   )
 }
 
-export default Warehouse
+export default Employees

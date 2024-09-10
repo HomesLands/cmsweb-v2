@@ -12,8 +12,6 @@ const getBadgeColorClass = (status: RequestStatus) => {
       return 'bg-yellow-500'
     case 'rejected':
       return 'bg-red-500'
-    case 'cancelled':
-      return 'bg-gray-500'
     default:
       return 'bg-gray-500'
   }
@@ -27,8 +25,6 @@ const getBadgeText = (status: RequestStatus) => {
       return 'Đang chờ'
     case 'rejected':
       return 'Từ chối'
-    case 'cancelled':
-      return 'Hủy'
     default:
       return 'Hủy'
   }
