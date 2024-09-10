@@ -1,12 +1,11 @@
 import { IPagingResponse, IUserInfo } from '@/types'
 
-import userData from '@/data/users.json'
+import userData from '@/data/users'
 
 export async function getUsers(params: {
   page: number
   pageSize: number
 }): Promise<IPagingResponse<IUserInfo>> {
-  console.log("Check get users")
   try {
     const users: IUserInfo[] = await new Promise((resolve) => {
       setTimeout(() => {

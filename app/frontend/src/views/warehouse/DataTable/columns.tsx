@@ -10,16 +10,11 @@ import {
   DropdownMenuTrigger,
   Button,
   Checkbox,
-  DataTableColumnHeader,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
+  DataTableColumnHeader
 } from '@/components/ui'
-import { IProductApprovalInfo, IProductInfoSearch } from '@/types'
-import { PlusCircledIcon } from '@radix-ui/react-icons'
+import { IUserInfo } from '@/types'
 
-export const columns: ColumnDef<IProductApprovalInfo>[] = [
+export const columns: ColumnDef<IUserInfo>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -42,57 +37,48 @@ export const columns: ColumnDef<IProductApprovalInfo>[] = [
     enableHiding: false
   },
   {
-    accessorKey: 'productCode',
-    header: 'Mã vật tư'
+    accessorKey: 'fullName',
+    header: 'Tên nhân sự'
   },
   {
-    accessorKey: 'createdAt',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày tạo" />,
-    cell: ({ row }) => {
-      const dateValue = row.getValue('createdAt') as string | number | Date
-      const date = new Date(dateValue)
-      const formattedDate = date
-        ? new Intl.DateTimeFormat('vi-VN', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-          }).format(date)
-        : ''
-      return formattedDate
-    }
-  },
-  // {
-  //   accessorKey: 'createdBy',
-  //   header: 'Người tạo'
-  // },
-  {
-    accessorKey: 'productName',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Tên vật tư" />
+    accessorKey: 'fullName',
+    header: 'Tên nhân sự'
   },
   {
-    accessorKey: 'modelOrSerialNumber',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Model" />
+    accessorKey: 'fullName',
+    header: 'Tên nhân sự'
   },
   {
-    accessorKey: 'supplier',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Nhà cung cấp" />
+    accessorKey: 'avatar',
+    header: 'Ảnh'
   },
   {
-    accessorKey: 'unit',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Đơn vị" />
-  },
-  {
-    accessorKey: 'quantity',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Số lượng" />
+    accessorKey: 'dob',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày sinh" />
   },
   {
     accessorKey: 'address',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Địa chỉ" />
+    header: 'Địa chỉ'
+  },
+  {
+    accessorKey: 'phoneNumber',
+    header: 'Số điện thoại'
+  },
+  {
+    accessorKey: 'email',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />
+  },
+  {
+    accessorKey: 'role',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Chức vụ" />
+  },
+  {
+    accessorKey: 'department',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Bộ phận" />
   },
   {
     id: 'actions',
-    cell: ({ row }) => {
-      const payment = row.original
+    cell: () => {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -103,73 +89,11 @@ export const columns: ColumnDef<IProductApprovalInfo>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>
-              Copy payment ID
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Cập nhật</DropdownMenuItem>
+            <DropdownMenuItem>Xem chi tiết</DropdownMenuItem>
             <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
-    }
-  }
-]
-
-export const columnsSearch: ColumnDef<IProductInfoSearch>[] = [
-  {
-    accessorKey: 'productCode',
-    header: 'Mã sản phẩm'
-  },
-  {
-    accessorKey: 'productName',
-    header: 'Tên sản phẩm'
-  },
-  {
-    accessorKey: 'modelOrSerialNumber',
-    header: 'Model/Số Serial'
-  },
-  {
-    accessorKey: 'supplier',
-    header: 'Nhà cung cấp'
-  },
-  {
-    accessorKey: 'importDate',
-    header: 'Ngày nhập'
-  },
-  {
-    accessorKey: 'unit',
-    header: 'Đơn vị'
-  },
-  {
-    accessorKey: 'quantity',
-    header: 'Số lượng'
-  },
-  {
-    accessorKey: 'address',
-    header: 'Địa chỉ'
-  },
-  {
-    accessorKey: 'note',
-    header: 'Ghi chú'
-  },
-  {
-    accessorKey: 'actions',
-    cell: () => {
-      // const product = row.original
-      return (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" className="rounded-full">
-                <PlusCircledIcon className="" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Thêm vào phiếu vật tư</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
       )
     }
   }

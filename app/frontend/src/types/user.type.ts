@@ -3,14 +3,24 @@ export interface IUserInfo {
   avatar: string
   fullName: string
   email: string
+  // username: string
+  // password: string
   phoneNumber: string
   role: string
   dob: string
   address: string
   department: string
   site: string
+  // citizenIdentity: string
+  // signature: string
   createdAt?: Date
   updatedAt?: Date
+}
+
+export interface IRegister {
+  fullname: string
+  username: string
+  password: string
 }
 
 export interface IUserState {
