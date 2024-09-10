@@ -1,14 +1,13 @@
 import { AutoMap } from "@automapper/classes";
 import { Expose } from "class-transformer";
-import { IsString, IsNotEmpty, MinLength } from "class-validator";
+import { IsNotEmpty, MinLength } from "class-validator";
 
 export class AuthenticationRequestDto {
-  @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: "INVALID_USERNAME" })
+  @MinLength(5, { message: "INVALID_USERNAME" })
   username: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: "INVALID_PASSWORD" })
   password: string;
 }
 

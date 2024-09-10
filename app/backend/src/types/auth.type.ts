@@ -3,3 +3,9 @@ export type TRegistrationRequestDto = {
   password: string;
   fullname: string;
 };
+
+export type TAuthenticationRequestDto = {
+  username: string;
+
+  password: string;
+};
