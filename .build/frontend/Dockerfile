@@ -29,7 +29,7 @@ RUN npm install -g serve
 COPY --from=build /app/dist ./dist
 
 # Expose port
-EXPOSE 3001
+EXPOSE 5137
 
 # Serve the application on port 
-CMD ["serve", "-s", "dist", "-l", "3001"]
+CMD ["serve", "-s", "dist", "-l", "5137"]
