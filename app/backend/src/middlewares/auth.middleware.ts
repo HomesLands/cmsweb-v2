@@ -16,7 +16,18 @@ const whitelist = [
 ];
 
 class AuthMiddleware {
-  public async authenticate(req: Request, res: Response, next: NextFunction) {
+  /**
+   * Determines whether users are who they claim to be
+   * @param {Request} req
+   * @param {Response} res
+   * @param {NextFunction} next
+   * @returns {Promise<void>}
+   */
+  public async authenticate(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     // Skip if preflight request
     if (req.method === HTTPMethod.OPTIONS) return next();
 
@@ -45,15 +56,70 @@ class AuthMiddleware {
     }
   }
 
-  public async authorize(req: Request, res: Response, next: NextFunction) {
-    // const id = req.userId
-    if (_.has(req, "userId")) {
-      const userId = req.userId as string;
-      const user = await userRepository.findOneBy({ id: userId });
+  /**
+   * Middleware to check authorities of user.
+   * @param {string[]} roles
+   * @returns {Promise<(req: Request, res: Response, next: NextFunction) => void}
+   */
+  public async hasRole(
+    roles: string[]
+  ): Promise<(req: Request, res: Response, next: NextFunction) => void> {
+    return (req: Request, res: Response, next: NextFunction) => {
+      try {
+        next();
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
 
-      return next();
-    }
-    return next(new GlobalError(StatusCodes.FORBIDDEN));
+  /**
+   * Middleware to check authorities of user.
+   * @param {string[]} authorities
+   * @returns {Promise<(req: Request, res: Response, next: NextFunction) => void}
+   */
+  public async hasAuthority(
+    authorities: string[]
+  ): Promise<(req: Request, res: Response, next: NextFunction) => void> {
+    return (req: Request, res: Response, next: NextFunction) => {
+      try {
+        next();
+      } catch (error) {
+        next(error);
+      }
+    };
+  }
+
+  /**
+   * Middleware to check authorities of user.
+   * @param {string} role
+   * @param {string[]} authorities
+   * @returns {Promise<(req: Request, res: Response, next: NextFunction) => void}
+   */
+  public async hasPermission(
+    role: string,
+    authorities: string[]
+  ): Promise<(req: Request, res: Response, next: NextFunction) => void> {
+    return (req: Request, res: Response, next: NextFunction) => {
+      try {
+        if (_.has(req, "permissions") && _.isArray(req.permissions)) {
+          const hasPermission = req.permissions.some((permission) => {
+            return (
+              permission.role === role &&
+              authorities.every((authority: string) =>
+                permission.authorities.includes(authority)
+              )
+            );
+          });
+          if (!hasPermission) {
+            return next(new GlobalError(StatusCodes.FORBIDDEN));
+          }
+          next();
+        }
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 }
 
