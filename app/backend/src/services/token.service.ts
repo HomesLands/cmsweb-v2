@@ -57,9 +57,9 @@ class TokenService {
   public async validateToken(token: string): Promise<boolean> {
     const expiryTime = TokenUtils.extractExpiration(token);
 
-    // if (expiryTime.getTime() > Date.now()) {
-    //   throw new GlobalError(ErrorCodes.TOKEN_NOT_EXPIRED);
-    // }
+    if (expiryTime.getTime() > Date.now()) {
+      throw new GlobalError(ErrorCodes.TOKEN_NOT_EXPIRED);
+    }
 
     const id = TokenUtils.extractSubject(token);
     const identity = await userRepository.findOneBy({ id });
