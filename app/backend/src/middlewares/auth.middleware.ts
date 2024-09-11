@@ -12,6 +12,7 @@ const whitelist = [
   { path: "/auth/authenticate", method: HTTPMethod.POST },
   { path: "/auth/register", method: HTTPMethod.POST },
   { path: "/auth/refresh", method: HTTPMethod.POST },
+  { path: "/healthCheck/status", method: HTTPMethod.GET },
 ];
 
 class AuthMiddleware {
