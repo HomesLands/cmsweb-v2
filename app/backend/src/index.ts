@@ -14,7 +14,7 @@ import moment from "moment";
 
 import { registerRoutes } from "@routes";
 import { errorHandlerMiddleware } from "@middlewares";
-import { passportStrategies, dataSource } from "@configs";
+import { passportStrategies, initializeDataSource } from "@configs";
 import { isDevEnvironment } from "heppers";
 import { logger } from "@lib";
 
@@ -29,14 +29,8 @@ dotenv.config();
   app.use(express.urlencoded({ extended: true }));
 
   // Config database
-  await dataSource
-    .initialize()
-    .then(() => {
-      logger.info("Data Source has been initialized!");
-    })
-    .catch((err) => {
-      logger.error("Error during Data Source initialization:", err);
-    });
+  // Default auto retries 5
+  await initializeDataSource();
 
   // Config CORS
   app.use(

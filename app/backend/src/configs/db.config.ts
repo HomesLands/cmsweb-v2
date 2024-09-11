@@ -1,6 +1,7 @@
 import { DataSource } from "typeorm";
 import { env } from "@constants";
 import { join } from "path";
+import { logger } from "@lib";
 
 const config = {
   HOST: env.dataSource.hostMySql,
@@ -15,6 +16,11 @@ const config = {
   },
 };
 
+logger.error("", { __dirname });
+logger.error("", {
+  entityDirname: join(__dirname, "../entities", "*.entity.{ts,js}"),
+});
+
 export const dataSource = new DataSource({
   type: "mysql",
   host: config.HOST,
@@ -26,3 +32,32 @@ export const dataSource = new DataSource({
   logging: false,
   synchronize: true,
 });
+
+export async function initializeDataSource(
+  retries = 5,
+  delay = 3000 // ms
+): Promise<void> {
+  while (retries > 0) {
+    try {
+      await dataSource.initialize();
+      logger.info("Data Source has been initialized!");
+      return;
+    } catch (err) {
+      retries -= 1;
+      logger.error(
+        `Error during Data Source initialization. Retries left: ${retries}. Error:`,
+        err
+      );
+
+      if (retries === 0) {
+        logger.error(
+          "Failed to initialize Data Source after multiple attempts."
+        );
+        throw err; // You can either throw or exit the process here
+      }
+
+      // Wait for the specified delay before retrying
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+}
