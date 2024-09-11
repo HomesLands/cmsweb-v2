@@ -1,43 +1,58 @@
 import { Request, Response, NextFunction } from "express";
-import JWT from "jsonwebtoken";
+import { HTTPMethod } from "http-method-enum";
 import _ from "lodash";
 
-import { ErrorCodes, GlobalError } from "@exception";
-import { env } from "@constants";
+import { GlobalError } from "@exception";
 import { userRepository } from "@repositories";
 import { StatusCodes } from "http-status-codes";
+import { TokenUtils } from "@utils";
 
-// public api
-const publicAPI: string[] = ["/api/v1/users/test1"];
+// Define a list of whitelisted routes with allowed methods
+const whitelist = [
+  { path: "/auth/authenticate", method: HTTPMethod.POST },
+  { path: "/auth/register", method: HTTPMethod.POST },
+  { path: "/auth/refresh", method: HTTPMethod.POST },
+];
 
 class AuthMiddleware {
-  public authenticate(req: Request, res: Response, next: NextFunction) {
-    // Check public APIs
-    if (publicAPI.includes(req.originalUrl)) return next();
+  public async authenticate(req: Request, res: Response, next: NextFunction) {
+    // Skip if preflight request
+    if (req.method === HTTPMethod.OPTIONS) return next();
+
+    // Check if the current request matches any whitelisted route and method
+    const isWhitelisted = whitelist.some(
+      (route) => route.path === req.path && route.method === req.method
+    );
+    if (isWhitelisted) return next(); // Skip authentication for whitelisted routes
 
     // Get token
     const token = req.headers["authorization"] as string;
     if (!token) return next(new GlobalError(StatusCodes.UNAUTHORIZED));
 
     const authToken = token.split(" ")[1];
-    JWT.verify(authToken, env.jwtSecret, async (err, decoded) => {
-      if (err) return next(new GlobalError(StatusCodes.UNAUTHORIZED));
-      if (typeof decoded === "object" && _.has(decoded, "id")) {
-        // Get user
-        const user = await userRepository.findOneBy({ id: decoded.id });
-        if (!user) return next(new GlobalError(ErrorCodes.USER_NOT_FOUND));
+    try {
+      // Get user
+      const sub = TokenUtils.extractSubject(authToken);
+      const user = await userRepository.findOneBy({ id: sub });
+      if (!user) return next(new GlobalError(StatusCodes.UNAUTHORIZED));
 
-        // Attached decoded user id to request
-        Object.assign(req, { userId: user.id });
-        next();
-      } else {
-        return next(new GlobalError(StatusCodes.UNAUTHORIZED));
-      }
-    });
+      // Attached decoded user id to request
+      Object.assign(req, { userId: user.id });
+      next();
+    } catch (error) {
+      next(error);
+    }
   }
 
-  public authorization(req: Request, res: Response, next: NextFunction) {
-    next();
+  public async authorize(req: Request, res: Response, next: NextFunction) {
+    // const id = req.userId
+    if (_.has(req, "userId")) {
+      const userId = req.userId as string;
+      const user = await userRepository.findOneBy({ id: userId });
+
+      return next();
+    }
+    return next(new GlobalError(StatusCodes.FORBIDDEN));
   }
 }
 
