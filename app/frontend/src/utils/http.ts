@@ -1,39 +1,48 @@
 // src/http.ts
-import axios from 'axios';
-import NProgress from 'nprogress';
-import { showToast, showErrorToast } from './toast'; // Import the showToast and showErrorToast functions
+import axios from 'axios'
+import NProgress from 'nprogress'
 
-import { useRequestStore } from '@/stores/request.store'; // Adjust the path if needed
+import { showErrorToast } from './toast'
 
-NProgress.configure({ showSpinner: false, trickleSpeed: 200 });
+import { useRequestStore } from '@/stores/request.store'
+import { useToLogin } from '@/router'
+
+interface ResponseData {
+  code: string
+}
+
+NProgress.configure({ showSpinner: false, trickleSpeed: 200 })
 
 Object.assign(axios.defaults, {
   baseURL: import.meta.env.VITE_BASE_API_URL,
   timeout: 10000,
   withCredentials: true
-});
+})
 
 // Request Interceptor
 axios.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem('token')
     if (token) {
-      config.headers = config.headers || {}; // Ensure headers is defined
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers = config.headers || {} // Ensure headers is defined
+      config.headers.Authorization = `Bearer ${token}`
     }
     if (!(config as { doNotShowLoading?: boolean })?.doNotShowLoading) {
-      const requestStore = useRequestStore.getState();
+      const requestStore = useRequestStore.getState()
       if (requestStore.requestQueueSize === 0) {
-        NProgress.start();
+        NProgress.start()
       }
-      requestStore.incrementRequestQueueSize();
+      requestStore.incrementRequestQueueSize()
     }
-    return config;
+    return config
   },
   (error) => {
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
+
+const isTokenExpired = (status: number, data: ResponseData) =>
+  status === 401 && ['TOKEN_EXPIRED'].includes(data.code)
 
 // Response Interceptor
 axios.interceptors.response.use(
@@ -41,65 +50,57 @@ axios.interceptors.response.use(
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     if (!response.config.doNotShowLoading) {
-      setProgressBarDone();
+      setProgressBarDone()
     }
-    return response;
+    return response
   },
   async (error) => {
     if (!error.config.doNotShowLoading) {
-      setProgressBarDone();
+      setProgressBarDone()
     }
     if (error.response) {
-      const { data, status } = error.response;
+      const { data, status } = error.response
 
-      if (status === 400) {
-        showErrorToast(data.code);
+      if (isTokenExpired(status, data)) {
+        await showErrorToast(data.code)
+        useToLogin()
+        return Promise.reject(error)
       }
 
-      if (status === 401 && ['TOKEN_EXPIRED'].includes(data.code)) {
-        // Handle token expiration (e.g., redirect to login)
-        // const { toast } = useToast(); // Uncomment and use if toast is needed
-        // await toast({
-        //   title: 'Token expired',
-        //   description: 'Your token has expired, please login again',
-        //   variant: 'destructive'
-        // });
-        // toLogin(); // Uncomment and use if redirect is needed
-        return Promise.reject(error);
+      if (status === 400) {
+        showErrorToast(data.code)
       }
 
       if (status === 401) {
-        // Handle unauthorized access (e.g., redirect to login)
-        // toLogin(); // Uncomment and use if redirect is needed
-        return Promise.reject(error);
+        // Handle token expiration (e.g., redirect to login)
+        await showErrorToast(data.code)
+        useToLogin()
+        return Promise.reject(error)
       }
 
       if (status === 403) {
-        // Handle forbidden access (e.g., show permission denied message)
-        // const { toast } = useToast(); // Uncomment and use if toast is needed
-        // await toast({
-        //   title: 'Permission denied',
-        //   description: "You don't have permission to access this resource",
-        //   variant: 'destructive'
-        // });
+        // Handle unauthorized access (e.g., redirect to login)
+        await showErrorToast(data.code)
+        useToLogin()
+        return Promise.reject(error)
       }
 
       if (status === 500) {
         // Handle server error (e.g., show error message)
-        showErrorToast(data.code); // Use the new showErrorToast function
+        showErrorToast(data.code) // Use the new showErrorToast function
       }
     }
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
 
 async function setProgressBarDone() {
   useRequestStore.setState({ requestQueueSize: useRequestStore.getState().requestQueueSize - 1 })
   if (useRequestStore.getState().requestQueueSize > 0) {
-    NProgress.inc();
+    NProgress.inc()
   } else {
-    NProgress.done();
+    NProgress.done()
   }
 }
 
-export default axios;
+export default axios

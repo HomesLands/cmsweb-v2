@@ -66,7 +66,7 @@ export const LoginForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
           </div>
           <div className="flex items-center justify-between w-full">
             <Button type="submit" className="md:w-[6rem]">
-              Đăng ký
+              Đăng nhập
             </Button>
             <div className="text-sm text-center">
               Bạn chưa có tài khoản?
