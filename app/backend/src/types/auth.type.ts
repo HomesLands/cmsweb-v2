@@ -6,6 +6,9 @@ export type TRegistrationRequestDto = {
 
 export type TAuthenticationRequestDto = {
   username: string;
-
   password: string;
+};
+
+export type TRefreshTokenRequestDto = {
+  token: string;
 };

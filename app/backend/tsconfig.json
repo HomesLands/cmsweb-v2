@@ -141,9 +141,11 @@
         "@mappers/*": ["mappers/*"],
         "@mappers": ["mappers/index"],
 
+        "@utils/*": ["utils/*"],
+        "@utils": ["utils/index"],
+
         "@constants": ["constants/index"],
         "@dto/*": ["dto/*"],
-        "@utils/*": ["utils/*"],
     },
   },
   "include": ["src/**/*"],

@@ -6,15 +6,26 @@ import bcrypt from "bcryptjs";
 import { generateToken, logger } from "@lib";
 import { ErrorCodes, GlobalError, ValidationError } from "@exception";
 import { AuthenticationResponseDto } from "@dto/response";
-import { AuthenticationRequestDto, RegistrationRequestDto } from "@dto/request";
+import {
+  AuthenticationRequestDto,
+  RefreshTokenRequestDto,
+  RegistrationRequestDto,
+} from "@dto/request";
 import { userRepository } from "@repositories";
 import { User } from "@entities";
 import { validate } from "class-validator";
-import { TAuthenticationRequestDto, TRegistrationRequestDto } from "@types";
+import {
+  TAuthenticationRequestDto,
+  TRefreshTokenRequestDto,
+  TRegistrationRequestDto,
+} from "@types";
 import { plainToClass } from "class-transformer";
 import { mapper } from "@mappers";
 import { env } from "@constants";
 import _ from "lodash";
+import tokenService from "./token.service";
+import { TokenUtils } from "@utils/token.util";
+import moment from "moment";
 
 class AuthService {
   public async authenticate(
@@ -37,9 +48,13 @@ class AuthService {
           return reject(new GlobalError(ErrorCodes.USER_NOT_FOUND));
         }
 
+        const token = tokenService.generateToken(user);
+        const expireTime = TokenUtils.extractExpiration(token);
+        logger.info(expireTime.toString());
+
         return resolve({
-          expireTime: new Date(),
-          token: generateToken(user.id, "local"),
+          expireTime: moment(TokenUtils.extractExpiration(token)).toString(), // Local date
+          token,
         });
       })(req, res, next);
     });
@@ -69,6 +84,24 @@ class AuthService {
     user.password = hashedPassword;
 
     await userRepository.createAndSave(user);
+  }
+
+  public async refreshToken(
+    plainData: TRefreshTokenRequestDto
+  ): Promise<AuthenticationResponseDto> {
+    // Map plain object to request dto
+    const requestData = plainToClass(RefreshTokenRequestDto, plainData);
+
+    // Validate the class instance
+    const errors = await validate(requestData);
+    if (errors.length > 0) throw new ValidationError(errors);
+
+    const newToken = await tokenService.refreshToken(requestData.token);
+
+    return {
+      token: newToken,
+      expireTime: moment(TokenUtils.extractExpiration(newToken)).toString(),
+    };
   }
 }
 
