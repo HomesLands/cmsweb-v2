@@ -15,6 +15,8 @@ import { plainToClass } from "class-transformer";
 import { mapper } from "@mappers";
 import { env } from "@constants";
 import _ from "lodash";
+import tokenService from "./token.service";
+import { TokenUtils } from "@utils/token.util";
 
 class AuthService {
   public async authenticate(
@@ -37,9 +39,11 @@ class AuthService {
           return reject(new GlobalError(ErrorCodes.USER_NOT_FOUND));
         }
 
+        const token = tokenService.generateToken(user);
+
         return resolve({
-          expireTime: new Date(),
-          token: generateToken(user.id, "local"),
+          expireTime: TokenUtils.extractExpiration(token),
+          token,
         });
       })(req, res, next);
     });
