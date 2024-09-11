@@ -48,6 +48,7 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "typeorm": "^0.3.20",
+    "uuid": "^10.0.0",
     "winston": "^3.14.2"
   },
   "devDependencies": {
@@ -64,6 +65,7 @@
     "@types/node": "^22.4.1",
     "@types/passport-local": "^1.0.38",
     "@types/swagger-jsdoc": "^6.0.4",
+    "@types/uuid": "^10.0.0",
     "eslint": "^9.9.1",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.9.0",

@@ -16,10 +16,10 @@ const config = {
   },
 };
 
-logger.error("", { __dirname });
-logger.error("", {
-  entityDirname: join(__dirname, "../entities", "*.entity.{ts,js}"),
-});
+// logger.error("", { __dirname });
+// logger.error("", {
+//   entityDirname: join(__dirname, "../entities", "*.entity.{ts,js}"),
+// });
 
 export const dataSource = new DataSource({
   type: "mysql",

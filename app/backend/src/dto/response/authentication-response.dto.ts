@@ -5,5 +5,5 @@ export class AuthenticationResponseDto {
   token?: string;
 
   @AutoMap()
-  expireTime?: Date;
+  expireTime?: string;
 }

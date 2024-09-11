@@ -52,10 +52,34 @@ export const ErrorCodes: TErrorCode = {
     code: 1010,
     message: "Lastname is not valid",
   },
-
   INVALID_FULLNAME: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1011,
     message: "Fullname is not valid",
+  },
+  INVALID_TOKEN: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1012,
+    message: "Token is not valid",
+  },
+  INVALID_JWT_PAYLOAD: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1013,
+    message: "Jwt payload is not valid",
+  },
+  TOKEN_NOT_EXPIRED: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1014,
+    message: "Token is not expired",
+  },
+  SUBJECT_NOT_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1015,
+    message: "Subject is not exist",
+  },
+  REFRESH_TOKEN_EXPIRED: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1016,
+    message: "Refresh token expired, cannot create new token.",
   },
 };
