@@ -2,7 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { authService } from "@services";
-import { TApiResponse, TRegistrationRequestDto } from "types";
+import {
+  TApiResponse,
+  TRefreshTokenRequestDto,
+  TRegistrationRequestDto,
+} from "types";
 import { AuthenticationResponseDto } from "@dto/response";
 
 class AuthController {
@@ -179,7 +183,22 @@ class AuthController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    res.status(StatusCodes.OK).json({ message: "OK" });
+    try {
+      const requestData = req.body as TRefreshTokenRequestDto;
+      const result = await authService.refreshToken(requestData);
+
+      const response: TApiResponse<AuthenticationResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "Refresh token successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
   }
 }
 

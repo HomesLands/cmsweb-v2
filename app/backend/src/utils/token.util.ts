@@ -1,9 +1,9 @@
+import * as JWT from "jsonwebtoken";
+
 import { env } from "@constants";
 import { ErrorCodes } from "@exception/error-code";
 import { GlobalError } from "@exception/global-error";
-import { logger } from "@lib";
-import * as JWT from "jsonwebtoken";
-import moment from "moment";
+import { logger } from "@lib/logger";
 
 export class TokenUtils {
   /**
@@ -18,13 +18,12 @@ export class TokenUtils {
   /**
    * Extract the expiration date from the given JWT token.
    * @param {string} token
-   * @returns {Date} Expiration date
+   * @returns {Moment} Expiration date
    */
   static extractExpiration(token: string): Date {
     const claims = TokenUtils.extractAllClaims(token);
     if (typeof claims === "object" && "exp" in claims && claims.exp) {
-      logger.info(claims.exp);
-      return moment(claims.exp * 1000).toDate(); // Convert expiration time from seconds to milliseconds
+      return new Date(claims.exp * 1000);
     }
     throw new GlobalError(ErrorCodes.INVALID_JWT_PAYLOAD);
   }
@@ -36,12 +35,17 @@ export class TokenUtils {
    */
   static extractId(token: string): string {
     const claims = TokenUtils.extractAllClaims(token);
-    if (typeof claims === "object" && "exp" in claims && claims.jti) {
+    if (typeof claims === "object" && "jti" in claims && claims.jti) {
       return claims.jti; // Convert expiration time from seconds to milliseconds
     }
     throw new GlobalError(ErrorCodes.INVALID_JWT_PAYLOAD);
   }
 
+  /**
+   * Extract the expiration date from the given JWT token.
+   * @param {string} token
+   * @returns {number} Expiration date
+   */
   static extractIat(token: string): number {
     const claims = TokenUtils.extractAllClaims(token);
     if (typeof claims === "object" && "iat" in claims && claims.iat) {

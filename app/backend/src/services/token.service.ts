@@ -1,12 +1,12 @@
 import * as JWT from "jsonwebtoken";
-import moment from "moment";
+import { v4 as uuidv4 } from "uuid";
 
 import { env } from "@constants";
 import { User } from "@entities";
 import { GlobalError, ErrorCodes } from "@exception";
 import { invalidTokenRepository, userRepository } from "@repositories";
 import { TokenUtils } from "@utils";
-import { logger } from "@lib/logger";
+import { logger } from "@lib";
 
 class TokenService {
   private _duration: number;
@@ -14,7 +14,7 @@ class TokenService {
 
   constructor() {
     this._duration = 3600; // Second
-    this._refreshableDuration = 36000;
+    this._refreshableDuration = 36000; // sencond
   }
 
   /**
@@ -26,6 +26,12 @@ class TokenService {
   public async refreshToken(token: string): Promise<string> {
     await this.validateToken(token);
 
+    // Check if the token is still refreshable
+    const iat = TokenUtils.extractIat(token);
+    const now = Math.floor(Date.now() / 1000);
+    if (now > iat + this._refreshableDuration)
+      throw new GlobalError(ErrorCodes.REFRESH_TOKEN_EXPIRED);
+
     // Invalidate the old token
     const invalidatedToken = {
       tokenId: TokenUtils.extractId(token),
@@ -36,13 +42,10 @@ class TokenService {
     const id = TokenUtils.extractSubject(token);
     const identity = await userRepository.findOneBy({ id });
     if (!identity) {
-      throw new GlobalError(ErrorCodes.UNAUTHENTICATED);
+      throw new GlobalError(ErrorCodes.SUBJECT_NOT_EXIST);
     }
 
-    const iat = TokenUtils.extractIat(token);
-    const expiryTime = iat * 1000 + this._refreshableDuration * 1000; // expiryTime as a timestamp in ms
-
-    return this.createToken(identity, expiryTime);
+    return this.createToken(identity, this._duration);
   }
 
   /**
@@ -54,9 +57,9 @@ class TokenService {
   public async validateToken(token: string): Promise<boolean> {
     const expiryTime = TokenUtils.extractExpiration(token);
 
-    if (expiryTime.getTime() > Date.now()) {
-      throw new GlobalError(ErrorCodes.TOKEN_NOT_EXPIRED);
-    }
+    // if (expiryTime.getTime() > Date.now()) {
+    //   throw new GlobalError(ErrorCodes.TOKEN_NOT_EXPIRED);
+    // }
 
     const id = TokenUtils.extractSubject(token);
     const identity = await userRepository.findOneBy({ id });
@@ -85,6 +88,7 @@ class TokenService {
       {
         sub: identity.id,
         scope: this.buildScope(identity),
+        jti: uuidv4(),
       },
       env.jwtSecret,
       {
@@ -109,8 +113,7 @@ class TokenService {
    * @returns {string} JWT token
    */
   public generateToken(identity: User): string {
-    const expiryTime = moment().add(this._duration, "second").unix();
-    return this.createToken(identity, expiryTime);
+    return this.createToken(identity, this._duration);
   }
 }
 

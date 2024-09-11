@@ -28,3 +28,11 @@ export class RegistrationRequestDto {
   @Expose()
   fullname: string;
 }
+
+export class RefreshTokenRequestDto {
+  @IsNotEmpty({ message: "INVALID_TOKEN" })
+  @MinLength(5, { message: "INVALID_TOKEN" })
+  @AutoMap()
+  @Expose()
+  token: string;
+}
