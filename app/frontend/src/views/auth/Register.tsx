@@ -1,6 +1,7 @@
 import React from 'react'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
 
 import { registerSchema } from '@/schemas'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
@@ -10,14 +11,17 @@ import { RegisterForm } from '@/components/app/form'
 import { registerForm } from '@/api/auth'
 
 const Register: React.FC = () => {
+  const navigate = useNavigate()
   const mutation = useMutation({
     mutationFn: async (data: z.infer<typeof registerSchema>) => {
       return registerForm(data)
+    },
+    onSuccess: () => {
+      navigate('/auth/login')
     }
   })
 
   const handleSubmit = (data: z.infer<typeof registerSchema>) => {
-    console.log('Submitted Data:', data)
     mutation.mutate(data)
   }
 

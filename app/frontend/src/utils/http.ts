@@ -1,10 +1,11 @@
 // src/http.ts
 import axios from 'axios';
 import NProgress from 'nprogress';
+import { showToast, showErrorToast } from './toast'; // Import the showToast and showErrorToast functions
+
 import { useRequestStore } from '@/stores/request.store'; // Adjust the path if needed
 
 NProgress.configure({ showSpinner: false, trickleSpeed: 200 });
-
 
 Object.assign(axios.defaults, {
   baseURL: import.meta.env.VITE_BASE_API_URL,
@@ -36,7 +37,7 @@ axios.interceptors.request.use(
 
 // Response Interceptor
 axios.interceptors.response.use(
-    (response) => {
+  (response) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     if (!response.config.doNotShowLoading) {
@@ -50,6 +51,10 @@ axios.interceptors.response.use(
     }
     if (error.response) {
       const { data, status } = error.response;
+
+      if (status === 400) {
+        showErrorToast(data.code);
+      }
 
       if (status === 401 && ['TOKEN_EXPIRED'].includes(data.code)) {
         // Handle token expiration (e.g., redirect to login)
@@ -78,15 +83,19 @@ axios.interceptors.response.use(
         //   variant: 'destructive'
         // });
       }
+
+      if (status === 500) {
+        // Handle server error (e.g., show error message)
+        showErrorToast(data.code); // Use the new showErrorToast function
+      }
     }
     return Promise.reject(error);
   }
 );
 
 async function setProgressBarDone() {
-  const requestStore = useRequestStore.getState();
-  requestStore.decrementRequestQueueSize();
-  if (requestStore.requestQueueSize > 0) {
+  useRequestStore.setState({ requestQueueSize: useRequestStore.getState().requestQueueSize - 1 })
+  if (useRequestStore.getState().requestQueueSize > 0) {
     NProgress.inc();
   } else {
     NProgress.done();

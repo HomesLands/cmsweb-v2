@@ -11,7 +11,7 @@ import {
 
 import { createUserSchema } from '@/schemas'
 import { z } from 'zod'
-import { AddNewUserForm } from '../form'
+import { AddNewUserForm } from '@/components/app/form'
 
 export function DialogAddUser() {
   const handleSubmit = (data: z.infer<typeof createUserSchema>) => {

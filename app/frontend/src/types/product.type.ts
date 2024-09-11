@@ -15,12 +15,13 @@ export interface IProductApprovalInfo {
 }
 
 export interface IProductRequirementInfoCreate {
-  // requestCode: string
+  requestCode: string
   requester: string
   project: string
   construction: string
   approver: string
   note: string
+  products: IProductInfo[]
 }
 
 export interface IProductNameSearch {

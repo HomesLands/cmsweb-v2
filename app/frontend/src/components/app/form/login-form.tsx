@@ -12,24 +12,23 @@ import {
   Form,
   Button
 } from '@/components/ui'
-import { registerSchema } from '@/schemas'
+import { loginSChema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 interface IFormRegisterProps {
-  onSubmit: (data: z.infer<typeof registerSchema>) => void
+  onSubmit: (data: z.infer<typeof loginSChema>) => void
 }
 
-export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
-  const form = useForm<z.infer<typeof registerSchema>>({
-    resolver: zodResolver(registerSchema),
+export const LoginForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
+  const form = useForm<z.infer<typeof loginSChema>>({
+    resolver: zodResolver(loginSChema),
     defaultValues: {
-      fullname: '',
       username: '',
       password: ''
     }
   })
 
-  const handleSubmit = (values: z.infer<typeof registerSchema>) => {
+  const handleSubmit = (values: z.infer<typeof loginSChema>) => {
     onSubmit(values)
   }
 
@@ -38,19 +37,6 @@ export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:w-[24rem] gap-2">
-            <FormField
-              control={form.control}
-              name="fullname"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Họ và tên</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Nhập họ và tên" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="username"
@@ -83,10 +69,10 @@ export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
               Đăng ký
             </Button>
             <div className="text-sm text-center">
-              Bạn đã có tài khoản?
-              <NavLink to="/auth/login" className="underline">
+              Bạn chưa có tài khoản?
+              <NavLink to="/auth/register" className="underline">
                 {' '}
-                Đăng nhập{' '}
+                Đăng ký{' '}
               </NavLink>
             </div>
           </div>

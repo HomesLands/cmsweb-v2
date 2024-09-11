@@ -9,6 +9,7 @@ import {
   Button,
   Input
 } from '@/components/ui'
+import { DialogAddProductRequest } from '@/components/app/dialog'
 
 interface ColumnVisibilityDropdownProps<TData> {
   table: Table<TData>
@@ -46,6 +47,7 @@ export function CustomComponentRequest<TData>({ table }: ColumnVisibilityDropdow
             ))}
         </DropdownMenuContent>
       </DropdownMenu>
+      <DialogAddProductRequest />
     </>
   )
 }

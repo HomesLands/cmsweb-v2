@@ -11,16 +11,20 @@ const decodeToken = (token: string | null): string | null => {
 
 export const useUserStore = create<IUserState>((set) => ({
   userInfo: undefined,
-  accessToken: decodeToken(localStorage.getItem('accessToken')) || undefined,
-  isAuthenticated: () => !!localStorage.getItem('accessToken'),
+  token: decodeToken(localStorage.getItem('token')) || undefined,
+  isAuthenticated: () => !!localStorage.getItem('token'),
   setUserInfo: (userInfo: IUserInfo) => set({ userInfo }),
-  setAccessToken: (token: string) => {
+  setToken: (token: string) => {
     const encodedToken = encodeToken(token)
-    localStorage.setItem('accessToken', encodedToken)
-    set({ accessToken: encodedToken })
+    localStorage.setItem('token', encodedToken)
+    set({ token: encodedToken })
+  },
+  setExpireTime: (expireTime: string) => {
+    localStorage.setItem('expireTime', expireTime)
+    set({ expireTime })
   },
   logout: () => {
-    localStorage.removeItem('accessToken')
-    set({ userInfo: undefined, accessToken: undefined })
+    localStorage.removeItem('token')
+    set({ userInfo: undefined, token: undefined })
   }
 }))

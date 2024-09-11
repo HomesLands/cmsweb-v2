@@ -1,87 +1,47 @@
 import React from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { NavLink } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { z } from 'zod'
+import { useMutation } from '@tanstack/react-query'
 
 import { loginSChema } from '@/schemas'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  Button,
-  Label,
-  Input
-} from '@/components/ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
+import backgroundImage from '@/assets/images/login-background.png'
+import { LoginForm } from '@/components/app/form'
+import { loginForm } from '@/api/auth'
+import { ILogin } from '@/types'
+import { useUserStore } from '@/stores'
 
 const Login: React.FC = () => {
-  const {
-    register,
-    handleSubmit
-    // formState: { errors }
-  } = useForm({
-    resolver: zodResolver(loginSChema)
+  const navigate = useNavigate()
+  const mutation = useMutation({
+    mutationFn: async (data: z.infer<typeof loginSChema>) => {
+      return loginForm(data)
+    },
+    onSuccess: (data: ILogin) => {
+      console.log(data)
+      useUserStore.getState().setToken(data.result.token)
+      useUserStore.getState().setExpireTime(data.result.expireTime)
+      navigate('/')
+    }
   })
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data)
-  })
+  const handleSubmit = (data: z.infer<typeof loginSChema>) => {
+    mutation.mutate(data)
+  }
 
   return (
-    <div className="auth-layout ">
-      {/* <img
-        src="@/assets/login-background.png"
-        alt="login image"
-        className="absolute inset-0 z-10 object-cover w-full h-full"
-      /> */}
-      <div className="flex items-center justify-center">
-        <form onSubmit={onSubmit}>
-          <Card className="max-w-sm md:min-w-[400px] md:min-h-[400px] mx-auto border-none">
-            <CardHeader title="Login">
-              <CardTitle className="text-2xl"> Login </CardTitle>
-              <CardDescription>
-                {' '}
-                Enter your username below to login to your account{' '}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4">
-                <div className="grid gap-2">
-                  <Label>Username</Label>
-                  <Input {...register('username')} type="text" placeholder="Enter your username" />
-                  <span></span>
-                </div>
-                <div className="grid gap-2">
-                  <div className="flex items-center">
-                    <Label>Password</Label>
-                    <NavLink
-                      to="/auth/forgot-password"
-                      className="inline-block ml-auto text-sm underline"
-                    >
-                      Forgot your password?
-                    </NavLink>
-                  </div>
-                  <Input
-                    {...register('password')}
-                    type="password"
-                    placeholder="Enter your password"
-                  />
-                  <span></span>
-                </div>
-                <Button type="submit">Sign in</Button>
-                <Button variant="outline"> Login with Google </Button>
-              </div>
-              <div className="mt-4 text-sm text-center">
-                Don't have an account?
-                <NavLink to="/auth/register" className="underline">
-                  {' '}
-                  Sign up{' '}
-                </NavLink>
-              </div>
-            </CardContent>
-          </Card>
-        </form>
+    <div className="relative flex items-center justify-center min-h-screen bg-gray-100">
+      <img src={backgroundImage} className="absolute top-0 left-0 object-fill w-full h-full" />
+      <div className="relative z-10 flex items-center justify-center w-full h-full ">
+        <Card className="min-w-[24rem] mx-auto border-none shadow-xl backdrop-blur-xl">
+          <CardHeader title="Đăng nhập">
+            <CardTitle className="text-2xl"> Đăng nhập </CardTitle>
+            <CardDescription> Nhập thông tin để đăng nhập vào hệ thống </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <LoginForm onSubmit={handleSubmit} />
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

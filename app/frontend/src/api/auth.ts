@@ -1,22 +1,53 @@
-import { IPagingResponse, IRegister } from '@/types'
+import { ILogin, IRegister, IRegisterResponse } from '@/types'
 import http from '@/utils/http'
+import { showErrorToast, showToast } from '@/utils/toast'
+
+interface ApiError {
+  response: {
+    code: number
+    message: string
+  }
+}
+
+interface LoginError {
+  response: {
+    data: {
+      code: number
+      message: string
+    }
+  }
+}
 
 export async function registerForm(params: {
   fullname: string
   username: string
   password: string
-}): Promise<IPagingResponse<IRegister>> {
-  console.log('Check register', params)
+}): Promise<IRegisterResponse<IRegister>> {
   try {
-    const response = await http.post('/auth/register', params)
-  } catch (error) {
-    console.log('Failed to register', error)
+    const response = await http.post<IRegisterResponse<IRegister>>('/auth/register', params)
+    showToast('Đăng ký thành công')
+    return response.data
+  } catch (error: unknown) {
+    const apiError = error as ApiError
+    if (apiError.response?.code) {
+      const { code } = apiError.response
+      showErrorToast(code)
+    }
+    throw error
   }
-  return {
-    items: [],
-    total: 0,
-    page: 0,
-    pageSize: 0,
-    pages: 0
+}
+
+export async function loginForm(params: { username: string; password: string }): Promise<ILogin> {
+  try {
+    const response = await http.post<ILogin>('/auth/authenticate', params)
+    showToast('Đăng nhập thành công')
+    return response.data
+  } catch (error: unknown) {
+    const apiError = error as LoginError
+    if (apiError.response?.data.code) {
+      const { code } = apiError.response.data
+      showErrorToast(code)
+    }
+    throw error
   }
 }

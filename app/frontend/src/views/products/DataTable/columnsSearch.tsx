@@ -3,7 +3,6 @@ import { PlusCircledIcon } from '@radix-ui/react-icons'
 
 import {
   Button,
-  Checkbox,
   DataTableColumnHeader,
   DataTableColumnAddressHeader,
   DataTableColumnActionHeader,
@@ -14,19 +13,20 @@ import {
 } from '@/components/ui'
 import { IProductInfo } from '@/types'
 
-export const columnsSearch: ColumnDef<IProductInfo>[] = [
+export const columnsSearch = (
+  handleAddRequest: (data: IProductInfo) => void
+): ColumnDef<IProductInfo>[] => [
   {
     accessorKey: 'addRequest',
-    header: ({ column }) => (
-      <DataTableColumnActionHeader column={column} title="Thêm vào phiếu yêu cầu" />
-    ),
-    cell: () => {
+    header: 'Thêm vào phiếu yêu cầu',
+    cell: ({ row }) => {
+      const product = row.original
       return (
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <div className="flex justify-center w-full">
-                <Button variant="ghost">
+                <Button variant="ghost" onClick={() => handleAddRequest(product)}>
                   <PlusCircledIcon className="w-4 h-4" />
                 </Button>
               </div>
@@ -38,10 +38,6 @@ export const columnsSearch: ColumnDef<IProductInfo>[] = [
         </TooltipProvider>
       )
     }
-  },
-  {
-    accessorKey: 'createdBy',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Người thêm" />
   },
   {
     accessorKey: 'productCode',
@@ -66,37 +62,5 @@ export const columnsSearch: ColumnDef<IProductInfo>[] = [
   {
     accessorKey: 'quantity',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Số lượng" />
-  },
-  {
-    accessorKey: 'address',
-    header: ({ column }) => <DataTableColumnAddressHeader column={column} title="Địa chỉ" />
-  },
-  {
-    accessorKey: 'notes',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Ghi chú" />
-  },
-  {
-    accessorKey: 'addRequest',
-    header: ({ column }) => (
-      <DataTableColumnActionHeader column={column} title="Thêm vào phiếu yêu cầu" />
-    ),
-    cell: () => {
-      return (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="flex justify-center w-full">
-                <Button variant="ghost">
-                  <PlusCircledIcon className="w-4 h-4" />
-                </Button>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Thêm vào phiếu yêu cầu</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      )
-    }
   }
 ]
