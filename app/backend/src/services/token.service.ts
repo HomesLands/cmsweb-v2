@@ -6,7 +6,6 @@ import { User } from "@entities";
 import { GlobalError, ErrorCodes } from "@exception";
 import { invalidTokenRepository, userRepository } from "@repositories";
 import { TokenUtils } from "@utils";
-import { logger } from "@lib";
 
 class TokenService {
   private _duration: number;
