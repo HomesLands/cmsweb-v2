@@ -13,7 +13,7 @@ class TokenService {
   private _refreshableDuration: number;
 
   constructor() {
-    this._duration = 3600; // Second
+    this._duration = 120; // Second
     this._refreshableDuration = 36000; // sencond
   }
 

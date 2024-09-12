@@ -32,6 +32,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "fs": "^0.0.1-security",
+    "http-method-enum": "^1.0.0",
     "http-status-codes": "^2.3.0",
     "jest": "^29.7.0",
     "jsonwebtoken": "^9.0.2",

@@ -11,11 +11,13 @@ import { StatusCodes } from "http-status-codes";
 const baseApi: Router = Router();
 
 export const registerRoutes = (app: Express) => {
+  baseApi.use(authMiddleware.authenticate);
+
   baseApi.use("/auth", authRoute);
 
-  baseApi.use("/users", authMiddleware.authenticate, userRoute);
+  baseApi.use("/users", userRoute);
 
-  baseApi.use("/products", authMiddleware.authenticate, productRoute);
+  baseApi.use("/products", productRoute);
 
   baseApi.use("/healthCheck", healthCheckRoute);
 
