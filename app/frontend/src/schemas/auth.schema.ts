@@ -4,12 +4,11 @@ import { USERNAME_REGEX, PASSWORD_REGEX } from '@/constants/regex'
 
 export const loginSChema = z.object({
   username: z.string().regex(USERNAME_REGEX, 'Only letters allowed'),
-  password: z
-    .string()
-    .regex(
-      PASSWORD_REGEX,
-      'Password must be 8-20 characters, include a number and a special character'
-    )
+  password: z.string()
+  // .regex(
+  //   PASSWORD_REGEX,
+  //   'Password must be 8-20 characters, include a number and a special character'
+  // )
 })
 
 export const registerSchema = z.object({

@@ -4,14 +4,13 @@ import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
 import { columns } from './DataTable/columns'
-import { useUsers } from '@/hooks'
+import { useProducts, usePagination } from '@/hooks'
 import { CustomComponent } from './CustomComponent'
-import usePaging from '@/hooks/use-paging'
 
-const Employees: React.FC = () => {
-  const { pagination, handlePageChange, handlePageSizeChange } = usePaging()
+const ProductRequisitions: React.FC = () => {
+  const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
 
-  const { data } = useUsers({
+  const { data } = useProducts({
     page: pagination.pageIndex + 1,
     pageSize: pagination.pageSize
   })
@@ -20,7 +19,7 @@ const Employees: React.FC = () => {
     <div className="flex flex-col gap-4">
       <Label className="flex items-center gap-1 font-semibold text-normal text-md font-beVietNam">
         <ReaderIcon className="header-icon" />
-        Danh sách nhân viên
+        Danh sách yêu cầu vật tư
       </Label>
       <DataTable
         columns={columns}
@@ -36,5 +35,4 @@ const Employees: React.FC = () => {
     </div>
   )
 }
-
-export default Employees
+export default ProductRequisitions

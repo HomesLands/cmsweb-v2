@@ -1,5 +1,5 @@
 import { getProducts } from '@/api/products'
-import { RequestStatusBadge } from '@/components/app/badge/RequestStatusBadge'
+import { ProductRequisitionStatusBadge } from '@/components/app/badge'
 import {
   Button,
   Table,
@@ -97,7 +97,7 @@ const Projects: React.FC = () => {
       accessorKey: 'commanderApprovalStatus',
       header: ({ column }) => <DataTableColumnHeader column={column} title="CHT" />,
       cell: ({ row }) => {
-        return <RequestStatusBadge status={row.original.commanderApprovalStatus} />
+        return <ProductRequisitionStatusBadge status={row.original.commanderApprovalStatus} />
       }
     },
     {
@@ -108,7 +108,7 @@ const Projects: React.FC = () => {
       accessorKey: 'projectManagerApprovalStatus',
       header: ({ column }) => <DataTableColumnHeader column={column} title="TPDA" />,
       cell: ({ row }) => {
-        return <RequestStatusBadge status={row.original.projectManagerApprovalStatus} />
+        return <ProductRequisitionStatusBadge status={row.original.projectManagerApprovalStatus} />
       }
     },
     {
@@ -119,7 +119,7 @@ const Projects: React.FC = () => {
       accessorKey: 'directorApprovalStatus',
       header: ({ column }) => <DataTableColumnHeader column={column} title="GD" />,
       cell: ({ row }) => {
-        return <RequestStatusBadge status={row.original.directorApprovalStatus} />
+        return <ProductRequisitionStatusBadge status={row.original.directorApprovalStatus} />
       }
     },
     {

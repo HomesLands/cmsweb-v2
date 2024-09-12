@@ -13,7 +13,7 @@ import {
   DataTableColumnHeader
 } from '@/components/ui'
 import { IProductApprovalInfo } from '@/types'
-import { RequestStatusBadge } from '@/components/app/badge/RequestStatusBadge'
+import { ProductRequisitionStatusBadge } from '@/components/app/badge'
 
 export const columns: ColumnDef<IProductApprovalInfo>[] = [
   {
@@ -45,7 +45,7 @@ export const columns: ColumnDef<IProductApprovalInfo>[] = [
     accessorKey: 'commanderApprovalStatus',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Chỉ huy trưởng" />,
     cell: ({ row }) => {
-      return <RequestStatusBadge status={row.original.commanderApprovalStatus} />
+      return <ProductRequisitionStatusBadge status={row.original.commanderApprovalStatus} />
     }
   },
   {
@@ -56,7 +56,7 @@ export const columns: ColumnDef<IProductApprovalInfo>[] = [
     accessorKey: 'projectManagerApprovalStatus',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Trưởng phòng dự án" />,
     cell: ({ row }) => {
-      return <RequestStatusBadge status={row.original.projectManagerApprovalStatus} />
+      return <ProductRequisitionStatusBadge status={row.original.projectManagerApprovalStatus} />
     }
   },
   {
@@ -67,7 +67,7 @@ export const columns: ColumnDef<IProductApprovalInfo>[] = [
     accessorKey: 'directorApprovalStatus',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Giám đốc" />,
     cell: ({ row }) => {
-      return <RequestStatusBadge status={row.original.directorApprovalStatus} />
+      return <ProductRequisitionStatusBadge status={row.original.directorApprovalStatus} />
     }
   },
   {
