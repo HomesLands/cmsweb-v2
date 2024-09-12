@@ -1,7 +1,8 @@
+import { userController } from "@controllers";
 import { Router } from "express";
 
 export const userRoute: Router = Router();
 
-// userRoute.route("/test1").get(userController.firstC);
+userRoute.route("/").get(userController.getAllUsers);
 
 export default userRoute;

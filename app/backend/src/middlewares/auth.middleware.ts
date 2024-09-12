@@ -49,7 +49,7 @@ class AuthMiddleware {
       if (!user) return next(new GlobalError(StatusCodes.UNAUTHORIZED));
 
       // Attached decoded user id to request
-      Object.assign(req, { userId: user.id });
+      Object.assign(req, { userId: user.id }, { permission: [] });
       next();
     } catch (error) {
       next(error);

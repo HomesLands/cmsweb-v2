@@ -38,17 +38,23 @@ class Logger {
   private logger: winston.Logger;
 
   constructor() {
-    const prodTransport = new winston.transports.File({
-      filename: "logs/error.log",
-      level: "error",
-    });
+    const prodTransport = [
+      new winston.transports.File({
+        filename: "logs/error.log",
+        level: "error",
+      }),
+      new winston.transports.File({
+        filename: "logs/info.log",
+        level: "info",
+      }),
+    ];
     const transport = new winston.transports.Console({
       format: formatter,
     });
     this.logger = winston.createLogger({
       level: isDevEnvironment() ? "trace" : "error",
       levels: customLevels.levels,
-      transports: [isDevEnvironment() ? transport : prodTransport],
+      transports: isDevEnvironment() ? [transport] : prodTransport,
     });
     winston.addColors(customLevels.colors);
   }
