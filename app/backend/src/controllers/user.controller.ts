@@ -22,7 +22,11 @@ class UserController {
    *         description: Server error
    *
    */
-  public async getAllUsers(req: Request, res: Response, next: NextFunction) {
+  public async getAllUsers(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const response: TApiResponse<string[]> = {
         code: StatusCodes.OK,
@@ -33,7 +37,6 @@ class UserController {
         result: [],
       };
       res.status(StatusCodes.OK).json(response);
-      next();
     } catch (error) {
       next(error);
     }
