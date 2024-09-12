@@ -3,7 +3,6 @@ import * as JWT from "jsonwebtoken";
 import { env } from "@constants";
 import { ErrorCodes } from "@exception/error-code";
 import { GlobalError } from "@exception/global-error";
-import { logger } from "@lib/logger";
 
 export class TokenUtils {
   /**
