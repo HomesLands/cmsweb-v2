@@ -5,3 +5,9 @@ export interface IPagingResponse<T> {
   pageSize: number
   pages: number
 }
+
+export interface IRegisterResponse<T> {
+  data: T
+  message: string
+  code: number
+}

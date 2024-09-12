@@ -5,13 +5,16 @@ interface ProgressBarProps {
 }
 
 export function ProgressBar({ step }: ProgressBarProps) {
+  const currentStep = step - 1
   return (
     <ol className="flex items-center justify-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 rtl:space-x-reverse">
       {/* Step 1 */}
-      <li className={`flex items-center ${step >= 1 ? 'text-blue-600 dark:text-blue-500' : ''}`}>
+      <li
+        className={`flex items-center ${currentStep >= 1 ? 'text-blue-600 dark:text-blue-500' : ''}`}
+      >
         <span
           className={`flex items-center justify-center w-5 h-5 text-xs border rounded-full me-2 shrink-0 ${
-            step >= 1
+            currentStep >= 1
               ? 'border-blue-600 dark:border-blue-500'
               : 'border-gray-500 dark:border-gray-400'
           }`}
@@ -23,10 +26,12 @@ export function ProgressBar({ step }: ProgressBarProps) {
       </li>
 
       {/* Step 2 */}
-      <li className={`flex items-center ${step >= 2 ? 'text-blue-600 dark:text-blue-500' : ''}`}>
+      <li
+        className={`flex items-center ${currentStep >= 2 ? 'text-blue-600 dark:text-blue-500' : ''}`}
+      >
         <span
           className={`flex items-center justify-center w-5 h-5 text-xs border rounded-full me-2 shrink-0 ${
-            step >= 2
+            currentStep >= 2
               ? 'border-blue-600 dark:border-blue-500'
               : 'border-gray-500 dark:border-gray-400'
           }`}
@@ -38,10 +43,12 @@ export function ProgressBar({ step }: ProgressBarProps) {
       </li>
 
       {/* Step 3 */}
-      <li className={`flex items-center ${step >= 3 ? 'text-blue-600 dark:text-blue-500' : ''}`}>
+      <li
+        className={`flex items-center ${currentStep >= 3 ? 'text-blue-600 dark:text-blue-500' : ''}`}
+      >
         <span
           className={`flex items-center justify-center w-5 h-5 text-xs border rounded-full me-2 shrink-0 ${
-            step >= 3
+            currentStep >= 3
               ? 'border-blue-600 dark:border-blue-500'
               : 'border-gray-500 dark:border-gray-400'
           }`}

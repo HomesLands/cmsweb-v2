@@ -67,12 +67,12 @@ const DashboardLayout = () => {
         {/* Header */}
         <header
           className={cn(
-            'sticky top-0 left-0 w-full flex items-center justify-between gap-4 px-2 h-14 border-b z-10',
-            'sm:gap-0 sm:px-0 sm:h-auto sm:justify-end'
+            'fixed top-0 left-0 w-full flex items-center justify-between gap-4 bg-white px-2 h-14 border-b z-10',
+            'sm:justify-end sm:fixed sm:top-0 sm:h-14'
           )}
         >
           <SidebarDrawerMobile />
-          <div className="flex flex-row items-center justify-end h-12 gap-2">
+          <div className="flex flex-row items-center justify-end gap-2 h-14">
             <SelectLanguage />
             <PopoverNotification />
             <DropdownHeader />
@@ -80,7 +80,7 @@ const DashboardLayout = () => {
         </header>
 
         {/* Main Content (Outlet) */}
-        <main className="p-4 transition-all duration-300">
+        <main className="p-4 mt-12 transition-all duration-300">
           <Outlet />
         </main>
       </div>

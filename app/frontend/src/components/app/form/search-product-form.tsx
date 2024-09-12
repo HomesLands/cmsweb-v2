@@ -1,77 +1,98 @@
-import { useForm } from 'react-hook-form'
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-  Input,
-  Form,
-  Button,
-  DataTable
-} from '@/components/ui'
-import { productSearchSchema } from '@/schemas'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import usePaging from '@/hooks/use-paging'
-import { useProducts } from '@/hooks'
-import { columns } from '@/views/products/DataTable/columns'
+import { useState, useEffect } from 'react'
 
-interface IFormCreateProductProps {
-  onSubmit: (data: z.infer<typeof productSearchSchema>) => void
+import { useMultiStep } from '@/hooks'
+import { useProductList } from '@/hooks'
+import { IProductInfo, IProductNameSearch } from '@/types'
+
+import { Button, DataTable, Label } from '@/components/ui'
+import { CustomComponentRequest } from '@/views/products/CustomComponentRequest'
+import { columnsSearch } from '@/views/products/DataTable/columnsSearch'
+import { columnsResult } from '@/views/products/DataTable/columnsResult'
+
+interface IFormAddProductProps {
+  onSubmit: (data: IProductNameSearch) => void
+  onBack: (step: number) => void
+  initialData?: IProductNameSearch | null
 }
 
-export const FormSearchProduct: React.FC<IFormCreateProductProps> = ({ onSubmit }) => {
-  const { pagination, handlePageChange, handlePageSizeChange } = usePaging()
+export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack }) => {
+  const { currentStep, handleStepChange } = useMultiStep(1)
 
-  const { data } = useProducts({
-    page: pagination.pageIndex + 1,
-    pageSize: pagination.pageSize
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  const [selectedProducts, setSelectedProducts] = useState<IProductInfo[]>([])
+
+  const { data } = useProductList({
+    page,
+    pageSize
   })
 
-  const form = useForm<z.infer<typeof productSearchSchema>>({
-    resolver: zodResolver(productSearchSchema),
-    defaultValues: {
-      productName: ''
-    }
-  })
-
-  const handleSubmit = (values: z.infer<typeof productSearchSchema>) => {
-    onSubmit(values)
+  const handleBack = () => {
+    onBack(1)
   }
 
+  const handleNext = () => {
+    console.log('Current step in handleNext:', currentStep)
+    handleStepChange(3)
+  }
+
+  const handleAddRequest = (product: IProductInfo) => {
+    console.log('Product added:', product)
+    const existingData = JSON.parse(localStorage.getItem('requestFormProducts') || '{}')
+    const updatedData =
+      typeof existingData === 'object' && existingData !== null ? existingData : {}
+    const productsArray = Array.isArray(updatedData.products) ? updatedData.products : []
+    const updatedProducts = [...productsArray, product]
+    updatedData.products = updatedProducts
+    localStorage.setItem('requestFormProducts', JSON.stringify(updatedData))
+    setSelectedProducts(updatedProducts) // Update state with selected products
+  }
+
+  useEffect(() => {
+    const existingData = JSON.parse(localStorage.getItem('requestFormProducts') || '{}')
+    const productsArray = Array.isArray(existingData.products) ? existingData.products : []
+    setSelectedProducts(productsArray)
+  }, [])
+
   return (
-    <div className="w-full mt-3">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="flex items-end w-full gap-2">
-          <FormField
-            control={form.control}
-            name="productName"
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <FormLabel>Tìm kiếm vật tư</FormLabel>
-                <FormControl>
-                  <Input placeholder="Nhập tên vật tư" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit" className="whitespace-nowrap">
-            Tìm kiếm
-          </Button>
-        </form>
-      </Form>
+    <div className="flex flex-col w-full gap-4 mt-3">
       <DataTable
-        columns={columns}
+        columns={columnsSearch(handleAddRequest)}
         data={data?.items || []}
         total={data?.total || 0}
         pages={data?.pages || 0}
-        page={pagination.pageIndex + 1}
-        pageSize={pagination.pageSize}
-        onPageChange={handlePageChange}
-        onPageSizeChange={handlePageSizeChange}
+        page={page}
+        pageSize={pageSize}
+        onPageChange={setPage}
+        onPageSizeChange={setPageSize}
+        CustomComponent={CustomComponentRequest}
       />
+
+      <div className="flex flex-col gap-2 p-4 border rounded-md">
+        <Label className="text-lg font-semibold leading-none tracking-tight font-beVietNam">
+          Danh sách vật tư đã thêm vào phiếu yêu cầu
+        </Label>
+        <span className="text-sm text-muted-foreground">Công ty Cổ phần Công nghệ Mekong</span>
+        <div className="flex flex-col gap-2">
+          <DataTable
+            columns={columnsResult()}
+            data={selectedProducts} // Use selected products for the second DataTable
+            total={selectedProducts.length}
+            pages={1}
+            page={1}
+            pageSize={selectedProducts.length}
+            onPageChange={() => {}}
+            onPageSizeChange={() => {}}
+            CustomComponent={CustomComponentRequest}
+          />
+        </div>
+      </div>
+      <div className="flex items-center justify-end w-full gap-2 mt-4">
+        <Button variant="outline" onClick={handleBack}>
+          Trở lại
+        </Button>
+        <Button onClick={handleNext}>Tiếp theo</Button>
+      </div>
     </div>
   )
 }

@@ -1,36 +1,27 @@
 import React from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { NavLink } from 'react-router-dom'
+import { z } from 'zod'
+import { useMutation } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
 
-import { loginSChema, registerSchema } from '@/schemas'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  Label,
-  Input,
-  Button
-} from '@/components/ui'
+import { registerSchema } from '@/schemas'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
 
 import backgroundImage from '@/assets/images/login-background.png'
 import { RegisterForm } from '@/components/app/form'
-import { z } from 'zod'
-import { useMutation } from '@tanstack/react-query'
 import { registerForm } from '@/api/auth'
 
 const Register: React.FC = () => {
+  const navigate = useNavigate()
   const mutation = useMutation({
     mutationFn: async (data: z.infer<typeof registerSchema>) => {
       return registerForm(data)
+    },
+    onSuccess: () => {
+      navigate('/auth/login')
     }
   })
 
   const handleSubmit = (data: z.infer<typeof registerSchema>) => {
-    // handle form submission
-    console.log('Submitted Data:', data)
     mutation.mutate(data)
   }
 

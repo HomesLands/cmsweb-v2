@@ -23,12 +23,26 @@ export interface IRegister {
   password: string
 }
 
+export interface ILogin {
+  code: number
+  error: boolean
+  message: string
+  method: string
+  path: string
+  result: {
+    expireTime: string
+    token: string
+  }
+}
+
 export interface IUserState {
   userInfo?: IUserInfo
-  accessToken?: string
+  token?: string
+  expireTime?: string
   isAuthenticated: () => boolean
   setUserInfo: (userInfo: IUserInfo) => void
-  setAccessToken: (token: string) => void
+  setToken: (token: string) => void
+  setExpireTime: (expireTime: string) => void
   logout: () => void
 }
 
