@@ -11,3 +11,9 @@ export interface IRegisterResponse<T> {
   message: string
   code: number
 }
+
+export interface IResponse<T> {
+  data: T
+  message: string
+  code: number
+}

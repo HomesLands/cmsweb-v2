@@ -4,7 +4,7 @@ import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
 import { columns } from './DataTable/columns'
-import { useUsers } from '@/hooks'
+import { useUsers, useUsers2 } from '@/hooks'
 import { CustomComponent } from './CustomComponent'
 import usePaging from '@/hooks/use-paging'
 
@@ -15,6 +15,9 @@ const Employees: React.FC = () => {
     page: pagination.pageIndex + 1,
     pageSize: pagination.pageSize
   })
+
+  const { data: data2 } = useUsers2()
+  console.log(data2)
 
   return (
     <div className="flex flex-col gap-4">

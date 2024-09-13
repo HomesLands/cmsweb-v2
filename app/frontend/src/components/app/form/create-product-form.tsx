@@ -14,6 +14,7 @@ import { productSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { IProductRequirementInfoCreate } from '@/types'
+import { SelectRequestPriority } from '../select'
 
 // Function to generate request code
 const generateRequestCode = () => {
@@ -38,6 +39,7 @@ export const CreateProductForm: React.FC<IFormCreateProductProps> = ({ onSubmit,
       construction: '',
       approver: '',
       note: '',
+      priority: 'normal',
       ...initialData
     }
   })
@@ -91,7 +93,7 @@ export const CreateProductForm: React.FC<IFormCreateProductProps> = ({ onSubmit,
               )}
             />
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-3 gap-2">
             <FormField
               control={form.control}
               name="construction"
@@ -113,6 +115,19 @@ export const CreateProductForm: React.FC<IFormCreateProductProps> = ({ onSubmit,
                   <FormLabel>Tên người duyệt</FormLabel>
                   <FormControl>
                     <Input placeholder="Nhập tên người duyệt" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="priority"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Mức ưu tiên</FormLabel>
+                  <FormControl>
+                    <SelectRequestPriority {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

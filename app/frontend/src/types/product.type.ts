@@ -20,6 +20,7 @@ export interface IProductRequirementInfoCreate {
   project: string
   construction: string
   approver: string
+  priority: string
   note: string
   products: IProductInfo[]
 }
@@ -33,9 +34,9 @@ export interface IProductInfoSearch {
   productName: string
   modelOrSerialNumber: string
   supplier: string
-  importDate: string // Change this to string
+  // importDate: string // Change this to string
   unit: string
-  quantity: number
+  quantity: string
   address: string
   note?: string
 }
@@ -50,7 +51,7 @@ export interface IProductInfo {
   supplier: string
   // importDate: string // Change this to string
   unit: string
-  quantity?: number
+  quantity: string
   address: string
   note?: string
   createdAt?: Date

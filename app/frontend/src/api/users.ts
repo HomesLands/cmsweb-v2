@@ -1,4 +1,5 @@
 import { IPagingResponse, IUserInfo } from '@/types'
+import http from '@/utils/http'
 
 import userData from '@/data/users'
 
@@ -32,4 +33,9 @@ export async function getUsers(params: {
     console.log('Failed to fetch users:', error)
     throw new Error('Failed to fetch users')
   }
+}
+
+export async function getUsers2() {
+  const response = await http.get<IUserInfo>('/users')
+  return response.data
 }

@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
-// import { useMutation } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
+import { postProductRequest } from '@/api/products'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
 import { IProductRequirementInfoCreate, IProductNameSearch, IProductInfo } from '@/types'
 import { CreateProductForm, SearchProductForm, ConfirmProductForm } from '@/components/app/form'
 import { ProgressBar } from '@/components/app/progress/progress-bar'
-// import { productRequest } from '@/api/products'
 import { useMultiStep } from '@/hooks'
+import toast from 'react-hot-toast'
 
 const ProductRequest: React.FC = () => {
   const { currentStep, handleStepChange } = useMultiStep(1)
-  // const [step, setStep] = useState<number>(1)
   const [formData, setFormData] = useState<IProductRequirementInfoCreate | null>(null)
   const [searchData, setSearchData] = useState<IProductNameSearch | null>(null)
 
@@ -25,11 +25,11 @@ const ProductRequest: React.FC = () => {
     }
   }, [])
 
-  // const mutation = useMutation({
-  //   mutationFn: async (data: IProductRequirementInfoCreate) => {
-  //     return productRequest(data)
-  //   }
-  // })
+  const mutation = useMutation({
+    mutationFn: async (data: IProductRequirementInfoCreate) => {
+      return postProductRequest(data)
+    }
+  })
 
   const handleFormCreateSubmit = (data: {
     requestCode: string
@@ -38,6 +38,7 @@ const ProductRequest: React.FC = () => {
     construction: string
     approver: string
     note: string
+    priority: string
     products: IProductInfo[]
   }) => {
     setFormData(data)
@@ -54,10 +55,11 @@ const ProductRequest: React.FC = () => {
   const handleConfirmRequest = () => {
     const savedFormData = localStorage.getItem('requestFormProducts')
     if (savedFormData) {
-      // const parsedFormData = JSON.parse(savedFormData)
-      // mutation.mutate(parsedFormData)
+      const productData = JSON.parse(savedFormData)
+      mutation.mutate(productData)
+      toast.success('Yêu cầu đã được gửi thành công')
 
-      handleStepChange(4)
+      // handleStepChange(4)
     }
   }
 
@@ -127,7 +129,7 @@ const ProductRequest: React.FC = () => {
               <ConfirmProductForm
                 data={formData}
                 onConfirm={handleConfirmRequest}
-                onBack={() => handleBackToSearch(1)}
+                onBack={handleBackToSearch}
               />
             </CardContent>
           </Card>

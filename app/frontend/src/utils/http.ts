@@ -1,17 +1,29 @@
 // src/http.ts
 import axios from 'axios'
 import NProgress from 'nprogress'
-
-import { showErrorToast } from './toast'
+import moment from 'moment'
 
 import { useRequestStore } from '@/stores/request.store'
+import { showErrorToast } from './toast'
 import { useToLogin } from '@/router'
+import { useUserStore } from '@/stores'
 
-interface ResponseData {
+interface RefreshTokenResponse {
   code: string
+  message: string
+  result: {
+    token: string
+    expireTime: string
+  }
 }
 
 NProgress.configure({ showSpinner: false, trickleSpeed: 200 })
+
+const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_BASE_API_URL,
+  timeout: 10000,
+  withCredentials: true
+})
 
 Object.assign(axios.defaults, {
   baseURL: import.meta.env.VITE_BASE_API_URL,
@@ -19,12 +31,28 @@ Object.assign(axios.defaults, {
   withCredentials: true
 })
 
-// Request Interceptor
-axios.interceptors.request.use(
+function isTokenExpired(expireTime: string): boolean {
+  if (!expireTime) return true
+
+  const expirationTime = moment(expireTime, 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ')
+  const now = moment()
+
+  return now.isAfter(expirationTime)
+}
+
+function refreshToken(token: string) {
+  return axiosInstance.post<RefreshTokenResponse>('/auth/refresh', { token }).then((response) => {
+    const { token, expireTime } = response.data.result
+    useUserStore.setState({ token, expireTime })
+    return token
+  })
+}
+
+axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token')
-    if (token) {
-      config.headers = config.headers || {} // Ensure headers is defined
+    const { token, expireTime } = useUserStore.getState()
+    if (token && expireTime && isTokenExpired(expireTime)) {
+      config.headers = config.headers || {}
       config.headers.Authorization = `Bearer ${token}`
     }
     if (!(config as { doNotShowLoading?: boolean })?.doNotShowLoading) {
@@ -41,28 +69,31 @@ axios.interceptors.request.use(
   }
 )
 
-const isTokenExpired = (status: number, data: ResponseData) =>
-  status === 401 && ['TOKEN_EXPIRED'].includes(data.code)
-
 // Response Interceptor
-axios.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   (response) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    if (!response.config.doNotShowLoading) {
+    // Đảm bảo config tồn tại
+    const config = response.config || {}
+
+    if (!(config as { doNotShowLoading?: boolean })?.doNotShowLoading) {
       setProgressBarDone()
     }
     return response
   },
   async (error) => {
-    if (!error.config.doNotShowLoading) {
+    const config = error.config || {}
+
+    if (!config.doNotShowLoading) {
       setProgressBarDone()
     }
     if (error.response) {
       const { data, status } = error.response
+      console.log(data)
 
-      if (isTokenExpired(status, data)) {
-        await showErrorToast(data.code)
+      if (isTokenExpired(data.expireTime)) {
+        console.log('token expired')
+        showErrorToast(data.code)
+        console.log('useToLogin in http')
         useToLogin()
         return Promise.reject(error)
       }
@@ -71,23 +102,29 @@ axios.interceptors.response.use(
         showErrorToast(data.code)
       }
 
-      if (status === 401) {
-        // Handle token expiration (e.g., redirect to login)
-        await showErrorToast(data.code)
-        useToLogin()
-        return Promise.reject(error)
-      }
-
-      if (status === 403) {
-        // Handle unauthorized access (e.g., redirect to login)
-        await showErrorToast(data.code)
-        useToLogin()
-        return Promise.reject(error)
+      if (status === 401 || status === 403) {
+        try {
+          const currentToken = useUserStore.getState().token
+          if (currentToken) {
+            const newToken = await refreshToken(currentToken)
+            error.config.headers.Authorization = `Bearer ${newToken}`
+            return axiosInstance.request(error.config)
+          } else {
+            showErrorToast(data.code)
+            console.log('useToLogin in http')
+            useToLogin()
+          }
+          return Promise.reject(error)
+        } catch {
+          showErrorToast(data.code)
+          console.log('useToLogin in http')
+          useToLogin()
+          return Promise.reject(error)
+        }
       }
 
       if (status === 500) {
-        // Handle server error (e.g., show error message)
-        showErrorToast(data.code) // Use the new showErrorToast function
+        showErrorToast(data.code)
       }
     }
     return Promise.reject(error)
@@ -103,4 +140,4 @@ async function setProgressBarDone() {
   }
 }
 
-export default axios
+export default axiosInstance

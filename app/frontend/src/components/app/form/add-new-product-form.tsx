@@ -1,4 +1,6 @@
 import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+
 import {
   FormField,
   FormItem,
@@ -11,7 +13,6 @@ import {
 } from '@/components/ui'
 import { addNewProductSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 
 interface IFormAddNewProductProps {
   onSubmit: (data: z.infer<typeof addNewProductSchema>) => void
@@ -30,7 +31,7 @@ export const AddNewProductForm: React.FC<IFormAddNewProductProps> = ({ onSubmit 
       unit: '',
       address: '',
       note: '',
-      quantity: 0 // Set the default value for quantity to 0
+      quantity: ''
     }
   })
 
