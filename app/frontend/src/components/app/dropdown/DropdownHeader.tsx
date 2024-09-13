@@ -12,7 +12,7 @@ import {
 } from '@/components/ui'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
-import { showToast } from '@/utils/toast'
+import { showToast } from '@/utils'
 import { useState } from 'react'
 import { DialogLogout } from '../dialog'
 import { logout } from '@/api/auth'

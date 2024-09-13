@@ -21,7 +21,7 @@ export function ProgressBar({ step }: ProgressBarProps) {
         >
           1
         </span>
-        <span className="hidden sm:text-sm sm:inline-flex sm:ms-1">Tạo phiếu vật tư</span>
+        <span className="hidden sm:text-sm sm:inline-flex sm:ms-1">Tạo phiếu yêu cầu</span>
         <DoubleArrowRightIcon className="w-4 h-4 ms-2 sm:ms-4 rtl:rotate-180" />
       </li>
 

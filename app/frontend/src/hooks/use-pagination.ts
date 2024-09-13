@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { PaginationState } from '@tanstack/react-table'
 
-const usePaging = () => {
+export const usePagination = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const page = parseInt(searchParams.get('page') || '1', 10)
   const pageSize = parseInt(searchParams.get('pageSize') || '10', 10)
@@ -36,5 +36,3 @@ const usePaging = () => {
 
   return { pagination, handlePageChange, handlePageSizeChange }
 }
-
-export default usePaging

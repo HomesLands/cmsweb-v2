@@ -1,7 +1,6 @@
-import { useUserStore } from '@/stores'
 import { ILogin, IRefreshToken, IRegister, IRegisterResponse } from '@/types'
-import http from '@/utils/http'
-import { showErrorToast, showToast } from '@/utils/toast'
+import { http, showErrorToast, showToast } from '@/utils'
+import { useUserStore } from '@/stores'
 
 interface ApiError {
   response: {
@@ -29,6 +28,7 @@ export async function registerForm(params: {
     showToast('Đăng ký thành công')
     return response.data
   } catch (error: unknown) {
+    console.log(error)
     const apiError = error as ApiError
     if (apiError.response?.code) {
       const { code } = apiError.response

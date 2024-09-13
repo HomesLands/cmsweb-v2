@@ -40,7 +40,7 @@ export function CustomComponent<TData>({ table }: ColumnVisibilityDropdownProps<
             ))}
         </DropdownMenuContent>
       </DropdownMenu>
-      <NavLink to="/products/add">
+      <NavLink to="/product-requisitions/add">
         <Button variant="outline" className="flex gap-1 font-beVietNam text-normal">
           <PlusCircledIcon className="icon" />
           Thêm yêu cầu vật tư

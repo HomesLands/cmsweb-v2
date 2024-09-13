@@ -5,9 +5,9 @@ import { useProductList } from '@/hooks'
 import { IProductInfo, IProductNameSearch } from '@/types'
 
 import { Button, DataTable, Label } from '@/components/ui'
-import { CustomComponentRequest } from '@/views/products/CustomComponentRequest'
-import { useColumnsSearch } from '@/views/products/DataTable/columnsSearch'
-import { columnsResult } from '@/views/products/DataTable/columnsResult'
+import { CustomComponentRequest } from '@/views/product-requisitions/CustomComponentRequest'
+import { useColumnsSearch } from '@/views/product-requisitions/DataTable/columnsSearch'
+import { columnsResult } from '@/views/product-requisitions/DataTable/columnsResult'
 
 interface IFormAddProductProps {
   onSubmit: (data: IProductNameSearch) => void
