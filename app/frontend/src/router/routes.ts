@@ -6,12 +6,18 @@ const routes: IRoute[] = [
   {
     title: 'Login',
     path: '/auth/login',
-    component: () => import('@/views/auth/Login')
+    component: () =>
+      import('@/views/auth').then((module) => ({
+        default: module.LoginPage
+      }))
   },
   {
     title: 'Register',
     path: '/auth/register',
-    component: () => import('@/views/auth/Register')
+    component: () =>
+      import('@/views/auth').then((module) => ({
+        default: module.RegisterPage
+      }))
   },
   {
     title: 'Home',
@@ -29,26 +35,32 @@ const routes: IRoute[] = [
       {
         title: 'Danh sách nhân viên',
         path: 'list',
-        component: () => import('@/views/employees/EmployeesList')
+        component: () =>
+          import('@/views/employees').then((module) => ({
+            default: module.Employees
+          }))
       }
     ]
   },
   {
     title: 'Project Subsystem',
-    path: '/projects-manage',
+    path: '/projects',
     component: () =>
       import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
       {
         title: 'Projects',
         path: 'list',
-        component: () => import('@/views/projects/Projects')
+        component: () =>
+          import('@/views/projects').then((module) => ({
+            default: module.Projects
+          }))
       }
     ]
   },
   {
     title: 'Yêu cầu vật tư',
-    path: '/products',
+    path: '/product-requisitions',
     component: () =>
       import('@/components/app/layouts').then((module) => ({
         default: module.DashboardLayout
@@ -57,12 +69,18 @@ const routes: IRoute[] = [
       {
         title: 'Danh sách yêu cầu vật tư',
         path: 'list',
-        component: () => import('@/views/products/Products')
+        component: () =>
+          import('@/views/product-requisitions').then((module) => ({
+            default: module.ProductRequisitions
+          }))
       },
       {
         title: 'Thêm yêu cầu vật tư',
         path: 'add',
-        component: () => import('@/views/products/ProductRequest')
+        component: () =>
+          import('@/views/product-requisitions').then((module) => ({
+            default: module.ProductRequisitionForm
+          }))
       }
     ]
   },
@@ -87,78 +105,90 @@ const routes: IRoute[] = [
 ]
 
 const sidebarSubmenus: ISidebarSubmenu[] = [
-  {
-    title: 'Quản lý nhân viên',
-    path: '/employees',
-    icon: PersonIcon,
-    component: () =>
-      import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
-    children: [
-      {
-        title: 'Danh sách nhân viên',
-        path: '/employees/list',
-        icon: AlignJustify,
-        component: () => import('@/views/employees/EmployeesList')
-      }
-    ]
-  },
-  {
-    title: 'Quản lý dự án',
-    path: '/projects-manage',
-    icon: FileTextIcon,
-    component: () =>
-      import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
-    children: [
-      {
-        title: 'Danh sách dự án',
-        path: '/projects-manage/list',
-        icon: Archive,
-        component: () => import('@/views/projects/Projects')
-      }
-    ]
-  },
+  // {
+  //   title: 'Quản lý nhân viên',
+  //   path: '/employees',
+  //   icon: PersonIcon,
+  //   component: () =>
+  //     import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
+  //   children: [
+  //     {
+  //       title: 'Danh sách nhân viên',
+  //       path: '/employees/list',
+  //       icon: AlignJustify,
+  //       component: () =>
+  //         import('@/views/employees').then((module) => ({
+  //           default: module.Employees
+  //         }))
+  //     }
+  //   ]
+  // },
+  // {
+  //   title: 'Quản lý dự án',
+  //   path: '/projects',
+  //   icon: FileTextIcon,
+  //   component: () =>
+  //     import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
+  //   children: [
+  //     {
+  //       title: 'Danh sách dự án',
+  //       path: '/projects/list',
+  //       icon: Archive,
+  //       component: () =>
+  //         import('@/views/projects').then((module) => ({
+  //           default: module.Projects
+  //         }))
+  //     }
+  //   ]
+  // },
   {
     title: 'Yêu cầu vật tư',
-    path: '/products',
+    path: '/product-requisitions',
     icon: ArchiveIcon,
     component: () =>
       import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
       {
         title: 'Danh sách yêu cầu vật tư',
-        path: '/products/list',
+        path: '/product-requisitions/list',
         icon: Archive,
-        component: () => import('@/views/products/Products')
+        component: () =>
+          import('@/views/product-requisitions').then((module) => ({
+            default: module.ProductRequisitions
+          }))
       },
       {
         title: 'Thêm yêu cầu vật tư',
-        path: '/products/add',
+        path: '/product-requisitions/add',
         icon: Archive,
-        component: () => import('@/views/products/Products')
-      }
-    ]
-  },
-  {
-    title: 'Kho',
-    path: '/warehouse',
-    icon: CubeIcon,
-    component: () =>
-      import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
-    children: [
-      {
-        title: 'Thêm vật tư',
-        path: '/warehouse/add',
-        icon: Archive,
-        component: () => import('@/views/warehouse/AddProduct')
-      },
-      {
-        title: 'Danh sách vật tư',
-        path: '/warehouse/list',
-        icon: Archive,
-        component: () => import('@/views/warehouse/Warehouse')
+        component: () =>
+          import('@/views/product-requisitions').then((module) => ({
+            default: module.ProductRequisitionForm
+          }))
       }
     ]
   }
+  // {
+  //   title: 'Kho',
+  //   path: '/warehouse',
+  //   icon: CubeIcon,
+  //   component: () =>
+  //     import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
+  //   children: [
+  //     {
+  //       title: 'Thêm vật tư',
+  //       path: '/warehouse/add',
+  //       icon: Archive,
+  //       component: () => import('@/views/warehouse/AddProduct')
+  //     },
+  //     {
+  //       title: 'Danh sách vật tư',
+  //       path: '/warehouse/list',
+  //       icon: Archive,
+  //       component: () => import('@/views/warehouse/Warehouse')
+  //     }
+  //   ]
+  // }
 ]
 
 export { routes, sidebarSubmenus }

@@ -3,7 +3,6 @@ import axios from 'axios'
 import NProgress from 'nprogress'
 
 import { showErrorToast } from './toast'
-
 import { useRequestStore } from '@/stores/request.store'
 import { useToLogin } from '@/router'
 
@@ -62,7 +61,7 @@ axios.interceptors.response.use(
       const { data, status } = error.response
 
       if (isTokenExpired(status, data)) {
-        await showErrorToast(data.code)
+        showErrorToast(data.code)
         useToLogin()
         return Promise.reject(error)
       }
@@ -73,14 +72,14 @@ axios.interceptors.response.use(
 
       if (status === 401) {
         // Handle token expiration (e.g., redirect to login)
-        await showErrorToast(data.code)
+        showErrorToast(data.code)
         useToLogin()
         return Promise.reject(error)
       }
 
       if (status === 403) {
         // Handle unauthorized access (e.g., redirect to login)
-        await showErrorToast(data.code)
+        showErrorToast(data.code)
         useToLogin()
         return Promise.reject(error)
       }

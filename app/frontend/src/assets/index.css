@@ -78,7 +78,7 @@
     @apply border-b border-b-gray-200 flex h-14 items-center justify-between gap-4 px-4 lg:h-[60px] lg:px-4;
   }
   .text-normal{
-    @apply text-gray-500;
+    @apply text-gray-800;
   }
   .text-danger{
     @apply text-xs text-red-500;

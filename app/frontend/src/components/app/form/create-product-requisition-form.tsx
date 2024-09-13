@@ -14,25 +14,21 @@ import { productSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { IProductRequirementInfoCreate } from '@/types'
-
-// Function to generate request code
-const generateRequestCode = () => {
-  const currentDate = new Date()
-  const ddmmyyyy = `${currentDate.getDate().toString().padStart(2, '0')}${(currentDate.getMonth() + 1).toString().padStart(2, '0')}${currentDate.getFullYear()}`
-  const randomChars = Math.random().toString(36).substring(2, 7).toUpperCase()
-  return `YCVT${ddmmyyyy}-${randomChars}`
-}
+import { generateProductRequisitionCode } from '@/utils'
 
 interface IFormCreateProductProps {
   onSubmit: (data: z.infer<typeof productSchema>) => void
   initialData?: IProductRequirementInfoCreate | null
 }
 
-export const CreateProductForm: React.FC<IFormCreateProductProps> = ({ onSubmit, initialData }) => {
+export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = ({
+  onSubmit,
+  initialData
+}) => {
   const form = useForm<z.infer<typeof productSchema>>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      requestCode: generateRequestCode(),
+      requestCode: generateProductRequisitionCode(),
       requester: '',
       project: '',
       construction: '',
@@ -50,7 +46,7 @@ export const CreateProductForm: React.FC<IFormCreateProductProps> = ({ onSubmit,
     <div className="mt-3">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 gap-2">
             <FormField
               control={form.control}
               name="requestCode"
@@ -91,7 +87,7 @@ export const CreateProductForm: React.FC<IFormCreateProductProps> = ({ onSubmit,
               )}
             />
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 gap-2">
             <FormField
               control={form.control}
               name="construction"

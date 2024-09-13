@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
-// import { useMutation } from '@tanstack/react-query'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
 import { IProductRequirementInfoCreate, IProductNameSearch, IProductInfo } from '@/types'
-import { CreateProductForm, SearchProductForm, ConfirmProductForm } from '@/components/app/form'
+import {
+  CreateProductRequisitionForm,
+  SearchProductForm,
+  ConfirmProductForm
+} from '@/components/app/form'
 import { ProgressBar } from '@/components/app/progress/progress-bar'
-// import { productRequest } from '@/api/products'
 import { useMultiStep } from '@/hooks'
 
-const ProductRequest: React.FC = () => {
+const ProductRequisitionForm: React.FC = () => {
   const { currentStep, handleStepChange } = useMultiStep(1)
   // const [step, setStep] = useState<number>(1)
   const [formData, setFormData] = useState<IProductRequirementInfoCreate | null>(null)
@@ -94,7 +96,10 @@ const ProductRequest: React.FC = () => {
               </div>
             </CardHeader>
             <CardContent className="flex flex-col">
-              <CreateProductForm onSubmit={handleFormCreateSubmit} initialData={formData} />
+              <CreateProductRequisitionForm
+                onSubmit={handleFormCreateSubmit}
+                initialData={formData}
+              />
             </CardContent>
           </Card>
         )}
@@ -150,4 +155,4 @@ const ProductRequest: React.FC = () => {
   )
 }
 
-export default ProductRequest
+export default ProductRequisitionForm
