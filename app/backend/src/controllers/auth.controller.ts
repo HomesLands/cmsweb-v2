@@ -54,13 +54,18 @@ class AuthController {
    *     RefreshTokenRequestDto:
    *       type: object
    *       required:
-   *         - token
+   *         - expiredToken
+   *         - refreshToken
    *       properties:
-   *         token:
+   *         expiredToken:
    *           type: string
-   *           description: token
+   *           description: Expired token
+   *         refreshToken:
+   *           type: string
+   *           description: Refresh token
    *       example:
-   *         token: ""
+   *         expiredToken: ""
+   *         refreshToken: ""
    */
 
   /**

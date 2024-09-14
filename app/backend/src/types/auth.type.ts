@@ -10,5 +10,6 @@ export type TAuthenticationRequestDto = {
 };
 
 export type TRefreshTokenRequestDto = {
-  token: string;
+  expiredToken: string;
+  refreshToken: string;
 };

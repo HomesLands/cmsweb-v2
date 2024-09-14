@@ -5,5 +5,16 @@ export class AuthenticationResponseDto {
   token?: string;
 
   @AutoMap()
+  refreshToken?: string;
+
+  @AutoMap()
+  expireTime?: string;
+}
+
+export class RefreshTokenResponseDto {
+  @AutoMap()
+  token?: string;
+
+  @AutoMap()
   expireTime?: string;
 }
