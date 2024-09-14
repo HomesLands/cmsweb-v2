@@ -2,10 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import { HTTPMethod } from "http-method-enum";
 import _ from "lodash";
 
-import { GlobalError } from "@exception";
+import { ErrorCodes, GlobalError } from "@exception";
 import { userRepository } from "@repositories";
 import { StatusCodes } from "http-status-codes";
 import { TokenUtils } from "@utils";
+import tokenService from "@services/token.service";
 
 // Define a list of whitelisted routes with allowed methods
 const whitelist = [
@@ -35,6 +36,7 @@ class AuthMiddleware {
     const isWhitelisted = whitelist.some(
       (route) => route.path === req.path && route.method === req.method
     );
+
     if (isWhitelisted) return next(); // Skip authentication for whitelisted routes
 
     // Get token
@@ -43,13 +45,16 @@ class AuthMiddleware {
 
     const authToken = token.split(" ")[1];
     try {
+      const isExpired = TokenUtils.isExpired(authToken);
+      if (isExpired) throw new GlobalError(ErrorCodes.TOKEN_EXPIRED);
+
       // Get user
       const sub = TokenUtils.extractSubject(authToken);
       const user = await userRepository.findOneBy({ id: sub });
       if (!user) return next(new GlobalError(StatusCodes.UNAUTHORIZED));
 
       // Attached decoded user id to request
-      Object.assign(req, { userId: user.id }, { permission: [] });
+      Object.assign(req, { userId: user.id });
       next();
     } catch (error) {
       next(error);
