@@ -5,6 +5,7 @@ import { env } from "@constants";
 import { ErrorCodes } from "@exception/error-code";
 import { GlobalError } from "@exception/global-error";
 import { logger } from "@lib";
+import { invalidTokenRepository } from "@repositories";
 
 export class TokenUtils {
   /**
@@ -12,9 +13,12 @@ export class TokenUtils {
    * @param {string} token
    * @returns {boolean} Result of verify token
    */
-  static isExpired(token: string): boolean {
+  static async isExpired(token: string): Promise<boolean> {
     try {
       JWT.verify(token, env.jwtSecret); // Verify and extract claims
+      const tokenId = TokenUtils.extractId(token);
+      const isExist = await invalidTokenRepository.existsBy({ tokenId });
+      if (isExist) return true;
       return false;
     } catch (error) {
       logger.error(TokenUtils.name, error);

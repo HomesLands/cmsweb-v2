@@ -13,3 +13,8 @@ export type TRefreshTokenRequestDto = {
   expiredToken: string;
   refreshToken: string;
 };
+
+export type TLogoutRequestDto = {
+  token: string;
+  refreshToken: string;
+};

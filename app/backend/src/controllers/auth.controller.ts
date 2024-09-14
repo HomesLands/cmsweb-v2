@@ -4,6 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import { authService } from "@services";
 import {
   TApiResponse,
+  TLogoutRequestDto,
   TRefreshTokenRequestDto,
   TRegistrationRequestDto,
 } from "types";
@@ -65,6 +66,22 @@ class AuthController {
    *           description: Refresh token
    *       example:
    *         expiredToken: ""
+   *         refreshToken: ""
+   *
+   *     LogoutRequestDto:
+   *       type: object
+   *       required:
+   *         - token
+   *         - refreshToken
+   *       properties:
+   *         token:
+   *           type: string
+   *           description: Token
+   *         refreshToken:
+   *           type: string
+   *           description: Refresh token
+   *       example:
+   *         token: ""
    *         refreshToken: ""
    */
 
@@ -199,6 +216,49 @@ class AuthController {
         method: req.method,
         path: req.originalUrl,
         result,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /auth/logout:
+   *   post:
+   *     summary: Logout
+   *     tags: [Auth]
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/LogoutRequestDto'
+   *     responses:
+   *       200:
+   *         description: Token remove successfully.
+   *         content:
+   *           application/json:
+   *             schema:
+   *       500:
+   *         description: Server error
+   */
+  public async logout(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const requestData = req.body as TLogoutRequestDto;
+      await authService.logout(requestData);
+
+      const response: TApiResponse<AuthenticationResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "Logout successfully",
+        method: req.method,
+        path: req.originalUrl,
       };
       res.status(StatusCodes.OK).json(response);
     } catch (error) {

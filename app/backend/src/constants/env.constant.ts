@@ -13,5 +13,9 @@ export const env: TEnv = {
   hashSalt: process.env.HASH_SALT || "",
   jwtSecret: process.env.JWT_SECRET || "",
   passportSecret: process.env.PASSPORT_SECRET || "",
-  port: process.env.PORT || "3000",
+  port: process.env.PORT ? parseInt(process.env.PORT, 10) : 3000,
+  duration: process.env.DURATION ? parseInt(process.env.DURATION, 10) : 3600,
+  refreshableDuration: process.env.REFRESHABLE_DURATION
+    ? parseInt(process.env.REFRESHABLE_DURATION, 10)
+    : 36000,
 };
