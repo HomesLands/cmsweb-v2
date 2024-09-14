@@ -46,7 +46,7 @@ class AuthMiddleware {
     const authToken = token.split(" ")[1];
     try {
       const isExpired = TokenUtils.isExpired(authToken);
-      if (isExpired) throw new GlobalError(ErrorCodes.TOKEN_EXPIRED);
+      if (isExpired) throw new GlobalError(StatusCodes.UNAUTHORIZED);
 
       // Get user
       const sub = TokenUtils.extractSubject(authToken);
