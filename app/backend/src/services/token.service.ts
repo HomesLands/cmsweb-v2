@@ -6,7 +6,6 @@ import { User } from "@entities";
 import { GlobalError, ErrorCodes } from "@exception";
 import { invalidTokenRepository, userRepository } from "@repositories";
 import { TokenUtils } from "@utils";
-import { logger } from "@lib/logger";
 import { RefreshTokenRequestDto } from "@dto/request";
 
 class TokenService {
@@ -14,8 +13,8 @@ class TokenService {
   private _refreshableDuration: number;
 
   constructor() {
-    this._duration = 60; // Second
-    this._refreshableDuration = 3600; // second
+    this._duration = env.duration; // Second
+    this._refreshableDuration = env.refreshableDuration; // second
   }
 
   /**
@@ -28,11 +27,13 @@ class TokenService {
     requestData: RefreshTokenRequestDto
   ): Promise<string> {
     // Check expire time token
-    const isExpiredToken = TokenUtils.isExpired(requestData.expiredToken);
+    const isExpiredToken = await TokenUtils.isExpired(requestData.expiredToken);
     if (!isExpiredToken) throw new GlobalError(ErrorCodes.TOKEN_NOT_EXPIRED);
 
     // Check if the token is still refreshable
-    const isExpiredRefresh = TokenUtils.isExpired(requestData.refreshToken);
+    const isExpiredRefresh = await TokenUtils.isExpired(
+      requestData.refreshToken
+    );
     if (isExpiredRefresh)
       throw new GlobalError(ErrorCodes.REFRESH_TOKEN_EXPIRED);
 

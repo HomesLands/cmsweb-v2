@@ -1,18 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response, NextFunction } from "express";
 import { HTTPMethod } from "http-method-enum";
 import _ from "lodash";
 
-import { ErrorCodes, GlobalError } from "@exception";
+import { GlobalError } from "@exception";
 import { userRepository } from "@repositories";
 import { StatusCodes } from "http-status-codes";
 import { TokenUtils } from "@utils";
-import tokenService from "@services/token.service";
 
 // Define a list of whitelisted routes with allowed methods
 const whitelist = [
   { path: "/auth/authenticate", method: HTTPMethod.POST },
   { path: "/auth/register", method: HTTPMethod.POST },
   { path: "/auth/refresh", method: HTTPMethod.POST },
+  { path: "/auth/logout", method: HTTPMethod.POST },
   { path: "/healthCheck/status", method: HTTPMethod.GET },
 ];
 
@@ -45,7 +46,7 @@ class AuthMiddleware {
 
     const authToken = token.split(" ")[1];
     try {
-      const isExpired = TokenUtils.isExpired(authToken);
+      const isExpired = await TokenUtils.isExpired(authToken);
       if (isExpired) throw new GlobalError(StatusCodes.UNAUTHORIZED);
 
       // Get user
@@ -69,8 +70,21 @@ class AuthMiddleware {
   public async hasRole(
     roles: string[]
   ): Promise<(req: Request, res: Response, next: NextFunction) => void> {
-    return (req: Request, res: Response, next: NextFunction) => {
+    return async (req: Request, res: Response, next: NextFunction) => {
       try {
+        if (_.has(req, "userId")) {
+          const userId = req.userId as string;
+          const user = await userRepository.findOneBy({ id: userId });
+          if (!user) throw new GlobalError(StatusCodes.FORBIDDEN);
+          // Get user role
+          const hasRole = user.userRoles?.some((item) => {
+            if (item.role.nameNormalize) {
+              return roles.includes(item.role.nameNormalize);
+            }
+            return false;
+          });
+          if (!hasRole) throw new GlobalError(StatusCodes.FORBIDDEN);
+        }
         next();
       } catch (error) {
         next(error);

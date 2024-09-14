@@ -14,13 +14,15 @@ import {
 } from "@dto/response";
 import {
   AuthenticationRequestDto,
+  LogoutRequestDto,
   RefreshTokenRequestDto,
   RegistrationRequestDto,
 } from "@dto/request";
-import { userRepository } from "@repositories";
-import { User } from "@entities";
+import { invalidTokenRepository, userRepository } from "@repositories";
+import { InvalidToken, User } from "@entities";
 import {
   TAuthenticationRequestDto,
+  TLogoutRequestDto,
   TRefreshTokenRequestDto,
   TRegistrationRequestDto,
 } from "@types";
@@ -103,6 +105,31 @@ class AuthService {
       token,
       expireTime: moment(TokenUtils.extractExpiration(token)).toString(),
     };
+  }
+
+  public async logout(plainData: TLogoutRequestDto): Promise<void> {
+    // Map plain object to request dto
+    const requestData = plainToClass(LogoutRequestDto, plainData);
+
+    // Validate the class instance
+    const errors = await validate(requestData);
+    if (errors.length > 0) throw new ValidationError(errors);
+
+    // Mark token expire
+    if (!(await TokenUtils.isExpired(requestData.token))) {
+      const tokenId = TokenUtils.extractId(requestData.token);
+      const expiryDate = TokenUtils.extractExpiration(requestData.token);
+      const invalidToken = { tokenId, expiryDate } as InvalidToken;
+      await invalidTokenRepository.createAndSave(invalidToken);
+    }
+
+    // Mark refresh token expire
+    if (!(await TokenUtils.isExpired(requestData.refreshToken))) {
+      const tokenId = TokenUtils.extractId(requestData.refreshToken);
+      const expiryDate = TokenUtils.extractExpiration(requestData.refreshToken);
+      const invalidToken = { tokenId, expiryDate } as InvalidToken;
+      await invalidTokenRepository.createAndSave(invalidToken);
+    }
   }
 }
 
