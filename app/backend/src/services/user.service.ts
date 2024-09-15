@@ -16,6 +16,14 @@ class UserService {
     );
     return userDto;
   }
+
+  public async getAllUsers(): Promise<UserResponseDto[] | []> {
+    const users = await userRepository.findAllUsers();
+
+    const usersDto = mapper.mapArray(users, User, UserResponseDto);
+
+    return usersDto;
+  }
 }
 
 export default new UserService();

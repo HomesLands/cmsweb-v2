@@ -1,6 +1,8 @@
 import { TApiResponse } from "@types";
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
+import { UserResponseDto } from "@dto/response";
+import userService from "@services/user.service";
 class UserController {
   /**
    * @swagger
@@ -20,7 +22,6 @@ class UserController {
    *         description: Get all users successfully.
    *       500:
    *         description: Server error
-   *
    */
   public async getAllUsers(
     req: Request,
@@ -28,13 +29,14 @@ class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const response: TApiResponse<string[]> = {
+      const users = await userService.getAllUsers();
+      const response: TApiResponse<UserResponseDto[]> = {
         code: StatusCodes.OK,
         error: false,
-        message: "OK",
+        message: "Get all users successfully",
         method: req.method,
         path: req.originalUrl,
-        result: [],
+        result: users,
       };
       res.status(StatusCodes.OK).json(response);
     } catch (error) {
@@ -43,4 +45,4 @@ class UserController {
   }
 }
 
-export const userController = new UserController();
+export default new UserController();

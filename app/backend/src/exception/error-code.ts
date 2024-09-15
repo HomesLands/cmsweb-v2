@@ -82,4 +82,9 @@ export const ErrorCodes: TErrorCode = {
     code: 1016,
     message: "Refresh token expired, cannot create new token.",
   },
+  USER_ASSIGNED_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1017,
+    message: "User is assigned not found",
+  },
 };
