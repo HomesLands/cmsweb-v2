@@ -31,8 +31,24 @@ export class RegistrationRequestDto {
 
 export class RefreshTokenRequestDto {
   @IsNotEmpty({ message: "INVALID_TOKEN" })
-  @MinLength(5, { message: "INVALID_TOKEN" })
+  @AutoMap()
+  @Expose()
+  expiredToken: string;
+
+  @IsNotEmpty({ message: "INVALID_REFRESH_TOKEN" })
+  @AutoMap()
+  @Expose()
+  refreshToken: string;
+}
+
+export class LogoutRequestDto {
+  @IsNotEmpty({ message: "INVALID_TOKEN" })
   @AutoMap()
   @Expose()
   token: string;
+
+  @IsNotEmpty({ message: "INVALID_REFRESH_TOKEN" })
+  @AutoMap()
+  @Expose()
+  refreshToken: string;
 }

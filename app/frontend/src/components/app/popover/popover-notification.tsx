@@ -42,7 +42,7 @@ export function PopoverNotification() {
             <div className="grid gap-1">
               {notifications.length > 0 ? (
                 notifications.map((notification) => (
-                  <div>
+                  <div key={notification.id}>
                     <div
                       key={notification.id}
                       className={`relative grid items-center grid-cols-5 gap-2 rounded-md px-2 py-2 ${notification.read ? 'bg-gray-50' : ''}`}

@@ -30,7 +30,7 @@ const getBadgeText = (status: RequestStatus) => {
   }
 }
 
-export const RequestStatusBadge: React.FC<RequestStatusBadgeProps> = ({ status }) => {
+export const ProductRequisitionStatusBadge: React.FC<RequestStatusBadgeProps> = ({ status }) => {
   return (
     <span className={`py-1.5 px-2.5 ${getBadgeColorClass(status)} rounded-full text-white`}>
       {getBadgeText(status)}

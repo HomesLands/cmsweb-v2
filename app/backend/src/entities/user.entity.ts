@@ -8,6 +8,7 @@ import { Site } from "@entities/site.entity";
 import { Project } from "@entities/project.entity";
 
 import { Gender } from "enums";
+import { UserRole } from "./user-role.entity";
 
 @Entity("user_tbl")
 export class User extends Base {
@@ -58,4 +59,7 @@ export class User extends Base {
   // a user can manage many project
   @OneToMany(() => Project, (project) => project.manager)
   projects?: Project[];
+  // A user can have many roles
+  @OneToMany(() => UserRole, (userRole) => userRole.user)
+  userRoles?: UserRole[];
 }

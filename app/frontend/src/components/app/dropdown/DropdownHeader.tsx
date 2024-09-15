@@ -13,7 +13,7 @@ import {
 import { useUserStore } from '@/stores'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
-import { showToast } from '@/utils/toast'
+import { showToast } from '@/utils'
 import { useState } from 'react'
 import { DialogLogout } from '../dialog'
 

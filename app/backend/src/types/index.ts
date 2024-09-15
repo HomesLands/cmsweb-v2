@@ -1,5 +1,5 @@
 export type TEnv = {
-  port: string;
+  port: number;
   dataSource: {
     hostMySql: string;
     userMySql: string;
@@ -9,6 +9,8 @@ export type TEnv = {
   hashSalt: string;
   jwtSecret: string;
   passportSecret: string;
+  duration: number;
+  refreshableDuration: number;
 };
 
 export type TApiResponse<T> = {
@@ -20,12 +22,11 @@ export type TApiResponse<T> = {
   path: string;
 };
 
-// export interface IPageOption {
-//   builderFor: string;
-//   orderBy: string;
-//   skip: number;
-//   take: number;
-// }
+export type TPaginationOption = {
+  skip: number | 0;
+  order: "ASC" | "DESC";
+  take: number | 10;
+};
 
 export type TErrorCodeValue = {
   code: number;

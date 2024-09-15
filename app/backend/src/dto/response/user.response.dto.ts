@@ -8,5 +8,8 @@ export class UserResponseDto {
   username?: string;
 
   @AutoMap()
+  password?: string;
+
+  @AutoMap()
   id?: string;
 }

@@ -82,9 +82,39 @@ export const ErrorCodes: TErrorCode = {
     code: 1016,
     message: "Refresh token expired, cannot create new token.",
   },
-  USER_ASSIGNED_NOT_FOUND: {
+  TOKEN_EXPIRED: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1017,
+    message: "Token expired.",
+  },
+  INVALID_REFRESH_TOKEN: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1018,
+    message: "Refresh token is not valid",
+  },
+  IAT_NOT_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1019,
+    message: "Token iat is not exist",
+  },
+  TOKEN_ID_NOT_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1019,
+    message: "Token id is not exist",
+  },
+  TOKEN_TYPE_NOT_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1020,
+    message: "Token type is not exist",
+  },
+  EXP_NOT_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1021,
+    message: "Token expiration is not exist",
+  },
+  USER_ASSIGNED_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1022,
     message: "User is assigned not found",
   },
 };

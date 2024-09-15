@@ -1,8 +1,10 @@
-import { TApiResponse } from "@types";
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
+
+import { userService } from "@services";
+import { TApiResponse, TPaginationOption } from "@types";
 import { UserResponseDto } from "@dto/response";
-import userService from "@services/user.service";
+
 class UserController {
   /**
    * @swagger
@@ -29,14 +31,19 @@ class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const users = await userService.getAllUsers();
+      // const plainData = req.query;
+      const results = await userService.getAllUsers({
+        order: "DESC",
+        skip: 0,
+        take: 100,
+      });
       const response: TApiResponse<UserResponseDto[]> = {
         code: StatusCodes.OK,
         error: false,
         message: "Get all users successfully",
         method: req.method,
         path: req.originalUrl,
-        result: users,
+        result: results,
       };
       res.status(StatusCodes.OK).json(response);
     } catch (error) {
