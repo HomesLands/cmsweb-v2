@@ -17,11 +17,13 @@ export const useProducts = (q: IUserQuery) => {
 }
 
 export const useProductList = (q: IUserQuery) => {
-  return useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['productList', JSON.stringify(q)],
     queryFn: () => getProductList(q),
     placeholderData: keepPreviousData
   })
+
+  return { data, isLoading }
 }
 
 export const useProjectList = () => {

@@ -24,7 +24,7 @@ export function ProgressBar({ step }: ProgressBarProps) {
           1
         </span>
         <span className="hidden sm:text-sm sm:inline-flex sm:ms-1">
-          {t('progress.create_product_requisitions')}
+          {t('progress.createProductRequisitions')}
         </span>
         <DoubleArrowRightIcon className="w-4 h-4 ms-2 sm:ms-4 rtl:rotate-180" />
       </li>
@@ -43,7 +43,7 @@ export function ProgressBar({ step }: ProgressBarProps) {
           2
         </span>
         <span className="hidden sm:text-sm sm:inline-flex sm:ms-2">
-          {t('progress.add_product_to_request')}
+          {t('progress.addProductToRequest')}
         </span>
         <DoubleArrowRightIcon className="w-4 h-4 ms-2 sm:ms-4 rtl:rotate-180" />
       </li>
@@ -62,7 +62,7 @@ export function ProgressBar({ step }: ProgressBarProps) {
           3
         </span>
         <span className="hidden sm:text-sm sm:inline-flex sm:ms-2">
-          {t('progress.confirm_product_requisitions')}
+          {t('progress.confirmProductRequisitions')}
         </span>
       </li>
     </ol>

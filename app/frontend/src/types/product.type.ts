@@ -17,12 +17,19 @@ export interface IProductApprovalInfo {
 export interface IProductRequirementInfoCreate {
   requestCode: string
   requester: string
-  project: string
-  site: string
+  project: {
+    id: string
+    name: string
+  }
+  site: {
+    id: string
+    name: string
+  }
   approver: string
   priority: string
   note: string
   products: IProductInfo[]
+  createdAt: string
 }
 
 export interface IProductNameSearch {

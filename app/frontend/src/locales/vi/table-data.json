@@ -1,0 +1,33 @@
+{
+  "tablePaging": {
+    "chooseColumn": "Chọn cột",
+    "addNewProduct": "Thêm vật tư",
+    "noData": "Không có dữ liệu",
+    "page": "Trang",
+    "of": " trên ",
+    "entries": "bản ghi",
+    "show": "Hiển thị",
+    "select": " hàng trên ",
+    "rows": "hàng được chọn",
+    "rowsPerPage": "Số hàng mỗi trang",
+    "hide": "Ẩn",
+    "asc": "Tăng dần",
+    "desc": "Giảm dần",
+    "firstPage": "Trang đầu",
+    "previousPage": "Trang trước",
+    "nextPage": "Trang tiếp",
+    "lastPage": "Trang cuối"
+  },
+  "tableData": {
+    "productCode": "Mã sản phẩm",
+    "productName": "Tên sản phẩm",
+    "model": "Model",
+    "supplier": "Nhà cung cấp",
+    "quantity": "Số lượng",
+    "unit": "Đơn vị",
+    "price": "Giá",
+    "total": "Tổng",
+    "action": "Hành động",
+    "addNewProduct": "Thêm vật tư"
+  }
+}

@@ -36,10 +36,17 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
     defaultValues: {
       requestCode: generateProductRequisitionCode(),
       requester: '',
-      project: '',
-      site: '',
+      project: {
+        id: '',
+        name: ''
+      },
+      site: {
+        id: '',
+        name: ''
+      },
       approver: '',
       note: '',
+      createdAt: new Date().toISOString(), // Ensure createdAt is set
       ...initialData
     }
   })
@@ -48,6 +55,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
   const { data: siteList } = useSiteList()
 
   const handleSubmit = (values: z.infer<typeof productSchema>) => {
+    values.createdAt = new Date().toISOString() // Ensure createdAt is included
     onSubmit(values)
   }
 
@@ -61,7 +69,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
               name="requestCode"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('product_requisition.request_code')}</FormLabel>
+                  <FormLabel>{t('productRequisition.requestCode')}</FormLabel>
                   <FormControl>
                     <Input readOnly {...field} />
                   </FormControl>
@@ -74,12 +82,9 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
               name="requester"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('product_requisition.requester')}</FormLabel>
+                  <FormLabel>{t('productRequisition.requester')}</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder={t('product_requisition.requester_description')}
-                      {...field}
-                    />
+                    <Input placeholder={t('productRequisition.requesterDescription')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -90,7 +95,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
               name="project"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('product_requisition.project_name')}</FormLabel>
+                  <FormLabel>{t('productRequisition.projectName')}</FormLabel>
                   <FormControl>
                     <SelectProject {...field} projectList={projectList?.result ?? []} />
                   </FormControl>
@@ -105,7 +110,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
               name="site"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('product_requisition.construction_site')}</FormLabel>
+                  <FormLabel>{t('productRequisition.constructionSite')}</FormLabel>
                   <FormControl>
                     <SelectConstruction {...field} constructionList={siteList?.result ?? []} />
                   </FormControl>
@@ -118,9 +123,9 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
               name="approver"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('product_requisition.approver')}</FormLabel>
+                  <FormLabel>{t('productRequisition.approver')}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('product_requisition.approver_description')} {...field} />
+                    <Input placeholder={t('productRequisition.approverDescription')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -132,9 +137,9 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
             name="note"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t('product_requisition.note')}</FormLabel>
+                <FormLabel>{t('productRequisition.note')}</FormLabel>
                 <FormControl>
-                  <Textarea placeholder={t('product_requisition.note_description')} {...field} />
+                  <Textarea placeholder={t('productRequisition.noteDescription')} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -142,7 +147,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
           />
 
           <div className="flex justify-end w-full">
-            <Button type="submit">{t('product_requisition.next')}</Button>
+            <Button type="submit">{t('productRequisition.next')}</Button>
           </div>
         </form>
       </Form>

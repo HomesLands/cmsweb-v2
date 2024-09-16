@@ -14,23 +14,32 @@ import { IProject } from '@/types'
 
 interface SelectProjectProps {
   projectList: IProject[]
-  onChange: (value: string) => void
+  onChange: (value: { id: string; name: string }) => void
 }
 
 export const SelectProject: FC<SelectProjectProps> = ({ projectList, onChange }) => {
   const { t } = useTranslation('productRequisition')
 
+  // Hàm để parse lại đối tượng từ chuỗi JSON
+  const handleValueChange = (value: string) => {
+    const project = JSON.parse(value)
+    onChange(project)
+  }
+
   return (
-    <Select onValueChange={onChange}>
+    <Select onValueChange={handleValueChange}>
       <SelectTrigger>
-        <SelectValue placeholder={t('product_requisition.project_name_description')} />
+        <SelectValue placeholder={t('productRequisition.projectNameDescription')} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>{t('product_requisition.project_name')}</SelectLabel>
+          <SelectLabel>{t('productRequisition.projectName')}</SelectLabel>
           {Array.isArray(projectList) &&
             projectList.map((project) => (
-              <SelectItem key={project.id} value={project.id}>
+              <SelectItem
+                key={project.id}
+                value={JSON.stringify({ id: project.id, name: project.name })}
+              >
                 {project.name}
               </SelectItem>
             ))}

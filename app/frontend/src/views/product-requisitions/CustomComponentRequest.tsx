@@ -1,5 +1,8 @@
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Table } from '@tanstack/react-table'
 import { ChevronDown } from 'lucide-react'
+import { PlusCircledIcon } from '@radix-ui/react-icons'
 
 import {
   DropdownMenu,
@@ -10,12 +13,31 @@ import {
   Input
 } from '@/components/ui'
 import { DialogAddProductRequest } from '@/components/app/dialog'
+import { IProductInfo } from '@/types'
 
 interface ColumnVisibilityDropdownProps<TData> {
   table: Table<TData>
+  handleAddRequest: (product: IProductInfo) => void
 }
 
-export function CustomComponentRequest<TData>({ table }: ColumnVisibilityDropdownProps<TData>) {
+export function CustomComponentRequest<TData>({
+  table,
+  handleAddRequest
+}: ColumnVisibilityDropdownProps<TData>) {
+  const { t } = useTranslation('tableData')
+  const [openDialog, setOpenDialog] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState<IProductInfo | null>(null)
+
+  const handleOpenDialog = (product: IProductInfo | null) => {
+    setSelectedProduct(product)
+    setOpenDialog(true)
+  }
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false)
+    setSelectedProduct(null)
+  }
+
   return (
     <>
       <Input
@@ -27,7 +49,7 @@ export function CustomComponentRequest<TData>({ table }: ColumnVisibilityDropdow
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="ml-auto text-normal">
-            Chọn cột
+            {t('tablePaging.chooseColumn')}
             <ChevronDown className="w-4 h-4 ml-2" />
           </Button>
         </DropdownMenuTrigger>
@@ -47,7 +69,17 @@ export function CustomComponentRequest<TData>({ table }: ColumnVisibilityDropdow
             ))}
         </DropdownMenuContent>
       </DropdownMenu>
-      {/* <DialogAddProductRequest handleAddRequest={handleAddRequest} openDialog={openDialog} product={product} component={component} onOpenChange={onOpenChange} /> */}
+      <Button variant="outline" onClick={() => handleOpenDialog(null)}>
+        <PlusCircledIcon className="w-4 h-4 mr-2" />
+        {t('tableData.addNewProduct')}
+      </Button>
+      <DialogAddProductRequest
+        handleAddRequest={handleAddRequest}
+        openDialog={openDialog}
+        product={selectedProduct}
+        component={null}
+        onOpenChange={handleCloseDialog}
+      />
     </>
   )
 }

@@ -80,23 +80,37 @@ export async function getProductList(params: {
 export async function postProductRequest(params: {
   requestCode: string
   requester: string
-  project: string
-  site: string
+  project: {
+    id: string
+    name: string
+  }
+  site: {
+    id: string
+    name: string
+  }
   approver: string
   note: string
   priority: string
   products: IProductInfo[]
+  createdAt: string
 }): Promise<IProductRequirementInfoCreate> {
   // Convert parameters to lowercase directly
   const lowercaseParams = {
     requestCode: params.requestCode,
     requester: params.requester.toLowerCase(),
-    project: params.project.toLowerCase(),
-    site: params.site.toLowerCase(),
+    project: {
+      id: params.project.id,
+      name: params.project.name.toLowerCase()
+    },
+    site: {
+      id: params.site.id,
+      name: params.site.name.toLowerCase()
+    },
     approver: params.approver.toLowerCase(),
     note: params.note.toLowerCase(),
     priority: params.priority.toLowerCase(),
-    products: params.products
+    products: params.products,
+    createdAt: params.createdAt
   }
   console.log('lowercaseParams', lowercaseParams)
   return lowercaseParams

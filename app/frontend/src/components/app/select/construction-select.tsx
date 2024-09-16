@@ -14,23 +14,31 @@ import { IConstruction } from '@/types'
 
 interface SelectConstructionProps {
   constructionList: IConstruction[]
-  onChange: (value: string) => void
+  onChange: (value: { id: string; name: string }) => void
 }
 
 export const SelectConstruction: FC<SelectConstructionProps> = ({ constructionList, onChange }) => {
   const { t } = useTranslation('productRequisition')
 
+  const handleValueChange = (value: string) => {
+    const construction = JSON.parse(value)
+    onChange(construction)
+  }
+
   return (
-    <Select onValueChange={onChange}>
+    <Select onValueChange={handleValueChange}>
       <SelectTrigger>
-        <SelectValue placeholder={t('product_requisition.construction_site_description')} />
+        <SelectValue placeholder={t('productRequisition.constructionSiteDescription')} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>{t('product_requisition.construction_site')}</SelectLabel>
+          <SelectLabel>{t('productRequisition.constructionSite')}</SelectLabel>
           {Array.isArray(constructionList) &&
             constructionList.map((construction) => (
-              <SelectItem key={construction.id} value={construction.id}>
+              <SelectItem
+                key={construction.id}
+                value={JSON.stringify({ id: construction.id, name: construction.name })}
+              >
                 {construction.name}
               </SelectItem>
             ))}

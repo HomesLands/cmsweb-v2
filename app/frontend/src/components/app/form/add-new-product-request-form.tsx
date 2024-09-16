@@ -53,7 +53,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
                 <FormItem>
                   <FormLabel>Mã vật tư</FormLabel>
                   <FormControl>
-                    <Input disabled {...field} />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -66,7 +66,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
                 <FormItem>
                   <FormLabel>Tên vật tư</FormLabel>
                   <FormControl>
-                    <Input disabled {...field} />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -79,7 +79,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
                 <FormItem>
                   <FormLabel>Model</FormLabel>
                   <FormControl>
-                    <Input disabled {...field} />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -108,7 +108,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
                 <FormItem>
                   <FormLabel>Đơn vị</FormLabel>
                   <FormControl>
-                    <Input disabled {...field} />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -121,7 +121,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
                 <FormItem>
                   <FormLabel>Nhà cung cấp</FormLabel>
                   <FormControl>
-                    <Input disabled {...field} />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -145,7 +145,6 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
           </div>
           <div className="flex justify-end w-full">
             <Button type="submit">Tiếp theo</Button>
-            {/* New Button */}
           </div>
         </form>
       </Form>
