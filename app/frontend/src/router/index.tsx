@@ -31,20 +31,29 @@ const createRouteObject = (route: {
 
 const routeObjects = routes.map(createRouteObject)
 
-export function useToLogin() {
-  const location = useLocation()
-  console.log('location', location)
-  const navigate = useNavigate()
-  console.log('navigate', navigate)
-  console.log('useToLogin')
+// export function useToLogin() {
+//   const location = useLocation()
+//   console.log('location', location)
+//   const navigate = useNavigate()
+//   console.log('navigate', navigate)
+//   console.log('useToLogin')
 
-  return (path?: string) => {
-    const userStore = useUserStore.getState()
-    userStore.logout()
-    const currentPath = location.pathname
-    if (currentPath !== '/auth/login') {
-      navigate('/auth/login')
-    }
+//   return (path?: string) => {
+//     const userStore = useUserStore.getState()
+//     userStore.logout()
+//     const currentPath = location.pathname
+//     if (currentPath !== '/auth/login') {
+//       navigate('/auth/login')
+//     }
+//   }
+// }
+
+export function toLogin() {
+  const userStore = useUserStore.getState()
+  userStore.logout()
+  const currentPath = router.state.location.pathname
+  if (currentPath !== '/auth/login') {
+    router.navigate('/auth/login')
   }
 }
 

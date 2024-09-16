@@ -14,12 +14,14 @@ import {
 } from '@/components/ui'
 import { loginSChema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslation } from 'react-i18next'
 
 interface IFormRegisterProps {
   onSubmit: (data: z.infer<typeof loginSChema>) => void
 }
 
 export const LoginForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
+  const { t } = useTranslation(['auth'])
   const form = useForm<z.infer<typeof loginSChema>>({
     resolver: zodResolver(loginSChema),
     defaultValues: {
@@ -42,9 +44,9 @@ export const LoginForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Tên đăng nhập</FormLabel>
+                  <FormLabel>{t('login.username')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nhập tên đăng nhập" {...field} />
+                    <Input placeholder={t('login.enter_username')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -55,9 +57,9 @@ export const LoginForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mật khẩu</FormLabel>
+                  <FormLabel>{t('login.password')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nhập mật khẩu" {...field} type="password" />
+                    <Input placeholder={t('login.enter_password')} {...field} type="password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -66,13 +68,13 @@ export const LoginForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
           </div>
           <div className="flex items-center justify-between w-full">
             <Button type="submit" className="md:w-[6rem]">
-              Đăng nhập
+              {t('login.login')}
             </Button>
             <div className="text-sm text-center">
-              Bạn chưa có tài khoản?
+              {t('login.dont_have_account')}
               <NavLink to="/auth/register" className="underline">
                 {' '}
-                Đăng ký{' '}
+                {t('login.register')}
               </NavLink>
             </div>
           </div>

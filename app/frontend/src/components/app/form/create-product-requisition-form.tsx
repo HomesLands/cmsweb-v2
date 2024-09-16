@@ -15,6 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { IProductRequirementInfoCreate } from '@/types'
 import { generateProductRequisitionCode } from '@/utils'
+import { useTranslation } from 'react-i18next'
 
 interface IFormCreateProductProps {
   onSubmit: (data: z.infer<typeof productSchema>) => void
@@ -25,6 +26,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
   onSubmit,
   initialData
 }) => {
+  const { t } = useTranslation('productRequisition')
   const form = useForm<z.infer<typeof productSchema>>({
     resolver: zodResolver(productSchema),
     defaultValues: {
@@ -52,7 +54,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
               name="requestCode"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mã yêu cầu</FormLabel>
+                  <FormLabel>{t('product_requisition.request_code')}</FormLabel>
                   <FormControl>
                     <Input readOnly {...field} />
                   </FormControl>
@@ -65,9 +67,12 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
               name="requester"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Người yêu cầu</FormLabel>
+                  <FormLabel>{t('product_requisition.requester')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nhập tên người yêu cầu" {...field} />
+                    <Input
+                      placeholder={t('product_requisition.requester_description')}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -78,9 +83,12 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
               name="project"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Tên dự án</FormLabel>
+                  <FormLabel>{t('product_requisition.project_name')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nhập tên dự án" {...field} />
+                    <Input
+                      placeholder={t('product_requisition.project_name_description')}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -93,9 +101,12 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
               name="construction"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Tên công trình</FormLabel>
+                  <FormLabel>{t('product_requisition.construction_site')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nhập tên công trình" {...field} />
+                    <Input
+                      placeholder={t('product_requisition.construction_site_description')}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -106,9 +117,9 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
               name="approver"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Tên người duyệt</FormLabel>
+                  <FormLabel>{t('product_requisition.approver')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nhập tên người duyệt" {...field} />
+                    <Input placeholder={t('product_requisition.approver_description')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -120,9 +131,9 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
             name="note"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Ghi chú</FormLabel>
+                <FormLabel>{t('product_requisition.note')}</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Nhập ghi chú" {...field} />
+                  <Textarea placeholder={t('product_requisition.note_description')} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -130,7 +141,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
           />
 
           <div className="flex justify-end w-full">
-            <Button type="submit">Tiếp theo</Button>
+            <Button type="submit">{t('product_requisition.next')}</Button>
           </div>
         </form>
       </Form>

@@ -32,6 +32,7 @@ export interface ILogin {
   result: {
     expireTime: string
     token: string
+    refreshToken: string
   }
 }
 
@@ -39,13 +40,43 @@ export interface IRefreshToken {
   token: string
 }
 
+export interface IRefreshTokenResponse {
+  code: number
+  message: string
+  result: {
+    token: string
+    refreshToken: string
+    expireTime: string
+  } | null
+}
+
+export interface LoginError {
+  response: {
+    data: {
+      code: number
+      message: string
+    }
+  }
+}
+
+export interface IError {
+  response: {
+    data: {
+      code: number
+      message: string
+    }
+  }
+}
+
 export interface IUserState {
   userInfo?: IUserInfo
   token?: string
+  refreshToken?: string
   expireTime?: string
   isAuthenticated: () => boolean
   setUserInfo: (userInfo: IUserInfo) => void
   setToken: (token: string) => void
+  setRefreshToken: (refreshToken: string) => void
   setExpireTime: (expireTime: string) => void
   logout: () => void
 }

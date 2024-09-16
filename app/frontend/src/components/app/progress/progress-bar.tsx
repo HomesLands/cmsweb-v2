@@ -1,10 +1,12 @@
 import { DoubleArrowRightIcon } from '@radix-ui/react-icons'
+import { useTranslation } from 'react-i18next'
 
 interface ProgressBarProps {
   step: number
 }
 
 export function ProgressBar({ step }: ProgressBarProps) {
+  const { t } = useTranslation('productRequisition')
   const currentStep = step
   return (
     <ol className="flex items-center justify-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 rtl:space-x-reverse">
@@ -21,7 +23,9 @@ export function ProgressBar({ step }: ProgressBarProps) {
         >
           1
         </span>
-        <span className="hidden sm:text-sm sm:inline-flex sm:ms-1">Tạo phiếu yêu cầu</span>
+        <span className="hidden sm:text-sm sm:inline-flex sm:ms-1">
+          {t('progress.create_product_requisitions')}
+        </span>
         <DoubleArrowRightIcon className="w-4 h-4 ms-2 sm:ms-4 rtl:rotate-180" />
       </li>
 
@@ -38,7 +42,9 @@ export function ProgressBar({ step }: ProgressBarProps) {
         >
           2
         </span>
-        <span className="hidden sm:text-sm sm:inline-flex sm:ms-2">Thêm vật tư</span>
+        <span className="hidden sm:text-sm sm:inline-flex sm:ms-2">
+          {t('progress.add_product_to_request')}
+        </span>
         <DoubleArrowRightIcon className="w-4 h-4 ms-2 sm:ms-4 rtl:rotate-180" />
       </li>
 
@@ -55,7 +61,9 @@ export function ProgressBar({ step }: ProgressBarProps) {
         >
           3
         </span>
-        <span className="hidden sm:text-sm sm:inline-flex sm:ms-2">Xác nhận</span>
+        <span className="hidden sm:text-sm sm:inline-flex sm:ms-2">
+          {t('progress.confirm_product_requisitions')}
+        </span>
       </li>
     </ol>
   )

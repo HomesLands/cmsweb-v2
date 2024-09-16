@@ -1,6 +1,7 @@
 import { AlignJustify, Archive } from 'lucide-react'
 import { PersonIcon, ArchiveIcon, FileTextIcon, CubeIcon } from '@radix-ui/react-icons'
 import type { IRoute, ISidebarSubmenu } from '@/types'
+import i18next from 'i18next'
 
 const routes: IRoute[] = [
   {
@@ -59,7 +60,7 @@ const routes: IRoute[] = [
     ]
   },
   {
-    title: 'Yêu cầu vật tư',
+    title: i18next.t('sidebar.product_requisitions'),
     path: '/product-requisitions',
     component: () =>
       import('@/components/app/layouts').then((module) => ({
@@ -67,7 +68,7 @@ const routes: IRoute[] = [
       })),
     children: [
       {
-        title: 'Danh sách yêu cầu vật tư',
+        title: i18next.t('sidebar.product_requisitions_list'),
         path: 'list',
         component: () =>
           import('@/views/product-requisitions').then((module) => ({
@@ -75,7 +76,7 @@ const routes: IRoute[] = [
           }))
       },
       {
-        title: 'Thêm yêu cầu vật tư',
+        title: i18next.t('sidebar.product_requisitions_create'),
         path: 'add',
         component: () =>
           import('@/views/product-requisitions').then((module) => ({
@@ -142,14 +143,14 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
   //   ]
   // },
   {
-    title: 'Yêu cầu vật tư',
+    title: i18next.t('sidebar.product_requisitions'),
     path: '/product-requisitions',
     icon: ArchiveIcon,
     component: () =>
       import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
       {
-        title: 'Danh sách yêu cầu vật tư',
+        title: i18next.t('sidebar.product_requisitions_list'),
         path: '/product-requisitions/list',
         icon: Archive,
         component: () =>
@@ -158,7 +159,7 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
           }))
       },
       {
-        title: 'Thêm yêu cầu vật tư',
+        title: i18next.t('sidebar.product_requisitions_create'),
         path: '/product-requisitions/add',
         icon: Archive,
         component: () =>
