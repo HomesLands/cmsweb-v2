@@ -1,18 +1,19 @@
-// src/http.ts
 import axios from 'axios'
 import NProgress from 'nprogress'
 import moment from 'moment'
 
 import { useRequestStore } from '@/stores/request.store'
 import { showErrorToast } from './toast'
-import { useToLogin } from '@/router'
+import { toLogin } from '@/router'
 import { useUserStore } from '@/stores'
+import { IError } from '@/types'
 
 interface RefreshTokenResponse {
   code: string
   message: string
   result: {
     token: string
+    refreshToken: string
     expireTime: string
   }
 }
@@ -25,42 +26,97 @@ const axiosInstance = axios.create({
   withCredentials: true
 })
 
-Object.assign(axios.defaults, {
-  baseURL: import.meta.env.VITE_BASE_API_URL,
-  timeout: 10000,
-  withCredentials: true
-})
-
 function isTokenExpired(expireTime: string): boolean {
   if (!expireTime) return true
 
-  const expirationTime = moment(expireTime, 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ')
+  const expirationTime = moment(expireTime)
   const now = moment()
 
   return now.isAfter(expirationTime)
 }
 
-function refreshToken(token: string) {
-  return axiosInstance.post<RefreshTokenResponse>('/auth/refresh', { token }).then((response) => {
+async function refreshTokenAPI(expiredToken: string, refreshToken: string): Promise<string> {
+  try {
+    const response = await axiosInstance.post<RefreshTokenResponse>('/auth/refresh', {
+      expiredToken,
+      refreshToken
+    })
+    console.log('Check response', response)
     const { token, expireTime } = response.data.result
     useUserStore.setState({ token, expireTime })
     return token
-  })
+  } catch (error: unknown) {
+    const err = error as IError
+    console.error('Failed to refresh tokennn:', err.response.data)
+    if (err.response.data.code === 400) {
+      showErrorToast(err.response.data.code)
+    }
+    return Promise.reject(err.response.data)
+  }
 }
+
+// ... existing code ...
+
+const isBase64 = (str: string): boolean => {
+  try {
+    return btoa(atob(str)) === str
+  } catch (err) {
+    return false
+  }
+}
+
+const decodeToken = (token: string): string | null => {
+  try {
+    console.log('Check token in decodeToken', token)
+    if (token && isBase64(token)) {
+      return atob(token)
+    } else {
+      console.error('Token is not correctly encoded in base64')
+      return null
+    }
+  } catch (e) {
+    console.error('Failed to decode token:', e)
+    return null
+  }
+}
+
+const decodeRefreshToken = (refreshToken: string): string | null => {
+  try {
+    if (refreshToken && isBase64(refreshToken)) {
+      return atob(refreshToken)
+    } else {
+      console.error('Refresh token is not correctly encoded in base64')
+      return null
+    }
+  } catch (e) {
+    console.error('Failed to decode refresh token:', e)
+    return null
+  }
+}
+
+// ... existing code ...
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const { token, expireTime } = useUserStore.getState()
-    if (token && expireTime && isTokenExpired(expireTime)) {
-      config.headers = config.headers || {}
-      config.headers.Authorization = `Bearer ${token}`
-    }
-    if (!(config as { doNotShowLoading?: boolean })?.doNotShowLoading) {
-      const requestStore = useRequestStore.getState()
-      if (requestStore.requestQueueSize === 0) {
-        NProgress.start()
+    const token = localStorage.getItem('token')
+    const decodedToken = decodeToken(token || '')
+    const expireTime = localStorage.getItem('expireTime')
+    console.log('Check token in interceptor request', decodedToken)
+    if (token) {
+      // const decodedToken = decodeToken(token)
+      // console.log('Check decodedToken in interceptor request', decodedToken)
+      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${decodedToken}`
+      // if (decodedToken && !isTokenExpired(expireTime)) {
+      //   axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${decodedToken}`
+      // }
+      if (!(config as { doNotShowLoading?: boolean })?.doNotShowLoading) {
+        const requestStore = useRequestStore.getState()
+        if (requestStore.requestQueueSize === 0) {
+          NProgress.start()
+        }
+        requestStore.incrementRequestQueueSize()
       }
-      requestStore.incrementRequestQueueSize()
+      return config
     }
     return config
   },
@@ -69,10 +125,8 @@ axiosInstance.interceptors.request.use(
   }
 )
 
-// Response Interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
-    // Đảm bảo config tồn tại
     const config = response.config || {}
 
     if (!(config as { doNotShowLoading?: boolean })?.doNotShowLoading) {
@@ -86,45 +140,50 @@ axiosInstance.interceptors.response.use(
     if (!config.doNotShowLoading) {
       setProgressBarDone()
     }
+
     if (error.response) {
-      const { data, status } = error.response
-      console.log(data)
+      const { code, expireTime } = error.response.data
 
-      if (isTokenExpired(data.expireTime)) {
-        console.log('token expired')
-        showErrorToast(data.code)
-        console.log('useToLogin in http')
-        useToLogin()
-        return Promise.reject(error)
+      if (code === 400) {
+        showErrorToast(code)
       }
 
-      if (status === 400) {
-        showErrorToast(data.code)
-      }
-
-      if (status === 401 || status === 403) {
+      if (code === 401 && !config._retry) {
+        config._retry = true
         try {
-          const currentToken = useUserStore.getState().token
-          if (currentToken) {
-            const newToken = await refreshToken(currentToken)
-            error.config.headers.Authorization = `Bearer ${newToken}`
-            return axiosInstance.request(error.config)
-          } else {
-            showErrorToast(data.code)
-            console.log('useToLogin in http')
-            useToLogin()
+          const currentToken = localStorage.getItem('token')
+          const refreshToken = localStorage.getItem('refreshToken')
+
+          if (currentToken && refreshToken) {
+            const decodedRefreshToken = decodeRefreshToken(refreshToken)
+            console.log('Check encodedRefreshToken in interceptor response', decodedRefreshToken)
+            console.log('Check currentToken in interceptor response', currentToken)
+
+            if (decodedRefreshToken) {
+              const newToken = await refreshTokenAPI(currentToken, decodedRefreshToken)
+              console.log('Check newToken in interceptor response', newToken)
+              // localStorage.setItem('token', newToken)
+
+              axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newToken}`
+              config.headers['Authorization'] = `Bearer ${newToken}`
+
+              return axiosInstance.request(config)
+            }
           }
-          return Promise.reject(error)
-        } catch {
-          showErrorToast(data.code)
-          console.log('useToLogin in http')
-          useToLogin()
+        } catch (err) {
+          showErrorToast(code)
+          // toLogin()
           return Promise.reject(error)
         }
       }
 
-      if (status === 500) {
-        showErrorToast(data.code)
+      if (code === 500) {
+        showErrorToast(code)
+      }
+
+      if (isTokenExpired(expireTime)) {
+        showErrorToast(code)
+        // toLogin()
       }
     }
     return Promise.reject(error)

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useMutation } from '@tanstack/react-query'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
 import { IProductRequirementInfoCreate, IProductNameSearch, IProductInfo } from '@/types'
@@ -8,13 +9,21 @@ import {
   ConfirmProductForm
 } from '@/components/app/form'
 import { ProgressBar } from '@/components/app/progress/progress-bar'
-import { useMultiStep } from '@/hooks'
+import { useMultiStep, useUsers2 } from '@/hooks'
+import { postProductRequest } from '@/api/products'
+import { showToast } from '@/utils'
+import { useTranslation } from 'react-i18next'
 
 const ProductRequisitionForm: React.FC = () => {
+  const { t } = useTranslation('productRequisition')
+
   const { currentStep, handleStepChange } = useMultiStep(1)
-  // const [step, setStep] = useState<number>(1)
   const [formData, setFormData] = useState<IProductRequirementInfoCreate | null>(null)
   const [searchData, setSearchData] = useState<IProductNameSearch | null>(null)
+
+  const { data: users } = useUsers2()
+
+  console.log(users)
 
   useEffect(() => {
     const savedFormData = localStorage.getItem('requestFormProducts')
@@ -27,11 +36,15 @@ const ProductRequisitionForm: React.FC = () => {
     }
   }, [])
 
-  // const mutation = useMutation({
-  //   mutationFn: async (data: IProductRequirementInfoCreate) => {
-  //     return productRequest(data)
-  //   }
-  // })
+  const mutation = useMutation({
+    mutationFn: async (data: IProductRequirementInfoCreate) => {
+      return postProductRequest(data)
+    },
+    onSuccess: () => {
+      showToast(t('request_success'))
+      // handleStepChange(4)
+    }
+  })
 
   const handleFormCreateSubmit = (data: {
     requestCode: string
@@ -57,10 +70,10 @@ const ProductRequisitionForm: React.FC = () => {
   const handleConfirmRequest = () => {
     const savedFormData = localStorage.getItem('requestFormProducts')
     if (savedFormData) {
-      // const parsedFormData = JSON.parse(savedFormData)
-      // mutation.mutate(parsedFormData)
+      const parsedFormData = JSON.parse(savedFormData)
+      mutation.mutate(parsedFormData)
 
-      handleStepChange(4)
+      // handleStepChange(4)
     }
   }
 
@@ -92,8 +105,10 @@ const ProductRequisitionForm: React.FC = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between w-full border-b">
               <div className="flex flex-col items-start gap-2 py-2">
-                <CardTitle>Yêu cầu vật tư</CardTitle>
-                <CardDescription>Công ty Cổ phần Công nghệ Mekong</CardDescription>
+                <CardTitle>{t('product_requisition.create_product_requisitions')}</CardTitle>
+                <CardDescription>
+                  {t('product_requisition.create_product_requisitions_description')}
+                </CardDescription>
               </div>
             </CardHeader>
             <CardContent className="flex flex-col">
@@ -108,8 +123,10 @@ const ProductRequisitionForm: React.FC = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between w-full border-b">
               <div className="flex flex-col items-start gap-2 py-2">
-                <CardTitle>Thêm vật tư vào yêu cầu</CardTitle>
-                <CardDescription>Công ty Cổ phần Công nghệ Mekong</CardDescription>
+                <CardTitle>{t('product_requisition.add_product_to_request')}</CardTitle>
+                <CardDescription>
+                  {t('product_requisition.add_product_to_request_description')}
+                </CardDescription>
               </div>
             </CardHeader>
             <CardContent className="flex flex-col">
@@ -125,8 +142,10 @@ const ProductRequisitionForm: React.FC = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between w-full border-b">
               <div className="flex flex-col items-start gap-2 py-2">
-                <CardTitle>Xác nhận yêu cầu vật tư</CardTitle>
-                <CardDescription>Công ty Cổ phần Công nghệ Mekong</CardDescription>
+                <CardTitle>{t('product_requisition.confirm_product_requisitions')}</CardTitle>
+                <CardDescription>
+                  {t('product_requisition.confirm_product_requisitions_description')}
+                </CardDescription>
               </div>
             </CardHeader>
             <CardContent className="flex flex-col">
@@ -142,12 +161,16 @@ const ProductRequisitionForm: React.FC = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between w-full border-b">
               <div className="flex flex-col items-start gap-2 py-2">
-                <CardTitle>Yêu cầu đã được gửi</CardTitle>
-                <CardDescription>Công ty Cổ phần Công nghệ Mekong</CardDescription>
+                <CardTitle>
+                  {t('product_requisition.confirm_product_requisitions_success')}
+                </CardTitle>
+                <CardDescription>
+                  {t('product_requisition.confirm_product_requisitions_success_description')}
+                </CardDescription>
               </div>
             </CardHeader>
             <CardContent className="flex flex-col">
-              <p>Yêu cầu của bạn đã được gửi thành công.</p>
+              <p>{t('product_requisition.confirm_product_requisitions_success_description')}</p>
             </CardContent>
           </Card>
         )}

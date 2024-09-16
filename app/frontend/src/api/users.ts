@@ -37,5 +37,6 @@ export async function getUsers(params: {
 
 export async function getUsers2() {
   const response = await http.get<IUserInfo>('/users')
+  console.log(response)
   return response.data
 }

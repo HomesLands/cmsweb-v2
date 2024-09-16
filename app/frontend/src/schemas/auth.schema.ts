@@ -11,19 +11,21 @@ export const loginSChema = z.object({
   // )
 })
 
-export const registerSchema = z.object({
-  fullname: z
-    .string()
-    .min(1, 'Full name is required')
-    .max(30, 'Max 30 characters')
-    .regex(USERNAME_REGEX, 'Only letters allowed'),
-  username: z.string(),
-  password: z.string()
-  // .regex(
-  //   PASSWORD_REGEX,
-  //   'Password must be 8-20 characters, include a number and a special character'
-  // )
-})
+export const registerSchema = z
+  .object({
+    fullname: z
+      .string()
+      .min(1, 'Full name is required')
+      .max(30, 'Max 30 characters')
+      .regex(USERNAME_REGEX, 'Only letters allowed'),
+    username: z.string(),
+    password: z.string(),
+    confirmPassword: z.string()
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword']
+  })
 
 export const createUserSchema = z.object({
   fullName: z
