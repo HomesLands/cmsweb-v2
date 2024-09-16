@@ -13,6 +13,7 @@ import { ILogin } from '@/types'
 import { useUserStore } from '@/stores'
 
 const Login: React.FC = () => {
+  const { setToken, setRefreshToken, setExpireTime } = useUserStore()
   const { t } = useTranslation(['auth'])
   const navigate = useNavigate()
   const mutation = useMutation({
@@ -20,10 +21,9 @@ const Login: React.FC = () => {
       return loginForm(data)
     },
     onSuccess: (data: ILogin) => {
-      useUserStore.getState().setToken(data.result.token)
-      // localStorage.setItem('token', data.result.token)
-      useUserStore.getState().setRefreshToken(data.result.refreshToken)
-      useUserStore.getState().setExpireTime(data.result.expireTime)
+      setToken(data.result.token)
+      setRefreshToken(data.result.refreshToken)
+      setExpireTime(data.result.expireTime)
       navigate('/')
     },
     onError: (error) => {
