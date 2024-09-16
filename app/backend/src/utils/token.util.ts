@@ -15,6 +15,7 @@ export class TokenUtils {
    */
   static async isExpired(token: string): Promise<boolean> {
     try {
+      logger.info({ jwtSecret: env.jwtSecret });
       JWT.verify(token, env.jwtSecret); // Verify and extract claims
       const tokenId = TokenUtils.extractId(token);
       const isExist = await invalidTokenRepository.existsBy({ tokenId });
