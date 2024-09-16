@@ -1,8 +1,11 @@
 // src/axios.d.ts
-import 'axios';
+import 'axios'
 
 declare module 'axios' {
   interface InternalAxiosRequestConfig {
-    doNotShowLoading?: boolean;
+    doNotShowLoading?: boolean
+  }
+  interface AxiosInstance {
+    (config: AxiosRequestConfig): Promise<AxiosResponse<T>>
   }
 }

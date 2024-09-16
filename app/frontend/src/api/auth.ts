@@ -1,5 +1,6 @@
-import { ILogin, IRegister, IRegisterResponse } from '@/types'
+import { ILogin, IRefreshToken, IRegister, IRegisterResponse } from '@/types'
 import { http, showErrorToast, showToast } from '@/utils'
+import { useUserStore } from '@/stores'
 
 interface ApiError {
   response: {
@@ -50,4 +51,15 @@ export async function loginForm(params: { username: string; password: string }):
     }
     throw error
   }
+}
+
+export async function refreshToken() {
+  const userStore = useUserStore.getState()
+  const response = await http.post<IRefreshToken>('/auth/refresh')
+  userStore.setToken(response.data.token)
+}
+
+export async function logout() {
+  const userStore = useUserStore.getState()
+  userStore.logout()
 }
