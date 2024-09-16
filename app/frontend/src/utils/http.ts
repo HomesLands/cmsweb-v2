@@ -98,17 +98,10 @@ const decodeRefreshToken = (refreshToken: string): string | null => {
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token')
-    const decodedToken = decodeToken(token || '')
-    const expireTime = localStorage.getItem('expireTime')
-    console.log('Check token in interceptor request', decodedToken)
+    const { token } = useUserStore.getState()
+    console.log({ token })
     if (token) {
-      // const decodedToken = decodeToken(token)
-      // console.log('Check decodedToken in interceptor request', decodedToken)
-      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${decodedToken}`
-      // if (decodedToken && !isTokenExpired(expireTime)) {
-      //   axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${decodedToken}`
-      // }
+      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`
       if (!(config as { doNotShowLoading?: boolean })?.doNotShowLoading) {
         const requestStore = useRequestStore.getState()
         if (requestStore.requestQueueSize === 0) {
@@ -148,34 +141,34 @@ axiosInstance.interceptors.response.use(
         showErrorToast(code)
       }
 
-      if (code === 401 && !config._retry) {
-        config._retry = true
-        try {
-          const currentToken = localStorage.getItem('token')
-          const refreshToken = localStorage.getItem('refreshToken')
+      // if (code === 401 && !config._retry) {
+      //   config._retry = true
+      //   try {
+      //     const currentToken = localStorage.getItem('token')
+      //     const refreshToken = localStorage.getItem('refreshToken')
 
-          if (currentToken && refreshToken) {
-            const decodedRefreshToken = decodeRefreshToken(refreshToken)
-            console.log('Check encodedRefreshToken in interceptor response', decodedRefreshToken)
-            console.log('Check currentToken in interceptor response', currentToken)
+      //     if (currentToken && refreshToken) {
+      //       const decodedRefreshToken = decodeRefreshToken(refreshToken)
+      //       console.log('Check encodedRefreshToken in interceptor response', decodedRefreshToken)
+      //       console.log('Check currentToken in interceptor response', currentToken)
 
-            if (decodedRefreshToken) {
-              const newToken = await refreshTokenAPI(currentToken, decodedRefreshToken)
-              console.log('Check newToken in interceptor response', newToken)
-              // localStorage.setItem('token', newToken)
+      //       if (decodedRefreshToken) {
+      //         const newToken = await refreshTokenAPI(currentToken, decodedRefreshToken)
+      //         console.log('Check newToken in interceptor response', newToken)
+      //         // localStorage.setItem('token', newToken)
 
-              axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newToken}`
-              config.headers['Authorization'] = `Bearer ${newToken}`
+      //         axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newToken}`
+      //         config.headers['Authorization'] = `Bearer ${newToken}`
 
-              return axiosInstance.request(config)
-            }
-          }
-        } catch (err) {
-          showErrorToast(code)
-          // toLogin()
-          return Promise.reject(error)
-        }
-      }
+      //         return axiosInstance.request(config)
+      //       }
+      //     }
+      //   } catch (err) {
+      //     showErrorToast(code)
+      //     // toLogin()
+      //     return Promise.reject(error)
+      //   }
+      // }
 
       if (code === 500) {
         showErrorToast(code)

@@ -23,8 +23,6 @@ const ProductRequisitionForm: React.FC = () => {
 
   const { data: users } = useUsers2()
 
-  console.log(users)
-
   useEffect(() => {
     const savedFormData = localStorage.getItem('requestFormProducts')
     if (savedFormData) {
