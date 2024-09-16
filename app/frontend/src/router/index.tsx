@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { createBrowserRouter, RouteObject, useLocation, useNavigate } from 'react-router-dom'
+import { createBrowserRouter, RouteObject } from 'react-router-dom'
 
 import { routes } from '@/router/routes'
 import { IRoute } from '@/types'
@@ -47,14 +47,5 @@ const routeObjects = routes.map(createRouteObject)
 //     }
 //   }
 // }
-
-export function toLogin() {
-  const userStore = useUserStore.getState()
-  userStore.logout()
-  const currentPath = router.state.location.pathname
-  if (currentPath !== '/auth/login') {
-    router.navigate('/auth/login')
-  }
-}
 
 export const router = createBrowserRouter(routeObjects)

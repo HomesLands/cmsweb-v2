@@ -1,53 +1,39 @@
-import { ILogin, IRefreshTokenResponse, IRegister, IRegisterResponse } from '@/types'
+import { AxiosError, isAxiosError } from 'axios'
+import {
+  IApiResponse,
+  ILoginResponse,
+  ILogoutRequest,
+  IRefreshTokenResponse,
+  IRegisterRequest
+} from '@/types'
 import { http, showErrorToast, showToast } from '@/utils'
 import { useUserStore } from '@/stores'
 
-interface ApiError {
-  response: {
-    code: number
-    message: string
-  }
-}
-
-interface LoginError {
-  response: {
-    data: {
-      code: number
-      message: string
-    }
-  }
-}
-
-export async function registerForm(params: {
-  fullname: string
-  username: string
-  password: string
-}): Promise<IRegisterResponse<IRegister>> {
+export async function registerApi(params: IRegisterRequest): Promise<IApiResponse<void>> {
   try {
-    const response = await http.post<IRegisterResponse<IRegister>>('/auth/register', params)
+    const response = await http.post<IApiResponse<void>>('/auth/register', params)
     showToast('Đăng ký thành công')
     return response.data
-  } catch (error: unknown) {
-    console.log(error)
-    const apiError = error as ApiError
-    if (apiError.response?.code) {
-      const { code } = apiError.response
-      showErrorToast(code)
+  } catch (error) {
+    if (isAxiosError(error)) {
+      const axiosError = error as AxiosError<IApiResponse<void>>
+      if (axiosError.response?.data.code) showErrorToast(axiosError.response.data.code)
     }
     throw error
   }
 }
 
-export async function loginForm(params: { username: string; password: string }): Promise<ILogin> {
+export async function loginApi(params: {
+  username: string
+  password: string
+}): Promise<IApiResponse<ILoginResponse>> {
   try {
-    const response = await http.post<ILogin>('/auth/authenticate', params)
-    showToast('Đăng nhập thành công')
+    const response = await http.post<IApiResponse<ILoginResponse>>('/auth/authenticate', params)
     return response.data
-  } catch (error: unknown) {
-    const apiError = error as LoginError
-    if (apiError.response?.data.code) {
-      const { code } = apiError.response.data
-      showErrorToast(code)
+  } catch (error) {
+    if (isAxiosError(error)) {
+      const axiosError = error as AxiosError<IApiResponse<void>>
+      if (axiosError.response?.data.code) showErrorToast(axiosError.response.data.code)
     }
     throw error
   }
@@ -62,7 +48,7 @@ export async function getRefreshToken({
 }) {
   try {
     return await http
-      .post<IRefreshTokenResponse>('/auth/refresh', {
+      .post<IApiResponse<IRefreshTokenResponse>>('/auth/refresh', {
         expiredToken,
         refreshToken
       })
@@ -77,27 +63,23 @@ export async function getRefreshToken({
         }
       })
   } catch (error: unknown) {
-    console.log(error)
-    const apiError = error as ApiError
-    if (apiError.response?.code) {
-      const { code, message } = apiError.response
-      return { code, error: true, message }
+    if (isAxiosError(error)) {
+      const axiosError = error as AxiosError<IApiResponse<void>>
+      if (axiosError.response?.data.code) showErrorToast(axiosError.response.data.code)
     }
-    return { token: '', expireTime: '' }
+    throw error
   }
 }
 
-// async function refreshTokenAPI(expiredToken: string, refreshToken: string): Promise<string> {
-//   return await axiosInstance
-//     .post<IRefreshTokenResponse>('/auth/refresh', { expiredToken, refreshToken })
-//     .then((response) => {
-//       const { token, expireTime } = response.data.result
-//       useUserStore.setState({ token, expireTime })
-//       return token
-//     })
-// }
-
-export async function logout() {
-  const userStore = useUserStore.getState()
-  userStore.logout()
+export async function logoutApi(data: ILogoutRequest) {
+  try {
+    const response = await http.post<IApiResponse<void>>('/auth/logout', data)
+    return response.data
+  } catch (error) {
+    if (isAxiosError(error)) {
+      const axiosError = error as AxiosError<IApiResponse<void>>
+      if (axiosError.response?.data.code) showErrorToast(axiosError.response.data.code)
+    }
+    throw error
+  }
 }

@@ -1,12 +1,11 @@
-import axios from 'axios'
+import axios, { AxiosError, isAxiosError } from 'axios'
 import NProgress from 'nprogress'
 import moment from 'moment'
 
 import { useRequestStore } from '@/stores/request.store'
 import { showErrorToast } from './toast'
-import { toLogin } from '@/router'
 import { useUserStore } from '@/stores'
-import { IError } from '@/types'
+import { IApiResponse } from '@/types'
 
 interface RefreshTokenResponse {
   code: string
@@ -35,27 +34,26 @@ function isTokenExpired(expireTime: string): boolean {
   return now.isAfter(expirationTime)
 }
 
-async function refreshTokenAPI(expiredToken: string, refreshToken: string): Promise<string> {
-  try {
-    const response = await axiosInstance.post<RefreshTokenResponse>('/auth/refresh', {
-      expiredToken,
-      refreshToken
-    })
-    console.log('Check response', response)
-    const { token, expireTime } = response.data.result
-    useUserStore.setState({ token, expireTime })
-    return token
-  } catch (error: unknown) {
-    const err = error as IError
-    console.error('Failed to refresh tokennn:', err.response.data)
-    if (err.response.data.code === 400) {
-      showErrorToast(err.response.data.code)
-    }
-    return Promise.reject(err.response.data)
-  }
-}
-
-// ... existing code ...
+// async function refreshTokenAPI(expiredToken: string, refreshToken: string): Promise<string> {
+//   try {
+//     const response = await axiosInstance.post<RefreshTokenResponse>('/auth/refresh', {
+//       expiredToken,
+//       refreshToken
+//     })
+//     console.log('Check response', response)
+//     const { token, expireTime } = response.data.result
+//     useUserStore.setState({ token, expireTime })
+//     return token
+//   } catch (error: unknown) {
+//     if (isAxiosError(error)) {
+//       const axiosError = error as AxiosError<IApiResponse<void>>
+//       if (axiosError.response?.data.code) {
+//         showErrorToast(axiosError.response.data.code)
+//       }
+//       return Promise.reject(axiosError.response?.data)
+//     }
+//   }
+// }
 
 const isBase64 = (str: string): boolean => {
   try {
@@ -93,8 +91,6 @@ const decodeRefreshToken = (refreshToken: string): string | null => {
     return null
   }
 }
-
-// ... existing code ...
 
 axiosInstance.interceptors.request.use(
   (config) => {

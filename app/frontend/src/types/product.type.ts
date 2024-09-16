@@ -1,15 +1,15 @@
-import { RequestStatus } from './request.type'
+import { RequestRequisitionStatus } from './request-requisition.type'
 
 export interface IProductApprovalInfo {
   id: string
   createdBy: string
   createdAt?: string
   updatedAt?: string
-  commanderApprovalStatus: RequestStatus
+  commanderApprovalStatus: RequestRequisitionStatus
   commanderApprovalContent?: string
-  projectManagerApprovalStatus: RequestStatus
+  projectManagerApprovalStatus: RequestRequisitionStatus
   projectManagerApprovalContent?: string
-  directorApprovalStatus: RequestStatus
+  directorApprovalStatus: RequestRequisitionStatus
   directorApprovalContent?: string
   notes?: string
 }

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Popover, PopoverContent, PopoverTrigger, Button, Label, ScrollArea } from '@/components/ui'
 import { BellIcon, ClockIcon, DotFilledIcon } from '@radix-ui/react-icons'
-import { Notification } from '@/types'
+import { INotification } from '@/types'
 import { getNotification } from '@/api/notification'
 
 export function PopoverNotification() {
-  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [notifications, setNotifications] = useState<INotification[]>([])
 
   useEffect(() => {
     async function fetchNotifications() {
