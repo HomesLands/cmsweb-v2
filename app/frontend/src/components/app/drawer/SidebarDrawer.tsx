@@ -15,14 +15,26 @@ import { cn } from '@/lib/utils'
 import { sidebarSubmenus } from '@/router/routes'
 import { IconWrapper } from './IconWrapper'
 import { useLayoutStore } from '@/stores'
+import { useTranslation } from 'react-i18next'
 
 export function SidebarDrawer() {
-  const { isMinimized, toggleMinimized } = useLayoutStore() // Add toggleMinimized
+  const { isMinimized, toggleMinimized } = useLayoutStore()
   const location = useLocation()
+  const { t } = useTranslation('sidebar') // useTranslation hook with 'sidebar' namespace
+
+  // Translate submenu items
+  const translatedSubmenus = sidebarSubmenus.map((submenu) => ({
+    ...submenu,
+    title: t(submenu.title),
+    children: submenu.children?.map((child) => ({
+      ...child,
+      title: t(child.title)
+    }))
+  }))
 
   return (
     <Accordion type="single" collapsible className="w-full">
-      {sidebarSubmenus.map((submenu) => {
+      {translatedSubmenus.map((submenu) => {
         const isSubmenuActive = submenu.children?.some((item) =>
           location.pathname.startsWith(item.path)
         )

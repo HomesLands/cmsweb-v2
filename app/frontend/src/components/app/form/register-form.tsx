@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { useTranslation } from 'react-i18next'
 
 import {
   FormField,
@@ -14,23 +15,27 @@ import {
 } from '@/components/ui'
 import { registerSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { IRegister } from '@/types'
 
 interface IFormRegisterProps {
-  onSubmit: (data: z.infer<typeof registerSchema>) => void
+  onSubmit: (data: IRegister) => void
 }
 
 export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
+  const { t } = useTranslation(['auth'])
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       fullname: '',
       username: '',
-      password: ''
+      password: '',
+      confirmPassword: ''
     }
   })
 
   const handleSubmit = (values: z.infer<typeof registerSchema>) => {
-    onSubmit(values)
+    const { confirmPassword, ...apiValues } = values
+    onSubmit(apiValues)
   }
 
   return (
@@ -43,9 +48,9 @@ export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
               name="fullname"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Họ và tên</FormLabel>
+                  <FormLabel>{t('register.fullname')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nhập họ và tên" {...field} />
+                    <Input placeholder={t('register.enter_fullname')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -56,9 +61,9 @@ export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Tên đăng nhập</FormLabel>
+                  <FormLabel>{t('register.username')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nhập tên đăng nhập" {...field} />
+                    <Input placeholder={t('register.enter_username')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -69,9 +74,26 @@ export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mật khẩu</FormLabel>
+                  <FormLabel>{t('register.password')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nhập mật khẩu" {...field} type="password" />
+                    <Input placeholder={t('register.enter_password')} {...field} type="password" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('register.confirm_password')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={t('register.enter_confirm_password')}
+                      {...field}
+                      type="password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -80,13 +102,13 @@ export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
           </div>
           <div className="flex items-center justify-between w-full">
             <Button type="submit" className="md:w-[6rem]">
-              Đăng ký
+              {t('register.register')}
             </Button>
             <div className="text-sm text-center">
-              Bạn đã có tài khoản?
+              {t('register.have_account')}
               <NavLink to="/auth/login" className="underline">
                 {' '}
-                Đăng nhập{' '}
+                {t('register.login_now')}
               </NavLink>
             </div>
           </div>

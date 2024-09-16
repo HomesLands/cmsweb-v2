@@ -1,0 +1,31 @@
+{
+  "product_requisition": {
+    "list": "Danh sách yêu cầu vật tư",
+    "create": "Tạo yêu cầu vật tư",
+    "create_product_requisitions": "Tạo yêu cầu vật tư",
+    "create_product_requisitions_description": "Công cụ tạo yêu cầu vật tư",
+    "request_code": "Mã yêu cầu",
+    "requester": "Người yêu cầu",
+    "requester_description": "Nhập tên người yêu cầu",
+    "project_name": "Tên dự án",
+    "project_name_description": "Nhập tên dự án",
+    "construction_site": "Tên công trình",
+    "construction_site_description": "Nhập tên công trình",
+    "approver": "Người phê duyệt",
+    "approver_description": "Nhập tên người phê duyệt",
+    "note": "Ghi chú",
+    "note_description": "Nhập ghi chú",
+    "next": "Tiếp theo",
+    "add_product_to_request": "Thêm sản phẩm vào yêu cầu",
+    "add_product_to_request_description": "Thêm sản phẩm vào yêu cầu mô tả",
+    "confirm_product_requisitions": "Xác nhận yêu cầu",
+    "confirm_product_requisitions_description": "Xác nhận yêu cầu mô tả",
+    "confirm_product_requisitions_success": "Xác nhận yêu cầu thành công",
+    "confirm_product_requisitions_success_description": "Xác nhận yêu cầu thành công mô tả"
+  },
+  "progress": {
+    "create_product_requisitions": "Tạo phiếu yêu cầu",
+    "add_product_to_request": "Thêm vật tư",
+    "confirm_product_requisitions": "Xác nhận"
+  }
+}

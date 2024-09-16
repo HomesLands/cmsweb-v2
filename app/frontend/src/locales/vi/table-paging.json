@@ -1,0 +1,16 @@
+{
+  "table_paging": {
+    "page": "Trang",
+    "of": " trên ",
+    "entries": "bản ghi",
+    "show": "Hiển thị",
+    "rows_per_page": "Số hàng mỗi trang",
+    "hide": "Ẩn",
+    "asc": "Tăng dần",
+    "desc": "Giảm dần",
+    "first_page": "Trang đầu",
+    "previous_page": "Trang trước",
+    "next_page": "Trang tiếp",
+    "last_page": "Trang cuối"
+  }
+}
