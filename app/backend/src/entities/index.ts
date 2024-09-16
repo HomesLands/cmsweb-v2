@@ -5,3 +5,4 @@ export * from "./unit.entity";
 export * from "./invalid-token.entity";
 export * from "./site.entity";
 export * from "./project.entity";
+export * from "./product-requisition-form.entity";

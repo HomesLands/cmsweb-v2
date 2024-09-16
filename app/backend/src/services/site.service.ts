@@ -1,4 +1,4 @@
-import { siteRepository, userRepository } from "@repositories";
+import { siteRepository, userRepository,  productRequisitionForm } from "@repositories";
 import { mapper } from "@mappers";
 import { plainToClass } from "class-transformer";
 
@@ -14,6 +14,12 @@ class SiteService {
     if(sitesData.length < 1) {
       return [];
     }
+
+    
+    const form = await productRequisitionForm.findProductRequisitionForm("657084dc-7380-11ef-9b98-8c8caa41f99d");
+    console.log({form})
+    console.log({form: form?.requestProducts})
+
     const sitesDto: SiteResponseDto[] = mapper.mapArray(
       sitesData,
       Site,
