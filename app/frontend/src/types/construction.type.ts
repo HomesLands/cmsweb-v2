@@ -6,7 +6,7 @@ export interface IConstruction {
   managerId: string
 }
 
-export interface IProjectListResponse<T> {
+export interface IConstructionListResponse<T> {
   code: string
   message: string
   result: T

@@ -1,22 +1,21 @@
 import {
   IConstruction,
-  IPagingResponse,
+  IConstructionListResponse,
+  IPaginationResponse,
   IProductApprovalInfo,
   IProductInfo,
-  IProductInfoSearch,
   IProductRequirementInfoCreate,
   IProject,
   IProjectListResponse
 } from '@/types'
 import productData from '@/data/products'
 import productListData from '@/data/product.list'
-import productList from '@/data/product.list'
 import { http } from '@/utils'
 
 export async function getProducts(params: {
   page: number
   pageSize: number
-}): Promise<IPagingResponse<IProductApprovalInfo>> {
+}): Promise<IPaginationResponse<IProductApprovalInfo>> {
   try {
     const users: IProductApprovalInfo[] = await new Promise((resolve) => {
       setTimeout(() => {
@@ -48,7 +47,7 @@ export async function getProducts(params: {
 export async function getProductList(params: {
   page: number
   pageSize: number
-}): Promise<IPagingResponse<IProductInfo>> {
+}): Promise<IPaginationResponse<IProductInfo>> {
   try {
     const productList: IProductInfo[] = await new Promise((resolve) => {
       setTimeout(() => {
@@ -131,7 +130,7 @@ export async function getProjectListInProductRequisition(): Promise<
 }
 
 export async function getConstructionListInProductRequisition(): Promise<
-  IProjectListResponse<IConstruction[]>
+  IConstructionListResponse<IConstruction[]>
 > {
   try {
     const response = await http.get<IProjectListResponse<IConstruction[]>>('/sites')

@@ -1,32 +1,18 @@
 import React from 'react'
-import { useMutation } from '@tanstack/react-query'
-import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
-
 import { LoginBackground } from '@/assets/images'
 import { RegisterForm } from '@/components/app/form'
-import { registerForm } from '@/api/auth'
-import { IRegister } from '@/types'
+import { IRegisterRequest } from '@/types'
+import { useRegister } from '@/hooks'
 
 const Register: React.FC = () => {
   const { t } = useTranslation(['auth'])
-  const navigate = useNavigate()
-  const mutation = useMutation({
-    mutationFn: async (data: IRegister) => {
-      return registerForm(data)
-    },
-    onSuccess: () => {
-      navigate('/auth/login')
-    },
-    onError: (error) => {
-      console.log(error)
-    }
-  })
+  const mutation = useRegister()
 
-  const handleSubmit = (data: IRegister) => {
-    mutation.mutate(data)
+  const handleSubmit = async (data: IRegisterRequest) => {
+    await mutation.mutateAsync(data)
   }
 
   return (
