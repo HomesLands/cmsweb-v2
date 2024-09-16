@@ -1,4 +1,7 @@
 import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { useTranslation } from 'react-i18next'
+
 import {
   FormField,
   FormItem,
@@ -11,11 +14,12 @@ import {
   Textarea
 } from '@/components/ui'
 import { productSchema } from '@/schemas'
+import { SelectProject, SelectConstruction } from '@/components/app/select'
+
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
+import { useProjectList, useSiteList } from '@/hooks'
 import { IProductRequirementInfoCreate } from '@/types'
 import { generateProductRequisitionCode } from '@/utils'
-import { useTranslation } from 'react-i18next'
 
 interface IFormCreateProductProps {
   onSubmit: (data: z.infer<typeof productSchema>) => void
@@ -33,12 +37,15 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
       requestCode: generateProductRequisitionCode(),
       requester: '',
       project: '',
-      construction: '',
+      site: '',
       approver: '',
       note: '',
       ...initialData
     }
   })
+
+  const { data: projectList } = useProjectList()
+  const { data: siteList } = useSiteList()
 
   const handleSubmit = (values: z.infer<typeof productSchema>) => {
     onSubmit(values)
@@ -85,10 +92,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                 <FormItem>
                   <FormLabel>{t('product_requisition.project_name')}</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder={t('product_requisition.project_name_description')}
-                      {...field}
-                    />
+                    <SelectProject {...field} projectList={projectList?.result ?? []} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -98,15 +102,12 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
           <div className="grid grid-cols-1 gap-2">
             <FormField
               control={form.control}
-              name="construction"
+              name="site"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t('product_requisition.construction_site')}</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder={t('product_requisition.construction_site_description')}
-                      {...field}
-                    />
+                    <SelectConstruction {...field} constructionList={siteList?.result ?? []} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -1,0 +1,23 @@
+{
+  "approver": "Thắng",
+  "construction": "Abbott",
+  "note": "",
+  "priority": "normal",
+  "products": [
+    {
+      "productCode": "PRD002",
+      "productName": "Máy hàn",
+      "modelOrSerialNumber": "MH-002",
+      "supplier": "Công ty B",
+      "quantity": "2",
+      "unit": "Cái",
+      "note": "Cần kiểm tra trước khi dùng"
+    }
+  ],
+  "address": "",
+  "createdBy": "",
+  "id": "",
+  "project": "TBE",
+  "requestCode": "YCVT14092024-JO7RM",
+  "requester": "Tuấn vũ"
+}

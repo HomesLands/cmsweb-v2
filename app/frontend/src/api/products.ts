@@ -1,13 +1,17 @@
 import {
+  IConstruction,
   IPagingResponse,
   IProductApprovalInfo,
   IProductInfo,
   IProductInfoSearch,
-  IProductRequirementInfoCreate
+  IProductRequirementInfoCreate,
+  IProject,
+  IProjectListResponse
 } from '@/types'
 import productData from '@/data/products'
 import productListData from '@/data/product.list'
 import productList from '@/data/product.list'
+import { http } from '@/utils'
 
 export async function getProducts(params: {
   page: number
@@ -77,7 +81,7 @@ export async function postProductRequest(params: {
   requestCode: string
   requester: string
   project: string
-  construction: string
+  site: string
   approver: string
   note: string
   priority: string
@@ -88,7 +92,7 @@ export async function postProductRequest(params: {
     requestCode: params.requestCode,
     requester: params.requester.toLowerCase(),
     project: params.project.toLowerCase(),
-    construction: params.construction.toLowerCase(),
+    site: params.site.toLowerCase(),
     approver: params.approver.toLowerCase(),
     note: params.note.toLowerCase(),
     priority: params.priority.toLowerCase(),
@@ -96,6 +100,32 @@ export async function postProductRequest(params: {
   }
   console.log('lowercaseParams', lowercaseParams)
   return lowercaseParams
+}
+
+export async function getProjectListInProductRequisition(): Promise<
+  IProjectListResponse<IProject[]>
+> {
+  try {
+    const response = await http.get<IProjectListResponse<IProject[]>>('/projects')
+
+    console.log('response in api: ', response)
+    return response.data
+  } catch (error) {
+    console.log('Failed to fetch projects:', error)
+    throw new Error('Failed to fetch projects')
+  }
+}
+
+export async function getConstructionListInProductRequisition(): Promise<
+  IProjectListResponse<IConstruction[]>
+> {
+  try {
+    const response = await http.get<IProjectListResponse<IConstruction[]>>('/sites')
+    return response.data
+  } catch (error) {
+    console.log('Failed to fetch constructions:', error)
+    throw new Error('Failed to fetch constructions')
+  }
 }
 
 // export async function searchProduct(params: {

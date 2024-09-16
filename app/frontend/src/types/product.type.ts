@@ -18,7 +18,7 @@ export interface IProductRequirementInfoCreate {
   requestCode: string
   requester: string
   project: string
-  construction: string
+  site: string
   approver: string
   priority: string
   note: string

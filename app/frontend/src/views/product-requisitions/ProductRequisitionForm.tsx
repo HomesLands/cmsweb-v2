@@ -50,7 +50,7 @@ const ProductRequisitionForm: React.FC = () => {
     requestCode: string
     requester: string
     project: string
-    construction: string
+    site: string
     approver: string
     note: string
     priority: string
