@@ -16,8 +16,8 @@ export const projectMapper: MappingProfile = (mapper: Mapper) => {
       mapFrom((source) => source.manager?.fullname)
     ),
     forMember(
-      (destination) => destination.managerId,
-      mapFrom((source) => source.manager?.id)
+      (destination) => destination.managerSlug,
+      mapFrom((source) => source.manager?.slug)
     ),
   );
   
