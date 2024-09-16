@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { IUserInfo, IUserState } from '@/types'
+import { IUserInfo, IUserStore } from '@/types'
 
 const encodeToken = (token: string): string => {
   return btoa(token)
@@ -15,7 +15,7 @@ const decodeToken = (token: string | null): string | null => {
   }
 }
 
-export const useUserStore = create<IUserState>()(
+export const useUserStore = create<IUserStore>()(
   persist(
     (set, get) => ({
       userInfo: undefined,
@@ -27,7 +27,7 @@ export const useUserStore = create<IUserState>()(
       setToken: (token: string) => set({ token }),
       setRefreshToken: (refreshToken: string) => set({ refreshToken }),
       setExpireTime: (expireTime: string) => set({ expireTime }),
-      logout: () =>
+      setLogout: () =>
         set({
           userInfo: undefined,
           token: undefined,
@@ -40,28 +40,3 @@ export const useUserStore = create<IUserState>()(
     }
   )
 )
-
-// export const useUserStore = create<IUserState>((set) => ({
-//   userInfo: undefined,
-//   token: decodeToken(localStorage.getItem('token')) || undefined,
-//   refreshToken: decodeToken(localStorage.getItem('refreshToken')) || undefined,
-//   expireTime: localStorage.getItem('expireTime') || undefined,
-//   isAuthenticated: () => !!localStorage.getItem('token'),
-//   setUserInfo: (userInfo: IUserInfo) => set({ userInfo }),
-//   setToken: (token: string) => {
-//     const encodedToken = encodeToken(token)
-//     localStorage.setItem('token', encodedToken)
-//   },
-//   setRefreshToken: (refreshToken: string) => {
-//     const encodedRefreshToken = encodeToken(refreshToken)
-//     localStorage.setItem('refreshToken', encodedRefreshToken)
-//   },
-//   setExpireTime: (expireTime: string) => {
-//     localStorage.setItem('expireTime', expireTime)
-//   },
-//   logout: () => {
-//     localStorage.removeItem('token')
-//     localStorage.removeItem('expireTime')
-//     set({ userInfo: undefined, token: undefined })
-//   }
-// }))

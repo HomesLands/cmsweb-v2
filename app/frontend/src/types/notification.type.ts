@@ -1,7 +1,7 @@
-export interface Notification {
-    id: string
-    title: string
-    content: string
-    read: boolean
-    createdAt: string
+export interface INotification {
+  id: string
+  title: string
+  content: string
+  read: boolean
+  createdAt: string
 }

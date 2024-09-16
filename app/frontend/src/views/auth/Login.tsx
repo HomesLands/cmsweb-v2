@@ -1,38 +1,19 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
-import { useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 
 import { loginSChema } from '@/schemas'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
 import { LoginBackground } from '@/assets/images'
 import { LoginForm } from '@/components/app/form'
-import { loginForm } from '@/api/auth'
-import { ILogin } from '@/types'
-import { useUserStore } from '@/stores'
+import { useLogin } from '@/hooks'
 
 const Login: React.FC = () => {
-  const { setToken, setRefreshToken, setExpireTime } = useUserStore()
   const { t } = useTranslation(['auth'])
-  const navigate = useNavigate()
-  const mutation = useMutation({
-    mutationFn: async (data: z.infer<typeof loginSChema>) => {
-      return loginForm(data)
-    },
-    onSuccess: (data: ILogin) => {
-      setToken(data.result.token)
-      setRefreshToken(data.result.refreshToken)
-      setExpireTime(data.result.expireTime)
-      navigate('/')
-    },
-    onError: (error) => {
-      console.log('Check error: ', error)
-    }
-  })
+  const mutation = useLogin()
 
-  const handleSubmit = (data: z.infer<typeof loginSChema>) => {
-    mutation.mutate(data)
+  const handleSubmit = async (data: z.infer<typeof loginSChema>) => {
+    await mutation.mutateAsync(data)
   }
 
   return (

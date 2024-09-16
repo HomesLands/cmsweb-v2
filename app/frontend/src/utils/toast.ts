@@ -21,6 +21,6 @@ export function showToast(message: string) {
 }
 
 export function showErrorToast(code: number) {
-  const message = errorMessages[code] || 'An unknown error occurred'
+  const message = errorMessages[code] || 'Đã có lỗi xảy ra'
   toast.error(message)
 }

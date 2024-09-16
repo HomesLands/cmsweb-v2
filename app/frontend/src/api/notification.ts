@@ -1,8 +1,8 @@
-import { Notification } from "@/types";
-import notificationsData from "@/data/notifications.json";
+import { INotification } from '@/types'
+import notificationsData from '@/data/notifications.json'
 
-export function getNotification(): Promise<Notification[]> {
-    return new Promise((resolve) => {
-        resolve(notificationsData as Notification[]);
-    });
+export function getNotification(): Promise<INotification[]> {
+  return new Promise((resolve) => {
+    resolve(notificationsData as INotification[])
+  })
 }

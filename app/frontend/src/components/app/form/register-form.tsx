@@ -15,10 +15,10 @@ import {
 } from '@/components/ui'
 import { registerSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { IRegister } from '@/types'
+import { IRegisterRequest } from '@/types'
 
 interface IFormRegisterProps {
-  onSubmit: (data: IRegister) => void
+  onSubmit: (data: IRegisterRequest) => void
 }
 
 export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
