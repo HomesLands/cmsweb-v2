@@ -15,14 +15,15 @@ import { useMutation } from '@tanstack/react-query'
 import { showToast } from '@/utils'
 import { useState } from 'react'
 import { DialogLogout } from '../dialog'
-import { logout } from '@/api/auth'
+import { useUserStore } from '@/stores'
 
 export function DropdownHeader() {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
+  const { logout } = useUserStore()
   const mutation = useMutation({
     mutationFn: async () => {
-      await logout()
+      logout()
     },
     onSuccess: () => {
       showToast('Đăng xuất thành công')
@@ -48,8 +49,11 @@ export function DropdownHeader() {
           <DropdownMenuItem className="cursor-pointer">Thông tin tài khoản</DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer">Đổi mật khẩu</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="flex items-center justify-start gap-2 cursor-pointer text-danger hover:bg-red-100">
-            <div className="flex items-center gap-2" onClick={() => setOpen(true)}>
+          <DropdownMenuItem
+            className="flex items-center justify-start gap-2 cursor-pointer text-danger hover:bg-red-100"
+            onClick={() => setOpen(true)}
+          >
+            <div className="flex items-center gap-2">
               <ExitIcon className="danger-icon" />
               Đăng xuất
             </div>
