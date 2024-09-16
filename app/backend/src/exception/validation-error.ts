@@ -1,7 +1,7 @@
 import { ValidationError as ClassValidatorError } from "class-validator";
 import _ from "lodash";
 
-import { TErrorCodeValue } from "@types";
+import { TErrorCodeKey, TErrorCodeValue } from "@types";
 import { ErrorCodes } from "./error-code";
 
 export class ValidationError extends Error {
@@ -42,7 +42,8 @@ export class ValidationError extends Error {
     error: ClassValidatorError
   ): TErrorCodeValue {
     const constraintKey =
-      error.constraints && Object.values(error.constraints)[0];
+      error.constraints &&
+      (Object.values(error.constraints)[0] as TErrorCodeKey);
     if (!constraintKey) return ErrorCodes.UNIDENTIFIED_ERROR;
     if (!_.has(ErrorCodes, constraintKey)) return ErrorCodes.UNIDENTIFIED_ERROR;
     return ErrorCodes[constraintKey];

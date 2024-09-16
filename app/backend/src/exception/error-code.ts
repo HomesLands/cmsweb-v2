@@ -2,20 +2,35 @@ import { StatusCodes } from "http-status-codes";
 import type { TErrorCode } from "@types";
 
 export const ErrorCodes: TErrorCode = {
+  // UserInputErrors
+  //   code range: [1000 - 3999]
   INVALID_EMAIL: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1001,
     message: "Email is not valid",
   },
-  PATH_NOT_FOUND: {
-    httpStatusCode: StatusCodes.NOT_FOUND,
-    code: 1002,
-    message: "Can not find path",
-  },
   INVALID_USERNAME: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1003,
     message: "Username is not valid",
+  },
+  INVALID_PASSWORD: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1008,
+    message: "Password is not valid",
+  },
+  INVALID_FULLNAME: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1011,
+    message: "Fullname is not valid",
+  },
+
+  // AuthenticationErrors
+  // Code range: [4000 - 4099]
+  PATH_NOT_FOUND: {
+    httpStatusCode: StatusCodes.NOT_FOUND,
+    code: 1002,
+    message: "Can not find path",
   },
   USER_NOT_FOUND: {
     httpStatusCode: StatusCodes.UNAUTHORIZED,
@@ -36,26 +51,6 @@ export const ErrorCodes: TErrorCode = {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1007,
     message: "Unindentified error",
-  },
-  INVALID_PASSWORD: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1008,
-    message: "Password is not valid",
-  },
-  INVALID_FIRSTNAME: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1009,
-    message: "Firstname is not valid",
-  },
-  INVALID_LASTNAME: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1010,
-    message: "Lastname is not valid",
-  },
-  INVALID_FULLNAME: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1011,
-    message: "Fullname is not valid",
   },
   INVALID_TOKEN: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -112,4 +107,4 @@ export const ErrorCodes: TErrorCode = {
     code: 1021,
     message: "Token expiration is not exist",
   },
-};
+} as const;
