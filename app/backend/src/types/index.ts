@@ -48,6 +48,7 @@ export type TErrorCodeKey =
   | "IAT_NOT_EXIST"
   | "TOKEN_ID_NOT_EXIST"
   | "TOKEN_TYPE_NOT_EXIST"
+  | "USER_ASSIGNED_NOT_FOUND"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {
@@ -59,3 +60,5 @@ export type TErrorCodeValue = {
 export type TErrorCode = Record<TErrorCodeKey, TErrorCodeValue>;
 
 export * from "./auth.type";
+export * from "./site.typs";
+export * from "./project.type";

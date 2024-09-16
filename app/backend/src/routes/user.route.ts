@@ -5,4 +5,4 @@ export const userRoute: Router = Router();
 
 userRoute.route("/").get(userController.getAllUsers);
 
-export default userRoute;
+// export default userRoute;

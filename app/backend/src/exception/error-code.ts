@@ -107,4 +107,9 @@ export const ErrorCodes: TErrorCode = {
     code: 1021,
     message: "Token expiration is not exist",
   },
+  USER_ASSIGNED_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1022,
+    message: "User is assigned not found",
+  },
 } as const;

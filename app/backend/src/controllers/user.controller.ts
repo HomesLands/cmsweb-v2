@@ -24,7 +24,6 @@ class UserController {
    *         description: Get all users successfully.
    *       500:
    *         description: Server error
-   *
    */
   public async getAllUsers(
     req: Request,
@@ -41,7 +40,7 @@ class UserController {
       const response: TApiResponse<UserResponseDto[]> = {
         code: StatusCodes.OK,
         error: false,
-        message: "OK",
+        message: "Get all users successfully",
         method: req.method,
         path: req.originalUrl,
         result: results,
@@ -53,4 +52,4 @@ class UserController {
   }
 }
 
-export const userController = new UserController();
+export default new UserController();

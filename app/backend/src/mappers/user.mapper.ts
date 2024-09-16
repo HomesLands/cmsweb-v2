@@ -4,5 +4,5 @@ import { User } from "@entities";
 
 // Define the mapping profile
 export const userMapper: MappingProfile = (mapper: Mapper) => {
-  createMap(mapper, User, UserResponseDto); // Map request object to entity
+  createMap(mapper, User, UserResponseDto); // Map entity to response object
 };

@@ -4,6 +4,9 @@ import { authRoute } from "@routes/auth.route";
 import { productRoute } from "@routes/product.route";
 import { userRoute } from "@routes/user.route";
 import { healthCheckRoute } from "@routes/health-check.route";
+import { siteRoute } from "@routes/site.route";
+import { projectRoute } from "@routes/project.route";
+
 import { authMiddleware } from "@middlewares";
 import { ErrorCodes, GlobalError } from "@exception";
 import { StatusCodes } from "http-status-codes";
@@ -19,6 +22,10 @@ export const registerRoutes = (app: Express) => {
   baseApi.use("/users", userRoute);
 
   baseApi.use("/products", productRoute);
+
+  baseApi.use("/sites", siteRoute);
+
+  baseApi.use("/projects", projectRoute);
 
   baseApi.use("/healthCheck", healthCheckRoute);
 
