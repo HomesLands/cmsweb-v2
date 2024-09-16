@@ -33,7 +33,10 @@ const routeObjects = routes.map(createRouteObject)
 
 export function useToLogin() {
   const location = useLocation()
+  console.log('location', location)
   const navigate = useNavigate()
+  console.log('navigate', navigate)
+  console.log('useToLogin')
 
   return (path?: string) => {
     const userStore = useUserStore.getState()

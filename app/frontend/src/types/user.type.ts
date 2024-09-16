@@ -35,6 +35,10 @@ export interface ILogin {
   }
 }
 
+export interface IRefreshToken {
+  token: string
+}
+
 export interface IUserState {
   userInfo?: IUserInfo
   token?: string

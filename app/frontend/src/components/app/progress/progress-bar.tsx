@@ -5,7 +5,7 @@ interface ProgressBarProps {
 }
 
 export function ProgressBar({ step }: ProgressBarProps) {
-  const currentStep = step - 1
+  const currentStep = step
   return (
     <ol className="flex items-center justify-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 rtl:space-x-reverse">
       {/* Step 1 */}

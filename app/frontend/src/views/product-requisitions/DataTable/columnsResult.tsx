@@ -1,6 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table'
 
-import { DataTableColumnHeader, DataTableColumnAddressHeader } from '@/components/ui'
+import { DataTableColumnHeader } from '@/components/ui'
 import { IProductInfo } from '@/types'
 
 export const columnsResult = (): ColumnDef<IProductInfo>[] => [

@@ -20,8 +20,8 @@ export function CustomComponentRequest<TData>({ table }: ColumnVisibilityDropdow
     <>
       <Input
         placeholder="Nhập tên vật tư..."
-        value={table.getColumn('createdBy')?.getFilterValue() as string}
-        onChange={(event) => table.getColumn('createdBy')?.setFilterValue(event.target.value)}
+        value={table.getColumn('productCode')?.getFilterValue() as string}
+        onChange={(event) => table.getColumn('productCode')?.setFilterValue(event.target.value)}
         className="max-w-sm"
       />
       <DropdownMenu>
@@ -47,7 +47,7 @@ export function CustomComponentRequest<TData>({ table }: ColumnVisibilityDropdow
             ))}
         </DropdownMenuContent>
       </DropdownMenu>
-      <DialogAddProductRequest />
+      {/* <DialogAddProductRequest handleAddRequest={handleAddRequest} openDialog={openDialog} product={product} component={component} onOpenChange={onOpenChange} /> */}
     </>
   )
 }

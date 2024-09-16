@@ -10,19 +10,19 @@ import {
   Button,
   UserAvatar
 } from '@/components/ui'
-import { useUserStore } from '@/stores'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import { showToast } from '@/utils'
 import { useState } from 'react'
 import { DialogLogout } from '../dialog'
+import { logout } from '@/api/auth'
 
 export function DropdownHeader() {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
   const mutation = useMutation({
     mutationFn: async () => {
-      return useUserStore.getState().logout()
+      await logout()
     },
     onSuccess: () => {
       showToast('Đăng xuất thành công')

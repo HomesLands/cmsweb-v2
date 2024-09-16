@@ -73,13 +73,14 @@ export async function getProductList(params: {
   }
 }
 
-export async function productRequest(params: {
+export async function postProductRequest(params: {
   requestCode: string
   requester: string
   project: string
   construction: string
   approver: string
   note: string
+  priority: string
   products: IProductInfo[]
 }): Promise<IProductRequirementInfoCreate> {
   // Convert parameters to lowercase directly
@@ -90,14 +91,11 @@ export async function productRequest(params: {
     construction: params.construction.toLowerCase(),
     approver: params.approver.toLowerCase(),
     note: params.note.toLowerCase(),
+    priority: params.priority.toLowerCase(),
     products: params.products
   }
+  console.log('lowercaseParams', lowercaseParams)
   return lowercaseParams
-
-  // Post using axios
-  // const response = await axios.post('/api/product/request', lowercaseParams)
-
-  // return lowercaseParams
 }
 
 // export async function searchProduct(params: {

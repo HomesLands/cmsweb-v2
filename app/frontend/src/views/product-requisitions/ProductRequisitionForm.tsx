@@ -40,6 +40,7 @@ const ProductRequisitionForm: React.FC = () => {
     construction: string
     approver: string
     note: string
+    priority: string
     products: IProductInfo[]
   }) => {
     setFormData(data)

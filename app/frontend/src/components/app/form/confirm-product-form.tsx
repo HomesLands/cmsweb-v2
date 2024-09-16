@@ -7,8 +7,8 @@ import { TbeLogo } from '@/assets/images'
 
 interface IConfirmProductFormProps {
   data: IProductRequirementInfoCreate
-  onConfirm: () => void
-  onBack: () => void
+  onConfirm: (data: IProductRequirementInfoCreate) => void
+  onBack: (step: number) => void
 }
 
 export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({
@@ -31,7 +31,14 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({
     }
   }, [])
 
-  console.log('Check data: ', data)
+  const handleBack = () => {
+    onBack(2)
+  }
+
+  const handleConfirm = () => {
+    onConfirm(data)
+  }
+
   return (
     <div className="mt-3">
       <div className="flex flex-col justify-center gap-3">
@@ -87,10 +94,10 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({
         ))}
 
       <div className="flex justify-end w-full gap-2 mt-4">
-        <Button variant="outline" onClick={onBack}>
+        <Button variant="outline" onClick={handleBack}>
           Trở lại
         </Button>
-        <Button onClick={onConfirm}>Xác nhận</Button>
+        <Button onClick={handleConfirm}>Xác nhận</Button>
       </div>
     </div>
   )
