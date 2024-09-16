@@ -23,6 +23,8 @@ services:
       HASH_SALT: ${HASH_SALT}
       JWT_SECRET: ${JWT_SECRET}
       PASSPORT_SECRET: ${PASSPORT_SECRET}
+      DURATION: ${DURATION}
+      REFRESHABLE_DURATION: ${REFRESHABLE_DURATION}
       TZ: Asia/Ho_Chi_Minh
     depends_on:
       mysql_db:

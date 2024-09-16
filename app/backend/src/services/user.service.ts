@@ -1,20 +1,20 @@
-import { userRepository } from "@repositories";
 import { mapper } from "@mappers";
 import { User } from "@entities";
 import { UserResponseDto } from "@dto/response";
+import { userRepository } from "@repositories";
+import { TPaginationOption } from "@types";
 
 class UserService {
-  public async getUserById(id: string): Promise<UserResponseDto | null> {
-    const userData = await userRepository.findOneBy({ id });
-    if (!userData) {
-      return null;
-    }
-    const userDto: UserResponseDto = mapper.map(
-      userData,
-      User,
-      UserResponseDto
-    );
-    return userDto;
+  public async getAllUsers(
+    options: TPaginationOption
+  ): Promise<UserResponseDto[]> {
+    const users = await userRepository.find({
+      take: options.take,
+      skip: options.skip,
+      order: { createdAt: options.order },
+    });
+    const results = mapper.mapArray(users, User, UserResponseDto);
+    return results;
   }
 }
 

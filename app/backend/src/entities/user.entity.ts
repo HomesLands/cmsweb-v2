@@ -1,11 +1,14 @@
-import { Entity, Column, JoinColumn, OneToOne, OneToMany } from "typeorm";
+import { Entity, Column, JoinColumn, OneToOne, OneToMany, ManyToOne } from "typeorm";
 import { Base } from "@entities/base.entity";
 import { AutoMap } from "@automapper/classes";
 
 import { File } from "@entities/file.entity";
 import { Position } from "@entities/position.entity";
 import { Site } from "@entities/site.entity";
+import { Project } from "@entities/project.entity";
+
 import { Gender } from "enums";
+import { UserRole } from "./user-role.entity";
 
 @Entity("user_tbl")
 export class User extends Base {
@@ -45,10 +48,18 @@ export class User extends Base {
   @Column({ name: "approval_level_column", nullable: true })
   approvalLevel?: number;
 
-  @OneToOne(() => Position)
-  @JoinColumn({ name: "position_column" })
+  @ManyToOne(() => Position, (position) => position.users)
+  @JoinColumn({ name: "position_id_column" })
   position?: Position;
 
-  @OneToMany(() => Site, (site) => site.users)
+  // a user can manage many sides
+  @OneToMany(() => Site, (site) => site.manager)
   sites?: Site[];
+
+  // a user can manage many project
+  @OneToMany(() => Project, (project) => project.manager)
+  projects?: Project[];
+  // A user can have many roles
+  @OneToMany(() => UserRole, (userRole) => userRole.user)
+  userRoles?: UserRole[];
 }

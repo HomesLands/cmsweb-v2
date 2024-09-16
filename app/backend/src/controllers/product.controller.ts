@@ -1,3 +1,3 @@
 class ProductController {}
 
-export const productController = new ProductController();
+export default new ProductController();

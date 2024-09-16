@@ -6,14 +6,15 @@ import { User } from "@entities";
 import { GlobalError, ErrorCodes } from "@exception";
 import { invalidTokenRepository, userRepository } from "@repositories";
 import { TokenUtils } from "@utils";
+import { RefreshTokenRequestDto } from "@dto/request";
 
 class TokenService {
   private _duration: number;
   private _refreshableDuration: number;
 
   constructor() {
-    this._duration = 120; // Second
-    this._refreshableDuration = 36000; // sencond
+    this._duration = env.duration; // Second
+    this._refreshableDuration = env.refreshableDuration; // second
   }
 
   /**
@@ -22,27 +23,24 @@ class TokenService {
    * @returns {string} New refreshed token
    * @throws {GlobalError} If identity is invalid
    */
-  public async refreshToken(token: string): Promise<string> {
-    await this.validateToken(token);
+  public async refreshToken(
+    requestData: RefreshTokenRequestDto
+  ): Promise<string> {
+    // Check expire time token
+    const isExpiredToken = await TokenUtils.isExpired(requestData.expiredToken);
+    if (!isExpiredToken) throw new GlobalError(ErrorCodes.TOKEN_NOT_EXPIRED);
 
     // Check if the token is still refreshable
-    const iat = TokenUtils.extractIat(token);
-    const now = Math.floor(Date.now() / 1000);
-    if (now > iat + this._refreshableDuration)
+    const isExpiredRefresh = await TokenUtils.isExpired(
+      requestData.refreshToken
+    );
+    if (isExpiredRefresh)
       throw new GlobalError(ErrorCodes.REFRESH_TOKEN_EXPIRED);
 
-    // Invalidate the old token
-    const invalidatedToken = {
-      tokenId: TokenUtils.extractId(token),
-      expiryDate: TokenUtils.extractExpiration(token),
-    };
-    await invalidTokenRepository.createAndSave(invalidatedToken);
-
-    const id = TokenUtils.extractSubject(token);
-    const identity = await userRepository.findOneBy({ id });
-    if (!identity) {
-      throw new GlobalError(ErrorCodes.SUBJECT_NOT_EXIST);
-    }
+    // Get user
+    const sub = TokenUtils.extractSubject(requestData.refreshToken);
+    const identity = await userRepository.findOneBy({ id: sub });
+    if (!identity) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 
     return this.createToken(identity, this._duration);
   }
@@ -54,18 +52,6 @@ class TokenService {
    * @throws {GlobalError} If token is invalid or expired
    */
   public async validateToken(token: string): Promise<boolean> {
-    const expiryTime = TokenUtils.extractExpiration(token);
-
-    if (expiryTime.getTime() > Date.now()) {
-      throw new GlobalError(ErrorCodes.TOKEN_NOT_EXPIRED);
-    }
-
-    const id = TokenUtils.extractSubject(token);
-    const identity = await userRepository.findOneBy({ id });
-    if (!identity) {
-      throw new GlobalError(ErrorCodes.SUBJECT_NOT_EXIST);
-    }
-
     const tokenId = TokenUtils.extractId(token);
     const isInvalidToken = await invalidTokenRepository.existsBy({ tokenId });
 
@@ -111,8 +97,14 @@ class TokenService {
    * @param {User} identity
    * @returns {string} JWT token
    */
-  public generateToken(identity: User): string {
-    return this.createToken(identity, this._duration);
+  public generateToken(identity: User): {
+    token: string;
+    refreshToken: string;
+  } {
+    return {
+      token: this.createToken(identity, this._duration),
+      refreshToken: this.createToken(identity, this._refreshableDuration),
+    };
   }
 }
 

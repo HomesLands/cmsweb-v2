@@ -2,15 +2,13 @@ import { AutoMap } from "@automapper/classes";
 
 export class UserResponseDto {
   @AutoMap()
-  firstName?: string;
-
-  @AutoMap()
-  lastName?: string;
+  fullname?: string;
 
   @AutoMap()
   username?: string;
 
-  fullName?: string;
+  @AutoMap()
+  password?: string;
 
   @AutoMap()
   id?: string;

@@ -2,30 +2,34 @@ import { NextFunction, Request, Response } from "express";
 import passport from "passport";
 import { StatusCodes } from "http-status-codes";
 import bcrypt from "bcryptjs";
+import { plainToClass } from "class-transformer";
+import _ from "lodash";
+import moment from "moment";
+import { validate } from "class-validator";
 
-import { logger } from "@lib";
 import { ErrorCodes, GlobalError, ValidationError } from "@exception";
-import { AuthenticationResponseDto } from "@dto/response";
+import {
+  AuthenticationResponseDto,
+  RefreshTokenResponseDto,
+} from "@dto/response";
 import {
   AuthenticationRequestDto,
+  LogoutRequestDto,
   RefreshTokenRequestDto,
   RegistrationRequestDto,
 } from "@dto/request";
-import { userRepository } from "@repositories";
-import { User } from "@entities";
-import { validate } from "class-validator";
+import { invalidTokenRepository, userRepository } from "@repositories";
+import { InvalidToken, User } from "@entities";
 import {
   TAuthenticationRequestDto,
+  TLogoutRequestDto,
   TRefreshTokenRequestDto,
   TRegistrationRequestDto,
 } from "@types";
-import { plainToClass } from "class-transformer";
 import { mapper } from "@mappers";
 import { env } from "@constants";
-import _ from "lodash";
 import tokenService from "./token.service";
 import { TokenUtils } from "@utils/token.util";
-import moment from "moment";
 
 class AuthService {
   public async authenticate(
@@ -48,13 +52,12 @@ class AuthService {
           return reject(new GlobalError(ErrorCodes.USER_NOT_FOUND));
         }
 
-        const token = tokenService.generateToken(user);
-        const expireTime = TokenUtils.extractExpiration(token);
-        logger.info(expireTime.toString());
+        const { token, refreshToken } = tokenService.generateToken(user);
 
         return resolve({
           expireTime: moment(TokenUtils.extractExpiration(token)).toString(), // Local date
           token,
+          refreshToken,
         });
       })(req, res, next);
     });
@@ -88,7 +91,7 @@ class AuthService {
 
   public async refreshToken(
     plainData: TRefreshTokenRequestDto
-  ): Promise<AuthenticationResponseDto> {
+  ): Promise<RefreshTokenResponseDto> {
     // Map plain object to request dto
     const requestData = plainToClass(RefreshTokenRequestDto, plainData);
 
@@ -96,12 +99,37 @@ class AuthService {
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
 
-    const newToken = await tokenService.refreshToken(requestData.token);
+    const token = await tokenService.refreshToken(requestData);
 
     return {
-      token: newToken,
-      expireTime: moment(TokenUtils.extractExpiration(newToken)).toString(),
+      token,
+      expireTime: moment(TokenUtils.extractExpiration(token)).toString(),
     };
+  }
+
+  public async logout(plainData: TLogoutRequestDto): Promise<void> {
+    // Map plain object to request dto
+    const requestData = plainToClass(LogoutRequestDto, plainData);
+
+    // Validate the class instance
+    const errors = await validate(requestData);
+    if (errors.length > 0) throw new ValidationError(errors);
+
+    // Mark token expire
+    if (!(await TokenUtils.isExpired(requestData.token))) {
+      const tokenId = TokenUtils.extractId(requestData.token);
+      const expiryDate = TokenUtils.extractExpiration(requestData.token);
+      const invalidToken = { tokenId, expiryDate } as InvalidToken;
+      await invalidTokenRepository.createAndSave(invalidToken);
+    }
+
+    // Mark refresh token expire
+    if (!(await TokenUtils.isExpired(requestData.refreshToken))) {
+      const tokenId = TokenUtils.extractId(requestData.refreshToken);
+      const expiryDate = TokenUtils.extractExpiration(requestData.refreshToken);
+      const invalidToken = { tokenId, expiryDate } as InvalidToken;
+      await invalidTokenRepository.createAndSave(invalidToken);
+    }
   }
 }
 

@@ -1,12 +1,18 @@
 import { createMapper } from "@automapper/core";
 import { classes } from "@automapper/classes";
 import { authMapper } from "./auth.mapper";
+import { siteMapper } from "./site.mapper";
+import { userMapper } from "./user.mapper";
+import { projectMapper } from "./project.mapper";
 
 export const mapper = createMapper({
   strategyInitializer: classes(),
 });
 
 authMapper(mapper);
+siteMapper(mapper);
+userMapper(mapper);
+projectMapper(mapper);
 
 // createMap(
 //   mapper,
