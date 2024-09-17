@@ -10,8 +10,8 @@ NProgress.configure({ showSpinner: false, trickleSpeed: 200 })
 
 let isRefreshing = false
 let failedQueue: { resolve: (token: string) => void; reject: (error: unknown) => void }[] = []
-const baseURL = import.meta.env.VITE_BASE_API_URL
-console.log({ baseURL })
+const baseURL = import.meta.env.VITE_BASE_API_URL || 'https://tbecms.cmsiot.net/api/v1'
+console.log({ baseURL, NODE_ENV: import.meta.env.MODE })
 
 const processQueue = (error: unknown, token: string | null = null) => {
   failedQueue.forEach((prom) => {
