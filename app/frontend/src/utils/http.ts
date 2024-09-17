@@ -1,7 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import NProgress from 'nprogress'
 import moment from 'moment'
-import { redirect } from 'react-router-dom'
 
 import { useRequestStore } from '@/stores/request.store'
 import { useUserStore } from '@/stores'
@@ -11,6 +10,8 @@ NProgress.configure({ showSpinner: false, trickleSpeed: 200 })
 
 let isRefreshing = false
 let failedQueue: { resolve: (token: string) => void; reject: (error: unknown) => void }[] = []
+const baseURL = import.meta.env.VITE_BASE_API_URL
+console.log({ baseURL })
 
 const processQueue = (error: unknown, token: string | null = null) => {
   failedQueue.forEach((prom) => {
@@ -30,7 +31,7 @@ const isTokenExpired = (expiryTime: string): boolean => {
 }
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BASE_API_URL,
+  baseURL,
   timeout: 10000,
   withCredentials: true
 })
@@ -39,8 +40,6 @@ axiosInstance.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     const { token, expireTime, refreshToken, setExpireTime, setToken, setLogout } =
       useUserStore.getState()
-    const baseURL = import.meta.env.VITE_BASE_API_URL as string
-
     if (expireTime && isTokenExpired(expireTime) && !isRefreshing) {
       isRefreshing = true
       try {
@@ -79,7 +78,6 @@ axiosInstance.interceptors.request.use(
         })
       })
     }
-
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`
       if (!config?.doNotShowLoading) {
@@ -91,19 +89,6 @@ axiosInstance.interceptors.request.use(
       }
     }
     return config
-
-    // if (token) {
-    //   axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    //   if (!config?.doNotShowLoading) {
-    //     const requestStore = useRequestStore.getState()
-    //     if (requestStore.requestQueueSize === 0) {
-    //       NProgress.start()
-    //     }
-    //     requestStore.incrementRequestQueueSize()
-    //   }
-    //   return config
-    // }
-    // return config
   },
   (error) => {
     return Promise.reject(error)
