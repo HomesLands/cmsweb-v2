@@ -15,8 +15,8 @@ export const siteMapper: MappingProfile = (mapper: Mapper) => {
       mapFrom((source) => source.manager?.fullname)
     ),
     forMember(
-      (destination) => destination.mangerId,
-      mapFrom((source) => source.manager?.id)
+      (destination) => destination.mangerSlug,
+      mapFrom((source) => source.manager?.slug)
     ),
   );
 
