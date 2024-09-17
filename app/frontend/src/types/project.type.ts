@@ -1,5 +1,5 @@
 export interface IProject {
-  id: string
+  slug: string
   name: string
   startDate: string
   description: string

@@ -37,11 +37,11 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
       requestCode: generateProductRequisitionCode(),
       requester: '',
       project: {
-        id: '',
+        slug: '',
         name: ''
       },
       site: {
-        id: '',
+        slug: '',
         name: ''
       },
       approver: '',
