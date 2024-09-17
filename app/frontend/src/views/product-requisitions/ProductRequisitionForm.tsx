@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useMutation } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
 import { IProductRequirementInfoCreate, IProductNameSearch, IProductInfo } from '@/types'
@@ -12,7 +13,6 @@ import { ProgressBar } from '@/components/app/progress/progress-bar'
 import { useMultiStep, useUsers2 } from '@/hooks'
 import { postProductRequest } from '@/api/products'
 import { showToast } from '@/utils'
-import { useTranslation } from 'react-i18next'
 
 const ProductRequisitionForm: React.FC = () => {
   const { t } = useTranslation('productRequisition')
@@ -47,12 +47,19 @@ const ProductRequisitionForm: React.FC = () => {
   const handleFormCreateSubmit = (data: {
     requestCode: string
     requester: string
-    project: string
-    construction: string
+    project: {
+      id: string
+      name: string
+    }
+    site: {
+      id: string
+      name: string
+    }
     approver: string
     note: string
     priority: string
     products: IProductInfo[]
+    createdAt: string
   }) => {
     setFormData(data)
     localStorage.setItem('requestFormProducts', JSON.stringify(data))
@@ -75,26 +82,27 @@ const ProductRequisitionForm: React.FC = () => {
     }
   }
 
-  const handleBackToCreate = (step: number) => {
+  const handleBackToCreate = () => {
     const savedFormData = localStorage.getItem('requestFormProducts')
     if (savedFormData) {
-      setFormData(JSON.parse(savedFormData))
+      const parsedFormData = JSON.parse(savedFormData)
+      setFormData(parsedFormData)
     }
-    handleStepChange(step)
+    handleStepChange(1)
   }
 
-  const handleBackToSearch = (step: number) => {
+  const handleBackToSearch = () => {
     const savedSearchData = localStorage.getItem('searchData')
     if (savedSearchData) {
       setSearchData(JSON.parse(savedSearchData))
     }
-    handleStepChange(step)
+    handleStepChange(2)
   }
 
   return (
     <div>
       <div className="flex justify-center w-full my-2">
-        <div className="w-full md:w-1/2">
+        <div className="w-full md:w-4/5">
           <ProgressBar step={currentStep} />
         </div>
       </div>
@@ -103,9 +111,9 @@ const ProductRequisitionForm: React.FC = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between w-full border-b">
               <div className="flex flex-col items-start gap-2 py-2">
-                <CardTitle>{t('product_requisition.create_product_requisitions')}</CardTitle>
+                <CardTitle>{t('productRequisition.createProductRequisitions')}</CardTitle>
                 <CardDescription>
-                  {t('product_requisition.create_product_requisitions_description')}
+                  {t('productRequisition.createProductRequisitionsDescription')}
                 </CardDescription>
               </div>
             </CardHeader>
@@ -121,9 +129,9 @@ const ProductRequisitionForm: React.FC = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between w-full border-b">
               <div className="flex flex-col items-start gap-2 py-2">
-                <CardTitle>{t('product_requisition.add_product_to_request')}</CardTitle>
+                <CardTitle>{t('productRequisition.addProductToRequest')}</CardTitle>
                 <CardDescription>
-                  {t('product_requisition.add_product_to_request_description')}
+                  {t('productRequisition.addProductToRequestDescription')}
                 </CardDescription>
               </div>
             </CardHeader>
@@ -140,9 +148,9 @@ const ProductRequisitionForm: React.FC = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between w-full border-b">
               <div className="flex flex-col items-start gap-2 py-2">
-                <CardTitle>{t('product_requisition.confirm_product_requisitions')}</CardTitle>
+                <CardTitle>{t('productRequisition.confirmProductRequisitions')}</CardTitle>
                 <CardDescription>
-                  {t('product_requisition.confirm_product_requisitions_description')}
+                  {t('productRequisition.confirmProductRequisitionsDescription')}
                 </CardDescription>
               </div>
             </CardHeader>
@@ -150,7 +158,7 @@ const ProductRequisitionForm: React.FC = () => {
               <ConfirmProductForm
                 data={formData}
                 onConfirm={handleConfirmRequest}
-                onBack={() => handleBackToSearch(1)}
+                onBack={handleBackToSearch}
               />
             </CardContent>
           </Card>
@@ -159,16 +167,14 @@ const ProductRequisitionForm: React.FC = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between w-full border-b">
               <div className="flex flex-col items-start gap-2 py-2">
-                <CardTitle>
-                  {t('product_requisition.confirm_product_requisitions_success')}
-                </CardTitle>
+                <CardTitle>{t('productRequisition.confirmProductRequisitionsSuccess')}</CardTitle>
                 <CardDescription>
-                  {t('product_requisition.confirm_product_requisitions_success_description')}
+                  {t('productRequisition.confirmProductRequisitionsSuccessDescription')}
                 </CardDescription>
               </div>
             </CardHeader>
             <CardContent className="flex flex-col">
-              <p>{t('product_requisition.confirm_product_requisitions_success_description')}</p>
+              <p>{t('productRequisition.confirmProductRequisitionsSuccessDescription')}</p>
             </CardContent>
           </Card>
         )}

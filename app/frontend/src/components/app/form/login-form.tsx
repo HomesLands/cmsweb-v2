@@ -46,7 +46,7 @@ export const LoginForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
                 <FormItem>
                   <FormLabel>{t('login.username')}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('login.enter_username')} {...field} />
+                    <Input placeholder={t('login.enterUsername')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -59,7 +59,7 @@ export const LoginForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
                 <FormItem>
                   <FormLabel>{t('login.password')}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('login.enter_password')} {...field} type="password" />
+                    <Input placeholder={t('login.enterPassword')} {...field} type="password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -71,7 +71,7 @@ export const LoginForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
               {t('login.login')}
             </Button>
             <div className="text-sm text-center">
-              {t('login.dont_have_account')}
+              {t('login.dontHaveAccount')}
               <NavLink to="/auth/register" className="underline">
                 {' '}
                 {t('login.register')}

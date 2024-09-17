@@ -60,7 +60,7 @@ const routes: IRoute[] = [
     ]
   },
   {
-    title: i18next.t('sidebar.product_requisitions'),
+    title: i18next.t('sidebar.productRequisitions'),
     path: '/product-requisitions',
     component: () =>
       import('@/components/app/layouts').then((module) => ({
@@ -68,7 +68,7 @@ const routes: IRoute[] = [
       })),
     children: [
       {
-        title: i18next.t('sidebar.product_requisitions_list'),
+        title: i18next.t('sidebar.productRequisitionsList'),
         path: 'list',
         component: () =>
           import('@/views/product-requisitions').then((module) => ({
@@ -76,7 +76,7 @@ const routes: IRoute[] = [
           }))
       },
       {
-        title: i18next.t('sidebar.product_requisitions_create'),
+        title: i18next.t('sidebar.createProductRequisitions'),
         path: 'add',
         component: () =>
           import('@/views/product-requisitions').then((module) => ({
@@ -143,14 +143,14 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
   //   ]
   // },
   {
-    title: i18next.t('sidebar.product_requisitions'),
+    title: i18next.t('sidebar.productRequisitions'),
     path: '/product-requisitions',
     icon: ArchiveIcon,
     component: () =>
       import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
     children: [
       {
-        title: i18next.t('sidebar.product_requisitions_list'),
+        title: i18next.t('sidebar.productRequisitionsList'),
         path: '/product-requisitions/list',
         icon: Archive,
         component: () =>
@@ -159,7 +159,7 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
           }))
       },
       {
-        title: i18next.t('sidebar.product_requisitions_create'),
+        title: i18next.t('sidebar.createProductRequisitions'),
         path: '/product-requisitions/add',
         icon: Archive,
         component: () =>

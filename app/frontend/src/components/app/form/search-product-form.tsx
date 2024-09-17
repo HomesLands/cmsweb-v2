@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import { useMultiStep } from '@/hooks'
 import { useProductList } from '@/hooks'
 import { IProductInfo, IProductNameSearch } from '@/types'
 
@@ -11,28 +11,24 @@ import { columnsResult } from '@/views/product-requisitions/DataTable/columnsRes
 
 interface IFormAddProductProps {
   onSubmit: (data: IProductNameSearch) => void
-  onBack: (step: number) => void
+  onBack: () => void
   initialData?: IProductNameSearch | null
 }
 
 export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSubmit }) => {
+  const { t } = useTranslation('productRequisition')
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [selectedProducts, setSelectedProducts] = useState<IProductInfo[]>([])
 
-  const { data } = useProductList({
+  const { data, isLoading } = useProductList({
     page,
     pageSize
   })
 
-  const handleBack = () => {
-    onBack(1)
-  }
-
   const handleNext = () => {
     const productNameSearch: IProductNameSearch = {
       productName: selectedProducts.map((product) => product.productName).join(', ')
-      // Add other required fields for IProductNameSearch if necessary
     }
     onSubmit(productNameSearch)
   }
@@ -49,14 +45,24 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
   }
 
   useEffect(() => {
-    const existingData = JSON.parse(localStorage.getItem('requestFormProducts') || '{}')
-    const productsArray = Array.isArray(existingData.products) ? existingData.products : []
-    setSelectedProducts(productsArray)
+    const updateSelectedProducts = () => {
+      const existingData = JSON.parse(localStorage.getItem('requestFormProducts') || '{}')
+      const productsArray = Array.isArray(existingData.products) ? existingData.products : []
+      setSelectedProducts(productsArray)
+    }
+
+    updateSelectedProducts()
+
+    window.addEventListener('storage', updateSelectedProducts)
+    return () => {
+      window.removeEventListener('storage', updateSelectedProducts)
+    }
   }, [])
 
   return (
     <div className="flex flex-col w-full gap-4 mt-3">
       <DataTable
+        isLoading={isLoading}
         columns={useColumnsSearch(handleAddRequest)}
         data={data?.items || []}
         total={data?.total || 0}
@@ -65,16 +71,21 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
         pageSize={pageSize}
         onPageChange={setPage}
         onPageSizeChange={setPageSize}
-        CustomComponent={CustomComponentRequest}
+        CustomComponent={(props) => (
+          <CustomComponentRequest {...props} handleAddRequest={handleAddRequest} />
+        )}
       />
 
       <div className="flex flex-col gap-2 p-4 border rounded-md">
         <Label className="text-lg font-semibold leading-none tracking-tight font-beVietNam">
-          Danh sách vật tư đã thêm vào phiếu yêu cầu
+          {t('productRequisition.addedProductToRequest')}
         </Label>
-        <span className="text-sm text-muted-foreground">Công ty Cổ phần Công nghệ Mekong</span>
+        <span className="text-sm text-muted-foreground">
+          {t('productRequisition.addedProductToRequestDescription')}
+        </span>
         <div className="flex flex-col gap-2">
           <DataTable
+            isLoading={isLoading}
             columns={columnsResult()}
             data={selectedProducts}
             total={selectedProducts.length}
@@ -83,15 +94,17 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
             pageSize={selectedProducts.length}
             onPageChange={() => {}}
             onPageSizeChange={() => {}}
-            CustomComponent={CustomComponentRequest}
+            CustomComponent={(props) => (
+              <CustomComponentRequest {...props} handleAddRequest={handleAddRequest} />
+            )}
           />
         </div>
       </div>
       <div className="flex items-center justify-end w-full gap-2 mt-4">
-        <Button variant="outline" onClick={handleBack}>
-          Trở lại
+        <Button variant="outline" onClick={onBack}>
+          {t('productRequisition.back')}
         </Button>
-        <Button onClick={handleNext}>Xác nhận</Button>
+        <Button onClick={handleNext}>{t('productRequisition.next')}</Button>
       </div>
     </div>
   )

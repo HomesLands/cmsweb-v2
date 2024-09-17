@@ -1,11 +1,16 @@
 import {
+  IConstruction,
+  IConstructionListResponse,
   IPaginationResponse,
   IProductApprovalInfo,
   IProductInfo,
-  IProductRequirementInfoCreate
+  IProductRequirementInfoCreate,
+  IProject,
+  IProjectListResponse
 } from '@/types'
 import productData from '@/data/products'
 import productListData from '@/data/product.list'
+import { http } from '@/utils'
 
 export async function getProducts(params: {
   page: number
@@ -74,26 +79,66 @@ export async function getProductList(params: {
 export async function postProductRequest(params: {
   requestCode: string
   requester: string
-  project: string
-  construction: string
+  project: {
+    id: string
+    name: string
+  }
+  site: {
+    id: string
+    name: string
+  }
   approver: string
   note: string
   priority: string
   products: IProductInfo[]
+  createdAt: string
 }): Promise<IProductRequirementInfoCreate> {
   // Convert parameters to lowercase directly
   const lowercaseParams = {
     requestCode: params.requestCode,
     requester: params.requester.toLowerCase(),
-    project: params.project.toLowerCase(),
-    construction: params.construction.toLowerCase(),
+    project: {
+      id: params.project.id,
+      name: params.project.name.toLowerCase()
+    },
+    site: {
+      id: params.site.id,
+      name: params.site.name.toLowerCase()
+    },
     approver: params.approver.toLowerCase(),
     note: params.note.toLowerCase(),
     priority: params.priority.toLowerCase(),
-    products: params.products
+    products: params.products,
+    createdAt: params.createdAt
   }
   console.log('lowercaseParams', lowercaseParams)
   return lowercaseParams
+}
+
+export async function getProjectListInProductRequisition(): Promise<
+  IProjectListResponse<IProject[]>
+> {
+  try {
+    const response = await http.get<IProjectListResponse<IProject[]>>('/projects')
+
+    console.log('response in api: ', response)
+    return response.data
+  } catch (error) {
+    console.log('Failed to fetch projects:', error)
+    throw new Error('Failed to fetch projects')
+  }
+}
+
+export async function getConstructionListInProductRequisition(): Promise<
+  IConstructionListResponse<IConstruction[]>
+> {
+  try {
+    const response = await http.get<IProjectListResponse<IConstruction[]>>('/sites')
+    return response.data
+  } catch (error) {
+    console.log('Failed to fetch constructions:', error)
+    throw new Error('Failed to fetch constructions')
+  }
 }
 
 // export async function searchProduct(params: {
