@@ -18,7 +18,7 @@ export const useLogin = () => {
       setToken(data.result.token)
       setRefreshToken(data.result.refreshToken)
       setExpireTime(data.result.expireTime)
-      navigate('/')
+      navigate('/product-requisitions/list')
       showToast('Đăng nhập thành công')
     },
     onError: (error) => {

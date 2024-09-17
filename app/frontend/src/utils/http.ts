@@ -1,111 +1,92 @@
-import axios, { AxiosError, isAxiosError } from 'axios'
+import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import NProgress from 'nprogress'
 import moment from 'moment'
 
 import { useRequestStore } from '@/stores/request.store'
-import { showErrorToast } from './toast'
 import { useUserStore } from '@/stores'
-import { IApiResponse } from '@/types'
-
-interface RefreshTokenResponse {
-  code: string
-  message: string
-  result: {
-    token: string
-    refreshToken: string
-    expireTime: string
-  }
-}
+import { IApiResponse, IRefreshTokenResponse } from '@/types'
 
 NProgress.configure({ showSpinner: false, trickleSpeed: 200 })
 
-const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BASE_API_URL,
+let isRefreshing = false
+let failedQueue: { resolve: (token: string) => void; reject: (error: unknown) => void }[] = []
+const baseURL = import.meta.env.VITE_BASE_API_URL || 'https://tbecms.cmsiot.net/api/v1'
+console.log({ baseURL, NODE_ENV: import.meta.env.MODE })
+
+const processQueue = (error: unknown, token: string | null = null) => {
+  failedQueue.forEach((prom) => {
+    if (token) {
+      prom.resolve(token)
+    } else {
+      prom.reject(error)
+    }
+  })
+  failedQueue = []
+}
+
+const isTokenExpired = (expiryTime: string): boolean => {
+  const currentDate = moment()
+  const expireDate = moment(expiryTime)
+  return currentDate.isAfter(expireDate)
+}
+
+const axiosInstance: AxiosInstance = axios.create({
+  baseURL,
   timeout: 10000,
   withCredentials: true
 })
 
-function isTokenExpired(expireTime: string): boolean {
-  if (!expireTime) return true
-
-  const expirationTime = moment(expireTime)
-  const now = moment()
-
-  return now.isAfter(expirationTime)
-}
-
-// async function refreshTokenAPI(expiredToken: string, refreshToken: string): Promise<string> {
-//   try {
-//     const response = await axiosInstance.post<RefreshTokenResponse>('/auth/refresh', {
-//       expiredToken,
-//       refreshToken
-//     })
-//     console.log('Check response', response)
-//     const { token, expireTime } = response.data.result
-//     useUserStore.setState({ token, expireTime })
-//     return token
-//   } catch (error: unknown) {
-//     if (isAxiosError(error)) {
-//       const axiosError = error as AxiosError<IApiResponse<void>>
-//       if (axiosError.response?.data.code) {
-//         showErrorToast(axiosError.response.data.code)
-//       }
-//       return Promise.reject(axiosError.response?.data)
-//     }
-//   }
-// }
-
-const isBase64 = (str: string): boolean => {
-  try {
-    return btoa(atob(str)) === str
-  } catch (err) {
-    return false
-  }
-}
-
-const decodeToken = (token: string): string | null => {
-  try {
-    console.log('Check token in decodeToken', token)
-    if (token && isBase64(token)) {
-      return atob(token)
-    } else {
-      console.error('Token is not correctly encoded in base64')
-      return null
-    }
-  } catch (e) {
-    console.error('Failed to decode token:', e)
-    return null
-  }
-}
-
-const decodeRefreshToken = (refreshToken: string): string | null => {
-  try {
-    if (refreshToken && isBase64(refreshToken)) {
-      return atob(refreshToken)
-    } else {
-      console.error('Refresh token is not correctly encoded in base64')
-      return null
-    }
-  } catch (e) {
-    console.error('Failed to decode refresh token:', e)
-    return null
-  }
-}
-
 axiosInstance.interceptors.request.use(
-  (config) => {
-    const { token } = useUserStore.getState()
-    console.log({ token })
+  async (config: InternalAxiosRequestConfig) => {
+    const { token, expireTime, refreshToken, setExpireTime, setToken, setLogout } =
+      useUserStore.getState()
+    if (expireTime && isTokenExpired(expireTime) && !isRefreshing) {
+      isRefreshing = true
+      try {
+        const response: AxiosResponse<IApiResponse<IRefreshTokenResponse>> = await axios.post(
+          `${baseURL}/auth/refresh`,
+          {
+            refreshToken,
+            expiredToken: token
+          }
+        )
+
+        const newToken = response.data.result.token
+        setToken(newToken)
+        setExpireTime(response.data.result.expireTime)
+        processQueue(null, newToken)
+      } catch (error) {
+        console.log({ error })
+        processQueue(error, null)
+        setLogout()
+        // redirect('/auth/login')
+        // You can redirect to the login page
+        window.location.href = '/auth/login'
+      } finally {
+        isRefreshing = false
+      }
+    } else if (isRefreshing) {
+      return new Promise((resolve, reject) => {
+        failedQueue.push({
+          resolve: (token: string) => {
+            config.headers['Authorization'] = `Bearer ${token}`
+            resolve(config)
+          },
+          reject: (error: unknown) => {
+            reject(error)
+          }
+        })
+      })
+    }
     if (token) {
-      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`
-      if (!(config as { doNotShowLoading?: boolean })?.doNotShowLoading) {
+      config.headers['Authorization'] = `Bearer ${token}`
+      if (!config?.doNotShowLoading) {
         const requestStore = useRequestStore.getState()
         if (requestStore.requestQueueSize === 0) {
           NProgress.start()
         }
         requestStore.incrementRequestQueueSize()
       }
-      return config
     }
     return config
   },
@@ -116,26 +97,13 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    const config = response.config || {}
-
-    if (!(config as { doNotShowLoading?: boolean })?.doNotShowLoading) {
-      setProgressBarDone()
-    }
+    if (!response.config?.doNotShowLoading) setProgressBarDone()
     return response
   },
   async (error) => {
-    const config = error.config || {}
-
-    if (!config.doNotShowLoading) {
-      setProgressBarDone()
-    }
-
+    if (!error.config?.doNotShowLoading) setProgressBarDone()
     if (error.response) {
-      const { code, expireTime } = error.response.data
-
-      if (code === 400) {
-        showErrorToast(code)
-      }
+      const { code } = error.response.data
 
       // if (code === 401 && !config._retry) {
       //   config._retry = true
@@ -166,9 +134,7 @@ axiosInstance.interceptors.response.use(
       //   }
       // }
 
-      if (code === 500) {
-        showErrorToast(code)
-      }
+      // showErrorToast(code)
 
       // if (isTokenExpired(expireTime)) {
       //   showErrorToast(code)

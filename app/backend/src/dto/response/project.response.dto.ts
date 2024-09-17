@@ -12,8 +12,8 @@ export class ProjectResponseDto {
 
   managerFullname?: string;
 
-  managerId?: string;
+  managerSlug?: string;
 
   @AutoMap()
-  id?: string;
+  slug?: string;
 }

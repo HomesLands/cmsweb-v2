@@ -37,14 +37,14 @@ class ProjectController {
    *           description: fileDescriptionProject
    *         manager:
    *           type: string
-   *           description: managerId
+   *           description: managerSlug
    *       example:
    *         name: FirstSite
    *         startDate: 2024-09-15T10:25:45+07:00
    *         process: 1
    *         description: project description
    *         fileDescription: temp file description
-   *         manager: 3c3d5058-6fd0-445c-a123-f14108c7ec5c
+   *         manager: 3Co-M1ZL4
    */
 
 
@@ -93,7 +93,7 @@ class ProjectController {
 
   /**
    * @swagger
-   * /projects/create:
+   * /projects:
    *   post:
    *     summary: Create new project
    *     tags: [Project]

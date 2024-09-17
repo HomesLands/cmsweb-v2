@@ -22,7 +22,10 @@ export function DropdownHeader() {
   const mutation = useLogout()
 
   const handleLogout = async () => {
-    const requestData = { token: token || '', refreshToken: refreshToken || '' } as ILogoutRequest
+    const requestData = {
+      token: token || 'token',
+      refreshToken: refreshToken || 'refreshToken'
+    } as ILogoutRequest
     await mutation.mutateAsync(requestData)
   }
   return (

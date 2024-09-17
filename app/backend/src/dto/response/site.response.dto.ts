@@ -9,8 +9,8 @@ export class SiteResponseDto {
 
   managerFullname?: string;
 
-  mangerId?: string;
+  mangerSlug?: string;
 
   @AutoMap()
-  id?: string;
+  slug?: string;
 }

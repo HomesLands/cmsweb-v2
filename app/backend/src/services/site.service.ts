@@ -32,7 +32,7 @@ class SiteService {
     // Map plain object to request dto
     const requestData = plainToClass(CreateSiteRequestDto, plainData);
 
-    const manager = await userRepository.findOneBy({ id: requestData.manager });
+    const manager = await userRepository.findOneBy({ slug: requestData.manager });
 
     if (!manager) {
       throw new GlobalError(ErrorCodes.USER_ASSIGNED_NOT_FOUND);
@@ -41,7 +41,9 @@ class SiteService {
     const siteData = mapper.map(requestData, CreateSiteRequestDto, Site);
     siteData.manager = manager;
 
-    return await siteRepository.createAndSave(siteData);
+    const dataSiteCreated = await siteRepository.createAndSave(siteData);
+    
+    return mapper.map(dataSiteCreated, Site, SiteResponseDto);
   }
 }
 

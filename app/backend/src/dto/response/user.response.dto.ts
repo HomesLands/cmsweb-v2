@@ -11,5 +11,5 @@ export class UserResponseDto {
   password?: string;
 
   @AutoMap()
-  id?: string;
+  slug?: string;
 }

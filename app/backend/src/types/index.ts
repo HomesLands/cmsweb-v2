@@ -60,5 +60,5 @@ export type TErrorCodeValue = {
 export type TErrorCode = Record<TErrorCodeKey, TErrorCodeValue>;
 
 export * from "./auth.type";
-export * from "./site.typs";
+export * from "./site.type";
 export * from "./project.type";
