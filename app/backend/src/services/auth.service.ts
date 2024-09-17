@@ -113,6 +113,7 @@ class AuthService {
 
     // Validate the class instance
     const errors = await validate(requestData);
+    console.log({ errors });
     if (errors.length > 0) throw new ValidationError(errors);
 
     // Mark token expire
