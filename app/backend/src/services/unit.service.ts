@@ -6,8 +6,8 @@ import { Unit } from "@entities/unit.entity";
 import { UnitResponseDto } from "@dto/response";
 import { CreateUnitRequestDto } from "@dto/request";  
 import { TCreateUnitRequestDto } from "@types";
-import { GlobalError } from "@exception/global-error";
-import { ErrorCodes } from "@exception/error-code";
+import { GlobalError, ValidationError, ErrorCodes } from "@exception";
+import { validate } from "class-validator";
 
 class UnitService {
   public async getAllUnits(): Promise<UnitResponseDto[] | []> {
@@ -27,6 +27,9 @@ class UnitService {
   public async createUnit(plainData: TCreateUnitRequestDto): Promise<UnitResponseDto> {
     // Map plain object to request dto
     const requestData = plainToClass(CreateUnitRequestDto, plainData);
+
+    const errors = await validate(requestData);
+    if (errors.length > 0) throw new ValidationError(errors);
 
     // Find exist
     const hasExisted = await unitRepository.existsBy({

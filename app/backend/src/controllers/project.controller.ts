@@ -40,7 +40,7 @@ class ProjectController {
    *           description: managerSlug
    *       example:
    *         name: FirstProject
-   *         startDate: 2024-09-15T10:25:45+07:00
+   *         startDate: 2024-09-15 10:25:45
    *         process: 1
    *         description: project description
    *         fileDescription: temp file description
