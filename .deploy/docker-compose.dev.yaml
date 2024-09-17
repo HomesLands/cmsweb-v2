@@ -60,6 +60,8 @@ services:
       NODE_ENV: ${NODE_ENV}
       VITE_BASE_API_URL: ${VITE_BASE_API_URL} # Replace with your actual API URL
     restart: always
+    ports:
+      - "5137:5137"
 
 networks:
   default:
