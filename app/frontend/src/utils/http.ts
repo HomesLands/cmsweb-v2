@@ -3,7 +3,7 @@ import NProgress from 'nprogress'
 import moment from 'moment'
 
 import { useRequestStore } from '@/stores/request.store'
-import { useUserStore } from '@/stores'
+import { useAuthStore } from '@/stores'
 import { IApiResponse, IRefreshTokenResponse } from '@/types'
 
 NProgress.configure({ showSpinner: false, trickleSpeed: 200 })
@@ -38,7 +38,7 @@ const axiosInstance: AxiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     const { token, expireTime, refreshToken, setExpireTime, setToken, setLogout } =
-      useUserStore.getState()
+      useAuthStore.getState()
     if (expireTime && isTokenExpired(expireTime) && !isRefreshing) {
       isRefreshing = true
       try {

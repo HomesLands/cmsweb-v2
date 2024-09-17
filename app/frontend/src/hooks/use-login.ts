@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom'
 
 import { IApiResponse, ILoginRequest, ILoginResponse } from '@/types'
 import { loginApi } from '@/api/auth'
-import { useUserStore } from '@/stores'
+import { useAuthStore } from '@/stores'
 import { showToast } from '@/utils'
 
 export const useLogin = () => {
-  const { setToken, setRefreshToken, setExpireTime } = useUserStore()
+  const { setToken, setRefreshToken, setExpireTime } = useAuthStore()
   const navigate = useNavigate()
 
   return useMutation({

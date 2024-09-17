@@ -16,6 +16,14 @@ class UserService {
     const results = mapper.mapArray(users, User, UserResponseDto);
     return results;
   }
+
+  public async getUserBySlug(slug: string): Promise<UserResponseDto> {
+    const user = await userRepository.findOneBy({
+      slug,
+    });
+    const results = mapper.map(user, User, UserResponseDto);
+    return results;
+  }
 }
 
 export default new UserService();

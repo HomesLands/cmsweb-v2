@@ -4,6 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import { userService } from "@services";
 import { TApiResponse, TPaginationOption } from "@types";
 import { UserResponseDto } from "@dto/response";
+import { logger } from "@lib/logger";
 
 class UserController {
   /**
@@ -19,6 +20,28 @@ class UserController {
    *   get:
    *     summary: Get all users
    *     tags: [User]
+   *     parameters:
+   *       - in: query
+   *         name: order
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: The order in which the users are sorted (ASC, DESC)
+   *         example: ASC
+   *       - in: query
+   *         name: skip
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of users to skip
+   *         example: 0
+   *       - in: query
+   *         name: take
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of users to retrieve
+   *         example: 10
    *     responses:
    *       200:
    *         description: Get all users successfully.
@@ -31,16 +54,54 @@ class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      // const plainData = req.query;
-      const results = await userService.getAllUsers({
-        order: "DESC",
-        skip: 0,
-        take: 100,
-      });
+      const plainData = req.query as unknown as TPaginationOption;
+      logger.info(UserController.name, plainData);
+      const results = await userService.getAllUsers(plainData);
       const response: TApiResponse<UserResponseDto[]> = {
         code: StatusCodes.OK,
         error: false,
         message: "Get all users successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result: results,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /users/{slug}:
+   *   get:
+   *     summary: Get user by slug
+   *     tags: [User]
+   *     parameters:
+   *       - in: path
+   *         name: slug
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: The user identity
+   *     responses:
+   *       200:
+   *         description: Get all users successfully.
+   *       500:
+   *         description: Server error
+   */
+  public async getUserBySlug(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { slug } = req.params;
+      const results = await userService.getUserBySlug(slug);
+      const response: TApiResponse<UserResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: `Get user with slug ${slug} successfully`,
         method: req.method,
         path: req.originalUrl,
         result: results,

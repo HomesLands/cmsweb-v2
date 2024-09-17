@@ -23,9 +23,9 @@ export type TApiResponse<T> = {
 };
 
 export type TPaginationOption = {
-  skip: number | 0;
+  skip: number;
   order: "ASC" | "DESC";
-  take: number | 10;
+  take: number;
 };
 
 export type TErrorCodeKey =
