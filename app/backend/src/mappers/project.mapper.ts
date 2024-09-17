@@ -19,6 +19,10 @@ export const projectMapper: MappingProfile = (mapper: Mapper) => {
       (destination) => destination.managerSlug,
       mapFrom((source) => source.manager?.slug)
     ),
+    forMember(
+      (destination) => destination.startDate,
+      mapFrom((source) => moment(source.startDate).format("YYYY-MM-DD HH:mm:ss"))
+    ),
   );
   
   // Map request object to entity

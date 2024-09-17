@@ -146,6 +146,9 @@
 
         "@constants": ["constants/index"],
         "@dto/*": ["dto/*"],
+
+        "@enums": ["enums/index"],
+        "@enums/*": ["enums/*"],
     },
   },
   "include": ["src/**/*"],

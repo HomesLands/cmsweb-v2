@@ -1,4 +1,4 @@
-import { siteRepository, userRepository,  productRequisitionForm } from "@repositories";
+import { siteRepository, userRepository,  productRequisitionFormRepository } from "@repositories";
 import { mapper } from "@mappers";
 import { plainToClass } from "class-transformer";
 
@@ -15,8 +15,7 @@ class SiteService {
       return [];
     }
 
-    
-    const form = await productRequisitionForm.findProductRequisitionForm("657084dc-7380-11ef-9b98-8c8caa41f99d");
+    const form = await productRequisitionFormRepository.findProductRequisitionForm("657084dc-7380-11ef-9b98-8c8caa41f99d");
     console.log({form})
     console.log({form: form?.requestProducts})
 

@@ -112,4 +112,39 @@ export const ErrorCodes: TErrorCode = {
     code: 1022,
     message: "User is assigned not found",
   },
+  UNIT_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1023,
+    message: "Unit exist",
+  },
+  UNIT_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1024,
+    message: "Unit not found",
+  },
+  CODE_PRODUCT_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1025,
+    message: "Code product exist",
+  },
+  INVALID_PRODUCT_PROVIDER: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1026,
+    message: "Invalid product provider",
+  },
+  INVALID_PRODUCT_NAME: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1027,
+    message: "Invalid product name",
+  },
+  INVALID_PRODUCT_UNIT: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1028,
+    message: "Invalid product unit",
+  },
+  INVALID_PRODUCT_CODE: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1029,
+    message: "Invalid product code",
+  },
 } as const;
