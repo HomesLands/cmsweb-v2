@@ -40,9 +40,9 @@ export function DropdownHeader() {
         <DropdownMenuContent className="min-w-[14rem]" align="end">
           <DropdownMenuLabel>Tài khoản của tôi</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="cursor-pointer">Thông tin tài khoản</DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">Đổi mật khẩu</DropdownMenuItem>
-          <DropdownMenuSeparator />
+          {/* <DropdownMenuItem className="cursor-pointer">Thông tin tài khoản</DropdownMenuItem> */}
+          {/* <DropdownMenuItem className="cursor-pointer">Đổi mật khẩu</DropdownMenuItem> */}
+          {/* <DropdownMenuSeparator /> */}
           <DropdownMenuItem
             className="flex items-center justify-start gap-2 cursor-pointer text-danger hover:bg-red-100"
             onClick={() => setOpen(true)}
