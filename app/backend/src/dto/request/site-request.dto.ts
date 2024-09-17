@@ -13,7 +13,7 @@ export class CreateSiteRequestDto {
   @AutoMap()
   address?: string;
 
-  @IsNotEmpty({message: "INVALID_SITE_MANAGER_ID"})
+  @IsNotEmpty({message: "INVALID_SITE_MANAGER"})
   @Expose()
   manager?: string;
 }

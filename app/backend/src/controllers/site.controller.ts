@@ -25,11 +25,11 @@ class SiteController {
    *           description: siteaddress
    *         manager:
    *           type: string
-   *           description: managerid
+   *           description: managerSlug
    *       example:
    *         name: FirstSite
    *         address: Linh Trung, Thủ Đức
-   *         manager: 3c3d5058-6fd0-445c-a123-f14108c7ec5c
+   *         manager: 3Co-M1ZL4
    */
 
   /**
@@ -41,7 +41,7 @@ class SiteController {
 
   /**
    * @swagger
-   * /sites/create:
+   * /sites:
    *   post:
    *     summary: Create new site
    *     tags: [Site]

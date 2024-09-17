@@ -22,7 +22,10 @@ export function DropdownHeader() {
   const mutation = useLogout()
 
   const handleLogout = async () => {
-    const requestData = { token: token || '', refreshToken: refreshToken || '' } as ILogoutRequest
+    const requestData = {
+      token: token || 'token',
+      refreshToken: refreshToken || 'refreshToken'
+    } as ILogoutRequest
     await mutation.mutateAsync(requestData)
   }
   return (
@@ -37,9 +40,9 @@ export function DropdownHeader() {
         <DropdownMenuContent className="min-w-[14rem]" align="end">
           <DropdownMenuLabel>Tài khoản của tôi</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="cursor-pointer">Thông tin tài khoản</DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">Đổi mật khẩu</DropdownMenuItem>
-          <DropdownMenuSeparator />
+          {/* <DropdownMenuItem className="cursor-pointer">Thông tin tài khoản</DropdownMenuItem> */}
+          {/* <DropdownMenuItem className="cursor-pointer">Đổi mật khẩu</DropdownMenuItem> */}
+          {/* <DropdownMenuSeparator /> */}
           <DropdownMenuItem
             className="flex items-center justify-start gap-2 cursor-pointer text-danger hover:bg-red-100"
             onClick={() => setOpen(true)}
