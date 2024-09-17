@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { z } from 'zod'
 
 import {
@@ -14,7 +13,7 @@ import { addNewProductRequestSchema } from '@/schemas'
 import { AddNewProductRequestForm } from '@/components/app/form'
 import { IProductInfo } from '@/types'
 
-interface DialogAddProductRequestProps {
+interface DialogEditProductRequisitionProps {
   handleAddRequest: (product: IProductInfo) => void
   openDialog: boolean
   product: IProductInfo | null
@@ -22,13 +21,13 @@ interface DialogAddProductRequestProps {
   onOpenChange: () => void
 }
 
-export function DialogAddProductRequest({
+export function DialogEditProductRequisition({
   handleAddRequest,
   openDialog,
   product,
   component,
   onOpenChange
-}: DialogAddProductRequestProps) {
+}: DialogEditProductRequisitionProps) {
   const handleSubmit = (data: z.infer<typeof addNewProductRequestSchema>) => {
     const completeData: IProductInfo = {
       ...data,

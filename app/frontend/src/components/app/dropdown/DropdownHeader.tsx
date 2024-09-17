@@ -10,29 +10,23 @@ import {
   Button,
   UserAvatar
 } from '@/components/ui'
-import { useNavigate } from 'react-router-dom'
-import { useMutation } from '@tanstack/react-query'
-import { showToast } from '@/utils'
 import { useState } from 'react'
 import { DialogLogout } from '../dialog'
+import { useLogout } from '@/hooks'
 import { useUserStore } from '@/stores'
+import { ILogoutRequest } from '@/types'
 
 export function DropdownHeader() {
+  const { token, refreshToken } = useUserStore()
   const [open, setOpen] = useState(false)
-  const navigate = useNavigate()
-  const { logout } = useUserStore()
-  const mutation = useMutation({
-    mutationFn: async () => {
-      logout()
-    },
-    onSuccess: () => {
-      showToast('Đăng xuất thành công')
-      navigate('/auth/login')
-    }
-  })
+  const mutation = useLogout()
 
-  const handleLogout = () => {
-    mutation.mutate()
+  const handleLogout = async () => {
+    const requestData = {
+      token: token || 'token',
+      refreshToken: refreshToken || 'refreshToken'
+    } as ILogoutRequest
+    await mutation.mutateAsync(requestData)
   }
   return (
     <div>
@@ -46,9 +40,9 @@ export function DropdownHeader() {
         <DropdownMenuContent className="min-w-[14rem]" align="end">
           <DropdownMenuLabel>Tài khoản của tôi</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="cursor-pointer">Thông tin tài khoản</DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">Đổi mật khẩu</DropdownMenuItem>
-          <DropdownMenuSeparator />
+          {/* <DropdownMenuItem className="cursor-pointer">Thông tin tài khoản</DropdownMenuItem> */}
+          {/* <DropdownMenuItem className="cursor-pointer">Đổi mật khẩu</DropdownMenuItem> */}
+          {/* <DropdownMenuSeparator /> */}
           <DropdownMenuItem
             className="flex items-center justify-start gap-2 cursor-pointer text-danger hover:bg-red-100"
             onClick={() => setOpen(true)}

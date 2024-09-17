@@ -1,15 +1,15 @@
-import { RequestStatus } from './request.type'
+import { RequestRequisitionStatus } from './request-requisition.type'
 
 export interface IProductApprovalInfo {
   id: string
   createdBy: string
   createdAt?: string
   updatedAt?: string
-  commanderApprovalStatus: RequestStatus
+  commanderApprovalStatus: RequestRequisitionStatus
   commanderApprovalContent?: string
-  projectManagerApprovalStatus: RequestStatus
+  projectManagerApprovalStatus: RequestRequisitionStatus
   projectManagerApprovalContent?: string
-  directorApprovalStatus: RequestStatus
+  directorApprovalStatus: RequestRequisitionStatus
   directorApprovalContent?: string
   notes?: string
 }
@@ -17,12 +17,19 @@ export interface IProductApprovalInfo {
 export interface IProductRequirementInfoCreate {
   requestCode: string
   requester: string
-  project: string
-  construction: string
+  project: {
+    slug: string
+    name: string
+  }
+  site: {
+    slug: string
+    name: string
+  }
   approver: string
   priority: string
   note: string
   products: IProductInfo[]
+  createdAt: string
 }
 
 export interface IProductNameSearch {

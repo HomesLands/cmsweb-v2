@@ -7,7 +7,7 @@ import { CustomComponent } from './CustomComponent'
 
 const Warehouse: React.FC = () => {
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
-  const { data } = useUsers({
+  const { data, isLoading } = useUsers({
     page: pagination.pageIndex + 1,
     pageSize: pagination.pageSize
   })
@@ -19,6 +19,7 @@ const Warehouse: React.FC = () => {
         Danh sách nhân viên
       </Label>
       <DataTable
+        isLoading={isLoading}
         columns={columns}
         data={data?.items || []}
         total={data?.total || 0}

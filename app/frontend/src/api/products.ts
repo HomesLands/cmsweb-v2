@@ -1,18 +1,21 @@
 import {
-  IPagingResponse,
+  IConstruction,
+  IConstructionListResponse,
+  IPaginationResponse,
   IProductApprovalInfo,
   IProductInfo,
-  IProductInfoSearch,
-  IProductRequirementInfoCreate
+  IProductRequirementInfoCreate,
+  IProject,
+  IProjectListResponse
 } from '@/types'
 import productData from '@/data/products'
 import productListData from '@/data/product.list'
-import productList from '@/data/product.list'
+import { http } from '@/utils'
 
 export async function getProducts(params: {
   page: number
   pageSize: number
-}): Promise<IPagingResponse<IProductApprovalInfo>> {
+}): Promise<IPaginationResponse<IProductApprovalInfo>> {
   try {
     const users: IProductApprovalInfo[] = await new Promise((resolve) => {
       setTimeout(() => {
@@ -44,7 +47,7 @@ export async function getProducts(params: {
 export async function getProductList(params: {
   page: number
   pageSize: number
-}): Promise<IPagingResponse<IProductInfo>> {
+}): Promise<IPaginationResponse<IProductInfo>> {
   try {
     const productList: IProductInfo[] = await new Promise((resolve) => {
       setTimeout(() => {
@@ -76,26 +79,66 @@ export async function getProductList(params: {
 export async function postProductRequest(params: {
   requestCode: string
   requester: string
-  project: string
-  construction: string
+  project: {
+    slug: string
+    name: string
+  }
+  site: {
+    slug: string
+    name: string
+  }
   approver: string
   note: string
   priority: string
   products: IProductInfo[]
+  createdAt: string
 }): Promise<IProductRequirementInfoCreate> {
   // Convert parameters to lowercase directly
   const lowercaseParams = {
     requestCode: params.requestCode,
     requester: params.requester.toLowerCase(),
-    project: params.project.toLowerCase(),
-    construction: params.construction.toLowerCase(),
+    project: {
+      slug: params.project.slug,
+      name: params.project.name.toLowerCase()
+    },
+    site: {
+      slug: params.site.slug,
+      name: params.site.name.toLowerCase()
+    },
     approver: params.approver.toLowerCase(),
     note: params.note.toLowerCase(),
     priority: params.priority.toLowerCase(),
-    products: params.products
+    products: params.products,
+    createdAt: params.createdAt
   }
   console.log('lowercaseParams', lowercaseParams)
   return lowercaseParams
+}
+
+export async function getProjectListInProductRequisition(): Promise<
+  IProjectListResponse<IProject[]>
+> {
+  try {
+    const response = await http.get<IProjectListResponse<IProject[]>>('/projects')
+
+    console.log('response in api: ', response)
+    return response.data
+  } catch (error) {
+    console.log('Failed to fetch projects:', error)
+    throw new Error('Failed to fetch projects')
+  }
+}
+
+export async function getConstructionListInProductRequisition(): Promise<
+  IConstructionListResponse<IConstruction[]>
+> {
+  try {
+    const response = await http.get<IProjectListResponse<IConstruction[]>>('/sites')
+    return response.data
+  } catch (error) {
+    console.log('Failed to fetch constructions:', error)
+    throw new Error('Failed to fetch constructions')
+  }
 }
 
 // export async function searchProduct(params: {

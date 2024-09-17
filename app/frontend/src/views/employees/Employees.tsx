@@ -10,7 +10,7 @@ import { CustomComponent } from './CustomComponent'
 const Employees: React.FC = () => {
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
 
-  const { data } = useUsers({
+  const { data, isLoading } = useUsers({
     page: pagination.pageIndex + 1,
     pageSize: pagination.pageSize
   })
@@ -22,6 +22,7 @@ const Employees: React.FC = () => {
         Danh sách nhân viên
       </Label>
       <DataTable
+        isLoading={isLoading}
         columns={columns}
         data={data?.items || []}
         total={data?.total || 0}

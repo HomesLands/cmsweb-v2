@@ -1,6 +1,6 @@
 import * as z from 'zod'
 
-import { USERNAME_REGEX, PASSWORD_REGEX } from '@/constants/regex'
+import { USERNAME_REGEX, PASSWORD_REGEX } from '@/constants'
 
 export const loginSChema = z.object({
   username: z.string().regex(USERNAME_REGEX, 'Only letters allowed'),

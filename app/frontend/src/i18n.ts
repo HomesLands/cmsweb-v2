@@ -5,12 +5,12 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 import enAuth from '@/locales/en/auth.json'
 import enSidebar from '@/locales/en/sidebar.json'
 import enProductRequisition from '@/locales/en/product-requisition.json'
-import enTablePaging from '@/locales/en/table-paging.json'
+import enTableData from '@/locales/en/table-data.json'
 
 import viAuth from '@/locales/vi/auth.json'
 import viSidebar from '@/locales/vi/sidebar.json'
 import viProductRequisition from '@/locales/vi/product-requisition.json'
-import viTablePaging from '@/locales/vi/table-paging.json'
+import viTableData from '@/locales/vi/table-data.json'
 
 i18n
   .use(LanguageDetector) // Tự động phát hiện ngôn ngữ
@@ -21,13 +21,13 @@ i18n
         auth: enAuth,
         sidebar: enSidebar,
         productRequisition: enProductRequisition,
-        tablePaging: enTablePaging
+        tableData: enTableData
       },
       vi: {
         auth: viAuth,
         sidebar: viSidebar,
         productRequisition: viProductRequisition,
-        tablePaging: viTablePaging
+        tableData: viTableData
       }
     },
     lng: 'vi',

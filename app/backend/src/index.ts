@@ -34,7 +34,7 @@ dotenv.config();
   // Config CORS
   app.use(
     cors({
-      origin: ["http://localhost:5173", "https://tbecms.cmsiot.online"],
+      origin: ["http://localhost:5173", "https://tbecms.cmsiot.net"],
       methods: "*",
       preflightContinue: true,
       optionsSuccessStatus: 200,

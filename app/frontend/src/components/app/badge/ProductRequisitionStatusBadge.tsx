@@ -1,10 +1,10 @@
-import { RequestStatus } from '@/types'
+import { RequestRequisitionStatus } from '@/types'
 
 export interface RequestStatusBadgeProps {
-  status: RequestStatus
+  status: RequestRequisitionStatus
 }
 
-const getBadgeColorClass = (status: RequestStatus) => {
+const getBadgeColorClass = (status: RequestRequisitionStatus) => {
   switch (status) {
     case 'approved':
       return 'bg-green-500'
@@ -17,7 +17,7 @@ const getBadgeColorClass = (status: RequestStatus) => {
   }
 }
 
-const getBadgeText = (status: RequestStatus) => {
+const getBadgeText = (status: RequestRequisitionStatus) => {
   switch (status) {
     case 'approved':
       return 'Đã duyệt'

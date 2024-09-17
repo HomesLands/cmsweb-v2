@@ -1,15 +1,11 @@
 // src/stores/requestStore.ts
+import { IRequestProductRequisitionStore } from '@/types'
 import { create } from 'zustand'
 
-interface RequestStoreState {
-  requestQueueSize: number
-  incrementRequestQueueSize: () => void
-  decrementRequestQueueSize: () => void
-}
-
-export const useRequestStore = create<RequestStoreState>(set => ({
+export const useRequestStore = create<IRequestProductRequisitionStore>((set) => ({
   requestQueueSize: 0,
-
-  incrementRequestQueueSize: () => set(state => ({ requestQueueSize: state.requestQueueSize + 1 })),
-  decrementRequestQueueSize: () => set(state => ({ requestQueueSize: state.requestQueueSize - 1 }))
+  incrementRequestQueueSize: () =>
+    set((state) => ({ requestQueueSize: state.requestQueueSize + 1 })),
+  decrementRequestQueueSize: () =>
+    set((state) => ({ requestQueueSize: state.requestQueueSize - 1 }))
 }))

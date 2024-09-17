@@ -15,10 +15,10 @@ import {
 } from '@/components/ui'
 import { registerSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { IRegister } from '@/types'
+import { IRegisterRequest } from '@/types'
 
 interface IFormRegisterProps {
-  onSubmit: (data: IRegister) => void
+  onSubmit: (data: IRegisterRequest) => void
 }
 
 export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
@@ -50,7 +50,7 @@ export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
                 <FormItem>
                   <FormLabel>{t('register.fullname')}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('register.enter_fullname')} {...field} />
+                    <Input placeholder={t('register.enterFullname')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -63,7 +63,7 @@ export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
                 <FormItem>
                   <FormLabel>{t('register.username')}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('register.enter_username')} {...field} />
+                    <Input placeholder={t('register.enterUsername')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -76,7 +76,7 @@ export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
                 <FormItem>
                   <FormLabel>{t('register.password')}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('register.enter_password')} {...field} type="password" />
+                    <Input placeholder={t('register.enterPassword')} {...field} type="password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -87,10 +87,10 @@ export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('register.confirm_password')}</FormLabel>
+                  <FormLabel>{t('register.confirmPassword')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder={t('register.enter_confirm_password')}
+                      placeholder={t('register.enterConfirmPassword')}
                       {...field}
                       type="password"
                     />
@@ -105,10 +105,10 @@ export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
               {t('register.register')}
             </Button>
             <div className="text-sm text-center">
-              {t('register.have_account')}
+              {t('register.haveAccount')}
               <NavLink to="/auth/login" className="underline">
                 {' '}
-                {t('register.login_now')}
+                {t('register.loginNow')}
               </NavLink>
             </div>
           </div>

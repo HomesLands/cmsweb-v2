@@ -1,0 +1,30 @@
+{
+  "tablePaging": {
+    "chooseColumn": "Choose column",
+    "addNewProduct": "Add new product",
+    "noData": "No data",
+    "page": "Page",
+    "of": "of ",
+    "entries": "entries",
+    "show": "Show",
+    "rowsPerPage": "Rows per page",
+    "hide": "Hide",
+    "asc": "Asc",
+    "desc": "Desc",
+    "firstPage": "First page",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "lastPage": "Last page"
+  },
+  "tableData": {
+    "productCode": "Product code",
+    "productName": "Product name",
+    "model": "Model",
+    "supplier": "Supplier",
+    "quantity": "Quantity",
+    "unit": "Unit",
+    "price": "Price",
+    "total": "Total",
+    "action": "Action"
+  }
+}
