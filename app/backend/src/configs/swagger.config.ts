@@ -17,7 +17,7 @@ const getServers = (): {
   else
     servers.push({
       description: "production",
-      url: "https://tbecms.cmsiot.online/api/v1",
+      url: "https://tbecms.cmsiot.net/api/v1",
     });
   return servers;
 };
