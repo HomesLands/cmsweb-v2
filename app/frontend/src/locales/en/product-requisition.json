@@ -1,29 +1,29 @@
 {
-  "product_requisition": {
+  "productRequisition": {
     "list": "Product requisitions list",
     "create": "Create product requisitions",
-    "create_product_requisitions": "Create product requisitions",
-    "create_product_requisitions_description": "Tool to create product requisitions",
-    "request_code": "Request code",
+    "createProductRequisitions": "Create product requisitions",
+    "createProductRequisitionsDescription": "Tool to create product requisitions",
+    "requestCode": "Request code",
     "requester": "Requester",
-    "requester_description": "Enter the requester name",
-    "project_name": "Project name",
-    "project_name_description": "Enter the project name",
-    "construction_site": "Construction site",
-    "construction_site_description": "Enter the construction site name",
+    "requesterDescription": "Enter the requester name",
+    "projectName": "Project name",
+    "projectNameDescription": "Choose project",
+    "constructionSite": "Construction site",
+    "constructionSiteDescription": "Choose construction site",
     "approver": "Approver",
     "note": "Note",
     "next": "Next",
-    "add_product_to_request": "Add product to request",
-    "add_product_to_request_description": "Add product to request description",
-    "confirm_product_requisitions": "Confirm product requisitions",
-    "confirm_product_requisitions_description": "Confirm product requisitions description",
-    "confirm_product_requisitions_success": "Confirm product requisitions success",
-    "confirm_product_requisitions_success_description": "Confirm product requisitions success description"
+    "addProductToRequest": "Add product to request",
+    "addProductToRequestDescription": "Add product to request description",
+    "confirmProductRequisitions": "Confirm product requisitions",
+    "confirmProductRequisitionsDescription": "Confirm product requisitions description",
+    "confirmProductRequisitionsSuccess": "Confirm product requisitions success",
+    "confirmProductRequisitionsSuccessDescription": "Confirm product requisitions success description"
   },
   "progress": {
-    "create_product_requisitions": "Create requisition",
-    "add_product_to_request": "Add product",
-    "confirm_product_requisitions": "Confirm requisition"
+    "createProductRequisitions": "Create requisition",
+    "addProductToRequest": "Add product",
+    "confirmProductRequisitions": "Confirm requisition"
   }
 }

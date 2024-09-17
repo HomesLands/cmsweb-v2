@@ -17,7 +17,7 @@ import { IProductInfo } from '@/types'
 interface DialogAddProductRequestProps {
   handleAddRequest: (product: IProductInfo) => void
   openDialog: boolean
-  product: IProductInfo
+  product: IProductInfo | null
   component: React.ReactNode
   onOpenChange: () => void
 }
@@ -48,16 +48,11 @@ export function DialogAddProductRequest({
           <DialogTitle>Thêm vật tư mới</DialogTitle>
           <DialogDescription>Nhập đầy đủ thông tin bên dưới để thêm vật tư mới</DialogDescription>
         </DialogHeader>
-        {product && (
-          <>
-            {product.productName}
-            <AddNewProductRequestForm
-              data={product}
-              onSubmit={handleSubmit}
-              handleAddRequest={handleAddRequest}
-            />
-          </>
-        )}
+        <AddNewProductRequestForm
+          data={product || ({} as IProductInfo)}
+          onSubmit={handleSubmit}
+          handleAddRequest={handleAddRequest}
+        />
       </DialogContent>
     </Dialog>
   )

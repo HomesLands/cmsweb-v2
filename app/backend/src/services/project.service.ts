@@ -26,7 +26,7 @@ class ProjectService {
     // Map plain object to request dto
     const requestData = plainToClass(CreateProjectRequestDto, plainData);
 
-    const manager = await userRepository.findOneBy({ id: requestData.manager });
+    const manager = await userRepository.findOneBy({ slug: requestData.manager });
     if (!manager) {
       throw new GlobalError(ErrorCodes.USER_ASSIGNED_NOT_FOUND);
     }
@@ -34,7 +34,9 @@ class ProjectService {
     const projectData = mapper.map(requestData, CreateProjectRequestDto, Project);    
     projectData.manager = manager;
 
-    return await projectRepository.createAndSave(projectData);
+    const projectDataCreated = await projectRepository.createAndSave(projectData);
+
+    return mapper.map(projectDataCreated, Project, ProjectResponseDto);
   }
 }
 
