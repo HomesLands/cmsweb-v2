@@ -1,21 +1,20 @@
 import * as React from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  SelectGroup
-} from '@/components/ui'
+
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui'
 import { USFlag, VIFlag } from '@/assets/images'
+import { showToast } from '@/utils'
 
 export const SelectLanguage: React.FC = () => {
   const { i18n } = useTranslation()
 
   const handleLanguageChange = (value: string) => {
     i18n.changeLanguage(value)
-    console.log('Language changed to:', value)
+    if (value === 'en') {
+      showToast('Current language: English')
+    } else {
+      showToast('Ngôn ngữ hiện tại: Tiếng Việt')
+    }
   }
 
   return (

@@ -7,11 +7,11 @@ export const productSchema = z.object({
   requestCode: z.string().min(1, 'Mã yêu cầu không hợp lệ'),
   requester: z.string().regex(USERNAME_REGEX, 'Tên người yêu cầu không hợp lệ'),
   project: z.object({
-    id: z.string().min(1, 'Tên dự án không hợp lệ'),
+    slug: z.string().min(1, 'Mã dự án không hợp lệ'),
     name: z.string().min(1, 'Tên dự án không hợp lệ')
   }),
   site: z.object({
-    id: z.string().min(1, 'Tên công trình không hợp lệ'),
+    slug: z.string().min(1, 'Mã công trình không hợp lệ'),
     name: z.string().min(1, 'Tên công trình không hợp lệ')
   }),
   approver: z.string().regex(USERNAME_REGEX, 'Tên người duyệt không hợp lệ'),
