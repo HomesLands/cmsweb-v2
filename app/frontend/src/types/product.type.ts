@@ -18,11 +18,11 @@ export interface IProductRequirementInfoCreate {
   requestCode: string
   requester: string
   project: {
-    id: string
+    slug: string
     name: string
   }
   site: {
-    id: string
+    slug: string
     name: string
   }
   approver: string

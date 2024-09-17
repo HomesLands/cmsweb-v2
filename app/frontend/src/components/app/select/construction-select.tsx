@@ -14,7 +14,7 @@ import { IConstruction } from '@/types'
 
 interface SelectConstructionProps {
   constructionList: IConstruction[]
-  onChange: (value: { id: string; name: string }) => void
+  onChange: (value: { slug: string; name: string }) => void
 }
 
 export const SelectConstruction: FC<SelectConstructionProps> = ({ constructionList, onChange }) => {
@@ -36,8 +36,8 @@ export const SelectConstruction: FC<SelectConstructionProps> = ({ constructionLi
           {Array.isArray(constructionList) &&
             constructionList.map((construction) => (
               <SelectItem
-                key={construction.id}
-                value={JSON.stringify({ id: construction.id, name: construction.name })}
+                key={construction.slug}
+                value={JSON.stringify({ slug: construction.slug, name: construction.name })}
               >
                 {construction.name}
               </SelectItem>

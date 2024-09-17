@@ -185,6 +185,99 @@ export function DataTable<TData, TValue>({
   )
 }
 
+// DataTableRequisition Component
+export function DataTableRequisition<TData, TValue>({
+  isLoading,
+  columns,
+  data,
+  pages,
+  page,
+  pageSize,
+  CustomComponent
+}: DataTableProps<TData, TValue>) {
+  const { t } = useTranslation('tableData')
+
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: page - 1,
+    pageSize
+  })
+
+  const table = useReactTable({
+    data,
+    columns,
+    pageCount: pages,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      pagination
+    },
+    onPaginationChange: setPagination,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    manualPagination: true,
+    debugTable: true
+  })
+
+  return (
+    <div>
+      <div className="flex justify-between gap-2">
+        {CustomComponent && <CustomComponent table={table} />}
+      </div>
+      <div className="mt-3 border rounded-md">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="w-full h-full mx-auto text-center">
+                  <Loader2Icon className="w-6 h-6 mx-auto text-primary animate-spin" />
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-full text-center">
+                  {t('tablePaging.noData')}
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  )
+}
+
 // DataTableColumnHeader Component
 interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>

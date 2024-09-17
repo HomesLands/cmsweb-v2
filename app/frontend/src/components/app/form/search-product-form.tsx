@@ -8,6 +8,7 @@ import { Button, DataTable, Label } from '@/components/ui'
 import { CustomComponentRequest } from '@/views/product-requisitions/CustomComponentRequest'
 import { useColumnsSearch } from '@/views/product-requisitions/DataTable/columnsSearch'
 import { columnsResult } from '@/views/product-requisitions/DataTable/columnsResult'
+import { showToast } from '@/utils'
 
 interface IFormAddProductProps {
   onSubmit: (data: IProductNameSearch) => void
@@ -41,7 +42,8 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
     const updatedProducts = [...productsArray, product]
     updatedData.products = updatedProducts
     localStorage.setItem('requestFormProducts', JSON.stringify(updatedData))
-    setSelectedProducts(updatedProducts) // Update state with selected products
+    setSelectedProducts(updatedProducts)
+    showToast('Thêm vật tư thành công!')
   }
 
   useEffect(() => {

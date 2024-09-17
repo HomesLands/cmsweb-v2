@@ -14,7 +14,7 @@ import { IProject } from '@/types'
 
 interface SelectProjectProps {
   projectList: IProject[]
-  onChange: (value: { id: string; name: string }) => void
+  onChange: (value: { slug: string; name: string }) => void
 }
 
 export const SelectProject: FC<SelectProjectProps> = ({ projectList, onChange }) => {
@@ -37,8 +37,8 @@ export const SelectProject: FC<SelectProjectProps> = ({ projectList, onChange })
           {Array.isArray(projectList) &&
             projectList.map((project) => (
               <SelectItem
-                key={project.id}
-                value={JSON.stringify({ id: project.id, name: project.name })}
+                key={project.slug}
+                value={JSON.stringify({ slug: project.slug, name: project.name })}
               >
                 {project.name}
               </SelectItem>

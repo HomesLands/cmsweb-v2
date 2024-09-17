@@ -80,11 +80,11 @@ export async function postProductRequest(params: {
   requestCode: string
   requester: string
   project: {
-    id: string
+    slug: string
     name: string
   }
   site: {
-    id: string
+    slug: string
     name: string
   }
   approver: string
@@ -98,11 +98,11 @@ export async function postProductRequest(params: {
     requestCode: params.requestCode,
     requester: params.requester.toLowerCase(),
     project: {
-      id: params.project.id,
+      slug: params.project.slug,
       name: params.project.name.toLowerCase()
     },
     site: {
-      id: params.site.id,
+      slug: params.site.slug,
       name: params.site.name.toLowerCase()
     },
     approver: params.approver.toLowerCase(),

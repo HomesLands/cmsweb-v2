@@ -48,11 +48,11 @@ const ProductRequisitionForm: React.FC = () => {
     requestCode: string
     requester: string
     project: {
-      id: string
+      slug: string
       name: string
     }
     site: {
-      id: string
+      slug: string
       name: string
     }
     approver: string
@@ -155,11 +155,7 @@ const ProductRequisitionForm: React.FC = () => {
               </div>
             </CardHeader>
             <CardContent className="flex flex-col">
-              <ConfirmProductForm
-                data={formData}
-                onConfirm={handleConfirmRequest}
-                onBack={handleBackToSearch}
-              />
+              <ConfirmProductForm onConfirm={handleConfirmRequest} onBack={handleBackToSearch} />
             </CardContent>
           </Card>
         )}
