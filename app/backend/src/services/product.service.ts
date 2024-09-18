@@ -1,5 +1,5 @@
 import { mapper } from "@mappers";
-import { TPaginationOptionRequest } from "@types";
+import { TPaginationOptionResponse, TProductQueryRequest } from "@types";
 import { ProductResponseDto } from "@dto/response";
 import { productRepository, unitRepository } from "@repositories";
 import { Product } from "@entities/product.entity";
@@ -9,19 +9,45 @@ import { GlobalError, ErrorCodes, ValidationError } from "@exception";
 
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
+import { FindOperator, Like } from "typeorm";
 
 class ProductService {
   public async getAllProducts(
-    options: TPaginationOptionRequest
-  ): Promise<ProductResponseDto[]> {
+    options: TProductQueryRequest
+  ): Promise<TPaginationOptionResponse<ProductResponseDto[]>> {
+    const searchConditions: { name?: FindOperator<string> } = {};
+    if (options.searchTerm) {
+      searchConditions.name = Like(`%${options.searchTerm}%`);
+      // You can extend this to search by other fields (e.g., description, category)
+    }
+
+    // Get the total number of products
+    const totalProducts = await productRepository.count({
+      where: searchConditions,
+    });
+
     const products = await productRepository.find({
       take: options.take,
       skip: options.skip,
       order: { createdAt: options.order },
       relations: ["unit"],
+      where: searchConditions,
     });
+
+    // Map the products to the DTO
     const results = mapper.mapArray(products, Product, ProductResponseDto);
-    return results;
+
+    // Calculate pagination details
+    const page = Math.ceil(options.skip / options.take) + 1;
+    const pageSize = +options.take;
+    const totalPages = Math.ceil(totalProducts / options.take);
+
+    return {
+      items: results,
+      page,
+      pageSize,
+      totalPages,
+    };
   }
 
   public async createProduct(
