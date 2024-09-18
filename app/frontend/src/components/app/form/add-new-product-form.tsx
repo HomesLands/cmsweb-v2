@@ -36,7 +36,6 @@ export const AddNewProductForm: React.FC<IFormAddNewProductProps> = ({ onSubmit 
   })
 
   const handleSubmit = (values: z.infer<typeof addNewProductSchema>) => {
-    console.log('Form Values:', values) // Log the form values, including quantity as 0
     onSubmit(values)
   }
 

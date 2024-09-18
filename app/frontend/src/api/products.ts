@@ -111,7 +111,6 @@ export async function postProductRequest(params: {
     products: params.products,
     createdAt: params.createdAt
   }
-  console.log('lowercaseParams', lowercaseParams)
   return lowercaseParams
 }
 
@@ -120,8 +119,6 @@ export async function getProjectListInProductRequisition(): Promise<
 > {
   try {
     const response = await http.get<IProjectListResponse<IProject[]>>('/projects')
-
-    console.log('response in api: ', response)
     return response.data
   } catch (error) {
     console.log('Failed to fetch projects:', error)

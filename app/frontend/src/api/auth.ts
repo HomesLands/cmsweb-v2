@@ -27,16 +27,15 @@ export async function loginApi(params: {
   username: string
   password: string
 }): Promise<IApiResponse<ILoginResponse>> {
-  try {
-    const response = await http.post<IApiResponse<ILoginResponse>>('/auth/authenticate', params)
-    return response.data
-  } catch (error) {
-    if (isAxiosError(error)) {
-      const axiosError = error as AxiosError<IApiResponse<void>>
-      if (axiosError.response?.data.code) showErrorToast(axiosError.response.data.code)
-    }
-    throw error
-  }
+  // try {
+  const response = await http.post<IApiResponse<ILoginResponse>>('/auth/authenticate', params)
+  return response.data
+  // } catch (error) {
+  //   if (isAxiosError(error)) {
+  //     const axiosError = error as AxiosError<IApiResponse<void>>
+  //     if (axiosError.response?.data.code) showErrorToast(axiosError.response.data.code)
+  //   }
+  //   throw error
 }
 
 export async function getRefreshToken({

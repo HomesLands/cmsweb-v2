@@ -13,7 +13,6 @@ import { showToast } from '@/utils'
 interface IFormAddProductProps {
   onSubmit: (data: IProductNameSearch) => void
   onBack: () => void
-  initialData?: IProductNameSearch | null
 }
 
 export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSubmit }) => {

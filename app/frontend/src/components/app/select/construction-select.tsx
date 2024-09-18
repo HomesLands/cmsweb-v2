@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -15,18 +15,32 @@ import { IConstruction } from '@/types'
 interface SelectConstructionProps {
   constructionList: IConstruction[]
   onChange: (value: { slug: string; name: string }) => void
+  defaultValue?: { slug: string; name: string }
 }
 
-export const SelectConstruction: FC<SelectConstructionProps> = ({ constructionList, onChange }) => {
+export const SelectConstruction: FC<SelectConstructionProps> = ({
+  constructionList,
+  onChange,
+  defaultValue
+}) => {
   const { t } = useTranslation('productRequisition')
 
   const handleValueChange = (value: string) => {
     const construction = JSON.parse(value)
-    onChange(construction)
+    onChange({ slug: construction.slug, name: construction.name })
   }
 
+  useEffect(() => {
+    if (defaultValue) {
+      onChange(defaultValue)
+    }
+  }, [defaultValue, onChange])
+
   return (
-    <Select onValueChange={handleValueChange}>
+    <Select
+      onValueChange={handleValueChange}
+      defaultValue={defaultValue ? JSON.stringify(defaultValue) : undefined}
+    >
       <SelectTrigger>
         <SelectValue placeholder={t('productRequisition.constructionSiteDescription')} />
       </SelectTrigger>

@@ -34,20 +34,21 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
   const form = useForm<z.infer<typeof productSchema>>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      requestCode: generateProductRequisitionCode(),
-      requester: '',
-      project: {
+      requestCode: initialData?.requestCode || generateProductRequisitionCode(),
+      requester: initialData?.requester || '',
+      project: initialData?.project || {
         slug: '',
         name: ''
       },
-      site: {
+      site: initialData?.site || {
         slug: '',
         name: ''
       },
-      approver: '',
-      note: '',
-      createdAt: new Date().toISOString(), // Ensure createdAt is set
-      ...initialData
+      approver: initialData?.approver || '',
+      note: initialData?.note || '',
+      createdAt: initialData?.createdAt || new Date().toISOString(),
+      // Add priority if it's part of your schema
+      priority: initialData?.priority || 'normal'
     }
   })
 
@@ -97,7 +98,11 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                 <FormItem>
                   <FormLabel>{t('productRequisition.projectName')}</FormLabel>
                   <FormControl>
-                    <SelectProject {...field} projectList={projectList?.result ?? []} />
+                    <SelectProject
+                      onChange={(value: { slug: string; name: string }) => field.onChange(value)}
+                      projectList={projectList?.result ?? []}
+                      defaultValue={initialData?.project}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -112,7 +117,11 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                 <FormItem>
                   <FormLabel>{t('productRequisition.constructionSite')}</FormLabel>
                   <FormControl>
-                    <SelectConstruction {...field} constructionList={siteList?.result ?? []} />
+                    <SelectConstruction
+                      onChange={(value: { slug: string; name: string }) => field.onChange(value)}
+                      constructionList={siteList?.result ?? []}
+                      defaultValue={initialData?.site}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -140,6 +149,19 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                 <FormLabel>{t('productRequisition.note')}</FormLabel>
                 <FormControl>
                   <Textarea placeholder={t('productRequisition.noteDescription')} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="priority"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('productRequisition.priority')}</FormLabel>
+                <FormControl>
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

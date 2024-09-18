@@ -37,7 +37,6 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
   })
 
   const handleSubmit = (values: z.infer<typeof addNewProductRequestSchema>) => {
-    console.log('values', values)
     onSubmit(values)
   }
 

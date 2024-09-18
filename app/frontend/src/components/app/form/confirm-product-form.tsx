@@ -63,9 +63,7 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
   }
 
   const handleEditRequest = (product: IProductInfo) => {
-    console.log('Check product edit', product)
     const existingData = JSON.parse(localStorage.getItem('requestFormProducts') || '{}')
-    console.log('Check existing data', existingData)
 
     if (existingData && Array.isArray(existingData.products)) {
       const productIndex = existingData.products.findIndex(
