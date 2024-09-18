@@ -52,7 +52,7 @@ class AuthMiddleware {
 
       // Get user
       const sub = TokenUtils.extractSubject(authToken);
-      const user = await userRepository.findOneBy({ id: sub });
+      const user = await userRepository.findOneBy({ slug: sub });
       if (!user) return next(new GlobalError(StatusCodes.UNAUTHORIZED));
 
       // Attached decoded user id to request

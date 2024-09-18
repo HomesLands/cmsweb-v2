@@ -71,7 +71,7 @@ class TokenService {
   private createToken(identity: User, expiryTime: string | number): string {
     return JWT.sign(
       {
-        sub: identity.id,
+        sub: identity.slug,
         scope: this.buildScope(identity),
         jti: uuidv4(),
       },
