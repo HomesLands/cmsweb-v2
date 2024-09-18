@@ -40,11 +40,11 @@ class ProductController {
    *         - required: ["code"]
    *         - required: ["description"]
    *       example:
-   *         name: Tủ lạnh 1 cửa
+   *         name: Máy khoan động lực điện Bosch GSB 10 RE 500W
    *         code: 8886008101053
-   *         provider: Aqua
+   *         provider: BOSCH
    *         unit: M_aSwDaaau
-   *         description: description
+   *         description: Dùng điện, Có chổi than
    */
 
   /**
@@ -83,6 +83,12 @@ class ProductController {
    *         required: true
    *         description: The number of products to retrieve
    *         example: 10
+   *       - in: query
+   *         name: search
+   *         schema:
+   *           type: string
+   *         required: false
+   *         description: Search by product name
    *     responses:
    *       200:
    *         description: Get all products successfully.

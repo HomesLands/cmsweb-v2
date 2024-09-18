@@ -4,4 +4,4 @@ export type TCreateProductRequestDto = {
   provider?: string;
   unit?: string;
   description?: string;
-}
+};

@@ -32,20 +32,20 @@ class ProductService {
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
 
-    const codeExisted = await productRepository.existsBy({
-      code: requestData.code,
-    });
-    if (codeExisted) {
-      // code of product may null, but not duplicate
-      if (requestData.code) {
-        throw new GlobalError(ErrorCodes.CODE_PRODUCT_EXIST);
-      }
+    // Allow the barcode field to be null. If the barcode in the request has a value,
+    // we need to check it to avoid duplicate product entries
+    if (requestData.code) {
+      const codeExisted = await productRepository.existsBy({
+        code: requestData.code,
+      });
+      if (codeExisted) throw new GlobalError(ErrorCodes.CODE_PRODUCT_EXIST);
     }
 
     const unit = await unitRepository.findOneBy({ slug: requestData.unit });
     if (!unit) {
       throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
     }
+
     const productData = mapper.map(
       requestData,
       CreateProductRequestDto,
