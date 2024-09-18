@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom'
 
 import { ILogoutRequest } from '@/types'
 import { logoutApi } from '@/api/auth'
-import { useUserStore } from '@/stores'
+import { useAuthStore, useUserStore } from '@/stores'
 import { showToast } from '@/utils'
 
 export const useLogout = () => {
-  const { setLogout } = useUserStore()
+  const { setLogout } = useAuthStore()
+  const { removeUserInfo } = useUserStore()
   const navigate = useNavigate()
 
   return useMutation({
@@ -16,6 +17,7 @@ export const useLogout = () => {
     },
     onSuccess: () => {
       setLogout()
+      removeUserInfo()
       showToast('Đăng xuất thành công')
       navigate('/auth/login')
     },

@@ -1,18 +1,12 @@
-import { z } from 'zod'
-import { PlusCircledIcon } from '@radix-ui/react-icons'
-
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   Button,
   DialogFooter
 } from '@/components/ui'
-
-import { createUserSchema } from '@/schemas'
 
 export function DialogLogout({
   open,

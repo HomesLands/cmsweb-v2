@@ -1,7 +1,9 @@
+import { productController } from "@controllers";
 import { Router } from "express";
-import { productController } from "@controllers"; 
 export const productRoute: Router = Router();
 
-productRoute.route("/")
-  .get(productController.getAllProducts)
-  .post(productController.createProduct);
+// [GET] /api/v1/products
+productRoute.route("/").get(productController.getAllProducts);
+
+// [GET] /api/v1/products
+productRoute.route("/").post(productController.createProduct);

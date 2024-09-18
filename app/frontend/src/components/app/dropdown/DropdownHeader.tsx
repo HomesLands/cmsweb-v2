@@ -13,11 +13,11 @@ import {
 import { useState } from 'react'
 import { DialogLogout } from '../dialog'
 import { useLogout } from '@/hooks'
-import { useUserStore } from '@/stores'
+import { useAuthStore } from '@/stores'
 import { ILogoutRequest } from '@/types'
 
 export function DropdownHeader() {
-  const { token, refreshToken } = useUserStore()
+  const { token, refreshToken } = useAuthStore()
   const [open, setOpen] = useState(false)
   const mutation = useLogout()
 

@@ -6,7 +6,7 @@ import { SiteResponseDto } from "@dto/response";
 import { TCreateSiteRequestDto } from "@types";
 
 class SiteController {
-   /**
+  /**
    * @swagger
    * components:
    *   schemas:
@@ -52,7 +52,7 @@ class SiteController {
    *           schema:
    *              $ref: '#/components/schemas/CreateSiteRequestDto'
    *     responses:
-   *       200:
+   *       201:
    *         description: New site created successfully.
    *         content:
    *           application/json:
@@ -65,21 +65,21 @@ class SiteController {
   public async createSite(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> {
     try {
       const requestData = req.body as TCreateSiteRequestDto;
       const siteData = await siteService.createSite(requestData);
 
       const response: TApiResponse<SiteResponseDto> = {
-        code: StatusCodes.OK,
+        code: StatusCodes.CREATED,
         error: false,
         message: "Create site successfully",
         method: req.method,
         path: req.originalUrl,
         result: siteData,
       };
-      res.status(StatusCodes.OK).json(response);
+      res.status(StatusCodes.CREATED).json(response);
     } catch (error) {
       next(error);
     }

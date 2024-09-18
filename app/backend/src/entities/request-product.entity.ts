@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToMany, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, Column, ManyToOne, JoinColumn } from "typeorm";
 import { Base } from "@entities/base.entity";
 import { ProductRequisitionForm } from "@entities/product-requisition-form.entity";
 import { Product } from "@entities/product.entity";
@@ -17,12 +17,11 @@ export class RequestProduct extends Base {
   @Column({ name: "name_column" })
   name?: string;
 
-  @Column({ name: "product_id_column" })
-  productId?: string;
-
-  @ManyToOne(() => ProductRequisitionForm,
-    (productRequisitionForm) => productRequisitionForm.requestProducts)
-    @JoinColumn({ name: "product_requisition_form_column" }) 
+  @ManyToOne(
+    () => ProductRequisitionForm,
+    (productRequisitionForm) => productRequisitionForm.requestProducts
+  )
+  @JoinColumn({ name: "product_requisition_form_column" })
   productRequisitionForm?: ProductRequisitionForm;
 
   @ManyToOne(() => Product, (product) => product.requestProducts)

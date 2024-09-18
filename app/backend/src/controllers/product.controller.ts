@@ -35,11 +35,11 @@ class ProductController {
    *         - required: ["code"]
    *         - required: ["description"]
    *       example:
-   *         name: FirstProduct
+   *         name: Tủ lạnh 1 cửa
    *         code: 8886008101053
    *         provider: Aqua
    *         unit: M_aSwDaaau
-   *         description: "sản phẩm"
+   *         description: description
    */
 
   /**
@@ -57,7 +57,7 @@ class ProductController {
    *     tags: [Product]
    *     responses:
    *       200:
-   *         description: Get all product successfully.
+   *         description: Get all products successfully.
    *       500:
    *         description: Server error
    */
@@ -113,21 +113,21 @@ class ProductController {
   public async createProduct(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> {
     try {
       const requestData = req.body as TCreateProductRequestDto;
       const productData = await productService.createProduct(requestData);
 
       const response: TApiResponse<ProductResponseDto> = {
-        code: StatusCodes.OK,
+        code: StatusCodes.CREATED,
         error: false,
         message: "Create product successfully",
         method: req.method,
         path: req.originalUrl,
         result: productData,
       };
-      res.status(StatusCodes.OK).json(response);
+      res.status(StatusCodes.CREATED).json(response);
     } catch (error) {
       next(error);
     }

@@ -7,7 +7,7 @@ import {
   IRegisterRequest
 } from '@/types'
 import { http, showErrorToast, showToast } from '@/utils'
-import { useUserStore } from '@/stores'
+import { useAuthStore } from '@/stores'
 
 export async function registerApi(params: IRegisterRequest): Promise<IApiResponse<void>> {
   try {
@@ -56,7 +56,7 @@ export async function getRefreshToken({
         const result = response.data.result
         if (result) {
           const { token, expireTime } = result
-          useUserStore.setState({ token, expireTime })
+          useAuthStore.setState({ token, expireTime })
           return { token, expireTime }
         } else {
           throw new Error('Invalid response data')

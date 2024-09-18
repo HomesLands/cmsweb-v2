@@ -3,7 +3,7 @@ import { createBrowserRouter, RouteObject } from 'react-router-dom'
 
 import { routes } from '@/router/routes'
 import { IRoute } from '@/types'
-import { useUserStore } from '@/stores'
+import { useAuthStore } from '@/stores'
 
 const createRouteObject = (route: {
   title: string
@@ -39,7 +39,7 @@ const routeObjects = routes.map(createRouteObject)
 //   console.log('useToLogin')
 
 //   return (path?: string) => {
-//     const userStore = useUserStore.getState()
+//     const userStore = useAuthStore.getState()
 //     userStore.logout()
 //     const currentPath = location.pathname
 //     if (currentPath !== '/auth/login') {
