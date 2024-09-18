@@ -71,14 +71,14 @@ class ProductController {
    *         description: The order in which the products are sorted (ASC, DESC)
    *         example: ASC
    *       - in: query
-   *         name: skip
+   *         name: page
    *         schema:
    *           type: integer
    *         required: true
    *         description: The number of products to skip
-   *         example: 0
+   *         example: 1
    *       - in: query
-   *         name: take
+   *         name: pageSize
    *         schema:
    *           type: integer
    *         required: true

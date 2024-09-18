@@ -23,9 +23,9 @@ export type TApiResponse<T> = {
 };
 
 export type TQueryRequest = {
-  skip: number;
+  page: number;
   order: "ASC" | "DESC";
-  take: number;
+  pageSize: number;
 };
 
 export type TPaginationOptionResponse<T> = {
