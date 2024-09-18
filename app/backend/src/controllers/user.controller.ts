@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { userService } from "@services";
-import { TApiResponse, TPaginationOptionRequest } from "@types";
+import { TApiResponse, TQueryRequest } from "@types";
 import { UserResponseDto } from "@dto/response";
 import { logger } from "@lib";
 
@@ -55,7 +55,7 @@ class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const plainData = req.query as unknown as TPaginationOptionRequest;
+      const plainData = req.query as unknown as TQueryRequest;
       logger.info(UserController.name, plainData);
       const results = await userService.getAllUsers(plainData);
       const response: TApiResponse<UserResponseDto[]> = {

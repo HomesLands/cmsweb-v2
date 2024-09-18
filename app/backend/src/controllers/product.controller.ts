@@ -3,7 +3,8 @@ import { productService } from "@services";
 import {
   TApiResponse,
   TCreateProductRequestDto,
-  TPaginationOptionRequest,
+  TPaginationOptionResponse,
+  TProductQueryRequest,
 } from "@types";
 import { ProductResponseDto } from "@dto/response";
 import { StatusCodes } from "http-status-codes";
@@ -84,7 +85,7 @@ class ProductController {
    *         description: The number of products to retrieve
    *         example: 10
    *       - in: query
-   *         name: search
+   *         name: searchTerm
    *         schema:
    *           type: string
    *         required: false
@@ -102,10 +103,12 @@ class ProductController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const query = req.query as unknown as TPaginationOptionRequest;
+      const query = req.query as unknown as TProductQueryRequest;
       logger.info(ProductController.name, query);
       const results = await productService.getAllProducts(query);
-      const response: TApiResponse<ProductResponseDto[]> = {
+      const response: TApiResponse<
+        TPaginationOptionResponse<ProductResponseDto[]>
+      > = {
         code: StatusCodes.OK,
         error: false,
         message: "Products have been retrieved successfully",
