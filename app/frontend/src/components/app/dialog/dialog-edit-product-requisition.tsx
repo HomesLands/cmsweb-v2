@@ -30,10 +30,7 @@ export function DialogEditProductRequisition({
 }: DialogEditProductRequisitionProps) {
   const handleSubmit = (data: z.infer<typeof addNewProductRequestSchema>) => {
     const completeData: IProductInfo = {
-      ...data,
-      id: '',
-      createdBy: '',
-      address: ''
+      ...data
     }
     handleAddRequest(completeData)
     onOpenChange()

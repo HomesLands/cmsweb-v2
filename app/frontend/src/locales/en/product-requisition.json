@@ -17,6 +17,8 @@
     "noteDescription": "Enter the note",
     "priority": "Priority",
     "next": "Next",
+    "add": "Add",
+    "confirm": "Confirm",
     "addProductToRequest": "Add product to request",
     "addProductToRequestDescription": "Add product to request description",
     "confirmProductRequisitions": "Confirm product requisitions",

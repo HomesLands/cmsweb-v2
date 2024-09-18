@@ -25,14 +25,23 @@ interface IFormAddNewProductProps {
 export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ onSubmit, data }) => {
   const form = useForm<z.infer<typeof addNewProductRequestSchema>>({
     resolver: zodResolver(addNewProductRequestSchema),
+    // defaultValues: {
+    //   productCode: data.productCode || '',
+    //   productName: data.productName || '',
+    //   modelOrSerialNumber: data.modelOrSerialNumber || '',
+    //   supplier: data.supplier || '',
+    //   unit: data.unit || '',
+    //   quantity: String(data.quantity) || '0',
+    //   note: data.note || ''
+    // }
     defaultValues: {
-      productCode: data.productCode || '',
-      productName: data.productName || '',
-      modelOrSerialNumber: data.modelOrSerialNumber || '',
-      supplier: data.supplier || '',
+      code: data.code || '',
+      name: data.name || '',
+      provider: data.provider || '',
       unit: data.unit || '',
-      quantity: String(data.quantity) || '0',
-      note: data.note || ''
+      description: data.description || '',
+      status: data.status || ''
+      // note: data.note || ''
     }
   })
 
@@ -47,7 +56,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
           <div className="grid grid-cols-3 gap-2">
             <FormField
               control={form.control}
-              name="productCode"
+              name="code"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Mã vật tư</FormLabel>
@@ -60,7 +69,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
             />
             <FormField
               control={form.control}
-              name="productName"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tên vật tư</FormLabel>
@@ -73,10 +82,10 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
             />
             <FormField
               control={form.control}
-              name="modelOrSerialNumber"
+              name="provider"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Model</FormLabel>
+                  <FormLabel>Nhà cung cấp</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -88,7 +97,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
           <div className="grid grid-cols-3 gap-2">
             <FormField
               control={form.control}
-              name="quantity"
+              name="status"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Số lượng</FormLabel>
@@ -113,7 +122,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="supplier"
               render={({ field }) => (
@@ -125,10 +134,10 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
           </div>
           <div className="grid grid-cols-1 gap-2">
-            <FormField
+            {/* <FormField
               control={form.control}
               name="note"
               render={({ field }) => (
@@ -140,10 +149,10 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
           </div>
           <div className="flex justify-end w-full">
-            <Button type="submit">Tiếp theo</Button>
+            <Button type="submit">Thêm</Button>
           </div>
         </form>
       </Form>

@@ -32,9 +32,9 @@ export function DialogAddProductRequest({
   const handleSubmit = (data: z.infer<typeof addNewProductRequestSchema>) => {
     const completeData: IProductInfo = {
       ...data,
-      id: '',
-      createdBy: '',
-      address: ''
+      code: ''
+      // createdBy: '',
+      // address: ''
     }
     handleAddRequest(completeData)
     onOpenChange()

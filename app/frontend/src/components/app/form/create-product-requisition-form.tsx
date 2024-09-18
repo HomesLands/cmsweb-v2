@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
-import { useEffect } from 'react'
 
 import {
   FormField,

@@ -22,16 +22,12 @@ export const AddNewProductForm: React.FC<IFormAddNewProductProps> = ({ onSubmit 
   const form = useForm<z.infer<typeof addNewProductSchema>>({
     resolver: zodResolver(addNewProductSchema),
     defaultValues: {
-      id: '',
-      createdBy: '',
-      productCode: '',
-      productName: '',
-      modelOrSerialNumber: '',
-      supplier: '',
+      code: '',
+      name: '',
+      provider: '',
       unit: '',
-      address: '',
-      note: '',
-      quantity: ''
+      description: '',
+      status: ''
     }
   })
 
@@ -46,7 +42,7 @@ export const AddNewProductForm: React.FC<IFormAddNewProductProps> = ({ onSubmit 
           <div className="grid grid-cols-2 gap-2">
             <FormField
               control={form.control}
-              name="productCode"
+              name="code"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Mã vật tư</FormLabel>
@@ -59,7 +55,7 @@ export const AddNewProductForm: React.FC<IFormAddNewProductProps> = ({ onSubmit 
             />
             <FormField
               control={form.control}
-              name="productName"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tên vật tư</FormLabel>
@@ -74,25 +70,12 @@ export const AddNewProductForm: React.FC<IFormAddNewProductProps> = ({ onSubmit 
           <div className="grid grid-cols-2 gap-2">
             <FormField
               control={form.control}
-              name="modelOrSerialNumber"
+              name="provider"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Model</FormLabel>
+                  <FormLabel>=Nhà cung cấp</FormLabel>
                   <FormControl>
                     <Input placeholder="Nhập tên model" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="supplier"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nhà cung cấp</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Nhập tên nhà cung cấp" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -113,33 +96,20 @@ export const AddNewProductForm: React.FC<IFormAddNewProductProps> = ({ onSubmit 
             />
             <FormField
               control={form.control}
-              name="address"
+              name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Địa chỉ</FormLabel>
+                  <FormLabel>Mô tả</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nhập địa chỉ" {...field} />
+                    <Input placeholder="Nhập mô tả" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <FormField
-            control={form.control}
-            name="note"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Ghi chú</FormLabel>
-                <FormControl>
-                  <Input placeholder="Nhập ghi chú" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <div className="flex justify-end w-full">
-            <Button type="submit">Tiếp theo</Button>
+            <Button type="submit">Thêm</Button>
           </div>
         </form>
       </Form>

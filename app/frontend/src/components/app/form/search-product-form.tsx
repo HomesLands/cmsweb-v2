@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useProductList } from '@/hooks'
+import { useAllProductList } from '@/hooks'
 import { IProductInfo, IProductNameSearch } from '@/types'
 
 import { Button, DataTable, Label } from '@/components/ui'
@@ -21,14 +21,21 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
   const [pageSize, setPageSize] = useState(10)
   const [selectedProducts, setSelectedProducts] = useState<IProductInfo[]>([])
 
-  const { data, isLoading } = useProductList({
+  // const { data, isLoading } = useProductList({
+  //   page,
+  //   pageSize
+  // })
+
+  const { data: allProduct, isLoading } = useAllProductList({
     page,
     pageSize
   })
 
+  console.log('allProduct', allProduct)
+
   const handleNext = () => {
     const productNameSearch: IProductNameSearch = {
-      productName: selectedProducts.map((product) => product.productName).join(', ')
+      productName: selectedProducts.map((product) => product.name).join(', ')
     }
     onSubmit(productNameSearch)
   }
@@ -65,9 +72,9 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
       <DataTable
         isLoading={isLoading}
         columns={useColumnsSearch(handleAddRequest)}
-        data={data?.items || []}
-        total={data?.total || 0}
-        pages={data?.pages || 0}
+        data={allProduct?.items || []}
+        // total={data?.total || 0}
+        pages={allProduct?.pages || 0}
         page={page}
         pageSize={pageSize}
         onPageChange={setPage}
@@ -89,7 +96,7 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
             isLoading={isLoading}
             columns={columnsResult()}
             data={selectedProducts}
-            total={selectedProducts.length}
+            // total={selectedProducts.length}
             pages={1}
             page={1}
             pageSize={selectedProducts.length}
