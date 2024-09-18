@@ -5,3 +5,4 @@ export { default as healthCheckController } from "./health-check.controller";
 export { default as siteController } from "./site.controller";
 export { default as projectController } from "./project.controller";
 export { default as errorCodeController } from "./error-code.controller";
+export { default as unitController } from "./unit.controller";

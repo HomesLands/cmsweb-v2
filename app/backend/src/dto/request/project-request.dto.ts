@@ -1,6 +1,6 @@
 import { AutoMap } from "@automapper/classes";
 import { Expose } from "class-transformer";
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsDateString } from "class-validator";
 
 export class CreateProjectRequestDto {
   @IsNotEmpty({message: "INVALID_PROJECT_NAME"})
@@ -9,6 +9,8 @@ export class CreateProjectRequestDto {
   name?: string;
 
   @IsNotEmpty({message: "INVALID_PROJECT_START_DATE"})
+  // @IsDate({ message: "INVALID_DATE_FORMAT"})
+  @IsDateString()
   @Expose()
   startDate?: string;
 
@@ -27,7 +29,7 @@ export class CreateProjectRequestDto {
   @AutoMap()
   fileDescription?: string;
 
-  @IsNotEmpty({message: "INVALID_PROJECT_MANAGER_ID"})
+  @IsNotEmpty({message: "INVALID_PROJECT_MANAGER"})
   @Expose()
   manager?: string;
 }

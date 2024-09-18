@@ -41,6 +41,7 @@ export class ValidationError extends Error {
   private transformErrorToErrorCode(
     error: ClassValidatorError
   ): TErrorCodeValue {
+    console.log({error})
     const constraintKey =
       error.constraints &&
       (Object.values(error.constraints)[0] as TErrorCodeKey);
