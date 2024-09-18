@@ -1,12 +1,18 @@
 import { StrictMode } from 'react'
 import { RouterProvider } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import '@/assets/index.css'
 import { router } from '@/router'
 import './i18n'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: (error, query) => {
+      console.log({ error, query })
+    }
+  })
+})
 
 function App() {
   return (

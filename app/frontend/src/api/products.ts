@@ -120,11 +120,8 @@ export async function getProjectListInProductRequisition(): Promise<
 > {
   try {
     const response = await http.get<IProjectListResponse<IProject[]>>('/projects')
-
-    console.log('response in api: ', response)
     return response.data
   } catch (error) {
-    console.log('Failed to fetch projects:', error)
     throw new Error('Failed to fetch projects')
   }
 }
