@@ -39,14 +39,13 @@ class ProjectController {
    *           type: string
    *           description: managerSlug
    *       example:
-   *         name: FirstSite
-   *         startDate: 2024-09-15T10:25:45+07:00
+   *         name: FirstProject
+   *         startDate: 2024-09-15 10:25:45
    *         process: 1
    *         description: project description
    *         fileDescription: temp file description
    *         manager: 3Co-M1ZL4
    */
-
 
   /**
    * @swagger
@@ -90,7 +89,6 @@ class ProjectController {
     }
   }
 
-
   /**
    * @swagger
    * /projects:
@@ -104,7 +102,7 @@ class ProjectController {
    *           schema:
    *              $ref: '#/components/schemas/CreateProjectRequestDto'
    *     responses:
-   *       200:
+   *       201:
    *         description: New project created successfully.
    *         content:
    *           application/json:
@@ -116,21 +114,21 @@ class ProjectController {
   public async createProject(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> {
     try {
       const requestData = req.body as TCreateProjectRequestDto;
       const projectData = await projectService.createProject(requestData);
 
       const response: TApiResponse<ProjectResponseDto> = {
-        code: StatusCodes.OK,
+        code: StatusCodes.CREATED,
         error: false,
         message: "Create project successfully",
         method: req.method,
         path: req.originalUrl,
         result: projectData,
       };
-      res.status(StatusCodes.OK).json(response);
+      res.status(StatusCodes.CREATED).json(response);
     } catch (error) {
       next(error);
     }

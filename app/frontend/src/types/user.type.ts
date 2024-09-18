@@ -13,6 +13,14 @@ export interface IUserInfo {
   updatedAt?: Date
 }
 
+export interface IUserBySlug {
+  result: {
+    fullname: string
+    username: string
+    slug: string
+  }
+}
+
 export interface IUserQuery {
   page: number
   pageSize: number

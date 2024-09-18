@@ -8,23 +8,25 @@ import {
   SelectValue
 } from '@/components/ui'
 import { FC } from 'react'
-import { requestPriorities } from '@/menus'
+import { useRequestPriorities } from '@/menus'
+import { useTranslation } from 'react-i18next'
 
 interface SelectUserRoleProps {
   value: string
   onChange: (value: string) => void
 }
 
-export const SelectRequestPriority: FC<SelectUserRoleProps> = ({ value, onChange }) => {
+export const RequestPrioritySelect: FC<SelectUserRoleProps> = ({ value, onChange }) => {
+  const { t } = useTranslation('productRequisition')
   return (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger>
-        <SelectValue placeholder="Chọn mức ưu tiên" />
+        <SelectValue placeholder={t('productRequisition.priority')} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Mức ưu tiên</SelectLabel>
-          {requestPriorities.map((requestPriority) => (
+          <SelectLabel>{t('productRequisition.priority')}</SelectLabel>
+          {useRequestPriorities().map((requestPriority) => (
             <SelectItem key={requestPriority.value} value={requestPriority.value}>
               <span className="text-normal">{requestPriority.label}</span>
             </SelectItem>

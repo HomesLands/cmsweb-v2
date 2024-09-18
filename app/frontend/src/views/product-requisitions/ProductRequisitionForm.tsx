@@ -19,7 +19,6 @@ const ProductRequisitionForm: React.FC = () => {
   const { t } = useTranslation('productRequisition')
   const { currentStep, handleStepChange } = useMultiStep(1)
   const [formData, setFormData] = useState<IProductRequirementInfoCreate | null>(null)
-
   const { setRequisition, getRequisition } = useRequisitionStore()
 
   useEffect(() => {

@@ -12,7 +12,10 @@
     "constructionSite": "Construction site",
     "constructionSiteDescription": "Choose construction site",
     "approver": "Approver",
+    "approverDescription": "Enter the approver name",
     "note": "Note",
+    "noteDescription": "Enter the note",
+    "priority": "Priority",
     "next": "Next",
     "addProductToRequest": "Add product to request",
     "addProductToRequestDescription": "Add product to request description",
@@ -25,5 +28,9 @@
     "createProductRequisitions": "Create requisition",
     "addProductToRequest": "Add product",
     "confirmProductRequisitions": "Confirm requisition"
+  },
+  "requestPriority": {
+    "normal": "Normal",
+    "urgent": "Urgent"
   }
 }

@@ -49,19 +49,28 @@ export interface IProductInfoSearch {
 }
 
 //ADD NEW PRODUCT
+// export interface IProductInfo {
+//   code: string
+//   createdBy: string
+//   productCode: string
+//   productName: string
+//   modelOrSerialNumber: string
+//   supplier: string
+//   importDate: string // Change this to string
+//   unit: string
+//   quantity: string
+//   address: string
+//   note?: string
+//   createdAt?: Date
+// }
+
 export interface IProductInfo {
-  id: string
-  createdBy: string
-  productCode: string
-  productName: string
-  modelOrSerialNumber: string
-  supplier: string
-  // importDate: string // Change this to string
+  code: string
+  name: string
+  provider: string
+  status: string
+  description: string
   unit: string
-  quantity: string
-  address: string
-  note?: string
-  createdAt?: Date
 }
 
 export interface IProductQuery {

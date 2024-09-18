@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
+import { useEffect } from 'react'
 
 import {
   FormField,
@@ -14,12 +15,13 @@ import {
   Textarea
 } from '@/components/ui'
 import { productSchema } from '@/schemas'
-import { SelectProject, SelectConstruction } from '@/components/app/select'
+import { SelectProject, SelectConstruction, RequestPrioritySelect } from '@/components/app/select'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useProjectList, useSiteList } from '@/hooks'
+import { useProjectList, useSiteList, useUserBySlug } from '@/hooks'
 import { IProductRequirementInfoCreate } from '@/types'
 import { generateProductRequisitionCode } from '@/utils'
+import { useAuthStore } from '@/stores'
 
 interface IFormCreateProductProps {
   onSubmit: (data: z.infer<typeof productSchema>) => void
@@ -31,24 +33,20 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
   initialData
 }) => {
   const { t } = useTranslation('productRequisition')
+  const { slug } = useAuthStore()
+  const { data } = useUserBySlug(slug || '')
+
   const form = useForm<z.infer<typeof productSchema>>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      requestCode: initialData?.requestCode || generateProductRequisitionCode(),
-      requester: initialData?.requester || '',
-      project: initialData?.project || {
-        slug: '',
-        name: ''
-      },
-      site: initialData?.site || {
-        slug: '',
-        name: ''
-      },
+      requestCode: generateProductRequisitionCode(),
+      requester: data?.result?.fullname || '',
+      project: { slug: '', name: '' },
+      site: { slug: '', name: '' },
       approver: initialData?.approver || '',
       note: initialData?.note || '',
       createdAt: initialData?.createdAt || new Date().toISOString(),
-      // Add priority if it's part of your schema
-      priority: initialData?.priority || 'normal'
+      priority: 'normal'
     }
   })
 
@@ -56,7 +54,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
   const { data: siteList } = useSiteList()
 
   const handleSubmit = (values: z.infer<typeof productSchema>) => {
-    values.createdAt = new Date().toISOString() // Ensure createdAt is included
+    values.createdAt = new Date().toISOString()
     onSubmit(values)
   }
 
@@ -85,7 +83,11 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                 <FormItem>
                   <FormLabel>{t('productRequisition.requester')}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('productRequisition.requesterDescription')} {...field} />
+                    <Input
+                      readOnly
+                      placeholder={t('productRequisition.requesterDescription')}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -161,7 +163,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
               <FormItem>
                 <FormLabel>{t('productRequisition.priority')}</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <RequestPrioritySelect {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

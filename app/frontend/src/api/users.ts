@@ -1,4 +1,4 @@
-import { IPaginationResponse, IUserInfo } from '@/types'
+import { IPaginationResponse, IUserBySlug, IUserInfo } from '@/types'
 import http from '@/utils/http'
 import userData from '@/data/users'
 
@@ -40,6 +40,7 @@ export async function getUsers2() {
 }
 
 export async function getBySlug(slug: string) {
-  const response = await http.get<IUserInfo>(`/users/${slug}`)
+  // const response = await http.get<IUserInfo>(`/users/${slug}`)
+  const response = await http.get<IUserBySlug>(`/users/${slug}`)
   return response.data
 }

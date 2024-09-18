@@ -138,6 +138,16 @@ export async function getConstructionListInProductRequisition(): Promise<
   }
 }
 
+export async function getAllProduct(): Promise<IProductInfo[]> {
+  try {
+    const response = await http.get<IProductInfo[]>('/products')
+    return response.data
+  } catch (error) {
+    console.log('Failed to fetch products:', error)
+    throw new Error('Failed to fetch products')
+  }
+}
+
 // export async function searchProduct(params: {
 //   productName: string
 // }): Promise<IProductInfoSearch[]> {

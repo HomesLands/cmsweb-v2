@@ -6,6 +6,7 @@ import { userRoute } from "@routes/user.route";
 import { healthCheckRoute } from "@routes/health-check.route";
 import { siteRoute } from "@routes/site.route";
 import { projectRoute } from "@routes/project.route";
+import { unitRoute } from "@routes/unit.route";
 
 import { authMiddleware } from "@middlewares";
 import { ErrorCodes, GlobalError } from "@exception";
@@ -24,6 +25,8 @@ export const registerRoutes = (app: Express) => {
   baseApi.use("/products", productRoute);
 
   baseApi.use("/sites", siteRoute);
+
+  baseApi.use("/units", unitRoute);
 
   baseApi.use("/projects", projectRoute);
 

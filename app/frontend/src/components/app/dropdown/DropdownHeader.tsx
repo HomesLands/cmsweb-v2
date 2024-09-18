@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { ExitIcon } from '@radix-ui/react-icons'
 
 import {
@@ -10,16 +11,19 @@ import {
   Button,
   UserAvatar
 } from '@/components/ui'
-import { useState } from 'react'
 import { DialogLogout } from '../dialog'
-import { useLogout } from '@/hooks'
-import { useUserStore } from '@/stores'
+import { useLogout, useUserBySlug } from '@/hooks'
+import { useAuthStore } from '@/stores'
 import { ILogoutRequest } from '@/types'
 
 export function DropdownHeader() {
-  const { token, refreshToken } = useUserStore()
+  const { slug, token, refreshToken } = useAuthStore()
   const [open, setOpen] = useState(false)
   const mutation = useLogout()
+
+  const { data } = useUserBySlug(slug || '')
+
+  console.log(data)
 
   const handleLogout = async () => {
     const requestData = {
@@ -38,7 +42,7 @@ export function DropdownHeader() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-[14rem]" align="end">
-          <DropdownMenuLabel>Tài khoản của tôi</DropdownMenuLabel>
+          <DropdownMenuLabel>{data?.result?.fullname}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {/* <DropdownMenuItem className="cursor-pointer">Thông tin tài khoản</DropdownMenuItem> */}
           {/* <DropdownMenuItem className="cursor-pointer">Đổi mật khẩu</DropdownMenuItem> */}

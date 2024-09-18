@@ -112,4 +112,94 @@ export const ErrorCodes: TErrorCode = {
     code: 1022,
     message: "User is assigned not found",
   },
+  UNIT_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1023,
+    message: "Unit exist",
+  },
+  UNIT_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1024,
+    message: "Unit not found",
+  },
+  CODE_PRODUCT_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1025,
+    message: "Code product exist",
+  },
+  INVALID_PRODUCT_PROVIDER: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1026,
+    message: "Invalid product provider",
+  },
+  INVALID_PRODUCT_NAME: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1027,
+    message: "Invalid product name",
+  },
+  INVALID_PRODUCT_UNIT: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1028,
+    message: "Invalid product unit",
+  },
+  INVALID_PRODUCT_CODE: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1029,
+    message: "Invalid product code",
+  },
+  INVALID_SITE_NAME: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1030,
+    message: "Invalid site name",
+  },
+  INVALID_SITE_ADDRESS: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1031,
+    message: "Invalid site address",
+  },
+  INVALID_SITE_MANAGER: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1032,
+    message: "Invalid site manager",
+  },
+  INVALID_PROJECT_NAME: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1033,
+    message: "Invalid project name",
+  },
+  INVALID_PROJECT_START_DATE: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1034,
+    message: "Invalid project start date",
+  },
+  INVALID_PROJECT_PROCESS: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1035,
+    message: "Invalid project process",
+  },
+  INVALID_PROJECT_DESCRIPTION: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1036,
+    message: "Invalid project description",
+  },
+  INVALID_PROJECT_FILE_DESCRIPTION: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1037,
+    message: "Invalid project file description",
+  },
+  INVALID_PROJECT_MANAGER: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1038,
+    message: "Invalid project manager",
+  },
+  INVALID_UNIT_NAME: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1039,
+    message: "Invalid unit name",
+  },
+  INVALID_DATE_FORMAT: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1039,
+    message: "Invalid date format",
+  },
 } as const;

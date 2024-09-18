@@ -5,8 +5,8 @@ import { ProjectResponseDto } from "@dto/response";
 import { CreateProjectRequestDto } from "@dto/request";
 import { TCreateProjectRequestDto } from "@types";
 import { plainToClass } from "class-transformer";
-import { GlobalError } from "@exception";
-import { ErrorCodes } from "@exception";
+import { ErrorCodes, ValidationError, GlobalError } from "@exception";
+import { validate } from "class-validator";
 
 class ProjectService {
   public async getAllSites(): Promise<ProjectResponseDto[] | []> {
@@ -25,6 +25,10 @@ class ProjectService {
   public async createProject(plainData: TCreateProjectRequestDto): Promise<ProjectResponseDto> {
     // Map plain object to request dto
     const requestData = plainToClass(CreateProjectRequestDto, plainData);
+
+    const errors = await validate(requestData);
+    if (errors.length > 0) throw new ValidationError(errors);
+    console.log({errors})
 
     const manager = await userRepository.findOneBy({ slug: requestData.manager });
     if (!manager) {

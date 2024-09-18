@@ -5,7 +5,7 @@ export class ProjectResponseDto {
   name?: string;
 
   @AutoMap()
-  startDate?: Date;
+  startDate?: string;
 
   @AutoMap()
   description?: string;
