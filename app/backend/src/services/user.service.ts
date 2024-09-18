@@ -2,12 +2,12 @@ import { mapper } from "@mappers";
 import { User } from "@entities";
 import { UserResponseDto } from "@dto/response";
 import { userRepository } from "@repositories";
-import { TPaginationOption } from "@types";
+import { TPaginationOptionRequest } from "@types";
 import { logger } from "@lib/logger";
 
 class UserService {
   public async getAllUsers(
-    options: TPaginationOption
+    options: TPaginationOptionRequest
   ): Promise<UserResponseDto[]> {
     const users = await userRepository.find({
       take: options.take,
