@@ -49,6 +49,24 @@ export type TErrorCodeKey =
   | "TOKEN_ID_NOT_EXIST"
   | "TOKEN_TYPE_NOT_EXIST"
   | "USER_ASSIGNED_NOT_FOUND"
+  | "UNIT_EXIST"
+  | "UNIT_NOT_FOUND"
+  | "CODE_PRODUCT_EXIST"
+  | "INVALID_PRODUCT_PROVIDER"
+  | "INVALID_PRODUCT_NAME"
+  | "INVALID_PRODUCT_UNIT"
+  | "INVALID_PRODUCT_CODE"
+  | "INVALID_SITE_NAME"
+  | "INVALID_SITE_ADDRESS"
+  | "INVALID_SITE_MANAGER"
+  | "INVALID_PROJECT_NAME"
+  | "INVALID_PROJECT_START_DATE"
+  | "INVALID_PROJECT_PROCESS"
+  | "INVALID_PROJECT_DESCRIPTION"
+  | "INVALID_PROJECT_FILE_DESCRIPTION"
+  | "INVALID_PROJECT_MANAGER"
+  | "INVALID_UNIT_NAME"
+  | "INVALID_DATE_FORMAT"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {
@@ -62,3 +80,5 @@ export type TErrorCode = Record<TErrorCodeKey, TErrorCodeValue>;
 export * from "./auth.type";
 export * from "./site.type";
 export * from "./project.type";
+export * from "./unit.type";
+export * from "./product.type";

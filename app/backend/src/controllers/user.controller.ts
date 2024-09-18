@@ -4,7 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import { userService } from "@services";
 import { TApiResponse, TPaginationOption } from "@types";
 import { UserResponseDto } from "@dto/response";
-import { logger } from "@lib/logger";
+import { logger } from "@lib";
 
 class UserController {
   /**

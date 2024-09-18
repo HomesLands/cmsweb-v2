@@ -4,3 +4,5 @@ export { default as imageService } from "./image.service";
 export { default as tokenService } from "./token.service";
 export { default as siteService } from "./site.service";
 export { default as projectService } from "./project.service";
+export { default as unitService } from "./unit.service";
+export { default as productService } from "./product.service";
