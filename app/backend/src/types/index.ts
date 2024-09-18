@@ -22,7 +22,7 @@ export type TApiResponse<T> = {
   path: string;
 };
 
-export type TPaginationOption = {
+export type TPaginationOptionRequest = {
   skip: number;
   order: "ASC" | "DESC";
   take: number;

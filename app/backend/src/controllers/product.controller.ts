@@ -1,8 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { productService } from "@services";
-import { TApiResponse, TCreateProductRequestDto } from "@types";
+import {
+  TApiResponse,
+  TCreateProductRequestDto,
+  TPaginationOptionRequest,
+} from "@types";
 import { ProductResponseDto } from "@dto/response";
 import { StatusCodes } from "http-status-codes";
+import { logger } from "@lib";
 
 class ProductController {
   /**
@@ -55,6 +60,29 @@ class ProductController {
    *   get:
    *     summary: Get all products
    *     tags: [Product]
+   *     parameters:
+   *       - in: query
+   *         name: order
+   *         schema:
+   *           type: string
+   *           enum: [ASC, DESC]
+   *         required: true
+   *         description: The order in which the products are sorted (ASC, DESC)
+   *         example: ASC
+   *       - in: query
+   *         name: skip
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of products to skip
+   *         example: 0
+   *       - in: query
+   *         name: take
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of products to retrieve
+   *         example: 10
    *     responses:
    *       200:
    *         description: Get all products successfully.
@@ -68,15 +96,13 @@ class ProductController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const results = await productService.getAllProducts({
-        order: "DESC",
-        skip: 0,
-        take: 100,
-      });
+      const query = req.query as unknown as TPaginationOptionRequest;
+      logger.info(ProductController.name, query);
+      const results = await productService.getAllProducts(query);
       const response: TApiResponse<ProductResponseDto[]> = {
         code: StatusCodes.OK,
         error: false,
-        message: "Get all products successfully",
+        message: "Products have been retrieved successfully",
         method: req.method,
         path: req.originalUrl,
         result: results,
