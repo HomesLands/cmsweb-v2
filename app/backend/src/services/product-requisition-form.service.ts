@@ -51,16 +51,6 @@ class ProductRequisitionFormService {
         'requestProducts.product',
       ]
     });
-    console.log({forms})
-    console.log({forms1: forms[0].userApprovals})
-    console.log({forms2: forms[0].requestProducts})
-    if(forms[0].requestProducts) {
-      if(forms[0].requestProducts.length > 0) {
-        console.log({xxxx: forms[0].requestProducts[0]})
-        console.log({xxxx2: forms[0].requestProducts[0].product})
-      }
-    }
-    
 
     const formsDto: ProductRequisitionFormResponseDto[] = mapper.mapArray(
       forms,

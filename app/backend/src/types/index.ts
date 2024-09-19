@@ -35,6 +35,12 @@ export type TPaginationOptionResponse<T> = {
   items: T;
 };
 
+export type TPaginationOption = {
+  take: number | 0;
+  skip: number | 10;
+  order: "DESC";
+}
+
 export type TErrorCodeKey =
   | "INVALID_EMAIL"
   | "PATH_NOT_FOUND"
