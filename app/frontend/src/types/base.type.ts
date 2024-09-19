@@ -4,12 +4,17 @@ export interface IApiResponse<T> {
   message: string
   method: string
   path: string
-  result: T
+  result: {
+    items: T[]
+    page: number
+    pageSize: number
+    pages: number
+  }
 }
 
 export interface IPaginationResponse<T> {
   items: T[]
-  total: number
+  // total: number
   page: number
   pageSize: number
   pages: number

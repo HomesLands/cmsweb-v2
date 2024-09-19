@@ -15,38 +15,35 @@ import {
 import { addNewProductRequestSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IProductInfo } from '@/types'
+import { useRequisitionStore } from '@/stores'
+import { showToast } from '@/utils'
 
 interface IFormAddNewProductProps {
-  data: IProductInfo
-  onSubmit: (data: z.infer<typeof addNewProductRequestSchema>) => void
-  handleAddRequest: (data: IProductInfo) => void
+  data?: IProductInfo
+  onSubmit: (data: IProductInfo) => void
 }
 
-export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ onSubmit, data }) => {
+export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ data, onSubmit }) => {
   const form = useForm<z.infer<typeof addNewProductRequestSchema>>({
     resolver: zodResolver(addNewProductRequestSchema),
-    // defaultValues: {
-    //   productCode: data.productCode || '',
-    //   productName: data.productName || '',
-    //   modelOrSerialNumber: data.modelOrSerialNumber || '',
-    //   supplier: data.supplier || '',
-    //   unit: data.unit || '',
-    //   quantity: String(data.quantity) || '0',
-    //   note: data.note || ''
-    // }
     defaultValues: {
-      code: data.code || '',
-      name: data.name || '',
-      provider: data.provider || '',
-      unit: data.unit || '',
-      description: data.description || '',
-      status: data.status || ''
-      // note: data.note || ''
+      createdAt: data?.createdAt || new Date().toISOString(),
+      code: data?.code || '',
+      name: data?.name || '',
+      provider: data?.provider || '',
+      unit: data?.unit || '',
+      quantity: data?.quantity || '',
+      description: data?.description || '',
+      status: data?.status || ''
     }
   })
 
   const handleSubmit = (values: z.infer<typeof addNewProductRequestSchema>) => {
-    onSubmit(values)
+    const completeData: IProductInfo = {
+      ...values,
+      createdAt: values.createdAt || ''
+    }
+    onSubmit(completeData)
   }
 
   return (
@@ -54,6 +51,19 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="grid grid-cols-3 gap-2">
+            <FormField
+              control={form.control}
+              name="createdAt"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Ngày tạo</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="code"
@@ -94,15 +104,34 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
               )}
             />
           </div>
+          <FormField
+            control={form.control}
+            name="status"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Trạng thái</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="grid grid-cols-3 gap-2">
             <FormField
               control={form.control}
-              name="status"
+              name="quantity"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Số lượng</FormLabel>
                   <FormControl>
-                    <Input type="number" min="1" placeholder="Nhập số lượng" {...field} />
+                    <Input
+                      type="number"
+                      min="1"
+                      placeholder="Nhập số lượng"
+                      {...field}
+                      value={field.value || 2}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -122,34 +151,19 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
                 </FormItem>
               )}
             />
-            {/* <FormField
+            <FormField
               control={form.control}
-              name="supplier"
+              name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nhà cung cấp</FormLabel>
+                  <FormLabel>Mô tả</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
-          </div>
-          <div className="grid grid-cols-1 gap-2">
-            {/* <FormField
-              control={form.control}
-              name="note"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Ghi chú</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="Nhập ghi chú" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
+            />
           </div>
           <div className="flex justify-end w-full">
             <Button type="submit">Thêm</Button>

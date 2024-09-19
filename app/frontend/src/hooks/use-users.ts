@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
-import { getBySlug, getUsers, getUsers2 } from '@/api/users'
+import { getBySlug, getUsers } from '@/api/users'
 import { IUserQuery } from '@/types'
 
 export const useUsers = (q: IUserQuery) => {
@@ -11,12 +11,12 @@ export const useUsers = (q: IUserQuery) => {
   })
 }
 
-export const useUsers2 = () => {
-  return useQuery({
-    queryKey: ['users2'],
-    queryFn: () => getUsers2()
-  })
-}
+// export const useUsers2 = () => {
+//   return useQuery({
+//     queryKey: ['users2'],
+//     queryFn: () => getUsers2()
+//   })
+// }
 
 export const useUserBySlug = (slug: string) => {
   return useQuery({

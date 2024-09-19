@@ -51,15 +51,16 @@ axiosInstance.interceptors.request.use(
           }
         )
 
-        const newToken = response.data.result.token
+        const newToken = response.data.result.items[0].token
         setToken(newToken)
-        setExpireTime(response.data.result.expireTime)
+        setExpireTime(response.data.result.items[0].expireTime)
         processQueue(null, newToken)
       } catch (error) {
         console.log({ error })
         processQueue(error, null)
         setLogout()
         // redirect('/auth/login')
+        showErrorToast(1017)
         // You can redirect to the login page
         window.location.href = '/auth/login'
       } finally {

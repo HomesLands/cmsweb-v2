@@ -25,3 +25,9 @@ export interface IUserQuery {
   page: number
   pageSize: number
 }
+
+export interface IProductQuery {
+  order: string
+  page: number
+  pageSize: number
+}

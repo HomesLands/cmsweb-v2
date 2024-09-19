@@ -3,11 +3,12 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import {
   getAllProduct,
   getConstructionListInProductRequisition,
+  getProductList,
   // getProductList,
   getProducts,
   getProjectListInProductRequisition
 } from '@/api/products'
-import { IUserQuery } from '@/types'
+import { IProductQuery, IUserQuery } from '@/types'
 
 export const useProducts = (q: IUserQuery) => {
   return useQuery({
@@ -17,17 +18,17 @@ export const useProducts = (q: IUserQuery) => {
   })
 }
 
-// export const useProductList = (q: IUserQuery) => {
-//   const { data, isLoading } = useQuery({
-//     queryKey: ['productList', JSON.stringify(q)],
-//     queryFn: () => getProductList(q),
-//     placeholderData: keepPreviousData
-//   })
+export const useProductList = (q: IUserQuery) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['productList', JSON.stringify(q)],
+    queryFn: () => getProductList(q),
+    placeholderData: keepPreviousData
+  })
 
-//   return { data, isLoading }
-// }
+  return { data, isLoading }
+}
 
-export const useAllProductList = (q: IUserQuery) => {
+export const useAllProductList = (q: IProductQuery) => {
   return useQuery({
     queryKey: ['allProductList', JSON.stringify(q)],
     queryFn: () => getAllProduct(q),

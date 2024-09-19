@@ -36,17 +36,17 @@ export interface IProductNameSearch {
   productName: string
 }
 
-export interface IProductInfoSearch {
-  productCode: string
-  productName: string
-  modelOrSerialNumber: string
-  supplier: string
-  // importDate: string // Change this to string
-  unit: string
-  quantity: string
-  address: string
-  note?: string
-}
+// export interface IProductInfoSearch {
+//   productCode: string
+//   productName: string
+//   modelOrSerialNumber: string
+//   supplier: string
+//   importDate: string // Change this to string
+//   unit: string
+//   quantity: string
+//   address: string
+//   note?: string
+// }
 
 //ADD NEW PRODUCT
 // export interface IProductInfo {
@@ -65,15 +65,23 @@ export interface IProductInfoSearch {
 // }
 
 export interface IProductInfo {
+  createdAt: string
   code: string
   name: string
   provider: string
-  status: string
-  description: string
+  status?: string
+  description?: string
   unit: string
+  quantity: string
+}
+
+export interface IUserQuery {
+  page: number
+  pageSize: number
 }
 
 export interface IProductQuery {
+  order: string
   page: number
   pageSize: number
 }

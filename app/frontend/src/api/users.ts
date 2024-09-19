@@ -23,7 +23,6 @@ export async function getUsers(params: {
 
     return {
       items: paginatedUsers,
-      total,
       page: params.page,
       pageSize: params.pageSize,
       pages
@@ -34,10 +33,10 @@ export async function getUsers(params: {
   }
 }
 
-export async function getUsers2() {
-  const response = await http.get<IUserInfo>('/users')
-  return response.data
-}
+// export async function getUsers2() {
+//   const response = await http.get<IUserInfo>('/users')
+//   return response.data
+// }
 
 export async function getBySlug(slug: string) {
   // const response = await http.get<IUserInfo>(`/users/${slug}`)
