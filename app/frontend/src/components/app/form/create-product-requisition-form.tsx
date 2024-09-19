@@ -17,7 +17,7 @@ import { productSchema } from '@/schemas'
 import { SelectProject, SelectConstruction, RequestPrioritySelect } from '@/components/app/select'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useProjectList, useSiteList, useUserBySlug } from '@/hooks'
+import { useProjects, useSites, useUser } from '@/hooks'
 import { IProductRequirementInfoCreate } from '@/types'
 import { generateProductRequisitionCode } from '@/utils'
 import { useAuthStore } from '@/stores'
@@ -33,7 +33,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
 }) => {
   const { t } = useTranslation('productRequisition')
   const { slug } = useAuthStore()
-  const { data } = useUserBySlug(slug || '')
+  const { data } = useUser(slug || '')
 
   const form = useForm<z.infer<typeof productSchema>>({
     resolver: zodResolver(productSchema),
@@ -49,8 +49,8 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
     }
   })
 
-  const { data: projectList } = useProjectList()
-  const { data: siteList } = useSiteList()
+  const { data: projects } = useProjects()
+  const { data: sites } = useSites()
 
   const handleSubmit = (values: z.infer<typeof productSchema>) => {
     values.createdAt = new Date().toISOString()
@@ -101,7 +101,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                   <FormControl>
                     <SelectProject
                       onChange={(value: { slug: string; name: string }) => field.onChange(value)}
-                      projectList={projectList?.result ?? []}
+                      projectList={projects?.result ?? []}
                       defaultValue={initialData?.project}
                     />
                   </FormControl>
@@ -120,7 +120,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                   <FormControl>
                     <SelectConstruction
                       onChange={(value: { slug: string; name: string }) => field.onChange(value)}
-                      constructionList={siteList?.result ?? []}
+                      constructionList={sites?.result ?? []}
                       defaultValue={initialData?.site}
                     />
                   </FormControl>

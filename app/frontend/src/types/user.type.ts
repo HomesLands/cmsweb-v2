@@ -1,8 +1,12 @@
+import { IQuery } from './base.type'
+
 export interface IUserInfo {
   id: string
   avatar: string
-  fullName: string
+  fullname: string
   email: string
+  username: string
+  slug: string
   phoneNumber: string
   role: string
   dob: string
@@ -13,15 +17,4 @@ export interface IUserInfo {
   updatedAt?: Date
 }
 
-export interface IUserBySlug {
-  result: {
-    fullname: string
-    username: string
-    slug: string
-  }
-}
-
-export interface IUserQuery {
-  page: number
-  pageSize: number
-}
+export type IUserQuery = IQuery

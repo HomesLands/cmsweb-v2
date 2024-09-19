@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useAllProductList } from '@/hooks'
-import { IProductInfo, IProductNameSearch } from '@/types'
+import { useProducts } from '@/hooks'
+import { IProductInfo, IProductNameSearch, IProductQuery } from '@/types'
 
 import { Button, DataTable, Label } from '@/components/ui'
 import { CustomComponentRequest } from '@/views/product-requisitions/CustomComponentRequest'
@@ -17,21 +17,17 @@ interface IFormAddProductProps {
 
 export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSubmit }) => {
   const { t } = useTranslation('productRequisition')
+  const [query, setQuery] = useState<IProductQuery>({
+    order: 'DESC',
+    page: 1,
+    pageSize: 10,
+    searchTerm: ''
+  })
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [selectedProducts, setSelectedProducts] = useState<IProductInfo[]>([])
 
-  // const { data, isLoading } = useProductList({
-  //   page,
-  //   pageSize
-  // })
-
-  const { data: allProduct, isLoading } = useAllProductList({
-    page,
-    pageSize
-  })
-
-  console.log('allProduct', allProduct)
+  const { data: allProduct, isLoading } = useProducts(query)
 
   const handleNext = () => {
     const productNameSearch: IProductNameSearch = {
@@ -72,9 +68,9 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
       <DataTable
         isLoading={isLoading}
         columns={useColumnsSearch(handleAddRequest)}
-        data={allProduct?.items || []}
+        data={allProduct?.result.items || []}
         // total={data?.total || 0}
-        pages={allProduct?.pages || 0}
+        pages={allProduct?.result.totalPages || 0}
         page={page}
         pageSize={pageSize}
         onPageChange={setPage}
@@ -96,7 +92,6 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
             isLoading={isLoading}
             columns={columnsResult()}
             data={selectedProducts}
-            // total={selectedProducts.length}
             pages={1}
             page={1}
             pageSize={selectedProducts.length}
