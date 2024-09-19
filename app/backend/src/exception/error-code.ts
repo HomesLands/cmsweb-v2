@@ -202,4 +202,39 @@ export const ErrorCodes: TErrorCode = {
     code: 1039,
     message: "Invalid date format",
   },
+  INVALID_COMPANY_NAME: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1040,
+    message: "Invalid company name",
+  },
+  COMPANY_NAME_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1041,
+    message: "Company name exist",
+  },
+  PRODUCT_REQUISITION_FORM_CODE_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1042,
+    message: "Product requisition form code exist",
+  },
+  COMPANY_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1043,
+    message: "Company not found",
+  },
+  INVALID_QUANTITY_USER_APPROVAL: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1044,
+    message: "Invalid quantity user approval",
+  },
+  PRODUCT_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1045,
+    message: "Product not found",
+  },
+  FORM_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1046,
+    message: "Form not found",
+  },
 } as const;

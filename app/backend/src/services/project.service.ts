@@ -28,7 +28,6 @@ class ProjectService {
 
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
-    console.log({errors})
 
     const manager = await userRepository.findOneBy({ slug: requestData.manager });
     if (!manager) {

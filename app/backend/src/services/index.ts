@@ -6,3 +6,5 @@ export { default as siteService } from "./site.service";
 export { default as projectService } from "./project.service";
 export { default as unitService } from "./unit.service";
 export { default as productService } from "./product.service";
+export { default as companyService } from "./company.service";
+export { default as productRequisitionFormService } from "./product-requisition-form.service";

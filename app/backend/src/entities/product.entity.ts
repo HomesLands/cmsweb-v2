@@ -2,7 +2,6 @@ import { Entity, Column, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { Base } from "@entities/base.entity";
 import { Unit } from "@entities/unit.entity";
 import { RequestProduct } from "@entities/request-product.entity";
-import { ProductStatus } from "@enums";
 import { AutoMap } from "@automapper/classes";
 
 @Entity("product_tbl")
@@ -27,7 +26,7 @@ export class Product extends Base {
 
   @Column({ name: "status_column", nullable: true })
   @AutoMap()
-  status?: ProductStatus;
+  status?: string; // ProductStatus in enums
 
   @Column({ name: "description_column", nullable: true })
   @AutoMap()

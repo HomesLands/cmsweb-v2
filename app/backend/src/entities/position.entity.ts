@@ -15,6 +15,6 @@ export class Position extends Base {
   @JoinColumn({ name: "department_column" })
   department?: Department;
 
-  @OneToMany(() => User, (user) => user.position)
-  users: User[];
+  // @OneToMany(() => User, (user) => user.position)
+  // users: User[];
 }
