@@ -34,7 +34,10 @@ i18n
     fallbackLng: 'vi', // Ngôn ngữ mặc định
     interpolation: {
       escapeValue: false // React đã tự động bảo vệ trước XSS
-    }
+    },
+    //Setup type-safe translation
+    ns: ['auth', 'sidebar', 'productRequisition', 'tableData'], //Dùng để phân biệt các phần khác nhau của app
+    defaultNS: 'auth' //Ngôn ngữ mặc định
   })
 
 export default i18n

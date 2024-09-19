@@ -5,6 +5,7 @@ import moment from 'moment'
 import { useRequestStore } from '@/stores/request.store'
 import { useAuthStore } from '@/stores'
 import { IApiResponse, IRefreshTokenResponse } from '@/types'
+import { showErrorToast } from './toast'
 
 NProgress.configure({ showSpinner: false, trickleSpeed: 200 })
 
@@ -113,42 +114,24 @@ axiosInstance.interceptors.response.use(
     if (!error.config?.doNotShowLoading) setProgressBarDone()
     if (error.response) {
       const { code } = error.response.data
+      const { status } = error.response
 
-      // if (code === 401 && !config._retry) {
-      //   config._retry = true
-      //   try {
-      //     const currentToken = localStorage.getItem('token')
-      //     const refreshToken = localStorage.getItem('refreshToken')
+      if (status === 401) {
+        showErrorToast(code)
+      }
 
-      //     if (currentToken && refreshToken) {
-      //       const decodedRefreshToken = decodeRefreshToken(refreshToken)
-      //       console.log('Check encodedRefreshToken in interceptor response', decodedRefreshToken)
-      //       console.log('Check currentToken in interceptor response', currentToken)
+      if (status === 403) {
+        showErrorToast(code)
+        window.location.href = '/auth/login'
+      }
 
-      //       if (decodedRefreshToken) {
-      //         const newToken = await refreshTokenAPI(currentToken, decodedRefreshToken)
-      //         console.log('Check newToken in interceptor response', newToken)
-      //         // localStorage.setItem('token', newToken)
+      if (status === 404) {
+        showErrorToast(code)
+      }
 
-      //         axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newToken}`
-      //         config.headers['Authorization'] = `Bearer ${newToken}`
-
-      //         return axiosInstance.request(config)
-      //       }
-      //     }
-      //   } catch (err) {
-      //     showErrorToast(code)
-      //     // toLogin()
-      //     return Promise.reject(error)
-      //   }
-      // }
-
-      // showErrorToast(code)
-
-      // if (isTokenExpired(expireTime)) {
-      //   showErrorToast(code)
-      //   // toLogin()
-      // }
+      if (status === 500) {
+        showErrorToast(code)
+      }
     }
     return Promise.reject(error)
   }

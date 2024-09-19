@@ -9,7 +9,7 @@ import {
   IProjectListResponse
 } from '@/types'
 import productData from '@/data/products'
-import productListData from '@/data/product.list'
+// import productListData from '@/data/product.list'
 import { http } from '@/utils'
 
 export async function getProducts(params: {
@@ -44,37 +44,37 @@ export async function getProducts(params: {
   }
 }
 
-export async function getProductList(params: {
-  page: number
-  pageSize: number
-}): Promise<IPaginationResponse<IProductInfo>> {
-  try {
-    const productList: IProductInfo[] = await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(productListData.items)
-      }, 1000)
-    })
+// export async function getProductList(params: {
+//   page: number
+//   pageSize: number
+// }): Promise<IPaginationResponse<IProductInfo>> {
+//   try {
+//     const productList: IProductInfo[] = await new Promise((resolve) => {
+//       setTimeout(() => {
+//         resolve(productListData.items)
+//       }, 1000)
+//     })
 
-    const startIndex = (params.page - 1) * params.pageSize
-    const endIndex = startIndex + params.pageSize
+//     const startIndex = (params.page - 1) * params.pageSize
+//     const endIndex = startIndex + params.pageSize
 
-    const paginatedProductList = productList.slice(startIndex, endIndex)
+//     const paginatedProductList = productList.slice(startIndex, endIndex)
 
-    const total = productList.length
-    const pages = Math.ceil(total / params.pageSize)
+//     const total = productList.length
+//     const pages = Math.ceil(total / params.pageSize)
 
-    return {
-      items: paginatedProductList,
-      total,
-      page: params.page,
-      pageSize: params.pageSize,
-      pages
-    }
-  } catch (error) {
-    console.log('Failed to fetch products:', error)
-    throw new Error('Failed to fetch products')
-  }
-}
+//     return {
+//       items: paginatedProductList,
+//       total,
+//       page: params.page,
+//       pageSize: params.pageSize,
+//       pages
+//     }
+//   } catch (error) {
+//     console.log('Failed to fetch products:', error)
+//     throw new Error('Failed to fetch products')
+//   }
+// }
 
 export async function postProductRequest(params: {
   requestCode: string
@@ -111,7 +111,6 @@ export async function postProductRequest(params: {
     products: params.products,
     createdAt: params.createdAt
   }
-  console.log('lowercaseParams', lowercaseParams)
   return lowercaseParams
 }
 
@@ -135,6 +134,21 @@ export async function getConstructionListInProductRequisition(): Promise<
   } catch (error) {
     console.log('Failed to fetch constructions:', error)
     throw new Error('Failed to fetch constructions')
+  }
+}
+
+export async function getAllProduct(params: {
+  page: number
+  pageSize: number
+}): Promise<IPaginationResponse<IProductInfo>> {
+  try {
+    const response = await http.get<IPaginationResponse<IProductInfo>>('/products', {
+      params
+    })
+    return response.data
+  } catch (error) {
+    console.log('Failed to fetch products:', error)
+    throw new Error('Failed to fetch products')
   }
 }
 

@@ -12,11 +12,13 @@ export interface IUserStore {
 }
 
 export interface IAuthStore {
+  slug?: string
   token?: string
   refreshToken?: string
   expireTime?: string
   expireTimeRefreshToken?: string
   isAuthenticated: () => boolean
+  setSlug: (slug: string) => void
   setToken: (token: string) => void
   setRefreshToken: (refreshToken: string) => void
   setExpireTime: (expireTime: string) => void

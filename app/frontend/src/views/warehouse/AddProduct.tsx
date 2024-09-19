@@ -8,7 +8,6 @@ const AddNewProduct: React.FC = () => {
   // const [ setFormSubmitted] = useState<boolean>(false)
 
   const handleFormCreateSubmit = (formData: IProductInfo) => {
-    console.log('Submitted Data:', formData) // Log form data
     setTimeout(() => {
       // setShowSearch(true)
       // setStep(1)
