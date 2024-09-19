@@ -207,7 +207,8 @@ class AuthController {
   ): Promise<void> {
     try {
       const requestData = req.body as TRefreshTokenRequestDto;
-      const result = await authService.refreshToken(requestData);
+      const result: AuthenticationResponseDto =
+        await authService.refreshToken(requestData);
 
       const response: TApiResponse<AuthenticationResponseDto> = {
         code: StatusCodes.OK,

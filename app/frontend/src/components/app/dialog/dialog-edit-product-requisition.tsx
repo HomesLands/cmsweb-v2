@@ -30,7 +30,8 @@ export function DialogEditProductRequisition({
 }: DialogEditProductRequisitionProps) {
   const handleSubmit = (data: z.infer<typeof addNewProductRequestSchema>) => {
     const completeData: IProductInfo = {
-      ...data
+      ...data,
+      createdAt: new Date().toISOString()
     }
     handleAddRequest(completeData)
     onOpenChange()
@@ -44,11 +45,7 @@ export function DialogEditProductRequisition({
           <DialogTitle>Thêm vật tư mới</DialogTitle>
           <DialogDescription>Nhập đầy đủ thông tin bên dưới để thêm vật tư mới</DialogDescription>
         </DialogHeader>
-        <AddNewProductRequestForm
-          data={product || ({} as IProductInfo)}
-          onSubmit={handleSubmit}
-          handleAddRequest={handleAddRequest}
-        />
+        <AddNewProductRequestForm data={product || ({} as IProductInfo)} onSubmit={handleSubmit} />
       </DialogContent>
     </Dialog>
   )

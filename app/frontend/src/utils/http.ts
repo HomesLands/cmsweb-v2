@@ -13,6 +13,8 @@ let isRefreshing = false
 let failedQueue: { resolve: (token: string) => void; reject: (error: unknown) => void }[] = []
 const baseURL = import.meta.env.VITE_BASE_API_URL
 
+console.log({ failedQueue })
+
 const processQueue = (error: unknown, token: string | null = null) => {
   failedQueue.forEach((prom) => {
     if (token) {
@@ -38,8 +40,16 @@ const axiosInstance: AxiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    const { token, expireTime, refreshToken, setExpireTime, setToken, setLogout } =
-      useAuthStore.getState()
+    const {
+      token,
+      expireTime,
+      refreshToken,
+      setExpireTime,
+      setToken,
+      setLogout,
+      setRefreshToken,
+      setExpireTimeRefreshToken
+    } = useAuthStore.getState()
     if (expireTime && isTokenExpired(expireTime) && !isRefreshing) {
       isRefreshing = true
       try {
@@ -51,9 +61,11 @@ axiosInstance.interceptors.request.use(
           }
         )
 
-        const newToken = response.data.result.items[0].token
+        const newToken = response.data.result.token
         setToken(newToken)
-        setExpireTime(response.data.result.items[0].expireTime)
+        setRefreshToken(response.data.result.refreshToken)
+        setExpireTime(response.data.result.expireTime)
+        setExpireTimeRefreshToken(response.data.result.expireTimeRefreshToken)
         processQueue(null, newToken)
       } catch (error) {
         console.log({ error })
@@ -107,22 +119,22 @@ axiosInstance.interceptors.response.use(
       const { code } = error.response.data
       const { status } = error.response
 
-      if (status === 401) {
-        showErrorToast(code)
-      }
+      // if (status === 401) {
+      //   showErrorToast(code)
+      // }
 
-      if (status === 403) {
-        showErrorToast(code)
-        window.location.href = '/auth/login'
-      }
+      // if (status === 403) {
+      //   showErrorToast(code)
+      //   window.location.href = '/auth/login'
+      // }
 
-      if (status === 404) {
-        showErrorToast(code)
-      }
+      // if (status === 404) {
+      //   showErrorToast(code)
+      // }
 
-      if (status === 500) {
-        showErrorToast(code)
-      }
+      // if (status === 500) {
+      //   showErrorToast(code)
+      // }
     }
     return Promise.reject(error)
   }

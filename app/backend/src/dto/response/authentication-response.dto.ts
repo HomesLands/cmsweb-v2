@@ -9,12 +9,7 @@ export class AuthenticationResponseDto {
 
   @AutoMap()
   expireTime?: string;
-}
-
-export class RefreshTokenResponseDto {
-  @AutoMap()
-  token?: string;
 
   @AutoMap()
-  expireTime?: string;
+  expireTimeRefreshToken?: string;
 }

@@ -8,10 +8,7 @@ import moment from "moment";
 import { validate } from "class-validator";
 
 import { ErrorCodes, GlobalError, ValidationError } from "@exception";
-import {
-  AuthenticationResponseDto,
-  RefreshTokenResponseDto,
-} from "@dto/response";
+import { AuthenticationResponseDto } from "@dto/response";
 import {
   AuthenticationRequestDto,
   LogoutRequestDto,
@@ -55,9 +52,12 @@ class AuthService {
         const { token, refreshToken } = tokenService.generateToken(user);
 
         return resolve({
-          expireTime: moment(TokenUtils.extractExpiration(token)).toString(), // Local date
           token,
           refreshToken,
+          expireTime: moment(TokenUtils.extractExpiration(token)).toString(), // Local date
+          expireTimeRefreshToken: moment(
+            TokenUtils.extractExpiration(refreshToken)
+          ).toString(), // Local date
         });
       })(req, res, next);
     });
@@ -91,7 +91,7 @@ class AuthService {
 
   public async refreshToken(
     plainData: TRefreshTokenRequestDto
-  ): Promise<RefreshTokenResponseDto> {
+  ): Promise<AuthenticationResponseDto> {
     // Map plain object to request dto
     const requestData = plainToClass(RefreshTokenRequestDto, plainData);
 
@@ -99,11 +99,16 @@ class AuthService {
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
 
-    const token = await tokenService.refreshToken(requestData);
+    const { token, refreshToken } =
+      await tokenService.refreshToken(requestData);
 
     return {
       token,
+      refreshToken,
       expireTime: moment(TokenUtils.extractExpiration(token)).toString(),
+      expireTimeRefreshToken: moment(
+        TokenUtils.extractExpiration(token)
+      ).toString(),
     };
   }
 

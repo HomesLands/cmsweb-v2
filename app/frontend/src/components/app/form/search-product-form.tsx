@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useAllProductList } from '@/hooks'
-import { IProductInfo, IProductNameSearch } from '@/types'
+import { useProducts } from '@/hooks'
+import { IProductInfo, IProductNameSearch, IProductQuery } from '@/types'
 
 import { Button, DataTable, Label } from '@/components/ui'
 import { CustomComponentRequest } from '@/views/product-requisitions/CustomComponentRequest'
@@ -17,20 +17,18 @@ interface IFormAddProductProps {
 
 export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSubmit }) => {
   const { t } = useTranslation('productRequisition')
+  const [query, setQuery] = useState<IProductQuery>({
+    order: 'DESC',
+    page: 1,
+    pageSize: 10,
+    searchTerm: ''
+  })
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [order, setOrder] = useState('DESC')
   const [selectedProducts, setSelectedProducts] = useState<IProductInfo[]>([])
 
-  const { data: allProduct, isLoading } = useAllProductList({
-    order,
-    page,
-    pageSize
-  })
-
-  const { getRequisition } = useRequisitionStore()
-
-  console.log('getRequisition', getRequisition())
+  const { data: allProduct, isLoading } = useProducts(query)
 
   const handleNext = () => {
     const productNameSearch: IProductNameSearch = {
@@ -45,7 +43,7 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
         isLoading={isLoading}
         columns={useColumnsSearch()}
         data={allProduct?.result?.items || []}
-        pages={allProduct?.result?.pages || 0}
+        pages={allProduct?.result?.totalPages || 0}
         page={page}
         pageSize={pageSize}
         onPageChange={setPage}

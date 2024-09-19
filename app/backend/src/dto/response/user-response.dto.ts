@@ -1,15 +1,10 @@
 import { AutoMap } from "@automapper/classes";
+import { BaseResponseDto } from "./base-response.dto";
 
-export class UserResponseDto {
+export class UserResponseDto extends BaseResponseDto {
   @AutoMap()
   fullname?: string;
 
   @AutoMap()
   username?: string;
-
-  @AutoMap()
-  password?: string;
-
-  @AutoMap()
-  slug?: string;
 }

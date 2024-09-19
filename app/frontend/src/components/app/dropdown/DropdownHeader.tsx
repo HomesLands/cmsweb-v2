@@ -12,25 +12,35 @@ import {
   UserAvatar
 } from '@/components/ui'
 import { DialogLogout } from '../dialog'
-import { useLogout, useUserBySlug } from '@/hooks'
-import { useAuthStore } from '@/stores'
+import { useLogout, useUser } from '@/hooks'
+import { useAuthStore, useUserStore } from '@/stores'
 import { ILogoutRequest } from '@/types'
+import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 export function DropdownHeader() {
-  const { slug, token, refreshToken } = useAuthStore()
+  const { t } = useTranslation('auth')
+  const { slug, token, refreshToken, setLogout } = useAuthStore()
   const [open, setOpen] = useState(false)
   const mutation = useLogout()
-
-  const { data } = useUserBySlug(slug || '')
-
-  console.log(data)
+  const { data } = useUser(slug || '')
+  const { removeUserInfo } = useUserStore()
+  const navigate = useNavigate()
 
   const handleLogout = async () => {
     const requestData = {
       token: token || 'token',
       refreshToken: refreshToken || 'refreshToken'
     } as ILogoutRequest
-    await mutation.mutateAsync(requestData)
+    await mutation.mutateAsync(requestData, {
+      onSuccess: () => {
+        setLogout()
+        removeUserInfo()
+        toast.success(t('logout.logoutSuccess'))
+        navigate('/auth/login')
+      }
+    })
   }
   return (
     <div>
@@ -42,7 +52,7 @@ export function DropdownHeader() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-[14rem]" align="end">
-          <DropdownMenuLabel>{data?.result?.fullname}</DropdownMenuLabel>
+          <DropdownMenuLabel className="text-center">{data?.result?.fullname}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {/* <DropdownMenuItem className="cursor-pointer">Thông tin tài khoản</DropdownMenuItem> */}
           {/* <DropdownMenuItem className="cursor-pointer">Đổi mật khẩu</DropdownMenuItem> */}

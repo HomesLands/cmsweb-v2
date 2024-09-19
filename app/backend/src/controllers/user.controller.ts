@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { userService } from "@services";
-import { TApiResponse, TPaginationOption } from "@types";
+import { TApiResponse, TQueryRequest } from "@types";
 import { UserResponseDto } from "@dto/response";
 import { logger } from "@lib";
 
@@ -25,18 +25,19 @@ class UserController {
    *         name: order
    *         schema:
    *           type: string
+   *           enum: [ASC, DESC]
    *         required: true
    *         description: The order in which the users are sorted (ASC, DESC)
    *         example: ASC
    *       - in: query
-   *         name: skip
+   *         name: page
    *         schema:
    *           type: integer
    *         required: true
    *         description: The number of users to skip
-   *         example: 0
+   *         example: 1
    *       - in: query
-   *         name: take
+   *         name: pageSize
    *         schema:
    *           type: integer
    *         required: true
@@ -54,7 +55,7 @@ class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const plainData = req.query as unknown as TPaginationOption;
+      const plainData = req.query as unknown as TQueryRequest;
       logger.info(UserController.name, plainData);
       const results = await userService.getAllUsers(plainData);
       const response: TApiResponse<UserResponseDto[]> = {

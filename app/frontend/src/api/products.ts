@@ -3,76 +3,21 @@ import {
   IConstruction,
   IConstructionListResponse,
   IPaginationResponse,
-  IProductApprovalInfo,
   IProductInfo,
+  IProductQuery,
   IProductRequirementInfoCreate,
   IProject,
   IProjectListResponse
 } from '@/types'
-import productData from '@/data/products'
-import productListData from '@/data/product.list'
 import { http } from '@/utils'
 
-export async function getProducts(params: {
-  page: number
-  pageSize: number
-}): Promise<IPaginationResponse<IProductApprovalInfo>> {
-  try {
-    const users: IProductApprovalInfo[] = await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(productData.items)
-      }, 1000)
-    })
-
-    const startIndex = (params.page - 1) * params.pageSize
-    const endIndex = startIndex + params.pageSize
-
-    const paginatedProducts = users.slice(startIndex, endIndex)
-
-    const total = users.length
-    const pages = Math.ceil(total / params.pageSize)
-
-    return {
-      items: paginatedProducts,
-      page: params.page,
-      pageSize: params.pageSize,
-      pages
-    }
-  } catch (error) {
-    console.log('Failed to fetch products:', error)
-    throw new Error('Failed to fetch products')
-  }
-}
-
-export async function getProductList(params: {
-  page: number
-  pageSize: number
-}): Promise<IPaginationResponse<IProductInfo>> {
-  try {
-    const productList: IProductInfo[] = await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(productListData.items)
-      }, 1000)
-    })
-
-    const startIndex = (params.page - 1) * params.pageSize
-    const endIndex = startIndex + params.pageSize
-
-    const paginatedProductList = productList.slice(startIndex, endIndex)
-
-    const total = productList.length
-    const pages = Math.ceil(total / params.pageSize)
-
-    return {
-      items: paginatedProductList,
-      page: params.page,
-      pageSize: params.pageSize,
-      pages
-    }
-  } catch (error) {
-    console.log('Failed to fetch products:', error)
-    throw new Error('Failed to fetch products')
-  }
+export async function getProducts(
+  params: IProductQuery
+): Promise<IApiResponse<IPaginationResponse<IProductInfo>>> {
+  const response = await http.get<IApiResponse<IPaginationResponse<IProductInfo>>>('/products', {
+    params
+  })
+  return response.data
 }
 
 export async function postProductRequest(params: {
