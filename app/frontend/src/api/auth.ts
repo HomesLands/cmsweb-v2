@@ -6,22 +6,13 @@ import {
   IRefreshTokenResponse,
   IRegisterRequest
 } from '@/types'
-import { http, showErrorToast, showToast } from '@/utils'
+import { http, showErrorToast } from '@/utils'
 import { useAuthStore } from '@/stores'
 import { jwtDecode } from 'jwt-decode'
 
 export async function registerApi(params: IRegisterRequest): Promise<IApiResponse<void>> {
-  try {
-    const response = await http.post<IApiResponse<void>>('/auth/register', params)
-    showToast('Đăng ký thành công')
-    return response.data
-  } catch (error) {
-    if (isAxiosError(error)) {
-      const axiosError = error as AxiosError<IApiResponse<void>>
-      if (axiosError.response?.data.code) showErrorToast(axiosError.response.data.code)
-    }
-    throw error
-  }
+  const response = await http.post<IApiResponse<void>>('/auth/register', params)
+  return response.data
 }
 
 export async function loginApi(params: {
@@ -29,10 +20,6 @@ export async function loginApi(params: {
   password: string
 }): Promise<IApiResponse<ILoginResponse>> {
   const response = await http.post<IApiResponse<ILoginResponse>>('/auth/authenticate', params)
-  if (response.data.result?.token) {
-    const decodedToken = jwtDecode(response.data.result.token) as { sub: string }
-    useAuthStore.getState().setSlug(decodedToken.sub)
-  }
   return response.data
 }
 
@@ -70,14 +57,6 @@ export async function getRefreshToken({
 }
 
 export async function logoutApi(data: ILogoutRequest) {
-  try {
-    const response = await http.post<IApiResponse<void>>('/auth/logout', data)
-    return response.data
-  } catch (error) {
-    if (isAxiosError(error)) {
-      const axiosError = error as AxiosError<IApiResponse<void>>
-      if (axiosError.response?.data.code) showErrorToast(axiosError.response.data.code)
-    }
-    throw error
-  }
+  const response = await http.post<IApiResponse<void>>('/auth/logout', data)
+  return response.data
 }

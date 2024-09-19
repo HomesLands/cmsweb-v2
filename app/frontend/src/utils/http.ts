@@ -5,13 +5,14 @@ import moment from 'moment'
 import { useRequestStore } from '@/stores/request.store'
 import { useAuthStore } from '@/stores'
 import { IApiResponse, IRefreshTokenResponse } from '@/types'
-import { showErrorToast } from './toast'
 
 NProgress.configure({ showSpinner: false, trickleSpeed: 200 })
 
 let isRefreshing = false
 let failedQueue: { resolve: (token: string) => void; reject: (error: unknown) => void }[] = []
 const baseURL = import.meta.env.VITE_BASE_API_URL
+
+console.log({ failedQueue })
 
 const processQueue = (error: unknown, token: string | null = null) => {
   failedQueue.forEach((prom) => {
@@ -69,7 +70,6 @@ axiosInstance.interceptors.request.use(
         console.log({ error })
         processQueue(error, null)
         setLogout()
-        // redirect('/auth/login')
         // You can redirect to the login page
         window.location.href = '/auth/login'
       } finally {
@@ -116,22 +116,22 @@ axiosInstance.interceptors.response.use(
       const { code } = error.response.data
       const { status } = error.response
 
-      if (status === 401) {
-        showErrorToast(code)
-      }
+      // if (status === 401) {
+      //   showErrorToast(code)
+      // }
 
-      if (status === 403) {
-        showErrorToast(code)
-        window.location.href = '/auth/login'
-      }
+      // if (status === 403) {
+      //   showErrorToast(code)
+      //   window.location.href = '/auth/login'
+      // }
 
-      if (status === 404) {
-        showErrorToast(code)
-      }
+      // if (status === 404) {
+      //   showErrorToast(code)
+      // }
 
-      if (status === 500) {
-        showErrorToast(code)
-      }
+      // if (status === 500) {
+      //   showErrorToast(code)
+      // }
     }
     return Promise.reject(error)
   }

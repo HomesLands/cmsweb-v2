@@ -7,13 +7,34 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { LoginBackground } from '@/assets/images'
 import { LoginForm } from '@/components/app/form'
 import { useLogin } from '@/hooks'
+import { IApiResponse, ILoginResponse } from '@/types'
+import { useNavigate } from 'react-router-dom'
+import { useAuthStore } from '@/stores'
+import toast from 'react-hot-toast'
+import { jwtDecode } from 'jwt-decode'
 
 const Login: React.FC = () => {
   const { t } = useTranslation(['auth'])
+  const { setToken, setRefreshToken, setExpireTime, setExpireTimeRefreshToken, setSlug } =
+    useAuthStore()
+  const navigate = useNavigate()
   const mutation = useLogin()
 
   const handleSubmit = async (data: z.infer<typeof loginSChema>) => {
-    await mutation.mutateAsync(data)
+    await mutation.mutateAsync(data, {
+      onSuccess: (data: IApiResponse<ILoginResponse>) => {
+        // Save to auth store
+        const decodedToken = jwtDecode(data.result.token) as { sub: string }
+        setSlug(decodedToken.sub)
+        setToken(data.result.token)
+        setRefreshToken(data.result.refreshToken)
+        setExpireTime(data.result.expireTime)
+        setExpireTimeRefreshToken(data.result.expireTimeRefreshToken)
+
+        navigate('/product-requisitions/list')
+        toast.success(t('login.loginSuccess'))
+      }
+    })
   }
 
   return (

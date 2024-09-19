@@ -14,6 +14,7 @@ const Employees: React.FC = () => {
     page: pagination.pageIndex + 1,
     pageSize: pagination.pageSize
   })
+  console.log('Employees')
 
   return (
     <div className="flex flex-col gap-4">
@@ -24,9 +25,8 @@ const Employees: React.FC = () => {
       <DataTable
         isLoading={isLoading}
         columns={columns}
-        data={data?.items || []}
-        // total={data?.total || 0}
-        pages={data?.pages || 0}
+        data={data?.result.items || []}
+        pages={data?.result.totalPages || 0}
         page={pagination.pageIndex + 1}
         pageSize={pagination.pageSize}
         onPageChange={handlePageChange}

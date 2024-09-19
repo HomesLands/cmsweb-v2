@@ -1,3 +1,4 @@
+import { IQuery } from './base.type'
 import { RequestRequisitionStatus } from './request-requisition.type'
 
 export interface IProductApprovalInfo {
@@ -73,7 +74,6 @@ export interface IProductInfo {
   unit: string
 }
 
-export interface IProductQuery {
-  page: number
-  pageSize: number
+export interface IProductQuery extends IQuery {
+  searchTerm?: string
 }
