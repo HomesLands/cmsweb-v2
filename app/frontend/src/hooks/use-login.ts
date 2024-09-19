@@ -7,7 +7,7 @@ import { useAuthStore } from '@/stores'
 import { showToast } from '@/utils'
 
 export const useLogin = () => {
-  const { setToken, setRefreshToken, setExpireTime } = useAuthStore()
+  const { setToken, setRefreshToken, setExpireTime, setExpireTimeRefreshToken } = useAuthStore()
   const navigate = useNavigate()
 
   return useMutation({
@@ -18,6 +18,7 @@ export const useLogin = () => {
       setToken(data.result.token)
       setRefreshToken(data.result.refreshToken)
       setExpireTime(data.result.expireTime)
+      setExpireTimeRefreshToken(data.result.expireTimeRefreshToken)
       navigate('/product-requisitions/list')
       showToast('Đăng nhập thành công')
     },

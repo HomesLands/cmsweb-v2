@@ -38,8 +38,16 @@ const axiosInstance: AxiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    const { token, expireTime, refreshToken, setExpireTime, setToken, setLogout } =
-      useAuthStore.getState()
+    const {
+      token,
+      expireTime,
+      refreshToken,
+      setExpireTime,
+      setToken,
+      setLogout,
+      setRefreshToken,
+      setExpireTimeRefreshToken
+    } = useAuthStore.getState()
     if (expireTime && isTokenExpired(expireTime) && !isRefreshing) {
       isRefreshing = true
       try {
@@ -53,7 +61,9 @@ axiosInstance.interceptors.request.use(
 
         const newToken = response.data.result.token
         setToken(newToken)
+        setRefreshToken(response.data.result.refreshToken)
         setExpireTime(response.data.result.expireTime)
+        setExpireTimeRefreshToken(response.data.result.expireTimeRefreshToken)
         processQueue(null, newToken)
       } catch (error) {
         console.log({ error })
