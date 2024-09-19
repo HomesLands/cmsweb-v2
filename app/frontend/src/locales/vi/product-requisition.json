@@ -15,8 +15,10 @@
     "approverDescription": "Nhập tên người phê duyệt",
     "note": "Ghi chú",
     "noteDescription": "Nhập ghi chú",
+    "priority": "Mức độ ưu tiên",
     "back": "Trở lại",
     "next": "Tiếp theo",
+    "add": "Thêm",
     "confirm": "Xác nhận",
     "addProductToRequest": "Thêm sản phẩm vào yêu cầu",
     "addProductToRequestDescription": "Thêm sản phẩm vào yêu cầu mô tả",
@@ -31,5 +33,9 @@
     "createProductRequisitions": "Tạo phiếu yêu cầu",
     "addProductToRequest": "Thêm vật tư",
     "confirmProductRequisitions": "Xác nhận"
+  },
+  "requestPriority": {
+    "normal": "Bình thường",
+    "urgent": "Cần gấp"
   }
 }

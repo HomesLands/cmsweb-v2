@@ -22,18 +22,18 @@ const ProductRequisitions: React.FC = () => {
         <ReaderIcon className="header-icon" />
         {t('productRequisition.list')}
       </Label>
-      <DataTable
+      {/* <DataTable
         isLoading={isLoading}
         columns={columns}
-        data={data?.items || []}
-        total={data?.total || 0}
-        pages={data?.pages || 0}
+        data={data?.result.items || []}
+        // total={data?.total || 0}
+        pages={data?.result.totalPages || 0}
         page={pagination.pageIndex + 1}
         pageSize={pagination.pageSize}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         CustomComponent={CustomComponent}
-      />
+      /> */}
     </div>
   )
 }

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useProductList } from '@/hooks'
-import { IProductInfo, IProductNameSearch } from '@/types'
+import { useProducts } from '@/hooks'
+import { IProductInfo, IProductNameSearch, IProductQuery } from '@/types'
 
 import { Button, DataTable, Label } from '@/components/ui'
 import { CustomComponentRequest } from '@/views/product-requisitions/CustomComponentRequest'
@@ -13,23 +13,25 @@ import { showToast } from '@/utils'
 interface IFormAddProductProps {
   onSubmit: (data: IProductNameSearch) => void
   onBack: () => void
-  initialData?: IProductNameSearch | null
 }
 
 export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSubmit }) => {
   const { t } = useTranslation('productRequisition')
+  const [query, setQuery] = useState<IProductQuery>({
+    order: 'DESC',
+    page: 1,
+    pageSize: 10,
+    searchTerm: ''
+  })
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [selectedProducts, setSelectedProducts] = useState<IProductInfo[]>([])
 
-  const { data, isLoading } = useProductList({
-    page,
-    pageSize
-  })
+  const { data: allProduct, isLoading } = useProducts(query)
 
   const handleNext = () => {
     const productNameSearch: IProductNameSearch = {
-      productName: selectedProducts.map((product) => product.productName).join(', ')
+      productName: selectedProducts.map((product) => product.name).join(', ')
     }
     onSubmit(productNameSearch)
   }
@@ -66,9 +68,9 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
       <DataTable
         isLoading={isLoading}
         columns={useColumnsSearch(handleAddRequest)}
-        data={data?.items || []}
-        total={data?.total || 0}
-        pages={data?.pages || 0}
+        data={allProduct?.result.items || []}
+        // total={data?.total || 0}
+        pages={allProduct?.result.totalPages || 0}
         page={page}
         pageSize={pageSize}
         onPageChange={setPage}
@@ -90,7 +92,6 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
             isLoading={isLoading}
             columns={columnsResult()}
             data={selectedProducts}
-            total={selectedProducts.length}
             pages={1}
             page={1}
             pageSize={selectedProducts.length}

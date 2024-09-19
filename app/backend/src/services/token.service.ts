@@ -2,7 +2,7 @@ import * as JWT from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 
 import { env } from "@constants";
-import { User } from "@entities";
+import { InvalidToken, User } from "@entities";
 import { GlobalError, ErrorCodes } from "@exception";
 import { invalidTokenRepository, userRepository } from "@repositories";
 import { TokenUtils } from "@utils";
@@ -19,13 +19,13 @@ class TokenService {
 
   /**
    * Refresh the provided JWT token.
-   * @param {string} token
+   * @param {RefreshTokenRequestDto} requestData
    * @returns {string} New refreshed token
    * @throws {GlobalError} If identity is invalid
    */
   public async refreshToken(
     requestData: RefreshTokenRequestDto
-  ): Promise<string> {
+  ): Promise<{ token: string; refreshToken: string }> {
     // Check expire time token
     const isExpiredToken = await TokenUtils.isExpired(requestData.expiredToken);
     if (!isExpiredToken) throw new GlobalError(ErrorCodes.TOKEN_NOT_EXPIRED);
@@ -37,12 +37,37 @@ class TokenService {
     if (isExpiredRefresh)
       throw new GlobalError(ErrorCodes.REFRESH_TOKEN_EXPIRED);
 
+    const refreshTokenId = TokenUtils.extractId(requestData.refreshToken);
+    const expireTimeRefreshToken = TokenUtils.extractExpiration(
+      requestData.refreshToken
+    );
+
+    // Check refresh token has been mark to expired
+    const isInvalidRefreshToken = await invalidTokenRepository.findOneBy({
+      id: refreshTokenId,
+    });
+    if (isInvalidRefreshToken)
+      throw new GlobalError(ErrorCodes.REFRESH_TOKEN_EXPIRED);
+
     // Get user
     const sub = TokenUtils.extractSubject(requestData.refreshToken);
-    const identity = await userRepository.findOneBy({ id: sub });
+    const identity = await userRepository.findOneBy({ slug: sub });
     if (!identity) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 
-    return this.createToken(identity, this._duration);
+    // Generate new token and refresh token
+    const result = {
+      token: this.createToken(identity, this._duration),
+      refreshToken: this.createToken(identity, this._refreshableDuration),
+    };
+
+    // Mark current refresh token is invalid
+    const invalidToken: InvalidToken = {
+      tokenId: refreshTokenId,
+      expiryDate: expireTimeRefreshToken,
+    };
+    await invalidTokenRepository.createAndSave(invalidToken);
+
+    return result;
   }
 
   /**
@@ -71,7 +96,7 @@ class TokenService {
   private createToken(identity: User, expiryTime: string | number): string {
     return JWT.sign(
       {
-        sub: identity.id,
+        sub: identity.slug,
         scope: this.buildScope(identity),
         jti: uuidv4(),
       },

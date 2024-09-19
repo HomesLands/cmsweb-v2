@@ -6,7 +6,7 @@ import { AutoMap } from "@automapper/classes";
 
 @Entity("product_tbl")
 export class Product extends Base {
-  @Column({ name: "name_column" })
+  @Column({ name: "name_column", unique: true })
   @AutoMap()
   name?: string;
 
@@ -28,7 +28,7 @@ export class Product extends Base {
   @AutoMap()
   status?: string; // ProductStatus in enums
 
-  @Column({ name: "description_column", nullable: true })
+  @Column({ name: "description_column", nullable: true, type: "text" })
   @AutoMap()
   description?: string;
 
@@ -37,7 +37,6 @@ export class Product extends Base {
   unit?: Unit;
 
   // a product have many request product
-  @OneToMany(() => RequestProduct,
-    (requestProduct) => requestProduct.product)
+  @OneToMany(() => RequestProduct, (requestProduct) => requestProduct.product)
   requestProducts?: RequestProduct[];
 }

@@ -52,7 +52,6 @@ interface DataTableProps<TData, TValue> {
   isLoading: boolean
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  total: number
   pages: number
   page: number
   pageSize: number
@@ -65,7 +64,6 @@ export function DataTable<TData, TValue>({
   isLoading,
   columns,
   data,
-  total,
   pages,
   page,
   pageSize,
@@ -165,7 +163,6 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center justify-end py-4 space-x-2">
         <DataTablePagination
           table={table}
-          total={total}
           pages={pages}
           page={pagination.pageIndex + 1}
           pageSize={pagination.pageSize}
@@ -423,7 +420,7 @@ export function DataTableColumnActionHeader<TData, TValue>({
 // DataTablePagination Component
 interface PaginationProps<TData> {
   table: ReactTable<TData>
-  total: number
+  // total: number
   pages: number
   page: number
   pageSize: number
@@ -433,7 +430,6 @@ interface PaginationProps<TData> {
 
 interface PaginationProps<TData> {
   table: ReactTable<TData>
-  total: number
   pages: number
   page: number
   pageSize: number

@@ -7,14 +7,22 @@ export interface ILayoutStore {
 
 export interface IUserStore {
   userInfo?: IUserInfo
+  setUserInfo: (userInfo: IUserInfo) => void
+  removeUserInfo: () => void
+}
+
+export interface IAuthStore {
+  slug?: string
   token?: string
   refreshToken?: string
   expireTime?: string
+  expireTimeRefreshToken?: string
   isAuthenticated: () => boolean
-  setUserInfo: (userInfo: IUserInfo) => void
+  setSlug: (slug: string) => void
   setToken: (token: string) => void
   setRefreshToken: (refreshToken: string) => void
   setExpireTime: (expireTime: string) => void
+  setExpireTimeRefreshToken: (expireTimeRefreshToken: string) => void
   setLogout: () => void
 }
 

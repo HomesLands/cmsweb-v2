@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -15,19 +15,28 @@ import { IProject } from '@/types'
 interface SelectProjectProps {
   projectList: IProject[]
   onChange: (value: { slug: string; name: string }) => void
+  defaultValue?: { slug: string; name: string }
 }
 
-export const SelectProject: FC<SelectProjectProps> = ({ projectList, onChange }) => {
+export const SelectProject: FC<SelectProjectProps> = ({ projectList, onChange, defaultValue }) => {
   const { t } = useTranslation('productRequisition')
 
-  // Hàm để parse lại đối tượng từ chuỗi JSON
   const handleValueChange = (value: string) => {
     const project = JSON.parse(value)
-    onChange(project)
+    onChange({ slug: project.slug, name: project.name })
   }
 
+  useEffect(() => {
+    if (defaultValue) {
+      onChange(defaultValue)
+    }
+  }, [defaultValue, onChange])
+
   return (
-    <Select onValueChange={handleValueChange}>
+    <Select
+      onValueChange={handleValueChange}
+      defaultValue={defaultValue ? JSON.stringify(defaultValue) : undefined}
+    >
       <SelectTrigger>
         <SelectValue placeholder={t('productRequisition.projectNameDescription')} />
       </SelectTrigger>

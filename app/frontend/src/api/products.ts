@@ -1,79 +1,19 @@
 import {
-  IConstruction,
-  IConstructionListResponse,
+  IApiResponse,
   IPaginationResponse,
-  IProductApprovalInfo,
   IProductInfo,
-  IProductRequirementInfoCreate,
-  IProject,
-  IProjectListResponse
+  IProductQuery,
+  IProductRequirementInfoCreate
 } from '@/types'
-import productData from '@/data/products'
-import productListData from '@/data/product.list'
 import { http } from '@/utils'
 
-export async function getProducts(params: {
-  page: number
-  pageSize: number
-}): Promise<IPaginationResponse<IProductApprovalInfo>> {
-  try {
-    const users: IProductApprovalInfo[] = await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(productData.items)
-      }, 1000)
-    })
-
-    const startIndex = (params.page - 1) * params.pageSize
-    const endIndex = startIndex + params.pageSize
-
-    const paginatedProducts = users.slice(startIndex, endIndex)
-
-    const total = users.length
-    const pages = Math.ceil(total / params.pageSize)
-
-    return {
-      items: paginatedProducts,
-      total,
-      page: params.page,
-      pageSize: params.pageSize,
-      pages
-    }
-  } catch (error) {
-    console.log('Failed to fetch products:', error)
-    throw new Error('Failed to fetch products')
-  }
-}
-
-export async function getProductList(params: {
-  page: number
-  pageSize: number
-}): Promise<IPaginationResponse<IProductInfo>> {
-  try {
-    const productList: IProductInfo[] = await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(productListData.items)
-      }, 1000)
-    })
-
-    const startIndex = (params.page - 1) * params.pageSize
-    const endIndex = startIndex + params.pageSize
-
-    const paginatedProductList = productList.slice(startIndex, endIndex)
-
-    const total = productList.length
-    const pages = Math.ceil(total / params.pageSize)
-
-    return {
-      items: paginatedProductList,
-      total,
-      page: params.page,
-      pageSize: params.pageSize,
-      pages
-    }
-  } catch (error) {
-    console.log('Failed to fetch products:', error)
-    throw new Error('Failed to fetch products')
-  }
+export async function getProducts(
+  params: IProductQuery
+): Promise<IApiResponse<IPaginationResponse<IProductInfo>>> {
+  const response = await http.get<IApiResponse<IPaginationResponse<IProductInfo>>>('/products', {
+    params
+  })
+  return response.data
 }
 
 export async function postProductRequest(params: {
@@ -111,52 +51,5 @@ export async function postProductRequest(params: {
     products: params.products,
     createdAt: params.createdAt
   }
-  console.log('lowercaseParams', lowercaseParams)
   return lowercaseParams
 }
-
-export async function getProjectListInProductRequisition(): Promise<
-  IProjectListResponse<IProject[]>
-> {
-  try {
-    const response = await http.get<IProjectListResponse<IProject[]>>('/projects')
-
-    console.log('response in api: ', response)
-    return response.data
-  } catch (error) {
-    console.log('Failed to fetch projects:', error)
-    throw new Error('Failed to fetch projects')
-  }
-}
-
-export async function getConstructionListInProductRequisition(): Promise<
-  IConstructionListResponse<IConstruction[]>
-> {
-  try {
-    const response = await http.get<IProjectListResponse<IConstruction[]>>('/sites')
-    return response.data
-  } catch (error) {
-    console.log('Failed to fetch constructions:', error)
-    throw new Error('Failed to fetch constructions')
-  }
-}
-
-// export async function searchProduct(params: {
-//   productName: string
-// }): Promise<IProductInfoSearch[]> {
-//   const { productName } = params
-//   const products = productList.items.filter((product) =>
-//     product.productName.toLowerCase().includes(productName.toLowerCase())
-//   )
-//   return products
-// }
-
-// export async function searchProduct(params: {
-//   productName: string
-// }): Promise<IProductInfoSearch[]> {
-//   const { productName } = params
-//   const products = productList.items.filter((product) =>
-//     product.productName.toLowerCase().includes(productName.toLowerCase())
-//   )
-//   return products
-// }

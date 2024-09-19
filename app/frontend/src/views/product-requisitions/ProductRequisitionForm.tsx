@@ -3,36 +3,30 @@ import { useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
-import { IProductRequirementInfoCreate, IProductNameSearch, IProductInfo } from '@/types'
+import { IProductRequirementInfoCreate } from '@/types'
 import {
   CreateProductRequisitionForm,
   SearchProductForm,
   ConfirmProductForm
 } from '@/components/app/form'
 import { ProgressBar } from '@/components/app/progress/progress-bar'
-import { useMultiStep, useUsers2 } from '@/hooks'
+import { useMultiStep } from '@/hooks'
 import { postProductRequest } from '@/api/products'
 import { showToast } from '@/utils'
+import { useRequisitionStore } from '@/stores'
 
 const ProductRequisitionForm: React.FC = () => {
   const { t } = useTranslation('productRequisition')
-
   const { currentStep, handleStepChange } = useMultiStep(1)
   const [formData, setFormData] = useState<IProductRequirementInfoCreate | null>(null)
-  const [searchData, setSearchData] = useState<IProductNameSearch | null>(null)
-
-  const { data: users } = useUsers2()
+  const { setRequisition, getRequisition } = useRequisitionStore()
 
   useEffect(() => {
-    const savedFormData = localStorage.getItem('requestFormProducts')
+    const savedFormData = getRequisition()
     if (savedFormData) {
-      setFormData(JSON.parse(savedFormData))
+      setFormData(savedFormData)
     }
-    const savedSearchData = localStorage.getItem('searchData')
-    if (savedSearchData) {
-      setSearchData(JSON.parse(savedSearchData))
-    }
-  }, [])
+  }, [getRequisition])
 
   const mutation = useMutation({
     mutationFn: async (data: IProductRequirementInfoCreate) => {
@@ -44,58 +38,37 @@ const ProductRequisitionForm: React.FC = () => {
     }
   })
 
-  const handleFormCreateSubmit = (data: {
-    requestCode: string
-    requester: string
-    project: {
-      slug: string
-      name: string
+  const handleFormCreateSubmit = (data: IProductRequirementInfoCreate) => {
+    const newRequisition: IProductRequirementInfoCreate = {
+      ...data,
+      createdAt: new Date().toISOString()
     }
-    site: {
-      slug: string
-      name: string
-    }
-    approver: string
-    note: string
-    priority: string
-    products: IProductInfo[]
-    createdAt: string
-  }) => {
-    setFormData(data)
-    localStorage.setItem('requestFormProducts', JSON.stringify(data))
+    setRequisition(newRequisition)
     handleStepChange(2)
   }
 
-  const handleFormSearchSubmit = (data: IProductNameSearch) => {
-    setSearchData(data)
-    localStorage.setItem('searchData', JSON.stringify(data))
+  const handleFormSearchSubmit = () => {
     handleStepChange(3)
   }
 
   const handleConfirmRequest = () => {
-    const savedFormData = localStorage.getItem('requestFormProducts')
+    const savedFormData = getRequisition()
     if (savedFormData) {
-      const parsedFormData = JSON.parse(savedFormData)
-      mutation.mutate(parsedFormData)
+      mutation.mutate(savedFormData)
 
       // handleStepChange(4)
     }
   }
 
   const handleBackToCreate = () => {
-    const savedFormData = localStorage.getItem('requestFormProducts')
+    const savedFormData = getRequisition()
     if (savedFormData) {
-      const parsedFormData = JSON.parse(savedFormData)
-      setFormData(parsedFormData)
+      setFormData(savedFormData)
     }
     handleStepChange(1)
   }
 
   const handleBackToSearch = () => {
-    const savedSearchData = localStorage.getItem('searchData')
-    if (savedSearchData) {
-      setSearchData(JSON.parse(savedSearchData))
-    }
     handleStepChange(2)
   }
 
@@ -136,11 +109,7 @@ const ProductRequisitionForm: React.FC = () => {
               </div>
             </CardHeader>
             <CardContent className="flex flex-col">
-              <SearchProductForm
-                onSubmit={handleFormSearchSubmit}
-                onBack={handleBackToCreate}
-                initialData={searchData}
-              />
+              <SearchProductForm onSubmit={handleFormSearchSubmit} onBack={handleBackToCreate} />
             </CardContent>
           </Card>
         )}

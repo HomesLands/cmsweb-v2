@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { ExitIcon } from '@radix-ui/react-icons'
 
 import {
@@ -10,23 +11,36 @@ import {
   Button,
   UserAvatar
 } from '@/components/ui'
-import { useState } from 'react'
 import { DialogLogout } from '../dialog'
-import { useLogout } from '@/hooks'
-import { useUserStore } from '@/stores'
+import { useLogout, useUser } from '@/hooks'
+import { useAuthStore, useUserStore } from '@/stores'
 import { ILogoutRequest } from '@/types'
+import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 export function DropdownHeader() {
-  const { token, refreshToken } = useUserStore()
+  const { t } = useTranslation('auth')
+  const { slug, token, refreshToken, setLogout } = useAuthStore()
   const [open, setOpen] = useState(false)
   const mutation = useLogout()
+  const { data } = useUser(slug || '')
+  const { removeUserInfo } = useUserStore()
+  const navigate = useNavigate()
 
   const handleLogout = async () => {
     const requestData = {
       token: token || 'token',
       refreshToken: refreshToken || 'refreshToken'
     } as ILogoutRequest
-    await mutation.mutateAsync(requestData)
+    await mutation.mutateAsync(requestData, {
+      onSuccess: () => {
+        setLogout()
+        removeUserInfo()
+        toast.success(t('logout.logoutSuccess'))
+        navigate('/auth/login')
+      }
+    })
   }
   return (
     <div>
@@ -38,7 +52,7 @@ export function DropdownHeader() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-[14rem]" align="end">
-          <DropdownMenuLabel>Tài khoản của tôi</DropdownMenuLabel>
+          <DropdownMenuLabel className="text-center">{data?.result?.fullname}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {/* <DropdownMenuItem className="cursor-pointer">Thông tin tài khoản</DropdownMenuItem> */}
           {/* <DropdownMenuItem className="cursor-pointer">Đổi mật khẩu</DropdownMenuItem> */}

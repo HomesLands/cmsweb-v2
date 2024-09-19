@@ -18,28 +18,36 @@ export class User extends Base {
   @Column({ name: "password_column" })
   password?: string;
 
+  @AutoMap()
   @Column({ name: "dob_column", nullable: true })
   dob?: string;
 
+  @AutoMap()
   @Column({ name: "gender_column", nullable: true })
   gender?: string; // Gender in enums
 
+  @AutoMap()
   @Column({ name: "address_column", nullable: true })
   address?: string;
 
+  @AutoMap()
   @Column({ name: "phone_number_column", nullable: true })
   phoneNumber?: string;
 
+  @AutoMap()
   @OneToOne(() => File)
   @JoinColumn({ name: "avatar_column" })
   avatar?: File;
 
+  @AutoMap()
   @Column({ name: "status_column", nullable: true })
   status?: string;
 
+  @AutoMap()
   @Column({ name: "is_approver_column", nullable: true })
   isApprover?: string;
 
+  @AutoMap()
   @Column({ name: "approval_level_column", nullable: true })
   approvalLevel?: number;
 
@@ -54,7 +62,7 @@ export class User extends Base {
   // a user can manage many project
   @OneToMany(() => Project, (project) => project.manager)
   projects?: Project[];
-  
+
   // A user can have many roles
   @OneToMany(() => UserRole, (userRole) => userRole.user)
   userRoles?: UserRole[];

@@ -22,10 +22,17 @@ export type TApiResponse<T> = {
   path: string;
 };
 
-export type TPaginationOption = {
-  skip: number | 0;
+export type TQueryRequest = {
+  page: number;
   order: "ASC" | "DESC";
-  take: number | 10;
+  pageSize: number;
+};
+
+export type TPaginationOptionResponse<T> = {
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  items: T;
 };
 
 export type TErrorCodeKey =

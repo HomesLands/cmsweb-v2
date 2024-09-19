@@ -5,6 +5,7 @@ export interface ILoginRequest {
 
 export interface ILoginResponse {
   expireTime: string
+  expireTimeRefreshToken: string
   token: string
   refreshToken: string
 }
@@ -21,8 +22,10 @@ export interface IRefreshTokenRequest {
 }
 
 export interface IRefreshTokenResponse {
-  token: string
   expireTime: string
+  expireTimeRefreshToken: string
+  token: string
+  refreshToken: string
 }
 
 export interface ILogoutRequest {

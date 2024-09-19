@@ -3,15 +3,16 @@ import NProgress from 'nprogress'
 import moment from 'moment'
 
 import { useRequestStore } from '@/stores/request.store'
-import { useUserStore } from '@/stores'
+import { useAuthStore } from '@/stores'
 import { IApiResponse, IRefreshTokenResponse } from '@/types'
 
 NProgress.configure({ showSpinner: false, trickleSpeed: 200 })
 
 let isRefreshing = false
 let failedQueue: { resolve: (token: string) => void; reject: (error: unknown) => void }[] = []
-const baseURL = import.meta.env.VITE_BASE_API_URL || 'https://tbecms.cmsiot.net/api/v1'
-console.log({ ENV: import.meta.env })
+const baseURL = import.meta.env.VITE_BASE_API_URL
+
+console.log({ failedQueue })
 
 const processQueue = (error: unknown, token: string | null = null) => {
   failedQueue.forEach((prom) => {
@@ -38,8 +39,16 @@ const axiosInstance: AxiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    const { token, expireTime, refreshToken, setExpireTime, setToken, setLogout } =
-      useUserStore.getState()
+    const {
+      token,
+      expireTime,
+      refreshToken,
+      setExpireTime,
+      setToken,
+      setLogout,
+      setRefreshToken,
+      setExpireTimeRefreshToken
+    } = useAuthStore.getState()
     if (expireTime && isTokenExpired(expireTime) && !isRefreshing) {
       isRefreshing = true
       try {
@@ -53,13 +62,14 @@ axiosInstance.interceptors.request.use(
 
         const newToken = response.data.result.token
         setToken(newToken)
+        setRefreshToken(response.data.result.refreshToken)
         setExpireTime(response.data.result.expireTime)
+        setExpireTimeRefreshToken(response.data.result.expireTimeRefreshToken)
         processQueue(null, newToken)
       } catch (error) {
         console.log({ error })
         processQueue(error, null)
         setLogout()
-        // redirect('/auth/login')
         // You can redirect to the login page
         window.location.href = '/auth/login'
       } finally {
@@ -104,41 +114,23 @@ axiosInstance.interceptors.response.use(
     if (!error.config?.doNotShowLoading) setProgressBarDone()
     if (error.response) {
       const { code } = error.response.data
+      const { status } = error.response
 
-      // if (code === 401 && !config._retry) {
-      //   config._retry = true
-      //   try {
-      //     const currentToken = localStorage.getItem('token')
-      //     const refreshToken = localStorage.getItem('refreshToken')
-
-      //     if (currentToken && refreshToken) {
-      //       const decodedRefreshToken = decodeRefreshToken(refreshToken)
-      //       console.log('Check encodedRefreshToken in interceptor response', decodedRefreshToken)
-      //       console.log('Check currentToken in interceptor response', currentToken)
-
-      //       if (decodedRefreshToken) {
-      //         const newToken = await refreshTokenAPI(currentToken, decodedRefreshToken)
-      //         console.log('Check newToken in interceptor response', newToken)
-      //         // localStorage.setItem('token', newToken)
-
-      //         axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newToken}`
-      //         config.headers['Authorization'] = `Bearer ${newToken}`
-
-      //         return axiosInstance.request(config)
-      //       }
-      //     }
-      //   } catch (err) {
-      //     showErrorToast(code)
-      //     // toLogin()
-      //     return Promise.reject(error)
-      //   }
+      // if (status === 401) {
+      //   showErrorToast(code)
       // }
 
-      // showErrorToast(code)
-
-      // if (isTokenExpired(expireTime)) {
+      // if (status === 403) {
       //   showErrorToast(code)
-      //   // toLogin()
+      //   window.location.href = '/auth/login'
+      // }
+
+      // if (status === 404) {
+      //   showErrorToast(code)
+      // }
+
+      // if (status === 500) {
+      //   showErrorToast(code)
       // }
     }
     return Promise.reject(error)

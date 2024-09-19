@@ -1,8 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import { productService } from "@services";
-import { TApiResponse, TCreateProductRequestDto } from "@types";
+import {
+  TApiResponse,
+  TCreateProductRequestDto,
+  TPaginationOptionResponse,
+  TProductQueryRequest,
+} from "@types";
 import { ProductResponseDto } from "@dto/response";
 import { StatusCodes } from "http-status-codes";
+import { logger } from "@lib";
 
 class ProductController {
   /**
@@ -35,11 +41,11 @@ class ProductController {
    *         - required: ["code"]
    *         - required: ["description"]
    *       example:
-   *         name: FirstProduct
+   *         name: Máy khoan động lực điện Bosch GSB 10 RE 500W
    *         code: 8886008101053
-   *         provider: Aqua
+   *         provider: BOSCH
    *         unit: M_aSwDaaau
-   *         description: "sản phẩm"
+   *         description: Dùng điện, Có chổi than
    */
 
   /**
@@ -55,9 +61,38 @@ class ProductController {
    *   get:
    *     summary: Get all products
    *     tags: [Product]
+   *     parameters:
+   *       - in: query
+   *         name: order
+   *         schema:
+   *           type: string
+   *           enum: [ASC, DESC]
+   *         required: true
+   *         description: The order in which the products are sorted (ASC, DESC)
+   *         example: ASC
+   *       - in: query
+   *         name: page
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of products to skip
+   *         example: 1
+   *       - in: query
+   *         name: pageSize
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of products to retrieve
+   *         example: 10
+   *       - in: query
+   *         name: searchTerm
+   *         schema:
+   *           type: string
+   *         required: false
+   *         description: Search by product name
    *     responses:
    *       200:
-   *         description: Get all product successfully.
+   *         description: Get all products successfully.
    *       500:
    *         description: Server error
    */
@@ -68,15 +103,15 @@ class ProductController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const results = await productService.getAllProducts({
-        order: "DESC",
-        skip: 0,
-        take: 100,
-      });
-      const response: TApiResponse<ProductResponseDto[]> = {
+      const query = req.query as unknown as TProductQueryRequest;
+      logger.info(ProductController.name, query);
+      const results = await productService.getAllProducts(query);
+      const response: TApiResponse<
+        TPaginationOptionResponse<ProductResponseDto[]>
+      > = {
         code: StatusCodes.OK,
         error: false,
-        message: "Get all products successfully",
+        message: "Products have been retrieved successfully",
         method: req.method,
         path: req.originalUrl,
         result: results,
@@ -113,21 +148,21 @@ class ProductController {
   public async createProduct(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> {
     try {
       const requestData = req.body as TCreateProductRequestDto;
       const productData = await productService.createProduct(requestData);
 
       const response: TApiResponse<ProductResponseDto> = {
-        code: StatusCodes.OK,
+        code: StatusCodes.CREATED,
         error: false,
         message: "Create product successfully",
         method: req.method,
         path: req.originalUrl,
         result: productData,
       };
-      res.status(StatusCodes.OK).json(response);
+      res.status(StatusCodes.CREATED).json(response);
     } catch (error) {
       next(error);
     }

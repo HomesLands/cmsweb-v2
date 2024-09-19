@@ -14,12 +14,13 @@ import {
   Textarea
 } from '@/components/ui'
 import { productSchema } from '@/schemas'
-import { SelectProject, SelectConstruction } from '@/components/app/select'
+import { SelectProject, SelectConstruction, RequestPrioritySelect } from '@/components/app/select'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useProjectList, useSiteList } from '@/hooks'
+import { useProjects, useSites, useUser } from '@/hooks'
 import { IProductRequirementInfoCreate } from '@/types'
 import { generateProductRequisitionCode } from '@/utils'
+import { useAuthStore } from '@/stores'
 
 interface IFormCreateProductProps {
   onSubmit: (data: z.infer<typeof productSchema>) => void
@@ -31,31 +32,28 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
   initialData
 }) => {
   const { t } = useTranslation('productRequisition')
+  const { slug } = useAuthStore()
+  const { data } = useUser(slug || '')
+
   const form = useForm<z.infer<typeof productSchema>>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       requestCode: generateProductRequisitionCode(),
-      requester: '',
-      project: {
-        slug: '',
-        name: ''
-      },
-      site: {
-        slug: '',
-        name: ''
-      },
-      approver: '',
-      note: '',
-      createdAt: new Date().toISOString(), // Ensure createdAt is set
-      ...initialData
+      requester: data?.result?.fullname || '',
+      project: { slug: '', name: '' },
+      site: { slug: '', name: '' },
+      approver: initialData?.approver || '',
+      note: initialData?.note || '',
+      createdAt: initialData?.createdAt || new Date().toISOString(),
+      priority: 'normal'
     }
   })
 
-  const { data: projectList } = useProjectList()
-  const { data: siteList } = useSiteList()
+  const { data: projects } = useProjects()
+  const { data: sites } = useSites()
 
   const handleSubmit = (values: z.infer<typeof productSchema>) => {
-    values.createdAt = new Date().toISOString() // Ensure createdAt is included
+    values.createdAt = new Date().toISOString()
     onSubmit(values)
   }
 
@@ -84,7 +82,11 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                 <FormItem>
                   <FormLabel>{t('productRequisition.requester')}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('productRequisition.requesterDescription')} {...field} />
+                    <Input
+                      readOnly
+                      placeholder={t('productRequisition.requesterDescription')}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -97,7 +99,11 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                 <FormItem>
                   <FormLabel>{t('productRequisition.projectName')}</FormLabel>
                   <FormControl>
-                    <SelectProject {...field} projectList={projectList?.result ?? []} />
+                    <SelectProject
+                      onChange={(value: { slug: string; name: string }) => field.onChange(value)}
+                      projectList={projects?.result ?? []}
+                      defaultValue={initialData?.project}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -112,7 +118,11 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                 <FormItem>
                   <FormLabel>{t('productRequisition.constructionSite')}</FormLabel>
                   <FormControl>
-                    <SelectConstruction {...field} constructionList={siteList?.result ?? []} />
+                    <SelectConstruction
+                      onChange={(value: { slug: string; name: string }) => field.onChange(value)}
+                      constructionList={sites?.result ?? []}
+                      defaultValue={initialData?.site}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -140,6 +150,19 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                 <FormLabel>{t('productRequisition.note')}</FormLabel>
                 <FormControl>
                   <Textarea placeholder={t('productRequisition.noteDescription')} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="priority"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('productRequisition.priority')}</FormLabel>
+                <FormControl>
+                  <RequestPrioritySelect {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
