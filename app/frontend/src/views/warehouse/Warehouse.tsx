@@ -22,7 +22,7 @@ const Warehouse: React.FC = () => {
         isLoading={isLoading}
         columns={columns}
         data={data?.items || []}
-        total={data?.total || 0}
+        // total={data?.total || 0}
         pages={data?.pages || 0}
         page={pagination.pageIndex + 1}
         pageSize={pagination.pageSize}

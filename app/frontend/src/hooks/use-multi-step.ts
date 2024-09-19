@@ -8,12 +8,10 @@ export const useMultiStep = (initialStep: number) => {
 
   useEffect(() => {
     setSearchParams({ step: currentStep.toString() })
-
   }, [currentStep, setSearchParams])
 
   const handleStepChange = (step: number) => {
     setCurrentStep(step)
-    console.log('Current step:', currentStep)
   }
 
   return { currentStep, handleStepChange }

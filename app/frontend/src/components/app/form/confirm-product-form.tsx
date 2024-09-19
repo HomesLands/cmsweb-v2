@@ -30,46 +30,12 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
     }
   }, [])
 
-  const handleAddRequest = (product: IProductInfo) => {
-    // Lấy dữ liệu hiện tại từ localStorage
-    const existingData = JSON.parse(localStorage.getItem('requestFormProducts') || '{}')
-    const updatedData =
-      typeof existingData === 'object' && existingData !== null ? existingData : {}
-
-    // Trích xuất mảng sản phẩm hoặc mặc định là mảng rỗng
-    const productsArray = Array.isArray(updatedData.products) ? updatedData.products : []
-
-    // Tìm chỉ số của sản phẩm trong mảng
-    const productIndex = productsArray.findIndex((p: IProductInfo) => p.id === product.id)
-
-    // Cập nhật sản phẩm nếu nó tồn tại, nếu không thì thêm vào mảng
-    if (productIndex !== -1) {
-      productsArray[productIndex] = product
-    } else {
-      productsArray.push(product)
-    }
-
-    // Cập nhật mảng sản phẩm trong đối tượng dữ liệu
-    updatedData.products = productsArray
-
-    // Lưu dữ liệu đã cập nhật lại vào localStorage
-    localStorage.setItem('requestFormProducts', JSON.stringify(updatedData))
-
-    // Cập nhật trạng thái với mảng sản phẩm mới
-    setSelectedProducts(productsArray)
-
-    // Hiển thị thông báo chỉ ra thành công
-    showToast('Chỉnh sửa thông tin vật tư thành công!')
-  }
-
   const handleEditRequest = (product: IProductInfo) => {
-    console.log('Check product edit', product)
     const existingData = JSON.parse(localStorage.getItem('requestFormProducts') || '{}')
-    console.log('Check existing data', existingData)
 
     if (existingData && Array.isArray(existingData.products)) {
       const productIndex = existingData.products.findIndex(
-        (p: IProductInfo) => p.productCode === product.productCode
+        (p: IProductInfo) => p.code === product.code
       )
 
       if (productIndex !== -1) {
@@ -91,9 +57,7 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
       typeof existingData === 'object' && existingData !== null ? existingData : {}
     const productsArray = Array.isArray(updatedData.products) ? updatedData.products : []
 
-    const updatedProducts = productsArray.filter(
-      (p: IProductInfo) => p.productCode !== product.productCode
-    )
+    const updatedProducts = productsArray.filter((p: IProductInfo) => p.code !== product.code)
 
     updatedData.products = updatedProducts
     localStorage.setItem('requestFormProducts', JSON.stringify(updatedData))
@@ -169,7 +133,7 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
           isLoading={false}
           columns={columns}
           data={selectedProducts}
-          total={selectedProducts.length}
+          // total={selectedProducts.length}
           pages={1}
           page={1}
           pageSize={selectedProducts.length}

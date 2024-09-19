@@ -33,7 +33,6 @@ export const AddNewUserForm: React.FC<IFormAddNewUserProps> = ({ onSubmit }) => 
   })
 
   const handleSubmit = (values: z.infer<typeof createUserSchema>) => {
-    console.log('Form Values:', values)
     onSubmit(values)
   }
 
