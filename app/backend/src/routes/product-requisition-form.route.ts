@@ -7,3 +7,5 @@ productRequisitionFormRoute.route("/")
   .get(productRequisitionFormController.getAllProductRequisitionForms);
 productRequisitionFormRoute.route("/")
   .post(productRequisitionFormController.createProductRequisitionForm);
+productRequisitionFormRoute.route("/:slug")
+  .get(productRequisitionFormController.getProductRequisitionFormBySlug);

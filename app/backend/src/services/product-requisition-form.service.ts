@@ -157,6 +157,34 @@ class ProductRequisitionFormService {
     console.log({formDto})
     return formDto;
   }
+
+  public async getProductRequisitionFormBySlug(
+    slug: string
+  ): Promise<ProductRequisitionFormResponseDto> {
+    const forms = await productRequisitionFormRepository.findOne({
+      where: {
+        slug
+      },
+      relations: [
+        'company',
+        'userApprovals',
+        'userApprovals.user',
+        'userApprovals.approvalLogs',
+        'requestProducts',
+        'requestProducts.product',
+      ]
+    });
+
+    if(!forms) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+
+    const formsDto: ProductRequisitionFormResponseDto = mapper.map(
+      forms,
+      ProductRequisitionForm,
+      ProductRequisitionFormResponseDto
+    );
+
+    return formsDto;
+  }
 }
 
 export default new ProductRequisitionFormService();

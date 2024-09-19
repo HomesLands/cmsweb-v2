@@ -169,15 +169,51 @@ class ProductRequisitionFormController {
         path: req.originalUrl,
         result: form,
       };
-      // const response = {
-      //   status: 'success',
-      //   message: 'Request completed successfully',
-      //   data: {
-      //     id: 123,
-      //     name: 'Product Requisition Form',
-      //     // các thông tin khác có thể được trả về
-      //   }
-      // };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /productRequisitionForms/{slug}:
+   *   get:
+   *     summary: get productRequisitionForm by slug
+   *     tags: [ProductRequisitionForm]
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - name: slug
+   *         in: path
+   *         required: true
+   *         type: string
+   *         description: slug of product requisition form
+   *     responses:
+   *       200:
+   *         description: get product requisition form successfully.
+   *       500:
+   *         description: Server error
+   *
+   */
+
+  public async getProductRequisitionFormBySlug(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const slug = req.params.slug as string;
+      const form = await productRequisitionFormService.getProductRequisitionFormBySlug(slug);
+
+      const response: TApiResponse<ProductRequisitionFormResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "Get productRequisitionForm successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result: form,
+      };
       res.status(StatusCodes.OK).json(response);
     } catch (error) {
       next(error);
