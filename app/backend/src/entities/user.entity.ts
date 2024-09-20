@@ -1,21 +1,9 @@
-import {
-  Entity,
-  Column,
-  JoinColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-} from "typeorm";
-import { Base } from "@entities/base.entity";
+import { Entity, Column, JoinColumn, OneToOne, OneToMany, ManyToOne } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 
-import { File } from "@entities/file.entity";
+import { File, Site, Base, Project, UserRole, UserApproval  } from "@entities";
 import { Position } from "@entities/position.entity";
-import { Site } from "@entities/site.entity";
-import { Project } from "@entities/project.entity";
-
-import { Gender } from "enums";
-import { UserRole } from "./user-role.entity";
+import {  } from "@entities/site.entity";
 
 @Entity("user_tbl")
 export class User extends Base {
@@ -36,7 +24,7 @@ export class User extends Base {
 
   @AutoMap()
   @Column({ name: "gender_column", nullable: true })
-  gender?: Gender;
+  gender?: string; // Gender in enums
 
   @AutoMap()
   @Column({ name: "address_column", nullable: true })
@@ -63,7 +51,6 @@ export class User extends Base {
   @Column({ name: "approval_level_column", nullable: true })
   approvalLevel?: number;
 
-  @AutoMap()
   @ManyToOne(() => Position, (position) => position.users)
   @JoinColumn({ name: "position_id_column" })
   position?: Position;
@@ -79,4 +66,8 @@ export class User extends Base {
   // A user can have many roles
   @OneToMany(() => UserRole, (userRole) => userRole.user)
   userRoles?: UserRole[];
+
+  // a user have many user approval
+  @OneToMany(() => UserApproval, (userApproval) => userApproval.user)
+  userApprovals?: UserApproval[];
 }

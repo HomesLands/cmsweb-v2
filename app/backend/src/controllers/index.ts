@@ -6,3 +6,5 @@ export { default as siteController } from "./site.controller";
 export { default as projectController } from "./project.controller";
 export { default as errorCodeController } from "./error-code.controller";
 export { default as unitController } from "./unit.controller";
+export { default as companyController } from "./company.controller";
+export { default as productRequisitionFormController } from "./product-requisition-form.controller";

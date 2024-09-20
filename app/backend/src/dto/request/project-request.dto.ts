@@ -1,6 +1,7 @@
 import { AutoMap } from "@automapper/classes";
 import { Expose } from "class-transformer";
-import { IsNotEmpty, IsDateString } from "class-validator";
+import { IsNotEmpty } from "class-validator";
+import { IsCustomDateString } from "@decorate";
 
 export class CreateProjectRequestDto {
   @IsNotEmpty({message: "INVALID_PROJECT_NAME"})
@@ -9,8 +10,7 @@ export class CreateProjectRequestDto {
   name?: string;
 
   @IsNotEmpty({message: "INVALID_PROJECT_START_DATE"})
-  // @IsDate({ message: "INVALID_DATE_FORMAT"})
-  @IsDateString()
+  @IsCustomDateString({message: "INVALID_DATE_FORMAT"})
   @Expose()
   startDate?: string;
 

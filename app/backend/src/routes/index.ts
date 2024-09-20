@@ -7,6 +7,8 @@ import { healthCheckRoute } from "@routes/health-check.route";
 import { siteRoute } from "@routes/site.route";
 import { projectRoute } from "@routes/project.route";
 import { unitRoute } from "@routes/unit.route";
+import { companyRoute } from "@routes/company.route";
+import { productRequisitionFormRoute } from "@routes/product-requisition-form.route";
 
 import { authMiddleware } from "@middlewares";
 import { ErrorCodes, GlobalError } from "@exception";
@@ -28,7 +30,11 @@ export const registerRoutes = (app: Express) => {
 
   baseApi.use("/units", unitRoute);
 
+  baseApi.use("/companies", companyRoute);
+
   baseApi.use("/projects", projectRoute);
+
+  baseApi.use("/productRequisitionForms", productRequisitionFormRoute);
 
   baseApi.use("/healthCheck", healthCheckRoute);
 

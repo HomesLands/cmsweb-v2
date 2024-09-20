@@ -35,6 +35,12 @@ export type TPaginationOptionResponse<T> = {
   items: T;
 };
 
+export type TPaginationOption = {
+  take: number | 0;
+  skip: number | 10;
+  order: "DESC";
+}
+
 export type TErrorCodeKey =
   | "INVALID_EMAIL"
   | "PATH_NOT_FOUND"
@@ -74,6 +80,13 @@ export type TErrorCodeKey =
   | "INVALID_PROJECT_MANAGER"
   | "INVALID_UNIT_NAME"
   | "INVALID_DATE_FORMAT"
+  | "INVALID_COMPANY_NAME"
+  | "COMPANY_NAME_EXIST"
+  | "PRODUCT_REQUISITION_FORM_CODE_EXIST"
+  | "COMPANY_NOT_FOUND"
+  | "INVALID_QUANTITY_USER_APPROVAL"
+  | "PRODUCT_NOT_FOUND"
+  | "FORM_NOT_FOUND"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {
@@ -89,3 +102,5 @@ export * from "./site.type";
 export * from "./project.type";
 export * from "./unit.type";
 export * from "./product.type";
+export * from "./company.type";
+export * from "./product-requisition-from.types";

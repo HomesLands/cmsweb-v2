@@ -23,7 +23,7 @@ export const siteMapper: MappingProfile = (mapper: Mapper) => {
       mapFrom((source) => source.manager?.fullname)
     ),
     forMember(
-      (destination) => destination.mangerSlug,
+      (destination) => destination.managerSlug,
       mapFrom((source) => source.manager?.slug)
     ),
     extend(baseMapper(mapper))

@@ -10,11 +10,8 @@ import { GlobalError, ValidationError, ErrorCodes } from "@exception";
 import { validate } from "class-validator";
 
 class UnitService {
-  public async getAllUnits(): Promise<UnitResponseDto[] | []> {
-    const unitData = await unitRepository.findAllUnits();
-    if(unitData.length < 1) {
-      return [];
-    }
+  public async getAllUnits(): Promise<UnitResponseDto[]> {
+    const unitData = await unitRepository.find();
 
     const unitsDto: UnitResponseDto[] = mapper.mapArray(
       unitData,

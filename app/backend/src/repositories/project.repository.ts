@@ -6,12 +6,6 @@ class ProjectRepository extends BaseRepository<Project> {
   constructor() {
     super(Project, dataSource);
   }
-
-  public async findAllSite(): Promise<Project[] | []> {
-    return this.find({
-      relations: ['manager']
-    });
-  }
 }
 
 export default new ProjectRepository();
