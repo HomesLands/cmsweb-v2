@@ -6,8 +6,8 @@ import { IUserQuery } from '@/types'
 export const useUsers = (q: IUserQuery) => {
   return useQuery({
     queryKey: ['users', JSON.stringify(q)],
-    queryFn: () => getUsers(q),
-    placeholderData: keepPreviousData
+    queryFn: () => getUsers(q)
+    // placeholderData: keepPreviousData
   })
 }
 

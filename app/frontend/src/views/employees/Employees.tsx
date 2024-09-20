@@ -10,11 +10,10 @@ import { CustomComponent } from './CustomComponent'
 const Employees: React.FC = () => {
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
 
-  const { data, isLoading } = useUsers({
-    page: pagination.pageIndex + 1,
-    pageSize: pagination.pageSize
-  })
-  console.log('Employees')
+  // const { data, isLoading } = useUsers({
+  //   page: pagination.pageIndex + 1,
+  //   pageSize: pagination.pageSize
+  // })
 
   return (
     <div className="flex flex-col gap-4">
@@ -22,7 +21,7 @@ const Employees: React.FC = () => {
         <ReaderIcon className="header-icon" />
         Danh sách nhân viên
       </Label>
-      <DataTable
+      {/* <DataTable
         isLoading={isLoading}
         columns={columns}
         data={data?.result.items || []}
@@ -32,7 +31,7 @@ const Employees: React.FC = () => {
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         CustomComponent={CustomComponent}
-      />
+      /> */}
     </div>
   )
 }
