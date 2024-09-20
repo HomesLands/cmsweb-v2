@@ -9,7 +9,7 @@ export class SiteResponseDto {
 
   managerFullname?: string;
 
-  mangerSlug?: string;
+  managerSlug?: string;
 
   @AutoMap()
   slug?: string;
