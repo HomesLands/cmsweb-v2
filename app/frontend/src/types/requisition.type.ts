@@ -5,5 +5,7 @@ export interface IRequisitionStore {
   getRequisition: () => IProductRequirementInfoCreate | undefined
   setRequisition: (requisition: IProductRequirementInfoCreate) => void
   clearRequisition: () => void
-  addProductToRequisition: (product: IProductInfo) => void // Added method
+  addProductToRequisition: (product: IProductInfo) => void
+  updateProductToRequisition: (product: IProductInfo) => void
+  deleteProductToRequisition: (product: IProductInfo) => void
 }

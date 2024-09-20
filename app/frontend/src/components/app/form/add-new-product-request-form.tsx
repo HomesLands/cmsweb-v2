@@ -9,14 +9,11 @@ import {
   FormMessage,
   Input,
   Form,
-  Button,
-  Textarea
+  Button
 } from '@/components/ui'
 import { addNewProductRequestSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IProductInfo } from '@/types'
-import { useRequisitionStore } from '@/stores'
-import { showToast } from '@/utils'
 
 interface IFormAddNewProductProps {
   data?: IProductInfo
@@ -32,7 +29,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
       name: data?.name || '',
       provider: data?.provider || '',
       unit: data?.unit || '',
-      quantity: data?.quantity || '',
+      quantity: data?.quantity || 1,
       description: data?.description || '',
       status: data?.status || ''
     }
@@ -41,7 +38,8 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
   const handleSubmit = (values: z.infer<typeof addNewProductRequestSchema>) => {
     const completeData: IProductInfo = {
       ...values,
-      createdAt: values.createdAt || ''
+      createdAt: values.createdAt || '',
+      quantity: Number(values.quantity)
     }
     onSubmit(completeData)
   }
@@ -130,7 +128,8 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
                       min="1"
                       placeholder="Nhập số lượng"
                       {...field}
-                      value={field.value || 2}
+                      value={field.value || 1}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
                     />
                   </FormControl>
                   <FormMessage />

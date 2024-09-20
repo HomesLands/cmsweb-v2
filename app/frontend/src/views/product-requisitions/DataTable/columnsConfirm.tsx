@@ -45,39 +45,33 @@ export const useColumnsConfirm = (
 
   return [
     {
-      accessorKey: 'productCode',
+      accessorKey: 'code',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.productCode')} />
       )
     },
     {
-      accessorKey: 'productName',
+      accessorKey: 'name',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.productName')} />
       )
     },
     {
-      accessorKey: 'modelOrSerialNumber',
+      accessorKey: 'provider',
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={i18next.t('tableData.model')} />
-      )
-    },
-    {
-      accessorKey: 'supplier',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={i18next.t('tableData.supplier')} />
-      )
-    },
-    {
-      accessorKey: 'quantity',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={i18next.t('tableData.quantity')} />
+        <DataTableColumnHeader column={column} title={i18next.t('tableData.provider')} />
       )
     },
     {
       accessorKey: 'unit',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.unit')} />
+      )
+    },
+    {
+      accessorKey: 'quantity',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={i18next.t('tableData.quantity')} />
       )
     },
     {
