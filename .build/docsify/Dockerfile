@@ -6,8 +6,8 @@ WORKDIR /app
 
 RUN npm install -g docsify-cli@latest
 
-COPY . /app/docs
+COPY . /app/docsify
 
 EXPOSE 3001
 
-CMD ["docsify", "serve", "/app/docs", "-p", "3001"]
+CMD ["docsify", "serve", "/app/docsify", "-p", "3001"]
