@@ -4,12 +4,14 @@ import { AutoMap } from "@automapper/classes";
 
 @Entity("company_tbl")
 export class Company extends Base {
-  @Column({ name: "name_column" })
+  @Column({ name: "name_column", unique: true })
   @AutoMap()
   name?: string;
 
   // a company have many product requisition form
-  @OneToMany(() => ProductRequisitionForm,
-    (productRequisitionForm) => productRequisitionForm.company)
+  @OneToMany(
+    () => ProductRequisitionForm,
+    (productRequisitionForm) => productRequisitionForm.company
+  )
   productRequisitionForms?: ProductRequisitionForm[];
 }

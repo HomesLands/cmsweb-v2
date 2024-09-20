@@ -39,7 +39,7 @@ export type TPaginationOption = {
   take: number | 0;
   skip: number | 10;
   order: "DESC";
-}
+};
 
 export type TErrorCodeKey =
   | "INVALID_EMAIL"
@@ -87,6 +87,7 @@ export type TErrorCodeKey =
   | "INVALID_QUANTITY_USER_APPROVAL"
   | "PRODUCT_NOT_FOUND"
   | "FORM_NOT_FOUND"
+  | "MISSING_USER_APPROVAL"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {

@@ -11,6 +11,7 @@ import { StatusCodes } from "http-status-codes";
 import { logger } from "@lib";
 
 class ProductController {
+  private _name = ProductController.name;
   /**
    * @swagger
    * components:
@@ -104,7 +105,7 @@ class ProductController {
   ): Promise<void> {
     try {
       const query = req.query as unknown as TProductQueryRequest;
-      logger.info(ProductController.name, query);
+      logger.info("", query);
       const results = await productService.getAllProducts(query);
       const response: TApiResponse<
         TPaginationOptionResponse<ProductResponseDto[]>
