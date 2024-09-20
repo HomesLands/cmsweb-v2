@@ -51,9 +51,9 @@ export class User extends Base {
   @Column({ name: "approval_level_column", nullable: true })
   approvalLevel?: number;
 
-  // @ManyToOne(() => Position, (position) => position.users)
-  // @JoinColumn({ name: "position_id_column" })
-  // position?: Position;
+  @ManyToOne(() => Position, (position) => position.users)
+  @JoinColumn({ name: "position_id_column" })
+  position?: Position;
 
   // a user can manage many sides
   @OneToMany(() => Site, (site) => site.manager)

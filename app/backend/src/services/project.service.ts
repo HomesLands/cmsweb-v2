@@ -9,11 +9,11 @@ import { ErrorCodes, ValidationError, GlobalError } from "@exception";
 import { validate } from "class-validator";
 
 class ProjectService {
-  public async getAllSites(): Promise<ProjectResponseDto[] | []> {
-    const projectsData = await projectRepository.findAllSite();
-    if(projectsData.length < 1) {
-      return [];
-    }
+  public async getAllProjects(): Promise<ProjectResponseDto[]> {
+    const projectsData = await projectRepository.find({
+      relations: ['manager']
+    });
+
     const projectsDto: ProjectResponseDto[] = mapper.mapArray(
       projectsData,
       Project,
