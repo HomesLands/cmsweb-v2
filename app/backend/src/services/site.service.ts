@@ -11,14 +11,9 @@ import { validate } from "class-validator";
 
 class SiteService {
   public async getAllSites(): Promise<SiteResponseDto[] | []> {
-    const sitesData = await siteRepository.findAllSite();
-    if(sitesData.length < 1) {
-      return [];
-    }
-
-    // const form = await productRequisitionFormRepository.findProductRequisitionForm("657084dc-7380-11ef-9b98-8c8caa41f99d");
-    // console.log({form})
-    // console.log({form: form?.requestProducts})
+    const sitesData = await siteRepository.find({
+      relations: ['manager']
+    });
 
     const sitesDto: SiteResponseDto[] = mapper.mapArray(
       sitesData,

@@ -149,6 +149,9 @@
 
         "@enums": ["enums/index"],
         "@enums/*": ["enums/*"],
+
+        "@decorate": ["decorate/index"],
+        "@decorate/*": ["decorate/*"],
     },
   },
   "include": ["src/**/*"],

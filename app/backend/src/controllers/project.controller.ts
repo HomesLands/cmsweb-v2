@@ -73,7 +73,7 @@ class ProjectController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const projectsData = await projectService.getAllSites();
+      const projectsData = await projectService.getAllProjects();
 
       const response: TApiResponse<ProjectResponseDto[]> = {
         code: StatusCodes.OK,
