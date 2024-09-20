@@ -55,14 +55,11 @@ services:
       timeout: 10s # Increase timeout for slower responses
       retries: 5
       start_period: 60s # Give the frontend app more time to become ready
-    environment:
-      NODE_ENV: ${NODE_ENV}
-      VITE_BASE_API_URL: ${VITE_BASE_API_URL} # Replace with your actual API URL
     restart: always
 
   docs:
     build:
-      context: ../docs
+      context: ../docsify
       dockerfile: ../.build/docsify/Dockerfile # Adjusted to be relative to the context
     healthcheck:
       test: ["CMD", "nc", "-z", "localhost", "3001"] # TCP check on port 3001
@@ -70,7 +67,8 @@ services:
       timeout: 10s # Increase timeout for slower responses
       retries: 5
       start_period: 60s # Give the frontend app more time to become ready
-    # restart: always
+    ports:
+      - "3001:3001"
 
 networks:
   default:
