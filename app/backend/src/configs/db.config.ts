@@ -25,7 +25,7 @@ export const dataSource = new DataSource({
   database: config.DB,
   entities: [join(__dirname, "../entities", "*.entity.{ts,js}")],
   logging: false,
-  synchronize: false,
+  synchronize: true,
 });
 
 export async function initializeDataSource(
