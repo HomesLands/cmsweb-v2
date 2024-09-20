@@ -1,9 +1,13 @@
 import {
   IApiResponse,
+  IConstruction,
+  IConstructionListResponse,
   IPaginationResponse,
   IProductInfo,
   IProductQuery,
-  IProductRequirementInfoCreate
+  IProductRequirementInfoCreate,
+  IProject,
+  IProjectListResponse
 } from '@/types'
 import { http } from '@/utils'
 
@@ -53,3 +57,63 @@ export async function postProductRequest(params: {
   }
   return lowercaseParams
 }
+
+export async function getProjectListInProductRequisition(): Promise<
+  IProjectListResponse<IProject[]>
+> {
+  try {
+    const response = await http.get<IProjectListResponse<IProject[]>>('/projects')
+    return response.data
+  } catch (error) {
+    console.log('Failed to fetch projects:', error)
+    throw new Error('Failed to fetch projects')
+  }
+}
+
+export async function getConstructionListInProductRequisition(): Promise<
+  IConstructionListResponse<IConstruction[]>
+> {
+  try {
+    const response = await http.get<IProjectListResponse<IConstruction[]>>('/sites')
+    return response.data
+  } catch (error) {
+    console.log('Failed to fetch constructions:', error)
+    throw new Error('Failed to fetch constructions')
+  }
+}
+
+export async function getAllProduct(params: {
+  order: string
+  page: number
+  pageSize: number
+}): Promise<IApiResponse<IProductInfo>> {
+  try {
+    const response = await http.get<IApiResponse<IProductInfo>>('/products', {
+      params
+    })
+    return response.data
+  } catch (error) {
+    console.log('Failed to fetch products:', error)
+    throw new Error('Failed to fetch products')
+  }
+}
+
+// export async function searchProduct(params: {
+//   productName: string
+// }): Promise<IProductInfoSearch[]> {
+//   const { productName } = params
+//   const products = productList.items.filter((product) =>
+//     product.productName.toLowerCase().includes(productName.toLowerCase())
+//   )
+//   return products
+// }
+
+// export async function searchProduct(params: {
+//   productName: string
+// }): Promise<IProductInfoSearch[]> {
+//   const { productName } = params
+//   const products = productList.items.filter((product) =>
+//     product.productName.toLowerCase().includes(productName.toLowerCase())
+//   )
+//   return products
+// }

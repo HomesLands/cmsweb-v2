@@ -21,12 +21,12 @@ const ProductRequisitionForm: React.FC = () => {
   const [formData, setFormData] = useState<IProductRequirementInfoCreate | null>(null)
   const { setRequisition, getRequisition } = useRequisitionStore()
 
-  useEffect(() => {
-    const savedFormData = getRequisition()
-    if (savedFormData) {
-      setFormData(savedFormData)
-    }
-  }, [getRequisition])
+  // useEffect(() => {
+  //   const savedFormData = getRequisition()
+  //   if (savedFormData) {
+  //     setFormData(savedFormData)
+  //   }
+  // }, [getRequisition])
 
   const mutation = useMutation({
     mutationFn: async (data: IProductRequirementInfoCreate) => {

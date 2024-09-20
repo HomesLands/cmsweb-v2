@@ -18,10 +18,12 @@ export const productSchema = z.object({
   products: z
     .array(
       z.object({
+        createdAt: z.string().default(''),
         code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
         name: z.string().min(1, 'Tên sản phẩm không hợp lệ'),
         provider: z.string().min(1, 'Nhà cung cấp không hợp lệ'),
         unit: z.string().min(1, 'Đơn vị không hợp lệ'),
+        quantity: z.string().min(1, 'Số lượng không hợp lệ'),
         description: z.string().min(1, 'Mô tả không hợp lệ'),
         status: z.string().min(1, 'Trạng thái không hợp lệ')
         // id: z.string().optional().default(''),
@@ -51,6 +53,7 @@ export const addNewProductSchema = z.object({
   name: z.string().min(1, 'Tên sản phẩm không hợp lệ'),
   provider: z.string().min(1, 'Nhà cung cấp không hợp lệ'),
   unit: z.string().min(1, 'Đơn vị không hợp lệ'),
+  quantity: z.string().min(1, 'Số lượng không hợp lệ'),
   description: z.string().min(1, 'Mô tả không hợp lệ'),
   status: z.string().min(1, 'Trạng thái không hợp lệ')
   // id: z.string().optional().default(''),
@@ -74,11 +77,13 @@ export const addNewProductRequestSchema = z.object({
   // unit: z.string().min(1, 'Đơn vị không hợp lệ'),
   // quantity: z.string().min(1, 'Số lượng không hợp lệ'),
   // note: z.string().optional().default('')
+  createdAt: z.string().optional(),
   code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
   name: z.string().min(1, 'Tên sản phẩm không hợp lệ'),
   provider: z.string().min(1, 'Nhà cung cấp không hợp lệ'),
   unit: z.string().min(1, 'Đơn vị không hợp lệ'),
-  description: z.string().min(1, 'Mô tả không hợp lệ'),
-  status: z.string().min(1, 'Trạng thái không hợp lệ')
+  quantity: z.string().min(1, 'Số lượng không hợp lệ'),
+  description: z.string().optional(),
+  status: z.string().optional()
 })
 export type TProductSchema = z.infer<typeof productSchema>

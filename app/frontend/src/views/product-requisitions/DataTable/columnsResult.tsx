@@ -5,27 +5,19 @@ import { IProductInfo } from '@/types'
 
 export const columnsResult = (): ColumnDef<IProductInfo>[] => [
   {
-    accessorKey: 'productCode',
+    accessorKey: 'code',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Mã vật tư" />
   },
   {
-    accessorKey: 'productName',
+    accessorKey: 'name',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Tên vật tư" />
   },
   {
-    accessorKey: 'modelOrSerialNumber',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Model" />
-  },
-  {
-    accessorKey: 'supplier',
+    accessorKey: 'provider',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Nhà cung cấp" />
   },
   {
     accessorKey: 'unit',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Đơn vị" />
-  },
-  {
-    accessorKey: 'quantity',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Số lượng" />
   }
 ]

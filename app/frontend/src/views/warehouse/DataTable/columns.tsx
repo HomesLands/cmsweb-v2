@@ -12,7 +12,7 @@ import {
   Checkbox,
   DataTableColumnHeader
 } from '@/components/ui'
-import { IUserInfo } from '@/types'
+import { IUserInfo } from '@/types/user.type'
 
 export const columns: ColumnDef<IUserInfo>[] = [
   {

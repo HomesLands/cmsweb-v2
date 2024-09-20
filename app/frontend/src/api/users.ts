@@ -1,4 +1,5 @@
-import { IApiResponse, IPaginationResponse, IUserInfo, IUserQuery } from '@/types'
+import { IApiResponse, IPaginationResponse, IUserQuery } from '@/types'
+import { IUserInfo } from '@/types/user.type'
 import { http } from '@/utils'
 
 export async function getUsers(

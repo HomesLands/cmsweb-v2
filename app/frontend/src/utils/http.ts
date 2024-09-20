@@ -5,6 +5,7 @@ import moment from 'moment'
 import { useRequestStore } from '@/stores/request.store'
 import { useAuthStore } from '@/stores'
 import { IApiResponse, IRefreshTokenResponse } from '@/types'
+import { showErrorToast } from './toast'
 
 NProgress.configure({ showSpinner: false, trickleSpeed: 200 })
 
@@ -70,6 +71,8 @@ axiosInstance.interceptors.request.use(
         console.log({ error })
         processQueue(error, null)
         setLogout()
+        // redirect('/auth/login')
+        showErrorToast(1017)
         // You can redirect to the login page
         window.location.href = '/auth/login'
       } finally {

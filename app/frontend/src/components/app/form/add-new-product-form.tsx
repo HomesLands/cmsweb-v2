@@ -26,8 +26,8 @@ export const AddNewProductForm: React.FC<IFormAddNewProductProps> = ({ onSubmit 
       name: '',
       provider: '',
       unit: '',
-      description: '',
-      status: ''
+      quantity: '',
+      description: ''
     }
   })
 
@@ -89,6 +89,19 @@ export const AddNewProductForm: React.FC<IFormAddNewProductProps> = ({ onSubmit 
                   <FormLabel>Đơn vị</FormLabel>
                   <FormControl>
                     <Input placeholder="Nhập đơn vị" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="quantity"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Số lượng</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Nhập số lượng" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
