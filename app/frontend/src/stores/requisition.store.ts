@@ -1,19 +1,18 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { IProductInfo, IProductRequirementInfoCreate, IRequisitionStore } from '@/types'
+import { IProductRequirementInfoCreate, IRequestProduct, IRequisitionStore } from '@/types'
 import { showToast, showErrorToast } from '@/utils'
+import toast from 'react-hot-toast'
 
 export const useRequisitionStore = create<IRequisitionStore>()(
   persist(
     (set, get) => ({
       requisition: undefined,
-      getRequisition: () => get().requisition,
       setRequisition: (requisition: IProductRequirementInfoCreate) => {
         set({ requisition })
-        showToast('Tạo phiếu yêu cầu thành công!')
       },
       clearRequisition: () => set({ requisition: undefined }),
-      addProductToRequisition: (product: IProductInfo) => {
+      addProductToRequisition: (product: IRequestProduct) => {
         const currentRequisition = get().requisition
         if (currentRequisition) {
           const productExists = currentRequisition.products.some((p) => p.code === product.code)
@@ -26,11 +25,11 @@ export const useRequisitionStore = create<IRequisitionStore>()(
                 products: [...currentRequisition.products, product]
               }
             })
-            showToast('Đã thêm vật tư vào phiếu yêu cầu!')
+            toast.success('Đã thêm vật tư vào phiếu yêu cầu!')
           }
         }
       },
-      updateProductToRequisition: (product: IProductInfo) => {
+      updateProductToRequisition: (product: IRequestProduct) => {
         const currentRequisition = get().requisition
         if (currentRequisition) {
           const productIndex = currentRequisition.products.findIndex((p) => p.code === product.code)
@@ -40,11 +39,11 @@ export const useRequisitionStore = create<IRequisitionStore>()(
             const updatedProducts = [...currentRequisition.products]
             updatedProducts[productIndex] = product
             set({ requisition: { ...currentRequisition, products: updatedProducts } })
-            showToast('Đã cập nhật vật tư trong phiếu yêu cầu!')
+            toast.success('Cập nhhật vật tư thành công!')
           }
         }
       },
-      deleteProductToRequisition: (product: IProductInfo) => {
+      deleteProductToRequisition: (product: IRequestProduct) => {
         const currentRequisition = get().requisition
         if (currentRequisition) {
           const updatedProducts = currentRequisition.products.filter((p) => p.code !== product.code)

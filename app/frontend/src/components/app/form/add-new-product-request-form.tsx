@@ -11,34 +11,31 @@ import {
   Form,
   Button
 } from '@/components/ui'
-import { addNewProductRequestSchema } from '@/schemas'
+import { requestProdcuctSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { IProductInfo } from '@/types'
+import { IRequestProduct } from '@/types'
 
 interface IFormAddNewProductProps {
-  data?: IProductInfo
-  onSubmit: (data: IProductInfo) => void
+  data: IRequestProduct
+  onSubmit: (data: IRequestProduct) => void
 }
 
 export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ data, onSubmit }) => {
-  const form = useForm<z.infer<typeof addNewProductRequestSchema>>({
-    resolver: zodResolver(addNewProductRequestSchema),
+  const form = useForm<z.infer<typeof requestProdcuctSchema>>({
+    resolver: zodResolver(requestProdcuctSchema),
     defaultValues: {
-      createdAt: data?.createdAt || new Date().toISOString(),
       code: data?.code || '',
       name: data?.name || '',
       provider: data?.provider || '',
       unit: data?.unit || '',
       quantity: data?.quantity || 1,
-      description: data?.description || '',
-      status: data?.status || ''
+      description: data?.description || ''
     }
   })
 
-  const handleSubmit = (values: z.infer<typeof addNewProductRequestSchema>) => {
-    const completeData: IProductInfo = {
+  const handleSubmit = (values: z.infer<typeof requestProdcuctSchema>) => {
+    const completeData: IRequestProduct = {
       ...values,
-      createdAt: values.createdAt || '',
       quantity: Number(values.quantity)
     }
     onSubmit(completeData)
@@ -49,19 +46,6 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="grid grid-cols-3 gap-2">
-            <FormField
-              control={form.control}
-              name="createdAt"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Ngày tạo</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="code"
@@ -102,19 +86,6 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
               )}
             />
           </div>
-          <FormField
-            control={form.control}
-            name="status"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Trạng thái</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <div className="grid grid-cols-3 gap-2">
             <FormField
               control={form.control}

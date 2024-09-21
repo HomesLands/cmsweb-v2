@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useRequisitionStore } from '@/stores'
 import { useProducts } from '@/hooks'
-import { IProductInfo, IProductNameSearch, IProductQuery } from '@/types'
+import { IProductNameSearch, IProductQuery, IRequestProduct } from '@/types'
 
 import { Button, DataTable, DataTableRequisition, Label } from '@/components/ui'
 import { CustomComponentRequest } from '@/views/product-requisitions/CustomComponentRequest'
@@ -25,17 +25,17 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
   })
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
-  const [selectedProducts, setSelectedProducts] = useState<IProductInfo[]>([])
+  const [selectedProducts] = useState<IRequestProduct[]>([])
 
   const { data: allProduct, isLoading } = useProducts(query)
-  const { getRequisition, updateProductToRequisition, deleteProductToRequisition } =
+  const { requisition, updateProductToRequisition, deleteProductToRequisition } =
     useRequisitionStore() // Fetch requisition data
 
-  const handleEditRequisition = (product: IProductInfo) => {
+  const handleEditRequisition = (product: IRequestProduct) => {
     updateProductToRequisition(product)
   }
 
-  const handleDeleteProduct = (product: IProductInfo) => {
+  const handleDeleteProduct = (product: IRequestProduct) => {
     deleteProductToRequisition(product)
   }
 
@@ -73,10 +73,10 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
           <DataTableRequisition
             isLoading={isLoading}
             columns={columns}
-            data={getRequisition()?.products || []} // Pass the requisition data here
+            data={requisition?.products || []} // Pass the requisition data here
             pages={1}
             page={1}
-            pageSize={getRequisition()?.products?.length || 0}
+            pageSize={requisition?.products?.length || 0}
             onPageChange={() => {}}
             onPageSizeChange={() => {}}
             CustomComponent={undefined}

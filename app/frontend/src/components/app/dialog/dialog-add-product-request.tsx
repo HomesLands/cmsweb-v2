@@ -9,14 +9,14 @@ import {
   DialogTrigger
 } from '@/components/ui'
 
-import { addNewProductRequestSchema } from '@/schemas'
+import { requestProdcuctSchema } from '@/schemas'
 import { AddNewProductRequestForm } from '@/components/app/form'
-import { IProductInfo } from '@/types'
+import { IRequestProduct } from '@/types'
 import { useRequisitionStore } from '@/stores'
 
 interface DialogAddProductRequestProps {
   openDialog: boolean
-  product?: IProductInfo | null
+  product: IRequestProduct
   component: React.ReactNode
   onOpenChange: () => void
 }
@@ -29,14 +29,13 @@ export function DialogAddProductRequest({
 }: DialogAddProductRequestProps) {
   const { addProductToRequisition } = useRequisitionStore()
 
-  const handleAddRequest = (product: IProductInfo) => {
+  const handleAddRequest = (product: IRequestProduct) => {
     addProductToRequisition(product)
     onOpenChange()
   }
-  const handleSubmit = (data: z.infer<typeof addNewProductRequestSchema>) => {
-    const completeData: IProductInfo = {
-      ...data,
-      createdAt: new Date().toISOString()
+  const handleSubmit = (data: IRequestProduct) => {
+    const completeData: IRequestProduct = {
+      ...data
     }
     handleAddRequest(completeData)
     onOpenChange()
@@ -47,7 +46,7 @@ export function DialogAddProductRequest({
       <DialogTrigger asChild>{component}</DialogTrigger>
       <DialogContent className="max-w-[44rem]">
         <DialogHeader>
-          <DialogTitle>Thêm vật tư mới</DialogTitle>
+          <DialogTitle>Thêm vật tư yêu cầu</DialogTitle>
           <DialogDescription>Nhập đầy đủ thông tin bên dưới để thêm vật tư mới</DialogDescription>
         </DialogHeader>
         <AddNewProductRequestForm data={product || undefined} onSubmit={handleSubmit} />

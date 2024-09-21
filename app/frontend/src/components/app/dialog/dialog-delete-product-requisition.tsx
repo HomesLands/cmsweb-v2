@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { TriangleAlert } from 'lucide-react'
 
 import {
   Button,
@@ -10,36 +10,27 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui'
-
-import { IProductInfo } from '@/types'
-
-import { TriangleAlert } from 'lucide-react'
+import { IRequestProduct } from '@/types'
 
 interface DialogDeleteProductRequisitionProps {
-  handleDeleteProduct: (product: IProductInfo) => void
-
+  handleDeleteProduct: (product: IRequestProduct) => void
   openDialog: boolean
-  product: IProductInfo | null
-
+  product: IRequestProduct
   component: React.ReactNode
   onOpenChange: () => void
 }
 
 export function DialogDeleteProductRequisition({
   handleDeleteProduct,
-
   openDialog,
-
   product,
-
   component,
   onOpenChange
 }: DialogDeleteProductRequisitionProps) {
-  const handleSubmit = (data: IProductInfo) => {
-    const completeData: IProductInfo = {
+  const handleSubmit = (data: IRequestProduct) => {
+    const completeData: IRequestProduct = {
       ...data
     }
-
     handleDeleteProduct(completeData)
     onOpenChange()
   }
