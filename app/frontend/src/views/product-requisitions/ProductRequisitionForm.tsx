@@ -19,14 +19,7 @@ const ProductRequisitionForm: React.FC = () => {
   const { t } = useTranslation('productRequisition')
   const { currentStep, handleStepChange } = useMultiStep(1)
   const [formData, setFormData] = useState<IProductRequirementInfoCreate | null>(null)
-  const { setRequisition, getRequisition } = useRequisitionStore()
-
-  // useEffect(() => {
-  //   const savedFormData = getRequisition()
-  //   if (savedFormData) {
-  //     setFormData(savedFormData)
-  //   }
-  // }, [getRequisition])
+  const { setRequisition, requisition } = useRequisitionStore()
 
   const mutation = useMutation({
     mutationFn: async (data: IProductRequirementInfoCreate) => {
@@ -34,7 +27,6 @@ const ProductRequisitionForm: React.FC = () => {
     },
     onSuccess: () => {
       showToast(t('request_success'))
-      // handleStepChange(4)
     }
   })
 
@@ -52,18 +44,16 @@ const ProductRequisitionForm: React.FC = () => {
   }
 
   const handleConfirmRequest = () => {
-    const savedFormData = getRequisition()
-    if (savedFormData) {
-      mutation.mutate(savedFormData)
+    if (requisition) {
+      mutation.mutate(requisition)
 
       // handleStepChange(4)
     }
   }
 
   const handleBackToCreate = () => {
-    const savedFormData = getRequisition()
-    if (savedFormData) {
-      setFormData(savedFormData)
+    if (requisition) {
+      setFormData(requisition)
     }
     handleStepChange(1)
   }

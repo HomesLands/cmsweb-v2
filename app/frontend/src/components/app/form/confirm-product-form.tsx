@@ -3,10 +3,9 @@ import { format } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 
 import { Button, DataTableRequisition } from '@/components/ui'
-import { IProductInfo, IProductRequirementInfoCreate } from '@/types'
+import { IProductRequirementInfoCreate, IRequestProduct } from '@/types'
 import { TbeLogo } from '@/assets/images'
 import { useColumnsConfirm } from '@/views/product-requisitions/DataTable/columnsConfirm'
-import { showToast } from '@/utils'
 import { useRequisitionStore } from '@/stores'
 
 interface IConfirmProductFormProps {
@@ -16,19 +15,17 @@ interface IConfirmProductFormProps {
 
 export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfirm, onBack }) => {
   const [localData, setLocalData] = useState<IProductRequirementInfoCreate | null>(null)
-  const [selectedProducts, setSelectedProducts] = useState<IProductInfo[]>([])
+  const [selectedProducts, setSelectedProducts] = useState<IRequestProduct[]>([])
   const { t } = useTranslation('productRequisition')
 
-  const { getRequisition, updateProductToRequisition, deleteProductToRequisition } =
+  const { requisition, updateProductToRequisition, deleteProductToRequisition } =
     useRequisitionStore()
 
-  console.log(getRequisition())
-
-  const handleEditRequest = (product: IProductInfo) => {
+  const handleEditRequest = (product: IRequestProduct) => {
     updateProductToRequisition(product)
   }
 
-  const handleDeleteProduct = (product: IProductInfo) => {
+  const handleDeleteProduct = (product: IRequestProduct) => {
     deleteProductToRequisition(product)
   }
 
@@ -65,31 +62,31 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
             </div>
           </div>
         </div>
-        {getRequisition() && (
+        {requisition && (
           <div className="grid grid-cols-3 gap-3 mb-3 text-sm font-beVietNam">
             <div>
               <strong>Ngày yêu cầu: </strong>
-              {format(new Date(getRequisition()?.createdAt || ''), 'HH:mm dd/MM/yyyy')}
+              {format(new Date(requisition?.createdAt || ''), 'hh:mm:ss dd/MM/yyyy')}
             </div>
             <div>
               <strong>Người yêu cầu: </strong>
-              {getRequisition()?.requester}
+              {requisition?.requester}
             </div>
             <div>
               <strong>Mã hóa đơn: </strong>
-              {getRequisition()?.requestCode}
+              {requisition?.requestCode}
             </div>
             <div>
               <strong>Công trình sử dụng: </strong>
-              {getRequisition()?.site.name}
+              {requisition?.site.name}
             </div>
             <div>
               <strong>Dự án: </strong>
-              {getRequisition()?.project.name}
+              {requisition?.project.name}
             </div>
             <div>
               <strong>Ghi chú: </strong>
-              {getRequisition()?.note}
+              {requisition?.note}
             </div>
           </div>
         )}
@@ -97,10 +94,10 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
       <DataTableRequisition
         isLoading={false}
         columns={columns}
-        data={getRequisition()?.products || []}
+        data={requisition?.products || []}
         pages={1}
         page={1}
-        pageSize={getRequisition()?.products?.length || 0}
+        pageSize={requisition?.products?.length || 0}
         onPageChange={() => {}}
       />
 

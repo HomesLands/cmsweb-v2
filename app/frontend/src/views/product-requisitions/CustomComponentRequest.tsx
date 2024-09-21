@@ -13,7 +13,7 @@ import {
   Input
 } from '@/components/ui'
 import { DialogAddProductRequest } from '@/components/app/dialog'
-import { IProductInfo } from '@/types'
+import { IRequestProduct } from '@/types'
 
 interface ColumnVisibilityDropdownProps<TData> {
   table: Table<TData>
@@ -22,9 +22,9 @@ interface ColumnVisibilityDropdownProps<TData> {
 export function CustomComponentRequest<TData>({ table }: ColumnVisibilityDropdownProps<TData>) {
   const { t } = useTranslation('tableData')
   const [openDialog, setOpenDialog] = useState(false)
-  const [selectedProduct, setSelectedProduct] = useState<IProductInfo | null>(null)
+  const [selectedProduct, setSelectedProduct] = useState<IRequestProduct | null>(null)
 
-  const handleOpenDialog = (product: IProductInfo | null) => {
+  const handleOpenDialog = (product: IRequestProduct) => {
     setSelectedProduct(product)
     setOpenDialog(true)
   }
@@ -64,14 +64,14 @@ export function CustomComponentRequest<TData>({ table }: ColumnVisibilityDropdow
             ))}
         </DropdownMenuContent>
       </DropdownMenu>
-      <Button variant="outline" onClick={() => handleOpenDialog(null)}>
+      <Button variant="outline" onClick={() => handleOpenDialog({})}>
         <PlusCircledIcon className="w-4 h-4 mr-2" />
         {t('tableData.addNewProduct')}
       </Button>
       {openDialog && (
         <DialogAddProductRequest
           openDialog={openDialog}
-          product={selectedProduct}
+          product={selectedProduct || {}}
           component={null}
           onOpenChange={onOpenChange}
         />
