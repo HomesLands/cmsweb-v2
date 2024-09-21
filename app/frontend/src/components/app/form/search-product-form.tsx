@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { useRequisitionStore } from '@/stores'
 import { useProducts } from '@/hooks'
 import { IProductInfo, IProductNameSearch, IProductQuery } from '@/types'
 
-import { Button, DataTable, Label } from '@/components/ui'
+import { Button, DataTable, DataTableRequisition, Label } from '@/components/ui'
 import { CustomComponentRequest } from '@/views/product-requisitions/CustomComponentRequest'
 import { useColumnsSearch } from '@/views/product-requisitions/DataTable/columnsSearch'
-import { columnsResult } from '@/views/product-requisitions/DataTable/columnsResult'
-import { useRequisitionStore } from '@/stores'
+import { useColumnsResult } from '@/views/product-requisitions/DataTable/columnsResult'
 
 interface IFormAddProductProps {
   onSubmit: (data: IProductNameSearch) => void
@@ -25,10 +25,19 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
   })
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
-  const [order, setOrder] = useState('DESC')
   const [selectedProducts, setSelectedProducts] = useState<IProductInfo[]>([])
 
   const { data: allProduct, isLoading } = useProducts(query)
+  const { getRequisition, updateProductToRequisition, deleteProductToRequisition } =
+    useRequisitionStore() // Fetch requisition data
+
+  const handleEditRequisition = (product: IProductInfo) => {
+    updateProductToRequisition(product)
+  }
+
+  const handleDeleteProduct = (product: IProductInfo) => {
+    deleteProductToRequisition(product)
+  }
 
   const handleNext = () => {
     const productNameSearch: IProductNameSearch = {
@@ -36,6 +45,8 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
     }
     onSubmit(productNameSearch)
   }
+
+  const columns = useColumnsResult(handleEditRequisition, handleDeleteProduct)
 
   return (
     <div className="flex flex-col w-full gap-4 mt-3">
@@ -51,7 +62,7 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
         CustomComponent={(props) => <CustomComponentRequest {...props} />}
       />
 
-      <div className="flex flex-col gap-2 p-4 border rounded-md">
+      <div className="flex flex-col gap-2">
         <Label className="text-lg font-semibold leading-none tracking-tight font-beVietNam">
           {t('productRequisition.addedProductToRequest')}
         </Label>
@@ -59,13 +70,13 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
           {t('productRequisition.addedProductToRequestDescription')}
         </span>
         <div className="flex flex-col gap-2">
-          <DataTable
+          <DataTableRequisition
             isLoading={isLoading}
-            columns={columnsResult()}
-            data={selectedProducts}
+            columns={columns}
+            data={getRequisition()?.products || []} // Pass the requisition data here
             pages={1}
             page={1}
-            pageSize={selectedProducts.length}
+            pageSize={getRequisition()?.products?.length || 0}
             onPageChange={() => {}}
             onPageSizeChange={() => {}}
             CustomComponent={undefined}

@@ -1,0 +1,239 @@
+{
+  "code": 200,
+  "error": false,
+  "message": "Get all error codes successfully",
+  "method": "GET",
+  "path": "/api/v1/errorCodes",
+  "result": {
+    "INVALID_EMAIL": {
+      "httpStatusCode": 400,
+      "code": 1001,
+      "message": "Email is not valid"
+    },
+    "INVALID_USERNAME": {
+      "httpStatusCode": 400,
+      "code": 1003,
+      "message": "Username is not valid"
+    },
+    "INVALID_PASSWORD": {
+      "httpStatusCode": 400,
+      "code": 1008,
+      "message": "Password is not valid"
+    },
+    "INVALID_FULLNAME": {
+      "httpStatusCode": 400,
+      "code": 1011,
+      "message": "Fullname is not valid"
+    },
+    "PATH_NOT_FOUND": {
+      "httpStatusCode": 404,
+      "code": 1002,
+      "message": "Can not find path"
+    },
+    "USER_NOT_FOUND": {
+      "httpStatusCode": 401,
+      "code": 1004,
+      "message": "User not found"
+    },
+    "SESSION_STORE_ERROR": {
+      "httpStatusCode": 500,
+      "code": 1005,
+      "message": "Fail in store session when login"
+    },
+    "USER_EXIST": {
+      "httpStatusCode": 400,
+      "code": 1006,
+      "message": "User exist"
+    },
+    "UNIDENTIFIED_ERROR": {
+      "httpStatusCode": 400,
+      "code": 1007,
+      "message": "Unindentified error"
+    },
+    "INVALID_TOKEN": {
+      "httpStatusCode": 400,
+      "code": 1012,
+      "message": "Token is not valid"
+    },
+    "INVALID_JWT_PAYLOAD": {
+      "httpStatusCode": 400,
+      "code": 1013,
+      "message": "Jwt payload is not valid"
+    },
+    "TOKEN_NOT_EXPIRED": {
+      "httpStatusCode": 400,
+      "code": 1014,
+      "message": "Token is not expired"
+    },
+    "SUBJECT_NOT_EXIST": {
+      "httpStatusCode": 400,
+      "code": 1015,
+      "message": "Subject is not exist"
+    },
+    "REFRESH_TOKEN_EXPIRED": {
+      "httpStatusCode": 400,
+      "code": 1016,
+      "message": "Refresh token expired, cannot create new token."
+    },
+    "TOKEN_EXPIRED": {
+      "httpStatusCode": 400,
+      "code": 1017,
+      "message": "Token expired."
+    },
+    "INVALID_REFRESH_TOKEN": {
+      "httpStatusCode": 400,
+      "code": 1018,
+      "message": "Refresh token is not valid"
+    },
+    "IAT_NOT_EXIST": {
+      "httpStatusCode": 400,
+      "code": 1019,
+      "message": "Token iat is not exist"
+    },
+    "TOKEN_ID_NOT_EXIST": {
+      "httpStatusCode": 400,
+      "code": 1019,
+      "message": "Token id is not exist"
+    },
+    "TOKEN_TYPE_NOT_EXIST": {
+      "httpStatusCode": 400,
+      "code": 1020,
+      "message": "Token type is not exist"
+    },
+    "EXP_NOT_EXIST": {
+      "httpStatusCode": 400,
+      "code": 1021,
+      "message": "Token expiration is not exist"
+    },
+    "USER_ASSIGNED_NOT_FOUND": {
+      "httpStatusCode": 400,
+      "code": 1022,
+      "message": "User is assigned not found"
+    },
+    "UNIT_EXIST": {
+      "httpStatusCode": 400,
+      "code": 1023,
+      "message": "Unit exist"
+    },
+    "UNIT_NOT_FOUND": {
+      "httpStatusCode": 400,
+      "code": 1024,
+      "message": "Unit not found"
+    },
+    "CODE_PRODUCT_EXIST": {
+      "httpStatusCode": 400,
+      "code": 1025,
+      "message": "Code product exist"
+    },
+    "INVALID_PRODUCT_PROVIDER": {
+      "httpStatusCode": 400,
+      "code": 1026,
+      "message": "Invalid product provider"
+    },
+    "INVALID_PRODUCT_NAME": {
+      "httpStatusCode": 400,
+      "code": 1027,
+      "message": "Invalid product name"
+    },
+    "INVALID_PRODUCT_UNIT": {
+      "httpStatusCode": 400,
+      "code": 1028,
+      "message": "Invalid product unit"
+    },
+    "INVALID_PRODUCT_CODE": {
+      "httpStatusCode": 400,
+      "code": 1029,
+      "message": "Invalid product code"
+    },
+    "INVALID_SITE_NAME": {
+      "httpStatusCode": 400,
+      "code": 1030,
+      "message": "Invalid site name"
+    },
+    "INVALID_SITE_ADDRESS": {
+      "httpStatusCode": 400,
+      "code": 1031,
+      "message": "Invalid site address"
+    },
+    "INVALID_SITE_MANAGER": {
+      "httpStatusCode": 400,
+      "code": 1032,
+      "message": "Invalid site manager"
+    },
+    "INVALID_PROJECT_NAME": {
+      "httpStatusCode": 400,
+      "code": 1033,
+      "message": "Invalid project name"
+    },
+    "INVALID_PROJECT_START_DATE": {
+      "httpStatusCode": 400,
+      "code": 1034,
+      "message": "Invalid project start date"
+    },
+    "INVALID_PROJECT_PROCESS": {
+      "httpStatusCode": 400,
+      "code": 1035,
+      "message": "Invalid project process"
+    },
+    "INVALID_PROJECT_DESCRIPTION": {
+      "httpStatusCode": 400,
+      "code": 1036,
+      "message": "Invalid project description"
+    },
+    "INVALID_PROJECT_FILE_DESCRIPTION": {
+      "httpStatusCode": 400,
+      "code": 1037,
+      "message": "Invalid project file description"
+    },
+    "INVALID_PROJECT_MANAGER": {
+      "httpStatusCode": 400,
+      "code": 1038,
+      "message": "Invalid project manager"
+    },
+    "INVALID_UNIT_NAME": {
+      "httpStatusCode": 400,
+      "code": 1039,
+      "message": "Invalid unit name"
+    },
+    "INVALID_DATE_FORMAT": {
+      "httpStatusCode": 400,
+      "code": 1039,
+      "message": "Invalid date format"
+    },
+    "INVALID_COMPANY_NAME": {
+      "httpStatusCode": 400,
+      "code": 1040,
+      "message": "Invalid company name"
+    },
+    "COMPANY_NAME_EXIST": {
+      "httpStatusCode": 400,
+      "code": 1041,
+      "message": "Company name exist"
+    },
+    "PRODUCT_REQUISITION_FORM_CODE_EXIST": {
+      "httpStatusCode": 400,
+      "code": 1042,
+      "message": "Product requisition form code exist"
+    },
+    "COMPANY_NOT_FOUND": {
+      "httpStatusCode": 400,
+      "code": 1043,
+      "message": "Company not found"
+    },
+    "INVALID_QUANTITY_USER_APPROVAL": {
+      "httpStatusCode": 400,
+      "code": 1044,
+      "message": "Invalid quantity user approval"
+    },
+    "PRODUCT_NOT_FOUND": {
+      "httpStatusCode": 400,
+      "code": 1045,
+      "message": "Product not found"
+    },
+    "FORM_NOT_FOUND": {
+      "httpStatusCode": 400,
+      "code": 1046,
+      "message": "Form not found"
+    }
+  }
+}

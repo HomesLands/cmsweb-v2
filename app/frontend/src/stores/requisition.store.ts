@@ -10,7 +10,7 @@ export const useRequisitionStore = create<IRequisitionStore>()(
       getRequisition: () => get().requisition,
       setRequisition: (requisition: IProductRequirementInfoCreate) => {
         set({ requisition })
-        showToast('Requisition set successfully')
+        showToast('Tạo phiếu yêu cầu thành công!')
       },
       clearRequisition: () => set({ requisition: undefined }),
       addProductToRequisition: (product: IProductInfo) => {
@@ -28,6 +28,28 @@ export const useRequisitionStore = create<IRequisitionStore>()(
             })
             showToast('Đã thêm vật tư vào phiếu yêu cầu!')
           }
+        }
+      },
+      updateProductToRequisition: (product: IProductInfo) => {
+        const currentRequisition = get().requisition
+        if (currentRequisition) {
+          const productIndex = currentRequisition.products.findIndex((p) => p.code === product.code)
+          if (productIndex === -1) {
+            showErrorToast(1000)
+          } else {
+            const updatedProducts = [...currentRequisition.products]
+            updatedProducts[productIndex] = product
+            set({ requisition: { ...currentRequisition, products: updatedProducts } })
+            showToast('Đã cập nhật vật tư trong phiếu yêu cầu!')
+          }
+        }
+      },
+      deleteProductToRequisition: (product: IProductInfo) => {
+        const currentRequisition = get().requisition
+        if (currentRequisition) {
+          const updatedProducts = currentRequisition.products.filter((p) => p.code !== product.code)
+          set({ requisition: { ...currentRequisition, products: updatedProducts } })
+          showToast('Đã xóa vật tư trong phiếu yêu cầu!')
         }
       }
     }),

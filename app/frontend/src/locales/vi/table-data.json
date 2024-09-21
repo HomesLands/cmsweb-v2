@@ -22,7 +22,7 @@
     "productCode": "Mã sản phẩm",
     "productName": "Tên sản phẩm",
     "model": "Model",
-    "supplier": "Nhà cung cấp",
+    "provider": "Nhà cung cấp",
     "quantity": "Số lượng",
     "unit": "Đơn vị",
     "price": "Giá",

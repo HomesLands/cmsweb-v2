@@ -73,7 +73,7 @@ export interface IProductInfo {
   status?: string
   description?: string
   unit: string
-  quantity: string
+  quantity: number
 }
 
 export interface IUserQuery {

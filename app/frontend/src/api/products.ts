@@ -58,30 +58,6 @@ export async function postProductRequest(params: {
   return lowercaseParams
 }
 
-export async function getProjectListInProductRequisition(): Promise<
-  IProjectListResponse<IProject[]>
-> {
-  try {
-    const response = await http.get<IProjectListResponse<IProject[]>>('/projects')
-    return response.data
-  } catch (error) {
-    console.log('Failed to fetch projects:', error)
-    throw new Error('Failed to fetch projects')
-  }
-}
-
-export async function getConstructionListInProductRequisition(): Promise<
-  IConstructionListResponse<IConstruction[]>
-> {
-  try {
-    const response = await http.get<IProjectListResponse<IConstruction[]>>('/sites')
-    return response.data
-  } catch (error) {
-    console.log('Failed to fetch constructions:', error)
-    throw new Error('Failed to fetch constructions')
-  }
-}
-
 export async function getAllProduct(params: {
   order: string
   page: number
