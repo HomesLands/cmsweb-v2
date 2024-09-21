@@ -3,7 +3,8 @@ import {
   IPaginationResponse,
   IProductInfo,
   IProductQuery,
-  IProductRequirementInfoCreate
+  IProductRequirementInfoCreate,
+  IRequestProduct
 } from '@/types'
 import { http } from '@/utils'
 
@@ -30,7 +31,7 @@ export async function postProductRequest(params: {
   approver: string
   note: string
   priority: string
-  products: IProductInfo[]
+  products: IRequestProduct[]
   createdAt: string
 }): Promise<IProductRequirementInfoCreate> {
   // Convert parameters to lowercase directly
@@ -52,4 +53,20 @@ export async function postProductRequest(params: {
     createdAt: params.createdAt
   }
   return lowercaseParams
+}
+
+export async function getAllProduct(params: {
+  order: string
+  page: number
+  pageSize: number
+}): Promise<IApiResponse<IProductInfo>> {
+  try {
+    const response = await http.get<IApiResponse<IProductInfo>>('/products', {
+      params
+    })
+    return response.data
+  } catch (error) {
+    console.log('Failed to fetch products:', error)
+    throw new Error('Failed to fetch products')
+  }
 }

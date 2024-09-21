@@ -1,17 +1,18 @@
-import { TApiResponse } from "@types";
+import { TApiResponse, TPaginationOptionResponse, TQueryRequest } from "@types";
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import { productRequisitionFormService } from "@services";
-import {
-  ProductRequisitionFormResponseDto,
-  UserApprovalForApprovalUserResponseDto,
-} from "@dto/response";
-import {
-  TCreateProductRequisitionFormRequestDto,
-  TApprovalProductRequisitionFormRequestDto,
-} from "@types";
+import { ProductRequisitionFormResponseDto, UserApprovalForApprovalUserResponseDto } from "@dto/response";
+import { TCreateProductRequisitionFormRequestDto, TApprovalProductRequisitionFormRequestDto } from "@types";
+import { logger } from "@lib";
 
 class ProductRequisitionFormController {
+  private _name: string;
+
+  constructor() {
+    this._name = ProductRequisitionFormController.name;
+  }
+
   /**
    * @swagger
    * components:
@@ -29,9 +30,9 @@ class ProductRequisitionFormController {
    *           type: integer
    *           description: The quantity of the product being requested.
    *       example:
-   *         productSlug: product-123
+   *         productSlug: KeYdkmeNg
    *         requestQuantity: 10
-   * 
+   *
    *     CreateUserApprovalDto:
    *       type: object
    *       required:
@@ -45,9 +46,9 @@ class ProductRequisitionFormController {
    *           type: string
    *           description: The approval stage (approval_stage_1, approval_stage_2, approval_stage_3).
    *       example:
-   *         userSlug: user-456
+   *         userSlug: KeYdkmeNg
    *         roleApproval: approval_stage_1
-   * 
+   *
    *     CreateProductRequisitionFormRequestDto:
    *       type: object
    *       required:
@@ -96,7 +97,7 @@ class ProductRequisitionFormController {
    *         type: urgent
    *         description: Ý kiến người tạo
    *         requestProducts:
-   *           - productSlug: product-123
+   *           - productSlug: KeYdkmeNg
    *             requestQuantity: 10
    *         userApprovals:
    *           - userSlug: user-456
@@ -136,15 +137,38 @@ class ProductRequisitionFormController {
    *     description: The productRequisitionForm managing API
    */
 
-    /**
+  /**
    * @swagger
    * /productRequisitionForms:
    *   get:
-   *     summary: Get all productRequisitionForms
+   *     summary: Get all product requisition forms
    *     tags: [ProductRequisitionForm]
+   *     parameters:
+   *       - in: query
+   *         name: order
+   *         schema:
+   *           type: string
+   *           enum: [ASC, DESC]
+   *         required: true
+   *         description: The order in which the product requisition forms are sorted (ASC, DESC)
+   *         example: ASC
+   *       - in: query
+   *         name: page
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of product requisition forms to skip
+   *         example: 1
+   *       - in: query
+   *         name: pageSize
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of product requisition forms to retrieve
+   *         example: 10
    *     responses:
    *       200:
-   *         description: Get all productRequisitionForms successfully.
+   *         description: Get all the product requisition forms successfully.
    *       500:
    *         description: Server error
    */
@@ -155,20 +179,22 @@ class ProductRequisitionFormController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const formsData = 
-        await productRequisitionFormService.getAllProductRequisitionForms({
-          order: "DESC",
-          skip: 0,
-          take: 100,
-        });
+      const query = req.query as unknown as TQueryRequest;
+      logger.info("", query);
+      const results =
+        await productRequisitionFormService.getAllProductRequisitionForms(
+          query
+        );
 
-      const response: TApiResponse<ProductRequisitionFormResponseDto[]> = {
+      const response: TApiResponse<
+        TPaginationOptionResponse<ProductRequisitionFormResponseDto[]>
+      > = {
         code: StatusCodes.OK,
         error: false,
         message: "Get list productRequisitionForms successfully",
         method: req.method,
         path: req.originalUrl,
-        result: formsData,
+        result: results,
       };
       res.status(StatusCodes.OK).json(response);
     } catch (error) {
@@ -180,7 +206,7 @@ class ProductRequisitionFormController {
    * @swagger
    * /productRequisitionForms:
    *   post:
-   *     summary: Create new productRequisitionForm
+   *     summary: Create new product requisition form
    *     tags: [ProductRequisitionForm]
    *     requestBody:
    *       required: true
@@ -190,7 +216,7 @@ class ProductRequisitionFormController {
    *              $ref: '#/components/schemas/CreateProductRequisitionFormRequestDto'
    *     responses:
    *       200:
-   *         description: New site created successfully.
+   *         description: New product requisition form created successfully.
    *         content:
    *           application/json:
    *             schema:
@@ -202,7 +228,7 @@ class ProductRequisitionFormController {
   public async createProductRequisitionForm(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> {
     try {
       const requestData = req.body as TCreateProductRequisitionFormRequestDto;
@@ -212,7 +238,7 @@ class ProductRequisitionFormController {
       const response: TApiResponse<ProductRequisitionFormResponseDto> = {
         code: StatusCodes.CREATED,
         error: false,
-        message: "Create site successfully",
+        message: "New product requisition form created successfully",
         method: req.method,
         path: req.originalUrl,
         result: form,
@@ -248,11 +274,14 @@ class ProductRequisitionFormController {
   public async getProductRequisitionFormBySlug(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> {
     try {
       const slug = req.params.slug as string;
-      const form = await productRequisitionFormService.getProductRequisitionFormBySlug(slug);
+      const form =
+        await productRequisitionFormService.getProductRequisitionFormBySlug(
+          slug
+        );
 
       const response: TApiResponse<ProductRequisitionFormResponseDto> = {
         code: StatusCodes.OK,

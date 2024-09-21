@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
 import { getProducts } from '@/api/products'
-import { IProductQuery, IUserQuery } from '@/types'
+import { IProductQuery } from '@/types'
 
 export const useProducts = (q: IProductQuery) => {
   return useQuery({

@@ -4,7 +4,7 @@ import { Base, RequestProduct, Company, UserApproval, User, Project, Site } from
 
 @Entity("product_requisition_form_tbl")
 export class ProductRequisitionForm extends Base {
-  @Column({ name: "code_column"})
+  @Column({ name: "code_column", unique: true })
   @AutoMap()
   code?: string;
 
@@ -30,15 +30,18 @@ export class ProductRequisitionForm extends Base {
   description?: boolean; 
 
   // a ProductRequisition have many request product
-  @OneToMany(() => RequestProduct,
-    (requestProduct) => requestProduct.productRequisitionForm,
+  @OneToMany(
+    () => RequestProduct,
+    (requestProduct) => requestProduct.productRequisitionForm
     // { eager: true } // get all request product
   )
   requestProducts?: RequestProduct[];
 
   // a product requisition form have many user approval
-  @OneToMany(() => UserApproval,
-    (userApproval) => userApproval.productRequisitionForm)
+  @OneToMany(
+    () => UserApproval,
+    (userApproval) => userApproval.productRequisitionForm
+  )
   userApprovals?: UserApproval[];
 
   @ManyToOne(() => User, (user) => user.productRequisitionForms)

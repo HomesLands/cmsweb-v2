@@ -9,44 +9,36 @@ import {
   FormMessage,
   Input,
   Form,
-  Button,
-  Textarea
+  Button
 } from '@/components/ui'
-import { addNewProductRequestSchema } from '@/schemas'
+import { requestProdcuctSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { IProductInfo } from '@/types'
+import { IRequestProduct } from '@/types'
 
 interface IFormAddNewProductProps {
-  data: IProductInfo
-  onSubmit: (data: z.infer<typeof addNewProductRequestSchema>) => void
-  handleAddRequest: (data: IProductInfo) => void
+  data: IRequestProduct
+  onSubmit: (data: IRequestProduct) => void
 }
 
-export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ onSubmit, data }) => {
-  const form = useForm<z.infer<typeof addNewProductRequestSchema>>({
-    resolver: zodResolver(addNewProductRequestSchema),
-    // defaultValues: {
-    //   productCode: data.productCode || '',
-    //   productName: data.productName || '',
-    //   modelOrSerialNumber: data.modelOrSerialNumber || '',
-    //   supplier: data.supplier || '',
-    //   unit: data.unit || '',
-    //   quantity: String(data.quantity) || '0',
-    //   note: data.note || ''
-    // }
+export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ data, onSubmit }) => {
+  const form = useForm<z.infer<typeof requestProdcuctSchema>>({
+    resolver: zodResolver(requestProdcuctSchema),
     defaultValues: {
-      code: data.code || '',
-      name: data.name || '',
-      provider: data.provider || '',
-      unit: data.unit || '',
-      description: data.description || '',
-      status: data.status || ''
-      // note: data.note || ''
+      code: data?.code || '',
+      name: data?.name || '',
+      provider: data?.provider || '',
+      unit: data?.unit || '',
+      quantity: data?.quantity || 1,
+      description: data?.description || ''
     }
   })
 
-  const handleSubmit = (values: z.infer<typeof addNewProductRequestSchema>) => {
-    onSubmit(values)
+  const handleSubmit = (values: z.infer<typeof requestProdcuctSchema>) => {
+    const completeData: IRequestProduct = {
+      ...values,
+      quantity: Number(values.quantity)
+    }
+    onSubmit(completeData)
   }
 
   return (
@@ -97,12 +89,19 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
           <div className="grid grid-cols-3 gap-2">
             <FormField
               control={form.control}
-              name="status"
+              name="quantity"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Số lượng</FormLabel>
                   <FormControl>
-                    <Input type="number" min="1" placeholder="Nhập số lượng" {...field} />
+                    <Input
+                      type="number"
+                      min="1"
+                      placeholder="Nhập số lượng"
+                      {...field}
+                      value={field.value || 1}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -122,34 +121,19 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ on
                 </FormItem>
               )}
             />
-            {/* <FormField
+            <FormField
               control={form.control}
-              name="supplier"
+              name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nhà cung cấp</FormLabel>
+                  <FormLabel>Mô tả</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
-          </div>
-          <div className="grid grid-cols-1 gap-2">
-            {/* <FormField
-              control={form.control}
-              name="note"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Ghi chú</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="Nhập ghi chú" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
+            />
           </div>
           <div className="flex justify-end w-full">
             <Button type="submit">Thêm</Button>

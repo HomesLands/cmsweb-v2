@@ -77,6 +77,7 @@ class AuthMiddleware {
           const userId = req.userId as string;
           const user = await userRepository.findOneBy({ id: userId });
           if (!user) throw new GlobalError(StatusCodes.FORBIDDEN);
+
           // Get user role
           const hasRole = user.userRoles?.some((item) => {
             if (item.role.nameNormalize) {

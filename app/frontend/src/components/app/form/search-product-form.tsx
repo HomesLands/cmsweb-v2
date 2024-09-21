@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { useRequisitionStore } from '@/stores'
 import { useProducts } from '@/hooks'
-import { IProductInfo, IProductNameSearch, IProductQuery } from '@/types'
+import { IProductNameSearch, IProductQuery, IRequestProduct } from '@/types'
 
-import { Button, DataTable, Label } from '@/components/ui'
+import { Button, DataTable, DataTableRequisition, Label } from '@/components/ui'
 import { CustomComponentRequest } from '@/views/product-requisitions/CustomComponentRequest'
 import { useColumnsSearch } from '@/views/product-requisitions/DataTable/columnsSearch'
-import { columnsResult } from '@/views/product-requisitions/DataTable/columnsResult'
-import { showToast } from '@/utils'
+import { useColumnsResult } from '@/views/product-requisitions/DataTable/columnsResult'
 
 interface IFormAddProductProps {
   onSubmit: (data: IProductNameSearch) => void
@@ -25,9 +25,19 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
   })
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
-  const [selectedProducts, setSelectedProducts] = useState<IProductInfo[]>([])
+  const [selectedProducts] = useState<IRequestProduct[]>([])
 
   const { data: allProduct, isLoading } = useProducts(query)
+  const { requisition, updateProductToRequisition, deleteProductToRequisition } =
+    useRequisitionStore() // Fetch requisition data
+
+  const handleEditRequisition = (product: IRequestProduct) => {
+    updateProductToRequisition(product)
+  }
+
+  const handleDeleteProduct = (product: IRequestProduct) => {
+    deleteProductToRequisition(product)
+  }
 
   const handleNext = () => {
     const productNameSearch: IProductNameSearch = {
@@ -36,51 +46,23 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
     onSubmit(productNameSearch)
   }
 
-  const handleAddRequest = (product: IProductInfo) => {
-    const existingData = JSON.parse(localStorage.getItem('requestFormProducts') || '{}')
-    const updatedData =
-      typeof existingData === 'object' && existingData !== null ? existingData : {}
-    const productsArray = Array.isArray(updatedData.products) ? updatedData.products : []
-    const updatedProducts = [...productsArray, product]
-    updatedData.products = updatedProducts
-    localStorage.setItem('requestFormProducts', JSON.stringify(updatedData))
-    setSelectedProducts(updatedProducts)
-    showToast('Thêm vật tư thành công!')
-  }
-
-  useEffect(() => {
-    const updateSelectedProducts = () => {
-      const existingData = JSON.parse(localStorage.getItem('requestFormProducts') || '{}')
-      const productsArray = Array.isArray(existingData.products) ? existingData.products : []
-      setSelectedProducts(productsArray)
-    }
-
-    updateSelectedProducts()
-
-    window.addEventListener('storage', updateSelectedProducts)
-    return () => {
-      window.removeEventListener('storage', updateSelectedProducts)
-    }
-  }, [])
+  const columns = useColumnsResult(handleEditRequisition, handleDeleteProduct)
 
   return (
     <div className="flex flex-col w-full gap-4 mt-3">
       <DataTable
         isLoading={isLoading}
-        columns={useColumnsSearch(handleAddRequest)}
-        data={allProduct?.result.items || []}
-        // total={data?.total || 0}
-        pages={allProduct?.result.totalPages || 0}
+        columns={useColumnsSearch()}
+        data={allProduct?.result?.items || []}
+        pages={allProduct?.result?.totalPages || 0}
         page={page}
         pageSize={pageSize}
         onPageChange={setPage}
         onPageSizeChange={setPageSize}
-        CustomComponent={(props) => (
-          <CustomComponentRequest {...props} handleAddRequest={handleAddRequest} />
-        )}
+        CustomComponent={(props) => <CustomComponentRequest {...props} />}
       />
 
-      <div className="flex flex-col gap-2 p-4 border rounded-md">
+      <div className="flex flex-col gap-2">
         <Label className="text-lg font-semibold leading-none tracking-tight font-beVietNam">
           {t('productRequisition.addedProductToRequest')}
         </Label>
@@ -88,18 +70,16 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
           {t('productRequisition.addedProductToRequestDescription')}
         </span>
         <div className="flex flex-col gap-2">
-          <DataTable
+          <DataTableRequisition
             isLoading={isLoading}
-            columns={columnsResult()}
-            data={selectedProducts}
+            columns={columns}
+            data={requisition?.products || []} // Pass the requisition data here
             pages={1}
             page={1}
-            pageSize={selectedProducts.length}
+            pageSize={requisition?.products?.length || 0}
             onPageChange={() => {}}
             onPageSizeChange={() => {}}
-            CustomComponent={(props) => (
-              <CustomComponentRequest {...props} handleAddRequest={handleAddRequest} />
-            )}
+            CustomComponent={undefined}
           />
         </div>
       </div>

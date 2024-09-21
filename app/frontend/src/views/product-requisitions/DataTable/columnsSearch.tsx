@@ -13,9 +13,7 @@ import {
 import { IProductInfo } from '@/types'
 import { DialogAddProductRequest } from '@/components/app/dialog'
 
-export const useColumnsSearch = (
-  handleAddRequest: (data: IProductInfo) => void
-): ColumnDef<IProductInfo>[] => {
+export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
   const [selectedProduct, setSelectedProduct] = useState<IProductInfo | null>(null)
   const [openDialog, setOpenDialog] = useState(false)
 
@@ -45,9 +43,8 @@ export const useColumnsSearch = (
                   </Button>
                   {selectedProduct === product && (
                     <DialogAddProductRequest
-                      handleAddRequest={handleAddRequest}
                       openDialog={openDialog}
-                      product={product}
+                      product={selectedProduct}
                       component={null}
                       onOpenChange={onOpenChange}
                     />
@@ -63,19 +60,15 @@ export const useColumnsSearch = (
       }
     },
     {
-      accessorKey: 'productCode',
+      accessorKey: 'code',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Mã vật tư" />
     },
     {
-      accessorKey: 'productName',
+      accessorKey: 'name',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Tên vật tư" />
     },
     {
-      accessorKey: 'modelOrSerialNumber',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Model" />
-    },
-    {
-      accessorKey: 'supplier',
+      accessorKey: 'provider',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Nhà cung cấp" />
     },
     {
@@ -83,8 +76,8 @@ export const useColumnsSearch = (
       header: ({ column }) => <DataTableColumnHeader column={column} title="Đơn vị" />
     },
     {
-      accessorKey: 'quantity',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Số lượng" />
+      accessorKey: 'description',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Mô tả" />
     }
   ]
 }

@@ -2,6 +2,7 @@
 import toast from 'react-hot-toast'
 
 const errorMessages: { [key: number]: string } = {
+  1000: 'Sản phẩm đã tồn tại trong phiếu yêu cầu',
   1001: 'Email không hợp lệ',
   1002: 'Không tìm thấy đường dẫn',
   1003: 'Tên người dùng không hợp lệ',
@@ -13,7 +14,8 @@ const errorMessages: { [key: number]: string } = {
   1009: 'Tên không hợp lệ',
   1010: 'Họ không hợp lệ',
   1011: 'Họ và tên không hợp lệ',
-  1016: 'Refresh token không hợp lệ'
+  1016: 'Refresh token không hợp lệ',
+  1017: 'Phiên đăng nhập đã hết hạn'
 }
 
 export function showToast(message: string) {

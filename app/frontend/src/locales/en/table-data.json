@@ -20,7 +20,7 @@
     "productCode": "Product code",
     "productName": "Product name",
     "model": "Model",
-    "supplier": "Supplier",
+    "provider": "Provider",
     "quantity": "Quantity",
     "unit": "Unit",
     "price": "Price",

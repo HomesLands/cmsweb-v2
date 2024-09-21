@@ -94,7 +94,7 @@ const routes: IRoute[] = [
       {
         title: 'Thêm vật tư',
         path: 'add',
-        component: () => import('@/views/warehouse/AddProduct')
+        component: () => import('@/views/warehouse/Warehouse')
       },
       {
         title: 'Danh sách vật tư',

@@ -13,37 +13,32 @@ import {
   Input
 } from '@/components/ui'
 import { DialogAddProductRequest } from '@/components/app/dialog'
-import { IProductInfo } from '@/types'
+import { IRequestProduct } from '@/types'
 
 interface ColumnVisibilityDropdownProps<TData> {
   table: Table<TData>
-  handleAddRequest: (product: IProductInfo) => void
 }
 
-export function CustomComponentRequest<TData>({
-  table,
-  handleAddRequest
-}: ColumnVisibilityDropdownProps<TData>) {
+export function CustomComponentRequest<TData>({ table }: ColumnVisibilityDropdownProps<TData>) {
   const { t } = useTranslation('tableData')
   const [openDialog, setOpenDialog] = useState(false)
-  const [selectedProduct, setSelectedProduct] = useState<IProductInfo | null>(null)
+  const [selectedProduct, setSelectedProduct] = useState<IRequestProduct | null>(null)
 
-  const handleOpenDialog = (product: IProductInfo | null) => {
+  const handleOpenDialog = (product: IRequestProduct) => {
     setSelectedProduct(product)
     setOpenDialog(true)
   }
 
-  const handleCloseDialog = () => {
+  const onOpenChange = () => {
     setOpenDialog(false)
-    setSelectedProduct(null)
   }
 
   return (
     <>
       <Input
         placeholder="Nhập tên vật tư..."
-        value={table.getColumn('productCode')?.getFilterValue() as string}
-        onChange={(event) => table.getColumn('productCode')?.setFilterValue(event.target.value)}
+        value={table.getColumn('code')?.getFilterValue() as string}
+        onChange={(event) => table.getColumn('code')?.setFilterValue(event.target.value)}
         className="max-w-sm"
       />
       <DropdownMenu>
@@ -69,17 +64,18 @@ export function CustomComponentRequest<TData>({
             ))}
         </DropdownMenuContent>
       </DropdownMenu>
-      <Button variant="outline" onClick={() => handleOpenDialog(null)}>
+      <Button variant="outline" onClick={() => handleOpenDialog({})}>
         <PlusCircledIcon className="w-4 h-4 mr-2" />
         {t('tableData.addNewProduct')}
       </Button>
-      <DialogAddProductRequest
-        handleAddRequest={handleAddRequest}
-        openDialog={openDialog}
-        product={selectedProduct}
-        component={null}
-        onOpenChange={handleCloseDialog}
-      />
+      {openDialog && (
+        <DialogAddProductRequest
+          openDialog={openDialog}
+          product={selectedProduct || {}}
+          component={null}
+          onOpenChange={onOpenChange}
+        />
+      )}
     </>
   )
 }

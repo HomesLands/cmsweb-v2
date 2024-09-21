@@ -9,14 +9,14 @@ import {
   DialogTrigger
 } from '@/components/ui'
 
-import { addNewProductRequestSchema } from '@/schemas'
+import { requestProdcuctSchema } from '@/schemas'
 import { AddNewProductRequestForm } from '@/components/app/form'
-import { IProductInfo } from '@/types'
+import { IRequestProduct } from '@/types'
 
 interface DialogEditProductRequisitionProps {
-  handleAddRequest: (product: IProductInfo) => void
+  handleAddRequest: (product: IRequestProduct) => void
   openDialog: boolean
-  product: IProductInfo | null
+  product: IRequestProduct
   component: React.ReactNode
   onOpenChange: () => void
 }
@@ -28,8 +28,8 @@ export function DialogEditProductRequisition({
   component,
   onOpenChange
 }: DialogEditProductRequisitionProps) {
-  const handleSubmit = (data: z.infer<typeof addNewProductRequestSchema>) => {
-    const completeData: IProductInfo = {
+  const handleSubmit = (data: IRequestProduct) => {
+    const completeData: IRequestProduct = {
       ...data
     }
     handleAddRequest(completeData)
@@ -41,14 +41,12 @@ export function DialogEditProductRequisition({
       <DialogTrigger asChild>{component}</DialogTrigger>
       <DialogContent className="max-w-[44rem]">
         <DialogHeader>
-          <DialogTitle>Thêm vật tư mới</DialogTitle>
-          <DialogDescription>Nhập đầy đủ thông tin bên dưới để thêm vật tư mới</DialogDescription>
+          <DialogTitle>Chỉnh sửa thông tin vật tư</DialogTitle>
+          <DialogDescription>
+            Nhập đầy đủ thông tin bên dưới để chỉnh sửa thông tin vật tư
+          </DialogDescription>
         </DialogHeader>
-        <AddNewProductRequestForm
-          data={product || ({} as IProductInfo)}
-          onSubmit={handleSubmit}
-          handleAddRequest={handleAddRequest}
-        />
+        <AddNewProductRequestForm data={product} onSubmit={handleSubmit} />
       </DialogContent>
     </Dialog>
   )

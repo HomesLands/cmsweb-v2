@@ -23,25 +23,30 @@ export function DropdownHeader() {
   const { t } = useTranslation('auth')
   const { slug, token, refreshToken, setLogout } = useAuthStore()
   const [open, setOpen] = useState(false)
-  const mutation = useLogout()
+  // const mutation = useLogout()
   const { data } = useUser(slug || '')
   const { removeUserInfo } = useUserStore()
   const navigate = useNavigate()
 
   const handleLogout = async () => {
-    const requestData = {
-      token: token || 'token',
-      refreshToken: refreshToken || 'refreshToken'
-    } as ILogoutRequest
-    await mutation.mutateAsync(requestData, {
-      onSuccess: () => {
-        setLogout()
-        removeUserInfo()
-        toast.success(t('logout.logoutSuccess'))
-        navigate('/auth/login')
-      }
-    })
+    setLogout()
+    removeUserInfo()
+    toast.success(t('logout.logoutSuccess'))
+    navigate('/auth/login')
+    // const requestData = {
+    //   token: token || 'token',
+    //   refreshToken: refreshToken || 'refreshToken'
+    // } as ILogoutRequest
+    // await mutation.mutateAsync(requestData, {
+    //   onSuccess: () => {
+    //     setLogout()
+    //     removeUserInfo()
+    //     toast.success(t('logout.logoutSuccess'))
+    //     navigate('/auth/login')
+    //   }
+    // })
   }
+
   return (
     <div>
       <DropdownMenu>

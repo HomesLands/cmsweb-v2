@@ -29,49 +29,32 @@ export interface IProductRequirementInfoCreate {
   approver: string
   priority: string
   note: string
-  products: IProductInfo[]
+  products: IRequestProduct[]
   createdAt: string
+}
+
+export interface IRequestProduct {
+  code?: string
+  name?: string
+  provider?: string
+  description?: string
+  unit?: string
+  quantity?: number
 }
 
 export interface IProductNameSearch {
   productName: string
 }
 
-export interface IProductInfoSearch {
-  productCode: string
-  productName: string
-  modelOrSerialNumber: string
-  supplier: string
-  // importDate: string // Change this to string
-  unit: string
-  quantity: string
-  address: string
-  note?: string
-}
-
-//ADD NEW PRODUCT
-// export interface IProductInfo {
-//   code: string
-//   createdBy: string
-//   productCode: string
-//   productName: string
-//   modelOrSerialNumber: string
-//   supplier: string
-//   importDate: string // Change this to string
-//   unit: string
-//   quantity: string
-//   address: string
-//   note?: string
-//   createdAt?: Date
-// }
-
 export interface IProductInfo {
+  createdAt: string
   code: string
   name: string
   provider: string
-  status: string
-  description: string
+  status?: string
+  description?: string
   unit: string
+  quantity: number
 }
 
 export interface IProductQuery extends IQuery {

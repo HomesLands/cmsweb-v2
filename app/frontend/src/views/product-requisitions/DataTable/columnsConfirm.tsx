@@ -12,25 +12,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui'
-import { IProductInfo } from '@/types'
+import { IRequestProduct } from '@/types'
 import { useState } from 'react'
 import { DialogEditProductRequisition } from '@/components/app/dialog'
 import { DialogDeleteProductRequisition } from '@/components/app/dialog/dialog-delete-product-requisition'
 
 export const useColumnsConfirm = (
-  handleEditRequest: (product: IProductInfo) => void,
-  handleDeleteProduct: (product: IProductInfo) => void
-): ColumnDef<IProductInfo>[] => {
-  const [selectedProduct, setSelectedProduct] = useState<IProductInfo | null>(null)
+  handleEditRequest: (product: IRequestProduct) => void,
+  handleDeleteProduct: (product: IRequestProduct) => void
+): ColumnDef<IRequestProduct>[] => {
+  const [selectedProduct, setSelectedProduct] = useState<IRequestProduct | null>(null)
   const [openEdit, setOpenEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
 
-  const handleEdit = (product: IProductInfo) => {
+  const handleEdit = (product: IRequestProduct) => {
     setOpenEdit(true)
     setSelectedProduct(product)
   }
 
-  const handleDelete = (product: IProductInfo) => {
+  const handleDelete = (product: IRequestProduct) => {
     setOpenDelete(true)
     setSelectedProduct(product)
   }
@@ -45,39 +45,33 @@ export const useColumnsConfirm = (
 
   return [
     {
-      accessorKey: 'productCode',
+      accessorKey: 'code',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.productCode')} />
       )
     },
     {
-      accessorKey: 'productName',
+      accessorKey: 'name',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.productName')} />
       )
     },
     {
-      accessorKey: 'modelOrSerialNumber',
+      accessorKey: 'provider',
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={i18next.t('tableData.model')} />
-      )
-    },
-    {
-      accessorKey: 'supplier',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={i18next.t('tableData.supplier')} />
-      )
-    },
-    {
-      accessorKey: 'quantity',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={i18next.t('tableData.quantity')} />
+        <DataTableColumnHeader column={column} title={i18next.t('tableData.provider')} />
       )
     },
     {
       accessorKey: 'unit',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.unit')} />
+      )
+    },
+    {
+      accessorKey: 'quantity',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={i18next.t('tableData.quantity')} />
       )
     },
     {
