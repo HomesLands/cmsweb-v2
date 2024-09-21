@@ -26,7 +26,6 @@ class UserService {
       skip: (page - 1) * pageSize,
       order: { createdAt: options.order },
     });
-    logger.info(UserService.name, { users });
     const results = mapper.mapArray(users, User, UserResponseDto);
     return results;
   }

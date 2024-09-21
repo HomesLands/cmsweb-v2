@@ -7,12 +7,6 @@ import { TCreateProductRequisitionFormRequestDto } from "@types";
 import { logger } from "@lib";
 
 class ProductRequisitionFormController {
-  private _name: string;
-
-  constructor() {
-    this._name = ProductRequisitionFormController.name;
-  }
-
   /**
    * @swagger
    * components:

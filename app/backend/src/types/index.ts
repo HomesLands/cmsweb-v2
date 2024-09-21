@@ -105,3 +105,4 @@ export * from "./unit.type";
 export * from "./product.type";
 export * from "./company.type";
 export * from "./product-requisition-from.types";
+export * from "./role.type";

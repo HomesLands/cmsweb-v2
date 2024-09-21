@@ -1,42 +1,43 @@
 import { mapper } from "@mappers";
-import { User } from "@entities";
-import { UserResponseDto } from "@dto/response";
-import { userRepository } from "@repositories";
-import { TQueryRequest } from "@types";
+import { Role } from "@entities";
+import { roleRepository, userRepository } from "@repositories";
+import { RoleResponseDto } from "@dto/response";
+import { TCreateRoleRequestDto } from "@types";
+import { plainToClass } from "class-transformer";
+import { CreateRoleRequestDto } from "@dto/request";
+import { validate } from "class-validator";
+import { ValidationError } from "@exception";
 import { logger } from "@lib/logger";
 
 class RoleService {
-  public async getAllRoles(options: TQueryRequest): Promise<UserResponseDto[]> {
-    // Parse and validate pagination parameters
-    let pageSize =
-      typeof options.pageSize === "string"
-        ? parseInt(options.pageSize, 10)
-        : options.pageSize;
-    let page =
-      typeof options.page === "string"
-        ? parseInt(options.page, 10)
-        : options.page;
-
-    // Ensure page and pageSize are positive numbers
-    if (isNaN(page) || page <= 0) page = 1;
-    if (isNaN(pageSize) || pageSize <= 0) pageSize = 10; // Default pageSize if invalid
-
-    const users = await userRepository.find({
-      take: pageSize,
-      skip: (page - 1) * pageSize,
-      order: { createdAt: options.order },
-    });
-    // logger.info(UserService.name, { users });
-    const results = mapper.mapArray(users, User, UserResponseDto);
+  public async getAllRoles(): Promise<RoleResponseDto[]> {
+    const roles = await roleRepository.find();
+    const results = mapper.mapArray(roles, Role, RoleResponseDto);
     return results;
   }
 
-  public async getUserBySlug(slug: string): Promise<UserResponseDto> {
-    const user = await userRepository.findOneBy({
+  public async getRoleBySlug(slug: string): Promise<RoleResponseDto> {
+    const role = await roleRepository.findOneBy({
       slug,
     });
-    const results = mapper.map(user, User, UserResponseDto);
+    const results = mapper.map(role, Role, RoleResponseDto);
     return results;
+  }
+
+  public async createRole(
+    plainData: TCreateRoleRequestDto
+  ): Promise<RoleResponseDto> {
+    const requestData = plainToClass(CreateRoleRequestDto, plainData);
+    logger.info("", { filename: RoleService.name, requestData });
+
+    const errors = await validate(requestData);
+    if (errors.length > 0) throw new ValidationError(errors);
+
+    const role = mapper.map(requestData, CreateRoleRequestDto, Role);
+
+    const createdRole = await roleRepository.createAndSave(role);
+
+    return mapper.map(createdRole, Role, RoleResponseDto);
   }
 }
 
