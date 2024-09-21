@@ -76,10 +76,6 @@ export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
       header: ({ column }) => <DataTableColumnHeader column={column} title="Đơn vị" />
     },
     {
-      accessorKey: 'quantity',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Số lượng" />
-    },
-    {
       accessorKey: 'description',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Mô tả" />
     }

@@ -42,8 +42,10 @@ export function DialogEditProductRequisition({
       <DialogTrigger asChild>{component}</DialogTrigger>
       <DialogContent className="max-w-[44rem]">
         <DialogHeader>
-          <DialogTitle>Thêm vật tư mới</DialogTitle>
-          <DialogDescription>Nhập đầy đủ thông tin bên dưới để thêm vật tư mới</DialogDescription>
+          <DialogTitle>Chỉnh sửa thông tin vật tư</DialogTitle>
+          <DialogDescription>
+            Nhập đầy đủ thông tin bên dưới để chỉnh sửa thông tin vật tư
+          </DialogDescription>
         </DialogHeader>
         <AddNewProductRequestForm data={product || ({} as IProductInfo)} onSubmit={handleSubmit} />
       </DialogContent>
