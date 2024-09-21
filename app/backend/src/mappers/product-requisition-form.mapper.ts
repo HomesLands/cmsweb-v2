@@ -33,6 +33,34 @@ export const productRequisitionFormMapper: MappingProfile = (mapper: Mapper) =>{
       mapFrom((source) => source.company?.slug) 
     ),
     forMember(
+      (destination) => destination.site,
+      mapFrom((source) => source.site?.name) 
+    ),
+    forMember(
+      (destination) => destination.siteSlug,
+      mapFrom((source) => source.site?.slug) 
+    ),
+    forMember(
+      (destination) => destination.project,
+      mapFrom((source) => source.project?.name) 
+    ),
+    forMember(
+      (destination) => destination.projectSlug,
+      mapFrom((source) => source.project?.slug) 
+    ),
+    forMember(
+      (destination) => destination.projectSlug,
+      mapFrom((source) => source.project?.slug) 
+    ),
+    forMember(
+      (destination) => destination.creator,
+      mapFrom((source) => source.creator?.fullname) 
+    ),
+    forMember(
+      (destination) => destination.creatorSlug,
+      mapFrom((source) => source.creator?.slug) 
+    ),
+    forMember(
       (destination) => destination.userApprovals,
       mapWith(
         UserApprovalResponseDto,
