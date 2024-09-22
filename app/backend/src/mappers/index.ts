@@ -12,6 +12,7 @@ import { approvalLogMapper } from "./approval-log.mapper";
 import { userApprovalMapper } from "./user-approval.mapper";
 import { requestProductMapper } from "./request-product.mapper";
 import { roleMapper } from "./role.mapper";
+import { authorityMapper } from "./authority.mapper";
 
 export const mapper = createMapper({
   strategyInitializer: classes(),
@@ -29,3 +30,4 @@ approvalLogMapper(mapper);
 userApprovalMapper(mapper);
 requestProductMapper(mapper);
 roleMapper(mapper);
+authorityMapper(mapper);

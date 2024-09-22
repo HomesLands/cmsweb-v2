@@ -13,91 +13,8 @@ export type TEnv = {
   refreshableDuration: number;
 };
 
-export type TApiResponse<T> = {
-  result?: T;
-  code: number;
-  message: string;
-  error: boolean;
-  method: string;
-  path: string;
-};
-
-export type TQueryRequest = {
-  page: number;
-  order: "ASC" | "DESC";
-  pageSize: number;
-};
-
-export type TPaginationOptionResponse<T> = {
-  page: number;
-  pageSize: number;
-  totalPages: number;
-  items: T;
-};
-
-export type TPaginationOption = {
-  take: number | 0;
-  skip: number | 10;
-  order: "DESC";
-};
-
-export type TErrorCodeKey =
-  | "INVALID_EMAIL"
-  | "PATH_NOT_FOUND"
-  | "INVALID_USERNAME"
-  | "USER_NOT_FOUND"
-  | "SESSION_STORE_ERROR"
-  | "USER_EXIST"
-  | "UNIDENTIFIED_ERROR"
-  | "INVALID_PASSWORD"
-  | "INVALID_FULLNAME"
-  | "INVALID_TOKEN"
-  | "INVALID_JWT_PAYLOAD"
-  | "TOKEN_NOT_EXPIRED"
-  | "SUBJECT_NOT_EXIST"
-  | "REFRESH_TOKEN_EXPIRED"
-  | "TOKEN_EXPIRED"
-  | "INVALID_REFRESH_TOKEN"
-  | "IAT_NOT_EXIST"
-  | "TOKEN_ID_NOT_EXIST"
-  | "TOKEN_TYPE_NOT_EXIST"
-  | "USER_ASSIGNED_NOT_FOUND"
-  | "UNIT_EXIST"
-  | "UNIT_NOT_FOUND"
-  | "CODE_PRODUCT_EXIST"
-  | "INVALID_PRODUCT_PROVIDER"
-  | "INVALID_PRODUCT_NAME"
-  | "INVALID_PRODUCT_UNIT"
-  | "INVALID_PRODUCT_CODE"
-  | "INVALID_SITE_NAME"
-  | "INVALID_SITE_ADDRESS"
-  | "INVALID_SITE_MANAGER"
-  | "INVALID_PROJECT_NAME"
-  | "INVALID_PROJECT_START_DATE"
-  | "INVALID_PROJECT_PROCESS"
-  | "INVALID_PROJECT_DESCRIPTION"
-  | "INVALID_PROJECT_FILE_DESCRIPTION"
-  | "INVALID_PROJECT_MANAGER"
-  | "INVALID_UNIT_NAME"
-  | "INVALID_DATE_FORMAT"
-  | "INVALID_COMPANY_NAME"
-  | "COMPANY_NAME_EXIST"
-  | "PRODUCT_REQUISITION_FORM_CODE_EXIST"
-  | "COMPANY_NOT_FOUND"
-  | "INVALID_QUANTITY_USER_APPROVAL"
-  | "PRODUCT_NOT_FOUND"
-  | "FORM_NOT_FOUND"
-  | "MISSING_USER_APPROVAL"
-  | "EXP_NOT_EXIST";
-
-export type TErrorCodeValue = {
-  code: number;
-  message: string;
-  httpStatusCode: number;
-};
-
-export type TErrorCode = Record<TErrorCodeKey, TErrorCodeValue>;
-
+export * from "./base.type";
+export * from "./error-code.type";
 export * from "./auth.type";
 export * from "./site.type";
 export * from "./project.type";
@@ -106,3 +23,4 @@ export * from "./product.type";
 export * from "./company.type";
 export * from "./product-requisition-from.types";
 export * from "./role.type";
+export * from "./authority.type";

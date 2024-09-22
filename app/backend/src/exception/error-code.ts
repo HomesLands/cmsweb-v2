@@ -159,6 +159,11 @@ export const ErrorCodes: TErrorCode = {
     code: 1047,
     message: "Missing user approval",
   },
+  AUTHORITY_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1048,
+    message: "Authority could not be found",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]

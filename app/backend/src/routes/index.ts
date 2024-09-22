@@ -15,6 +15,7 @@ import { ErrorCodes, GlobalError } from "@exception";
 import { StatusCodes } from "http-status-codes";
 import { errorCodeRoute } from "./error-code.route";
 import { roleRoute } from "./role.route";
+import { authorityRoute } from "./authority.route";
 
 const baseApi: Router = Router();
 
@@ -42,6 +43,8 @@ export const registerRoutes = (app: Express) => {
   baseApi.use("/errorCodes", errorCodeRoute);
 
   baseApi.use("/roles", roleRoute);
+
+  baseApi.use("/authorities", authorityRoute);
 
   app.use("/api/v1", baseApi);
 

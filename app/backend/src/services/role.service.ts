@@ -1,6 +1,6 @@
 import { mapper } from "@mappers";
 import { Role } from "@entities";
-import { roleRepository, userRepository } from "@repositories";
+import { roleRepository } from "@repositories";
 import { RoleResponseDto } from "@dto/response";
 import { TCreateRoleRequestDto } from "@types";
 import { plainToClass } from "class-transformer";
