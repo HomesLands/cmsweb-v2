@@ -142,14 +142,14 @@ class ProductRequisitionFormService {
     if (!company) throw new GlobalError(ErrorCodes.COMPANY_NOT_FOUND);
 
     // Validate user approvals
-    const userSlugs = requestData.userApprovals.map((item) => item.userSlug);
-    const userApprovals = await userRepository.find({
-      where: {
-        slug: In(userSlugs),
-      },
-    });
-    if (userApprovals.length < userSlugs.length)
-      throw new GlobalError(ErrorCodes.MISSING_USER_APPROVAL);
+    // const userSlugs = requestData.userApprovals.map((item) => item.userSlug);
+    // const userApprovals = await userRepository.find({
+    //   where: {
+    //     slug: In(userSlugs),
+    //   },
+    // });
+    // if (userApprovals.length < userSlugs.length)
+    //   throw new GlobalError(ErrorCodes.MISSING_USER_APPROVAL);
 
     for (let i: number = 0; i < requestData.requestProducts.length; i++) {
       const product = await productRepository.findOneBy({
