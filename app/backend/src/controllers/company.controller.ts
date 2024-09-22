@@ -14,12 +14,17 @@ class CompanyController {
    *       type: object
    *       required:
    *         - name
+   *         - director
    *       properties:
    *         name:
    *           type: string
    *           description: company name
+   *         director:
+   *           type: string
+   *           description: director slug
    *       example:
    *         name: Thái Bình
+   *         director: slug-123
    */
 
   /**

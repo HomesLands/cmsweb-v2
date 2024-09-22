@@ -269,6 +269,16 @@ export const ErrorCodes: TErrorCode = {
     code: 1069,
     message: "Missing user approval",
   },
+  INVALID_COMPANY_DIRECTOR: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1070,
+    message: "Invalid company director",
+  },
+  COMPANY_DIRECTOR_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1071,
+    message: "Company director not found",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]
