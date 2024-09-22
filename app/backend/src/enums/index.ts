@@ -10,9 +10,12 @@ export enum ProductStatus {
 }
 
 export enum ProductRequisitionFormStatus {
-  WAITING = "waiting",
-  ACCEPTED_STAGE_1 = "accepted_stage_1",
-  ACCEPTED_STAGE_2 = "accept_stage_2",
+  CANCEL = "cancel", // creator can 
+  WAITING = "waiting", // waiting stage 1 approval -> creator can edit
+  // RECALLED_BY_STAGE_2 = "recalled_by_stage_2", // waiting stage 1 approval -> creator can't edit
+  ACCEPTED_STAGE_1 = "accepted_stage_1", // waiting stage 2 approval
+  // RECALLED_BY_STAGE_3 = "recalled_by_stage_3", // waiting stage 2 approval
+  ACCEPTED_STAGE_2 = "accepted_stage_2", // waiting stage 3 approval
   WAITING_EXPORT = "waiting_export",
   EXPORTING = "exporting",
   DONE = "done",

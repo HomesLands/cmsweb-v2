@@ -1,4 +1,4 @@
-import { companyRepository } from "@repositories";
+import { companyRepository, userRepository } from "@repositories";
 import { CompanyResponseDto } from "@dto/response";
 import { mapper } from "@mappers";
 import { Company } from "@entities";
@@ -12,7 +12,9 @@ import { plainToClass } from "class-transformer";
 
 class CompanyService {
   public async getAllCompanies(): Promise<CompanyResponseDto[]> {
-    const companiesData = await companyRepository.find();
+    const companiesData = await companyRepository.find({
+      relations: ['director']
+    });
 
     const companiesDto: CompanyResponseDto[] = mapper.mapArray(
       companiesData,
@@ -34,7 +36,12 @@ class CompanyService {
     });
     if(nameExist) throw new GlobalError(ErrorCodes.COMPANY_NAME_EXIST);
 
+    const director = await userRepository.findOneBy({ slug: requestData.director });
+
+    if(!director) throw new GlobalError(ErrorCodes.COMPANY_DIRECTOR_NOT_FOUND);
+
     const companyData = mapper.map(requestData, CreateCompanyRequestDto, Company);
+    companyData.director = director;
     const createdCompanyData = await companyRepository.createAndSave(companyData);
 
     return mapper.map(createdCompanyData, Company, CompanyResponseDto);

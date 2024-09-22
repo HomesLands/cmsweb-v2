@@ -1,5 +1,8 @@
 import { AutoMap } from "@automapper/classes";
-import { ApprovalLogResponseDto } from "@dto/response";
+import {
+  ApprovalLogResponseDto,
+  ProductRequisitionFormResponseDto,
+} from "@dto/response";
 
 export class UserApprovalResponseDto {
   userSlug?: string;
@@ -11,4 +14,14 @@ export class UserApprovalResponseDto {
 
   @AutoMap(() => [ApprovalLogResponseDto])
   approvalLogs?: ApprovalLogResponseDto[];
+}
+
+export class UserApprovalForApprovalUserResponseDto {
+  @AutoMap()
+  roleApproval?: string;
+
+  approvalUserSlug?: string;
+
+  @AutoMap(() => ProductRequisitionFormResponseDto)
+  productRequisitionForm?: ProductRequisitionFormResponseDto;
 }

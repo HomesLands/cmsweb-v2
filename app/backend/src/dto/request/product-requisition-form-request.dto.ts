@@ -4,41 +4,83 @@ import {
   IsArray,
   ArrayNotEmpty,
   IsEnum,
+  IsOptional,
 } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
 import { AutoMap } from '@automapper/classes';
-import { ProductRequisitionFormType } from "@enums";
+import {
+  ProductRequisitionFormType,
+  ApprovalLogStatus,
+} from "@enums";
 import { CreateRequestProductRequestDto } from "./request-product-request.dto";
 import { CreateUserApprovalRequestDto } from "./user-approval-request.dto";
 
 export class CreateProductRequisitionFormRequestDto {
-  @IsNotEmpty()
+  @IsNotEmpty({ message: "INVALID_CODE_FORM" })
   @Expose()
   @AutoMap()
   code?: string;
 
-  @IsNotEmpty()
-  @IsEnum(ProductRequisitionFormType)
+  @IsNotEmpty({ message: "INVALID_TYPE_PRODUCT_REQUISITION_FORM" })
+  @IsEnum(ProductRequisitionFormType, { message: "INVALID_TYPE_PRODUCT_REQUISITION_FORM" })
   @Expose()
   @AutoMap()
   type?: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: "INVALID_COMPANY_SLUG" })
   @Expose()
   @AutoMap()
   companySlug?: string;
 
-  @IsArray()
-  @ArrayNotEmpty()
+  @IsNotEmpty({ message: "INVALID_SITE_SLUG" })
+  @Expose()
+  @AutoMap()
+  siteSlug?: string;
+
+  @IsNotEmpty({ message: "INVALID_PROJECT_SLUG" })
+  @Expose()
+  @AutoMap()
+  projectSlug?: string;
+
+  @IsArray({ message: "INVALID_REQUEST_PRODUCT_ARRAY"})
+  @ArrayNotEmpty({ message: "INVALID_REQUEST_PRODUCT_ARRAY"})
   @ValidateNested({ each: true })
   @Type(() => CreateRequestProductRequestDto)
   @Expose()
   requestProducts: CreateRequestProductRequestDto[];
 
-  @IsArray()
-  @ArrayNotEmpty()
+  @IsArray({ message: "INVALID_APPROVAL_USER_ARRAY"})
+  @ArrayNotEmpty({ message: "INVALID_APPROVAL_USER_ARRAY"})
   @ValidateNested({ each: true })
   @Type(() => CreateUserApprovalRequestDto)
   @Expose()
   userApprovals: CreateUserApprovalRequestDto[];
+
+  @IsOptional()
+  @Expose()
+  @AutoMap()
+  description?: string;  
+}
+
+export class ApprovalProductRequisitionFormRequestDto {
+  @IsNotEmpty({ message: "INVALID_FORM_SLUG" })
+  @Expose()
+  @AutoMap()
+  formSlug?: string;
+
+  @IsNotEmpty({ message: "INVALID_APPROVAL_STATUS" })
+  @IsEnum(ApprovalLogStatus, { message: "INVALID_APPROVAL_STATUS" })
+  @Expose()
+  @AutoMap()
+  approvalLogStatus?: string;
+
+  @IsNotEmpty({ message: "INVALID_APPROVAL_USER_SLUG" })
+  @Expose()
+  @AutoMap()
+  approvalUserSlug?: string;
+
+  @IsNotEmpty({ message: "INVALID_CONTENT_APPROVAL_LOG" })
+  @Expose()
+  @AutoMap()
+  approvalLogContent?: string;  
 }

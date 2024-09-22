@@ -11,19 +11,19 @@ class ProductRequisitionFormRepository extends BaseRepository<ProductRequisition
     return this.findOneBy({ id });
   }
 
-  public async updateProductRequisitionForm(
-    id: string,
-    dataUpdate: Partial<ProductRequisitionForm>
-  ): Promise<ProductRequisitionForm | null> {
-    const entity = await this.findOneBy({ id });
-    if(!entity) return null;    
+  // public async updateProductRequisitionForm(
+  //   id: string,
+  //   dataUpdate: Partial<ProductRequisitionForm>
+  // ): Promise<ProductRequisitionForm | null> {
+  //   const entity = await this.findOneBy({ id });
+  //   if(!entity) return null;    
 
-    // Object.assign(entity, dataUpdate);
+  //   // Object.assign(entity, dataUpdate);
 
-    const updatedEntity = await this.save({id, dataUpdate});
+  //   const updatedEntity = await this.save({id, dataUpdate});
 
-    return updatedEntity;
-  }
+  //   return updatedEntity;
+  // }
 }
 
 export default new ProductRequisitionFormRepository();

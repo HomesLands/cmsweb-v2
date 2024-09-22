@@ -154,10 +154,130 @@ export const ErrorCodes: TErrorCode = {
     code: 1046,
     message: "Form not found",
   },
-  MISSING_USER_APPROVAL: {
+  APPROVAL_USER_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1047,
+    message: "Approval user not found",
+  },
+  USER_OF_APPROVAL_USER_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1048,
+    message: "User of approval user not found",
+  },
+  INVALID_APPROVAL_USER_FOR_APPROVAL_FORM: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1049,
+    message: "Invalid approval user for approval form",
+  },
+  PRODUCT_REQUISITION_FORM_DONE_APPROVAL: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1050,
+    message: "Product requisition form done approval",
+  },
+  SITE_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1051,
+    message: "Site not found",
+  },
+  PROJECT_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1052,
+    message: "Project not found",
+  },
+  INVALID_CREATOR: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1053,
+    message: "Invalid creator",
+  },
+  INVALID_APPROVAL_STATUS: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1054,
+    message: "Invalid approval status",
+  },
+  INVALID_CONTENT_APPROVAL_LOG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1055,
+    message: "Invalid content approval log",
+  },
+  INVALID_CODE_FORM: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1056,
+    message: "Invalid code form",
+  },
+  INVALID_TYPE_PRODUCT_REQUISITION_FORM: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1057,
+    message: "Invalid type of product requisition form",
+  },
+  INVALID_COMPANY_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1058,
+    message: "Invalid company slug",
+  },
+  INVALID_SITE_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1059,
+    message: "Invalid site slug",
+  },
+  INVALID_PROJECT_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1060,
+    message: "Invalid project slug",
+  },
+  INVALID_REQUEST_PRODUCT_ARRAY: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1061,
+    message: "Invalid request product array",
+  },
+  INVALID_APPROVAL_USER_ARRAY: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1062,
+    message: "Invalid approval user array",
+  },
+  INVALID_FORM_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1063,
+    message: "Invalid form slug",
+  },
+  INVALID_APPROVAL_USER_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1064,
+    message: "Invalid approval user slug",
+  },
+  INVALID_PRODUCT_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1065,
+    message: "Invalid product slug",
+  },
+  INVALID_REQUEST_PRODUCT_QUANTITY: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1066,
+    message: "Invalid request product quantity",
+  },
+  INVALID_USER_SLUG_IN_USER_APPROVAL: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1067,
+    message: "Invalid user slug in user approval",
+  },
+  INVALID_ROLE_APPROVAL: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1068,
+    message: "Invalid role approval",
+  },
+  MISSING_USER_APPROVAL: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1069,
     message: "Missing user approval",
+  },
+  INVALID_COMPANY_DIRECTOR: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1070,
+    message: "Invalid company director",
+  },
+  COMPANY_DIRECTOR_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1071,
+    message: "Company director not found",
   },
 
   // AuthenticationErrors
