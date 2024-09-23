@@ -112,6 +112,10 @@ export type TErrorCodeKey =
   | "MISSING_USER_APPROVAL"
   | "INVALID_COMPANY_DIRECTOR"
   | "COMPANY_DIRECTOR_NOT_FOUND"
+  | "FORM_NOT_CREATED_BY_YOU"
+  | "INVALID_REQUEST_PRODUCT_SLUG"
+  | "REQUEST_PRODUCT_NOT_FOUND"
+  | "CAN_NOT_EDIT_FORM"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {
@@ -129,3 +133,4 @@ export * from "./unit.type";
 export * from "./product.type";
 export * from "./company.type";
 export * from "./product-requisition-from.types";
+export * from "./request-product.type";

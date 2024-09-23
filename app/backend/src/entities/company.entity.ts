@@ -9,7 +9,7 @@ export class Company extends Base {
   name?: string;
 
   @ManyToOne(() => User, (user) => user.companies)
-  @JoinColumn({ name: "name_column" })
+  @JoinColumn({ name: "director_column" })
   @AutoMap()
   director?: User;
 

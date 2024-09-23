@@ -1,5 +1,6 @@
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
+import _ from "lodash";
 
 import {
   productRequisitionFormRepository,
@@ -17,6 +18,7 @@ import {
   TApprovalProductRequisitionFormRequestDto,
   TQueryRequest,
   TPaginationOptionResponse,
+  TResubmitRequisitionFormRequestDto,
 } from "@types";
 import {
   ProductRequisitionFormResponseDto,
@@ -28,6 +30,7 @@ import {
   CreateUserApprovalRequestDto,
   ApprovalProductRequisitionFormRequestDto,
   CreateApprovalLogRequestDto,
+  ResubmitProductRequisitionFormRequestDto,
 } from "@dto/request";
 import { mapper } from "@mappers";
 import {
@@ -75,6 +78,7 @@ class ProductRequisitionFormService {
       order: { createdAt: options.order },
       relations: [
         "company",
+        "creator",
         "userApprovals",
         "userApprovals.user",
         "userApprovals.approvalLogs",
@@ -435,6 +439,75 @@ class ProductRequisitionFormService {
 
     return formsDto
   }
+
+  public async resubmitProductRequisitionFormV1(
+    creatorId: string,
+    plainData: TResubmitRequisitionFormRequestDto
+  ): Promise<void> {
+    const requestData = plainToClass(ResubmitProductRequisitionFormRequestDto, plainData);
+    const errors = await validate(requestData);
+    if(errors.length > 0) throw new ValidationError(errors);
+
+    const creator = await userRepository.findOneBy({ id: creatorId });
+    if(!creator) throw new GlobalError(ErrorCodes.INVALID_CREATOR);
+
+    const form = await productRequisitionFormRepository.findOne({
+      where: {
+        slug: requestData.formSlug
+      },
+      relations: ['creator']
+    });
+    if (!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+
+    if(!_.isEqual(creator, form.creator)) throw new GlobalError(ErrorCodes.FORM_NOT_CREATED_BY_YOU);
+
+    for (let i: number = 0; i < requestData.requestProducts.length; i++) {
+      const requestProductData = requestData.requestProducts[i];
+
+      const existingRequestProduct = await requestProductRepository.findOne({
+        where: {
+          product: {
+            slug: requestProductData.productSlug
+          },
+          productRequisitionForm: {
+            id: form.id
+          }
+        }
+      });
+
+      if(existingRequestProduct) {
+        // check quantity
+        if(existingRequestProduct.requestQuantity !== requestProductData.requestQuantity) {
+          existingRequestProduct.requestQuantity = requestProductData.requestQuantity;
+          await requestProductRepository.save(existingRequestProduct);
+        }
+      } else {
+        const product = await productRepository.findOneBy({ slug: requestProductData.productSlug });
+        if(product) {
+          const requestProductMapper = mapper.map(
+            requestProductData,
+            CreateRequestProductRequestDto,
+            RequestProduct
+          );
+          requestProductMapper.product = product;
+          requestProductMapper.productRequisitionForm = form;
+
+          await requestProductRepository.createAndSave(requestProductMapper);
+        }
+      }
+
+      const currentRequestProducts = await requestProductRepository.find({
+        where: {
+          productRequisitionForm: {
+            id: form.id
+          }
+        }
+      });
+
+    }
+
+  }
+
 }
 
 export default new ProductRequisitionFormService();

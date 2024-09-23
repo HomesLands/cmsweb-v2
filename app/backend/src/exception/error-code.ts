@@ -279,6 +279,26 @@ export const ErrorCodes: TErrorCode = {
     code: 1071,
     message: "Company director not found",
   },
+  FORM_NOT_CREATED_BY_YOU: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1072,
+    message: "Form not created by you",
+  },
+  INVALID_REQUEST_PRODUCT_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1073,
+    message: "Invalid request product slug",
+  },
+  REQUEST_PRODUCT_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1074,
+    message: "Request product not found",
+  },
+  CAN_NOT_EDIT_FORM: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1075,
+    message: "Can not edit form",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]

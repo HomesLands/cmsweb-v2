@@ -4,7 +4,8 @@ import {
   createMap,
   forMember,
   mapWith, 
-  mapFrom
+  mapFrom,
+  extend
 } from "@automapper/core";
 import {
   ApprovalLogResponseDto,
@@ -18,6 +19,7 @@ import {
   ProductRequisitionForm,
 } from "@entities";
 import { CreateUserApprovalRequestDto } from "@dto/request";
+import { baseMapper } from "./base.mapper";
 
 export const userApprovalMapper: MappingProfile = (mapper: Mapper) =>{
   // Map entity to response object
@@ -45,6 +47,7 @@ export const userApprovalMapper: MappingProfile = (mapper: Mapper) =>{
         (source) => source.approvalLogs
       )
     ),
+    extend(baseMapper(mapper)),
   );
 
   // Map entity to response object for approval user
@@ -64,6 +67,7 @@ export const userApprovalMapper: MappingProfile = (mapper: Mapper) =>{
         (source) => source.productRequisitionForm
       )
     ),
+    extend(baseMapper(mapper)),
   );
 
   // Map request object to entity

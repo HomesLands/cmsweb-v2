@@ -8,6 +8,9 @@ export class RequestProductResponseDto {
   @AutoMap()
   description?: string;
 
+  @AutoMap()
+  slug?: string;
+
   @AutoMap(() => ProductResponseDto)
   product?: ProductResponseDto;
 }

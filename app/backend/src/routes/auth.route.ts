@@ -15,5 +15,3 @@ authRoute.route("/refresh").post(authController.refreshToken);
 
 // [POST] /api/v1/auth/logout
 authRoute.route("/logout").post(authController.logout);
-
-export default authRoute;
