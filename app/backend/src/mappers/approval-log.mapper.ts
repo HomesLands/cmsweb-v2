@@ -4,6 +4,7 @@ import {
   createMap,
   forMember,
   mapFrom,
+  extend,
 } from "@automapper/core";
 import {
   ApprovalLogResponseDto,
@@ -13,6 +14,7 @@ import {
   ApprovalLog,
 } from "@entities";
 import moment from "moment";
+import { baseMapper } from "./base.mapper";
 
 export const approvalLogMapper: MappingProfile = (mapper: Mapper) =>{
   // Map entity to response object
@@ -25,7 +27,8 @@ export const approvalLogMapper: MappingProfile = (mapper: Mapper) =>{
       mapFrom(
         (source) => moment(source.createdAt).toISOString()
       )
-    )
+    ),
+    extend(baseMapper(mapper)),
   );
 
   // Map request object to entity

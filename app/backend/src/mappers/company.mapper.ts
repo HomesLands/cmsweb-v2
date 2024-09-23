@@ -1,7 +1,8 @@
-import { MappingProfile, Mapper, createMap, forMember, mapFrom } from "@automapper/core";
+import { MappingProfile, Mapper, createMap, forMember, mapFrom, extend } from "@automapper/core";
 import { CreateCompanyRequestDto } from "@dto/request";
 import { CompanyResponseDto } from "@dto/response";
 import { Company } from "@entities";
+import { baseMapper } from "./base.mapper";
 
 export const companyMapper: MappingProfile = (mapper: Mapper) => {
   // Map request object to entity
@@ -9,6 +10,7 @@ export const companyMapper: MappingProfile = (mapper: Mapper) => {
     mapper,
     CreateCompanyRequestDto,
     Company,
+    extend(baseMapper(mapper)),
   );
 
   // Map entity to response object

@@ -10,6 +10,7 @@ export class RequestProduct extends Base {
   requestQuantity?: number;
 
   @Column({ name: "description_column" , nullable: true })
+  @AutoMap()
   description?: string;
 
   // a Request product have one or many image

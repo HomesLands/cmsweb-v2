@@ -12,7 +12,10 @@ import {
   ProductRequisitionFormType,
   ApprovalLogStatus,
 } from "@enums";
-import { CreateRequestProductRequestDto } from "./request-product-request.dto";
+import {
+  CreateRequestProductRequestDto,
+  ResubmitRequestProductRequestDto,
+} from "./request-product-request.dto";
 import { CreateUserApprovalRequestDto } from "./user-approval-request.dto";
 
 export class CreateProductRequisitionFormRequestDto {
@@ -83,4 +86,23 @@ export class ApprovalProductRequisitionFormRequestDto {
   @Expose()
   @AutoMap()
   approvalLogContent?: string;  
+}
+
+export class ResubmitProductRequisitionFormRequestDto {
+  @IsNotEmpty({ message: "INVALID_FORM_SLUG" })
+  @Expose()
+  @AutoMap()
+  formSlug?: string;
+
+  @IsArray({ message: "INVALID_REQUEST_PRODUCT_ARRAY"})
+  @ArrayNotEmpty({ message: "INVALID_REQUEST_PRODUCT_ARRAY"})
+  @ValidateNested({ each: true })
+  @Type(() => ResubmitRequestProductRequestDto)
+  @Expose()
+  requestProducts: ResubmitRequestProductRequestDto[];
+
+  @IsOptional()
+  @Expose()
+  @AutoMap()
+  description?: string;
 }

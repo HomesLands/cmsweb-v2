@@ -44,7 +44,8 @@ class CompanyService {
     companyData.director = director;
     const createdCompanyData = await companyRepository.createAndSave(companyData);
 
-    return mapper.map(createdCompanyData, Company, CompanyResponseDto);
+    const companyDto = mapper.map(createdCompanyData, Company, CompanyResponseDto);
+    return companyDto;
   }
 }
 

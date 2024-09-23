@@ -4,6 +4,7 @@ import {
   createMap,
   forMember,
   mapWith,
+  extend,
 } from "@automapper/core";
 import {
   ProductResponseDto,
@@ -14,6 +15,7 @@ import {
   RequestProduct
 } from "@entities";
 import { CreateRequestProductRequestDto } from "@dto/request";
+import { baseMapper } from "./base.mapper";
 
 export const requestProductMapper: MappingProfile = (mapper: Mapper) =>{
   
@@ -35,6 +37,7 @@ export const requestProductMapper: MappingProfile = (mapper: Mapper) =>{
         ProductResponseDto,
         Product,
         (source) => source.product)
-    )
+    ),
+    extend(baseMapper(mapper)),
   );
 }

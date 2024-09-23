@@ -4,7 +4,8 @@ import {
   createMap,
   forMember,
   mapFrom,
-  mapWith 
+  mapWith, 
+  extend
 } from "@automapper/core";
 import {
   ProductRequisitionFormResponseDto,
@@ -17,6 +18,7 @@ import {
   RequestProduct,
 } from "@entities";
 import { CreateProductRequisitionFormRequestDto } from "@dto/request";
+import { baseMapper } from "./base.mapper";
 
 export const productRequisitionFormMapper: MappingProfile = (mapper: Mapper) =>{
   // Map entity to response object
@@ -73,7 +75,8 @@ export const productRequisitionFormMapper: MappingProfile = (mapper: Mapper) =>{
         RequestProductResponseDto,
         RequestProduct,
         (source) => source.requestProducts)
-    )
+    ),
+    extend(baseMapper(mapper)),
   );
 
   // Map request object to entity
