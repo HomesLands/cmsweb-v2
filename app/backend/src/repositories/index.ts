@@ -13,3 +13,5 @@ export { default as roleRepository } from "./role.repository";
 export { default as authorityRepository } from "./authority.repository";
 export { default as permissionRepository } from "./permission.repository";
 export { default as userRoleRepository } from "./user-role.repository";
+
+export { default as approvalLogRepository } from "./approval-log.repository";

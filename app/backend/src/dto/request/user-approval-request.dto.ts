@@ -7,13 +7,13 @@ import { AutoMap } from '@automapper/classes';
 import { RoleApproval } from "@enums";
 
 export class CreateUserApprovalRequestDto {
-  @IsNotEmpty()
+  @IsNotEmpty({ message: "INVALID_USER_SLUG_IN_USER_APPROVAL" })
   @Expose()
   @AutoMap()
   userSlug?: string;
 
-  @IsNotEmpty()
-  @IsEnum(RoleApproval)
+  @IsNotEmpty({ message: "INVALID_ROLE_APPROVAL" })
+  @IsEnum(RoleApproval, { message: "INVALID_ROLE_APPROVAL" })
   @Expose()
   @AutoMap()
   roleApproval?: string;

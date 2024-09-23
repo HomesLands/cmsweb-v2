@@ -41,15 +41,15 @@ class AuthService {
     if (errors.length > 0) throw new ValidationError(errors);
 
     return new Promise((resolve, reject) => {
-      passport.authenticate("local", (err: unknown, user?: User) => {
+      passport.authenticate("local", async (err: unknown, user?: User) => {
         if (!_.isEmpty(err))
           return reject(new GlobalError(StatusCodes.UNAUTHORIZED));
 
-        if (!user?.id) {
-          return reject(new GlobalError(ErrorCodes.USER_NOT_FOUND));
+        if (_.isEmpty(user)) {
+          return reject(new GlobalError(ErrorCodes.AUTHORITY_NOT_FOUND));
         }
 
-        const { token, refreshToken } = tokenService.generateToken(user);
+        const { token, refreshToken } = await tokenService.generateToken(user);
 
         return resolve({
           token,

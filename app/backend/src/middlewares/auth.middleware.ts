@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response, NextFunction } from "express";
 import { HTTPMethod } from "http-method-enum";
 import _ from "lodash";
@@ -64,49 +63,117 @@ class AuthMiddleware {
   }
 
   /**
+   * Middleware to check role of user.
+   * @param {string} role
+   * @returns {<(req: Request, res: Response, next: NextFunction) => void}
+   */
+  public hasRole(
+    role: string
+  ): (req: Request, res: Response, next: NextFunction) => void {
+    return (req: Request, res: Response, next: NextFunction) => {
+      if (_.has(req, "userId")) {
+        const userId = req.userId as string;
+        userRepository
+          .findOneBy({ id: userId })
+          .then((user) => {
+            if (!user) throw new GlobalError(StatusCodes.FORBIDDEN);
+
+            // Get user role
+            const hasRole = user.userRoles?.some((item) => {
+              if (item.role.nameNormalize) {
+                return item.role.nameNormalize === role;
+              }
+              return false;
+            });
+            if (!hasRole) throw new GlobalError(StatusCodes.FORBIDDEN);
+            next();
+          })
+          .catch((error) => {
+            next(error); // Pass errors to the next middleware
+          });
+      } else next(new GlobalError(StatusCodes.FORBIDDEN));
+    };
+  }
+
+  /**
    * Middleware to check authorities of user.
    * @param {string[]} roles
-   * @returns {Promise<(req: Request, res: Response, next: NextFunction) => void}
+   * @returns {<(req: Request, res: Response, next: NextFunction) => void}
    */
-  public async hasRole(
+  public hasAnyRole(
     roles: string[]
-  ): Promise<(req: Request, res: Response, next: NextFunction) => void> {
-    return async (req: Request, res: Response, next: NextFunction) => {
-      try {
-        if (_.has(req, "userId")) {
-          const userId = req.userId as string;
-          const user = await userRepository.findOneBy({ id: userId });
-          if (!user) throw new GlobalError(StatusCodes.FORBIDDEN);
-
-          // Get user role
-          const hasRole = user.userRoles?.some((item) => {
-            if (item.role.nameNormalize) {
-              return roles.includes(item.role.nameNormalize);
-            }
-            return false;
+  ): (req: Request, res: Response, next: NextFunction) => void {
+    return (req: Request, res: Response, next: NextFunction) => {
+      if (_.has(req, "userId")) {
+        const userId = req.userId as string;
+        userRepository
+          .findOneBy({ id: userId })
+          .then((user) => {
+            if (!user) throw new GlobalError(StatusCodes.FORBIDDEN);
+            const hasRole = user.userRoles?.some((item) => {
+              if (item.role.nameNormalize) {
+                return roles.includes(item.role.nameNormalize);
+              }
+              return false;
+            });
+            if (!hasRole) throw new GlobalError(StatusCodes.FORBIDDEN);
+            next();
+          })
+          .catch((error) => {
+            next(error); // Pass errors to the next middleware
           });
-          if (!hasRole) throw new GlobalError(StatusCodes.FORBIDDEN);
-        }
-        next();
-      } catch (error) {
-        next(error);
-      }
+      } else next(new GlobalError(StatusCodes.FORBIDDEN));
     };
   }
 
   /**
    * Middleware to check authorities of user.
    * @param {string} authority
-   * @returns {Promise<(req: Request, res: Response, next: NextFunction) => void}
+   * @returns {<(req: Request, res: Response, next: NextFunction) => void}
    */
-  public async hasAuthority(
+  public hasAuthority(
     authority: string
-  ): Promise<(req: Request, res: Response, next: NextFunction) => void> {
+  ): (req: Request, res: Response, next: NextFunction) => void {
     return (req: Request, res: Response, next: NextFunction) => {
-      try {
-        next();
-      } catch (error) {
-        next(error);
+      if (_.has(req, "userId")) {
+        const userId = req.userId as string;
+
+        // Find the user by ID using promise chaining
+        userRepository
+          .findOne({
+            where: { id: userId },
+            relations: [
+              "userRoles",
+              "userRoles.role",
+              "userRoles.role.permissions",
+              "userRoles.role.permissions.authority",
+            ],
+          })
+          .then((user) => {
+            if (!user) throw new GlobalError(StatusCodes.FORBIDDEN);
+
+            const hasAuthority = user.userRoles?.some((userRole) => {
+              const { permissions } = userRole.role;
+              if (permissions) {
+                console.log({ permissions });
+                return permissions.some(
+                  (permission) =>
+                    permission.authority?.nameNormalize === authority
+                );
+              }
+              return false;
+            });
+
+            if (!hasAuthority) {
+              throw new GlobalError(StatusCodes.FORBIDDEN);
+            }
+            next(); // Proceed if the user has the authority
+          })
+          .catch((error) => {
+            next(error); // Pass errors to the next middleware
+          });
+      } else {
+        next(new GlobalError(StatusCodes.FORBIDDEN)); // Pass errors to the next middleware
       }
     };
   }

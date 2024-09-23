@@ -1,6 +1,5 @@
 import { Entity, Column, ManyToOne, JoinColumn } from "typeorm";
-import { Base } from "@entities/base.entity";
-import { User } from "@entities/user.entity";
+import { Base, User, ProductRequisitionForm } from "@entities";
 import { AutoMap } from "@automapper/classes";
 
 @Entity("site_tbl")
@@ -16,4 +15,8 @@ export class Site extends Base {
   @ManyToOne(() => User, (user) => user.sites)
   @JoinColumn({ name: "manager_id_column" })
   manager?: User;
+
+  @ManyToOne(() => ProductRequisitionForm,
+    (productRequisitionForm) => productRequisitionForm.site)
+  productRequisitionForms?: ProductRequisitionForm[];
 }

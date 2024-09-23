@@ -7,6 +7,7 @@ export * from "./company-request.dto";
 export * from "./product-requisition-form-request.dto";
 export * from "./user-approval-request.dto";
 export * from "./request-product-request.dto";
+export * from "./approval-log-request.dto";
 export * from "./role-request.dto";
 export * from "./authority-request.dto";
 export * from "./permission-request.dto";

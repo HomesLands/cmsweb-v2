@@ -8,6 +8,7 @@ import {
 import {
   ApprovalLogResponseDto,
 } from "@dto/response";
+import { CreateApprovalLogRequestDto } from "@dto/request";
 import {
   ApprovalLog,
 } from "@entities";
@@ -25,5 +26,24 @@ export const approvalLogMapper: MappingProfile = (mapper: Mapper) =>{
         (source) => moment(source.createdAt).toISOString()
       )
     )
-  )
+  );
+
+  // Map request object to entity
+  createMap(
+    mapper,
+    CreateApprovalLogRequestDto,
+    ApprovalLog,
+    forMember(
+      (destination) => destination.content,
+      mapFrom(
+        (source) => source.approvalLogContent
+      )
+    ),
+    forMember(
+      (destination) => destination.status,
+      mapFrom(
+        (source) => source.approvalLogStatus
+      )
+    )
+  );
 }

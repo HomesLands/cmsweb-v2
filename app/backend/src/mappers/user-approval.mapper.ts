@@ -9,10 +9,13 @@ import {
 import {
   ApprovalLogResponseDto,
   UserApprovalResponseDto,
+  UserApprovalForApprovalUserResponseDto,
+  ProductRequisitionFormResponseDto,
 } from "@dto/response";
 import {
   ApprovalLog,
   UserApproval,
+  ProductRequisitionForm,
 } from "@entities";
 import { CreateUserApprovalRequestDto } from "@dto/request";
 
@@ -40,6 +43,25 @@ export const userApprovalMapper: MappingProfile = (mapper: Mapper) =>{
         ApprovalLogResponseDto,
         ApprovalLog,
         (source) => source.approvalLogs
+      )
+    ),
+  );
+
+  // Map entity to response object for approval user
+  createMap(
+    mapper,
+    UserApproval,
+    UserApprovalForApprovalUserResponseDto,
+    forMember(
+      (destination) => destination.approvalUserSlug,
+      mapFrom((source) => source.slug)
+    ),
+    forMember(
+      (destination) => destination.productRequisitionForm,
+      mapWith(
+        ProductRequisitionFormResponseDto,
+        ProductRequisitionForm,
+        (source) => source.productRequisitionForm
       )
     ),
   );
