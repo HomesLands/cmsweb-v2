@@ -174,6 +174,16 @@ export const ErrorCodes: TErrorCode = {
     code: 1050,
     message: "Authority could not be found",
   },
+  USER_ROLE_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1051,
+    message: "User role is existed",
+  },
+  PERMISSION_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1052,
+    message: "Permission is existed",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]

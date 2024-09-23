@@ -6,16 +6,16 @@ import {
   forMember,
   mapWith,
 } from "@automapper/core";
-import { PermissionResponseDto, RoleResponseDto } from "@dto/response";
-import { Permission, Role } from "@entities";
+import { RoleResponseDto, UserRoleResponseDto } from "@dto/response";
+import { Role, UserRole } from "@entities";
 import { baseMapper } from "./base.mapper";
 
 // Define the mapping profile
-export const permissionMapper: MappingProfile = (mapper: Mapper) => {
+export const userRoleMapper: MappingProfile = (mapper: Mapper) => {
   createMap(
     mapper,
-    Permission,
-    PermissionResponseDto,
+    UserRole,
+    UserRoleResponseDto,
     extend(baseMapper(mapper)),
     forMember(
       (destination) => destination.role,

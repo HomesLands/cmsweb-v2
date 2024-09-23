@@ -14,6 +14,7 @@ import { requestProductMapper } from "./request-product.mapper";
 import { roleMapper } from "./role.mapper";
 import { authorityMapper } from "./authority.mapper";
 import { permissionMapper } from "./permission.mapper";
+import { userRoleMapper } from "./user-role.mapper";
 
 export const mapper = createMapper({
   strategyInitializer: classes(),
@@ -33,3 +34,4 @@ requestProductMapper(mapper);
 roleMapper(mapper);
 authorityMapper(mapper);
 permissionMapper(mapper);
+userRoleMapper(mapper);

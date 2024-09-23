@@ -96,47 +96,15 @@ class AuthMiddleware {
 
   /**
    * Middleware to check authorities of user.
-   * @param {string[]} authorities
+   * @param {string} authority
    * @returns {Promise<(req: Request, res: Response, next: NextFunction) => void}
    */
   public async hasAuthority(
-    authorities: string[]
+    authority: string
   ): Promise<(req: Request, res: Response, next: NextFunction) => void> {
     return (req: Request, res: Response, next: NextFunction) => {
       try {
         next();
-      } catch (error) {
-        next(error);
-      }
-    };
-  }
-
-  /**
-   * Middleware to check authorities of user.
-   * @param {string} role
-   * @param {string[]} authorities
-   * @returns {Promise<(req: Request, res: Response, next: NextFunction) => void}
-   */
-  public async hasPermission(
-    role: string,
-    authorities: string[]
-  ): Promise<(req: Request, res: Response, next: NextFunction) => void> {
-    return (req: Request, res: Response, next: NextFunction) => {
-      try {
-        if (_.has(req, "permissions") && _.isArray(req.permissions)) {
-          const hasPermission = req.permissions.some((permission) => {
-            return (
-              permission.role === role &&
-              authorities.every((authority: string) =>
-                permission.authorities.includes(authority)
-              )
-            );
-          });
-          if (!hasPermission) {
-            return next(new GlobalError(StatusCodes.FORBIDDEN));
-          }
-          next();
-        }
       } catch (error) {
         next(error);
       }

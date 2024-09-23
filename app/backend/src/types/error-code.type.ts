@@ -48,6 +48,8 @@ export type TErrorCodeKey =
   | "ROLE_NOT_FOUND"
   | "AUTHORITY_NOT_FOUND"
   | "PERMISSION_NOT_FOUND"
+  | "USER_ROLE_EXIST"
+  | "PERMISSION_EXIST"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {

@@ -9,6 +9,18 @@ import { logger } from "@lib";
 class UserController {
   /**
    * @swagger
+   * components:
+   *   schemas:
+   *     UpdateUserRoleRequestDto:
+   *       type: array
+   *       description: List of role slug being requested.
+   *       items:
+   *         type: string
+   *         example: ""
+   */
+
+  /**
+   * @swagger
    * tags:
    *   - name: User
    *     description: The user managing API

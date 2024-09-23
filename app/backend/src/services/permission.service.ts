@@ -61,6 +61,13 @@ class PermissionService {
     if (!role) throw new GlobalError(ErrorCodes.ROLE_NOT_FOUND);
     if (!authority) throw new GlobalError(ErrorCodes.AUTHORITY_NOT_FOUND);
 
+    // Check existed
+    const isExisted = await permissionRepository.existsBy({
+      role: { id: role.id },
+      authority: { id: authority.id },
+    });
+    if (isExisted) throw new GlobalError(ErrorCodes.PERMISSION_EXIST);
+
     const permission = new Permission();
     permission.authority = authority;
     permission.role = role;
