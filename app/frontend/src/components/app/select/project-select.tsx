@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -10,33 +10,32 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui'
-import { IProject } from '@/types'
+import { useProjects } from '@/hooks'
 
 interface SelectProjectProps {
-  projectList: IProject[]
-  onChange: (value: { slug: string; name: string }) => void
-  defaultValue?: { slug: string; name: string }
+  defaultValue?: string
+  onChange: (value: { slug: string; managerSlug: string; name: string }) => void
 }
 
-export const SelectProject: FC<SelectProjectProps> = ({ projectList, onChange, defaultValue }) => {
+export const SelectProject: FC<SelectProjectProps> = ({ onChange, defaultValue }) => {
   const { t } = useTranslation('productRequisition')
+  const { data: projects } = useProjects()
+
+  const projectList = projects?.result
 
   const handleValueChange = (value: string) => {
-    const project = JSON.parse(value)
-    onChange({ slug: project.slug, name: project.name })
+    const selectedProject = projectList?.find((project) => project.slug === value)
+    if (selectedProject) {
+      onChange({
+        slug: selectedProject.slug,
+        managerSlug: selectedProject.managerSlug,
+        name: selectedProject.name
+      })
+    }
   }
 
-  useEffect(() => {
-    if (defaultValue) {
-      onChange(defaultValue)
-    }
-  }, [defaultValue, onChange])
-
   return (
-    <Select
-      onValueChange={handleValueChange}
-      defaultValue={defaultValue ? JSON.stringify(defaultValue) : undefined}
-    >
+    <Select onValueChange={handleValueChange} defaultValue={defaultValue}>
       <SelectTrigger>
         <SelectValue placeholder={t('productRequisition.projectNameDescription')} />
       </SelectTrigger>
@@ -45,10 +44,7 @@ export const SelectProject: FC<SelectProjectProps> = ({ projectList, onChange, d
           <SelectLabel>{t('productRequisition.projectName')}</SelectLabel>
           {Array.isArray(projectList) &&
             projectList.map((project) => (
-              <SelectItem
-                key={project.slug}
-                value={JSON.stringify({ slug: project.slug, name: project.name })}
-              >
+              <SelectItem key={project.slug} value={project.slug}>
                 {project.name}
               </SelectItem>
             ))}

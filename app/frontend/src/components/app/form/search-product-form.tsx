@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useRequisitionStore } from '@/stores'
 import { useProducts } from '@/hooks'
-import { IProductNameSearch, IProductQuery, IRequestProduct } from '@/types'
+import { IProductInfo, IProductNameSearch, IProductQuery, IProductRequisitionInfo } from '@/types'
 
 import { Button, DataTable, DataTableRequisition, Label } from '@/components/ui'
 import { CustomComponentRequest } from '@/views/product-requisitions/CustomComponentRequest'
@@ -25,23 +25,24 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
   })
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
-  const [selectedProducts] = useState<IRequestProduct[]>([])
+  const [selectedProducts, setSelectedProducts] = useState<IProductRequisitionInfo[]>([])
 
   const { data: allProduct, isLoading } = useProducts(query)
-  const { requisition, updateProductToRequisition, deleteProductToRequisition } =
-    useRequisitionStore() // Fetch requisition data
 
-  const handleEditRequisition = (product: IRequestProduct) => {
-    updateProductToRequisition(product)
+  const { getRequisition, updateProductToRequisition, deleteProductToRequisition } =
+    useRequisitionStore()
+
+  const handleEditRequisition = (product: IProductRequisitionInfo) => {
+    updateProductToRequisition(product, product.requestQuantity)
   }
 
-  const handleDeleteProduct = (product: IRequestProduct) => {
+  const handleDeleteProduct = (product: IProductRequisitionInfo) => {
     deleteProductToRequisition(product)
   }
 
   const handleNext = () => {
     const productNameSearch: IProductNameSearch = {
-      productName: selectedProducts.map((product) => product.name).join(', ')
+      name: selectedProducts.map((product) => product.name).join(', ')
     }
     onSubmit(productNameSearch)
   }
@@ -73,10 +74,10 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
           <DataTableRequisition
             isLoading={isLoading}
             columns={columns}
-            data={requisition?.products || []} // Pass the requisition data here
+            data={getRequisition()?.requestProducts || []}
             pages={1}
             page={1}
-            pageSize={requisition?.products?.length || 0}
+            pageSize={getRequisition()?.requestProducts?.length || 0}
             onPageChange={() => {}}
             onPageSizeChange={() => {}}
             CustomComponent={undefined}

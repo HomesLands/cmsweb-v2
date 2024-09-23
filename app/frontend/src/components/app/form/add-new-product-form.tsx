@@ -23,10 +23,11 @@ export const AddNewProductForm: React.FC<IFormAddNewProductProps> = ({ onSubmit 
     resolver: zodResolver(addNewProductSchema),
     defaultValues: {
       code: '',
+      slug: '',
       name: '',
       provider: '',
       unit: '',
-      quantity: '',
+      requestQuantity: '',
       description: ''
     }
   })
@@ -96,7 +97,7 @@ export const AddNewProductForm: React.FC<IFormAddNewProductProps> = ({ onSubmit 
             />
             <FormField
               control={form.control}
-              name="quantity"
+              name="requestQuantity"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Số lượng</FormLabel>

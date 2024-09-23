@@ -7,6 +7,8 @@
     "requestCode": "Mã yêu cầu",
     "requester": "Người yêu cầu",
     "requesterDescription": "Nhập tên người yêu cầu",
+    "companyName": "Tên công ty",
+    "companyNameDescription": "Chọn công ty",
     "projectName": "Tên dự án",
     "projectNameDescription": "Chọn dự án",
     "constructionSite": "Tên công trình",
@@ -32,7 +34,8 @@
   "progress": {
     "createProductRequisitions": "Tạo phiếu yêu cầu",
     "addProductToRequest": "Thêm vật tư",
-    "confirmProductRequisitions": "Xác nhận"
+    "confirmProductRequisitions": "Xác nhận",
+    "requisitionSuccess": "Yêu cầu thành công"
   },
   "requestPriority": {
     "normal": "Bình thường",

@@ -168,28 +168,28 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
           }))
       }
     ]
+  },
+  {
+    title: 'Kho',
+    path: '/warehouse',
+    icon: CubeIcon,
+    component: () =>
+      import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
+    children: [
+      {
+        title: 'Thêm vật tư',
+        path: '/warehouse/add',
+        icon: Archive,
+        component: () => import('@/views/warehouse/Warehouse')
+      },
+      {
+        title: 'Danh sách vật tư',
+        path: '/warehouse/list',
+        icon: Archive,
+        component: () => import('@/views/warehouse/Warehouse')
+      }
+    ]
   }
-  // {
-  //   title: 'Kho',
-  //   path: '/warehouse',
-  //   icon: CubeIcon,
-  //   component: () =>
-  //     import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
-  //   children: [
-  //     {
-  //       title: 'Thêm vật tư',
-  //       path: '/warehouse/add',
-  //       icon: Archive,
-  //       component: () => import('@/views/warehouse/AddProduct')
-  //     },
-  //     {
-  //       title: 'Danh sách vật tư',
-  //       path: '/warehouse/list',
-  //       icon: Archive,
-  //       component: () => import('@/views/warehouse/Warehouse')
-  //     }
-  //   ]
-  // }
 ]
 
 export { routes, sidebarSubmenus }

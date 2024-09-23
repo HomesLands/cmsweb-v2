@@ -6,12 +6,13 @@ import enAuth from '@/locales/en/auth.json'
 import enSidebar from '@/locales/en/sidebar.json'
 import enProductRequisition from '@/locales/en/product-requisition.json'
 import enTableData from '@/locales/en/table-data.json'
+import enToast from '@/locales/en/toast.json'
 
 import viAuth from '@/locales/vi/auth.json'
 import viSidebar from '@/locales/vi/sidebar.json'
 import viProductRequisition from '@/locales/vi/product-requisition.json'
 import viTableData from '@/locales/vi/table-data.json'
-
+import viToast from '@/locales/vi/toast.json'
 i18n
   .use(LanguageDetector) // Tự động phát hiện ngôn ngữ
   .use(initReactI18next) // Passes i18n down to react-i18next
@@ -21,13 +22,15 @@ i18n
         auth: enAuth,
         sidebar: enSidebar,
         productRequisition: enProductRequisition,
-        tableData: enTableData
+        tableData: enTableData,
+        toast: enToast
       },
       vi: {
         auth: viAuth,
         sidebar: viSidebar,
         productRequisition: viProductRequisition,
-        tableData: viTableData
+        tableData: viTableData,
+        toast: viToast
       }
     },
     lng: 'vi',

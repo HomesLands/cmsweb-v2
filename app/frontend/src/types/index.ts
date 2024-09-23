@@ -1,6 +1,7 @@
 export * from './base.type'
 export * from './product.type'
 export * from './component.type'
+export * from './company.type'
 export * from './route.type'
 export * from './notification.type'
 export * from './request-requisition.type'
