@@ -8,7 +8,7 @@ const getBadgeColorClass = (status: RequestRequisitionStatus) => {
   switch (status) {
     case 'approved':
       return 'bg-green-500'
-    case 'pending':
+    case 'waiting':
       return 'bg-yellow-500'
     case 'rejected':
       return 'bg-red-500'
@@ -21,8 +21,8 @@ const getBadgeText = (status: RequestRequisitionStatus) => {
   switch (status) {
     case 'approved':
       return 'Đã duyệt'
-    case 'pending':
-      return 'Đang chờ'
+    case 'waiting':
+      return 'Đang xét duyệt'
     case 'rejected':
       return 'Từ chối'
     default:

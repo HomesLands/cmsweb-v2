@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
-import { IProductRequirementInfoCreate } from '@/types'
+import { IFinalProductRequisition, IProductRequirementInfoCreate } from '@/types'
 import {
   CreateProductRequisitionForm,
   SearchProductForm,
@@ -11,37 +11,29 @@ import {
 } from '@/components/app/form'
 import { ProgressBar } from '@/components/app/progress/progress-bar'
 import { useMultiStep } from '@/hooks'
-import { postProductRequest } from '@/api/products'
+import { createProductRequisition } from '@/api/products'
 import { showToast } from '@/utils'
 import { useRequisitionStore } from '@/stores'
 
 const ProductRequisitionForm: React.FC = () => {
   const { t } = useTranslation('productRequisition')
+  const { t: tToast } = useTranslation('toast')
   const { currentStep, handleStepChange } = useMultiStep(1)
-  const [formData, setFormData] = useState<IProductRequirementInfoCreate | null>(null)
-  const { setRequisition, getRequisition } = useRequisitionStore()
-
-  // useEffect(() => {
-  //   const savedFormData = getRequisition()
-  //   if (savedFormData) {
-  //     setFormData(savedFormData)
-  //   }
-  // }, [getRequisition])
+  const { setRequisition, clearRequisition } = useRequisitionStore()
 
   const mutation = useMutation({
-    mutationFn: async (data: IProductRequirementInfoCreate) => {
-      return postProductRequest(data)
+    mutationFn: async (data: IFinalProductRequisition) => {
+      return createProductRequisition(data)
     },
     onSuccess: () => {
-      showToast(t('request_success'))
-      // handleStepChange(4)
+      showToast(tToast('toast.request_success'))
+      clearRequisition()
     }
   })
 
   const handleFormCreateSubmit = (data: IProductRequirementInfoCreate) => {
     const newRequisition: IProductRequirementInfoCreate = {
-      ...data,
-      createdAt: new Date().toISOString()
+      ...data
     }
     setRequisition(newRequisition)
     handleStepChange(2)
@@ -51,20 +43,14 @@ const ProductRequisitionForm: React.FC = () => {
     handleStepChange(3)
   }
 
-  const handleConfirmRequest = () => {
-    const savedFormData = getRequisition()
-    if (savedFormData) {
-      mutation.mutate(savedFormData)
-
-      // handleStepChange(4)
+  const handleConfirmRequest = (data: IFinalProductRequisition) => {
+    if (data) {
+      mutation.mutate(data)
+      handleStepChange(4)
     }
   }
 
   const handleBackToCreate = () => {
-    const savedFormData = getRequisition()
-    if (savedFormData) {
-      setFormData(savedFormData)
-    }
     handleStepChange(1)
   }
 
@@ -91,10 +77,7 @@ const ProductRequisitionForm: React.FC = () => {
               </div>
             </CardHeader>
             <CardContent className="flex flex-col">
-              <CreateProductRequisitionForm
-                onSubmit={handleFormCreateSubmit}
-                initialData={formData}
-              />
+              <CreateProductRequisitionForm onSubmit={handleFormCreateSubmit} />
             </CardContent>
           </Card>
         )}

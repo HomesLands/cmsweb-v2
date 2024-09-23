@@ -11,7 +11,7 @@ import {
 
 import { createUserSchema } from '@/schemas'
 import { z } from 'zod'
-import { AddNewUserForm } from '@/components/app/form'
+// import { AddNewUserForm } from '@/components/app/form'
 
 export function DialogAddUser() {
   const handleSubmit = (data: z.infer<typeof createUserSchema>) => {}
@@ -31,7 +31,7 @@ export function DialogAddUser() {
             Nhập đầy đủ thông tin bên dưới để thêm nhân viên mới
           </DialogDescription>
         </DialogHeader>
-        <AddNewUserForm onSubmit={handleSubmit} />
+        {/* <AddNewUserForm onSubmit={handleSubmit} /> */}
       </DialogContent>
     </Dialog>
   )

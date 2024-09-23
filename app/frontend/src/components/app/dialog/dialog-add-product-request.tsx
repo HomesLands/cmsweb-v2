@@ -11,12 +11,12 @@ import {
 
 import { addNewProductRequestSchema } from '@/schemas'
 import { AddNewProductRequestForm } from '@/components/app/form'
-import { IProductInfo } from '@/types'
+import { IProductRequisitionInfo } from '@/types'
 import { useRequisitionStore } from '@/stores'
 
 interface DialogAddProductRequestProps {
   openDialog: boolean
-  product?: IProductInfo | null
+  product?: IProductRequisitionInfo | null
   component: React.ReactNode
   onOpenChange: () => void
 }
@@ -28,15 +28,16 @@ export function DialogAddProductRequest({
   onOpenChange
 }: DialogAddProductRequestProps) {
   const { addProductToRequisition } = useRequisitionStore()
-
-  const handleAddRequest = (product: IProductInfo) => {
+  console.log('product in dialog ne hihi', product) //co slug
+  const handleAddRequest = (product: IProductRequisitionInfo) => {
+    console.log('product in dialog ne hihihaha', product) //co slug
     addProductToRequisition(product)
     onOpenChange()
   }
   const handleSubmit = (data: z.infer<typeof addNewProductRequestSchema>) => {
-    const completeData: IProductInfo = {
+    const completeData: IProductRequisitionInfo = {
       ...data,
-      createdAt: new Date().toISOString()
+      requestQuantity: Number(data.requestQuantity)
     }
     handleAddRequest(completeData)
     onOpenChange()

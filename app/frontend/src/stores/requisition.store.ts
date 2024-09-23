@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { IProductInfo, IProductRequirementInfoCreate, IRequisitionStore } from '@/types'
+import { IProductRequirementInfoCreate, IProductRequisitionInfo, IRequisitionStore } from '@/types'
 import { showToast, showErrorToast } from '@/utils'
 
 export const useRequisitionStore = create<IRequisitionStore>()(
@@ -9,46 +9,70 @@ export const useRequisitionStore = create<IRequisitionStore>()(
       requisition: undefined,
       getRequisition: () => get().requisition,
       setRequisition: (requisition: IProductRequirementInfoCreate) => {
-        set({ requisition })
+        const updatedRequisition = { ...requisition }
+
+        if (requisition.type === 'normal') {
+          updatedRequisition.userApprovals = [
+            { userSlug: requisition.site.managerSlug, roleApproval: 'approval_stage_1' },
+            { userSlug: requisition.project.managerSlug, roleApproval: 'approval_stage_2' },
+            { userSlug: requisition.company.directorSlug, roleApproval: 'approval_stage_3' }
+          ]
+        } else if (requisition.type === 'urgent') {
+          updatedRequisition.userApprovals = [
+            { userSlug: requisition.company.directorSlug, roleApproval: 'approval_stage_3' }
+          ]
+        }
+
+        set({ requisition: updatedRequisition })
         showToast('Tạo phiếu yêu cầu thành công!')
       },
       clearRequisition: () => set({ requisition: undefined }),
-      addProductToRequisition: (product: IProductInfo) => {
+      addProductToRequisition: (product: IProductRequisitionInfo) => {
         const currentRequisition = get().requisition
         if (currentRequisition) {
-          const productExists = currentRequisition.products.some((p) => p.code === product.code)
+          console.log('currentRequisition', currentRequisition)
+          const productExists = currentRequisition.requestProducts.some(
+            (p) => p.code === product.code
+          )
           if (productExists) {
             showErrorToast(1000)
           } else {
             set({
               requisition: {
                 ...currentRequisition,
-                products: [...currentRequisition.products, product]
+                requestProducts: [
+                  ...currentRequisition.requestProducts,
+                  { ...product, productSlug: product.productSlug }
+                ]
               }
             })
             showToast('Đã thêm vật tư vào phiếu yêu cầu!')
           }
         }
       },
-      updateProductToRequisition: (product: IProductInfo) => {
+      updateProductToRequisition: (product: IProductRequisitionInfo) => {
         const currentRequisition = get().requisition
         if (currentRequisition) {
-          const productIndex = currentRequisition.products.findIndex((p) => p.code === product.code)
+          const productIndex = currentRequisition.requestProducts.findIndex(
+            (p) => p.code === product.code
+          )
           if (productIndex === -1) {
             showErrorToast(1000)
           } else {
-            const updatedProducts = [...currentRequisition.products]
+            const updatedProducts = [...currentRequisition.requestProducts]
             updatedProducts[productIndex] = product
-            set({ requisition: { ...currentRequisition, products: updatedProducts } })
+            set({ requisition: { ...currentRequisition, requestProducts: updatedProducts } })
             showToast('Đã cập nhật vật tư trong phiếu yêu cầu!')
           }
         }
       },
-      deleteProductToRequisition: (product: IProductInfo) => {
+      deleteProductToRequisition: (product: IProductRequisitionInfo) => {
         const currentRequisition = get().requisition
         if (currentRequisition) {
-          const updatedProducts = currentRequisition.products.filter((p) => p.code !== product.code)
-          set({ requisition: { ...currentRequisition, products: updatedProducts } })
+          const updatedProducts = currentRequisition.requestProducts.filter(
+            (p) => p.code !== product.code
+          )
+          set({ requisition: { ...currentRequisition, requestProducts: updatedProducts } })
           showToast('Đã xóa vật tư trong phiếu yêu cầu!')
         }
       }

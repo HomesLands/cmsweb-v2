@@ -7,6 +7,8 @@
     "requestCode": "Request code",
     "requester": "Requester",
     "requesterDescription": "Enter the requester name",
+    "companyName": "Company name",
+    "companyNameDescription": "Choose company",
     "projectName": "Project name",
     "projectNameDescription": "Choose project",
     "constructionSite": "Construction site",

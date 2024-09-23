@@ -58,5 +58,5 @@ export async function getRefreshToken({
 
 export async function logoutApi(data: ILogoutRequest) {
   const response = await http.post<IApiResponse<void>>('/auth/logout', data)
-  return response.data
+  return response
 }

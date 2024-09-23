@@ -11,12 +11,12 @@ import {
 
 import { addNewProductRequestSchema } from '@/schemas'
 import { AddNewProductRequestForm } from '@/components/app/form'
-import { IProductInfo } from '@/types'
+import { IProductRequisitionInfo } from '@/types'
 
 interface DialogEditProductRequisitionProps {
-  handleAddRequest: (product: IProductInfo) => void
+  handleAddRequest: (product: IProductRequisitionInfo) => void
   openDialog: boolean
-  product: IProductInfo | null
+  product: IProductRequisitionInfo | null
   component: React.ReactNode
   onOpenChange: () => void
 }
@@ -28,10 +28,11 @@ export function DialogEditProductRequisition({
   component,
   onOpenChange
 }: DialogEditProductRequisitionProps) {
+  console.log('product in dialoggg', product)
   const handleSubmit = (data: z.infer<typeof addNewProductRequestSchema>) => {
-    const completeData: IProductInfo = {
+    const completeData: IProductRequisitionInfo = {
       ...data,
-      createdAt: new Date().toISOString()
+      requestQuantity: Number(data.requestQuantity)
     }
     handleAddRequest(completeData)
     onOpenChange()
@@ -47,7 +48,10 @@ export function DialogEditProductRequisition({
             Nhập đầy đủ thông tin bên dưới để chỉnh sửa thông tin vật tư
           </DialogDescription>
         </DialogHeader>
-        <AddNewProductRequestForm data={product || ({} as IProductInfo)} onSubmit={handleSubmit} />
+        <AddNewProductRequestForm
+          data={product || ({} as IProductRequisitionInfo)}
+          onSubmit={handleSubmit}
+        />
       </DialogContent>
     </Dialog>
   )

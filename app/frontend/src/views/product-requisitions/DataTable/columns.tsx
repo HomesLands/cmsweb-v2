@@ -12,10 +12,10 @@ import {
   Checkbox,
   DataTableColumnHeader
 } from '@/components/ui'
-import { IProductApprovalInfo } from '@/types'
+import { IRequestRequisitionInfo } from '@/types'
 import { ProductRequisitionStatusBadge } from '@/components/app/badge'
 
-export const columns: ColumnDef<IProductApprovalInfo>[] = [
+export const columns: ColumnDef<IRequestRequisitionInfo>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -38,46 +38,62 @@ export const columns: ColumnDef<IProductApprovalInfo>[] = [
     enableHiding: false
   },
   {
-    accessorKey: 'createdBy',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Người yêu cầu" />
+    accessorKey: 'code',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Mã yêu cầu" />
   },
   {
-    accessorKey: 'commanderApprovalStatus',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Chỉ huy trưởng" />,
+    accessorKey: 'creator',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Người tạo" />
+  },
+  {
+    accessorKey: 'company',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />
+  },
+  {
+    accessorKey: 'status',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Trạng thái" />,
     cell: ({ row }) => {
-      return <ProductRequisitionStatusBadge status={row.original.commanderApprovalStatus} />
+      console.log('row', row)
+      return <ProductRequisitionStatusBadge status={row.original.status} />
     }
   },
-  {
-    accessorKey: 'commanderApprovalContent',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Nội dung" />
-  },
-  {
-    accessorKey: 'projectManagerApprovalStatus',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Trưởng phòng dự án" />,
-    cell: ({ row }) => {
-      return <ProductRequisitionStatusBadge status={row.original.projectManagerApprovalStatus} />
-    }
-  },
-  {
-    accessorKey: 'projectManagerApprovalContent',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Nội dung" />
-  },
-  {
-    accessorKey: 'directorApprovalStatus',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Giám đốc" />,
-    cell: ({ row }) => {
-      return <ProductRequisitionStatusBadge status={row.original.directorApprovalStatus} />
-    }
-  },
-  {
-    accessorKey: 'directorApprovalContent',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Nội dung" />
-  },
-  {
-    accessorKey: 'notes',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Ghi chú" />
-  },
+  // {
+  //   accessorKey: 'commanderApprovalStatus',
+  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Chỉ huy trưởng" />,
+  //   cell: ({ row }) => {
+  //     return <ProductRequisitionStatusBadge status={row.original.commanderApprovalStatus} />
+  //   }
+  // },
+  // {
+  //   accessorKey: 'commanderApprovalContent',
+  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Nội dung" />
+  // },
+  // {
+  //   accessorKey: 'projectManagerApprovalStatus',
+  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Trưởng phòng dự án" />,
+  //   cell: ({ row }) => {
+  //     return <ProductRequisitionStatusBadge status={row.original.projectManagerApprovalStatus} />
+  //   }
+  // },
+  // {
+  //   accessorKey: 'projectManagerApprovalContent',
+  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Nội dung" />
+  // },
+  // {
+  //   accessorKey: 'directorApprovalStatus',
+  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Giám đốc" />,
+  //   cell: ({ row }) => {
+  //     return <ProductRequisitionStatusBadge status={row.original.directorApprovalStatus} />
+  //   }
+  // },
+  // {
+  //   accessorKey: 'directorApprovalContent',
+  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Nội dung" />
+  // },
+  // {
+  //   accessorKey: 'notes',
+  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Ghi chú" />
+  // },
   {
     id: 'actions',
     cell: () => {

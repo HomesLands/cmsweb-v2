@@ -4,7 +4,7 @@ export interface IProject {
   startDate: string
   description: string
   managerFullname: string
-  managerId: string
+  managerSlug: string
 }
 
 export interface IProjectListResponse<T> {

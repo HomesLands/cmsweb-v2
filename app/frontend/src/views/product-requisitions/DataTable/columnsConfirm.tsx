@@ -12,25 +12,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui'
-import { IProductInfo } from '@/types'
+import { IProductRequisitionInfo } from '@/types'
 import { useState } from 'react'
 import { DialogEditProductRequisition } from '@/components/app/dialog'
 import { DialogDeleteProductRequisition } from '@/components/app/dialog/dialog-delete-product-requisition'
 
 export const useColumnsConfirm = (
-  handleEditRequest: (product: IProductInfo) => void,
-  handleDeleteProduct: (product: IProductInfo) => void
-): ColumnDef<IProductInfo>[] => {
-  const [selectedProduct, setSelectedProduct] = useState<IProductInfo | null>(null)
+  handleEditRequest: (product: IProductRequisitionInfo) => void,
+  handleDeleteProduct: (product: IProductRequisitionInfo) => void
+): ColumnDef<IProductRequisitionInfo>[] => {
+  const [selectedProduct, setSelectedProduct] = useState<IProductRequisitionInfo | null>(null)
   const [openEdit, setOpenEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
 
-  const handleEdit = (product: IProductInfo) => {
+  const handleEdit = (product: IProductRequisitionInfo) => {
     setOpenEdit(true)
     setSelectedProduct(product)
   }
 
-  const handleDelete = (product: IProductInfo) => {
+  const handleDelete = (product: IProductRequisitionInfo) => {
     setOpenDelete(true)
     setSelectedProduct(product)
   }
@@ -69,7 +69,7 @@ export const useColumnsConfirm = (
       )
     },
     {
-      accessorKey: 'quantity',
+      accessorKey: 'requestQuantity',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.quantity')} />
       )

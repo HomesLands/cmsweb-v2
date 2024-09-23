@@ -1,83 +1,101 @@
-import React, { useEffect, useState } from 'react'
-import { format } from 'date-fns'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Button, DataTableRequisition } from '@/components/ui'
-import { IProductInfo, IProductRequirementInfoCreate } from '@/types'
-import { TbeLogo } from '@/assets/images'
+import {
+  IFinalProductRequisition,
+  IProductRequirementInfoCreate,
+  IProductRequisitionInfo
+} from '@/types'
 import { useColumnsConfirm } from '@/views/product-requisitions/DataTable/columnsConfirm'
-import { showToast } from '@/utils'
 import { useRequisitionStore } from '@/stores'
 
+import { TbeLogo } from '@/assets/images'
+import { MetekLogo } from '@/assets/images'
+import { SongnamLogo } from '@/assets/images'
+
 interface IConfirmProductFormProps {
-  onConfirm: (data: IProductRequirementInfoCreate) => void
+  onConfirm: (data: IFinalProductRequisition) => void
   onBack: () => void
 }
 
 export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfirm, onBack }) => {
-  const [localData, setLocalData] = useState<IProductRequirementInfoCreate | null>(null)
-  const [selectedProducts, setSelectedProducts] = useState<IProductInfo[]>([])
   const { t } = useTranslation('productRequisition')
 
   const { getRequisition, updateProductToRequisition, deleteProductToRequisition } =
     useRequisitionStore()
 
-  console.log(getRequisition())
-
-  const handleEditRequest = (product: IProductInfo) => {
-    updateProductToRequisition(product)
+  const handleEditRequest = (product: IProductRequisitionInfo) => {
+    updateProductToRequisition(product, product.requestQuantity)
   }
 
-  const handleDeleteProduct = (product: IProductInfo) => {
+  const handleDeleteProduct = (product: IProductRequisitionInfo) => {
     deleteProductToRequisition(product)
   }
 
-  useEffect(() => {
-    if (localData) {
-      setSelectedProducts(localData.products)
-    }
-  }, [localData])
-
   const columns = useColumnsConfirm(handleEditRequest, handleDeleteProduct)
 
-  const handleConfirm = () => {
-    if (localData) {
-      onConfirm(localData)
+  const transformRequisitionToApiFormat = (requisition: IProductRequirementInfoCreate) => {
+    return {
+      code: requisition.code,
+      companySlug: requisition.company.slug,
+      siteSlug: requisition.site.slug,
+      projectSlug: requisition.project.slug,
+      type: requisition.type,
+      description: requisition.note || '',
+      requestProducts: requisition.requestProducts.map((product) => ({
+        productSlug: product.productSlug,
+        requestQuantity: product.requestQuantity
+      })),
+      userApprovals: requisition.userApprovals.map((approval) => ({
+        userSlug: approval.userSlug,
+        roleApproval: approval.roleApproval
+      }))
     }
+  }
+
+  const handleConfirm = () => {
+    const requisition = getRequisition() as IProductRequirementInfoCreate
+    const apiFormattedRequisition = transformRequisitionToApiFormat(requisition)
+    onConfirm(apiFormattedRequisition)
   }
 
   return (
     <div className="mt-3">
       <div className="flex flex-col justify-center gap-4">
-        <div className="flex flex-row items-center justify-between py-3 border-b-2">
-          <img src={TbeLogo} height={56} width={56} />
-          <span className="text-xl font-bold text-normal font-beVietNam">
+        <div className="grid items-center justify-between grid-cols-6 py-3 mb-4 border-b-2">
+          {getRequisition()?.company.name === 'TBE' ? (
+            <img className="col-span-1" src={TbeLogo} height={56} width={56} />
+          ) : getRequisition()?.company.name === 'Metek' ? (
+            <img className="col-span-1" src={MetekLogo} height={64} width={64} />
+          ) : (
+            <img className="w-full col-span-1" src={SongnamLogo} />
+          )}
+          <span className="col-span-4 text-xl font-bold text-center text-normal font-beVietNam">
             {t('productRequisition.confirmProductRequisitions')}
           </span>
-          <div className="flex flex-col gap-2">
-            <div className="flex flex-row p-2 border rounded-md">
-              <span>KMH</span>
-              <span>QR3-01/001</span>
-            </div>
-            <div className="flex flex-row p-2 border rounded-md">
-              <span>Lần ban hành</span>
-              <span>1</span>
+          <div className="col-span-1">
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-row gap-1 p-1">
+                <span>KMH:</span>
+                <span>QR3-01/001</span>
+              </div>
+              <div className="flex flex-row gap-1 p-1">
+                <span>Lần ban hành:</span>
+                <span>1</span>
+              </div>
             </div>
           </div>
         </div>
         {getRequisition() && (
-          <div className="grid grid-cols-3 gap-3 mb-3 text-sm font-beVietNam">
-            <div>
-              <strong>Ngày yêu cầu: </strong>
-              {format(new Date(getRequisition()?.createdAt || ''), 'HH:mm dd/MM/yyyy')}
-            </div>
+          <div className="grid grid-cols-3 gap-3 mb-4 text-sm font-beVietNam">
             <div>
               <strong>Người yêu cầu: </strong>
               {getRequisition()?.requester}
             </div>
             <div>
-              <strong>Mã hóa đơn: </strong>
-              {getRequisition()?.requestCode}
+              <strong>Mã phiếu yêu cầu: </strong>
+              {getRequisition()?.code}
             </div>
             <div>
               <strong>Công trình sử dụng: </strong>
@@ -97,10 +115,10 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
       <DataTableRequisition
         isLoading={false}
         columns={columns}
-        data={getRequisition()?.products || []}
+        data={getRequisition()?.requestProducts || []}
         pages={1}
         page={1}
-        pageSize={getRequisition()?.products?.length || 0}
+        pageSize={getRequisition()?.requestProducts?.length || 0}
         onPageChange={() => {}}
       />
 

@@ -1,9 +1,9 @@
-export interface IConstruction {
+export interface ISite {
   slug: string
   name: string
   address: string
   managerFullname: string
-  managerId: string
+  managerSlug: string
 }
 
 export interface IConstructionListResponse<T> {
