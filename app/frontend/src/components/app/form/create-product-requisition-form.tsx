@@ -43,9 +43,9 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
       code: requisition?.code || generateProductRequisitionCode(),
       requester: data?.result?.fullname || '',
       company: {
-        slug: requisition?.company.slug || '',
-        directorSlug: requisition?.company.directorSlug || '',
-        name: requisition?.company.name || ''
+        slug: requisition?.company?.slug || '',
+        directorSlug: requisition?.company?.directorSlug || '',
+        name: requisition?.company?.name || ''
       },
       project: {
         slug: requisition?.project.slug || '',
@@ -134,7 +134,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
             <FormLabel>{t('productRequisition.companyName')}</FormLabel>
             <FormControl>
               <SelectCompany
-                defaultValue={requisition?.company.slug}
+                defaultValue={requisition?.company?.slug}
                 onChange={(slug: string, directorSlug: string, name: string) =>
                   field.onChange({ slug, directorSlug, name })
                 }
@@ -219,7 +219,11 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
             ))}
           </div>
           <div className="flex justify-end">
-            <Button className="flex justify-end" type="submit">
+            <Button
+              className="flex justify-end"
+              type="submit"
+              onClick={() => console.log({ values: form.getValues() })}
+            >
               {t('productRequisition.next')}
             </Button>
           </div>
