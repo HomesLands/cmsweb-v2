@@ -1,17 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 
-import { roleService } from "@services";
-import { TApiResponse, TCreateRoleRequestDto } from "@types";
-import { RoleResponseDto, UserResponseDto } from "@dto/response";
-import { logger } from "@lib/logger";
+import { authorityService } from "@services";
+import { TApiResponse, TCreateAuthorityRequestDto } from "@types";
+import { AuthorityResponseDto } from "@dto/response";
 
-class RoleController {
+class AuthorityController {
   /**
    * @swagger
    * components:
    *   schemas:
-   *     CreateRoleRequestDto:
+   *     CreateAuthorityRequestDto:
    *       type: object
    *       required:
    *         - nameNormalize
@@ -19,45 +18,45 @@ class RoleController {
    *       properties:
    *         nameNormalize:
    *           type: string
-   *           description: Role code. Start with ROLE_
+   *           description: Authority code.
    *         description:
    *           type: string
-   *           description: Description for role name
+   *           description: Description for authority
    *       example:
-   *         nameNormalize: ROLE_DIRECTOR
-   *         description: Giám đốc
+   *         nameNormalize: CREATE_USER
+   *         description: Enable create user
    */
 
   /**
    * @swagger
    * tags:
-   *   - name: Role
-   *     description: The role managing API
+   *   - name: Authority
+   *     description: The authority managing API
    */
 
   /**
    * @swagger
-   * /roles:
+   * /authorities:
    *   get:
-   *     summary: Get all roles
-   *     tags: [Role]
+   *     summary: Get all authorities
+   *     tags: [Authority]
    *     responses:
    *       200:
-   *         description: Get all roles successfully.
+   *         description: Get all authorities successfully.
    *       500:
    *         description: Server error
    */
-  public async getAllRoles(
+  public async getAllAuthorities(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const results = await roleService.getAllRoles();
-      const response: TApiResponse<UserResponseDto[]> = {
+      const results = await authorityService.getAllAuthorities();
+      const response: TApiResponse<AuthorityResponseDto[]> = {
         code: StatusCodes.OK,
         error: false,
-        message: "Roles have been retrieved successfully",
+        message: "Authorities have been retrieved successfully",
         method: req.method,
         path: req.originalUrl,
         result: results,
@@ -70,35 +69,35 @@ class RoleController {
 
   /**
    * @swagger
-   * /roles/{slug}:
+   * /authorities/{slug}:
    *   get:
-   *     summary: Get role by slug
-   *     tags: [Role]
+   *     summary: Get authority by slug
+   *     tags: [Authority]
    *     parameters:
    *       - in: path
    *         name: slug
    *         schema:
    *           type: string
    *         required: true
-   *         description: The user identity
+   *         description: The authority identity
    *     responses:
    *       200:
-   *         description: Get all users successfully.
+   *         description: Get all authorities successfully.
    *       500:
    *         description: Server error
    */
-  public async getRoleBySlug(
+  public async getAuthorityBySlug(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
       const { slug } = req.params;
-      const results = await roleService.getRoleBySlug(slug);
-      const response: TApiResponse<RoleResponseDto> = {
+      const results = await authorityService.getAuthorityBySlug(slug);
+      const response: TApiResponse<AuthorityResponseDto> = {
         code: StatusCodes.OK,
         error: false,
-        message: `Get role with slug ${slug} successfully`,
+        message: `Get authority with slug ${slug} successfully`,
         method: req.method,
         path: req.originalUrl,
         result: results,
@@ -111,36 +110,36 @@ class RoleController {
 
   /**
    * @swagger
-   * /roles:
+   * /authorities:
    *   post:
-   *     summary: Create role
-   *     tags: [Role]
+   *     summary: Create authority
+   *     tags: [Authority]
    *     requestBody:
    *       required: true
    *       content:
    *         application/json:
    *           schema:
-   *              $ref: '#/components/schemas/CreateRoleRequestDto'
+   *              $ref: '#/components/schemas/CreateAuthorityRequestDto'
    *     responses:
    *       200:
    *         description: Create role successfully.
    *       500:
    *         description: Server error
    */
-  public async createRole(
+  public async createAuthority(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const requestData = req.body as TCreateRoleRequestDto;
-      logger.info("", { filename: RoleController.name, requestData });
+      const requestData = req.body as TCreateAuthorityRequestDto;
 
-      const result: RoleResponseDto = await roleService.createRole(requestData);
-      const response: TApiResponse<RoleResponseDto> = {
+      const result: AuthorityResponseDto =
+        await authorityService.createAuthority(requestData);
+      const response: TApiResponse<AuthorityResponseDto> = {
         code: StatusCodes.CREATED,
         error: false,
-        message: "The role created successfully",
+        message: "The authority created successfully",
         method: req.method,
         path: req.originalUrl,
         result,
@@ -153,4 +152,4 @@ class RoleController {
   }
 }
 
-export default new RoleController();
+export default new AuthorityController();

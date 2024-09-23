@@ -53,7 +53,6 @@ export const columns: ColumnDef<IRequestRequisitionInfo>[] = [
     accessorKey: 'status',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Trạng thái" />,
     cell: ({ row }) => {
-      console.log('row', row)
       return <ProductRequisitionStatusBadge status={row.original.status} />
     }
   },

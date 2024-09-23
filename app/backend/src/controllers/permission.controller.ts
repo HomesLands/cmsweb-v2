@@ -1,63 +1,62 @@
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 
-import { roleService } from "@services";
-import { TApiResponse, TCreateRoleRequestDto } from "@types";
-import { RoleResponseDto, UserResponseDto } from "@dto/response";
-import { logger } from "@lib/logger";
+import { permissionService } from "@services";
+import { TApiResponse, TCreatePermissionRequestDto } from "@types";
+import { PermissionResponseDto } from "@dto/response";
 
-class RoleController {
+class PermissionController {
   /**
    * @swagger
    * components:
    *   schemas:
-   *     CreateRoleRequestDto:
+   *     CreatePermissionRequestDto:
    *       type: object
    *       required:
-   *         - nameNormalize
-   *         - description
+   *         - roleSlug
+   *         - authoritySlug
    *       properties:
-   *         nameNormalize:
+   *         roleSlug:
    *           type: string
    *           description: Role code. Start with ROLE_
-   *         description:
+   *         authoritySlug:
    *           type: string
-   *           description: Description for role name
+   *           description: Authority code
    *       example:
-   *         nameNormalize: ROLE_DIRECTOR
-   *         description: Giám đốc
+   *         roleSlug: V56Ck-iUuV
+   *         authoritySlug: G4-uaU14OY
    */
 
   /**
    * @swagger
    * tags:
-   *   - name: Role
-   *     description: The role managing API
+   *   - name: Permission
+   *     description: The permission managing API
    */
 
   /**
    * @swagger
-   * /roles:
+   * /permissions:
    *   get:
-   *     summary: Get all roles
-   *     tags: [Role]
+   *     summary: Get all permissions
+   *     tags: [Permission]
    *     responses:
    *       200:
-   *         description: Get all roles successfully.
+   *         description: Get all permissions successfully.
    *       500:
    *         description: Server error
    */
-  public async getAllRoles(
+  public async getAllPermissions(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const results = await roleService.getAllRoles();
-      const response: TApiResponse<UserResponseDto[]> = {
+      const results = await permissionService.getAllPermissions();
+      const response: TApiResponse<PermissionResponseDto[]> = {
         code: StatusCodes.OK,
         error: false,
-        message: "Roles have been retrieved successfully",
+        message: "Permissions have been retrieved successfully",
         method: req.method,
         path: req.originalUrl,
         result: results,
@@ -70,35 +69,35 @@ class RoleController {
 
   /**
    * @swagger
-   * /roles/{slug}:
+   * /permissions/{slug}:
    *   get:
-   *     summary: Get role by slug
-   *     tags: [Role]
+   *     summary: Get permission by slug
+   *     tags: [Permission]
    *     parameters:
    *       - in: path
    *         name: slug
    *         schema:
    *           type: string
    *         required: true
-   *         description: The user identity
+   *         description: The permission identity
    *     responses:
    *       200:
-   *         description: Get all users successfully.
+   *         description: Get permission successfully
    *       500:
    *         description: Server error
    */
-  public async getRoleBySlug(
+  public async getPermissionBySlug(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
       const { slug } = req.params;
-      const results = await roleService.getRoleBySlug(slug);
-      const response: TApiResponse<RoleResponseDto> = {
+      const results = await permissionService.getPermissionBySlug(slug);
+      const response: TApiResponse<PermissionResponseDto> = {
         code: StatusCodes.OK,
         error: false,
-        message: `Get role with slug ${slug} successfully`,
+        message: `Get permission with slug ${slug} successfully`,
         method: req.method,
         path: req.originalUrl,
         result: results,
@@ -111,36 +110,36 @@ class RoleController {
 
   /**
    * @swagger
-   * /roles:
+   * /permissions:
    *   post:
-   *     summary: Create role
-   *     tags: [Role]
+   *     summary: Create permission
+   *     tags: [Permission]
    *     requestBody:
    *       required: true
    *       content:
    *         application/json:
    *           schema:
-   *              $ref: '#/components/schemas/CreateRoleRequestDto'
+   *              $ref: '#/components/schemas/CreatePermissionRequestDto'
    *     responses:
    *       200:
    *         description: Create role successfully.
    *       500:
    *         description: Server error
    */
-  public async createRole(
+  public async createPermission(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const requestData = req.body as TCreateRoleRequestDto;
-      logger.info("", { filename: RoleController.name, requestData });
+      const requestData = req.body as TCreatePermissionRequestDto;
 
-      const result: RoleResponseDto = await roleService.createRole(requestData);
-      const response: TApiResponse<RoleResponseDto> = {
+      const result: PermissionResponseDto =
+        await permissionService.createPermission(requestData);
+      const response: TApiResponse<PermissionResponseDto> = {
         code: StatusCodes.CREATED,
         error: false,
-        message: "The role created successfully",
+        message: "The permission created successfully",
         method: req.method,
         path: req.originalUrl,
         result,
@@ -153,4 +152,4 @@ class RoleController {
   }
 }
 
-export default new RoleController();
+export default new PermissionController();

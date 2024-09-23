@@ -56,8 +56,8 @@ class TokenService {
 
     // Generate new token and refresh token
     const result = {
-      token: this.createToken(identity, this._duration),
-      refreshToken: this.createToken(identity, this._refreshableDuration),
+      token: await this.createToken(identity, this._duration),
+      refreshToken: await this.createToken(identity, this._refreshableDuration),
     };
 
     // Mark current refresh token is invalid
@@ -93,11 +93,14 @@ class TokenService {
    * @param {string | number} expiryTime Expiry date as string (ISO format) or timestamp (ms)
    * @returns {string} JWT token
    */
-  private createToken(identity: User, expiryTime: string | number): string {
+  private async createToken(
+    identity: User,
+    expiryTime: string | number
+  ): Promise<string> {
     return JWT.sign(
       {
         sub: identity.slug,
-        scope: this.buildScope(identity),
+        scope: await this.buildScope(identity),
         jti: uuidv4(),
       },
       env.jwtSecret,
@@ -113,8 +116,19 @@ class TokenService {
    * @param {User} identity
    * @returns {string} The scope string
    */
-  private buildScope(identity: User): string {
-    return "";
+  private async buildScope(identity: User): Promise<string> {
+    const scope: string[] = [];
+    const user = await userRepository.findOne({
+      where: { id: identity.id },
+      relations: ["userRoles", "userRoles.role"],
+    });
+    if (!user) return scope.join(", ");
+    user.userRoles?.forEach((item) => {
+      if (item.role?.nameNormalize) {
+        scope.push(item.role.nameNormalize);
+      }
+    });
+    return scope.join(", ");
   }
 
   /**
@@ -122,13 +136,13 @@ class TokenService {
    * @param {User} identity
    * @returns {string} JWT token
    */
-  public generateToken(identity: User): {
+  public async generateToken(identity: User): Promise<{
     token: string;
     refreshToken: string;
-  } {
+  }> {
     return {
-      token: this.createToken(identity, this._duration),
-      refreshToken: this.createToken(identity, this._refreshableDuration),
+      token: await this.createToken(identity, this._duration),
+      refreshToken: await this.createToken(identity, this._refreshableDuration),
     };
   }
 }

@@ -269,14 +269,39 @@ export const ErrorCodes: TErrorCode = {
     code: 1069,
     message: "Missing user approval",
   },
-  INVALID_COMPANY_DIRECTOR: {
+  ROLE_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1070,
+    message: "Authority could not be found",
+  },
+  AUTHORITY_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1071,
+    message: "Authority could not be found",
+  },
+  PERMISSION_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1072,
+    message: "Authority could not be found",
+  },
+  USER_ROLE_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1072,
+    message: "User role is existed",
+  },
+  PERMISSION_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1073,
+    message: "Permission is existed",
+  },
+  INVALID_COMPANY_DIRECTOR: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1074,
     message: "Invalid company director",
   },
   COMPANY_DIRECTOR_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1071,
+    code: 1075,
     message: "Company director not found",
   },
   FORM_NOT_CREATED_BY_YOU: {

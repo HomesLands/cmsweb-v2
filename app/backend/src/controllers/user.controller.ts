@@ -9,6 +9,18 @@ import { logger } from "@lib";
 class UserController {
   /**
    * @swagger
+   * components:
+   *   schemas:
+   *     UpdateUserRoleRequestDto:
+   *       type: array
+   *       description: List of role slug being requested.
+   *       items:
+   *         type: string
+   *         example: ""
+   */
+
+  /**
+   * @swagger
    * tags:
    *   - name: User
    *     description: The user managing API
@@ -56,7 +68,6 @@ class UserController {
   ): Promise<void> {
     try {
       const plainData = req.query as unknown as TQueryRequest;
-      logger.info(UserController.name, plainData);
       const results = await userService.getAllUsers(plainData);
       const response: TApiResponse<UserResponseDto[]> = {
         code: StatusCodes.OK,

@@ -1,18 +1,23 @@
-import { TApiResponse, TPaginationOptionResponse, TQueryRequest, TResubmitProductRequisitionFormRequestDto } from "@types";
+import {
+  TApiResponse,
+  TPaginationOptionResponse,
+  TQueryRequest,
+  TResubmitProductRequisitionFormRequestDto,
+} from "@types";
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import { productRequisitionFormService } from "@services";
-import { ProductRequisitionFormResponseDto, UserApprovalForApprovalUserResponseDto } from "@dto/response";
-import { TCreateProductRequisitionFormRequestDto, TApprovalProductRequisitionFormRequestDto } from "@types";
+import {
+  ProductRequisitionFormResponseDto,
+  UserApprovalForApprovalUserResponseDto,
+} from "@dto/response";
+import {
+  TCreateProductRequisitionFormRequestDto,
+  TApprovalProductRequisitionFormRequestDto,
+} from "@types";
 import { logger } from "@lib";
 
 class ProductRequisitionFormController {
-  private _name: string;
-
-  constructor() {
-    this._name = ProductRequisitionFormController.name;
-  }
-
   /**
    * @swagger
    * components:
@@ -102,7 +107,7 @@ class ProductRequisitionFormController {
    *         userApprovals:
    *           - userSlug: user-456
    *             roleApproval: approval_stage_3
-   * 
+   *
    *     ApprovalProductRequisitionFormRequestDto:
    *       type: object
    *       required:
@@ -128,7 +133,7 @@ class ProductRequisitionFormController {
    *         approvalUserSlug: rIsvuLZgnE_
    *         approvalLogStatus: accept
    *         approvalLogContent: Yêu cầu đã ok
-   * 
+   *
    *     ResubmitProductRequisitionFormRequestDto:
    *       type: object
    *       required:
@@ -144,10 +149,10 @@ class ProductRequisitionFormController {
    *       example:
    *         slug: XUWyA6fr7i
    *         description: Đã chỉnh sửa
-   * 
+   *
    */
-  
-    /**
+
+  /**
    * @swagger
    * tags:
    *   - name: ProductRequisitionForm
@@ -250,7 +255,11 @@ class ProductRequisitionFormController {
     try {
       const requestData = req.body as TCreateProductRequisitionFormRequestDto;
       const creatorId = req.userId as string;
-      const form = await productRequisitionFormService.createProductRequisitionForm(creatorId, requestData);
+      const form =
+        await productRequisitionFormService.createProductRequisitionForm(
+          creatorId,
+          requestData
+        );
 
       const response: TApiResponse<ProductRequisitionFormResponseDto> = {
         code: StatusCodes.CREATED,
@@ -354,18 +363,19 @@ class ProductRequisitionFormController {
   public async getAllProductRequisitionFormsByApprovalUser(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> {
     try {
       const userId = req.userId as string;
       const query = req.query as unknown as TQueryRequest;
-      const form = await productRequisitionFormService.getAllProductRequisitionFormsByApprovalUser(
-        userId,
-        query
-      );
+      const form =
+        await productRequisitionFormService.getAllProductRequisitionFormsByApprovalUser(
+          userId,
+          query
+        );
 
       const response: TApiResponse<
-      TPaginationOptionResponse<UserApprovalForApprovalUserResponseDto[]>
+        TPaginationOptionResponse<UserApprovalForApprovalUserResponseDto[]>
       > = {
         code: StatusCodes.OK,
         error: false,
@@ -400,14 +410,17 @@ class ProductRequisitionFormController {
    *
    */
 
-  public async approvalProductRequisitionForm (
+  public async approvalProductRequisitionForm(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> {
     try {
       const data = req.body as TApprovalProductRequisitionFormRequestDto;
-      const form = await productRequisitionFormService.approvalProductRequisitionForm(data);
+      const form =
+        await productRequisitionFormService.approvalProductRequisitionForm(
+          data
+        );
 
       const response: TApiResponse<ProductRequisitionFormResponseDto> = {
         code: StatusCodes.OK,
@@ -415,7 +428,7 @@ class ProductRequisitionFormController {
         message: "Approval productRequisitionForms successfully",
         method: req.method,
         path: req.originalUrl,
-        result: form
+        result: form,
       };
       res.status(StatusCodes.OK).json(response);
     } catch (error) {
@@ -423,7 +436,7 @@ class ProductRequisitionFormController {
     }
   }
 
-   /**
+  /**
    * @swagger
    * /productRequisitionForms/creator:
    *   get:
@@ -460,21 +473,22 @@ class ProductRequisitionFormController {
    *
    */
 
-   public async getAllProductRequisitionFormsByCreator(
+  public async getAllProductRequisitionFormsByCreator(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> {
     try {
       const creatorId = req.userId as string;
       const query = req.query as unknown as TQueryRequest;
-      const forms = await productRequisitionFormService.getAllProductRequisitionFormsByCreator(
-        creatorId,
-        query
-      );
+      const forms =
+        await productRequisitionFormService.getAllProductRequisitionFormsByCreator(
+          creatorId,
+          query
+        );
 
       const response: TApiResponse<
-      TPaginationOptionResponse<ProductRequisitionFormResponseDto[]>
+        TPaginationOptionResponse<ProductRequisitionFormResponseDto[]>
       > = {
         code: StatusCodes.OK,
         error: false,
@@ -488,7 +502,6 @@ class ProductRequisitionFormController {
       next(error);
     }
   }
-
 
   /**
    * @swagger
@@ -510,16 +523,20 @@ class ProductRequisitionFormController {
    *
    */
 
-   public async resubmitRequisitionFormsByCreator(
+  public async resubmitRequisitionFormsByCreator(
     req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): Promise<void> {
     try {
       const data = req.body as TResubmitProductRequisitionFormRequestDto;
-      console.log({data})
+      console.log({ data });
       const creatorId = req.userId as string;
-      const forms = await productRequisitionFormService.resubmitRequisitionFormsByCreator(data, creatorId);
+      const forms =
+        await productRequisitionFormService.resubmitRequisitionFormsByCreator(
+          data,
+          creatorId
+        );
 
       const response: TApiResponse<ProductRequisitionFormResponseDto> = {
         code: StatusCodes.OK,

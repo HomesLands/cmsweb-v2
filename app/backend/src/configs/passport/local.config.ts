@@ -15,7 +15,10 @@ export const customLocalStrategy = (): void => {
 
   passport.deserializeUser(async (id: string, done) => {
     try {
-      const user = await userRepository.findOneBy({ id });
+      const user = await userRepository.findOne({
+        where: { id },
+        relations: ["userRoles"],
+      });
       done(null, user);
     } catch (error) {
       done(error, undefined);
