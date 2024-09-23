@@ -9,14 +9,14 @@ import {
   DialogTrigger
 } from '@/components/ui'
 
-import { requestProdcuctSchema } from '@/schemas'
+import { addNewProductRequestSchema } from '@/schemas'
 import { AddNewProductRequestForm } from '@/components/app/form'
-import { IRequestProduct } from '@/types'
+import { IProductRequisitionInfo } from '@/types'
 import { useRequisitionStore } from '@/stores'
 
 interface DialogAddProductRequestProps {
   openDialog: boolean
-  product: IRequestProduct
+  product?: IProductRequisitionInfo | null
   component: React.ReactNode
   onOpenChange: () => void
 }
@@ -28,14 +28,16 @@ export function DialogAddProductRequest({
   onOpenChange
 }: DialogAddProductRequestProps) {
   const { addProductToRequisition } = useRequisitionStore()
-
-  const handleAddRequest = (product: IRequestProduct) => {
+  console.log('product in dialog ne hihi', product) //co slug
+  const handleAddRequest = (product: IProductRequisitionInfo) => {
+    console.log('product in dialog ne hihihaha', product) //co slug
     addProductToRequisition(product)
     onOpenChange()
   }
-  const handleSubmit = (data: IRequestProduct) => {
-    const completeData: IRequestProduct = {
-      ...data
+  const handleSubmit = (data: z.infer<typeof addNewProductRequestSchema>) => {
+    const completeData: IProductRequisitionInfo = {
+      ...data,
+      requestQuantity: Number(data.requestQuantity)
     }
     handleAddRequest(completeData)
     onOpenChange()

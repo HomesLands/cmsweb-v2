@@ -10,16 +10,17 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui'
-import { IProductInfo } from '@/types'
+import { IProductInfo, IProductRequisitionInfo } from '@/types'
 import { DialogAddProductRequest } from '@/components/app/dialog'
 
 export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
-  const [selectedProduct, setSelectedProduct] = useState<IProductInfo | null>(null)
+  const [selectedProduct, setSelectedProduct] = useState<IProductRequisitionInfo | null>(null)
   const [openDialog, setOpenDialog] = useState(false)
 
   const handleButtonClick = (product: IProductInfo) => {
     setOpenDialog(true)
-    setSelectedProduct(product)
+    const { quantity, slug, ...rest } = product
+    setSelectedProduct({ ...rest, requestQuantity: quantity, productSlug: slug })
   }
 
   const onOpenChange = () => {
@@ -32,7 +33,6 @@ export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
       header: 'Thêm vào phiếu yêu cầu',
       cell: ({ row }) => {
         const product = row.original
-
         return (
           <TooltipProvider>
             <Tooltip>
@@ -41,7 +41,7 @@ export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
                   <Button variant="ghost" onClick={() => handleButtonClick(product)}>
                     <PlusCircledIcon className="w-4 h-4" />
                   </Button>
-                  {selectedProduct === product && (
+                  {selectedProduct && selectedProduct.code === product.code && (
                     <DialogAddProductRequest
                       openDialog={openDialog}
                       product={selectedProduct}

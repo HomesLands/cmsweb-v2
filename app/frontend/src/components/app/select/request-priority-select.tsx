@@ -11,24 +11,33 @@ import { FC } from 'react'
 import { useRequestPriorities } from '@/menus'
 import { useTranslation } from 'react-i18next'
 
-interface SelectUserRoleProps {
-  value: string
-  onChange: (value: string) => void
+interface RequestPrioritySelectProps {
+  onChange: (value: 'normal' | 'urgent') => void
+  defaultValue?: 'normal' | 'urgent'
 }
 
-export const RequestPrioritySelect: FC<SelectUserRoleProps> = ({ value, onChange }) => {
+export const RequestPrioritySelect: FC<RequestPrioritySelectProps> = ({
+  onChange,
+  defaultValue
+}) => {
   const { t } = useTranslation('productRequisition')
+  const priorities = useRequestPriorities()
+
+  const handleValueChange = (value: string) => {
+    onChange(value as 'normal' | 'urgent')
+  }
+
   return (
-    <Select value={value} onValueChange={onChange}>
+    <Select onValueChange={handleValueChange} defaultValue={defaultValue}>
       <SelectTrigger>
         <SelectValue placeholder={t('productRequisition.priority')} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           <SelectLabel>{t('productRequisition.priority')}</SelectLabel>
-          {useRequestPriorities().map((requestPriority) => (
+          {priorities.map((requestPriority) => (
             <SelectItem key={requestPriority.value} value={requestPriority.value}>
-              <span className="text-normal">{requestPriority.label}</span>
+              {requestPriority.label}
             </SelectItem>
           ))}
         </SelectGroup>

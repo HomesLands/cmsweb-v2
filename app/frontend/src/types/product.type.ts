@@ -16,21 +16,47 @@ export interface IProductApprovalInfo {
 }
 
 export interface IProductRequirementInfoCreate {
-  requestCode: string
+  code: string
   requester: string
-  project: {
+  company: {
     slug: string
+    directorSlug: string
     name: string
   }
   site: {
     slug: string
+    managerSlug: string
     name: string
   }
-  approver: string
-  priority: string
-  note: string
-  products: IRequestProduct[]
-  createdAt: string
+  project: {
+    slug: string
+    managerSlug: string
+    name: string
+  }
+  type: 'normal' | 'urgent'
+  requestProducts: IProductRequisitionInfo[]
+  userApprovals: {
+    userSlug: string
+    roleApproval: string
+  }[]
+  note?: string
+}
+
+export interface IFinalProductRequisition {
+  code: string
+  companySlug: string
+  siteSlug: string
+  projectSlug: string
+  type: 'normal' | 'urgent'
+  description: string
+  requestProducts: {
+    productSlug: string
+    requestQuantity: number
+  }[]
+  userApprovals: {
+    userSlug: string
+    roleApproval: string
+  }[]
 }
 
 export interface IRequestProduct {
@@ -43,18 +69,34 @@ export interface IRequestProduct {
 }
 
 export interface IProductNameSearch {
-  productName: string
+  name: string
 }
 
 export interface IProductInfo {
-  createdAt: string
   code: string
+  slug: string
   name: string
   provider: string
   status?: string
   description?: string
   unit: string
   quantity: number
+}
+
+export interface IProductRequisitionInfo {
+  code: string
+  productSlug: string
+  name: string
+  provider: string
+  status?: string
+  description?: string
+  unit: string
+  requestQuantity: number
+}
+
+export interface IUserQuery {
+  page: number
+  pageSize: number
 }
 
 export interface IProductQuery extends IQuery {
