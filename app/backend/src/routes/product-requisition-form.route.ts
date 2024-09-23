@@ -23,9 +23,15 @@ productRequisitionFormRoute.route("/creator")
 productRequisitionFormRoute.route("/approvalForm")
   .patch(productRequisitionFormController.approvalProductRequisitionForm);
 
+// [PATCH] /api/v1/productRequisitionForms/resubmit
+productRequisitionFormRoute.route("/resubmit")
+  .patch(productRequisitionFormController.resubmitRequisitionFormsByCreator);
+
 // [GET] /api/v1/productRequisitionForms/:slug
 productRequisitionFormRoute.route("/:slug")
   .get(productRequisitionFormController.getProductRequisitionFormBySlug);
+
+
 
 
 

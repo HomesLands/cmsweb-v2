@@ -116,6 +116,8 @@ export type TErrorCodeKey =
   | "INVALID_REQUEST_PRODUCT_SLUG"
   | "REQUEST_PRODUCT_NOT_FOUND"
   | "CAN_NOT_EDIT_FORM"
+  | "REQUEST_PRODUCT_EXIST"
+  | "INVALID_REASON_RESUBMIT_FORM"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {

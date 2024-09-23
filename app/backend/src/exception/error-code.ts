@@ -299,6 +299,16 @@ export const ErrorCodes: TErrorCode = {
     code: 1075,
     message: "Can not edit form",
   },
+  REQUEST_PRODUCT_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1076,
+    message: "Request product exist",
+  },
+  INVALID_REASON_RESUBMIT_FORM: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1077,
+    message: "Invalid reason resubmit form",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]
