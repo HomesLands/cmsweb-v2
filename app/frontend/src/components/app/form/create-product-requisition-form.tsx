@@ -1,3 +1,4 @@
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
@@ -14,47 +15,196 @@ import {
   Textarea
 } from '@/components/ui'
 import { productSchema } from '@/schemas'
-import { SelectProject, SelectConstruction, RequestPrioritySelect } from '@/components/app/select'
+import {
+  SelectProject,
+  SelectSite,
+  RequestPrioritySelect,
+  SelectCompany
+} from '@/components/app/select'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useProjects, useSites, useUser } from '@/hooks'
-import { IProductRequirementInfoCreate } from '@/types'
+import { useUser } from '@/hooks'
 import { generateProductRequisitionCode } from '@/utils'
-import { useAuthStore } from '@/stores'
+import { useAuthStore, useRequisitionStore } from '@/stores'
 
 interface IFormCreateProductProps {
   onSubmit: (data: z.infer<typeof productSchema>) => void
-  initialData?: IProductRequirementInfoCreate | null
 }
 
-export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = ({
-  onSubmit,
-  initialData
-}) => {
+export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = ({ onSubmit }) => {
   const { t } = useTranslation('productRequisition')
   const { slug } = useAuthStore()
   const { data } = useUser(slug || '')
+  const { requisition } = useRequisitionStore()
 
   const form = useForm<z.infer<typeof productSchema>>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      requestCode: generateProductRequisitionCode(),
+      code: requisition?.code || generateProductRequisitionCode(),
       requester: data?.result?.fullname || '',
-      project: { slug: '', name: '' },
-      site: { slug: '', name: '' },
-      approver: initialData?.approver || '',
-      note: initialData?.note || '',
-      createdAt: initialData?.createdAt || new Date().toISOString(),
-      priority: 'normal'
+      company: {
+        slug: requisition?.company.slug || '',
+        directorSlug: requisition?.company.directorSlug || '',
+        name: requisition?.company.name || ''
+      },
+      project: {
+        slug: requisition?.project.slug || '',
+        managerSlug: requisition?.project.managerSlug || '',
+        name: requisition?.project.name || ''
+      },
+      site: {
+        slug: requisition?.site.slug || '',
+        managerSlug: requisition?.site.managerSlug || '',
+        name: requisition?.site.name || ''
+      },
+      type: 'normal',
+      requestProducts: [],
+      userApprovals: [],
+      note: requisition?.note || ''
     }
   })
 
-  const { data: projects } = useProjects()
-  const { data: sites } = useSites()
-
   const handleSubmit = (values: z.infer<typeof productSchema>) => {
-    values.createdAt = new Date().toISOString()
     onSubmit(values)
+  }
+
+  const handleChoosePriority = (value: 'normal' | 'urgent') => {
+    form.setValue('type', value)
+  }
+
+  const formFields = {
+    code: (
+      <FormField
+        control={form.control}
+        name="code"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('productRequisition.requestCode')}</FormLabel>
+            <FormControl>
+              <Input readOnly {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    type: (
+      <FormField
+        control={form.control}
+        name="type"
+        render={() => (
+          <FormItem>
+            <FormLabel>{t('productRequisition.priority')}</FormLabel>
+            <FormControl>
+              <RequestPrioritySelect
+                defaultValue={requisition?.type}
+                onChange={handleChoosePriority as (value: string) => void}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    requester: (
+      <FormField
+        control={form.control}
+        name="requester"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('productRequisition.requester')}</FormLabel>
+            <FormControl>
+              <Input
+                readOnly
+                placeholder={t('productRequisition.requesterDescription')}
+                {...field}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    company: (
+      <FormField
+        control={form.control}
+        name="company"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('productRequisition.companyName')}</FormLabel>
+            <FormControl>
+              <SelectCompany
+                defaultValue={requisition?.company.slug}
+                onChange={(slug: string, directorSlug: string, name: string) =>
+                  field.onChange({ slug, directorSlug, name })
+                }
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+
+    site: (
+      <FormField
+        control={form.control}
+        name="site"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('productRequisition.constructionSite')}</FormLabel>
+            <FormControl>
+              <SelectSite
+                defaultValue={requisition?.site.slug}
+                onChange={(value: { slug: string; managerSlug: string; name: string }) =>
+                  field.onChange(value)
+                }
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    project: (
+      <FormField
+        control={form.control}
+        name="project"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('productRequisition.projectName')}</FormLabel>
+            <FormControl>
+              <SelectProject
+                defaultValue={requisition?.project.slug}
+                onChange={(value: { slug: string; managerSlug: string; name: string }) =>
+                  field.onChange(value)
+                }
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    note: (
+      <FormField
+        control={form.control}
+        name="note"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('productRequisition.note')}</FormLabel>
+            <FormControl>
+              <Textarea
+                placeholder={t('productRequisition.noteDescription')}
+                defaultValue={requisition?.note}
+                {...field}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    )
   }
 
   return (
@@ -62,115 +212,16 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 gap-2">
-            <FormField
-              control={form.control}
-              name="requestCode"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('productRequisition.requestCode')}</FormLabel>
-                  <FormControl>
-                    <Input readOnly {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="requester"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('productRequisition.requester')}</FormLabel>
-                  <FormControl>
-                    <Input
-                      readOnly
-                      placeholder={t('productRequisition.requesterDescription')}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="project"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('productRequisition.projectName')}</FormLabel>
-                  <FormControl>
-                    <SelectProject
-                      onChange={(value: { slug: string; name: string }) => field.onChange(value)}
-                      projectList={projects?.result ?? []}
-                      defaultValue={initialData?.project}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {Object.keys(formFields).map((key) => (
+              <React.Fragment key={key}>
+                {formFields[key as keyof typeof formFields]}
+              </React.Fragment>
+            ))}
           </div>
-          <div className="grid grid-cols-1 gap-2">
-            <FormField
-              control={form.control}
-              name="site"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('productRequisition.constructionSite')}</FormLabel>
-                  <FormControl>
-                    <SelectConstruction
-                      onChange={(value: { slug: string; name: string }) => field.onChange(value)}
-                      constructionList={sites?.result ?? []}
-                      defaultValue={initialData?.site}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="approver"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('productRequisition.approver')}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={t('productRequisition.approverDescription')} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <FormField
-            control={form.control}
-            name="note"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t('productRequisition.note')}</FormLabel>
-                <FormControl>
-                  <Textarea placeholder={t('productRequisition.noteDescription')} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="priority"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t('productRequisition.priority')}</FormLabel>
-                <FormControl>
-                  <RequestPrioritySelect {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div className="flex justify-end w-full">
-            <Button type="submit">{t('productRequisition.next')}</Button>
+          <div className="flex justify-end">
+            <Button className="flex justify-end" type="submit">
+              {t('productRequisition.next')}
+            </Button>
           </div>
         </form>
       </Form>

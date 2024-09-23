@@ -9,6 +9,7 @@ import { projectRoute } from "@routes/project.route";
 import { unitRoute } from "@routes/unit.route";
 import { companyRoute } from "@routes/company.route";
 import { productRequisitionFormRoute } from "@routes/product-requisition-form.route";
+import { requestProductRoute } from "@routes/request-product.route";
 
 import { authMiddleware } from "@middlewares";
 import { ErrorCodes, GlobalError } from "@exception";
@@ -29,6 +30,8 @@ export const registerRoutes = (app: Express) => {
   baseApi.use("/users", userRoute);
 
   baseApi.use("/products", productRoute);
+
+  baseApi.use("/requestProducts", requestProductRoute);
 
   baseApi.use("/sites", siteRoute);
 

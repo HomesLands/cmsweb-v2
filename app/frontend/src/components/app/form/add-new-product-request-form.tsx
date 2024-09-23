@@ -11,32 +11,37 @@ import {
   Form,
   Button
 } from '@/components/ui'
-import { requestProdcuctSchema } from '@/schemas'
+import { addNewProductRequestSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { IRequestProduct } from '@/types'
+import { IProductRequisitionInfo } from '@/types'
 
 interface IFormAddNewProductProps {
-  data: IRequestProduct
-  onSubmit: (data: IRequestProduct) => void
+  data?: IProductRequisitionInfo
+  onSubmit: (data: IProductRequisitionInfo) => void
 }
 
 export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ data, onSubmit }) => {
-  const form = useForm<z.infer<typeof requestProdcuctSchema>>({
-    resolver: zodResolver(requestProdcuctSchema),
+  console.log('data in form', data)
+  const form = useForm<z.infer<typeof addNewProductRequestSchema>>({
+    resolver: zodResolver(addNewProductRequestSchema),
     defaultValues: {
       code: data?.code || '',
+      productSlug: data?.productSlug || '',
       name: data?.name || '',
       provider: data?.provider || '',
       unit: data?.unit || '',
-      quantity: data?.quantity || 1,
-      description: data?.description || ''
+      requestQuantity: data?.requestQuantity || 1,
+      description: data?.description || '',
+      status: data?.status || ''
     }
   })
 
-  const handleSubmit = (values: z.infer<typeof requestProdcuctSchema>) => {
-    const completeData: IRequestProduct = {
+  const handleSubmit = (values: z.infer<typeof addNewProductRequestSchema>) => {
+    console.log('values in form', values)
+    const completeData: IProductRequisitionInfo = {
       ...values,
-      quantity: Number(values.quantity)
+      requestQuantity: Number(values.requestQuantity),
+      productSlug: values.productSlug
     }
     onSubmit(completeData)
   }
@@ -89,7 +94,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
           <div className="grid grid-cols-3 gap-2">
             <FormField
               control={form.control}
-              name="quantity"
+              name="requestQuantity"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Số lượng</FormLabel>

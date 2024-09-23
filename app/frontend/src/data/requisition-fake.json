@@ -1,0 +1,36 @@
+{
+  "createdAt": "2024-09-20T09:27:22.104Z",
+  "code": "YCVT20092024-3D8PB",
+  "companySlug": "LHJVIkk1JN",
+  "note": "",
+  "project": {
+    "slug": "ovEhtGxHly",
+    "managerSlug": "gBFS3-T3y"
+  },
+  "requestProducts": [
+    {
+      "productSlug": "7776008101053",
+      "requestQuantity": 1
+    }
+  ],
+  "requester": "Phan Quyết Thắng",
+  "site": {
+    "slug": "nRdgsxac1i",
+    "managerSlug": "oVcjuekb0"
+  },
+  "type": "normal",
+  "userApprovals": [
+    {
+      "userSlug": "oVcjuekb0",
+      "roleApproval": "approval_stage_1"
+    },
+    {
+      "userSlug": "gBFS3-T3y",
+      "roleApproval": "approval_stage_2"
+    },
+    {
+      "userSlug": "gBFS3-T3y",
+      "roleApproval": "approval_stage_3"
+    }
+  ]
+}

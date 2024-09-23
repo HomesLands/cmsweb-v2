@@ -12,3 +12,4 @@ export { default as roleController } from "./role.controller";
 export { default as authorityController } from "./authority.controller";
 export { default as permissionController } from "./permission.controller";
 export { default as userRoleController } from "./user-role.controller";
+export { default as requestProductController } from "./request-product.controller";

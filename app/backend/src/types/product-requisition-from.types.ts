@@ -19,3 +19,8 @@ export type TApprovalProductRequisitionFormRequestDto = {
   approvalLogStatus?: string;
   approvalLogContent?: string;
 }
+
+export type TResubmitProductRequisitionFormRequestDto = {
+  slug?: string;
+  description?: string;
+}

@@ -26,3 +26,4 @@ export * from "./role.type";
 export * from "./authority.type";
 export * from "./permission.type";
 export * from "./user-role.type";
+export * from "./request-product.type";

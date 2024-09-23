@@ -10,12 +10,13 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui'
-import { IRequestProduct } from '@/types'
+
+import { IProductRequisitionInfo } from '@/types'
 
 interface DialogDeleteProductRequisitionProps {
-  handleDeleteProduct: (product: IRequestProduct) => void
+  handleDeleteProduct: (product: IProductRequisitionInfo) => void
   openDialog: boolean
-  product: IRequestProduct
+  product: IProductRequisitionInfo | null
   component: React.ReactNode
   onOpenChange: () => void
 }
@@ -27,8 +28,8 @@ export function DialogDeleteProductRequisition({
   component,
   onOpenChange
 }: DialogDeleteProductRequisitionProps) {
-  const handleSubmit = (data: IRequestProduct) => {
-    const completeData: IRequestProduct = {
+  const handleSubmit = (data: IProductRequisitionInfo) => {
+    const completeData: IProductRequisitionInfo = {
       ...data
     }
     handleDeleteProduct(completeData)

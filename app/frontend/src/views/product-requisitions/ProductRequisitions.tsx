@@ -4,17 +4,18 @@ import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
 import { columns } from './DataTable/columns'
-import { useProducts, usePagination } from '@/hooks'
+import { usePagination, useAllProductRequisition } from '@/hooks'
 import { CustomComponent } from './CustomComponent'
 
 const ProductRequisitions: React.FC = () => {
   const { t } = useTranslation(['productRequisition'])
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
-
-  const { data, isLoading } = useProducts({
+  const { data, isLoading } = useAllProductRequisition({
     page: pagination.pageIndex + 1,
     pageSize: pagination.pageSize
   })
+
+  console.log('data in product requisitions', data?.result)
 
   return (
     <div className="flex flex-col gap-4">
@@ -22,18 +23,17 @@ const ProductRequisitions: React.FC = () => {
         <ReaderIcon className="header-icon" />
         {t('productRequisition.list')}
       </Label>
-      {/* <DataTable
+      <DataTable
         isLoading={isLoading}
         columns={columns}
-        data={data?.result.items || []}
-        // total={data?.total || 0}
-        pages={data?.result.totalPages || 0}
+        data={data?.result?.items || []}
+        pages={data?.result?.totalPages || 0}
         page={pagination.pageIndex + 1}
         pageSize={pagination.pageSize}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         CustomComponent={CustomComponent}
-      /> */}
+      />
     </div>
   )
 }
