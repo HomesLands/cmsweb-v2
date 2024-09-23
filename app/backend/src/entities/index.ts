@@ -17,3 +17,4 @@ export * from "./user-role.entity";
 export * from "./approval-log.entity";
 export * from "./role.entity";
 export * from "./authority.entity";
+export * from "./permission.entity";

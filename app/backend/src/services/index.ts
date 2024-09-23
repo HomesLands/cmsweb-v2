@@ -10,3 +10,4 @@ export { default as companyService } from "./company.service";
 export { default as productRequisitionFormService } from "./product-requisition-form.service";
 export { default as roleService } from "./role.service";
 export { default as authorityService } from "./authority.service";
+export { default as permissionService } from "./permission.service";

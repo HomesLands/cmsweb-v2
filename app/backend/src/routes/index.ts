@@ -16,6 +16,7 @@ import { StatusCodes } from "http-status-codes";
 import { errorCodeRoute } from "./error-code.route";
 import { roleRoute } from "./role.route";
 import { authorityRoute } from "./authority.route";
+import { permissionRoute } from "./permission.route";
 
 const baseApi: Router = Router();
 
@@ -45,6 +46,8 @@ export const registerRoutes = (app: Express) => {
   baseApi.use("/roles", roleRoute);
 
   baseApi.use("/authorities", authorityRoute);
+
+  baseApi.use("/permissions", permissionRoute);
 
   app.use("/api/v1", baseApi);
 

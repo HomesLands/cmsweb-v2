@@ -9,3 +9,4 @@ export * from "./user-approval-request.dto";
 export * from "./request-product-request.dto";
 export * from "./role-request.dto";
 export * from "./authority-request.dto";
+export * from "./permission-request.dto";

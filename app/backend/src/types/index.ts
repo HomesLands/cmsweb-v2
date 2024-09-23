@@ -24,3 +24,4 @@ export * from "./company.type";
 export * from "./product-requisition-from.types";
 export * from "./role.type";
 export * from "./authority.type";
+export * from "./permission.type";

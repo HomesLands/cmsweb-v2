@@ -11,3 +11,4 @@ export { default as requestProductRepository } from "./request-product.repositor
 export { default as userApprovalRepository } from "./user-approval.repository";
 export { default as roleRepository } from "./role.repository";
 export { default as authorityRepository } from "./authority.repository";
+export { default as permissionRepository } from "./permission.repository";

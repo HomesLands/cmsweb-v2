@@ -14,7 +14,7 @@ class ErrorCodeController {
 
   /**
    * @swagger
-   * /roles:
+   * /errorCodes:
    *   get:
    *     summary: Get all error codes
    *     tags: [ErrorCode]

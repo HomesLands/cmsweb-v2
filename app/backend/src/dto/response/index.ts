@@ -12,3 +12,4 @@ export * from "./user-approval-response.dto";
 export * from "./base-response.dto";
 export * from "./role-response.dto";
 export * from "./authority-response.dto";
+export * from "./permission-response.dto";

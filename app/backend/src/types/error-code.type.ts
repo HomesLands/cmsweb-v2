@@ -45,7 +45,9 @@ export type TErrorCodeKey =
   | "PRODUCT_NOT_FOUND"
   | "FORM_NOT_FOUND"
   | "MISSING_USER_APPROVAL"
+  | "ROLE_NOT_FOUND"
   | "AUTHORITY_NOT_FOUND"
+  | "PERMISSION_NOT_FOUND"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {
