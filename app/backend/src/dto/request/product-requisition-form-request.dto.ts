@@ -92,16 +92,9 @@ export class ResubmitProductRequisitionFormRequestDto {
   @IsNotEmpty({ message: "INVALID_FORM_SLUG" })
   @Expose()
   @AutoMap()
-  formSlug?: string;
+  slug?: string;
 
-  @IsArray({ message: "INVALID_REQUEST_PRODUCT_ARRAY"})
-  @ArrayNotEmpty({ message: "INVALID_REQUEST_PRODUCT_ARRAY"})
-  @ValidateNested({ each: true })
-  @Type(() => ResubmitRequestProductRequestDto)
-  @Expose()
-  requestProducts: ResubmitRequestProductRequestDto[];
-
-  @IsOptional()
+  @IsNotEmpty({ message: "INVALID_REASON_RESUBMIT_FORM" })
   @Expose()
   @AutoMap()
   description?: string;

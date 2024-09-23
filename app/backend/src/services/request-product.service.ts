@@ -30,7 +30,7 @@ class RequestProductService {
       where: {
         slug: slug
       },
-      relations: ['productRequisitionForm']
+      relations: ['productRequisitionForm', 'product']
     });
     if(!requestProduct) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_NOT_FOUND);
 
@@ -64,7 +64,7 @@ class RequestProductService {
     if(!requestProduct) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_NOT_FOUND);
 
     if(!requestProduct.productRequisitionForm) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
-    
+    console.log({requestProduct})
     const isPermitEdit: boolean = PermissionUtils.isPermitEditProductRequisitionForm(
       requestProduct.productRequisitionForm.status,
       requestProduct.productRequisitionForm.isRecalled
@@ -72,7 +72,6 @@ class RequestProductService {
     if(!isPermitEdit) throw new GlobalError(ErrorCodes.CAN_NOT_EDIT_FORM);
     
     // UPDATE
-    await requestProductRepository.remove(requestProduct);
     requestProduct.requestQuantity = requestData.newQuantity;
     const updatedData = await requestProductRepository.save(requestProduct);
     const updatedDataDto = mapper.map(updatedData, RequestProduct, RequestProductResponseDto);
@@ -92,10 +91,29 @@ class RequestProductService {
     });
     if (!product) throw new GlobalError(ErrorCodes.PRODUCT_NOT_FOUND);
 
-    const form = await productRequisitionFormRepository.findOneBy({
-      slug: requestData.formSlug
+    const form = await productRequisitionFormRepository.findOne({
+      where: {
+        slug: requestData.formSlug
+      },
+      relations: [
+        'requestProducts',
+        'requestProducts.product'
+      ]
     });
     if(!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+
+    const formCheck = await productRequisitionFormRepository.findOne({
+      where: {
+        slug: requestData.formSlug,
+        requestProducts: {
+          product: {
+            id: product.id
+          }
+        }
+      },
+    });
+
+    if(formCheck) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_EXIST);
 
     const isPermitEdit: boolean = PermissionUtils.isPermitEditProductRequisitionForm(
       form.status,
@@ -115,6 +133,7 @@ class RequestProductService {
       RequestProduct
     );
     requestProductMapper.productRequisitionForm = form;
+    requestProductMapper.product = product;
     const createdRequestProduct = await requestProductRepository.createAndSave(requestProductMapper);
     const requestProductDto = mapper.map(
       createdRequestProduct,
