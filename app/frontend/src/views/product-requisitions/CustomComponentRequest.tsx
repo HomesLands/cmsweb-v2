@@ -24,7 +24,7 @@ export function CustomComponentRequest<TData>({ table }: ColumnVisibilityDropdow
   const [openDialog, setOpenDialog] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<IProductRequisitionInfo | null>(null)
 
-  const handleOpenDialog = (product: IProductRequisitionInfo | null) => {
+  const handleOpenDialog = (product: IProductRequisitionInfo) => {
     setSelectedProduct(product)
     setOpenDialog(true)
   }
@@ -64,7 +64,7 @@ export function CustomComponentRequest<TData>({ table }: ColumnVisibilityDropdow
             ))}
         </DropdownMenuContent>
       </DropdownMenu>
-      <Button variant="outline" onClick={() => handleOpenDialog(null)}>
+      <Button variant="outline" onClick={() => handleOpenDialog({} as IProductRequisitionInfo)}>
         <PlusCircledIcon className="w-4 h-4 mr-2" />
         {t('tableData.addNewProduct')}
       </Button>

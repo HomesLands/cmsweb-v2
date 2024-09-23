@@ -91,19 +91,6 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
               )}
             />
           </div>
-          <FormField
-            control={form.control}
-            name="status"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Trạng thái</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <div className="grid grid-cols-3 gap-2">
             <FormField
               control={form.control}

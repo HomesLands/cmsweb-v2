@@ -9,3 +9,4 @@ export { default as productRepository } from "./product.repository";
 export { default as companyRepository } from "./company.repository";
 export { default as requestProductRepository } from "./request-product.repository";
 export { default as userApprovalRepository } from "./user-approval.repository";
+export { default as approvalLogRepository } from "./approval-log.repository";

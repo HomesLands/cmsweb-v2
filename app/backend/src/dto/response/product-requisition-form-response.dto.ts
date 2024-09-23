@@ -17,9 +17,23 @@ export class ProductRequisitionFormResponseDto {
   @AutoMap()
   status?: string;
 
-  company?: string;
+  @AutoMap()
+  isRecalled?: boolean;
 
+  @AutoMap()
+  description?: boolean;
+
+  company?: string;
   companySlug?: string;
+
+  site?: string;
+  siteSlug?: string;
+
+  project?: string;
+  projectSlug?: string;
+
+  creator?: string;
+  creatorSlug?: string;
 
   @AutoMap(() => [RequestProductResponseDto])
   requestProducts?: RequestProductResponseDto[];

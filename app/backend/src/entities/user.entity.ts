@@ -1,7 +1,7 @@
 import { Entity, Column, JoinColumn, OneToOne, OneToMany, ManyToOne } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 
-import { File, Site, Base, Project, UserRole, UserApproval  } from "@entities";
+import { File, Site, Base, Project, UserRole, UserApproval, ProductRequisitionForm, Company } from "@entities";
 import { Position } from "@entities/position.entity";
 import {  } from "@entities/site.entity";
 
@@ -70,4 +70,13 @@ export class User extends Base {
   // a user have many user approval
   @OneToMany(() => UserApproval, (userApproval) => userApproval.user)
   userApprovals?: UserApproval[];
+
+  // a user can create many product requisition form
+  @OneToMany(() => ProductRequisitionForm,
+    (productRequisitionForm) => productRequisitionForm.creator)
+  productRequisitionForms?: ProductRequisitionForm[];
+
+  // a user can many company
+  @OneToMany(() => Company, (company) => company.director)
+  companies?: Company[];
 }

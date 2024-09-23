@@ -1,7 +1,5 @@
 import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from "typeorm";
-import { Base } from "@entities/base.entity";
-import { User } from "./user.entity";
-import { Site } from "./site.entity";
+import { Base, User, ProductRequisitionForm } from "@entities";
 import { AutoMap } from "@automapper/classes";
 
 @Entity("project_tbl")
@@ -35,4 +33,8 @@ export class Project extends Base {
 
   // @OneToMany(() => Site, (site) => site.project)
   // sites: Site[]
+
+  @OneToMany(() => ProductRequisitionForm,
+    (productRequisitionForm) => productRequisitionForm.project)
+  productRequisitionForms?: ProductRequisitionForm[];
 }

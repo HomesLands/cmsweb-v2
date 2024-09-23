@@ -39,7 +39,7 @@ export type TPaginationOption = {
   take: number | 0;
   skip: number | 10;
   order: "DESC";
-}
+};
 
 export type TErrorCodeKey =
   | "INVALID_EMAIL"
@@ -87,6 +87,35 @@ export type TErrorCodeKey =
   | "INVALID_QUANTITY_USER_APPROVAL"
   | "PRODUCT_NOT_FOUND"
   | "FORM_NOT_FOUND"
+  | "APPROVAL_USER_NOT_FOUND"
+  | "USER_OF_APPROVAL_USER_NOT_FOUND"
+  | "INVALID_APPROVAL_USER_FOR_APPROVAL_FORM"
+  | "PRODUCT_REQUISITION_FORM_DONE_APPROVAL"
+  | "SITE_NOT_FOUND"
+  | "PROJECT_NOT_FOUND"
+  | "INVALID_CREATOR"
+  | "INVALID_APPROVAL_STATUS"
+  | "INVALID_CONTENT_APPROVAL_LOG"
+  | "INVALID_CODE_FORM"
+  | "INVALID_TYPE_PRODUCT_REQUISITION_FORM"
+  | "INVALID_COMPANY_SLUG"
+  | "INVALID_SITE_SLUG"
+  | "INVALID_PROJECT_SLUG"
+  | "INVALID_REQUEST_PRODUCT_ARRAY"
+  | "INVALID_APPROVAL_USER_ARRAY"
+  | "INVALID_FORM_SLUG"
+  | "INVALID_APPROVAL_USER_SLUG"
+  | "INVALID_PRODUCT_SLUG"
+  | "INVALID_REQUEST_PRODUCT_QUANTITY"
+  | "INVALID_USER_SLUG_IN_USER_APPROVAL"
+  | "INVALID_ROLE_APPROVAL"
+  | "MISSING_USER_APPROVAL"
+  | "INVALID_COMPANY_DIRECTOR"
+  | "COMPANY_DIRECTOR_NOT_FOUND"
+  | "FORM_NOT_CREATED_BY_YOU"
+  | "INVALID_REQUEST_PRODUCT_SLUG"
+  | "REQUEST_PRODUCT_NOT_FOUND"
+  | "CAN_NOT_EDIT_FORM"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {
@@ -104,3 +133,4 @@ export * from "./unit.type";
 export * from "./product.type";
 export * from "./company.type";
 export * from "./product-requisition-from.types";
+export * from "./request-product.type";

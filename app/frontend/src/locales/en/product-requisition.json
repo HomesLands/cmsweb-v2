@@ -31,7 +31,8 @@
   "progress": {
     "createProductRequisitions": "Create requisition",
     "addProductToRequest": "Add product",
-    "confirmProductRequisitions": "Confirm requisition"
+    "confirmProductRequisitions": "Confirm requisition",
+    "requisitionSuccess": "Requisition success"
   },
   "requestPriority": {
     "normal": "Normal",

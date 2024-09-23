@@ -24,89 +24,6 @@ export const ErrorCodes: TErrorCode = {
     code: 1011,
     message: "Fullname is not valid",
   },
-
-  // AuthenticationErrors
-  // Code range: [4000 - 4099]
-  PATH_NOT_FOUND: {
-    httpStatusCode: StatusCodes.NOT_FOUND,
-    code: 1002,
-    message: "Can not find path",
-  },
-  USER_NOT_FOUND: {
-    httpStatusCode: StatusCodes.UNAUTHORIZED,
-    code: 1004,
-    message: "User not found",
-  },
-  SESSION_STORE_ERROR: {
-    httpStatusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-    code: 1005,
-    message: "Fail in store session when login",
-  },
-  USER_EXIST: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1006,
-    message: "User exist",
-  },
-  UNIDENTIFIED_ERROR: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1007,
-    message: "Unindentified error",
-  },
-  INVALID_TOKEN: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1012,
-    message: "Token is not valid",
-  },
-  INVALID_JWT_PAYLOAD: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1013,
-    message: "Jwt payload is not valid",
-  },
-  TOKEN_NOT_EXPIRED: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1014,
-    message: "Token is not expired",
-  },
-  SUBJECT_NOT_EXIST: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1015,
-    message: "Subject is not exist",
-  },
-  REFRESH_TOKEN_EXPIRED: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1016,
-    message: "Refresh token expired, cannot create new token.",
-  },
-  TOKEN_EXPIRED: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1017,
-    message: "Token expired.",
-  },
-  INVALID_REFRESH_TOKEN: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1018,
-    message: "Refresh token is not valid",
-  },
-  IAT_NOT_EXIST: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1019,
-    message: "Token iat is not exist",
-  },
-  TOKEN_ID_NOT_EXIST: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1019,
-    message: "Token id is not exist",
-  },
-  TOKEN_TYPE_NOT_EXIST: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1020,
-    message: "Token type is not exist",
-  },
-  EXP_NOT_EXIST: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1021,
-    message: "Token expiration is not exist",
-  },
   USER_ASSIGNED_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1022,
@@ -236,5 +153,233 @@ export const ErrorCodes: TErrorCode = {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1046,
     message: "Form not found",
+  },
+  APPROVAL_USER_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1047,
+    message: "Approval user not found",
+  },
+  USER_OF_APPROVAL_USER_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1048,
+    message: "User of approval user not found",
+  },
+  INVALID_APPROVAL_USER_FOR_APPROVAL_FORM: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1049,
+    message: "Invalid approval user for approval form",
+  },
+  PRODUCT_REQUISITION_FORM_DONE_APPROVAL: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1050,
+    message: "Product requisition form done approval",
+  },
+  SITE_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1051,
+    message: "Site not found",
+  },
+  PROJECT_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1052,
+    message: "Project not found",
+  },
+  INVALID_CREATOR: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1053,
+    message: "Invalid creator",
+  },
+  INVALID_APPROVAL_STATUS: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1054,
+    message: "Invalid approval status",
+  },
+  INVALID_CONTENT_APPROVAL_LOG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1055,
+    message: "Invalid content approval log",
+  },
+  INVALID_CODE_FORM: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1056,
+    message: "Invalid code form",
+  },
+  INVALID_TYPE_PRODUCT_REQUISITION_FORM: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1057,
+    message: "Invalid type of product requisition form",
+  },
+  INVALID_COMPANY_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1058,
+    message: "Invalid company slug",
+  },
+  INVALID_SITE_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1059,
+    message: "Invalid site slug",
+  },
+  INVALID_PROJECT_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1060,
+    message: "Invalid project slug",
+  },
+  INVALID_REQUEST_PRODUCT_ARRAY: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1061,
+    message: "Invalid request product array",
+  },
+  INVALID_APPROVAL_USER_ARRAY: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1062,
+    message: "Invalid approval user array",
+  },
+  INVALID_FORM_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1063,
+    message: "Invalid form slug",
+  },
+  INVALID_APPROVAL_USER_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1064,
+    message: "Invalid approval user slug",
+  },
+  INVALID_PRODUCT_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1065,
+    message: "Invalid product slug",
+  },
+  INVALID_REQUEST_PRODUCT_QUANTITY: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1066,
+    message: "Invalid request product quantity",
+  },
+  INVALID_USER_SLUG_IN_USER_APPROVAL: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1067,
+    message: "Invalid user slug in user approval",
+  },
+  INVALID_ROLE_APPROVAL: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1068,
+    message: "Invalid role approval",
+  },
+  MISSING_USER_APPROVAL: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1069,
+    message: "Missing user approval",
+  },
+  INVALID_COMPANY_DIRECTOR: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1070,
+    message: "Invalid company director",
+  },
+  COMPANY_DIRECTOR_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1071,
+    message: "Company director not found",
+  },
+  FORM_NOT_CREATED_BY_YOU: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1072,
+    message: "Form not created by you",
+  },
+  INVALID_REQUEST_PRODUCT_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1073,
+    message: "Invalid request product slug",
+  },
+  REQUEST_PRODUCT_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1074,
+    message: "Request product not found",
+  },
+  CAN_NOT_EDIT_FORM: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1075,
+    message: "Can not edit form",
+  },
+
+  // AuthenticationErrors
+  // Code range: [4000 - 4099]
+  PATH_NOT_FOUND: {
+    httpStatusCode: StatusCodes.NOT_FOUND,
+    code: 1002,
+    message: "Can not find path",
+  },
+  USER_NOT_FOUND: {
+    httpStatusCode: StatusCodes.UNAUTHORIZED,
+    code: 1004,
+    message: "User not found",
+  },
+  SESSION_STORE_ERROR: {
+    httpStatusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+    code: 1005,
+    message: "Fail in store session when login",
+  },
+  USER_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1006,
+    message: "User exist",
+  },
+  UNIDENTIFIED_ERROR: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1007,
+    message: "Unindentified error",
+  },
+  INVALID_TOKEN: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1012,
+    message: "Token is not valid",
+  },
+  INVALID_JWT_PAYLOAD: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1013,
+    message: "Jwt payload is not valid",
+  },
+  TOKEN_NOT_EXPIRED: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1014,
+    message: "Token is not expired",
+  },
+  SUBJECT_NOT_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1015,
+    message: "Subject is not exist",
+  },
+  REFRESH_TOKEN_EXPIRED: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1016,
+    message: "Refresh token expired, cannot create new token.",
+  },
+  TOKEN_EXPIRED: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1017,
+    message: "Token expired.",
+  },
+  INVALID_REFRESH_TOKEN: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1018,
+    message: "Refresh token is not valid",
+  },
+  IAT_NOT_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1019,
+    message: "Token iat is not exist",
+  },
+  TOKEN_ID_NOT_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1019,
+    message: "Token id is not exist",
+  },
+  TOKEN_TYPE_NOT_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1020,
+    message: "Token type is not exist",
+  },
+  EXP_NOT_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1021,
+    message: "Token expiration is not exist",
   },
 } as const;

@@ -1,9 +1,9 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
 import { getUser, getUsers } from '@/api'
-import { IUserQuery } from '@/types'
+import { IQuery } from '@/types'
 
-export const useUsers = (q: IUserQuery) => {
+export const useUsers = (q: IQuery) => {
   return useQuery({
     queryKey: ['users', JSON.stringify(q)],
     queryFn: () => getUsers(q),

@@ -8,3 +8,5 @@ export { default as errorCodeController } from "./error-code.controller";
 export { default as unitController } from "./unit.controller";
 export { default as companyController } from "./company.controller";
 export { default as productRequisitionFormController } from "./product-requisition-form.controller";
+export { default as roleController } from "./role.controller";
+export { default as requestProductController } from "./request-product.controller";

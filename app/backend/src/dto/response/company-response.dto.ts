@@ -6,4 +6,7 @@ export class CompanyResponseDto {
 
   @AutoMap()
   slug?: string;
+
+  director?: string;
+  directorSlug?: string;
 }

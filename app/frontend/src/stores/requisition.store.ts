@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { IProductRequirementInfoCreate, IProductRequisitionInfo, IRequisitionStore } from '@/types'
 import { showToast, showErrorToast } from '@/utils'
+import toast from 'react-hot-toast'
 
 export const useRequisitionStore = create<IRequisitionStore>()(
   persist(
@@ -46,7 +47,7 @@ export const useRequisitionStore = create<IRequisitionStore>()(
                 ]
               }
             })
-            showToast('Đã thêm vật tư vào phiếu yêu cầu!')
+            toast.success('Đã thêm vật tư vào phiếu yêu cầu!')
           }
         }
       },

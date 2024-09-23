@@ -22,7 +22,7 @@ interface IConfirmProductFormProps {
 export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfirm, onBack }) => {
   const { t } = useTranslation('productRequisition')
 
-  const { getRequisition, updateProductToRequisition, deleteProductToRequisition } =
+  const { requisition, getRequisition, updateProductToRequisition, deleteProductToRequisition } =
     useRequisitionStore()
 
   const handleEditRequest = (product: IProductRequisitionInfo) => {
@@ -91,7 +91,7 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
           <div className="grid grid-cols-3 gap-3 mb-4 text-sm font-beVietNam">
             <div>
               <strong>Người yêu cầu: </strong>
-              {getRequisition()?.requester}
+              {requisition?.requester}
             </div>
             <div>
               <strong>Mã phiếu yêu cầu: </strong>
@@ -99,15 +99,15 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
             </div>
             <div>
               <strong>Công trình sử dụng: </strong>
-              {getRequisition()?.site.name}
+              {requisition?.site.name}
             </div>
             <div>
               <strong>Dự án: </strong>
-              {getRequisition()?.project.name}
+              {requisition?.project.name}
             </div>
             <div>
               <strong>Ghi chú: </strong>
-              {getRequisition()?.note}
+              {requisition?.note}
             </div>
           </div>
         )}
@@ -118,7 +118,7 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
         data={getRequisition()?.requestProducts || []}
         pages={1}
         page={1}
-        pageSize={getRequisition()?.requestProducts?.length || 0}
+        pageSize={requisition?.requestProducts?.length || 0}
         onPageChange={() => {}}
       />
 

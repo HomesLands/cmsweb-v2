@@ -28,7 +28,7 @@ export const formatter = winston.format.combine(
   winston.format.printf((info) => {
     const { timestamp, level, message, ...meta } = info;
 
-    return `${timestamp} [${level}]: ${message} ${
+    return `${timestamp} [${level}] ${message} ${
       Object.keys(meta).length ? JSON.stringify(meta, null, 2) : ""
     }`;
   })

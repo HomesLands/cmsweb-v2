@@ -65,4 +65,5 @@ export const addNewProductRequestSchema = z.object({
   description: z.string().optional(),
   status: z.string().optional()
 })
+
 export type TProductSchema = z.infer<typeof productSchema>

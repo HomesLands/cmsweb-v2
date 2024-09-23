@@ -9,9 +9,9 @@ import {
   DialogTrigger
 } from '@/components/ui'
 
-import { addNewProductRequestSchema } from '@/schemas'
 import { AddNewProductRequestForm } from '@/components/app/form'
 import { IProductRequisitionInfo } from '@/types'
+import { addNewProductRequestSchema } from '@/schemas'
 
 interface DialogEditProductRequisitionProps {
   handleAddRequest: (product: IProductRequisitionInfo) => void
