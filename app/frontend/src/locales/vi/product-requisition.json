@@ -29,7 +29,8 @@
     "confirmProductRequisitions": "Xác nhận yêu cầu vật tư",
     "confirmProductRequisitionsDescription": "Thông tin chi tiết của yêu cầu vật tư",
     "confirmProductRequisitionsSuccess": "Xác nhận yêu cầu thành công",
-    "confirmProductRequisitionsSuccessDescription": "Xác nhận yêu cầu thành công mô tả"
+    "confirmProductRequisitionsSuccessDescription": "Phiếu yêu cầu đã được gửi đi. Bạn có thể xem danh sách",
+    "here": "tại đây"
   },
   "progress": {
     "createProductRequisitions": "Tạo phiếu yêu cầu",

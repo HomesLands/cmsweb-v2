@@ -14,12 +14,13 @@ import { useMultiStep } from '@/hooks'
 import { createProductRequisition } from '@/api/products'
 import { showToast } from '@/utils'
 import { useRequisitionStore } from '@/stores'
+import { NavLink } from 'react-router-dom'
 
 const ProductRequisitionForm: React.FC = () => {
   const { t } = useTranslation('productRequisition')
   const { t: tToast } = useTranslation('toast')
   const { currentStep, handleStepChange } = useMultiStep(1)
-  const { setRequisition, clearRequisition } = useRequisitionStore()
+  const { setRequisition, clearRequisition, updateRequisition } = useRequisitionStore()
 
   const mutation = useMutation({
     mutationFn: async (data: IFinalProductRequisition) => {
@@ -35,6 +36,8 @@ const ProductRequisitionForm: React.FC = () => {
     const newRequisition: IProductRequirementInfoCreate = {
       ...data
     }
+    console.log('newRequisition', newRequisition)
+    // updateRequisition(newRequisition)
     setRequisition(newRequisition)
     handleStepChange(2)
   }
@@ -121,8 +124,16 @@ const ProductRequisitionForm: React.FC = () => {
                 </CardDescription>
               </div>
             </CardHeader>
-            <CardContent className="flex flex-col">
-              <p>{t('productRequisition.confirmProductRequisitionsSuccessDescription')}</p>
+            <CardContent className="flex flex-col mt-3 text-normal">
+              <div className="flex flex-row gap-1">
+                <p>{t('productRequisition.confirmProductRequisitionsSuccessDescription')}</p>
+                <NavLink
+                  to="/product-requisitions/list"
+                  className="text-blue-500 transition-all duration-300 hover:underline"
+                >
+                  {t('productRequisition.here')}
+                </NavLink>
+              </div>
             </CardContent>
           </Card>
         )}
