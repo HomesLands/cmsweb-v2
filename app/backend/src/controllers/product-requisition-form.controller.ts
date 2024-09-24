@@ -9,7 +9,7 @@ import { StatusCodes } from "http-status-codes";
 import { productRequisitionFormService } from "@services";
 import {
   ProductRequisitionFormResponseDto,
-  UserApprovalForApprovalUserResponseDto,
+  UserApprovalFormResponseDto,
 } from "@dto/response";
 import {
   TCreateProductRequisitionFormRequestDto,
@@ -375,7 +375,7 @@ class ProductRequisitionFormController {
         );
 
       const response: TApiResponse<
-        TPaginationOptionResponse<UserApprovalForApprovalUserResponseDto[]>
+        TPaginationOptionResponse<UserApprovalFormResponseDto[]>
       > = {
         code: StatusCodes.OK,
         error: false,
@@ -530,21 +530,20 @@ class ProductRequisitionFormController {
   ): Promise<void> {
     try {
       const data = req.body as TResubmitProductRequisitionFormRequestDto;
-      console.log({ data });
-      const creatorId = req.userId as string;
-      const forms =
+      logger.info("ResubmitProductRequisitionFormRequest", { data });
+
+      const result =
         await productRequisitionFormService.resubmitRequisitionFormsByCreator(
-          data,
-          creatorId
+          data
         );
 
       const response: TApiResponse<ProductRequisitionFormResponseDto> = {
         code: StatusCodes.OK,
         error: false,
-        message: "Resubmit productRequisitionForms successfully",
+        message: "Product requisition form has been submitted successfully",
         method: req.method,
         path: req.originalUrl,
-        result: forms,
+        result: result,
       };
       res.status(StatusCodes.OK).json(response);
     } catch (error) {

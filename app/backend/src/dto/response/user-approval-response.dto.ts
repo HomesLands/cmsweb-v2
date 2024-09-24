@@ -16,7 +16,7 @@ export class UserApprovalResponseDto {
   approvalLogs?: ApprovalLogResponseDto[];
 }
 
-export class UserApprovalForApprovalUserResponseDto {
+export class UserApprovalFormResponseDto {
   @AutoMap()
   roleApproval?: string;
 

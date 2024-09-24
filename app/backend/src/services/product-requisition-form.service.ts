@@ -1,6 +1,5 @@
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
-import _ from "lodash";
 
 import {
   productRequisitionFormRepository,
@@ -22,7 +21,7 @@ import {
 } from "@types";
 import {
   ProductRequisitionFormResponseDto,
-  UserApprovalForApprovalUserResponseDto,
+  UserApprovalFormResponseDto,
 } from "@dto/response";
 import {
   CreateProductRequisitionFormRequestDto,
@@ -270,11 +269,10 @@ class ProductRequisitionFormService {
   public async getAllProductRequisitionFormsByApprovalUser(
     userId: string,
     options: TQueryRequest
-  ): Promise<
-    TPaginationOptionResponse<UserApprovalForApprovalUserResponseDto[]>
-  > {
+  ): Promise<TPaginationOptionResponse<UserApprovalFormResponseDto[]>> {
     // Get the total number of products
-    const totalProductRequisitionForm = await productRepository.count({});
+    const totalProductRequisitionForm =
+      await productRequisitionFormRepository.count({});
 
     // Parse and validate pagination parameters
     let pageSize =
@@ -315,10 +313,10 @@ class ProductRequisitionFormService {
       ],
     });
 
-    const formsDto: UserApprovalForApprovalUserResponseDto[] = mapper.mapArray(
+    const formsDto: UserApprovalFormResponseDto[] = mapper.mapArray(
       approvalUser,
       UserApproval,
-      UserApprovalForApprovalUserResponseDto
+      UserApprovalFormResponseDto
     );
 
     return {
@@ -499,7 +497,8 @@ class ProductRequisitionFormService {
     options: TQueryRequest
   ): Promise<TPaginationOptionResponse<ProductRequisitionFormResponseDto[]>> {
     // Get the total number of products
-    const totalProductRequisitionForm = await productRepository.count({});
+    const totalProductRequisitionForm =
+      await productRequisitionFormRepository.count({});
 
     // Parse and validate pagination parameters
     let pageSize =
@@ -554,8 +553,7 @@ class ProductRequisitionFormService {
   }
 
   public async resubmitRequisitionFormsByCreator(
-    plainData: TResubmitProductRequisitionFormRequestDto,
-    creatorId: string
+    plainData: TResubmitProductRequisitionFormRequestDto
   ): Promise<ProductRequisitionFormResponseDto> {
     const requestData = plainToClass(
       ResubmitProductRequisitionFormRequestDto,
