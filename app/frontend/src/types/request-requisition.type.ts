@@ -20,3 +20,10 @@ export interface IRequestRequisitionInfo {
   createdAt: string
   updatedAt: string
 }
+
+export interface IRequisitionFormResponseForApprover {
+  approvalUserSlug: string
+  roleApproval: string
+  slug: string
+  productRequisitionForm: IRequestRequisitionInfo[]
+}
