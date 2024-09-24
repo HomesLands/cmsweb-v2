@@ -12,9 +12,10 @@ import {
   Checkbox,
   DataTableColumnHeader
 } from '@/components/ui'
-import { IRequestRequisitionInfo } from '@/types'
+import { IRequestRequisitionInfo, RequestRequisitionType } from '@/types'
 import { ProductRequisitionStatusBadge } from '@/components/app/badge'
 import { AcceptRequisitionDropdownMenuItem } from '@/components/app/dropdown/accept-requisition-dropdown'
+import { RequisitionTypeBadge } from '@/components/app/badge/RequisitionTypeBadge'
 
 export const columns: ColumnDef<IRequestRequisitionInfo>[] = [
   {
@@ -46,13 +47,8 @@ export const columns: ColumnDef<IRequestRequisitionInfo>[] = [
     accessorKey: 'type',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Loại yêu cầu" />,
     cell: ({ row }) => {
-      const type = row.getValue('type') as string
-      const isUrgent = type.toLowerCase() === 'urgent'
-      return (
-        <div className={isUrgent ? 'text-red-600 font-bold' : ''}>
-          {isUrgent ? 'Cần gấp' : 'Bình thường'}
-        </div>
-      )
+      const type = row.getValue('type') as RequestRequisitionType
+      return <RequisitionTypeBadge type={type} />
     }
   },
   {

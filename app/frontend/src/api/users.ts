@@ -11,7 +11,7 @@ export async function getUsers(
   return response.data
 }
 
-export async function getUser(slug: string) {
-  const response = await http.get<IApiResponse<IUserInfo>>(`/users/${slug}`)
+export async function getUser() {
+  const response = await http.get<IApiResponse<IUserInfo>>(`/users/info`)
   return response.data
 }
