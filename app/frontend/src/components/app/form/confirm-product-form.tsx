@@ -90,12 +90,18 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
         {getRequisition() && (
           <div className="grid grid-cols-3 gap-3 mb-4 text-sm font-beVietNam">
             <div>
-              <strong>Người yêu cầu: </strong>
-              {requisition?.requester}
+              <strong>Mức yêu tiên: </strong>
+              <span className={requisition?.type === 'urgent' ? 'text-red-600 font-bold' : ''}>
+                {requisition?.type === 'normal' ? 'Bình thường' : 'Cần gấp'}
+              </span>
             </div>
             <div>
               <strong>Mã phiếu yêu cầu: </strong>
               {getRequisition()?.code}
+            </div>
+            <div>
+              <strong>Người yêu cầu: </strong>
+              {requisition?.requester}
             </div>
             <div>
               <strong>Công trình sử dụng: </strong>

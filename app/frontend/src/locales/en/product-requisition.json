@@ -26,7 +26,8 @@
     "confirmProductRequisitions": "Confirm product requisitions",
     "confirmProductRequisitionsDescription": "Confirm product requisitions description",
     "confirmProductRequisitionsSuccess": "Confirm product requisitions success",
-    "confirmProductRequisitionsSuccessDescription": "Confirm product requisitions success description"
+    "confirmProductRequisitionsSuccessDescription": "Confirm product requisitions success description",
+    "here": "here"
   },
   "progress": {
     "createProductRequisitions": "Create requisition",

@@ -43,6 +43,19 @@ export const columns: ColumnDef<IRequestRequisitionInfo>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title="Mã yêu cầu" />
   },
   {
+    accessorKey: 'type',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Loại yêu cầu" />,
+    cell: ({ row }) => {
+      const type = row.getValue('type') as string
+      const isUrgent = type.toLowerCase() === 'urgent'
+      return (
+        <div className={isUrgent ? 'text-red-600 font-bold' : ''}>
+          {isUrgent ? 'Cần gấp' : 'Bình thường'}
+        </div>
+      )
+    }
+  },
+  {
     accessorKey: 'creator',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Người tạo" />
   },
