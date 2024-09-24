@@ -1,5 +1,4 @@
 import { userController } from "@controllers";
-import { authMiddleware } from "@middlewares";
 import { Router } from "express";
 
 export const userRoute: Router = Router();
@@ -11,5 +10,8 @@ userRoute.get(
   userController.getAllUsers
 );
 
-// [GET] /api/v1/users/{slug}
-userRoute.route("/:slug").get(userController.getUserBySlug);
+// [GET] /api/v1/users/info/permissions
+userRoute.route("/info/permissions").get(userController.getUserPermissions);
+
+// [GET] /api/v1/users/info
+userRoute.route("/info").get(userController.getUser);
