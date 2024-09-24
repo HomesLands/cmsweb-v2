@@ -3,8 +3,7 @@ import { StatusCodes } from "http-status-codes";
 
 import { userService } from "@services";
 import { TApiResponse, TQueryRequest } from "@types";
-import { UserResponseDto } from "@dto/response";
-import { logger } from "@lib";
+import { UserPermissionResponseDto, UserResponseDto } from "@dto/response";
 
 class UserController {
   /**
@@ -85,35 +84,63 @@ class UserController {
 
   /**
    * @swagger
-   * /users/{slug}:
+   * /users/info:
    *   get:
-   *     summary: Get user by slug
+   *     summary: Get user info
    *     tags: [User]
-   *     parameters:
-   *       - in: path
-   *         name: slug
-   *         schema:
-   *           type: string
-   *         required: true
-   *         description: The user identity
    *     responses:
    *       200:
-   *         description: Get all users successfully.
+   *         description: The user has been retrieved successfully.
    *       500:
    *         description: Server error
    */
-  public async getUserBySlug(
+  public async getUser(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const { slug } = req.params;
-      const results = await userService.getUserBySlug(slug);
+      const { userId = "" } = req;
+      const results = await userService.getUser(userId);
       const response: TApiResponse<UserResponseDto> = {
         code: StatusCodes.OK,
         error: false,
-        message: `Get user with slug ${slug} successfully`,
+        message: `The user has been retrieved successfully`,
+        method: req.method,
+        path: req.originalUrl,
+        result: results,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /users/info/permissions:
+   *   get:
+   *     summary: Get user permissions
+   *     tags: [User]
+   *     responses:
+   *       200:
+   *         description: User permissions have been retrieved successfully.
+   *       500:
+   *         description: Server error
+   */
+  public async getUserPermissions(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { userId = "" } = req;
+      const results: UserPermissionResponseDto[] =
+        await userService.getUserPermissions(userId);
+      const response: TApiResponse<UserPermissionResponseDto[]> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: `User permissions have been retrieved successfully`,
         method: req.method,
         path: req.originalUrl,
         result: results,

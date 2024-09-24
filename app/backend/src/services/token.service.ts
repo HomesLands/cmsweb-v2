@@ -117,18 +117,22 @@ class TokenService {
    * @returns {string} The scope string
    */
   private async buildScope(identity: User): Promise<string> {
-    const scope: string[] = [];
     const user = await userRepository.findOne({
       where: { id: identity.id },
-      relations: ["userRoles", "userRoles.role"],
+      relations: [
+        "userRoles",
+        "userRoles.role",
+        "userRoles.role.permissions",
+        "userRoles.role.permissions.authority",
+      ],
     });
-    if (!user) return scope.join(", ");
-    user.userRoles?.forEach((item) => {
-      if (item.role?.nameNormalize) {
-        scope.push(item.role.nameNormalize);
-      }
-    });
-    return scope.join(", ");
+    if (!user) return `[]`;
+    if (!user.userRoles) return `[]`;
+    const scope = user.userRoles
+      .map((item) => item.role.nameNormalize)
+      .filter((item): item is string => item !== undefined); // Filters out undefined results;
+
+    return `[${scope.join(", ")}]`;
   }
 
   /**

@@ -21,7 +21,6 @@ class PermissionService {
       relations: ["role", "authority"],
     });
 
-    console.log({ permissions });
     const results = mapper.mapArray(
       permissions,
       Permission,

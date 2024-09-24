@@ -1,9 +1,9 @@
 import { mapper } from "@mappers";
 import { User } from "@entities";
-import { UserResponseDto } from "@dto/response";
+import { UserPermissionResponseDto, UserResponseDto } from "@dto/response";
 import { userRepository } from "@repositories";
 import { TQueryRequest } from "@types";
-import { logger } from "@lib";
+import { GlobalError, ErrorCodes } from "@exception";
 
 class UserService {
   public async getAllUsers(options: TQueryRequest): Promise<UserResponseDto[]> {
@@ -30,12 +30,48 @@ class UserService {
     return results;
   }
 
-  public async getUserBySlug(slug: string): Promise<UserResponseDto> {
+  public async getUser(userId: string): Promise<UserResponseDto> {
     const user = await userRepository.findOneBy({
-      slug,
+      id: userId,
     });
+    if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
+
     const results = mapper.map(user, User, UserResponseDto);
     return results;
+  }
+  public async getUserPermissions(
+    userId: string
+  ): Promise<UserPermissionResponseDto[]> {
+    const user = await userRepository.findOne({
+      where: { id: userId },
+      relations: [
+        "userRoles",
+        "userRoles.role",
+        "userRoles.role.permissions",
+        "userRoles.role.permissions.authority",
+      ],
+    });
+    if (!user) return [];
+    if (!user.userRoles) return [];
+    const scope: UserPermissionResponseDto[] = user.userRoles
+      .map((item) => {
+        if (!item.role || !item.role.nameNormalize) return undefined; // Skip items without a role or nameNormalize
+
+        const authorities: string[] = item.role.permissions
+          .map((permission) => permission.authority?.nameNormalize)
+          .filter((name): name is string => name !== undefined); // Filters out undefined values
+
+        return {
+          role: item.role.nameNormalize,
+          authorities,
+        };
+      })
+      .filter(
+        (item): item is { role: string; authorities: string[] } =>
+          item !== undefined
+      ); // Filters out undefined results
+
+    return scope;
   }
 }
 

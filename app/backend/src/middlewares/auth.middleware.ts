@@ -155,7 +155,6 @@ class AuthMiddleware {
             const hasAuthority = user.userRoles?.some((userRole) => {
               const { permissions } = userRole.role;
               if (permissions) {
-                console.log({ permissions });
                 return permissions.some(
                   (permission) =>
                     permission.authority?.nameNormalize === authority
@@ -165,6 +164,59 @@ class AuthMiddleware {
             });
 
             if (!hasAuthority) {
+              throw new GlobalError(StatusCodes.FORBIDDEN);
+            }
+            next(); // Proceed if the user has the authority
+          })
+          .catch((error) => {
+            next(error); // Pass errors to the next middleware
+          });
+      } else {
+        next(new GlobalError(StatusCodes.FORBIDDEN)); // Pass errors to the next middleware
+      }
+    };
+  }
+
+  /**
+   * Middleware to check authorities of user.
+   * @param {string[]} authorities
+   * @returns {<(req: Request, res: Response, next: NextFunction) => void}
+   */
+  public hasAnyAuthority(
+    authorities: string[]
+  ): (req: Request, res: Response, next: NextFunction) => void {
+    return (req: Request, res: Response, next: NextFunction) => {
+      if (_.has(req, "userId")) {
+        const userId = req.userId as string;
+
+        // Find the user by ID using promise chaining
+        userRepository
+          .findOne({
+            where: { id: userId },
+            relations: [
+              "userRoles",
+              "userRoles.role",
+              "userRoles.role.permissions",
+              "userRoles.role.permissions.authority",
+            ],
+          })
+          .then((user) => {
+            if (!user) throw new GlobalError(StatusCodes.FORBIDDEN);
+
+            const hasAnyAuthority = user.userRoles?.some((userRole) => {
+              const { permissions } = userRole.role;
+              if (permissions) {
+                return permissions.some((permission) =>
+                  authorities.some(
+                    (authority) =>
+                      permission.authority?.nameNormalize === authority
+                  )
+                );
+              }
+              return false;
+            });
+
+            if (!hasAnyAuthority) {
               throw new GlobalError(StatusCodes.FORBIDDEN);
             }
             next(); // Proceed if the user has the authority
