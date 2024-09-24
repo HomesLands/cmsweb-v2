@@ -8,3 +8,11 @@ export class UserResponseDto extends BaseResponseDto {
   @AutoMap()
   username?: string;
 }
+
+export class UserPermissionResponseDto extends BaseResponseDto {
+  @AutoMap()
+  role?: string;
+
+  @AutoMap()
+  authorities?: string[];
+}
