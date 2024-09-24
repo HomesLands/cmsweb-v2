@@ -27,6 +27,17 @@ export const useRequisitionStore = create<IRequisitionStore>()(
         set({ requisition: updatedRequisition })
         showToast('Tạo phiếu yêu cầu thành công!')
       },
+      updateRequisition: (updatedFields: Partial<IProductRequirementInfoCreate>) => {
+        set((state) => ({
+          requisition: state.requisition
+            ? {
+                ...state.requisition,
+                ...updatedFields,
+                requestProducts: state.requisition.requestProducts
+              }
+            : undefined
+        }))
+      },
       clearRequisition: () => set({ requisition: undefined }),
       addProductToRequisition: (product: IProductRequisitionInfo) => {
         const currentRequisition = get().requisition

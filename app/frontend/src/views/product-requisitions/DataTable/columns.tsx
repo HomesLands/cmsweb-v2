@@ -14,6 +14,7 @@ import {
 } from '@/components/ui'
 import { IRequestRequisitionInfo } from '@/types'
 import { ProductRequisitionStatusBadge } from '@/components/app/badge'
+import { AcceptRequisitionDropdownMenuItem } from '@/components/app/dropdown/accept-requisition-dropdown'
 
 export const columns: ColumnDef<IRequestRequisitionInfo>[] = [
   {
@@ -57,43 +58,6 @@ export const columns: ColumnDef<IRequestRequisitionInfo>[] = [
       return <ProductRequisitionStatusBadge status={row.original.status} />
     }
   },
-  // {
-  //   accessorKey: 'commanderApprovalStatus',
-  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Chỉ huy trưởng" />,
-  //   cell: ({ row }) => {
-  //     return <ProductRequisitionStatusBadge status={row.original.commanderApprovalStatus} />
-  //   }
-  // },
-  // {
-  //   accessorKey: 'commanderApprovalContent',
-  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Nội dung" />
-  // },
-  // {
-  //   accessorKey: 'projectManagerApprovalStatus',
-  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Trưởng phòng dự án" />,
-  //   cell: ({ row }) => {
-  //     return <ProductRequisitionStatusBadge status={row.original.projectManagerApprovalStatus} />
-  //   }
-  // },
-  // {
-  //   accessorKey: 'projectManagerApprovalContent',
-  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Nội dung" />
-  // },
-  // {
-  //   accessorKey: 'directorApprovalStatus',
-  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Giám đốc" />,
-  //   cell: ({ row }) => {
-  //     return <ProductRequisitionStatusBadge status={row.original.directorApprovalStatus} />
-  //   }
-  // },
-  // {
-  //   accessorKey: 'directorApprovalContent',
-  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Nội dung" />
-  // },
-  // {
-  //   accessorKey: 'notes',
-  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Ghi chú" />
-  // },
   {
     id: 'actions',
     cell: () => {
@@ -101,15 +65,16 @@ export const columns: ColumnDef<IRequestRequisitionInfo>[] = [
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="w-8 h-8 p-0">
-              <span className="sr-only">Actions</span>
+              <span className="sr-only">Thao tác</span>
               <MoreHorizontal className="w-4 h-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Xem chi tiết</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <AcceptRequisitionDropdownMenuItem>Duyệt</AcceptRequisitionDropdownMenuItem>
+            <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )

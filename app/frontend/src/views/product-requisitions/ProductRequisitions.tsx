@@ -6,6 +6,7 @@ import { DataTable, Label } from '@/components/ui'
 import { columns } from './DataTable/columns'
 import { usePagination, useAllProductRequisition } from '@/hooks'
 import { CustomComponent } from './CustomComponent'
+import { RequisitionsTab } from '@/components/app/tab/requisition-list-tab'
 
 const ProductRequisitions: React.FC = () => {
   const { t } = useTranslation(['productRequisition'])
@@ -23,7 +24,7 @@ const ProductRequisitions: React.FC = () => {
         <ReaderIcon className="header-icon" />
         {t('productRequisition.list')}
       </Label>
-      <DataTable
+      {/* <DataTable
         isLoading={isLoading}
         columns={columns}
         data={data?.result?.items || []}
@@ -33,7 +34,8 @@ const ProductRequisitions: React.FC = () => {
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         CustomComponent={CustomComponent}
-      />
+      /> */}
+      <RequisitionsTab />
     </div>
   )
 }

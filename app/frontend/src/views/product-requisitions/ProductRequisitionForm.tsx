@@ -19,7 +19,7 @@ const ProductRequisitionForm: React.FC = () => {
   const { t } = useTranslation('productRequisition')
   const { t: tToast } = useTranslation('toast')
   const { currentStep, handleStepChange } = useMultiStep(1)
-  const { setRequisition, clearRequisition } = useRequisitionStore()
+  const { setRequisition, clearRequisition, updateRequisition } = useRequisitionStore()
 
   const mutation = useMutation({
     mutationFn: async (data: IFinalProductRequisition) => {
@@ -35,7 +35,7 @@ const ProductRequisitionForm: React.FC = () => {
     const newRequisition: IProductRequirementInfoCreate = {
       ...data
     }
-    setRequisition(newRequisition)
+    updateRequisition(newRequisition)
     handleStepChange(2)
   }
 

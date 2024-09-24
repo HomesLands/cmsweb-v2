@@ -26,6 +26,7 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [selectedProducts, setSelectedProducts] = useState<IProductRequisitionInfo[]>([])
+  const { requisition } = useRequisitionStore()
 
   const { data: allProduct, isLoading } = useProducts(query)
 
@@ -74,10 +75,10 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
           <DataTableRequisition
             isLoading={isLoading}
             columns={columns}
-            data={getRequisition()?.requestProducts || []}
+            data={requisition?.requestProducts || []}
             pages={1}
             page={1}
-            pageSize={getRequisition()?.requestProducts?.length || 0}
+            pageSize={requisition?.requestProducts?.length || 0}
             onPageChange={() => {}}
             onPageSizeChange={() => {}}
             CustomComponent={undefined}
