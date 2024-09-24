@@ -27,7 +27,7 @@ export class ProductRequisitionForm extends Base {
   // save opinion of creator
   @Column({ name: "description_column", nullable: true })
   @AutoMap()
-  description?: boolean; 
+  description?: string; 
 
   // a ProductRequisition have many request product
   @OneToMany(

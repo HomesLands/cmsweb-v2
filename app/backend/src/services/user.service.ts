@@ -3,7 +3,7 @@ import { User } from "@entities";
 import { UserResponseDto } from "@dto/response";
 import { userRepository } from "@repositories";
 import { TQueryRequest } from "@types";
-import { logger } from "@lib/logger";
+import { logger } from "@lib";
 
 class UserService {
   public async getAllUsers(options: TQueryRequest): Promise<UserResponseDto[]> {
@@ -26,7 +26,6 @@ class UserService {
       skip: (page - 1) * pageSize,
       order: { createdAt: options.order },
     });
-    logger.info(UserService.name, { users });
     const results = mapper.mapArray(users, User, UserResponseDto);
     return results;
   }

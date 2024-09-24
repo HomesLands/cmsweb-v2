@@ -16,8 +16,6 @@ const ProductRequisitions: React.FC = () => {
     pageSize: pagination.pageSize
   })
 
-  console.log('data in product requisitions', data?.result)
-
   return (
     <div className="flex flex-col gap-4">
       <Label className="flex items-center gap-1 font-semibold text-normal text-md font-beVietNam">
