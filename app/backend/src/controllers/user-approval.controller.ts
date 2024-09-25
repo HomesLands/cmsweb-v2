@@ -31,6 +31,29 @@ class UserApprovalController {
    *   get:
    *     summary: Get user approval for product requisition form
    *     tags: [UserApproval]
+   *     parameters:
+   *       - in: query
+   *         name: order
+   *         schema:
+   *           type: string
+   *           enum: [ASC, DESC]
+   *         required: true
+   *         description: The order in which the product requisition forms are sorted (ASC, DESC)
+   *         example: ASC
+   *       - in: query
+   *         name: page
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of product requisition forms to skip
+   *         example: 1
+   *       - in: query
+   *         name: pageSize
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of product requisition forms to retrieve
+   *         example: 10
    *     responses:
    *       200:
    *         description: User approval has been retrieved successfully.

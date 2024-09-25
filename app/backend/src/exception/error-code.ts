@@ -154,15 +154,10 @@ export const ErrorCodes: TErrorCode = {
     code: 1046,
     message: "Form not found",
   },
-  APPROVAL_USER_NOT_FOUND: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1047,
-    message: "Approval user not found",
-  },
-  USER_OF_APPROVAL_USER_NOT_FOUND: {
+  USER_APPROVAL_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1048,
-    message: "User of approval user not found",
+    message: "Approval user not found",
   },
   INVALID_APPROVAL_USER_FOR_APPROVAL_FORM: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -332,6 +327,11 @@ export const ErrorCodes: TErrorCode = {
   INVALID_REASON_RESUBMIT_FORM: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1077,
+    message: "Invalid reason resubmit form",
+  },
+  CREATOR_FORM_NOT_FORM: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1078,
     message: "Invalid reason resubmit form",
   },
 
