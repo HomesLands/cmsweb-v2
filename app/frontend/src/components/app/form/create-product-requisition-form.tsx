@@ -25,7 +25,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useUser } from '@/hooks'
 import { generateProductRequisitionCode } from '@/utils'
-import { useAuthStore, useRequisitionStore } from '@/stores'
+import { useRequisitionStore } from '@/stores'
 
 interface IFormCreateProductProps {
   onSubmit: (data: z.infer<typeof productSchema>) => void
@@ -33,8 +33,7 @@ interface IFormCreateProductProps {
 
 export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = ({ onSubmit }) => {
   const { t } = useTranslation('productRequisition')
-  const { slug } = useAuthStore()
-  const { data } = useUser(slug || '')
+  const { data } = useUser()
   const { requisition } = useRequisitionStore()
 
   const form = useForm<z.infer<typeof productSchema>>({

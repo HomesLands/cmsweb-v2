@@ -31,8 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
   DropdownMenuItem,
-  DropdownMenuSeparator,
-  Input
+  DropdownMenuSeparator
 } from '@/components/ui'
 import { useState } from 'react'
 import {
@@ -72,9 +71,11 @@ export function DataTable<TData, TValue>({
   CustomComponent
 }: DataTableProps<TData, TValue>) {
   const { t } = useTranslation('tableData')
+  console.log('data in table', data)
 
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [filterValue, setFilterValue] = useState<string>('all')
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
   const [pagination, setPagination] = useState<PaginationState>({
@@ -106,10 +107,26 @@ export function DataTable<TData, TValue>({
     debugTable: true
   })
 
+  const handleFilterChange = (value: string) => {
+    setFilterValue(value)
+    setColumnFilters([{ id: 'type', value: value === 'all' ? '' : value }])
+  }
+
   return (
     <div>
       <div className="flex justify-between gap-2">
         {CustomComponent && <CustomComponent table={table} />}
+        <Select value={filterValue} onValueChange={handleFilterChange}>
+          <SelectTrigger className="w-[8rem]">
+            <SelectValue placeholder={t('tablePaging.filter')} />
+          </SelectTrigger>
+          <SelectContent side="top">
+            <SelectItem value="all">{t('tableData.all')}</SelectItem>
+            <SelectItem value="normal">{t('tableData.normal')}</SelectItem>
+            <SelectItem value="urgent">{t('tableData.urgent')}</SelectItem>
+            {/* Add more filter options as needed */}
+          </SelectContent>
+        </Select>
       </div>
       <div className="mt-3 border rounded-md">
         <Table>
@@ -118,9 +135,9 @@ export function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
+                    {header.isPlaceholder ? null : (
+                      <div>{flexRender(header.column.columnDef.header, header.getContext())}</div>
+                    )}
                   </TableHead>
                 ))}
               </TableRow>
@@ -293,7 +310,7 @@ export function DataTableColumnHeader<TData, TValue>({
   }
 
   return (
-    <div className={cn('flex items-center w-fit space-x-2 text-[0.8rem]', className)}>
+    <div className={cn('flex items-center min-w-32 space-x-2 text-[0.8rem]', className)}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="sm" className="-ml-3 h-8 data-[state=open]:bg-accent">

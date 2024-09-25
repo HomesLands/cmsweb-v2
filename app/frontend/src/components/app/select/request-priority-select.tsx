@@ -16,6 +16,8 @@ interface RequestPrioritySelectProps {
   defaultValue?: 'normal' | 'urgent'
 }
 
+import { cn } from '@/lib/utils'
+
 export const RequestPrioritySelect: FC<RequestPrioritySelectProps> = ({
   onChange,
   defaultValue
@@ -36,8 +38,16 @@ export const RequestPrioritySelect: FC<RequestPrioritySelectProps> = ({
         <SelectGroup>
           <SelectLabel>{t('productRequisition.priority')}</SelectLabel>
           {priorities.map((requestPriority) => (
-            <SelectItem key={requestPriority.value} value={requestPriority.value}>
-              {requestPriority.label}
+            <SelectItem
+              key={requestPriority.value}
+              value={requestPriority.value}
+              className={cn(requestPriority.value === 'urgent' && 'text-red-600 font-semibold')}
+            >
+              <span
+                className={cn(requestPriority.value === 'urgent' && 'text-red-600 font-semibold')}
+              >
+                {requestPriority.label}
+              </span>
             </SelectItem>
           ))}
         </SelectGroup>

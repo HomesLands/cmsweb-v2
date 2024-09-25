@@ -1,6 +1,7 @@
 import { IProductRequisitionInfo } from './product.type'
 
 export type RequestRequisitionStatus = 'approved' | 'waiting' | 'rejected'
+export type RequestRequisitionType = 'normal' | 'urgent'
 
 export interface IRequestRequisitionInfo {
   code: string
@@ -19,4 +20,11 @@ export interface IRequestRequisitionInfo {
   }[]
   createdAt: string
   updatedAt: string
+}
+
+export interface IRequisitionFormResponseForApprover {
+  approvalUserSlug: string
+  roleApproval: string
+  slug: string
+  productRequisitionForm: IRequestRequisitionInfo[]
 }

@@ -11,9 +11,9 @@ export const useUsers = (q: IQuery) => {
   })
 }
 
-export const useUser = (slug: string) => {
+export const useUser = () => {
   return useQuery({
-    queryKey: ['users', slug],
-    queryFn: () => getUser(slug)
+    queryKey: ['user-info'],
+    queryFn: () => getUser()
   })
 }

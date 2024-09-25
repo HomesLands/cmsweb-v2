@@ -11,20 +11,19 @@ import {
   Button,
   UserAvatar
 } from '@/components/ui'
-import { DialogLogout } from '../dialog'
-import { useLogout, useUser } from '@/hooks'
+import { DialogLogout } from '@/components/app/dialog'
+import { useUser } from '@/hooks'
 import { useAuthStore, useUserStore } from '@/stores'
-import { ILogoutRequest } from '@/types'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 
 export function DropdownHeader() {
   const { t } = useTranslation('auth')
-  const { slug, token, refreshToken, setLogout } = useAuthStore()
+  const { setLogout } = useAuthStore()
   const [open, setOpen] = useState(false)
   // const mutation = useLogout()
-  const { data } = useUser(slug || '')
+  const { data } = useUser()
   const { removeUserInfo } = useUserStore()
   const navigate = useNavigate()
 
@@ -57,7 +56,9 @@ export function DropdownHeader() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-[14rem]" align="end">
-          <DropdownMenuLabel className="text-center">{data?.result?.fullname}</DropdownMenuLabel>
+          <DropdownMenuLabel>
+            {t('userInfo.hello')} {data?.result?.fullname}
+          </DropdownMenuLabel>
           <DropdownMenuSeparator />
           {/* <DropdownMenuItem className="cursor-pointer">Thông tin tài khoản</DropdownMenuItem> */}
           {/* <DropdownMenuItem className="cursor-pointer">Đổi mật khẩu</DropdownMenuItem> */}
