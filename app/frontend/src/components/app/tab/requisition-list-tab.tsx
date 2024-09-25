@@ -10,8 +10,22 @@ import {
   CardTitle
 } from '@/components/ui'
 import RequisitionStage1Table from '../table/requisition-stage-1-table'
+import { usePagination, useProductRequisitionByApprover } from '@/hooks'
 
 export function RequisitionsTab() {
+  const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
+  const { data, isLoading } = useProductRequisitionByApprover({
+    page: pagination.pageIndex + 1,
+    pageSize: pagination.pageSize
+  })
+
+  console.log('data in tab', data?.result.items)
+  const filteredForms = data?.result.items
+    .map((item) => item.productRequisitionForm)
+    .flat()
+    .filter((form) => form.status === 'waiting' && form.isRecalled === false)
+
+  console.log('Filtered and grouped forms:', filteredForms)
   return (
     <Tabs defaultValue="not-approved" className="w-full">
       <TabsList className="flex justify-end gap-2 space-x-2">

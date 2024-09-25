@@ -22,7 +22,7 @@ const ProductRequisitions: React.FC = () => {
         <ReaderIcon className="header-icon" />
         {t('productRequisition.list')}
       </Label>
-      {/* <DataTable
+      <DataTable
         isLoading={isLoading}
         columns={columns}
         data={data?.result?.items || []}
@@ -32,8 +32,8 @@ const ProductRequisitions: React.FC = () => {
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         CustomComponent={CustomComponent}
-      /> */}
-      <RequisitionsTab />
+      />
+      {/* <RequisitionsTab /> */}
     </div>
   )
 }

@@ -25,6 +25,10 @@
     "unit": "Unit",
     "price": "Price",
     "total": "Total",
-    "action": "Action"
+    "action": "Action",
+    "filter": "Filter",
+    "all": "All",
+    "normal": "Normal",
+    "urgent": "Urgent"
   }
 }
