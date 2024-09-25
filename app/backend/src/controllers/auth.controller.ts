@@ -31,6 +31,19 @@ class AuthController {
    *         username: johndoe
    *         password: Pass@1234
    *
+   *     AuthenticationResponseDto:
+   *       type: object
+   *       required:
+   *         - token
+   *         - refreshToken
+   *         - expireTime
+   *         - expireTimeRefreshToken
+   *       example:
+   *         token: token
+   *         refreshToken: refreshToken
+   *         expireTime: expireTime
+   *         expireTimeRefreshToken: expireTimeRefreshToken
+   *
    *     RegistrationRequestDto:
    *       type: object
    *       required:
@@ -110,8 +123,9 @@ class AuthController {
    *         content:
    *           application/json:
    *             schema:
-   *       500:
-   *         description: Server error
+   *               $ref: '#/components/schemas/AuthenticationResponseDto'
+   *       401:
+   *         description: Unauthorized
    *
    */
   public async authenticate(
@@ -153,9 +167,12 @@ class AuthController {
    *         content:
    *           application/json:
    *             schema:
-   *       500:
-   *         description: Server error
-   *
+   *       1003:
+   *         description: Username is not valid
+   *       1008:
+   *         description: Password is not valid
+   *       1011:
+   *         description: Fullname is not valid
    */
   public async register(
     req: Request,
@@ -197,8 +214,14 @@ class AuthController {
    *         content:
    *           application/json:
    *             schema:
-   *       500:
-   *         description: Server error
+   *       1012:
+   *         description: Token is not valid
+   *       1014:
+   *         description: Token is not expired
+   *       1016:
+   *         description: Refresh token expired, cannot create new token.
+   *       1018:
+   *         description: Refresh token is not valid
    */
   public async refreshToken(
     req: Request,

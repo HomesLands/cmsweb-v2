@@ -2,8 +2,11 @@ import { Router } from "express";
 import { companyController } from "@controllers";
 export const companyRoute: Router = Router();
 
+// [POST] /api/v1/companies
+companyRoute.patch("/:slug", companyController.updateCompany);
+
 // [GET] /api/v1/companies
-companyRoute.route("/").get(companyController.getAllCompanies);
+companyRoute.get("/", companyController.getAllCompanies);
 
 // [POST] /api/v1/companies
-companyRoute.route("/").post(companyController.createCompany);
+companyRoute.post("/", companyController.createCompany);

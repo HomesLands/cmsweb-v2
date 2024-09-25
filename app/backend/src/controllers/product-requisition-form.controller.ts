@@ -160,7 +160,7 @@ class ProductRequisitionFormController {
    * @swagger
    * /productRequisitionForms:
    *   get:
-   *     summary: Get all product requisition forms
+   *     summary: Get all product requisition forms by creator
    *     tags: [ProductRequisitionForm]
    *     parameters:
    *       - in: query

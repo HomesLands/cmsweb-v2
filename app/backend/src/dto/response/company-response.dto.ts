@@ -1,6 +1,7 @@
 import { AutoMap } from "@automapper/classes";
+import { BaseResponseDto } from "./base-response.dto";
 
-export class CompanyResponseDto {
+export class CompanyResponseDto extends BaseResponseDto {
   @AutoMap()
   name?: string;
 
@@ -8,5 +9,6 @@ export class CompanyResponseDto {
   slug?: string;
 
   director?: string;
+
   directorSlug?: string;
 }
