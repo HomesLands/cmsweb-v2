@@ -32,3 +32,8 @@ export interface ILogoutRequest {
   token: string
   refreshToken: string
 }
+
+export interface IUserInfoPermission {
+  role: string
+  authorities: string[] | null
+}

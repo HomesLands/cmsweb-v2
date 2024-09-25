@@ -7,7 +7,7 @@ import { columns } from './DataTable/columns'
 import { usePagination, useProductRequisitionByApprover } from '@/hooks'
 import { CustomComponent } from './CustomComponent'
 
-const ProductRequisitions: React.FC = () => {
+const ProductRequisitionsEmployee: React.FC = () => {
   const { t } = useTranslation(['productRequisition'])
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
 
@@ -51,7 +51,6 @@ const ProductRequisitions: React.FC = () => {
     })
   }, [data?.result?.items])
 
-  // Tính toán trạng thái hiển thị cho mỗi item
   const dataWithDisplayStatus = useMemo(() => {
     return filteredData.map((item) => {
       const { status, isRecalled } = item.productRequisitionForm
@@ -115,6 +114,7 @@ const ProductRequisitions: React.FC = () => {
     <div className="flex flex-col gap-4">
       <Label className="flex items-center gap-1 font-semibold text-normal text-md font-beVietNam">
         <ReaderIcon className="header-icon" />
+        haha hoho
         {t('productRequisition.list')}
       </Label>
       <DataTable
@@ -132,4 +132,4 @@ const ProductRequisitions: React.FC = () => {
   )
 }
 
-export default ProductRequisitions
+export default ProductRequisitionsEmployee

@@ -4,6 +4,7 @@ export interface IRoute {
   redirect?: string
   component?: () => Promise<{ default: React.ComponentType }>
   children?: IRoute[]
+  permissions?: string[]
 }
 
 export interface IRoutes {
@@ -14,6 +15,7 @@ export interface ISubmenu {
   path: string
   component?: () => Promise<{ default: React.ComponentType }>
   icon: React.ComponentType
+  permissions?: string[]
 }
 
 export interface ISidebarSubmenu {
@@ -22,4 +24,5 @@ export interface ISidebarSubmenu {
   icon: React.ComponentType
   component?: () => Promise<{ default: React.ComponentType }>
   children?: ISubmenu[]
+  permissions?: string[]
 }
