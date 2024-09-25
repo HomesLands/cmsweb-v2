@@ -19,6 +19,7 @@ import { roleRoute } from "./role.route";
 import { authorityRoute } from "./authority.route";
 import { permissionRoute } from "./permission.route";
 import { userRoleRoute } from "./user-role.route";
+import { userApprovalRoute } from "./user-approval.route";
 
 const baseApi: Router = Router();
 
@@ -54,6 +55,8 @@ export const registerRoutes = (app: Express) => {
   baseApi.use("/permissions", permissionRoute);
 
   baseApi.use("/userRoles", userRoleRoute);
+
+  baseApi.use("/userApprovals", userApprovalRoute);
 
   app.use("/api/v1", baseApi);
 
