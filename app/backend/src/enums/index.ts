@@ -3,14 +3,8 @@ export enum Gender {
   FEMALE = "female",
 }
 
-export enum ProductStatus {
-  OUT_OF_STOCK = "out_of_stock",
-  IN_STOCK = "in_stock",
-  BUYING = "buying",
-}
-
 export enum ProductRequisitionFormStatus {
-  CANCEL = "cancel", // creator can 
+  CANCEL = "cancel", // creator can edit
   WAITING = "waiting", // waiting stage 1 approval -> creator can edit
   // RECALLED_BY_STAGE_2 = "recalled_by_stage_2", // waiting stage 1 approval -> creator can't edit
   ACCEPTED_STAGE_1 = "accepted_stage_1", // waiting stage 2 approval

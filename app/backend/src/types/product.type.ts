@@ -6,6 +6,18 @@ export type TCreateProductRequestDto = {
   provider?: string;
   unit?: string;
   description?: string;
+  quantity?: number;
+};
+
+export type TUpdateProductRequestDto = {
+  slug?: string;
+  name?: string;
+  quantity?: number;
+  code?: string;
+  provider?: string;
+  rfid?: string;
+  unit?: string;
+  description?: string;
 };
 
 export type TProductQueryRequest = TQueryRequest & {

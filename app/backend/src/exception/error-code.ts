@@ -304,10 +304,10 @@ export const ErrorCodes: TErrorCode = {
     code: 1075,
     message: "Company director not found",
   },
-  FORM_NOT_CREATED_BY_YOU: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
+  FORBIDDEN_EDIT_FORM: {
+    httpStatusCode: StatusCodes.FORBIDDEN,
     code: 1072,
-    message: "Form not created by you",
+    message: "Forbidden edit form",
   },
   INVALID_REQUEST_PRODUCT_SLUG: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -333,6 +333,11 @@ export const ErrorCodes: TErrorCode = {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1077,
     message: "Invalid reason resubmit form",
+  },
+  INVALID_QUANTITY_PRODUCT: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1078,
+    message: "Invalid quantity product",
   },
 
   // AuthenticationErrors
