@@ -4,7 +4,7 @@ import { AutoMap } from "@automapper/classes";
 
 @Entity("company_tbl")
 export class Company extends Base {
-  @Column({ name: "name_column", unique: true })
+  @Column({ name: "name_column", unique: true, nullable: false })
   @AutoMap()
   name?: string;
 

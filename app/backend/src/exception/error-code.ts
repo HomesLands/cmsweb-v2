@@ -154,22 +154,17 @@ export const ErrorCodes: TErrorCode = {
     code: 1046,
     message: "Form not found",
   },
-  APPROVAL_USER_NOT_FOUND: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1047,
-    message: "Approval user not found",
-  },
-  USER_OF_APPROVAL_USER_NOT_FOUND: {
+  USER_APPROVAL_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1048,
-    message: "User of approval user not found",
+    message: "Approval user not found",
   },
-  INVALID_APPROVAL_USER_FOR_APPROVAL_FORM: {
+  INVALID_USER_APPROVAL: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1049,
     message: "Invalid approval user for approval form",
   },
-  PRODUCT_REQUISITION_FORM_DONE_APPROVAL: {
+  INVALID_FORM_STATUS_TRANSITION: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1050,
     message: "Product requisition form done approval",
@@ -304,10 +299,10 @@ export const ErrorCodes: TErrorCode = {
     code: 1075,
     message: "Company director not found",
   },
-  FORM_NOT_CREATED_BY_YOU: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
+  FORBIDDEN_EDIT_FORM: {
+    httpStatusCode: StatusCodes.FORBIDDEN,
     code: 1072,
-    message: "Form not created by you",
+    message: "Forbidden edit form",
   },
   INVALID_REQUEST_PRODUCT_SLUG: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -332,6 +327,16 @@ export const ErrorCodes: TErrorCode = {
   INVALID_REASON_RESUBMIT_FORM: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1077,
+    message: "Invalid reason resubmit form",
+  },
+  INVALID_QUANTITY_PRODUCT: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1078,
+    message: "Invalid quantity product",
+  },
+  CREATOR_FORM_NOT_FORM: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1079,
     message: "Invalid reason resubmit form",
   },
 

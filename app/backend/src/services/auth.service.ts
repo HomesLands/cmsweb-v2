@@ -46,7 +46,7 @@ class AuthService {
           return reject(new GlobalError(StatusCodes.UNAUTHORIZED));
 
         if (_.isEmpty(user)) {
-          return reject(new GlobalError(ErrorCodes.AUTHORITY_NOT_FOUND));
+          return reject(new GlobalError(StatusCodes.UNAUTHORIZED));
         }
 
         const { token, refreshToken } = await tokenService.generateToken(user);

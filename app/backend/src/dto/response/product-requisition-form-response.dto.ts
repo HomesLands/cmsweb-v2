@@ -1,5 +1,6 @@
 import { AutoMap } from "@automapper/classes";
 import {
+  BaseResponseDto,
   RequestProductResponseDto,
   UserApprovalResponseDto,
 } from "@dto/response";
@@ -24,15 +25,19 @@ export class ProductRequisitionFormResponseDto {
   description?: boolean;
 
   company?: string;
+
   companySlug?: string;
 
   site?: string;
+
   siteSlug?: string;
 
   project?: string;
+
   projectSlug?: string;
 
   creator?: string;
+
   creatorSlug?: string;
 
   @AutoMap(() => [RequestProductResponseDto])

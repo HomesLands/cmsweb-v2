@@ -1,6 +1,5 @@
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
-import _ from "lodash";
 
 import {
   productRequisitionFormRepository,
@@ -20,10 +19,7 @@ import {
   TPaginationOptionResponse,
   TResubmitProductRequisitionFormRequestDto,
 } from "@types";
-import {
-  ProductRequisitionFormResponseDto,
-  UserApprovalForApprovalUserResponseDto,
-} from "@dto/response";
+import { ProductRequisitionFormResponseDto } from "@dto/response";
 import {
   CreateProductRequisitionFormRequestDto,
   CreateRequestProductRequestDto,
@@ -51,10 +47,14 @@ import { In } from "typeorm";
 
 class ProductRequisitionFormService {
   public async getAllProductRequisitionForms(
+    creatorId: string,
     options: TQueryRequest
   ): Promise<TPaginationOptionResponse<ProductRequisitionFormResponseDto[]>> {
     // Get the total number of products
-    const totalProductRequisitionForm = await productRepository.count({});
+    const totalProductRequisitionForm =
+      await productRequisitionFormRepository.count({
+        where: { creator: { id: creatorId } },
+      });
 
     // Parse and validate pagination parameters
     let pageSize =
@@ -78,6 +78,8 @@ class ProductRequisitionFormService {
       order: { createdAt: options.order },
       relations: [
         "company",
+        "site",
+        "project",
         "creator",
         "userApprovals",
         "userApprovals.user",
@@ -267,69 +269,6 @@ class ProductRequisitionFormService {
     return formsDto;
   }
 
-  public async getAllProductRequisitionFormsByApprovalUser(
-    userId: string,
-    options: TQueryRequest
-  ): Promise<
-    TPaginationOptionResponse<UserApprovalForApprovalUserResponseDto[]>
-  > {
-    // Get the total number of products
-    const totalProductRequisitionForm = await productRepository.count({});
-
-    // Parse and validate pagination parameters
-    let pageSize =
-      typeof options.pageSize === "string"
-        ? parseInt(options.pageSize, 10)
-        : options.pageSize;
-    let page =
-      typeof options.page === "string"
-        ? parseInt(options.page, 10)
-        : options.page;
-
-    // Ensure page and pageSize are positive numbers
-    if (isNaN(page) || page <= 0) page = 1;
-    if (isNaN(pageSize) || pageSize <= 0) pageSize = 10; // Default pageSize if invalid
-    // Calculate pagination details
-    const totalPages = Math.ceil(totalProductRequisitionForm / pageSize);
-
-    const approvalUser = await userApprovalRepository.find({
-      where: {
-        user: {
-          id: userId,
-        },
-      },
-      take: pageSize,
-      skip: (page - 1) * pageSize,
-      order: { createdAt: options.order },
-      relations: [
-        "productRequisitionForm",
-        "productRequisitionForm.company",
-        "productRequisitionForm.site",
-        "productRequisitionForm.project",
-        "productRequisitionForm.creator",
-        "productRequisitionForm.requestProducts",
-        "productRequisitionForm.requestProducts.product",
-        "productRequisitionForm.userApprovals",
-        "productRequisitionForm.userApprovals.user",
-        "productRequisitionForm.userApprovals.approvalLogs",
-      ],
-    });
-
-    const formsDto: UserApprovalForApprovalUserResponseDto[] = mapper.mapArray(
-      approvalUser,
-      UserApproval,
-      UserApprovalForApprovalUserResponseDto
-    );
-
-    return {
-      items: formsDto,
-      page,
-      pageSize,
-      totalPages,
-    };
-  }
-
-  //note: sửa trả về form
   public async approvalProductRequisitionForm(
     plainData: TApprovalProductRequisitionFormRequestDto
   ): Promise<ProductRequisitionFormResponseDto> {
@@ -337,6 +276,8 @@ class ProductRequisitionFormService {
       ApprovalProductRequisitionFormRequestDto,
       plainData
     );
+
+    // Validation request data
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
 
@@ -354,7 +295,6 @@ class ProductRequisitionFormService {
         "requestProducts.product",
       ],
     });
-    console.log({ form });
     if (!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
     const approvalUser = await userApprovalRepository.findOne({
@@ -363,34 +303,24 @@ class ProductRequisitionFormService {
       },
       relations: ["user"],
     });
+    if (!approvalUser?.user)
+      throw new GlobalError(ErrorCodes.USER_APPROVAL_NOT_FOUND);
 
-    if (!approvalUser) {
-      throw new GlobalError(ErrorCodes.APPROVAL_USER_NOT_FOUND);
-    }
-    if (!approvalUser?.user) {
-      throw new GlobalError(ErrorCodes.USER_OF_APPROVAL_USER_NOT_FOUND);
-    }
-
+    // Waiting && approvalUser === approval_stage_1 ==> wait approval_stage_1 approve
     if (form.status === ProductRequisitionFormStatus.WAITING) {
-      // form : waiting => approvalUser: approval_stage_1 > wait approval_stage_1 approve
-      //checking
-      if (approvalUser.roleApproval !== RoleApproval.APPROVAL_STAGE_1) {
-        throw new GlobalError(
-          ErrorCodes.INVALID_APPROVAL_USER_FOR_APPROVAL_FORM
-        );
-      }
+      if (approvalUser.roleApproval !== RoleApproval.APPROVAL_STAGE_1)
+        throw new GlobalError(ErrorCodes.INVALID_USER_APPROVAL);
 
       // change status form
       if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
         form.status = ProductRequisitionFormStatus.ACCEPTED_STAGE_1;
         form.isRecalled = false;
-        form = await productRequisitionFormRepository.save(form);
       } else {
         // give_back and cancel because give_back === cancel when form.status === waiting
         form.status = ProductRequisitionFormStatus.CANCEL;
         form.isRecalled = true;
-        form = await productRequisitionFormRepository.save(form);
       }
+      form = await productRequisitionFormRepository.save(form);
 
       // create approval log
       const approvalLogData = mapper.map(
@@ -407,31 +337,28 @@ class ProductRequisitionFormService {
         ProductRequisitionFormResponseDto
       );
       return formDto;
-    } else if (form.status === ProductRequisitionFormStatus.ACCEPTED_STAGE_1) {
+    }
+
+    if (form.status === ProductRequisitionFormStatus.ACCEPTED_STAGE_1) {
       // form : accepted_stage_1 => approvalUser: approval_stage_2 > wait approval_stage_2 approve
-      if (approvalUser.roleApproval !== RoleApproval.APPROVAL_STAGE_2) {
-        throw new GlobalError(
-          ErrorCodes.INVALID_APPROVAL_USER_FOR_APPROVAL_FORM
-        );
-      }
+      if (approvalUser.roleApproval !== RoleApproval.APPROVAL_STAGE_2)
+        throw new GlobalError(ErrorCodes.INVALID_USER_APPROVAL);
 
       if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
         // update status
         form.status = ProductRequisitionFormStatus.ACCEPTED_STAGE_2;
         form.isRecalled = false;
-        form = await productRequisitionFormRepository.save(form);
       } else if (
         requestData.approvalLogStatus === ApprovalLogStatus.GIVE_BACK
       ) {
         form.status = ProductRequisitionFormStatus.WAITING;
         form.isRecalled = true;
-        form = await productRequisitionFormRepository.save(form);
       } else {
         // CANCEL
         form.status = ProductRequisitionFormStatus.CANCEL;
         form.isRecalled = true;
-        form = await productRequisitionFormRepository.save(form);
       }
+      form = await productRequisitionFormRepository.save(form);
 
       // create approval log
       const approvalLogData = mapper.map(
@@ -448,30 +375,28 @@ class ProductRequisitionFormService {
         ProductRequisitionFormResponseDto
       );
       return formDto;
-    } else if (form.status === ProductRequisitionFormStatus.ACCEPTED_STAGE_2) {
+    }
+
+    if (form.status === ProductRequisitionFormStatus.ACCEPTED_STAGE_2) {
       // form : accepted_stage_2 => approvalUser: approval_stage_3 > wait approval_stage_1 approve
       if (approvalUser.roleApproval !== RoleApproval.APPROVAL_STAGE_3) {
-        throw new GlobalError(
-          ErrorCodes.INVALID_APPROVAL_USER_FOR_APPROVAL_FORM
-        );
+        throw new GlobalError(ErrorCodes.INVALID_USER_APPROVAL);
       }
 
       if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
         form.status = ProductRequisitionFormStatus.WAITING_EXPORT;
         form.isRecalled = false;
-        form = await productRequisitionFormRepository.save(form);
       } else if (
         requestData.approvalLogStatus === ApprovalLogStatus.GIVE_BACK
       ) {
         form.status = ProductRequisitionFormStatus.ACCEPTED_STAGE_1;
         form.isRecalled = true;
-        form = await productRequisitionFormRepository.save(form);
       } else {
         // CANCEL
         form.status = ProductRequisitionFormStatus.CANCEL;
         form.isRecalled = true;
-        form = await productRequisitionFormRepository.save(form);
       }
+      form = await productRequisitionFormRepository.save(form);
 
       // create approval log
       const approvalLogData = mapper.map(
@@ -491,69 +416,10 @@ class ProductRequisitionFormService {
     // form.status: cancel => wait creator edit and resubmit
     // form.status: waiting_export/ exporting => export product
     // form.status: done => completed
-    throw new GlobalError(ErrorCodes.PRODUCT_REQUISITION_FORM_DONE_APPROVAL);
+    throw new GlobalError(ErrorCodes.INVALID_FORM_STATUS_TRANSITION);
   }
 
-  public async getAllProductRequisitionFormsByCreator(
-    userId: string,
-    options: TQueryRequest
-  ): Promise<TPaginationOptionResponse<ProductRequisitionFormResponseDto[]>> {
-    // Get the total number of products
-    const totalProductRequisitionForm = await productRepository.count({});
-
-    // Parse and validate pagination parameters
-    let pageSize =
-      typeof options.pageSize === "string"
-        ? parseInt(options.pageSize, 10)
-        : options.pageSize;
-    let page =
-      typeof options.page === "string"
-        ? parseInt(options.page, 10)
-        : options.page;
-
-    // Ensure page and pageSize are positive numbers
-    if (isNaN(page) || page <= 0) page = 1;
-    if (isNaN(pageSize) || pageSize <= 0) pageSize = 10; // Default pageSize if invalid
-    // Calculate pagination details
-    const totalPages = Math.ceil(totalProductRequisitionForm / pageSize);
-
-    const forms = await productRequisitionFormRepository.find({
-      where: {
-        creator: {
-          id: userId,
-        },
-      },
-      take: pageSize,
-      skip: (page - 1) * pageSize,
-      order: { createdAt: options.order },
-      relations: [
-        "company",
-        "site",
-        "project",
-        "creator",
-        "userApprovals",
-        "userApprovals.user",
-        "userApprovals.approvalLogs",
-        "requestProducts",
-        "requestProducts.product",
-      ],
-    });
-
-    const formsDto: ProductRequisitionFormResponseDto[] = mapper.mapArray(
-      forms,
-      ProductRequisitionForm,
-      ProductRequisitionFormResponseDto
-    );
-
-    return {
-      items: formsDto,
-      page,
-      pageSize,
-      totalPages,
-    };
-  }
-
-  public async resubmitRequisitionFormsByCreator(
+  public async resubmitRequisitionForm(
     plainData: TResubmitProductRequisitionFormRequestDto,
     creatorId: string
   ): Promise<ProductRequisitionFormResponseDto> {
@@ -583,11 +449,12 @@ class ProductRequisitionFormService {
     console.log({ form });
     if (!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
-    // if(form.creator) {
-    //   if(form.creator.id !== creatorId) throw new GlobalError(ErrorCodes.FORM_NOT_CREATED_BY_YOU);
-    // } else {
-    //   throw new GlobalError(ErrorCodes.FORM_NOT_CREATED_BY_YOU);
-    // }
+    if (form.creator) {
+      if (form.creator.id !== creatorId)
+        throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    } else {
+      throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    }
 
     form.status = ProductRequisitionFormStatus.WAITING;
     form.isRecalled = false;

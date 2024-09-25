@@ -7,10 +7,7 @@ import {
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import { productRequisitionFormService } from "@services";
-import {
-  ProductRequisitionFormResponseDto,
-  UserApprovalForApprovalUserResponseDto,
-} from "@dto/response";
+import { ProductRequisitionFormResponseDto } from "@dto/response";
 import {
   TCreateProductRequisitionFormRequestDto,
   TApprovalProductRequisitionFormRequestDto,
@@ -156,14 +153,14 @@ class ProductRequisitionFormController {
    * @swagger
    * tags:
    *   - name: ProductRequisitionForm
-   *     description: The productRequisitionForm managing API
+   *     description: The product requisition form managing API
    */
 
   /**
    * @swagger
    * /productRequisitionForms:
    *   get:
-   *     summary: Get all product requisition forms
+   *     summary: Get all product requisition forms by creator
    *     tags: [ProductRequisitionForm]
    *     parameters:
    *       - in: query
@@ -202,9 +199,11 @@ class ProductRequisitionFormController {
   ): Promise<void> {
     try {
       const query = req.query as unknown as TQueryRequest;
-      logger.info("", query);
+      const creatorId = req.userId as string;
+      logger.info(`[ProductRequisitionFormController.name]`, query);
       const results =
         await productRequisitionFormService.getAllProductRequisitionForms(
+          creatorId,
           query
         );
 
@@ -246,7 +245,6 @@ class ProductRequisitionFormController {
    *         description: Server error
    *
    */
-
   public async createProductRequisitionForm(
     req: Request,
     res: Response,
@@ -325,76 +323,9 @@ class ProductRequisitionFormController {
 
   /**
    * @swagger
-   * /productRequisitionForms/approvalUser:
-   *   get:
-   *     summary: get productRequisitionForm by approvalUser
-   *     tags: [ProductRequisitionForm]
-   *     parameters:
-   *       - in: query
-   *         name: order
-   *         schema:
-   *           type: string
-   *           enum: [ASC, DESC]
-   *         required: true
-   *         description: The order in which the product requisition forms are sorted (ASC, DESC)
-   *         example: ASC
-   *       - in: query
-   *         name: page
-   *         schema:
-   *           type: integer
-   *         required: true
-   *         description: The number of product requisition forms to skip
-   *         example: 1
-   *       - in: query
-   *         name: pageSize
-   *         schema:
-   *           type: integer
-   *         required: true
-   *         description: The number of product requisition forms to retrieve
-   *         example: 10
-   *     responses:
-   *       200:
-   *         description: get product requisition form successfully.
-   *       500:
-   *         description: Server error
-   *
-   */
-
-  public async getAllProductRequisitionFormsByApprovalUser(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
-    try {
-      const userId = req.userId as string;
-      const query = req.query as unknown as TQueryRequest;
-      const form =
-        await productRequisitionFormService.getAllProductRequisitionFormsByApprovalUser(
-          userId,
-          query
-        );
-
-      const response: TApiResponse<
-        TPaginationOptionResponse<UserApprovalForApprovalUserResponseDto[]>
-      > = {
-        code: StatusCodes.OK,
-        error: false,
-        message: "Get list productRequisitionForms successfully",
-        method: req.method,
-        path: req.originalUrl,
-        result: form,
-      };
-      res.status(StatusCodes.OK).json(response);
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  /**
-   * @swagger
-   * /productRequisitionForms/approvalForm:
+   * /productRequisitionForms/approval:
    *   patch:
-   *     summary: update status for productRequisitionForm by approvalUser
+   *     summary: update status for product requisition form by approval user
    *     tags: [ProductRequisitionForm]
    *     requestBody:
    *       required: true
@@ -438,76 +369,9 @@ class ProductRequisitionFormController {
 
   /**
    * @swagger
-   * /productRequisitionForms/creator:
-   *   get:
-   *     summary: get productRequisitionForm by creator
-   *     tags: [ProductRequisitionForm]
-   *     parameters:
-   *       - in: query
-   *         name: order
-   *         schema:
-   *           type: string
-   *           enum: [ASC, DESC]
-   *         required: true
-   *         description: The order in which the product requisition forms are sorted (ASC, DESC)
-   *         example: ASC
-   *       - in: query
-   *         name: page
-   *         schema:
-   *           type: integer
-   *         required: true
-   *         description: The number of product requisition forms to skip
-   *         example: 1
-   *       - in: query
-   *         name: pageSize
-   *         schema:
-   *           type: integer
-   *         required: true
-   *         description: The number of product requisition forms to retrieve
-   *         example: 10
-   *     responses:
-   *       200:
-   *         description: get product requisition form successfully.
-   *       500:
-   *         description: Server error
-   *
-   */
-
-  public async getAllProductRequisitionFormsByCreator(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
-    try {
-      const creatorId = req.userId as string;
-      const query = req.query as unknown as TQueryRequest;
-      const forms =
-        await productRequisitionFormService.getAllProductRequisitionFormsByCreator(
-          creatorId,
-          query
-        );
-
-      const response: TApiResponse<
-        TPaginationOptionResponse<ProductRequisitionFormResponseDto[]>
-      > = {
-        code: StatusCodes.OK,
-        error: false,
-        message: "Get list productRequisitionForms successfully",
-        method: req.method,
-        path: req.originalUrl,
-        result: forms,
-      };
-      res.status(StatusCodes.OK).json(response);
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  /**
-   * @swagger
    * /productRequisitionForms/resubmit:
    *   patch:
-   *     summary: resubmit productRequisitionForm by creator
+   *     summary: Re-submit product requisition form by creator
    *     tags: [ProductRequisitionForm]
    *     requestBody:
    *       required: true
@@ -523,17 +387,18 @@ class ProductRequisitionFormController {
    *
    */
 
-  public async resubmitRequisitionFormsByCreator(
+  public async resubmitRequisitionForm(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
       const data = req.body as TResubmitProductRequisitionFormRequestDto;
-      console.log({ data });
       const creatorId = req.userId as string;
-      const forms =
-        await productRequisitionFormService.resubmitRequisitionFormsByCreator(
+      logger.info("ResubmitProductRequisitionFormRequest", { data });
+
+      const result =
+        await productRequisitionFormService.resubmitRequisitionForm(
           data,
           creatorId
         );
@@ -541,10 +406,10 @@ class ProductRequisitionFormController {
       const response: TApiResponse<ProductRequisitionFormResponseDto> = {
         code: StatusCodes.OK,
         error: false,
-        message: "Resubmit productRequisitionForms successfully",
+        message: "Product requisition form has been submitted successfully",
         method: req.method,
         path: req.originalUrl,
-        result: forms,
+        result: result,
       };
       res.status(StatusCodes.OK).json(response);
     } catch (error) {

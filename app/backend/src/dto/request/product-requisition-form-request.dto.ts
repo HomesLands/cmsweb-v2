@@ -14,7 +14,6 @@ import {
 } from "@enums";
 import {
   CreateRequestProductRequestDto,
-  ResubmitRequestProductRequestDto,
 } from "./request-product-request.dto";
 import { CreateUserApprovalRequestDto } from "./user-approval-request.dto";
 

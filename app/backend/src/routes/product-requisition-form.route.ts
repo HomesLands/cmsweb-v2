@@ -4,34 +4,31 @@ import { productRequisitionFormController } from "@controllers";
 export const productRequisitionFormRoute: Router = Router();
 
 // [GET] /api/v1/productRequisitionForms
-productRequisitionFormRoute.route("/")
-  .get(productRequisitionFormController.getAllProductRequisitionForms);
+productRequisitionFormRoute.get(
+  "/",
+  productRequisitionFormController.getAllProductRequisitionForms
+);
 
 // [POST] /api/v1/productRequisitionForms
-productRequisitionFormRoute.route("/")
-  .post(productRequisitionFormController.createProductRequisitionForm);
+productRequisitionFormRoute.post(
+  "/",
+  productRequisitionFormController.createProductRequisitionForm
+);
 
-// [GET] /api/v1/productRequisitionForms/approvalUser
-productRequisitionFormRoute.route("/approvalUser")
-.get(productRequisitionFormController.getAllProductRequisitionFormsByApprovalUser);
-
-// [GET] /api/v1/productRequisitionForms/creator
-productRequisitionFormRoute.route("/creator")
-.get(productRequisitionFormController.getAllProductRequisitionFormsByCreator);
-
-// [PATCH] /api/v1/productRequisitionForms/approvalForm
-productRequisitionFormRoute.route("/approvalForm")
-  .patch(productRequisitionFormController.approvalProductRequisitionForm);
+// [PATCH] /api/v1/productRequisitionForms/approval
+productRequisitionFormRoute.patch(
+  "/approval",
+  productRequisitionFormController.approvalProductRequisitionForm
+);
 
 // [PATCH] /api/v1/productRequisitionForms/resubmit
-productRequisitionFormRoute.route("/resubmit")
-  .patch(productRequisitionFormController.resubmitRequisitionFormsByCreator);
+productRequisitionFormRoute.patch(
+  "/resubmit",
+  productRequisitionFormController.resubmitRequisitionForm
+);
 
 // [GET] /api/v1/productRequisitionForms/:slug
-productRequisitionFormRoute.route("/:slug")
-  .get(productRequisitionFormController.getProductRequisitionFormBySlug);
-
-
-
-
-
+productRequisitionFormRoute.get(
+  "/:slug",
+  productRequisitionFormController.getProductRequisitionFormBySlug
+);

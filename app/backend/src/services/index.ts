@@ -13,3 +13,4 @@ export { default as authorityService } from "./authority.service";
 export { default as permissionService } from "./permission.service";
 export { default as userRoleService } from "./user-role.service";
 export { default as requestProductService } from "./request-product.service";
+export { default as userApprovalService } from "./user-approval.service";
