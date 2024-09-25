@@ -1,6 +1,7 @@
 import { AutoMap } from "@automapper/classes";
+import { BaseResponseDto } from "./base-response.dto";
 
-export class ProjectResponseDto {
+export class ProjectResponseDto extends BaseResponseDto {
   @AutoMap()
   name?: string;
 
@@ -13,7 +14,4 @@ export class ProjectResponseDto {
   managerFullname?: string;
 
   managerSlug?: string;
-
-  @AutoMap()
-  slug?: string;
 }
