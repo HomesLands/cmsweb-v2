@@ -435,7 +435,8 @@ class ProductRequisitionFormService {
   }
 
   public async resubmitRequisitionForm(
-    plainData: TResubmitProductRequisitionFormRequestDto
+    plainData: TResubmitProductRequisitionFormRequestDto,
+    creatorId: string,
   ): Promise<ProductRequisitionFormResponseDto> {
     const requestData = plainToClass(
       ResubmitProductRequisitionFormRequestDto,
