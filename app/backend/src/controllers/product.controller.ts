@@ -3,6 +3,7 @@ import { productService } from "@services";
 import {
   TApiResponse,
   TCreateProductRequestDto,
+  TUpdateProductRequestDto,
   TPaginationOptionResponse,
   TProductQueryRequest,
 } from "@types";
@@ -35,6 +36,9 @@ class ProductController {
    *         unit:
    *           type: string
    *           description: unitSlugForProduct
+   *         quantity:
+   *           type: integer
+   *           description: quantity of product
    *         description:
    *           type: string
    *           description: descriptionProduct
@@ -46,6 +50,49 @@ class ProductController {
    *         code: 8886008101053
    *         provider: BOSCH
    *         unit: M_aSwDaaau
+   *         quantity: 10
+   *         description: Dùng điện, Có chổi than
+   * 
+   *     UpdateProductRequestDto:
+   *       type: object
+   *       required:
+   *         - slug
+   *       properties:
+   *         slug:
+   *           type: string
+   *           description: The slug of product
+   *         name:
+   *           type: string
+   *           description: The name of product
+   *         quantity:
+   *           type: integer
+   *           description: The quantity of product
+   *         code:
+   *           type: string
+   *           description: productCode - barcode
+   *         provider:
+   *           type: string
+   *           description: productProvider
+   *         rfid:
+   *           type: string
+   *           description: The rfid of product
+   *         unit:
+   *           type: string
+   *           description: unitSlugForProduct
+   *         description:
+   *           type: string
+   *           description: descriptionProduct
+   *       oneOf:
+   *         - required: ["code"]
+   *         - required: ["description"]
+   *       example:
+   *         slug: slug-123 
+   *         name: Máy khoan động lực điện Bosch GSB 10 RE 500W
+   *         code: 8886008101053
+   *         rfid: 0A3F4B92C5
+   *         provider: BOSCH
+   *         unit: M_aSwDaaau
+   *         quantity: 10
    *         description: Dùng điện, Có chổi than
    */
 
@@ -168,6 +215,53 @@ class ProductController {
       next(error);
     }
   }
+
+  /**
+   * @swagger
+   * /products:
+   *   patch:
+   *     summary: Update product
+   *     tags: [Product]
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/UpdateProductRequestDto'
+   *     responses:
+   *       200:
+   *         description: Update product successfully.
+   *         content:
+   *           application/json:
+   *             schema:
+   *       500:
+   *         description: Server error
+   *
+   */
+
+  public async updateProduct(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const requestData = req.body as TUpdateProductRequestDto;
+      const productData = await productService.updateProduct(requestData);
+
+      const response: TApiResponse<ProductResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "Update product successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result: productData,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+  
 }
 
 export default new ProductController();
