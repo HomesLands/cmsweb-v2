@@ -5,4 +5,5 @@ export type TCreateCompanyRequestDto = {
 
 export type TUpdateCompanyRequestDto = {
   name?: string;
+  director?: string;
 };

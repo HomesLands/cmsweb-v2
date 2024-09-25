@@ -34,12 +34,17 @@ class CompanyController {
    *       type: object
    *       required:
    *         - name
+   *         - director
    *       properties:
    *         name:
    *           type: string
    *           description: company name
+   *         director:
+   *           type: string
+   *           description: director slug
    *       example:
    *         name: Thái Bình
+   *         director: slug-123
    */
 
   /**
@@ -172,7 +177,7 @@ class CompanyController {
       const response: TApiResponse<CompanyResponseDto> = {
         code: StatusCodes.OK,
         error: false,
-        message: "Create company successfully",
+        message: "The company updated successfully",
         method: req.method,
         path: req.originalUrl,
         result: companyData,

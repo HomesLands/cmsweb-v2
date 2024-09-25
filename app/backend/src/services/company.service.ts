@@ -77,8 +77,12 @@ class CompanyService {
     const company = await companyRepository.findOneBy({ slug });
     if (!company) throw new GlobalError(ErrorCodes.COMPANY_NOT_FOUND);
 
-    Object.assign(company, requestData);
+    const director = await userRepository.findOneBy({
+      slug: requestData.director,
+    });
+    if (!director) throw new GlobalError(ErrorCodes.COMPANY_DIRECTOR_NOT_FOUND);
 
+    Object.assign(company, { name: requestData.name, director });
     const updatedCompany = await companyRepository.save(company);
 
     const companyDto = mapper.map(updatedCompany, Company, CompanyResponseDto);
