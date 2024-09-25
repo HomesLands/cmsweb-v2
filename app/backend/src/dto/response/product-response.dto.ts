@@ -12,10 +12,13 @@ export class ProductResponseDto extends BaseResponseDto {
   provider?: string;
 
   @AutoMap()
-  status?: string;
+  description?: string;
 
   @AutoMap()
-  description?: string;
+  quantity?: number;
+
+  @AutoMap()
+  rfid?: number;
 
   unit?: string;
 }

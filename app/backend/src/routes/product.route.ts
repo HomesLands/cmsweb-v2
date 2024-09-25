@@ -7,3 +7,6 @@ productRoute.route("/").get(productController.getAllProducts);
 
 // [GET] /api/v1/products
 productRoute.route("/").post(productController.createProduct);
+
+// [PATCH] /api/v1/products
+productRoute.route("/").patch(productController.updateProduct);

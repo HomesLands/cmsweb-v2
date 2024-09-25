@@ -1,10 +1,10 @@
 import { mapper } from "@mappers";
-import { TPaginationOptionResponse, TProductQueryRequest } from "@types";
+import { TPaginationOptionResponse, TProductQueryRequest, TUpdateProductRequestDto } from "@types";
 import { ProductResponseDto } from "@dto/response";
 import { productRepository, unitRepository } from "@repositories";
 import { Product } from "@entities/product.entity";
 import { TCreateProductRequestDto } from "@types";
-import { CreateProductRequestDto } from "@dto/request";
+import { CreateProductRequestDto, UpdateProductRequestDto } from "@dto/request";
 import { GlobalError, ErrorCodes, ValidationError } from "@exception";
 
 import { plainToClass } from "class-transformer";
@@ -92,6 +92,28 @@ class ProductService {
     const productDataCreated =
       await productRepository.createAndSave(productData);
     return mapper.map(productDataCreated, Product, ProductResponseDto);
+  }
+
+  public async updateProduct(
+    plainData: TUpdateProductRequestDto
+  ): Promise<ProductResponseDto> {
+    const requestData = plainToClass(UpdateProductRequestDto, plainData);
+
+    const errors = await validate(requestData);
+    if (errors.length > 0) throw new ValidationError(errors);
+
+    let product = await productRepository.findOneBy({ slug: requestData.slug });
+    if(!product) throw new GlobalError(ErrorCodes.PRODUCT_NOT_FOUND);
+    Object.assign(product, requestData);
+
+    const unit = await unitRepository.findOneBy({ slug: requestData.unit });
+    if(!unit) throw new GlobalError(ErrorCodes.INVALID_PRODUCT_UNIT);
+    product.unit = unit;
+
+    product = await productRepository.save(product);
+
+    const productDto = mapper.map(product, Product, ProductResponseDto);
+    return productDto;
   }
 }
 

@@ -28,6 +28,9 @@
     "price": "Giá",
     "total": "Tổng",
     "action": "Hành động",
-    "addNewProduct": "Thêm vật tư"
+    "filter": "Lọc",
+    "all": "Tất cả",
+    "normal": "Bình thường",
+    "urgent": "Cần gấp"
   }
 }

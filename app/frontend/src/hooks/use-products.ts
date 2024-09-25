@@ -3,6 +3,7 @@ import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
 import {
   createProductRequisition,
   getAllProductRequisition,
+  getProductRequisitionByApprover,
   getProductRequisitionBySlug,
   getProducts
 } from '@/api/products'
@@ -27,6 +28,13 @@ export const useProductRequisitionBySlug = (slug: string) => {
   return useQuery({
     queryKey: ['productRequisitionBySlug', slug],
     queryFn: () => getProductRequisitionBySlug(slug)
+  })
+}
+
+export const useProductRequisitionByApprover = (q: IProductQuery) => {
+  return useQuery({
+    queryKey: ['productRequisitionByApprover', JSON.stringify(q)],
+    queryFn: () => getProductRequisitionByApprover(q)
   })
 }
 

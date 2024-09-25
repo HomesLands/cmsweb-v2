@@ -64,10 +64,10 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
     <div className="mt-3">
       <div className="flex flex-col justify-center gap-4">
         <div className="grid items-center justify-between grid-cols-6 py-3 mb-4 border-b-2">
-          {getRequisition()?.company.name === 'TBE' ? (
-            <img className="col-span-1" src={TbeLogo} height={56} width={56} />
-          ) : getRequisition()?.company.name === 'Metek' ? (
-            <img className="col-span-1" src={MetekLogo} height={64} width={64} />
+          {getRequisition()?.company.name.includes('Thái Bình') ? (
+            <img className="w-full col-span-1" src={TbeLogo} height={56} width={56} />
+          ) : getRequisition()?.company.name.includes('Mekong') ? (
+            <img className="w-full col-span-1" src={MetekLogo} height={64} width={64} />
           ) : (
             <img className="w-full col-span-1" src={SongnamLogo} />
           )}
@@ -90,12 +90,18 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
         {getRequisition() && (
           <div className="grid grid-cols-3 gap-3 mb-4 text-sm font-beVietNam">
             <div>
-              <strong>Người yêu cầu: </strong>
-              {requisition?.requester}
+              <strong>Mức yêu tiên: </strong>
+              <span className={requisition?.type === 'urgent' ? 'text-red-600 font-bold' : ''}>
+                {requisition?.type === 'normal' ? 'Bình thường' : 'Cần gấp'}
+              </span>
             </div>
             <div>
               <strong>Mã phiếu yêu cầu: </strong>
               {getRequisition()?.code}
+            </div>
+            <div>
+              <strong>Người yêu cầu: </strong>
+              {requisition?.requester}
             </div>
             <div>
               <strong>Công trình sử dụng: </strong>

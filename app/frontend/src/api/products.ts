@@ -5,7 +5,8 @@ import {
   IProductInfo,
   IProductQuery,
   IProductRequirementInfoCreate,
-  IRequestRequisitionInfo
+  IRequestRequisitionInfo,
+  IRequisitionFormResponseForApprover
 } from '@/types'
 import { http } from '@/utils'
 
@@ -78,6 +79,15 @@ export async function getAllProductRequisition(params: IProductQuery) {
       params
     }
   )
+  return response.data
+}
+
+export async function getProductRequisitionByApprover(params: IProductQuery) {
+  const response = await http.get<
+    IApiResponse<IPaginationResponse<IRequisitionFormResponseForApprover>>
+  >('/productRequisitionForms/approvalUser', {
+    params
+  })
   return response.data
 }
 

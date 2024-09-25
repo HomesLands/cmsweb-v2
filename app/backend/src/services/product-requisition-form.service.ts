@@ -435,7 +435,8 @@ class ProductRequisitionFormService {
   }
 
   public async resubmitRequisitionForm(
-    plainData: TResubmitProductRequisitionFormRequestDto
+    plainData: TResubmitProductRequisitionFormRequestDto,
+    creatorId: string,
   ): Promise<ProductRequisitionFormResponseDto> {
     const requestData = plainToClass(
       ResubmitProductRequisitionFormRequestDto,
@@ -463,11 +464,11 @@ class ProductRequisitionFormService {
     console.log({ form });
     if (!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
-    // if(form.creator) {
-    //   if(form.creator.id !== creatorId) throw new GlobalError(ErrorCodes.FORM_NOT_CREATED_BY_YOU);
-    // } else {
-    //   throw new GlobalError(ErrorCodes.FORM_NOT_CREATED_BY_YOU);
-    // }
+    if(form.creator) {
+      if(form.creator.id !== creatorId) throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    } else {
+      throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    }
 
     form.status = ProductRequisitionFormStatus.WAITING;
     form.isRecalled = false;

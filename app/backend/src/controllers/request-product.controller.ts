@@ -84,9 +84,11 @@ class RequestProductController {
   ): Promise<void> {
     try {
       const { slug } = req.params;
+      const creatorId = req.userId as string;
       const deletedRequestProduct = 
         await requestProductService.deleteRequestProductInProductRequisitionForm(
           slug,
+          creatorId
         );
       const response: TApiResponse<RequestProductResponseDto> = {
         code: StatusCodes.OK,
@@ -131,8 +133,12 @@ class RequestProductController {
   ): Promise<void> {
     try {
       const data = req.body as TChangeQuantityRequestProductRequestDto;
+      const creatorId = req.userId as string;
       const requestProduct = 
-        await requestProductService.changeQuantityRequestProductInProductRequisitionForm(data);
+        await requestProductService.changeQuantityRequestProductInProductRequisitionForm(
+          data,
+          creatorId
+        );
       const response: TApiResponse<RequestProductResponseDto> = {
         code: StatusCodes.OK,
         error: false,
@@ -176,17 +182,21 @@ class RequestProductController {
   ): Promise<void> {
     try {
       const data = req.body as TAddNewRequestProductRequestDto;
+      const creatorId = req.userId as string;
       const requestProduct = 
-        await requestProductService.addNewRequestProductInProductRequisitionForm(data);
+        await requestProductService.addNewRequestProductInProductRequisitionForm(
+          data,
+          creatorId
+        );
       const response: TApiResponse<RequestProductResponseDto> = {
-        code: StatusCodes.CREATED,
+        code: StatusCodes.OK,
         error: false,
         message: "Add new request product successfully",
         method: req.method,
         path: req.originalUrl,
         result: requestProduct,
       };
-      res.status(StatusCodes.CREATED).json(response);
+      res.status(StatusCodes.OK).json(response);
     } catch (error) {
       next(error);
     }

@@ -24,17 +24,30 @@ import { PermissionUtils } from "@utils";
 class RequestProductService {
   public async deleteRequestProductInProductRequisitionForm (
     slug: string,
+    creatorId: string,
   ): Promise<RequestProductResponseDto> {
     // CHECKING
     const requestProduct = await requestProductRepository.findOne({
       where: {
         slug: slug
       },
-      relations: ['productRequisitionForm', 'product']
+      relations: [
+        'productRequisitionForm',
+        'productRequisitionForm.creator',
+        'product',
+      ]
     });
     if(!requestProduct) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_NOT_FOUND);
 
     if(!requestProduct.productRequisitionForm) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+
+    if(requestProduct.productRequisitionForm.creator) {
+      if(requestProduct.productRequisitionForm.creator?.id !== creatorId) 
+        throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    } else {
+      // creator not found
+      throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    }
 
     const isPermitEdit: boolean = PermissionUtils.isPermitEditProductRequisitionForm(
       requestProduct.productRequisitionForm.status,
@@ -48,7 +61,8 @@ class RequestProductService {
   }
 
   public async changeQuantityRequestProductInProductRequisitionForm (
-    plainData: TChangeQuantityRequestProductRequestDto
+    plainData: TChangeQuantityRequestProductRequestDto,
+    creatorId: string
   ): Promise<RequestProductResponseDto> {
     // CHECKING
     const requestData = plainToClass(ChangeQuantityRequestProduct, plainData);
@@ -59,12 +73,23 @@ class RequestProductService {
       where: {
         slug: requestData.slug
       },
-      relations: ['productRequisitionForm', 'product']
+      relations: [
+        'productRequisitionForm',
+        'productRequisitionForm.creator',
+        'product'
+      ]
     });
     if(!requestProduct) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_NOT_FOUND);
 
     if(!requestProduct.productRequisitionForm) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
-    console.log({requestProduct})
+
+    if(requestProduct.productRequisitionForm.creator) {
+      if(requestProduct.productRequisitionForm.creator?.id !== creatorId) 
+        throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    } else {
+      // creator not found
+      throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    }
     const isPermitEdit: boolean = PermissionUtils.isPermitEditProductRequisitionForm(
       requestProduct.productRequisitionForm.status,
       requestProduct.productRequisitionForm.isRecalled
@@ -79,7 +104,8 @@ class RequestProductService {
   }
 
   public async addNewRequestProductInProductRequisitionForm (
-    plainData: TAddNewRequestProductRequestDto
+    plainData: TAddNewRequestProductRequestDto,
+    creatorId: string
   ): Promise<RequestProductResponseDto> {
     // CHECKING
     const requestData = plainToClass(AddNewRequestProduct, plainData);
@@ -97,10 +123,19 @@ class RequestProductService {
       },
       relations: [
         'requestProducts',
-        'requestProducts.product'
+        'requestProducts.product',
+        'creator'
       ]
     });
     if(!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+
+    if(form.creator) {
+      if(form.creator?.id !== creatorId) 
+        throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    } else {
+      // creator not found
+      throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    }
 
     const formCheck = await productRequisitionFormRepository.findOne({
       where: {

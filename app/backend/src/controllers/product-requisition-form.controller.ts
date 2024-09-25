@@ -394,10 +394,11 @@ class ProductRequisitionFormController {
   ): Promise<void> {
     try {
       const data = req.body as TResubmitProductRequisitionFormRequestDto;
+      const creatorId = req.userId as string;
       logger.info("ResubmitProductRequisitionFormRequest", { data });
 
       const result =
-        await productRequisitionFormService.resubmitRequisitionForm(data);
+        await productRequisitionFormService.resubmitRequisitionForm(data, creatorId);
 
       const response: TApiResponse<ProductRequisitionFormResponseDto> = {
         code: StatusCodes.OK,

@@ -1,4 +1,8 @@
 {
-  "request_success": "Request created successfully",
-  "request_error": "Request created failed"
+  "toast": {
+    "request_success": "Request created successfully",
+    "request_error": "Request created failed",
+    "confirm_success": "Request confirmed successfully",
+    "confirm_error": "Request confirmed failed"
+  }
 }
