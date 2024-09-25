@@ -214,6 +214,8 @@ class AuthController {
    *         content:
    *           application/json:
    *             schema:
+   *       1004:
+   *         description: User not found
    *       1012:
    *         description: Token is not valid
    *       1014:
