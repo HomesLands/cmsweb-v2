@@ -3,15 +3,17 @@ import { createBrowserRouter, RouteObject } from 'react-router-dom'
 
 import { routes } from '@/router/routes'
 import { IRoute } from '@/types'
-import { useAuthStore } from '@/stores'
+import ProtectedRoute from '@/views/auth/ProtectedRoute'
 
 const createRouteObject = (route: {
   title: string
   path: string
   component?: () => Promise<{ default: React.ComponentType }>
   children?: IRoute[]
+  authorities?: string[]
 }): RouteObject => {
-  const { component, children } = route
+  const { component, children, authorities } = route
+  console.log('authorities in createRouteObject', authorities)
 
   const Element = React.lazy(async () => {
     const module = await component!()
@@ -21,9 +23,11 @@ const createRouteObject = (route: {
   return {
     path: route.path,
     element: (
+      // <ProtectedRoute requiredAuthorities={authorities}>
       <Suspense>
         <Element />
       </Suspense>
+      // </ProtectedRoute>
     ),
     children: children?.map(createRouteObject)
   }

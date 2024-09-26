@@ -1,4 +1,3 @@
-import { IUserInfoPermission } from './auth.type'
 import { IUserInfo } from './user.type'
 
 export interface ILayoutStore {
@@ -18,6 +17,7 @@ export interface IAuthStore {
   refreshToken?: string
   expireTime?: string
   expireTimeRefreshToken?: string
+  authorities?: string[]
   isAuthenticated: () => boolean
   setSlug: (slug: string) => void
   setToken: (token: string) => void
@@ -38,7 +38,19 @@ export interface IUserRole {
   authorities: string[]
 }
 
+export interface IUserPermission {
+  authority: string
+}
+
 export interface IUserInfoPermissionsStore {
   userRoles: IUserRole[]
-  setUserRoles: (userRoles: IUserRole[]) => void
+  getUserRoles: () => IUserRole[]
+  setUserRoles: (roles: IUserRole[]) => void
+  clearUserRoles: () => void
 }
+
+// export interface IUserInfoPermissionsStore {
+//   userRole: IUserRole | null
+//   setUserRole: (role: IUserRole) => void
+//   clearUserRole: () => void
+// }

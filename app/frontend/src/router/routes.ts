@@ -1,7 +1,9 @@
-import { AlignJustify, Archive } from 'lucide-react'
-import { PersonIcon, ArchiveIcon, FileTextIcon, CubeIcon } from '@radix-ui/react-icons'
-import type { IRoute, ISidebarSubmenu } from '@/types'
+import { Archive } from 'lucide-react'
 import i18next from 'i18next'
+import { ArchiveIcon, CubeIcon } from '@radix-ui/react-icons'
+
+import type { IRoute, ISidebarSubmenu } from '@/types'
+import ProtectedRoute from '@/views/auth/ProtectedRoute'
 
 const routes: IRoute[] = [
   {
@@ -70,6 +72,7 @@ const routes: IRoute[] = [
       {
         title: i18next.t('sidebar.productRequisitionsList'),
         path: 'list',
+        authorities: ['APPROVE_PRODUCT_REQUISITION'],
         component: () =>
           import('@/views/product-requisitions').then((module) => ({
             default: module.ProductRequisitions
@@ -153,6 +156,7 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
         title: i18next.t('sidebar.productRequisitionsList'),
         path: '/product-requisitions/list',
         icon: Archive,
+        authorities: ['APPROVE_PRODUCT_REQUISITION'],
         component: () =>
           import('@/views/product-requisitions').then((module) => ({
             default: module.ProductRequisitions

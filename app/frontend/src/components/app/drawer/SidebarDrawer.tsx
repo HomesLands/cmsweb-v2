@@ -1,4 +1,6 @@
+import { useTranslation } from 'react-i18next'
 import { NavLink, useLocation } from 'react-router-dom'
+
 import {
   Accordion,
   AccordionContent,
@@ -15,7 +17,7 @@ import { cn } from '@/lib/utils'
 import { sidebarSubmenus } from '@/router/routes'
 import { IconWrapper } from './IconWrapper'
 import { useLayoutStore } from '@/stores'
-import { useTranslation } from 'react-i18next'
+import { hasAuthority } from '@/utils/auth'
 
 export function SidebarDrawer() {
   const { isMinimized, toggleMinimized } = useLayoutStore()
@@ -32,9 +34,19 @@ export function SidebarDrawer() {
     }))
   }))
 
+  // Filter and translate submenu items based on user authority
+  const authorizedSubmenus = translatedSubmenus
+    .filter((submenu) => !submenu.authorities || hasAuthority(submenu.authorities))
+    .map((submenu) => ({
+      ...submenu,
+      children: submenu.children?.filter(
+        (child) => !child.authorities || hasAuthority(child.authorities)
+      )
+    }))
+
   return (
     <Accordion type="single" collapsible className="w-full">
-      {translatedSubmenus.map((submenu) => {
+      {authorizedSubmenus.map((submenu) => {
         const isSubmenuActive = submenu.children?.some((item) =>
           location.pathname.startsWith(item.path)
         )
@@ -79,12 +91,11 @@ export function SidebarDrawer() {
                       <NavLink
                         key={item.title}
                         to={item.path}
-                        className={() => {
-                          const isExactMatch = location.pathname === item.path
-                          return `flex items-center gap-2 py-2 ml-8 duration-300 rounded-lg hover:text-primary ${
-                            isExactMatch ? 'text-primary font-semibold' : ''
+                        className={({ isActive }) =>
+                          `flex items-center gap-2 py-2 ml-8 duration-300 rounded-lg hover:text-primary ${
+                            isActive ? 'text-primary font-semibold' : ''
                           }`
-                        }}
+                        }
                       >
                         <span className="font-sans font-normal">{item.title}</span>
                       </NavLink>
