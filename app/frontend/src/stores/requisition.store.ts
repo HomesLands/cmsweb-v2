@@ -48,7 +48,6 @@ export const useRequisitionStore = create<IRequisitionStore>()(
       addProductToRequisition: (product: IProductRequisitionInfo) => {
         const currentRequisition = get().requisition
         if (currentRequisition) {
-          console.log('currentRequisition', currentRequisition)
           const productExists = currentRequisition.requestProducts.some(
             (p) => p.code === product.code
           )

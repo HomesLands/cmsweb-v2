@@ -85,7 +85,7 @@ export async function getAllProductRequisition(params: IProductQuery) {
 export async function getProductRequisitionByApprover(params: IProductQuery) {
   const response = await http.get<
     IApiResponse<IPaginationResponse<IRequisitionFormResponseForApprover>>
-  >('/productRequisitionForms/approvalUser', {
+  >('/userApprovals', {
     params
   })
   return response.data
@@ -100,4 +100,13 @@ export async function createProductRequisition(data: IFinalProductRequisition) {
 export async function getProductRequisitionBySlug(slug: string) {
   const response = await http.get<IApiResponse<IProductInfo>>(`/productRequisitionForms/${slug}`)
   return response
+}
+
+export async function getProductRequisitionByCreator(params: IProductQuery) {
+  const response = await http.get<
+    IApiResponse<IPaginationResponse<IRequisitionFormResponseForApprover>>
+  >('/productRequisitionForms/creator', {
+    params
+  })
+  return response.data
 }

@@ -1,3 +1,4 @@
+import { IUserInfoPermission } from './auth.type'
 import { IUserInfo } from './user.type'
 
 export interface ILayoutStore {
@@ -30,4 +31,14 @@ export interface IRequestProductRequisitionStore {
   requestQueueSize: number
   incrementRequestQueueSize: () => void
   decrementRequestQueueSize: () => void
+}
+
+export interface IUserRole {
+  role: string
+  authorities: string[]
+}
+
+export interface IUserInfoPermissionsStore {
+  userRoles: IUserRole[]
+  setUserRoles: (userRoles: IUserRole[]) => void
 }

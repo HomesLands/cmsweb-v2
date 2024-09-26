@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
-import { getUser, getUsers } from '@/api'
+import { getUser, getUserInfoPermission, getUsers } from '@/api'
 import { IQuery } from '@/types'
 
 export const useUsers = (q: IQuery) => {
@@ -15,5 +15,12 @@ export const useUser = () => {
   return useQuery({
     queryKey: ['user-info'],
     queryFn: () => getUser()
+  })
+}
+
+export const useUserInfoPermission = () => {
+  return useQuery({
+    queryKey: ['user-info-permission'],
+    queryFn: () => getUserInfoPermission()
   })
 }
