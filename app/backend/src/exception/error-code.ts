@@ -339,6 +339,11 @@ export const ErrorCodes: TErrorCode = {
     code: 1079,
     message: "Invalid reason resubmit form",
   },
+  INVALID_ROLE_PREFIX: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1080,
+    message: `Role must start with "ROLE_"`,
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]
