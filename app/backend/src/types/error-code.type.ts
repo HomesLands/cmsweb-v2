@@ -81,6 +81,7 @@ export type TErrorCodeKey =
   | "INVALID_REASON_RESUBMIT_FORM"
   | "INVALID_QUANTITY_PRODUCT"
   | "CREATOR_FORM_NOT_FORM"
+  | "INVALID_ROLE_PREFIX"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {
