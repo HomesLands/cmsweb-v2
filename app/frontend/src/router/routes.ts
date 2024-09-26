@@ -64,6 +64,7 @@ const routes: IRoute[] = [
   {
     title: i18next.t('sidebar.productRequisitions'),
     path: '/product-requisitions',
+    // Đã xóa authorities ở đây
     component: () =>
       import('@/components/app/layouts').then((module) => ({
         default: module.DashboardLayout
@@ -72,7 +73,7 @@ const routes: IRoute[] = [
       {
         title: i18next.t('sidebar.productRequisitionsList'),
         path: 'list',
-        authorities: ['APPROVE_PRODUCT_REQUISITION'],
+        authorities: ['APPROVE_PRODUCT_REQUISITION'], // Giữ nguyên ở đây
         component: () =>
           import('@/views/product-requisitions').then((module) => ({
             default: module.ProductRequisitions
