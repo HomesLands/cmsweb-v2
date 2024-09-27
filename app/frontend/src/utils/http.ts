@@ -48,8 +48,21 @@ axiosInstance.interceptors.request.use(
       setToken,
       setLogout,
       setRefreshToken,
-      setExpireTimeRefreshToken
+      setExpireTimeRefreshToken,
+      isAuthenticated
     } = useAuthStore.getState()
+
+    // Allow requests to public routes (login, register, etc.)
+    const publicRoutes = ['/auth/authenticate', '/auth/register', '/auth/refresh']
+    if (publicRoutes.includes(config.url || '')) {
+      return config
+    }
+
+    // Prevent requests if not authenticated
+    if (!isAuthenticated()) {
+      return Promise.reject(new Error('User is not authenticated'))
+    }
+
     if (expireTime && isTokenExpired(expireTime) && !isRefreshing) {
       isRefreshing = true
       try {

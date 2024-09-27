@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { LoginBackground } from '@/assets/images'
 import { LoginForm } from '@/components/app/form'
 import { useLogin, useUserInfoPermission } from '@/hooks'
-import { IApiResponse, ILoginResponse, IUserRole } from '@/types'
+import { IApiResponse, ILoginResponse } from '@/types'
 import { useAuthStore, useUserInfoPermissionsStore } from '@/stores'
 
 const Login: React.FC = () => {
@@ -20,30 +20,51 @@ const Login: React.FC = () => {
   const { setUserRoles } = useUserInfoPermissionsStore()
   const navigate = useNavigate()
   const mutation = useLogin()
+  const [isLoading, setIsLoading] = useState(false)
+
   const { refetch: refetchUserInfoPermission } = useUserInfoPermission()
 
   const handleSubmit = async (data: z.infer<typeof loginSChema>) => {
-    await mutation.mutateAsync(data, {
-      onSuccess: async (data: IApiResponse<ILoginResponse>) => {
-        // Save to auth store
-        const decodedToken = jwtDecode(data.result.token) as { sub: string }
-        setSlug(decodedToken.sub)
-        setToken(data.result.token)
-        setRefreshToken(data.result.refreshToken)
-        setExpireTime(data.result.expireTime)
-        setExpireTimeRefreshToken(data.result.expireTimeRefreshToken)
+    setIsLoading(true)
+    try {
+      const response: IApiResponse<ILoginResponse> = await mutation.mutateAsync(data)
 
-        // Fetch user permissions after successful login
-        const userInfoPermissionResponse = await refetchUserInfoPermission()
-        if (userInfoPermissionResponse.data && userInfoPermissionResponse.data.result) {
-          setUserRoles(userInfoPermissionResponse.data.result.userRoles)
-        } else {
-          console.log('userInfoPermissionResponse', userInfoPermissionResponse)
-        }
-        navigate('/product-requisitions/list')
-        toast.success(t('login.loginSuccess'))
+      // Save to auth store
+      const decodedToken = jwtDecode(response.result.token) as { sub: string }
+      setSlug(decodedToken.sub)
+      setToken(response.result.token)
+      setRefreshToken(response.result.refreshToken)
+      setExpireTime(response.result.expireTime)
+      setExpireTimeRefreshToken(response.result.expireTimeRefreshToken)
+
+      // Fetch user permissions
+      const { data: userInfoPermissionData } = await refetchUserInfoPermission()
+      if (
+        userInfoPermissionData &&
+        Array.isArray(userInfoPermissionData) &&
+        userInfoPermissionData.length > 0
+      ) {
+        setUserRoles(userInfoPermissionData)
+      } else {
+        throw new Error('User info permission data is invalid or undefined')
       }
-    })
+
+      navigate('/product-requisitions/list')
+      toast.success(t('login.loginSuccess'))
+    } catch (error) {
+      console.error('Login error:', error)
+      if (error instanceof Error) {
+        toast.error(
+          t(
+            `login.${error.message === 'User info permission data is invalid or undefined' ? 'permissionError' : 'loginError'}`
+          )
+        )
+      } else {
+        toast.error(t('login.loginError'))
+      }
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -56,7 +77,7 @@ const Login: React.FC = () => {
             <CardDescription> {t('login.description')} </CardDescription>
           </CardHeader>
           <CardContent>
-            <LoginForm onSubmit={handleSubmit} />
+            <LoginForm onSubmit={handleSubmit} isLoading={isLoading} />
           </CardContent>
         </Card>
       </div>

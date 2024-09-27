@@ -18,3 +18,18 @@ export interface IUserInfo {
 }
 
 export type IUserQuery = IQuery
+
+export interface IUserRole {
+  role: string
+  authorities: string[]
+}
+
+export interface IUserRoleResponse {
+  role: string
+  authorities: string[]
+}
+
+export interface IUserInfoPermissionsStore {
+  userRoles: IUserRole[]
+  setUserRoles: (userRoles: IUserRole[]) => void
+}
