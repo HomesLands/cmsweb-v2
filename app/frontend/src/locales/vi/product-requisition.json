@@ -25,6 +25,10 @@
     "next": "Tiếp theo",
     "add": "Thêm",
     "confirm": "Xác nhận",
+    "returnToReview": "Hoàn lại",
+    "approve": "Duyệt",
+    "returnToPrevious": "Trở lại",
+    "reject": "Từ chối",
     "addProductToRequest": "Thêm vật tư vào yêu cầu",
     "addProductToRequestDescription": "Công ty Cổ phần Công nghệ Mekong",
     "addedProductToRequest": "Vật tư đã được thêm vào yêu cầu",
@@ -44,5 +48,9 @@
   "requestPriority": {
     "normal": "Bình thường",
     "urgent": "Cần gấp"
+  },
+  "requisitionDetail": {
+    "requestDetail": "Chi tiết yêu cầu vật tư",
+    "requestDetailDescription": "Thông tin chi tiết của yêu cầu vật tư"
   }
 }

@@ -24,6 +24,10 @@
     "next": "Next",
     "add": "Add",
     "confirm": "Confirm",
+    "returnToReview": "Return to review",
+    "approve": "Approve",
+    "returnToPrevious": "Return to previous",
+    "reject": "Reject",
     "addProductToRequest": "Add product to request",
     "addProductToRequestDescription": "Mekong Technology Joint Stock Company",
     "confirmProductRequisitions": "Confirm product requisitions",
@@ -41,5 +45,9 @@
   "requestPriority": {
     "normal": "Normal",
     "urgent": "Urgent"
+  },
+  "requisitionDetail": {
+    "requestDetail": "Request detail",
+    "requestDetailDescription": "Request detail description"
   }
 }

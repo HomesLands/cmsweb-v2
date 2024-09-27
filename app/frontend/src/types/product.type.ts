@@ -92,6 +92,7 @@ export interface IProductRequisitionInfo {
   description?: string
   unit: string
   requestQuantity: number
+  // product: IProductInfo
 }
 
 export interface IUserQuery {

@@ -58,3 +58,38 @@ export interface IRequisitionFormResponseForApprover {
   slug: string
   productRequisitionForm: IRequestRequisitionInfo
 }
+
+// export interface IRequisitionFormResponseForCreator {
+//   code: string
+//   type: RequestRequisitionType
+//   status: RequestRequisitionStatus
+//   isRecalled: boolean
+//   description: string | null
+//   company: string
+//   companySlug: string
+//   site: string
+//   siteSlug: string
+//   project: string
+//   projectSlug: string
+//   creator: string
+//   creatorSlug: string
+//   requestProducts: IProductRequisitionInfo[]
+//   slug: string
+//   userApprovals: {
+//     roleApproval: string
+//     userFullname: string
+//     userSlug: string
+//     createdAt: string
+//     updatedAt: string
+//     approvalLogs: {
+//       status: string
+//       content: string
+//       createdAt: string
+//       updatedAt: string
+//       slug: string
+//     }[]
+//     slug: string
+//   }[]
+//   createdAt: string
+//   updatedAt: string
+// }
