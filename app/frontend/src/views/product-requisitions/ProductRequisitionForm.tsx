@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 
@@ -20,7 +20,7 @@ const ProductRequisitionForm: React.FC = () => {
   const { t } = useTranslation('productRequisition')
   const { t: tToast } = useTranslation('toast')
   const { currentStep, handleStepChange } = useMultiStep(1)
-  const { setRequisition, clearRequisition, updateRequisition } = useRequisitionStore()
+  const { setRequisition, clearRequisition } = useRequisitionStore()
 
   const mutation = useMutation({
     mutationFn: async (data: IFinalProductRequisition) => {
