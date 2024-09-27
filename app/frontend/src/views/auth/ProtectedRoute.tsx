@@ -1,8 +1,8 @@
 import React from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 import { useAuthStore } from '@/stores/auth.store'
-import { useUserInfoPermissionsStore, useUserStore } from '@/stores/user.store'
-import { IUserRole } from '@/types'
+import { useUserInfoPermissionsStore } from '@/stores/user.store'
+import { IUserRoleResponse } from '@/types'
 
 interface ProtectedRouteProps {
   requiredPermissions?: string[]
@@ -10,14 +10,14 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requiredPermissions = [] }) => {
   const { isAuthenticated } = useAuthStore()
-  const { getUserRoles } = useUserInfoPermissionsStore()
+  const { userRoles } = useUserInfoPermissionsStore()
 
   if (!isAuthenticated) {
     return <Navigate to="/auth/login" replace />
   }
 
   if (requiredPermissions.length > 0) {
-    const hasRequiredPermission = getUserRoles().some((role: IUserRole) =>
+    const hasRequiredPermission = userRoles.some((role: IUserRoleResponse) =>
       role.authorities.some((authority: string) => requiredPermissions.includes(authority))
     )
 

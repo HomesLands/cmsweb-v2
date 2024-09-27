@@ -1,3 +1,5 @@
+import React from 'react'
+
 export interface IRoute {
   title: string
   path: string
@@ -5,14 +7,12 @@ export interface IRoute {
     authorities?: string[]
   }
   redirect?: string
-  component?: () => Promise<{ default: React.ComponentType }>
+  component: React.FC
   children?: IRoute[]
   authorities?: string[]
+  index?: boolean
 }
 
-export interface IRoutes {
-  routes: IRoute[]
-}
 export interface ISubmenu {
   title: string
   path: string

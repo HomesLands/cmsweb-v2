@@ -127,7 +127,7 @@ const ProductRequisitionForm: React.FC = () => {
               <div className="flex flex-row gap-1">
                 <p>{t('productRequisition.confirmProductRequisitionsSuccessDescription')}</p>
                 <NavLink
-                  to="/product-requisitions/list"
+                  to="/product-requisitions"
                   className="text-blue-500 transition-all duration-300 hover:underline"
                 >
                   {t('productRequisition.here')}

@@ -28,24 +28,12 @@ export function DropdownHeader() {
   const { clearUserRoles } = useUserInfoPermissionsStore()
   const navigate = useNavigate()
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     setLogout()
     removeUserInfo()
     clearUserRoles()
-    toast.success(t('logout.logoutSuccess'))
     navigate('/auth/login')
-    // const requestData = {
-    //   token: token || 'token',
-    //   refreshToken: refreshToken || 'refreshToken'
-    // } as ILogoutRequest
-    // await mutation.mutateAsync(requestData, {
-    //   onSuccess: () => {
-    //     setLogout()
-    //     removeUserInfo()
-    //     toast.success(t('logout.logoutSuccess'))
-    //     navigate('/auth/login')
-    //   }
-    // })
+    toast.success(t('logout.logoutSuccess'))
   }
 
   return (

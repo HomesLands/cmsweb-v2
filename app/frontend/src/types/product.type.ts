@@ -94,11 +94,6 @@ export interface IProductRequisitionInfo {
   requestQuantity: number
 }
 
-export interface IUserQuery {
-  page: number
-  pageSize: number
-}
-
 export interface IProductQuery extends IQuery {
   searchTerm?: string
 }

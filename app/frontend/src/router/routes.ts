@@ -3,108 +3,115 @@ import i18next from 'i18next'
 import { ArchiveIcon, CubeIcon } from '@radix-ui/react-icons'
 
 import type { IRoute, ISidebarSubmenu } from '@/types'
-import ProtectedRoute from '@/views/auth/ProtectedRoute'
+import React from 'react'
+import { ROUTE } from '@/constants'
+
+// Layouts
+const DashboardLayout = React.lazy(() =>
+  import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout }))
+)
+
+// Views
+const LoginPage = React.lazy(() =>
+  import('@/views/auth').then((module) => ({
+    default: module.LoginPage
+  }))
+)
+const RegisterPage = React.lazy(() =>
+  import('@/views/auth').then((module) => ({
+    default: module.RegisterPage
+  }))
+)
+const EmployeePage = React.lazy(() =>
+  import('@/views/employees').then((module) => ({
+    default: module.Employees
+  }))
+)
+const ProjectPage = React.lazy(() =>
+  import('@/views/projects').then((module) => ({
+    default: module.Projects
+  }))
+)
+const ProductRequisitionPage = React.lazy(() =>
+  import('@/views/product-requisitions').then((module) => ({
+    default: module.ProductRequisitions
+  }))
+)
+const ProductRequisitionFormPage = React.lazy(() =>
+  import('@/views/product-requisitions').then((module) => ({
+    default: module.ProductRequisitionForm
+  }))
+)
 
 const routes: IRoute[] = [
   {
     title: 'Login',
-    path: '/auth/login',
-    component: () =>
-      import('@/views/auth').then((module) => ({
-        default: module.LoginPage
-      }))
+    path: ROUTE.LOGIN,
+    component: LoginPage
   },
   {
     title: 'Register',
-    path: '/auth/register',
-    component: () =>
-      import('@/views/auth').then((module) => ({
-        default: module.RegisterPage
-      }))
-  },
-  {
-    title: 'Home',
-    path: '/',
-    redirect: 'employees',
-    component: () =>
-      import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout }))
+    path: ROUTE.REGISTER,
+    component: RegisterPage
   },
   {
     title: 'Quản lý nhân viên',
     path: '/employees',
-    component: () =>
-      import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
+    component: DashboardLayout,
     children: [
       {
         title: 'Danh sách nhân viên',
         path: 'list',
-        component: () =>
-          import('@/views/employees').then((module) => ({
-            default: module.Employees
-          }))
+        component: EmployeePage
       }
     ]
   },
   {
-    title: 'Project Subsystem',
+    title: 'Project',
     path: '/projects',
-    component: () =>
-      import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
+    component: DashboardLayout,
     children: [
       {
         title: 'Projects',
         path: 'list',
-        component: () =>
-          import('@/views/projects').then((module) => ({
-            default: module.Projects
-          }))
+        component: ProjectPage
       }
     ]
   },
   {
     title: i18next.t('sidebar.productRequisitions'),
     path: '/product-requisitions',
-    // Đã xóa authorities ở đây
-    component: () =>
-      import('@/components/app/layouts').then((module) => ({
-        default: module.DashboardLayout
-      })),
+    component: DashboardLayout,
     children: [
       {
         title: i18next.t('sidebar.productRequisitionsList'),
         path: 'list',
+        index: true,
         authorities: ['APPROVE_PRODUCT_REQUISITION'], // Giữ nguyên ở đây
-        component: () =>
-          import('@/views/product-requisitions').then((module) => ({
-            default: module.ProductRequisitions
-          }))
+        component: ProductRequisitionPage
       },
       {
         title: i18next.t('sidebar.createProductRequisitions'),
         path: 'add',
-        component: () =>
-          import('@/views/product-requisitions').then((module) => ({
-            default: module.ProductRequisitionForm
-          }))
+        component: ProductRequisitionFormPage
       }
     ]
   },
   {
     title: 'Warehouse',
     path: '/warehouse',
-    component: () =>
-      import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
+    component: DashboardLayout,
     children: [
-      {
-        title: 'Thêm vật tư',
-        path: 'add',
-        component: () => import('@/views/warehouse/Warehouse')
-      },
-      {
-        title: 'Danh sách vật tư',
-        path: 'list',
-        component: () => import('@/views/warehouse/Warehouse')
-      }
+      // {
+      //   title: 'Thêm vật tư',
+      //   path: 'add',
+      //   component:
+      // },
+      // {
+      //   title: 'Danh sách vật tư',
+      //   path: 'list',
+      //   component: () => import('@/views/warehouse/Warehouse')
+      // }
     ]
   }
 ]
@@ -155,7 +162,7 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
     children: [
       {
         title: i18next.t('sidebar.productRequisitionsList'),
-        path: '/product-requisitions/list',
+        path: '/product-requisitions',
         icon: Archive,
         authorities: ['APPROVE_PRODUCT_REQUISITION'],
         component: () =>
