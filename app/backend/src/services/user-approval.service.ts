@@ -25,7 +25,11 @@ class UserApprovalService {
 
     const totalApprovalForms = await userApprovalRepository.count({
       where: {
-        user: user,
+        assignedUserApproval: {
+          user: {
+            id: userId
+          }
+        },
       },
     });
 
@@ -38,8 +42,10 @@ class UserApprovalService {
 
     const approvalForms = await userApprovalRepository.find({
       where: {
-        user: {
-          id: userId,
+        assignedUserApproval: {
+          user: {
+            id: userId
+          }
         },
       },
       take: pageSize,

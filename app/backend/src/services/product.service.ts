@@ -87,7 +87,6 @@ class ProductService {
       CreateProductRequestDto,
       Product
     );
-    productData.unit = unit;
 
     const productDataCreated =
       await productRepository.createAndSave(productData);
@@ -108,7 +107,6 @@ class ProductService {
 
     const unit = await unitRepository.findOneBy({ slug: requestData.unit });
     if(!unit) throw new GlobalError(ErrorCodes.INVALID_PRODUCT_UNIT);
-    product.unit = unit;
 
     product = await productRepository.save(product);
 

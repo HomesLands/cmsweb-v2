@@ -22,10 +22,6 @@ export const productMapper: MappingProfile = (mapper: Mapper) => {
     mapper,
     Product,
     ProductResponseDto,
-    forMember(
-      (destination) => destination.unit,
-      mapFrom((source) => source.unit?.name)
-    ),
     extend(baseMapper(mapper))
   );
 };

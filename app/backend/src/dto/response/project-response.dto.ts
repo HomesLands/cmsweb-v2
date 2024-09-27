@@ -1,4 +1,5 @@
 import { AutoMap } from "@automapper/classes";
+import { ProductRequisitionFormResponseDto } from "@dto/response";
 
 export class ProjectResponseDto {
   @AutoMap()
@@ -10,10 +11,13 @@ export class ProjectResponseDto {
   @AutoMap()
   description?: string;
 
-  managerFullname?: string;
-
-  managerSlug?: string;
-
   @AutoMap()
   slug?: string;
+
+  site?: string;
+
+  siteSlug?: string;
+
+  @AutoMap(() => [ProductRequisitionFormResponseDto])
+  productRequisitionFormResponseDto?: ProductRequisitionFormResponseDto[];
 }

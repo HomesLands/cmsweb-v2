@@ -13,7 +13,7 @@ import { plainToClass } from "class-transformer";
 class CompanyService {
   public async getAllCompanies(): Promise<CompanyResponseDto[]> {
     const companiesData = await companyRepository.find({
-      relations: ['director']
+      relations: ['sites']
     });
 
     const companiesDto: CompanyResponseDto[] = mapper.mapArray(
@@ -36,12 +36,7 @@ class CompanyService {
     });
     if(nameExist) throw new GlobalError(ErrorCodes.COMPANY_NAME_EXIST);
 
-    const director = await userRepository.findOneBy({ slug: requestData.director });
-
-    if(!director) throw new GlobalError(ErrorCodes.COMPANY_DIRECTOR_NOT_FOUND);
-
     const companyData = mapper.map(requestData, CreateCompanyRequestDto, Company);
-    companyData.director = director;
     const createdCompanyData = await companyRepository.createAndSave(companyData);
 
     const companyDto = mapper.map(createdCompanyData, Company, CompanyResponseDto);

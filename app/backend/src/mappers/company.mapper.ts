@@ -1,7 +1,13 @@
-import { MappingProfile, Mapper, createMap, forMember, mapFrom, extend } from "@automapper/core";
+import { MappingProfile, Mapper, createMap, forMember, mapFrom, extend, mapWith } from "@automapper/core";
 import { CreateCompanyRequestDto } from "@dto/request";
-import { CompanyResponseDto } from "@dto/response";
-import { Company } from "@entities";
+import { 
+  CompanyResponseDto, 
+  SiteResponseDto,
+} from "@dto/response";
+import { 
+  Company,
+  Site, 
+} from "@entities";
 import { baseMapper } from "./base.mapper";
 
 export const companyMapper: MappingProfile = (mapper: Mapper) => {
@@ -19,12 +25,12 @@ export const companyMapper: MappingProfile = (mapper: Mapper) => {
     Company,
     CompanyResponseDto,
     forMember(
-      (destination) => destination.director,
-      mapFrom((source) => source.director?.fullname)
+      (destination) => destination.sites,
+      mapWith(
+        SiteResponseDto,
+        Site,
+        (source) => source.sites)
     ),
-    forMember(
-      (destination) => destination.directorSlug,
-      mapFrom((source) => source.director?.slug)
-    ),
+    extend(baseMapper(mapper)),
   )
 }

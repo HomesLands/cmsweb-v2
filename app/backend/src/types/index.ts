@@ -1,3 +1,5 @@
+import exp from "constants";
+
 export type TEnv = {
   port: number;
   dataSource: {
@@ -27,3 +29,6 @@ export * from "./authority.type";
 export * from "./permission.type";
 export * from "./user-role.type";
 export * from "./request-product.type";
+export * from "./department.type";
+export * from "./user-department.type";
+export * from "./assigned-user-approval.type";

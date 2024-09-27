@@ -14,3 +14,6 @@ export { default as permissionController } from "./permission.controller";
 export { default as userRoleController } from "./user-role.controller";
 export { default as requestProductController } from "./request-product.controller";
 export { default as userApprovalController } from "./user-approval.controller";
+export { default as departmentController } from "./department.controller";
+export { default as userDepartmentController } from "./user-department.controller";
+export { default as assignedUserApprovalController } from "./assigned-user-approval.controller";

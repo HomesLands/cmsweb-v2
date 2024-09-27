@@ -1,5 +1,8 @@
-import { Entity, Column } from "typeorm";
-import { Base } from "@entities/base.entity";
+import { Entity, Column, ManyToOne } from "typeorm";
+import { 
+  Base,
+  RequestProduct, 
+} from "@entities";
 
 @Entity("file_tbl")
 export class File extends Base {
@@ -9,9 +12,12 @@ export class File extends Base {
   @Column({ name: "type_column" })
   type?: string;
 
-  @Column({ name: "content_column" })
-  content?: string;
+  @Column({ type: "mediumblob", name: "data_column" })
+  data?: string;
 
-  @Column({ name: "length_column" })
+  @Column({ name: "length_column", nullable: true })
   length?: number;
+
+  @ManyToOne(() => RequestProduct, (requestProduct) => requestProduct.codeImages)
+  requestProduct?: RequestProduct;
 }

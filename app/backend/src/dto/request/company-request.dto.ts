@@ -7,9 +7,4 @@ export class CreateCompanyRequestDto {
   @Expose()
   @AutoMap()
   name?: string;
-
-  @IsNotEmpty({ message: "INVALID_COMPANY_DIRECTOR" })
-  @Expose()
-  @AutoMap()
-  director?: string;
 }

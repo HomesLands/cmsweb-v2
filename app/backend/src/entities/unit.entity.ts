@@ -1,6 +1,8 @@
 import { Entity, Column, OneToMany } from "typeorm";
-import { Base } from "@entities/base.entity";
-import { Product } from "./product.entity";
+import { 
+  Base,
+  ProductWarehouse, 
+} from "@entities";
 import { AutoMap } from "@automapper/classes";
 
 @Entity("unit_tbl")
@@ -9,7 +11,8 @@ export class Unit extends Base {
   @AutoMap()
   name?: string;
 
-  // a unit have many product
-  @OneToMany(() => Product, (product) => product.unit)
-  products?: Product[];
+  // a unit have many product warehouse
+  @OneToMany(() => ProductWarehouse,
+    (productWarehouse) => productWarehouse.unit)
+  productWarehouses?: ProductWarehouse[];
 }

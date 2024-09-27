@@ -14,7 +14,6 @@ import {
   UserApprovalFormResponseDto,
 } from "@dto/response";
 import { ApprovalLog, UserApproval, ProductRequisitionForm } from "@entities";
-import { CreateUserApprovalRequestDto } from "@dto/request";
 import { baseMapper } from "./base.mapper";
 
 export const userApprovalMapper: MappingProfile = (mapper: Mapper) => {
@@ -25,11 +24,11 @@ export const userApprovalMapper: MappingProfile = (mapper: Mapper) => {
     UserApprovalResponseDto,
     forMember(
       (destination) => destination.userFullname,
-      mapFrom((source) => source.user?.fullname)
+      mapFrom((source) => source.assignedUserApproval?.user?.fullname)
     ),
     forMember(
       (destination) => destination.userSlug,
-      mapFrom((source) => source.user?.slug)
+      mapFrom((source) => source.assignedUserApproval?.user?.slug)
     ),
     forMember(
       (destination) => destination.approvalLogs,
@@ -63,5 +62,5 @@ export const userApprovalMapper: MappingProfile = (mapper: Mapper) => {
   );
 
   // Map request object to entity
-  createMap(mapper, CreateUserApprovalRequestDto, UserApproval);
+  // createMap(mapper, CreateUserApprovalRequestDto, UserApproval);
 };

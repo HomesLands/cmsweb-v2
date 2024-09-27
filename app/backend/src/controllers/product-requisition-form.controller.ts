@@ -22,62 +22,41 @@ class ProductRequisitionFormController {
    *     CreateRequestProductDto:
    *       type: object
    *       required:
-   *         - productSlug
+   *         - product
    *         - requestQuantity
    *       properties:
-   *         productSlug:
+   *         product:
    *           type: string
    *           description: The slug of the product.
    *         requestQuantity:
    *           type: integer
    *           description: The quantity of the product being requested.
    *       example:
-   *         productSlug: KeYdkmeNg
+   *         product: KeYdkmeNg
    *         requestQuantity: 10
-   *
-   *     CreateUserApprovalDto:
-   *       type: object
-   *       required:
-   *         - userSlug
-   *         - roleApproval
-   *       properties:
-   *         userSlug:
-   *           type: string
-   *           description: The slug of the user who is approving.
-   *         roleApproval:
-   *           type: string
-   *           description: The approval stage (approval_stage_1, approval_stage_2, approval_stage_3).
-   *       example:
-   *         userSlug: KeYdkmeNg
-   *         roleApproval: approval_stage_1
    *
    *     CreateProductRequisitionFormRequestDto:
    *       type: object
    *       required:
    *         - code
-   *         - companySlug
-   *         - siteSlug
-   *         - projectSlug
+   *         - project
    *         - type
-   *         - requestProducts
-   *         - userApprovals
+   *         - deadlineApproval
    *         - description
+   *         - requestProducts
    *       properties:
    *         code:
    *           type: string
    *           description: The code for the requisition form.
-   *         companySlug:
-   *           type: string
-   *           description: The slug of the company.
-   *         siteSlug:
-   *           type: string
-   *           description: The slug of the site.
-   *         projectSlug:
+   *         project:
    *           type: string
    *           description: The slug of the project.
    *         type:
    *           type: string
    *           description: The type of form.
+   *         deadlineApproval:
+   *           type: string
+   *           description: The date expire approval form.
    *         description:
    *           type: string
    *           description: The opinion of creator.
@@ -86,24 +65,14 @@ class ProductRequisitionFormController {
    *           description: List of products being requested.
    *           items:
    *             $ref: '#/components/schemas/CreateRequestProductDto'
-   *         userApprovals:
-   *           type: array
-   *           description: List of user approvals for the form.
-   *           items:
-   *             $ref: '#/components/schemas/CreateUserApprovalDto'
    *       example:
    *         code: YCVT123
-   *         companySlug: company-789
-   *         siteSlug: site-789
-   *         projectSlug: project-789
+   *         project: project-789
    *         type: urgent
    *         description: Ý kiến người tạo
    *         requestProducts:
    *           - productSlug: KeYdkmeNg
    *             requestQuantity: 10
-   *         userApprovals:
-   *           - userSlug: user-456
-   *             roleApproval: approval_stage_3
    *
    *     ApprovalProductRequisitionFormRequestDto:
    *       type: object
@@ -347,10 +316,12 @@ class ProductRequisitionFormController {
     next: NextFunction
   ): Promise<void> {
     try {
+      const userId = req.userId as string;
       const data = req.body as TApprovalProductRequisitionFormRequestDto;
       const form =
         await productRequisitionFormService.approvalProductRequisitionForm(
-          data
+          data,
+          userId
         );
 
       const response: TApiResponse<ProductRequisitionFormResponseDto> = {

@@ -1,9 +1,14 @@
-import { Entity, Column, JoinColumn, OneToOne, OneToMany, ManyToOne } from "typeorm";
+import { Entity, Column, JoinColumn, OneToOne, OneToMany } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 
-import { File, Site, Base, Project, UserRole, UserApproval, ProductRequisitionForm, Company } from "@entities";
-import { Position } from "@entities/position.entity";
-import {  } from "@entities/site.entity";
+import { 
+  File, 
+  Base, 
+  UserRole, 
+  ProductRequisitionForm, 
+  AssignedUserApproval, 
+  UserDepartment
+} from "@entities";
 
 @Entity("user_tbl")
 export class User extends Base {
@@ -35,48 +40,27 @@ export class User extends Base {
   phoneNumber?: string;
 
   @AutoMap()
-  @OneToOne(() => File)
+  @OneToOne(() => File, { nullable: true })
   @JoinColumn({ name: "avatar_column" })
   avatar?: File;
-
-  @AutoMap()
-  @Column({ name: "status_column", nullable: true })
-  status?: string;
-
-  @AutoMap()
-  @Column({ name: "is_approver_column", nullable: true })
-  isApprover?: string;
-
-  @AutoMap()
-  @Column({ name: "approval_level_column", nullable: true })
-  approvalLevel?: number;
-
-  @ManyToOne(() => Position, (position) => position.users)
-  @JoinColumn({ name: "position_id_column" })
-  position?: Position;
-
-  // a user can manage many sides
-  @OneToMany(() => Site, (site) => site.manager)
-  sites?: Site[];
-
-  // a user can manage many project
-  @OneToMany(() => Project, (project) => project.manager)
-  projects?: Project[];
 
   // A user can have many roles
   @OneToMany(() => UserRole, (userRole) => userRole.user)
   userRoles?: UserRole[];
 
-  // a user have many user approval
-  @OneToMany(() => UserApproval, (userApproval) => userApproval.user)
-  userApprovals?: UserApproval[];
-
+  // creator
   // a user can create many product requisition form
   @OneToMany(() => ProductRequisitionForm,
     (productRequisitionForm) => productRequisitionForm.creator)
   productRequisitionForms?: ProductRequisitionForm[];
 
-  // a user can many company
-  @OneToMany(() => Company, (company) => company.director)
-  companies?: Company[];
+  // a user have many assignedUserApproval
+  @OneToMany(() => AssignedUserApproval,
+    (assignedUserApproval) => assignedUserApproval.user)
+  assignedUserApprovals?: AssignedUserApproval[];
+
+  // a user have many userDepartment
+  @OneToMany(() => UserDepartment,
+    (userDepartment) => userDepartment.user)
+  userDepartments?: UserDepartment[];
 }

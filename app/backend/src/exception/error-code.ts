@@ -249,10 +249,10 @@ export const ErrorCodes: TErrorCode = {
     code: 1066,
     message: "Invalid request product quantity",
   },
-  INVALID_USER_SLUG_IN_USER_APPROVAL: {
+  INVALID_ASSIGNED_USER_APPROVAL: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1067,
-    message: "Invalid user slug in user approval",
+    message: "Invalid assigned user approval",
   },
   INVALID_ROLE_APPROVAL: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -338,6 +338,41 @@ export const ErrorCodes: TErrorCode = {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1079,
     message: "Invalid reason resubmit form",
+  },
+  INVALID_USER_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1080,
+    message: "Invalid user slug",
+  },
+  INVALID_DEPARTMENT_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1081,
+    message: "Invalid department slug",
+  },
+  DEPARTMENT_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1082,
+    message: "Department not found",
+  },
+  INVALID_FORM_TYPE: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1083,
+    message: "Invalid form type",
+  },
+  INVALID_DEADLINE_DATE_APPROVAL_FORM: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1084,
+    message: "Invalid form type",
+  },
+  FORBIDDEN_APPROVAL_FORM: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1085,
+    message: "Forbidden approval form",
+  },
+  INVALID_DESCRIPTION_DEPARTMENT: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1086,
+    message: "Invalid description department",
   },
 
   // AuthenticationErrors
