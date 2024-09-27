@@ -1,7 +1,10 @@
 import { AutoMap } from "@automapper/classes";
-import { ProjectResponseDto, DepartmentResponseDto } from "@dto/response";
+import { ProjectResponseDto, DepartmentResponseDto, BaseResponseDto } from "@dto/response";
 
-export class SiteResponseDto {
+
+export class SiteResponseDto
+//  extends BaseResponseDto 
+ {
   @AutoMap()
   name?: string;
 
@@ -13,8 +16,6 @@ export class SiteResponseDto {
 
   @AutoMap(() => [DepartmentResponseDto])
   departments?: DepartmentResponseDto[];
-
-  //note: thiếu department
 
   company?: string;
 

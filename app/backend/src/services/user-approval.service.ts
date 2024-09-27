@@ -1,9 +1,7 @@
 import { UserApprovalFormResponseDto } from "@dto/response";
 import { UserApproval } from "@entities";
-import { ErrorCodes } from "@exception/error-code";
-import { GlobalError } from "@exception/global-error";
 import { mapper } from "@mappers";
-import { userApprovalRepository, userRepository } from "@repositories";
+import { userApprovalRepository } from "@repositories";
 import { TPaginationOptionResponse, TQueryRequest } from "@types";
 
 class UserApprovalService {
@@ -20,8 +18,6 @@ class UserApprovalService {
       typeof options.page === "string"
         ? parseInt(options.page, 10)
         : options.page;
-    const user = await userRepository.findOneBy({ id: userId });
-    if (!user) throw new GlobalError(ErrorCodes.USER_APPROVAL_NOT_FOUND);
 
     const totalApprovalForms = await userApprovalRepository.count({
       where: {

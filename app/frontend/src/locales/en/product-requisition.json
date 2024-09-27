@@ -1,6 +1,9 @@
 {
   "productRequisition": {
-    "list": "Product requisitions list",
+    "list": "List of product requisition approvals",
+    "listDescription": "List of product requisition approvals",
+    "listEmployee": "List of created product requisitions",
+    "listEmployeeDescription": "List of created product requisitions",
     "create": "Create product requisitions",
     "createProductRequisitions": "Create product requisitions",
     "createProductRequisitionsDescription": "Tool to create product requisitions",

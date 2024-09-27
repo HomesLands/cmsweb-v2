@@ -15,7 +15,8 @@ const errorMessages: { [key: number]: string } = {
   1010: 'Họ không hợp lệ',
   1011: 'Họ và tên không hợp lệ',
   1016: 'Refresh token không hợp lệ',
-  1017: 'Phiên đăng nhập đã hết hạn'
+  1017: 'Phiên đăng nhập đã hết hạn',
+  403: 'Bạn không có quyền truy cập trang này'
 }
 
 export function showToast(message: string) {

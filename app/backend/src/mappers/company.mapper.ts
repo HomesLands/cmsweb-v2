@@ -1,4 +1,4 @@
-import { MappingProfile, Mapper, createMap, forMember, mapFrom, extend, mapWith } from "@automapper/core";
+import { MappingProfile, Mapper, createMap, forMember, extend, mapWith } from "@automapper/core";
 import { CreateCompanyRequestDto } from "@dto/request";
 import { 
   CompanyResponseDto, 

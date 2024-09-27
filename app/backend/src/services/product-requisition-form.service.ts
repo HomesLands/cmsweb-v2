@@ -271,6 +271,8 @@ class ProductRequisitionFormService {
       ApprovalProductRequisitionFormRequestDto,
       plainData
     );
+
+    // Validation request data
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
 
@@ -319,7 +321,7 @@ class ProductRequisitionFormService {
       //checking
       if (userApproval.assignedUserApproval?.roleApproval !== RoleApproval.APPROVAL_STAGE_1) {
         throw new GlobalError(
-          ErrorCodes.INVALID_APPROVAL_USER_FOR_APPROVAL_FORM
+          ErrorCodes.FORBIDDEN_APPROVAL_FORM
         );
       }
 
@@ -327,13 +329,12 @@ class ProductRequisitionFormService {
       if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
         form.status = ProductRequisitionFormStatus.ACCEPTED_STAGE_1;
         form.isRecalled = false;
-        form = await productRequisitionFormRepository.save(form);
       } else {
         // give_back and cancel because give_back === cancel when form.status === waiting
         form.status = ProductRequisitionFormStatus.CANCEL;
         form.isRecalled = true;
-        form = await productRequisitionFormRepository.save(form);
       }
+      form = await productRequisitionFormRepository.save(form);
 
       // create approval log
       const approvalLogData = mapper.map(
@@ -350,11 +351,13 @@ class ProductRequisitionFormService {
         ProductRequisitionFormResponseDto
       );
       return formDto;
-    } else if (form.status === ProductRequisitionFormStatus.ACCEPTED_STAGE_1) {
+    }
+
+    if (form.status === ProductRequisitionFormStatus.ACCEPTED_STAGE_1) {
       // form : accepted_stage_1 => approvalUser: approval_stage_2 > wait approval_stage_2 approve
       if (userApproval.assignedUserApproval?.roleApproval !== RoleApproval.APPROVAL_STAGE_2) {
         throw new GlobalError(
-          ErrorCodes.INVALID_APPROVAL_USER_FOR_APPROVAL_FORM
+          ErrorCodes.FORBIDDEN_APPROVAL_FORM
         );
       }
 
@@ -362,19 +365,17 @@ class ProductRequisitionFormService {
         // update status
         form.status = ProductRequisitionFormStatus.ACCEPTED_STAGE_2;
         form.isRecalled = false;
-        form = await productRequisitionFormRepository.save(form);
       } else if (
         requestData.approvalLogStatus === ApprovalLogStatus.GIVE_BACK
       ) {
         form.status = ProductRequisitionFormStatus.WAITING;
         form.isRecalled = true;
-        form = await productRequisitionFormRepository.save(form);
       } else {
         // CANCEL
         form.status = ProductRequisitionFormStatus.CANCEL;
         form.isRecalled = true;
-        form = await productRequisitionFormRepository.save(form);
       }
+      form = await productRequisitionFormRepository.save(form);
 
       // create approval log
       const approvalLogData = mapper.map(
@@ -391,30 +392,30 @@ class ProductRequisitionFormService {
         ProductRequisitionFormResponseDto
       );
       return formDto;
-    } else if (form.status === ProductRequisitionFormStatus.ACCEPTED_STAGE_2) {
+    }
+
+    if (form.status === ProductRequisitionFormStatus.ACCEPTED_STAGE_2) {
       // form : accepted_stage_2 => approvalUser: approval_stage_3 > wait approval_stage_1 approve
       if (userApproval.assignedUserApproval?.roleApproval !== RoleApproval.APPROVAL_STAGE_3) {
         throw new GlobalError(
-          ErrorCodes.INVALID_APPROVAL_USER_FOR_APPROVAL_FORM
+          ErrorCodes.FORBIDDEN_APPROVAL_FORM
         );
       }
 
       if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
         form.status = ProductRequisitionFormStatus.WAITING_EXPORT;
         form.isRecalled = false;
-        form = await productRequisitionFormRepository.save(form);
       } else if (
         requestData.approvalLogStatus === ApprovalLogStatus.GIVE_BACK
       ) {
         form.status = ProductRequisitionFormStatus.ACCEPTED_STAGE_1;
         form.isRecalled = true;
-        form = await productRequisitionFormRepository.save(form);
       } else {
         // CANCEL
         form.status = ProductRequisitionFormStatus.CANCEL;
         form.isRecalled = true;
-        form = await productRequisitionFormRepository.save(form);
       }
+      form = await productRequisitionFormRepository.save(form);
 
       // create approval log
       const approvalLogData = mapper.map(
@@ -434,12 +435,12 @@ class ProductRequisitionFormService {
     // form.status: cancel => wait creator edit and resubmit
     // form.status: waiting_export/ exporting => export product
     // form.status: done => completed
-    throw new GlobalError(ErrorCodes.PRODUCT_REQUISITION_FORM_DONE_APPROVAL);
+    throw new GlobalError(ErrorCodes.INVALID_FORM_STATUS_TRANSITION);
   }
 
   public async resubmitRequisitionForm(
     plainData: TResubmitProductRequisitionFormRequestDto,
-    creatorId: string,
+    creatorId: string
   ): Promise<ProductRequisitionFormResponseDto> {
     const requestData = plainToClass(
       ResubmitProductRequisitionFormRequestDto,
@@ -466,8 +467,9 @@ class ProductRequisitionFormService {
     console.log({ form });
     if (!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
-    if(form.creator) {
-      if(form.creator.id !== creatorId) throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    if (form.creator) {
+      if (form.creator.id !== creatorId)
+        throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
     } else {
       throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
     }

@@ -159,12 +159,12 @@ export const ErrorCodes: TErrorCode = {
     code: 1048,
     message: "Approval user not found",
   },
-  INVALID_APPROVAL_USER_FOR_APPROVAL_FORM: {
+  INVALID_USER_APPROVAL: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1049,
     message: "Invalid approval user for approval form",
   },
-  PRODUCT_REQUISITION_FORM_DONE_APPROVAL: {
+  INVALID_FORM_STATUS_TRANSITION: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1050,
     message: "Product requisition form done approval",
@@ -373,6 +373,11 @@ export const ErrorCodes: TErrorCode = {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1086,
     message: "Invalid description department",
+  },
+  INVALID_ROLE_PREFIX: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1087,
+    message: `Role must start with "ROLE_"`,
   },
 
   // AuthenticationErrors

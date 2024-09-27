@@ -129,7 +129,7 @@ class ProductRequisitionFormController {
    * @swagger
    * /productRequisitionForms:
    *   get:
-   *     summary: Get all product requisition forms
+   *     summary: Get all product requisition forms by creator
    *     tags: [ProductRequisitionForm]
    *     parameters:
    *       - in: query
@@ -169,7 +169,7 @@ class ProductRequisitionFormController {
     try {
       const query = req.query as unknown as TQueryRequest;
       const creatorId = req.userId as string;
-      logger.info("", query);
+      logger.info(`[ProductRequisitionFormController.name]`, query);
       const results =
         await productRequisitionFormService.getAllProductRequisitionForms(
           creatorId,
@@ -369,7 +369,10 @@ class ProductRequisitionFormController {
       logger.info("ResubmitProductRequisitionFormRequest", { data });
 
       const result =
-        await productRequisitionFormService.resubmitRequisitionForm(data, creatorId);
+        await productRequisitionFormService.resubmitRequisitionForm(
+          data,
+          creatorId
+        );
 
       const response: TApiResponse<ProductRequisitionFormResponseDto> = {
         code: StatusCodes.OK,

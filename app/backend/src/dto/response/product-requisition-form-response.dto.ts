@@ -1,11 +1,13 @@
 import { AutoMap } from "@automapper/classes";
 import {
+  BaseResponseDto,
   RequestProductResponseDto,
   UserApprovalResponseDto,
 } from "@dto/response";
-import { BaseResponseDto } from "./base-response.dto";
 
-export class ProductRequisitionFormResponseDto extends BaseResponseDto{
+export class ProductRequisitionFormResponseDto 
+// extends BaseResponseDto
+{
   @AutoMap()
   code?: string;
 

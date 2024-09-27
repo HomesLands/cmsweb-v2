@@ -8,3 +8,15 @@ export class CreateCompanyRequestDto {
   @AutoMap()
   name?: string;
 }
+
+export class UpdateCompanyRequestDto {
+  @IsNotEmpty({ message: "INVALID_COMPANY_NAME" })
+  @Expose()
+  @AutoMap()
+  name?: string;
+
+  @IsNotEmpty({ message: "INVALID_COMPANY_DIRECTOR" })
+  @Expose()
+  @AutoMap()
+  director?: string;
+}

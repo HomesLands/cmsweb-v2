@@ -17,6 +17,7 @@ export interface IAuthStore {
   refreshToken?: string
   expireTime?: string
   expireTimeRefreshToken?: string
+  authorities?: string[]
   isAuthenticated: () => boolean
   setSlug: (slug: string) => void
   setToken: (token: string) => void
@@ -31,3 +32,25 @@ export interface IRequestProductRequisitionStore {
   incrementRequestQueueSize: () => void
   decrementRequestQueueSize: () => void
 }
+
+export interface IUserRole {
+  role: string
+  authorities: string[]
+}
+
+export interface IUserPermission {
+  authority: string
+}
+
+export interface IUserInfoPermissionsStore {
+  userRoles: IUserRole[]
+  getUserRoles: () => IUserRole[]
+  setUserRoles: (roles: IUserRole[]) => void
+  clearUserRoles: () => void
+}
+
+// export interface IUserInfoPermissionsStore {
+//   userRole: IUserRole | null
+//   setUserRole: (role: IUserRole) => void
+//   clearUserRole: () => void
+// }

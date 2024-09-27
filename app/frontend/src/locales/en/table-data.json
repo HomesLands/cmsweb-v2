@@ -28,7 +28,12 @@
     "action": "Action",
     "filter": "Filter",
     "all": "All",
-    "normal": "Normal",
-    "urgent": "Urgent"
+    "waiting_approval_1": "Waiting approval",
+    "approved_stage_1": "Approved stage",
+    "canceled_stage_1": "Canceled stage",
+    "accepted_stage_2": "Accepted stage",
+    "waiting_approval_2": "Waiting approval",
+    "waiting_export": "Waiting export",
+    "canceled_stage_final": "Canceled"
   }
 }
