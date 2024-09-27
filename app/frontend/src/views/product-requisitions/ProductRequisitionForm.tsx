@@ -36,7 +36,6 @@ const ProductRequisitionForm: React.FC = () => {
     const newRequisition: IProductRequirementInfoCreate = {
       ...data
     }
-    console.log('newRequisition', newRequisition)
     // updateRequisition(newRequisition)
     setRequisition(newRequisition)
     handleStepChange(2)

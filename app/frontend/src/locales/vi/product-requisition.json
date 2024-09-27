@@ -1,6 +1,9 @@
 {
   "productRequisition": {
-    "list": "Danh sách yêu cầu vật tư",
+    "list": "Danh sách duyệt yêu cầu vật tư",
+    "listDescription": "Danh sách duyệt yêu cầu vật tư",
+    "listEmployee": "Danh sách yêu cầu vật tư đã tạo",
+    "listEmployeeDescription": "Danh sách yêu cầu vật tư đã tạo",
     "create": "Tạo yêu cầu vật tư",
     "createProductRequisitions": "Tạo yêu cầu vật tư",
     "createProductRequisitionsDescription": "Công cụ tạo yêu cầu vật tư",

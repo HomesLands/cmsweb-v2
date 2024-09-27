@@ -30,7 +30,12 @@
     "action": "Hành động",
     "filter": "Lọc",
     "all": "Tất cả",
-    "normal": "Bình thường",
-    "urgent": "Cần gấp"
+    "waiting_approval_1": "Chờ duyệt",
+    "approved_stage_1": "Đã duyệt",
+    "canceled_stage_1": "Đã hủy",
+    "accepted_stage_2": "Đã duyệt",
+    "waiting_approval_2": "Đang chờ duyệt",
+    "waiting_export": "Đang xuất kho",
+    "cancel_stage_final": "Đã hủy"
   }
 }

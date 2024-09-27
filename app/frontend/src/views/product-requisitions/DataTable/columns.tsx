@@ -12,12 +12,16 @@ import {
   Checkbox,
   DataTableColumnHeader
 } from '@/components/ui'
-import { IRequestRequisitionInfo, RequestRequisitionType } from '@/types'
+import {
+  IRequisitionFormResponseForApprover,
+  RequestRequisitionRoleApproval,
+  RequestRequisitionStatus
+} from '@/types'
 import { ProductRequisitionStatusBadge } from '@/components/app/badge'
 import { AcceptRequisitionDropdownMenuItem } from '@/components/app/dropdown/accept-requisition-dropdown'
 import { RequisitionTypeBadge } from '@/components/app/badge/RequisitionTypeBadge'
 
-export const columns: ColumnDef<IRequestRequisitionInfo>[] = [
+export const columns: ColumnDef<IRequisitionFormResponseForApprover>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -40,30 +44,40 @@ export const columns: ColumnDef<IRequestRequisitionInfo>[] = [
     enableHiding: false
   },
   {
-    accessorKey: 'code',
+    accessorKey: 'productRequisitionForm.code',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Mã yêu cầu" />
   },
   {
-    accessorKey: 'type',
+    accessorKey: 'productRequisitionForm',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Loại yêu cầu" />,
     cell: ({ row }) => {
-      const type = row.getValue('type') as RequestRequisitionType
+      const { type } = row.original.productRequisitionForm
       return <RequisitionTypeBadge type={type} />
     }
   },
   {
-    accessorKey: 'creator',
+    accessorKey: 'productRequisitionForm.creator',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Người tạo" />
   },
   {
-    accessorKey: 'company',
+    accessorKey: 'productRequisitionForm.company',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />
   },
   {
-    accessorKey: 'status',
+    accessorFn: (row) => row.productRequisitionForm.status,
+    id: 'status',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Trạng thái" />,
     cell: ({ row }) => {
-      return <ProductRequisitionStatusBadge status={row.original.status} />
+      return (
+        <ProductRequisitionStatusBadge
+          isRecalled={row.original.productRequisitionForm.isRecalled}
+          status={row.original.productRequisitionForm.status as RequestRequisitionStatus}
+          roleApproval={row.original.roleApproval as RequestRequisitionRoleApproval}
+        />
+      )
+    },
+    filterFn: (row, id, value) => {
+      return row.original.productRequisitionForm.status === value
     }
   },
   {

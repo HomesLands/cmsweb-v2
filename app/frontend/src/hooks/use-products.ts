@@ -4,6 +4,7 @@ import {
   createProductRequisition,
   getAllProductRequisition,
   getProductRequisitionByApprover,
+  getProductRequisitionByCreator,
   getProductRequisitionBySlug,
   getProducts
 } from '@/api/products'
@@ -35,6 +36,13 @@ export const useProductRequisitionByApprover = (q: IProductQuery) => {
   return useQuery({
     queryKey: ['productRequisitionByApprover', JSON.stringify(q)],
     queryFn: () => getProductRequisitionByApprover(q)
+  })
+}
+
+export const useProductRequisitionByCreator = (q: IProductQuery) => {
+  return useQuery({
+    queryKey: ['productRequisitionByCreator', JSON.stringify(q)],
+    queryFn: () => getProductRequisitionByCreator(q)
   })
 }
 
