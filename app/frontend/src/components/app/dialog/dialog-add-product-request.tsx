@@ -28,9 +28,7 @@ export function DialogAddProductRequest({
   onOpenChange
 }: DialogAddProductRequestProps) {
   const { addProductToRequisition } = useRequisitionStore()
-  console.log('product in dialog ne hihi', product) //co slug
   const handleAddRequest = (product: IProductRequisitionInfo) => {
-    console.log('product in dialog ne hihihaha', product) //co slug
     addProductToRequisition(product)
     onOpenChange()
   }

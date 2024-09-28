@@ -1,4 +1,3 @@
-import React from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 
 import { Authority, ROUTE } from '@/constants'
@@ -9,7 +8,9 @@ import {
   LoginPage,
   RegisterPage,
   ProductRequisitionPage,
-  ProductRequisitionFormPage
+  ProductRequisitionFormPage,
+  ApprovalProductRequisitionPage,
+  ApprovalProductRequisitionDetailPage
 } from './loadable'
 
 export const router = createBrowserRouter([
@@ -24,7 +25,7 @@ export const router = createBrowserRouter([
         index: true,
         element: (
           <ProtectedElement
-            allowedAuthorities={[Authority.APPROVE_PRODUCT_REQUISITION]}
+            allowedAuthorities={[Authority.READ_PRODUCT_REQUISITION]}
             element={<SuspenseElement component={ProductRequisitionPage} />}
           />
         )
@@ -35,6 +36,24 @@ export const router = createBrowserRouter([
           <ProtectedElement
             element={<SuspenseElement component={ProductRequisitionFormPage} />}
             allowedAuthorities={[Authority.CREATE_PRODUCT_REQUISITION]}
+          />
+        )
+      },
+      {
+        path: 'approval',
+        element: (
+          <ProtectedElement
+            element={<SuspenseElement component={ApprovalProductRequisitionPage} />}
+            allowedAuthorities={[Authority.APPROVE_PRODUCT_REQUISITION]}
+          />
+        )
+      },
+      {
+        path: 'approval/:slug',
+        element: (
+          <ProtectedElement
+            element={<SuspenseElement component={ApprovalProductRequisitionDetailPage} />}
+            allowedAuthorities={[Authority.APPROVE_PRODUCT_REQUISITION]}
           />
         )
       }

@@ -1,5 +1,5 @@
 import { IQuery } from './base.type'
-import { RequestRequisitionStatus } from './request-requisition.type'
+import { ApprovalLogStatus, RequestRequisitionStatus } from './request-requisition.type'
 
 export interface IProductApprovalInfo {
   id: string
@@ -92,8 +92,16 @@ export interface IProductRequisitionInfo {
   description?: string
   unit: string
   requestQuantity: number
+  // product: IProductInfo
 }
 
 export interface IProductQuery extends IQuery {
   searchTerm?: string
+}
+
+export interface IApproveProductRequisition {
+  formSlug: string
+  approvalUserSlug: string
+  approvalLogStatus: ApprovalLogStatus
+  approvalLogMessage: string
 }

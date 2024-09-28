@@ -8,6 +8,7 @@ import { IRegisterRequest } from '@/types'
 import { useRegister } from '@/hooks'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import { ROUTE } from '@/constants'
 
 const Register: React.FC = () => {
   const navigate = useNavigate()
@@ -17,7 +18,7 @@ const Register: React.FC = () => {
   const handleSubmit = async (data: IRegisterRequest) => {
     await mutation.mutateAsync(data, {
       onSuccess: () => {
-        navigate('/auth/login')
+        navigate(ROUTE.LOGIN)
         toast.success(t('register.registerSuccess'))
       }
     })

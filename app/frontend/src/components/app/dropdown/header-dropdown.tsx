@@ -12,19 +12,18 @@ import {
   UserAvatar
 } from '@/components/ui'
 import { DialogLogout } from '@/components/app/dialog'
-import { useUser } from '@/hooks'
 import { useAuthStore, useUserInfoPermissionsStore, useUserStore } from '@/stores'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { ROUTE } from '@/constants'
 
 export function HeaderDropdown() {
   const { t } = useTranslation('auth')
   const { setLogout } = useAuthStore()
   const [open, setOpen] = useState(false)
   // const mutation = useLogout()
-  const { data } = useUser()
-  const { removeUserInfo } = useUserStore()
+  const { removeUserInfo, userInfo } = useUserStore()
   const { clearUserRoles } = useUserInfoPermissionsStore()
   const navigate = useNavigate()
 
@@ -32,7 +31,7 @@ export function HeaderDropdown() {
     setLogout()
     removeUserInfo()
     clearUserRoles()
-    navigate('/auth/login')
+    navigate(ROUTE.LOGIN)
     toast.success(t('logout.logoutSuccess'))
   }
 
@@ -47,7 +46,7 @@ export function HeaderDropdown() {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-[14rem]" align="end">
           <DropdownMenuLabel>
-            {t('userInfo.hello')} {data?.result?.fullname}
+            {t('userInfo.hello')} {userInfo?.fullname}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           {/* <DropdownMenuItem className="cursor-pointer">Thông tin tài khoản</DropdownMenuItem> */}

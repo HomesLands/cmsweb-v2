@@ -31,6 +31,16 @@ export const ProductRequisitionPage = React.lazy(() =>
     default: module.ProductRequisitions
   }))
 )
+export const ApprovalProductRequisitionPage = React.lazy(() =>
+  import('@/views/product-requisitions').then((module) => ({
+    default: module.ApprovalProductRequisitions
+  }))
+)
+export const ApprovalProductRequisitionDetailPage = React.lazy(() =>
+  import('@/views/product-requisitions').then((module) => ({
+    default: module.ApprovalProductRequisitionDetail
+  }))
+)
 export const ProductRequisitionFormPage = React.lazy(() =>
   import('@/views/product-requisitions').then((module) => ({
     default: module.ProductRequisitionForm

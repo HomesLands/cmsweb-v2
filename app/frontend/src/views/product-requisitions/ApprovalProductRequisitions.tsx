@@ -1,15 +1,19 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ReaderIcon } from '@radix-ui/react-icons'
+import { useNavigate } from 'react-router-dom'
 
 import { DataTable, Label } from '@/components/ui'
-import { columns } from './DataTable/columns'
+import { useColumnsRequisitionList } from './DataTable/columns'
 import { usePagination, useProductRequisitionByApprover } from '@/hooks'
 import { CustomComponent } from './CustomComponent'
+import { IRequisitionFormResponseForApprover } from '@/types'
 
-const ProductRequisitionsEmployee: React.FC = () => {
+const ApprovalProductRequisitions: React.FC = () => {
   const { t } = useTranslation(['productRequisition'])
+  const [, setSelectedRequisition] = useState<IRequisitionFormResponseForApprover | null>(null)
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
+  const navigate = useNavigate()
 
   const { data, isLoading } = useProductRequisitionByApprover({
     page: pagination.pageIndex + 1,
@@ -110,16 +114,22 @@ const ProductRequisitionsEmployee: React.FC = () => {
     })
   }, [filteredData])
 
+  const handleRowClick = (requisition: IRequisitionFormResponseForApprover) => {
+    setSelectedRequisition(requisition)
+    navigate(`/product-requisitions/approval/${requisition.productRequisitionForm.slug}`, {
+      state: { selectedRequisition: requisition }
+    })
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <Label className="flex items-center gap-1 font-semibold text-normal text-md font-beVietNam">
         <ReaderIcon className="header-icon" />
-        haha hoho
         {t('productRequisition.list')}
       </Label>
       <DataTable
         isLoading={isLoading}
-        columns={columns}
+        columns={useColumnsRequisitionList()}
         data={dataWithDisplayStatus}
         pages={data?.result?.totalPages || 0}
         page={pagination.pageIndex + 1}
@@ -127,9 +137,10 @@ const ProductRequisitionsEmployee: React.FC = () => {
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         CustomComponent={CustomComponent}
+        onRowClick={handleRowClick}
       />
     </div>
   )
 }
 
-export default ProductRequisitionsEmployee
+export default ApprovalProductRequisitions

@@ -51,13 +51,19 @@ export const sidebarRoutes: ISidebarRoute[] = [
         title: i18next.t('sidebar.productRequisitionsList'),
         path: ROUTE.PRODUCT_REQUSITIONS,
         icon: Archive,
-        authorities: [Authority.APPROVE_PRODUCT_REQUISITION]
+        authorities: [Authority.READ_PRODUCT_REQUISITION]
       },
       {
         title: i18next.t('sidebar.createProductRequisitions'),
         path: ROUTE.ADD_PRODUCT_REQUSITIONS,
         icon: Archive,
         authorities: [Authority.CREATE_PRODUCT_REQUISITION]
+      },
+      {
+        title: i18next.t('sidebar.approvalProductRequisitions'),
+        path: '/product-requisitions/approval',
+        icon: Archive,
+        authorities: [Authority.APPROVE_PRODUCT_REQUISITION]
       }
     ]
   },

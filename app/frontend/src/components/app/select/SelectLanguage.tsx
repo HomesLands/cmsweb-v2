@@ -6,13 +6,14 @@ import { USFlag, VIFlag } from '@/assets/images'
 
 export const SelectLanguage: React.FC = () => {
   const { i18n } = useTranslation()
+  const defaultLang = React.useMemo(() => localStorage.getItem('i18nextLng') || 'vi', [])
 
   const handleLanguageChange = (value: string) => {
     i18n.changeLanguage(value)
   }
 
   return (
-    <Select onValueChange={handleLanguageChange} defaultValue="vi">
+    <Select onValueChange={handleLanguageChange} defaultValue={defaultLang}>
       <SelectTrigger className="p-0 border-none">
         <SelectValue placeholder="Select a language" />
       </SelectTrigger>

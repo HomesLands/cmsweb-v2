@@ -16,6 +16,7 @@ import {
 import { registerSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IRegisterRequest } from '@/types'
+import { ROUTE } from '@/constants'
 
 interface IFormRegisterProps {
   onSubmit: (data: IRegisterRequest) => void
@@ -106,8 +107,7 @@ export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
             </Button>
             <div className="text-sm text-center">
               {t('register.haveAccount')}
-              <NavLink to="/auth/login" className="underline">
-                {' '}
+              <NavLink to={ROUTE.LOGIN} className="underline">
                 {t('register.loginNow')}
               </NavLink>
             </div>
