@@ -73,10 +73,19 @@ const routes: IRoute[] = [
       {
         title: i18next.t('sidebar.productRequisitionsList'),
         path: 'list',
-        authorities: ['APPROVE_PRODUCT_REQUISITION'], // Giữ nguyên ở đây
+        // authorities: ['APPROVE_PRODUCT_REQUISITION'],
         component: () =>
           import('@/views/product-requisitions').then((module) => ({
             default: module.ProductRequisitions
+          }))
+      },
+      {
+        title: i18next.t('sidebar.productRequisitionsListStaff'),
+        path: 'list/staff',
+        // authorities: ['APPROVE_PRODUCT_REQUISITION'],
+        component: () =>
+          import('@/views/product-requisitions').then((module) => ({
+            default: module.ProductRequisitionsStaff
           }))
       },
       {
@@ -85,6 +94,14 @@ const routes: IRoute[] = [
         component: () =>
           import('@/views/product-requisitions').then((module) => ({
             default: module.ProductRequisitionForm
+          }))
+      },
+      {
+        title: 'Chi tiết yêu cầu',
+        path: 'detail/:slug',
+        component: () =>
+          import('@/views/product-requisitions').then((module) => ({
+            default: module.ProductRequisitionsDetail
           }))
       }
     ]
@@ -157,7 +174,17 @@ const sidebarSubmenus: ISidebarSubmenu[] = [
         title: i18next.t('sidebar.productRequisitionsList'),
         path: '/product-requisitions/list',
         icon: Archive,
-        authorities: ['APPROVE_PRODUCT_REQUISITION'],
+        // authorities: ['APPROVE_PRODUCT_REQUISITION'],
+        component: () =>
+          import('@/views/product-requisitions').then((module) => ({
+            default: module.ProductRequisitions
+          }))
+      },
+      {
+        title: i18next.t('sidebar.productRequisitionsListStaff'),
+        path: '/product-requisitions/list/staff',
+        icon: Archive,
+        // authorities: ['APPROVE_PRODUCT_REQUISITION'],
         component: () =>
           import('@/views/product-requisitions').then((module) => ({
             default: module.ProductRequisitions

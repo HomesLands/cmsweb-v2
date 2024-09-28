@@ -24,6 +24,20 @@
     "next": "Next",
     "add": "Add",
     "confirm": "Confirm",
+    "giveBack": "Give back",
+    "accept": "Approve",
+    "returnToPrevious": "Return to previous",
+    "reject": "Reject",
+    "acceptConfirmTitle": "Approve requisition",
+    "acceptConfirmMessage": "Are you sure you want to approve this requisition?",
+    "rejectConfirmTitle": "Reject requisition",
+    "rejectConfirmMessage": "Are you sure you want to reject this requisition?",
+    "returnConfirmTitle": "Return requisition",
+    "returnConfirmMessage": "Are you sure you want to return this requisition?",
+    "cancelConfirmTitle": "Cancel requisition",
+    "cancelConfirmMessage": "Are you sure you want to cancel this requisition?",
+    "messageInputLabel": "Content",
+    "messageInputPlaceholder": "Enter content",
     "addProductToRequest": "Add product to request",
     "addProductToRequestDescription": "Mekong Technology Joint Stock Company",
     "confirmProductRequisitions": "Confirm product requisitions",
@@ -41,5 +55,9 @@
   "requestPriority": {
     "normal": "Normal",
     "urgent": "Urgent"
+  },
+  "requisitionDetail": {
+    "requestDetail": "Request detail",
+    "requestDetailDescription": "Request detail description"
   }
 }

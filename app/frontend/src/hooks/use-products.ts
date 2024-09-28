@@ -1,6 +1,7 @@
 import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
 
 import {
+  approveProductRequisition,
   createProductRequisition,
   getAllProductRequisition,
   getProductRequisitionByApprover,
@@ -8,7 +9,7 @@ import {
   getProductRequisitionBySlug,
   getProducts
 } from '@/api/products'
-import { IFinalProductRequisition, IProductQuery } from '@/types'
+import { IApproveProductRequisition, IFinalProductRequisition, IProductQuery } from '@/types'
 
 export const useProducts = (q: IProductQuery) => {
   return useQuery({
@@ -43,6 +44,18 @@ export const useProductRequisitionByCreator = (q: IProductQuery) => {
   return useQuery({
     queryKey: ['productRequisitionByCreator', JSON.stringify(q)],
     queryFn: () => getProductRequisitionByCreator(q)
+  })
+}
+//Approve Product Requisition for Approver
+export const useApproveProductRequisition = () => {
+  return useMutation({
+    mutationFn: (data: IApproveProductRequisition) =>
+      approveProductRequisition(
+        data.formSlug,
+        data.approvalUserSlug,
+        data.approvalLogStatus,
+        data.approvalLogMessage
+      )
   })
 }
 

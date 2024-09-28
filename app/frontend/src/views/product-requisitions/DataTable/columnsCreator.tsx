@@ -1,6 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontal } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
 
 import {
   DropdownMenu,
@@ -13,39 +12,24 @@ import {
   Checkbox,
   DataTableColumnHeader
 } from '@/components/ui'
-import {
-  IFinalProductRequisition,
-  IProductRequisitionInfo,
-  IRequestRequisitionInfo,
-  IRequisitionFormResponseForApprover,
-  RequestRequisitionRoleApproval,
-  RequestRequisitionStatus
-} from '@/types'
-import { ProductRequisitionStatusBadge } from '@/components/app/badge'
+import { IRequestRequisitionInfo, RequestRequisitionStatus } from '@/types'
+import { ProductRequisitionByCreatorStatusBadge } from '@/components/app/badge'
 import { AcceptRequisitionDropdownMenuItem } from '@/components/app/dropdown/accept-requisition-dropdown'
 import { RequisitionTypeBadge } from '@/components/app/badge/RequisitionTypeBadge'
 import { useState } from 'react'
 import { DialogRequisitionDetail } from '@/components/app/dialog/dialog-requisition-detail'
 
-export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseForApprover>[] => {
-  const navigate = useNavigate()
+export const useColumnsRequisitionListCreator = (): ColumnDef<IRequestRequisitionInfo>[] => {
   const [openDialog, setOpenDialog] = useState(false)
-  const [openAcceptDialog, setOpenAcceptDialog] = useState(false)
-  const [selectedRequisition, setSelectedRequisition] =
-    useState<IRequisitionFormResponseForApprover | null>(null)
-  const handleOpenDialog = (requisition: IRequisitionFormResponseForApprover) => {
+  const [selectedRequisition, setSelectedRequisition] = useState<IRequestRequisitionInfo | null>(
+    null
+  )
+  const handleOpenDialog = (requisition: IRequestRequisitionInfo) => {
     setOpenDialog(true)
-    setSelectedRequisition(requisition)
-  }
-  const handleAcceptRequisition = (requisition: IRequisitionFormResponseForApprover) => {
-    setOpenAcceptDialog(true)
     setSelectedRequisition(requisition)
   }
   const onOpenChange = () => {
     setOpenDialog(false)
-  }
-  const handleRowClick = (requisition: IRequisitionFormResponseForApprover) => {
-    navigate(`/product-requisitions/${requisition.productRequisitionForm.slug}`)
   }
   return [
     // {
@@ -71,49 +55,46 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
     //   enableHiding: false
     // },
     {
-      accessorKey: 'productRequisitionForm.code',
+      accessorKey: 'code',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Mã yêu cầu" />
     },
     {
       accessorKey: 'productRequisitionForm',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Loại yêu cầu" />,
       cell: ({ row }) => {
-        const { type } = row.original.productRequisitionForm
+        const { type } = row.original
         return <RequisitionTypeBadge type={type} />
       }
     },
     {
-      accessorKey: 'productRequisitionForm.creator',
+      accessorKey: 'creator',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Người tạo" />
     },
     {
-      accessorKey: 'productRequisitionForm.company',
+      accessorKey: 'company',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />
     },
     {
-      accessorFn: (row) => row.productRequisitionForm.status,
+      accessorFn: (row) => row.status,
       id: 'status',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Trạng thái" />,
       cell: ({ row }) => {
         return (
-          <ProductRequisitionStatusBadge
-            isRecalled={row.original.productRequisitionForm.isRecalled}
-            status={row.original.productRequisitionForm.status as RequestRequisitionStatus}
-            roleApproval={row.original.roleApproval as RequestRequisitionRoleApproval}
+          <ProductRequisitionByCreatorStatusBadge
+            isRecalled={row.original.isRecalled}
+            status={row.original.status as RequestRequisitionStatus}
           />
         )
       },
       filterFn: (row, id, value) => {
-        return row.original.productRequisitionForm.status === value
+        return row.original.status === value
       }
     },
     {
       id: 'actions',
-      header: 'Thao tác',
+      header: () => <div className="text-[0.8rem] min-w-20">Thao tác</div>,
       cell: ({ row }) => {
         const requisition = row.original
-        const { roleApproval } = requisition
-        console.log('requisition info', requisition)
         return (
           <div>
             <DropdownMenu>
@@ -127,29 +108,17 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => handleOpenDialog(requisition)}>
-                  Xem chi tiết và duyệt
+                  Xem chi tiết
                 </DropdownMenuItem>
-                {roleApproval === 'approval_stage_1' && (
-                  <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
-                )}
-                {roleApproval === 'approval_stage_2' && (
-                  <>
-                    <DropdownMenuItem>Hoàn lại</DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
-                  </>
-                )}
-                {roleApproval === 'approval_stage_3' && (
-                  <>
-                    <DropdownMenuItem>Hoàn lại</DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
-                  </>
-                )}
+
+                <AcceptRequisitionDropdownMenuItem>Duyệt</AcceptRequisitionDropdownMenuItem>
+                <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             {selectedRequisition === requisition && openDialog && (
               <DialogRequisitionDetail
                 openDialog={openDialog}
-                requisition={requisition.productRequisitionForm}
+                requisition={requisition}
                 component={null}
                 onOpenChange={onOpenChange}
               />
