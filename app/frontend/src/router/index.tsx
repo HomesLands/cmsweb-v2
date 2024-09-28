@@ -1,28 +1,62 @@
-import React, { Suspense } from 'react'
-import { createBrowserRouter, RouteObject } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 
-import { routes } from '@/router/routes'
-import { IRoute } from '@/types'
+import { Authority, ROUTE } from '@/constants'
+import { SuspenseElement, ProtectedElement } from '@/components/app/elements'
 
-const createRouteObject = (route: IRoute): RouteObject => {
-  const { component, children } = route
+import {
+  DashboardLayout,
+  LoginPage,
+  RegisterPage,
+  ProductRequisitionPage,
+  ProductRequisitionFormPage,
+  ApprovalProductRequisitionPage,
+  ApprovalProductRequisitionDetailPage
+} from './loadable'
 
-  const Element = React.lazy(async () => {
-    const module = await component!()
-    return { default: module.default }
-  })
-
-  return {
-    path: route.path,
-    element: (
-      <Suspense>
-        <Element />
-      </Suspense>
-    ),
-    children: children?.map(createRouteObject)
+export const router = createBrowserRouter([
+  { path: ROUTE.LOGIN, element: <SuspenseElement component={LoginPage} /> },
+  { path: ROUTE.REGISTER, element: <SuspenseElement component={RegisterPage} /> },
+  { path: ROUTE.HOME, element: <SuspenseElement component={DashboardLayout} /> },
+  {
+    path: ROUTE.PRODUCT_REQUSITIONS,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: (
+          <ProtectedElement
+            allowedAuthorities={[Authority.READ_PRODUCT_REQUISITION]}
+            element={<SuspenseElement component={ProductRequisitionPage} />}
+          />
+        )
+      },
+      {
+        path: 'add',
+        element: (
+          <ProtectedElement
+            element={<SuspenseElement component={ProductRequisitionFormPage} />}
+            allowedAuthorities={[Authority.CREATE_PRODUCT_REQUISITION]}
+          />
+        )
+      },
+      {
+        path: 'approval',
+        element: (
+          <ProtectedElement
+            element={<SuspenseElement component={ApprovalProductRequisitionPage} />}
+            allowedAuthorities={[Authority.APPROVE_PRODUCT_REQUISITION]}
+          />
+        )
+      },
+      {
+        path: 'approval/:slug',
+        element: (
+          <ProtectedElement
+            element={<SuspenseElement component={ApprovalProductRequisitionDetailPage} />}
+            allowedAuthorities={[Authority.APPROVE_PRODUCT_REQUISITION]}
+          />
+        )
+      }
+    ]
   }
-}
-
-const routeObjects = routes.map(createRouteObject)
-
-export const router = createBrowserRouter(routeObjects)
+])

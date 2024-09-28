@@ -1,51 +1,30 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontal } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
   Button,
-  Checkbox,
   DataTableColumnHeader
 } from '@/components/ui'
 import {
-  IFinalProductRequisition,
-  IProductRequisitionInfo,
-  IRequestRequisitionInfo,
   IRequisitionFormResponseForApprover,
   RequestRequisitionRoleApproval,
   RequestRequisitionStatus
 } from '@/types'
 import { ProductRequisitionStatusBadge } from '@/components/app/badge'
-import { AcceptRequisitionDropdownMenuItem } from '@/components/app/dropdown/accept-requisition-dropdown'
 import { RequisitionTypeBadge } from '@/components/app/badge/RequisitionTypeBadge'
 import { useState } from 'react'
 import { DialogRequisitionDetail } from '@/components/app/dialog/dialog-requisition-detail'
 
 export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseForApprover>[] => {
-  const navigate = useNavigate()
   const [openDialog, setOpenDialog] = useState(false)
-  const [openAcceptDialog, setOpenAcceptDialog] = useState(false)
-  const [selectedRequisition, setSelectedRequisition] =
-    useState<IRequisitionFormResponseForApprover | null>(null)
-  const handleOpenDialog = (requisition: IRequisitionFormResponseForApprover) => {
-    setOpenDialog(true)
-    setSelectedRequisition(requisition)
-  }
-  const handleAcceptRequisition = (requisition: IRequisitionFormResponseForApprover) => {
-    setOpenAcceptDialog(true)
-    setSelectedRequisition(requisition)
-  }
+  const [selectedRequisition] = useState<IRequisitionFormResponseForApprover | null>(null)
   const onOpenChange = () => {
     setOpenDialog(false)
-  }
-  const handleRowClick = (requisition: IRequisitionFormResponseForApprover) => {
-    navigate(`/product-requisitions/${requisition.productRequisitionForm.slug}`)
   }
   return [
     // {
@@ -125,10 +104,6 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => handleOpenDialog(requisition)}>
-                  Xem chi tiết và duyệt
-                </DropdownMenuItem>
                 {roleApproval === 'approval_stage_1' && (
                   <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
                 )}

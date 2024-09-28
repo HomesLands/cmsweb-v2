@@ -2,6 +2,7 @@
   "sidebar": {
     "productRequisitions": "Product requisitions",
     "productRequisitionsList": "Product requisitions list",
-    "createProductRequisitions": "Create product requisitions"
+    "createProductRequisitions": "Create product requisitions",
+    "approvalProductRequisitions": "Approval product requisitions"
   }
 }

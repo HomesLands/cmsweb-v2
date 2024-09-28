@@ -1,110 +1,59 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ReaderIcon } from '@radix-ui/react-icons'
-import { useNavigate } from 'react-router-dom'
 
-import { DataTable, Label } from '@/components/ui'
-import { useColumnsRequisitionList } from './DataTable/columns'
-import { usePagination, useProductRequisitionByApprover } from '@/hooks'
+import { DataTableByCreator, Label } from '@/components/ui'
+import { usePagination, useProductRequisitionByCreator } from '@/hooks'
 import { CustomComponent } from './CustomComponent'
-import { IRequisitionFormResponseForApprover } from '@/types'
+import { useColumnsRequisitionListCreator } from './DataTable/columnsCreator'
+import { useUserStore } from '@/stores'
 
-const ProductRequisitionsStaff: React.FC = () => {
+const ProductRequisitions: React.FC = () => {
   const { t } = useTranslation(['productRequisition'])
-  const [selectedRequisition, setSelectedRequisition] =
-    useState<IRequisitionFormResponseForApprover | null>(null)
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
-  const navigate = useNavigate()
+  const { userInfo } = useUserStore()
 
-  const { data, isLoading } = useProductRequisitionByApprover({
+  const { data, isLoading } = useProductRequisitionByCreator({
     page: pagination.pageIndex + 1,
     pageSize: pagination.pageSize
   })
 
   const filteredData = useMemo(() => {
-    if (!data?.result?.items || data.result.items.length === 0) return []
+    if (!data?.result?.items || data.result.items.length === 0 || !userInfo) return []
 
-    const roleApproval = data.result.items[0].roleApproval
-
-    return data.result.items.filter((item) => {
-      const { status, isRecalled } = item.productRequisitionForm
-
-      switch (roleApproval) {
-        case 'approval_stage_1':
-          return (
-            (status === 'waiting' && !isRecalled) ||
-            (status === 'cancel' && isRecalled) ||
-            (status === 'accepted_stage_1' && !isRecalled)
-          )
-        case 'approval_stage_2':
-          return (
-            (status === 'accepted_stage_1' && !isRecalled) ||
-            (status === 'accepted_stage_1' && isRecalled) ||
-            status === 'accepted_stage_2' ||
-            (status === 'cancel' && isRecalled) ||
-            (status === 'waiting' && isRecalled)
-          )
-        case 'approval_stage_3':
-          return (
-            (status === 'accepted_stage_1' && isRecalled) ||
-            status === 'waiting_export' ||
-            (status === 'cancel' && isRecalled)
-          )
-        default:
-          return false
-      }
-    })
-  }, [data?.result?.items])
+    return data.result.items.filter((item) => item.creatorSlug === userInfo.slug)
+  }, [data?.result.items, userInfo])
 
   const dataWithDisplayStatus = useMemo(() => {
     return filteredData.map((item) => {
-      const { status, isRecalled } = item.productRequisitionForm
+      const { status, isRecalled } = item
       let displayStatus = ''
       let statusColor = ''
 
-      switch (item.roleApproval) {
-        case 'approval_stage_1':
-          if (status === 'waiting' && !isRecalled) {
-            displayStatus = 'Chờ duyệt'
-            statusColor = 'yellow'
-          } else if (status === 'cancel' && isRecalled) {
-            displayStatus = 'Đã hủy'
-            statusColor = 'red'
-          } else if (status === 'accepted_stage_1' && !isRecalled) {
-            displayStatus = 'Đã duyệt'
-            statusColor = 'green'
-          }
-          break
-        case 'approval_stage_2':
-          if (status === 'accepted_stage_1' && !isRecalled) {
-            displayStatus = 'Chờ duyệt bước 2'
-            statusColor = 'yellow'
-          } else if (status === 'accepted_stage_1' && isRecalled) {
-            displayStatus = 'Chờ duyệt bước 2 (bị hoàn lại từ bước trên)'
-            statusColor = 'yellow'
-          } else if (status === 'accepted_stage_2') {
-            displayStatus = 'Đã duyệt'
-            statusColor = 'green'
-          } else if (status === 'cancel' && isRecalled) {
-            displayStatus = 'Hủy'
-            statusColor = 'red'
-          } else if (status === 'waiting' && isRecalled) {
-            displayStatus = 'Bị hoàn lại để xem xét'
-            statusColor = 'orange'
-          }
-          break
-        case 'approval_stage_3':
-          if (status === 'accepted_stage_1' && isRecalled) {
-            displayStatus = 'Đã bị hoàn để xem xét lại'
-            statusColor = 'red'
-          } else if (status === 'waiting_export') {
-            displayStatus = 'Đã duyệt'
-            statusColor = 'green'
-          } else if (status === 'cancel' && isRecalled) {
-            displayStatus = 'Hủy'
-            statusColor = 'red'
-          }
-          break
+      if (status === 'waiting' && !isRecalled) {
+        displayStatus = 'Vừa tạo, đang chờ duyệt bước 1'
+        statusColor = 'yellow'
+      } else if (status === 'cancel' && isRecalled) {
+        displayStatus = 'Đã bị hoàn ở bước 1'
+        statusColor = 'orange'
+      } else if (status === 'accepted_stage_1' && !isRecalled) {
+        displayStatus = 'Đã duyệt bước 1'
+        statusColor = 'green'
+      } else if (status === 'waiting' && isRecalled) {
+        displayStatus = 'Đã bị hoàn ở bước 2'
+        statusColor = 'orange'
+      } else if (status === 'accepted_stage_2' && !isRecalled) {
+        displayStatus = 'Đã duyệt bước 2'
+        statusColor = 'green'
+      } else if (status === 'accepted_stage_1' && isRecalled) {
+        displayStatus = 'Đã bị hoàn ở bước 3'
+        statusColor = 'orange'
+      } else if (status === 'waiting_export' && !isRecalled) {
+        displayStatus = 'Đã duyệt bước 3'
+        statusColor = 'blue'
+      } else if (status === 'cancel' && !isRecalled) {
+        displayStatus = 'Đã bị hủy'
+        statusColor = 'red'
       }
 
       return {
@@ -115,22 +64,15 @@ const ProductRequisitionsStaff: React.FC = () => {
     })
   }, [filteredData])
 
-  const handleRowClick = (requisition: IRequisitionFormResponseForApprover) => {
-    setSelectedRequisition(requisition)
-    navigate(`/product-requisitions/detail/${requisition.productRequisitionForm.slug}`, {
-      state: { selectedRequisition: requisition }
-    })
-  }
-
   return (
     <div className="flex flex-col gap-4">
       <Label className="flex items-center gap-1 font-semibold text-normal text-md font-beVietNam">
         <ReaderIcon className="header-icon" />
-        {t('productRequisition.list')}
+        {t('productRequisition.listEmployee')}
       </Label>
-      <DataTable
+      <DataTableByCreator
         isLoading={isLoading}
-        columns={useColumnsRequisitionList()}
+        columns={useColumnsRequisitionListCreator()}
         data={dataWithDisplayStatus}
         pages={data?.result?.totalPages || 0}
         page={pagination.pageIndex + 1}
@@ -138,10 +80,9 @@ const ProductRequisitionsStaff: React.FC = () => {
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         CustomComponent={CustomComponent}
-        onRowClick={handleRowClick}
       />
     </div>
   )
 }
 
-export default ProductRequisitionsStaff
+export default ProductRequisitions

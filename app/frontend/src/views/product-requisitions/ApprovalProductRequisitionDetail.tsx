@@ -3,17 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { ReaderIcon } from '@radix-ui/react-icons'
 import { useLocation, useParams } from 'react-router-dom'
 
-import {
-  DataTableRequisition,
-  Label,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter
-} from '@/components/ui'
-import { useApproveProductRequisition, useProductRequisitionBySlug } from '@/hooks'
+import { DataTableRequisition, Label, Button } from '@/components/ui'
+import { useProductRequisitionBySlug } from '@/hooks'
 
 import { TbeLogo } from '@/assets/images'
 import { MetekLogo } from '@/assets/images'
@@ -30,10 +21,10 @@ import { showToast } from '@/utils'
 import { useMutation } from '@tanstack/react-query'
 import { approveProductRequisition } from '@/api'
 
-const ProductRequisitionsDetail: React.FC = () => {
+const ApprovalProductRequisitionDetail: React.FC = () => {
   const { t } = useTranslation(['productRequisition'])
   const { slug } = useParams<{ slug: string }>()
-  const { data, isLoading } = useProductRequisitionBySlug(slug!)
+  const { data } = useProductRequisitionBySlug(slug!)
   const location = useLocation()
   const selectedRequisition = location.state?.selectedRequisition as
     | IRequisitionFormResponseForApprover
@@ -42,8 +33,6 @@ const ProductRequisitionsDetail: React.FC = () => {
   console.log('approval user slug: ', selectedRequisition?.approvalUserSlug)
 
   const { roleApproval } = selectedRequisition || {}
-  const status = data?.result?.status
-  const isRecalled = data?.result?.isRecalled
 
   const columns = useColumnsDetail()
 
@@ -241,4 +230,4 @@ const ProductRequisitionsDetail: React.FC = () => {
   )
 }
 
-export default ProductRequisitionsDetail
+export default ApprovalProductRequisitionDetail

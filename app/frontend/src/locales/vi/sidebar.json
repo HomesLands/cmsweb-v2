@@ -2,7 +2,7 @@
   "sidebar": {
     "productRequisitions": "Yêu cầu vật tư",
     "productRequisitionsList": "Danh sách yêu cầu vật tư",
-    "productRequisitionsListStaff": "Danh sách yêu cầu vật tư đã tạo",
+    "approvalProductRequisitions": "Danh sách duyệt yêu cầu vật tư",
     "createProductRequisitions": "Tạo yêu cầu vật tư"
   }
 }
