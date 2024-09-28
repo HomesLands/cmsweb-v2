@@ -64,10 +64,10 @@ export class ApprovalProductRequisitionFormRequestDto {
   @AutoMap()
   approvalLogStatus?: string;
 
-  @IsNotEmpty({ message: "INVALID_APPROVAL_USER_SLUG" })
-  @Expose()
-  @AutoMap()
-  approvalUserSlug?: string;
+  // @IsNotEmpty({ message: "INVALID_APPROVAL_USER_SLUG" })
+  // @Expose()
+  // @AutoMap()
+  // approvalUserSlug?: string;
 
   @IsNotEmpty({ message: "INVALID_CONTENT_APPROVAL_LOG" })
   @Expose()

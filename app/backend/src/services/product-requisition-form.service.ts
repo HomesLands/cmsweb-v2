@@ -119,46 +119,44 @@ class ProductRequisitionFormService {
 
     const creator = await userRepository.findOne({
       where: {
-        id: creatorId
+        id: creatorId,
+        isDeleted: false,
       },
       relations: [
         'userDepartments',
+        'userDepartments.department',
       ]
     });
 
     if (!creator) throw new GlobalError(ErrorCodes.INVALID_CREATOR);
-    if (!creator.userDepartments) throw new GlobalError(ErrorCodes.INVALID_CREATOR);
-    const departmentId = creator.userDepartments;
-
+  
     const assignedUserApproval = await assignedUserApprovalRepository.find({
       where: {
-        user: {
-          userDepartments: {
-            department: departmentId
-          }
-        },
         formType: FormApprovalType.PRODUCT_REQUISITION_FORM,
       },
-      relations: ['user']
+      relations: [
+        'user',
+      ]
     });
 
     if(assignedUserApproval.length !== 3)
       throw new GlobalError(ErrorCodes.INVALID_QUANTITY_USER_APPROVAL);
 
-    const userApprovalStageOne = assignedUserApproval.map(
+    const userApprovalStageOne = assignedUserApproval.find(
       (item) => item.roleApproval === RoleApproval.APPROVAL_STAGE_1
     );
-    const userApprovalStageTwo = assignedUserApproval.map(
+    console.log({userApprovalStageOne})
+    const userApprovalStageTwo = assignedUserApproval.find(
       (item) => item.roleApproval === RoleApproval.APPROVAL_STAGE_2
     );
-    const userApprovalStageThree = assignedUserApproval.map(
+    const userApprovalStageThree = assignedUserApproval.find(
       (item) => item.roleApproval === RoleApproval.APPROVAL_STAGE_3
     );
 
     if(!(
-      Object.keys(userApprovalStageOne).length === 0 
-      && Object.keys(userApprovalStageTwo).length === 0
-      && Object.keys(userApprovalStageThree).length === 0
+      userApprovalStageOne
+      && userApprovalStageTwo
+      && userApprovalStageThree
     )) throw new GlobalError(ErrorCodes.MISSING_USER_APPROVAL);
 
     const project = await projectRepository.findOneBy({
@@ -170,8 +168,7 @@ class ProductRequisitionFormService {
       const product = await productRepository.findOneBy({
         slug: requestData.requestProducts[i].product,
       });
-      // tạm thời tạo với những sản phẩm có sẵn
-      // Create if not exist
+      // note: Tạm thời chỉ lấy các sản phẩm có trong db
       if (!product) throw new GlobalError(ErrorCodes.PRODUCT_NOT_FOUND);
     }
 
@@ -304,7 +301,6 @@ class ProductRequisitionFormService {
         slug: requestData.formSlug,
       },
       relations: [
-        "company",
         "creator",
         "userApprovals",
         "userApprovals.assignedUserApproval",

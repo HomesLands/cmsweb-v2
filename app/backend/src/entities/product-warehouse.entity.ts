@@ -3,6 +3,7 @@ import { AutoMap } from "@automapper/classes";
 
 import {
   Base,
+  Product,
   RFID,
   Unit,
   Warehouse
@@ -25,4 +26,8 @@ export class ProductWarehouse extends Base {
   // a product ware house have many RFID
   @OneToMany(() => RFID, (rfid) => rfid.productWarehouse)
   rfids?: RFID[];
+
+  @ManyToOne(() => Product, (product) => product.productWarehouses)
+  @JoinColumn({ name: "product_column" })
+  product?: Product;
 }

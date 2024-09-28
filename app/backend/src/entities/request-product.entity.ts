@@ -22,7 +22,8 @@ export class RequestProduct extends Base {
     @JoinColumn({ name: "product_requisition_form_column" }) 
   productRequisitionForm?: ProductRequisitionForm;
 
-  @ManyToOne(() => Product, (product) => product.requestProducts)
+  @ManyToOne(() => Product, 
+    (product) => product.requestProducts)
   @JoinColumn({ name: "product_id_column" })
   product?: Product;
 }

@@ -48,18 +48,20 @@ class UserApprovalService {
       skip: (page - 1) * pageSize,
       order: { createdAt: options.order },
       relations: [
+        "assignedUserApproval",
         "productRequisitionForm",
-        "productRequisitionForm.company",
-        "productRequisitionForm.site",
         "productRequisitionForm.project",
         "productRequisitionForm.creator",
         "productRequisitionForm.requestProducts",
         "productRequisitionForm.requestProducts.product",
         "productRequisitionForm.userApprovals",
-        "productRequisitionForm.userApprovals.user",
+        "productRequisitionForm.userApprovals.assignedUserApproval",
+        "productRequisitionForm.userApprovals.assignedUserApproval.user",
         "productRequisitionForm.userApprovals.approvalLogs",
       ],
     });
+
+    console.log(approvalForms[0].productRequisitionForm?.userApprovals)
 
     const approvalFormsDto: UserApprovalFormResponseDto[] = mapper.mapArray(
       approvalForms,

@@ -16,9 +16,4 @@ export class ProductResponseDto extends BaseResponseDto {
 
   @AutoMap()
   quantity?: number;
-
-  @AutoMap()
-  rfid?: number;
-
-  unit?: string;
 }

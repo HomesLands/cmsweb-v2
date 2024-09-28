@@ -68,26 +68,23 @@ class ProductRequisitionFormController {
    *       example:
    *         code: YCVT123
    *         project: project-789
+   *         deadlineApproval: 2024-09-12 20:45:15
    *         type: urgent
    *         description: Ý kiến người tạo
    *         requestProducts:
-   *           - productSlug: KeYdkmeNg
+   *           - product: KeYdkmeNg
    *             requestQuantity: 10
    *
    *     ApprovalProductRequisitionFormRequestDto:
    *       type: object
    *       required:
    *         - formSlug
-   *         - approvalUserSlug
    *         - approvalLogStatus
    *         - approvalLogContent
    *       properties:
    *         formSlug:
    *           type: string
    *           description: The slug of the form.
-   *         approvalUserSlug:
-   *           type: string
-   *           description: The slug of approval user for form.
    *         approvalLogStatus:
    *           type: string
    *           description: The status approval form (accept/give_back/cancel)
@@ -96,7 +93,6 @@ class ProductRequisitionFormController {
    *           description: The reason approval form.
    *       example:
    *         formSlug: XUWyA6fr7i
-   *         approvalUserSlug: rIsvuLZgnE_
    *         approvalLogStatus: accept
    *         approvalLogContent: Yêu cầu đã ok
    *

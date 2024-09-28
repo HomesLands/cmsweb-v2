@@ -2,8 +2,6 @@ import {
   MappingProfile,
   Mapper,
   createMap,
-  mapFrom,
-  forMember,
   extend,
 } from "@automapper/core";
 import { ProductResponseDto } from "@dto/response";

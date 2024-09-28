@@ -12,8 +12,14 @@ import {
   UserApprovalResponseDto,
   ProductRequisitionFormResponseDto,
   UserApprovalFormResponseDto,
+  AssignedUserApprovalResponseDto,
 } from "@dto/response";
-import { ApprovalLog, UserApproval, ProductRequisitionForm } from "@entities";
+import { 
+  ApprovalLog,
+  UserApproval,
+  ProductRequisitionForm,
+  AssignedUserApproval,
+} from "@entities";
 import { baseMapper } from "./base.mapper";
 
 export const userApprovalMapper: MappingProfile = (mapper: Mapper) => {
@@ -38,6 +44,14 @@ export const userApprovalMapper: MappingProfile = (mapper: Mapper) => {
         (source) => source.approvalLogs
       )
     ),
+    forMember(
+      (destination) => destination.assignedUserApproval,
+      mapWith(
+        AssignedUserApprovalResponseDto,
+        AssignedUserApproval,
+        (source) => source.assignedUserApproval
+      )
+    ),
     extend(baseMapper(mapper))
   );
 
@@ -49,6 +63,10 @@ export const userApprovalMapper: MappingProfile = (mapper: Mapper) => {
     forMember(
       (destination) => destination.approvalUserSlug,
       mapFrom((source) => source.slug)
+    ),
+    forMember(
+      (destination) => destination.roleApproval,
+      mapFrom((source) => source.assignedUserApproval?.roleApproval)
     ),
     forMember(
       (destination) => destination.productRequisitionForm,

@@ -12,7 +12,7 @@ export type TCreateProductRequisitionFormRequestDto = {
 
 export type TApprovalProductRequisitionFormRequestDto = {
   formSlug?: string;
-  approvalUserSlug?: string;
+  // approvalUserSlug?: string;
   approvalLogStatus?: string;
   approvalLogContent?: string;
 }

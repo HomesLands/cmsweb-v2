@@ -25,11 +25,6 @@ export class CreateProductRequestDto {
   @AutoMap()
   quantity?: number;
 
-  @IsNotEmpty({message: "INVALID_PRODUCT_UNIT"})
-  @Expose()
-  @AutoMap()
-  unit?: string;
-
   // if code empty, must have description
   // if have code, description is optional 
   @ValidateIf(o => !o.code)
