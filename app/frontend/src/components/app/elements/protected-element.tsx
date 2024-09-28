@@ -1,18 +1,18 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { ROUTE } from '@/constants'
-import { useAuthStore, useUserInfoPermissionsStore, useUserStore } from '@/stores'
-import React, { useCallback, useEffect } from 'react'
-import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-export const ProtectedRoute = ({
+import { ROUTE } from '@/constants'
+import { useAuthStore, useUserInfoPermissionsStore, useUserStore } from '@/stores'
+import { useCallback, useEffect } from 'react'
+import toast from 'react-hot-toast'
+
+export default function ProtectedElement({
   element,
   allowedAuthorities
 }: {
   element: React.ReactNode
   allowedAuthorities: string[]
-}) => {
+}) {
   const { isAuthenticated, setLogout } = useAuthStore()
   const { t } = useTranslation('auth')
   const { removeUserInfo } = useUserStore()
@@ -20,27 +20,29 @@ export const ProtectedRoute = ({
   const navigate = useNavigate()
 
   const handleLogout = useCallback(() => {
-    // removeUserInfo()
-    // clearUserRoles()
+    setLogout()
+    removeUserInfo()
+    clearUserRoles()
     toast.error(t('sessionExpired'))
     navigate(ROUTE.LOGIN)
-  }, [])
+  }, [setLogout, removeUserInfo, clearUserRoles, navigate, t])
 
   const hasRequiredPermissions = useCallback(() => {
-    return userRoles.some((userrole) =>
-      userrole.authorities.some((authority) => allowedAuthorities.includes(authority))
+    return userRoles.some((userRole) =>
+      userRole.authorities.some((authority) => allowedAuthorities.includes(authority))
     )
-  }, [])
+  }, [userRoles, allowedAuthorities])
 
+  // Check authentication and permissions
   useEffect(() => {
-    // Check authentication and permissions
     if (!isAuthenticated()) {
       handleLogout()
     } else if (!hasRequiredPermissions()) {
-      toast.error('access denied')
+      toast.error(t('accessDenied')) // Using translation for error message
       navigate(ROUTE.HOME)
     }
-  }, [])
+    // Make sure to include necessary dependencies
+  }, [isAuthenticated, navigate, handleLogout, hasRequiredPermissions, t])
 
   const hasAccess = isAuthenticated() && hasRequiredPermissions()
 

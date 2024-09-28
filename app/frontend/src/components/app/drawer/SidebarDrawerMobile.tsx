@@ -11,7 +11,7 @@ import {
   Button
 } from '@/components/ui'
 
-import { sidebarSubmenus } from '@/router/routes'
+import { sidebarRoutes } from '@/router/routes'
 import { IconWrapper } from './IconWrapper'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
@@ -23,7 +23,7 @@ export function SidebarDrawerMobile() {
   const { t } = useTranslation('sidebar')
 
   // Translate submenu items
-  const translatedSubmenus = sidebarSubmenus.map((submenu) => ({
+  const translatedSubmenus = sidebarRoutes.map((submenu) => ({
     ...submenu,
     title: t(submenu.title),
     children: submenu.children?.map((child) => ({

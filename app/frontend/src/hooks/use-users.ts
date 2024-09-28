@@ -14,7 +14,9 @@ export const useUsers = (q: IQuery) => {
 export const useUser = () => {
   return useQuery({
     queryKey: ['user-info'],
-    queryFn: () => getUser()
+    queryFn: () => getUser(),
+    select: (data) => data.result,
+    enabled: false // Only run the query if the user is authenticated
   })
 }
 

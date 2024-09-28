@@ -11,9 +11,9 @@ import { loginSChema } from '@/schemas'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
 import { LoginBackground } from '@/assets/images'
 import { LoginForm } from '@/components/app/form'
-import { useLogin, useUserInfoPermission } from '@/hooks'
+import { useLogin, useUser, useUserInfoPermission } from '@/hooks'
 import { IApiResponse, ILoginResponse } from '@/types'
-import { useAuthStore, useUserInfoPermissionsStore } from '@/stores'
+import { useAuthStore, useUserInfoPermissionsStore, useUserStore } from '@/stores'
 import { ROUTE } from '@/constants'
 
 const Login: React.FC = () => {
@@ -21,11 +21,12 @@ const Login: React.FC = () => {
   const { setToken, setRefreshToken, setExpireTime, setExpireTimeRefreshToken, setSlug } =
     useAuthStore()
   const { setUserRoles } = useUserInfoPermissionsStore()
+  const { setUserInfo } = useUserStore()
   const navigate = useNavigate()
   const mutation = useLogin()
   const [isLoading, setIsLoading] = useState(false)
-
   const { refetch: refetchUserInfoPermission } = useUserInfoPermission()
+  const { refetch: refetchUserInfo } = useUser()
 
   const handleSubmit = async (data: z.infer<typeof loginSChema>) => {
     setIsLoading(true)
@@ -40,9 +41,11 @@ const Login: React.FC = () => {
       setExpireTime(response.result.expireTime)
       setExpireTimeRefreshToken(response.result.expireTimeRefreshToken)
 
-      // Fetch user permissions
+      // Fetch user info and permissions
       const { data: userRoles } = await refetchUserInfoPermission()
+      const { data: userInfo } = await refetchUserInfo()
       setUserRoles(Array.isArray(userRoles) ? userRoles : []) // Handle roles being non-array safely
+      setUserInfo(userInfo || {})
 
       navigate(ROUTE.HOME)
       toast.success(t('login.loginSuccess'))

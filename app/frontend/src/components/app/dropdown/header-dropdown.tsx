@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 
-export function DropdownHeader() {
+export function HeaderDropdown() {
   const { t } = useTranslation('auth')
   const { setLogout } = useAuthStore()
   const [open, setOpen] = useState(false)
