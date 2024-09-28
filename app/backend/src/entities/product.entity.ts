@@ -1,7 +1,8 @@
-import { Entity, Column, OneToMany } from "typeorm";
+import { Entity, Column, OneToMany, ManyToOne, JoinColumn, AfterLoad } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 
-import { Base, ProductWarehouse, RequestProduct } from "@entities";
+import { Base, ProductWarehouse, RequestProduct, Unit } from "@entities";
+import { productRepository } from "@repositories";
 
 @Entity("product_tbl")
 export class Product extends Base {
@@ -25,6 +26,10 @@ export class Product extends Base {
   @AutoMap()
   description?: string;
 
+  @ManyToOne(() => Unit, (unit) => unit.products)
+  @JoinColumn({ name: "unit_column" })
+  unit?: Unit;
+
   // a product have many request product
   @OneToMany(() => RequestProduct, (requestProduct) => requestProduct.product)
   requestProducts?: RequestProduct[];
@@ -33,4 +38,21 @@ export class Product extends Base {
   @OneToMany(() => ProductWarehouse, 
     (productWarehouse) => productWarehouse.product)
   productWarehouses?: ProductWarehouse[];
+
+  // Phương thức tính tổng quantity từ các ProductWarehouse
+  // async updateTotalQuantity() {
+  //   if (this.productWarehouses && this.productWarehouses.length > 0) {
+  //     this.quantity = this.productWarehouses.reduce((total, pw) => total + (pw.quantity || 0), 0);
+  //   } else {
+  //     this.quantity = 0; // Không có ProductWarehouse nào, quantity mặc định bằng 0
+  //   }
+  //   // await this.save(); // Cập nhật lại quantity cho Product
+  //   await productRepository.save(this);
+  // }
+
+  // Hook để tự động tải lại quantity sau khi Product được tải
+  // @AfterLoad()
+  // async loadTotalQuantity() {
+  //   await this.updateTotalQuantity();
+  // }
 }

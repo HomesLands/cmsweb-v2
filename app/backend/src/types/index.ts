@@ -32,3 +32,5 @@ export * from "./request-product.type";
 export * from "./department.type";
 export * from "./user-department.type";
 export * from "./assigned-user-approval.type";
+export * from "./warehouse.type";
+export * from "./product-warehouse.type";

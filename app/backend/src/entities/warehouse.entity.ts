@@ -15,7 +15,7 @@ export class Warehouse extends Base {
   @AutoMap()
   address?: string;
 
-  @Column({ name: "description" })
+  @Column({ name: "description" , nullable: true})
   @AutoMap()
   description?: string;
 

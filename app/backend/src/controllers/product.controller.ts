@@ -22,6 +22,7 @@ class ProductController {
    *       required:
    *         - name
    *         - provider
+   *         - unit
    *       properties:
    *         name:
    *           type: string
@@ -29,12 +30,12 @@ class ProductController {
    *         code:
    *           type: string
    *           description: productCode - barcode
+   *         unit:
+   *           type: string
+   *           description: unit slug for product
    *         provider:
    *           type: string
    *           description: productProvider
-   *         quantity:
-   *           type: integer
-   *           description: quantity of product
    *         description:
    *           type: string
    *           description: descriptionProduct
@@ -45,7 +46,7 @@ class ProductController {
    *         name: Máy khoan động lực điện Bosch GSB 10 RE 500W
    *         code: 8886008101053
    *         provider: BOSCH
-   *         quantity: 10
+   *         unit: slug-1234
    *         description: Dùng điện, Có chổi than
    * 
    *     UpdateProductRequestDto:
@@ -59,9 +60,9 @@ class ProductController {
    *         name:
    *           type: string
    *           description: The name of product
-   *         quantity:
-   *           type: integer
-   *           description: The quantity of product
+   *         unit:
+   *           type: string
+   *           description: The unit slug for product
    *         code:
    *           type: string
    *           description: productCode - barcode
@@ -79,7 +80,7 @@ class ProductController {
    *         name: Máy khoan động lực điện Bosch GSB 10 RE 500W
    *         code: 8886008101053
    *         provider: BOSCH
-   *         quantity: 10
+   *         unit: slug-1234
    *         description: Dùng điện, Có chổi than
    */
 

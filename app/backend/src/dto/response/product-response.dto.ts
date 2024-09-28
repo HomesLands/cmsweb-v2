@@ -1,7 +1,12 @@
 import { AutoMap } from "@automapper/classes";
-import { BaseResponseDto } from "./base-response.dto";
+import {
+  BaseResponseDto,
+  ProductWarehouseResponseDto,
+} from "@dto/response";
 
-export class ProductResponseDto extends BaseResponseDto {
+export class ProductResponseDto 
+// extends BaseResponseDto 
+{
   @AutoMap()
   name?: string;
 
@@ -16,4 +21,9 @@ export class ProductResponseDto extends BaseResponseDto {
 
   @AutoMap()
   quantity?: number;
+
+  unit?: string;
+
+  @AutoMap(() =>[ProductWarehouseResponseDto])
+  productWarehouses?: ProductWarehouseResponseDto[];
 }

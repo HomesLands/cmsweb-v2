@@ -17,3 +17,5 @@ export { default as userApprovalController } from "./user-approval.controller";
 export { default as departmentController } from "./department.controller";
 export { default as userDepartmentController } from "./user-department.controller";
 export { default as assignedUserApprovalController } from "./assigned-user-approval.controller";
+export { default as warehouseController } from "./warehouse.controller";
+export { default as productWarehouseController } from "./product-warehouse.controller";

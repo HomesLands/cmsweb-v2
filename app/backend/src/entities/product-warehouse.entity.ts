@@ -1,23 +1,21 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import { AfterInsert, AfterUpdate, Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 
 import {
   Base,
   Product,
   RFID,
-  Unit,
   Warehouse
 } from "@entities";
 
+@Index(["product", "warehouse"], {
+  unique: true,
+})
 @Entity("product_warehouse_tbl")
 export class ProductWarehouse extends Base {
-  @Column({ name: "quantity_column" })
+  @Column({ name: "quantity_column", default: 0 })
   @AutoMap()
   quantity?: number;
-
-  @ManyToOne(() => Unit, (unit) => unit.productWarehouses)
-  @JoinColumn({ name: "unit_column" })
-  unit?: Unit;
 
   @ManyToOne(() => Warehouse, (warehouse) => warehouse.productWarehouses)
   @JoinColumn({ name: "warehouse_column" })
@@ -30,4 +28,12 @@ export class ProductWarehouse extends Base {
   @ManyToOne(() => Product, (product) => product.productWarehouses)
   @JoinColumn({ name: "product_column" })
   product?: Product;
+
+  // @AfterInsert()
+  // @AfterUpdate()
+  // async updateProductQuantity() {
+  //   if (this.product) {
+  //     await this.product.updateTotalQuantity();
+  //   }
+  // }
 }

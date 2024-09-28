@@ -17,3 +17,5 @@ export { default as approvalLogRepository } from "./approval-log.repository";
 export { default as departmentRepository } from "./department.repository";
 export { default as userDepartmentRepository } from "./user-department.repository";
 export { default as assignedUserApprovalRepository } from "./assigned-user-approval.repository";
+export { default as productWarehouseRepository } from "./product-warehouse.repository";
+export { default as warehouseRepository } from "./warehouse.repository";

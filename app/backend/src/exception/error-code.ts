@@ -379,6 +379,36 @@ export const ErrorCodes: TErrorCode = {
     code: 1087,
     message: `Role must start with "ROLE_"`,
   },
+  INVALID_UNIT_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1088,
+    message: `Invalid unit slug"`,
+  },
+  INVALID_WAREHOUSE_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1089,
+    message: `Invalid warehouse slug"`,
+  },
+  INVALID_QUANTITY_PRODUCT_WAREHOUSE: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1089,
+    message: `Invalid quantity product warehouse"`,
+  },
+  WAREHOUSE_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1090,
+    message: `Warehouse not found"`,
+  },
+  MISSING_QUANTITY_PRODUCT_WAREHOUSE_ADD_NEW: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1091,
+    message: `Missing quantity product warehouse add new"`,
+  },
+  ERROR_WHEN_UPDATE_PRODUCT_QUANTITY: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1092,
+    message: `Error when update product quantity"`,
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]
