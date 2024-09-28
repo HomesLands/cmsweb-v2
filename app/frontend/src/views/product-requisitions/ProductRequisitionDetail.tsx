@@ -1,88 +1,177 @@
-import React, { useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CheckCircledIcon, CheckIcon, ReaderIcon } from '@radix-ui/react-icons'
-import { useNavigate, useParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import { ReaderIcon } from '@radix-ui/react-icons'
+import { useLocation, useParams } from 'react-router-dom'
 
-import { DataTable, DataTableRequisition, Label } from '@/components/ui'
-import { useColumnsRequisitionList } from './DataTable/columns'
-import { usePagination, useProductRequisitionBySlug } from '@/hooks'
-import { CustomComponent } from './CustomComponent'
-import { IRequisitionFormResponseForApprover } from '@/types'
-import { getProductRequisitionBySlug } from '@/api'
-import { useColumnsConfirm } from '@/views/product-requisitions/DataTable/columnsConfirm'
+import {
+  DataTableRequisition,
+  Label,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter
+} from '@/components/ui'
+import { useApproveProductRequisition, useProductRequisitionBySlug } from '@/hooks'
 
 import { TbeLogo } from '@/assets/images'
 import { MetekLogo } from '@/assets/images'
 import { SongnamLogo } from '@/assets/images'
 import { useColumnsDetail } from './DataTable/columnsDetail'
-import { Button } from '@/components/ui'
-import { RotateCcw, XIcon } from 'lucide-react'
+import {
+  ApprovalLogStatus,
+  IApproveProductRequisition,
+  IRequisitionFormResponseForApprover,
+  RequestRequisitionRoleApproval
+} from '@/types'
+import { DialogApprovalRequisition } from '@/components/app/dialog'
+import { showToast } from '@/utils'
+import { useMutation } from '@tanstack/react-query'
+import { approveProductRequisition } from '@/api'
 
 const ProductRequisitionsDetail: React.FC = () => {
   const { t } = useTranslation(['productRequisition'])
   const { slug } = useParams<{ slug: string }>()
   const { data, isLoading } = useProductRequisitionBySlug(slug!)
-  const navigate = useNavigate()
+  const location = useLocation()
+  const selectedRequisition = location.state?.selectedRequisition as
+    | IRequisitionFormResponseForApprover
+    | undefined
+  console.log('form slug: ', data?.result.slug)
+  console.log('approval user slug: ', selectedRequisition?.approvalUserSlug)
 
-  console.log(data?.result?.requestProducts)
+  const { roleApproval } = selectedRequisition || {}
+  const status = data?.result?.status
+  const isRecalled = data?.result?.isRecalled
 
   const columns = useColumnsDetail()
 
-  const handleApprove = () => {
-    // Logic xử lý duyệt yêu cầu
-    console.log('Yêu cầu được duyệt')
-  }
+  const [openDialog, setOpenDialog] = useState<'accept' | 'give_back' | 'cancel' | null>(null)
 
-  const handleReject = () => {
-    // Logic xử lý từ chối yêu cầu
-    console.log('Yêu cầu bị từ chối')
-  }
+  const buttonStates = useMemo(() => {
+    if (!data?.result || !selectedRequisition) return {}
 
-  const handleReturn = () => {
-    // Logic xử lý hoàn lại cấp trước
-    console.log('Yêu cầu được hoàn lại cấp trước')
-  }
+    const { status, isRecalled } = data.result
+    const { roleApproval } = selectedRequisition
 
-  const handleCancel = () => {
-    // Logic xử lý hủy yêu cầu
-    console.log('Yêu cầu bị hủy')
+    let acceptEnabled = false
+    let giveBackEnabled = false
+    let cancelEnabled = false
+
+    switch (roleApproval) {
+      case 'approval_stage_1':
+        acceptEnabled = status === 'waiting' && !isRecalled
+        giveBackEnabled = status === 'waiting' && !isRecalled
+        break
+      case 'approval_stage_2':
+      case 'approval_stage_3':
+        acceptEnabled = ['accepted_stage_1', 'accepted_stage_2'].includes(status) && !isRecalled
+        giveBackEnabled = ['accepted_stage_1', 'accepted_stage_2'].includes(status) && !isRecalled
+        cancelEnabled = ['accepted_stage_1', 'accepted_stage_2'].includes(status)
+        break
+    }
+
+    return { acceptEnabled, giveBackEnabled, cancelEnabled }
+  }, [data?.result, selectedRequisition])
+
+  const handleAccept = () => setOpenDialog('accept')
+  const handleGiveBack = () => setOpenDialog('give_back')
+  const handleCancel = () => setOpenDialog('cancel')
+
+  const mutation = useMutation({
+    mutationFn: async (data: IApproveProductRequisition) => {
+      return approveProductRequisition(
+        data.formSlug,
+        data.approvalUserSlug,
+        data.approvalLogStatus,
+        data.approvalLogMessage
+      )
+    },
+    onSuccess: () => {
+      showToast('toast.request_success')
+    }
+  })
+
+  const handleConfirm = (message: string, status: ApprovalLogStatus) => {
+    mutation.mutate({
+      formSlug: data?.result.slug as string,
+      approvalUserSlug: selectedRequisition?.approvalUserSlug as string,
+      approvalLogStatus: status,
+      approvalLogMessage: message
+    })
+
+    setOpenDialog(null)
   }
 
   return (
     <div className="flex flex-col gap-4">
-      <Label className="flex items-center justify-between gap-1 font-semibold text-normal text-md font-beVietNam">
-        <div className="flex items-center gap-1">
+      <div className="flex items-center justify-between">
+        <Label className="flex items-center gap-1 font-semibold text-normal text-md font-beVietNam">
           <ReaderIcon className="header-icon" />
           {t('requisitionDetail.requestDetail')}
+        </Label>
+        <div className="flex gap-4">
+          {roleApproval === 'approval_stage_1' && (
+            <>
+              <Button
+                variant="outline"
+                onClick={handleGiveBack}
+                disabled={!buttonStates.giveBackEnabled}
+              >
+                {t('productRequisition.giveBack')}
+              </Button>
+              <Button
+                variant="default"
+                onClick={handleAccept}
+                disabled={!buttonStates.acceptEnabled}
+              >
+                {t('productRequisition.accept')}
+              </Button>
+            </>
+          )}
+          {(roleApproval === 'approval_stage_2' || roleApproval === 'approval_stage_3') && (
+            <>
+              <Button
+                variant="destructive"
+                onClick={handleCancel}
+                disabled={!buttonStates.cancelEnabled}
+              >
+                {t('productRequisition.cancel')}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleGiveBack}
+                disabled={!buttonStates.giveBackEnabled}
+              >
+                {t('productRequisition.giveBack')}
+              </Button>
+              <Button
+                variant="default"
+                onClick={handleAccept}
+                disabled={!buttonStates.acceptEnabled}
+              >
+                {t('productRequisition.accept')}
+              </Button>
+            </>
+          )}
         </div>
-        <div className="flex justify-end gap-4 mt-6">
-          {/* <Button variant="outline" onClick={() => navigate(-1)}>
-          {t('productRequisition.back')}
-        </Button> */}
-          <Button variant="destructive" onClick={handleCancel}>
-            {/* <XIcon className="w-4 h-4 mr-1" /> */}
-            {t('productRequisition.reject')}
-          </Button>
-          <Button variant="outline" onClick={handleReject}>
-            {/* <RotateCcw className="w-4 h-4 mr-1" /> */}
-            {t('productRequisition.returnToReview')}
-          </Button>
-          <Button variant="default" onClick={handleApprove}>
-            {/* <CheckIcon className="w-4 h-4 mr-1" /> */}
-            {t('productRequisition.approve')}
-          </Button>
-        </div>
-      </Label>
+      </div>
       <div className="mt-3">
         <div className="flex flex-col justify-center gap-4">
           <div className="grid items-center justify-between grid-cols-6 py-3 mb-4 border-b-2">
             {data?.result?.company.includes('Thái Bình') ? (
-              <img className="w-full col-span-1" src={TbeLogo} height={56} width={56} />
+              <div className="w-full col-span-1">
+                <img src={TbeLogo} height={72} width={72} />
+              </div>
             ) : data?.result?.company.includes('Mekong') ? (
-              <img className="w-full col-span-1" src={MetekLogo} height={64} width={64} />
+              <div className="w-full col-span-1">
+                <img src={MetekLogo} height={72} width={72} />
+              </div>
             ) : (
-              <img className="w-full col-span-1" src={SongnamLogo} />
+              <div className="w-full col-span-1">
+                <img src={SongnamLogo} height={72} width={72} />
+              </div>
             )}
             <span className="col-span-4 text-xl font-bold text-center text-normal font-beVietNam">
               {t('productRequisition.confirmProductRequisitions')}
@@ -141,12 +230,12 @@ const ProductRequisitionsDetail: React.FC = () => {
           onPageChange={() => {}}
         />
 
-        {/* <div className="flex justify-end w-full gap-2 mt-4">
-        <Button variant="outline" onClick={onBack}>
-          {t('productRequisition.back')}
-        </Button>
-        <Button onClick={handleConfirm}>{t('productRequisition.confirm')}</Button>
-      </div> */}
+        <DialogApprovalRequisition
+          openDialog={openDialog as ApprovalLogStatus}
+          setOpenDialog={setOpenDialog}
+          onConfirm={handleConfirm}
+          roleApproval={roleApproval as RequestRequisitionRoleApproval}
+        />
       </div>
     </div>
   )

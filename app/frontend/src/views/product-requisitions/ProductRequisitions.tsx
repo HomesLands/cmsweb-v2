@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ReaderIcon } from '@radix-ui/react-icons'
 import { useNavigate } from 'react-router-dom'
@@ -11,6 +11,8 @@ import { IRequisitionFormResponseForApprover } from '@/types'
 
 const ProductRequisitionsStaff: React.FC = () => {
   const { t } = useTranslation(['productRequisition'])
+  const [selectedRequisition, setSelectedRequisition] =
+    useState<IRequisitionFormResponseForApprover | null>(null)
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
   const navigate = useNavigate()
 
@@ -114,7 +116,10 @@ const ProductRequisitionsStaff: React.FC = () => {
   }, [filteredData])
 
   const handleRowClick = (requisition: IRequisitionFormResponseForApprover) => {
-    navigate(`/product-requisitions/detail/${requisition.productRequisitionForm.slug}`)
+    setSelectedRequisition(requisition)
+    navigate(`/product-requisitions/detail/${requisition.productRequisitionForm.slug}`, {
+      state: { selectedRequisition: requisition }
+    })
   }
 
   return (

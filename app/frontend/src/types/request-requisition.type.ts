@@ -10,6 +10,8 @@ export type RequestRequisitionStatus =
   | 'done'
 export type RequestRequisitionType = 'normal' | 'urgent'
 
+export type ApprovalLogStatus = 'cancel' | 'accept' | 'give_back'
+
 export type RequestRequisitionRoleApproval =
   | 'approval_stage_1'
   | 'approval_stage_2'

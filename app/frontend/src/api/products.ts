@@ -1,4 +1,5 @@
 import {
+  ApprovalLogStatus,
   IApiResponse,
   IFinalProductRequisition,
   IPaginationResponse,
@@ -109,6 +110,24 @@ export async function getProductRequisitionByCreator(params: IProductQuery) {
     '/productRequisitionForms',
     {
       params
+    }
+  )
+  return response.data
+}
+
+export async function approveProductRequisition(
+  formSlug: string,
+  approvalUserSlug: string,
+  approvalLogStatus: ApprovalLogStatus,
+  approvalLogMessage: string
+) {
+  const response = await http.patch<IApiResponse<IRequestRequisitionInfo>>(
+    `/productRequisitionForms/approval`,
+    {
+      approvalUserSlug,
+      formSlug,
+      approvalLogStatus,
+      approvalLogMessage
     }
   )
   return response.data
