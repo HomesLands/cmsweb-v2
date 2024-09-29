@@ -54,7 +54,7 @@ export const useApproveProductRequisition = () => {
         data.formSlug,
         data.approvalUserSlug,
         data.approvalLogStatus,
-        data.approvalLogMessage
+        data.approvalLogContent
       )
   })
 }
