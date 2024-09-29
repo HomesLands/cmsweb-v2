@@ -49,7 +49,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
     children: [
       {
         title: i18next.t('sidebar.productRequisitionsList'),
-        path: ROUTE.LIST_PRODUCT_REQUISITIONS,
+        path: ROUTE.PRODUCT_REQUISITIONS,
         icon: Archive,
         authorities: [Authority.READ_PRODUCT_REQUISITION]
       },
