@@ -158,7 +158,7 @@ class RequestProductService {
 
     // UPDATE
     const dataCreateRequestProduct: TCreateRequestProductRequestDto = {
-      productSlug: requestData.productSlug,
+      product: requestData.productSlug,
       requestQuantity: requestData.requestQuantity,
     };
 

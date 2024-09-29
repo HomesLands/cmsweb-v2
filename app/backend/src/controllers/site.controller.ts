@@ -14,22 +14,17 @@ class SiteController {
    *       type: object
    *       required:
    *         - name
-   *         - address
-   *         - manager
+   *         - company
    *       properties:
    *         name:
    *           type: string
    *           description: sitename
-   *         address:
+   *         company:
    *           type: string
-   *           description: siteaddress
-   *         manager:
-   *           type: string
-   *           description: managerSlug
+   *           description: companySlug
    *       example:
    *         name: FirstSite
-   *         address: Linh Trung, Thủ Đức
-   *         manager: 3Co-M1ZL4
+   *         company: company-slug-123
    */
 
   /**

@@ -1,5 +1,5 @@
-export * from "./image.repository";
 export { default as userRepository } from "./user.repository";
+export { default as fileRepository } from "./file.repository";
 export { default as invalidTokenRepository } from "./invalid-token.repository";
 export { default as siteRepository } from "./site.repository";
 export { default as projectRepository } from "./project.repository";
@@ -13,5 +13,9 @@ export { default as roleRepository } from "./role.repository";
 export { default as authorityRepository } from "./authority.repository";
 export { default as permissionRepository } from "./permission.repository";
 export { default as userRoleRepository } from "./user-role.repository";
-
 export { default as approvalLogRepository } from "./approval-log.repository";
+export { default as departmentRepository } from "./department.repository";
+export { default as userDepartmentRepository } from "./user-department.repository";
+export { default as assignedUserApprovalRepository } from "./assigned-user-approval.repository";
+export { default as productWarehouseRepository } from "./product-warehouse.repository";
+export { default as warehouseRepository } from "./warehouse.repository";

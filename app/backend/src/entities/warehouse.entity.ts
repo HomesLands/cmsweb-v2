@@ -1,14 +1,26 @@
-import { Entity, Column } from "typeorm";
-import { Base } from "@entities/base.entity";
+import { Entity, Column, OneToMany } from "typeorm";
+import { AutoMap } from "@automapper/classes";
+import { 
+  Base,
+  ProductWarehouse, 
+} from "@entities";
 
 @Entity("warehouse_tbl")
 export class Warehouse extends Base {
-  @Column({ name: "site_column" })
-  site?: string;
+  @Column({ name: "name_column", unique: true })
+  @AutoMap()
+  name?: string;
 
   @Column({ name: "address_column" })
+  @AutoMap()
   address?: string;
 
-  @Column({ name: "status_column" })
-  status?: string;
+  @Column({ name: "description" , nullable: true})
+  @AutoMap()
+  description?: string;
+
+  // a warehouse have many product warehouse
+  @OneToMany(() => ProductWarehouse,
+    (productWarehouse) => productWarehouse.warehouse)
+  productWarehouses?: ProductWarehouse[];
 }

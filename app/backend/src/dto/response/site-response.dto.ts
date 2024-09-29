@@ -1,14 +1,23 @@
 import { AutoMap } from "@automapper/classes";
-import { BaseResponseDto } from "./base-response.dto";
+import { ProjectResponseDto, DepartmentResponseDto, BaseResponseDto } from "@dto/response";
 
-export class SiteResponseDto extends BaseResponseDto {
+
+export class SiteResponseDto
+//  extends BaseResponseDto 
+ {
   @AutoMap()
   name?: string;
 
   @AutoMap()
-  address?: string;
+  slug?: string;
 
-  managerFullname?: string;
+  @AutoMap(() => [ProjectResponseDto])
+  projects?: ProjectResponseDto[];
 
-  managerSlug?: string;
+  @AutoMap(() => [DepartmentResponseDto])
+  departments?: DepartmentResponseDto[];
+
+  company?: string;
+
+  companySlug?: string;
 }

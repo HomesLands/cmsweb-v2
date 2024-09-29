@@ -10,6 +10,6 @@ export type TAddNewRequestProductRequestDto = {
 }
 
 export type TCreateRequestProductRequestDto = {
-  productSlug?: string;
+  product?: string;
   requestQuantity?: number;
 }

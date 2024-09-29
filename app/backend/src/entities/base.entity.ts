@@ -22,4 +22,7 @@ export class Base {
   @AutoMap()
   @UpdateDateColumn({ type: "timestamp", name: "updated_at_column" })
   updatedAt?: Date;
+
+  @Column({ name: "is_deleted_column", default: false })
+  isDeleted?: boolean;
 }
