@@ -10,7 +10,8 @@ import {
   ProductRequisitionPage,
   ProductRequisitionFormPage,
   ApprovalProductRequisitionPage,
-  ApprovalProductRequisitionDetailPage
+  ApprovalProductRequisitionDetailPage,
+  ProductRequisitionListPage
 } from './loadable'
 
 export const router = createBrowserRouter([
@@ -18,7 +19,7 @@ export const router = createBrowserRouter([
   { path: ROUTE.REGISTER, element: <SuspenseElement component={RegisterPage} /> },
   { path: ROUTE.HOME, element: <SuspenseElement component={DashboardLayout} /> },
   {
-    path: ROUTE.PRODUCT_REQUSITIONS,
+    path: ROUTE.PRODUCT_REQUISITIONS,
     element: <SuspenseElement component={DashboardLayout} />,
     children: [
       {
@@ -36,6 +37,15 @@ export const router = createBrowserRouter([
           <ProtectedElement
             element={<SuspenseElement component={ProductRequisitionFormPage} />}
             allowedAuthorities={[Authority.CREATE_PRODUCT_REQUISITION]}
+          />
+        )
+      },
+      {
+        path: 'list',
+        element: (
+          <ProtectedElement
+            element={<SuspenseElement component={ProductRequisitionListPage} />}
+            allowedAuthorities={[Authority.READ_PRODUCT_REQUISITION]}
           />
         )
       },

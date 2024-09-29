@@ -119,7 +119,7 @@ export async function approveProductRequisition(
   formSlug: string,
   approvalUserSlug: string,
   approvalLogStatus: ApprovalLogStatus,
-  approvalLogMessage: string
+  approvalLogContent: string
 ) {
   const response = await http.patch<IApiResponse<IRequestRequisitionInfo>>(
     `/productRequisitionForms/approval`,
@@ -127,7 +127,7 @@ export async function approveProductRequisition(
       approvalUserSlug,
       formSlug,
       approvalLogStatus,
-      approvalLogMessage
+      approvalLogContent
     }
   )
   return response.data

@@ -103,5 +103,5 @@ export interface IApproveProductRequisition {
   formSlug: string
   approvalUserSlug: string
   approvalLogStatus: ApprovalLogStatus
-  approvalLogMessage: string
+  approvalLogContent: string
 }
