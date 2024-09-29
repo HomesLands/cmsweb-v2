@@ -5,7 +5,6 @@ import {
   IPaginationResponse,
   IProductInfo,
   IProductQuery,
-  IProductRequirementInfoCreate,
   IRequestRequisitionInfo,
   IRequisitionFormResponseForApprover
 } from '@/types'

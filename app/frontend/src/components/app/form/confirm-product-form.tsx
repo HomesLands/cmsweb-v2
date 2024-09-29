@@ -65,15 +65,13 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
       <div className="flex flex-col justify-center gap-4">
         <div className="grid items-center justify-between grid-cols-6 py-3 mb-4 border-b-2">
           {getRequisition()?.company.name.includes('Thái Bình') ? (
-            <img className="w-full col-span-1" src={TbeLogo} height={56} width={56} />
+            <img className="w-24 col-span-1" src={TbeLogo} />
           ) : getRequisition()?.company.name.includes('Mekong') ? (
-            <div className="w-full h-full col-span-1">
-              <img src={MetekLogo} height={72} width={72} />
-            </div>
+            <img src={MetekLogo} className="w-40" />
           ) : (
-            <img className="w-full col-span-1" src={SongnamLogo} />
+            <img className="w-40 col-span-1" src={SongnamLogo} />
           )}
-          <span className="col-span-4 text-xl font-bold text-center text-normal font-beVietNam">
+          <span className="col-span-4 text-2xl font-extrabold text-center text-normal font-beVietNam uppercase">
             {t('productRequisition.confirmProductRequisitions')}
           </span>
           <div className="col-span-1">

@@ -194,7 +194,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
                 <img src={SongnamLogo} height={72} width={72} />
               </div>
             )}
-            <span className="col-span-4 text-xl font-bold text-center text-normal font-beVietNam">
+            <span className="col-span-4 text-2xl font-extrabold text-center text-normal font-beVietNam uppercase">
               {t('productRequisition.confirmProductRequisitions')}
             </span>
             <div className="col-span-1">

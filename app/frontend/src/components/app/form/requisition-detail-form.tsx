@@ -201,13 +201,6 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
               </TableBody>
             </Table>
           </div>
-          <div>
-            <h3 className="mb-2 text-lg font-semibold">Xác nhận duyệt</h3>
-            <div className="flex justify-end gap-2">
-              <Button variant="outline">Hủy</Button>
-              <Button>Xác nhận duyệt</Button>
-            </div>
-          </div>
         </form>
       </Form>
     </div>

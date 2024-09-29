@@ -10,8 +10,7 @@ import {
   ProductRequisitionPage,
   ProductRequisitionFormPage,
   ApprovalProductRequisitionPage,
-  ApprovalProductRequisitionDetailPage,
-  ProductRequisitionListPage
+  ApprovalProductRequisitionDetailPage
 } from './loadable'
 
 export const router = createBrowserRouter([
@@ -37,15 +36,6 @@ export const router = createBrowserRouter([
           <ProtectedElement
             element={<SuspenseElement component={ProductRequisitionFormPage} />}
             allowedAuthorities={[Authority.CREATE_PRODUCT_REQUISITION]}
-          />
-        )
-      },
-      {
-        path: 'list',
-        element: (
-          <ProtectedElement
-            element={<SuspenseElement component={ProductRequisitionListPage} />}
-            allowedAuthorities={[Authority.READ_PRODUCT_REQUISITION]}
           />
         )
       },
