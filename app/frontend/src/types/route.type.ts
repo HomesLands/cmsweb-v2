@@ -1,10 +1,13 @@
 export interface IRoute {
   title: string
   path: string
+  meta?: {
+    authorities?: string[]
+  }
   redirect?: string
   component?: () => Promise<{ default: React.ComponentType }>
   children?: IRoute[]
-  permissions?: string[]
+  authorities?: string[]
 }
 
 export interface IRoutes {
@@ -13,16 +16,22 @@ export interface IRoutes {
 export interface ISubmenu {
   title: string
   path: string
+  meta?: {
+    authorities?: string[]
+  }
   component?: () => Promise<{ default: React.ComponentType }>
   icon: React.ComponentType
-  permissions?: string[]
+  authorities?: string[]
 }
 
 export interface ISidebarSubmenu {
   title: string
   path: string
+  meta?: {
+    authorities?: string[]
+  }
   icon: React.ComponentType
   component?: () => Promise<{ default: React.ComponentType }>
   children?: ISubmenu[]
-  permissions?: string[]
+  authorities?: string[]
 }

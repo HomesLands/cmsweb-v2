@@ -54,7 +54,7 @@ class RoleController {
   ): Promise<void> {
     try {
       const results = await roleService.getAllRoles();
-      const response: TApiResponse<UserResponseDto[]> = {
+      const response: TApiResponse<RoleResponseDto[]> = {
         code: StatusCodes.OK,
         error: false,
         message: "Roles have been retrieved successfully",

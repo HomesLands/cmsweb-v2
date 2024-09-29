@@ -13,7 +13,7 @@ import {
 } from '@/components/ui'
 import { DialogLogout } from '@/components/app/dialog'
 import { useUser } from '@/hooks'
-import { useAuthStore, useUserStore } from '@/stores'
+import { useAuthStore, useUserInfoPermissionsStore, useUserStore } from '@/stores'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
@@ -25,11 +25,13 @@ export function DropdownHeader() {
   // const mutation = useLogout()
   const { data } = useUser()
   const { removeUserInfo } = useUserStore()
+  const { clearUserRoles } = useUserInfoPermissionsStore()
   const navigate = useNavigate()
 
   const handleLogout = async () => {
     setLogout()
     removeUserInfo()
+    clearUserRoles()
     toast.success(t('logout.logoutSuccess'))
     navigate('/auth/login')
     // const requestData = {

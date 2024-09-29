@@ -1,6 +1,12 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { IUserInfoPermissionsStore, IUserStore, IUserRole } from '@/types'
+import {
+  IUserInfoPermission,
+  IUserInfoPermissionsStore,
+  IUserPermission,
+  IUserRole,
+  IUserStore
+} from '@/types'
 import { IUserInfo } from '@/types/user.type'
 
 export const useUserStore = create<IUserStore>()(
@@ -18,12 +24,27 @@ export const useUserStore = create<IUserStore>()(
 
 export const useUserInfoPermissionsStore = create<IUserInfoPermissionsStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       userRoles: [],
-      setUserRoles: (userRoles: IUserRole[]) => set({ userRoles })
+      getUserRoles: () => get().userRoles,
+      setUserRoles: (roles: IUserRole[]) => set({ userRoles: roles }),
+      clearUserRoles: () => set({ userRoles: [] })
     }),
     {
       name: 'user-info-permissions-storage'
     }
   )
 )
+
+// export const useUserInfoPermissionsStore = create<IUserInfoPermissionsStore>()(
+//   persist(
+//     (set) => ({
+//       userRole: null,
+//       setUserRole: (role: IUserRole) => set({ userRole: role }),
+//       clearUserRole: () => set({ userRole: null })
+//     }),
+//     {
+//       name: 'user-info-permissions-storage'
+//     }
+//   )
+// )

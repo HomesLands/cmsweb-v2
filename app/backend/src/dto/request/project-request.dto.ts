@@ -14,11 +14,6 @@ export class CreateProjectRequestDto {
   @Expose()
   startDate?: string;
 
-  @IsNotEmpty({ message: "INVALID_PROJECT_PROCESS" })
-  @Expose()
-  @AutoMap()
-  process?: number;
-
   @IsNotEmpty({ message: "INVALID_PROJECT_DESCRIPTION" })
   @Expose()
   @AutoMap()
@@ -29,7 +24,7 @@ export class CreateProjectRequestDto {
   @AutoMap()
   fileDescription?: string;
 
-  @IsNotEmpty({ message: "INVALID_PROJECT_MANAGER" })
+  @IsNotEmpty({ message: "INVALID_SITE_SLUG" })
   @Expose()
-  manager?: string;
+  site?: string;
 }

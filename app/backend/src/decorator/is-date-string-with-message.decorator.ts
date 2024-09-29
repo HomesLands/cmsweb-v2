@@ -7,7 +7,7 @@ import {
 export function IsDateStringWithMessage(validationOptions?: ValidationOptions) {
   return function (object: object, propertyName: string) {
     registerDecorator({
-      name: "isCustomDateString",
+      name: "IsDateStringWithMessage",
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,

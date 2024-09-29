@@ -15,10 +15,9 @@ class ProjectController {
    *       required:
    *         - name
    *         - startDate
-   *         - process
    *         - description
    *         - fileDescription
-   *         - manager
+   *         - site
    *       properties:
    *         name:
    *           type: string
@@ -35,16 +34,15 @@ class ProjectController {
    *         fileDescription:
    *           type: string
    *           description: fileDescriptionProject
-   *         manager:
+   *         site:
    *           type: string
-   *           description: managerSlug
+   *           description: siteSlug
    *       example:
    *         name: FirstProject
    *         startDate: 2024-09-15 10:25:45
-   *         process: 1
    *         description: project description
    *         fileDescription: temp file description
-   *         manager: 3Co-M1ZL4
+   *         site: 3Co-M1ZL4
    */
 
   /**

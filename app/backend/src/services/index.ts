@@ -14,3 +14,8 @@ export { default as permissionService } from "./permission.service";
 export { default as userRoleService } from "./user-role.service";
 export { default as requestProductService } from "./request-product.service";
 export { default as userApprovalService } from "./user-approval.service";
+export { default as departmentService } from "./department.service";
+export { default as userDepartmentService } from "./user-department.service";
+export { default as assignedUserApprovalService } from "./assigned-user-approval.service";
+export { default as warehouseService } from "./warehouse.service";
+export { default as productWarehouseService } from "./product-warehouse.service";
