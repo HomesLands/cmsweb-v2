@@ -67,7 +67,9 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
           {getRequisition()?.company.name.includes('Thái Bình') ? (
             <img className="w-full col-span-1" src={TbeLogo} height={56} width={56} />
           ) : getRequisition()?.company.name.includes('Mekong') ? (
-            <img className="w-full col-span-1" src={MetekLogo} height={64} width={64} />
+            <div className="w-full h-full col-span-1">
+              <img src={MetekLogo} height={72} width={72} />
+            </div>
           ) : (
             <img className="w-full col-span-1" src={SongnamLogo} />
           )}

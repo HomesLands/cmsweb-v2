@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ReaderIcon } from '@radix-ui/react-icons'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { DataTableRequisition, Label, Button } from '@/components/ui'
 import { useProductRequisitionBySlug } from '@/hooks'
@@ -22,6 +22,8 @@ import { useMutation } from '@tanstack/react-query'
 import { approveProductRequisition } from '@/api'
 
 const ApprovalProductRequisitionDetail: React.FC = () => {
+  const navigate = useNavigate()
+  const { t: tToast } = useTranslation('toast')
   const { t } = useTranslation(['productRequisition'])
   const { slug } = useParams<{ slug: string }>()
   const { data } = useProductRequisitionBySlug(slug!)
@@ -47,6 +49,11 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
     let acceptEnabled = false
     let giveBackEnabled = false
     let cancelEnabled = false
+
+    // Nếu đã duyệt bước 2 và không bị recall, disable tất cả các nút
+    if (status === 'accepted_stage_2' && !isRecalled) {
+      return { acceptEnabled, giveBackEnabled, cancelEnabled }
+    }
 
     switch (roleApproval) {
       case 'approval_stage_1':
@@ -74,11 +81,33 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
         data.formSlug,
         data.approvalUserSlug,
         data.approvalLogStatus,
-        data.approvalLogMessage
+        data.approvalLogContent
       )
     },
-    onSuccess: () => {
-      showToast('toast.request_success')
+    onSuccess: (_, variables) => {
+      let toastMessage = ''
+
+      switch (roleApproval) {
+        case 'approval_stage_1':
+          if (variables.approvalLogStatus === 'accept') {
+            toastMessage = tToast('toast.approveRequestSuccess')
+          } else if (variables.approvalLogStatus === 'give_back') {
+            toastMessage = tToast('toast.giveBackRequestSuccess')
+          }
+          break
+        case 'approval_stage_2':
+        case 'approval_stage_3':
+          if (variables.approvalLogStatus === 'accept') {
+            toastMessage = tToast('toast.approveRequestSuccess')
+          } else if (variables.approvalLogStatus === 'give_back') {
+            toastMessage = tToast('toast.giveBackRequestSuccess')
+          } else if (variables.approvalLogStatus === 'cancel') {
+            toastMessage = tToast('toast.cancelRequestSuccess')
+          }
+          break
+      }
+
+      showToast(toastMessage)
     }
   })
 
@@ -87,7 +116,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
       formSlug: data?.result.slug as string,
       approvalUserSlug: selectedRequisition?.approvalUserSlug as string,
       approvalLogStatus: status,
-      approvalLogMessage: message
+      approvalLogContent: message
     })
 
     setOpenDialog(null)
@@ -101,6 +130,9 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           {t('requisitionDetail.requestDetail')}
         </Label>
         <div className="flex gap-4">
+          <Button variant="outline" onClick={() => navigate(-1)}>
+            Back
+          </Button>
           {roleApproval === 'approval_stage_1' && (
             <>
               <Button
@@ -155,7 +187,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
               </div>
             ) : data?.result?.company.includes('Mekong') ? (
               <div className="w-full col-span-1">
-                <img src={MetekLogo} height={72} width={72} />
+                <img src={MetekLogo} height={150} width={150} />
               </div>
             ) : (
               <div className="w-full col-span-1">
@@ -166,7 +198,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
               {t('productRequisition.confirmProductRequisitions')}
             </span>
             <div className="col-span-1">
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col text-xs font-beVietNam">
                 <div className="flex flex-row gap-1 p-1">
                   <span>KMH:</span>
                   <span>QR3-01/001</span>

@@ -27,7 +27,7 @@ const ProductRequisitionForm: React.FC = () => {
       return createProductRequisition(data)
     },
     onSuccess: () => {
-      showToast(tToast('toast.request_success'))
+      showToast(tToast('toast.requestSuccess'))
       clearRequisition()
     }
   })
