@@ -26,7 +26,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
     resolver: zodResolver(addNewProductRequestSchema),
     defaultValues: {
       code: data?.code || '',
-      productSlug: data?.productSlug || '',
+      product: data?.product || '',
       name: data?.name || '',
       provider: data?.provider || '',
       unit: data?.unit || '',
@@ -41,7 +41,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
     const completeData: IProductRequisitionInfo = {
       ...values,
       requestQuantity: Number(values.requestQuantity),
-      productSlug: values.productSlug
+      product: values.product
     }
     onSubmit(completeData)
   }

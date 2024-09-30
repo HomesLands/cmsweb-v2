@@ -20,7 +20,7 @@ export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
   const handleButtonClick = (product: IProductInfo) => {
     setOpenDialog(true)
     const { quantity, slug, ...rest } = product
-    setSelectedProduct({ ...rest, requestQuantity: quantity, productSlug: slug })
+    setSelectedProduct({ ...rest, requestQuantity: quantity, product: slug })
   }
 
   const onOpenChange = () => {

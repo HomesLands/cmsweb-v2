@@ -5,19 +5,22 @@ import { USERNAME_REGEX } from '@/constants/regex'
 export const productSchema = z.object({
   code: z.string().min(1, 'Mã yêu cầu không hợp lệ'),
   requester: z.string().min(1, 'Tên người yêu cầu không hợp lệ'),
+  deadlineApproval: z
+    .string()
+    .min(1, 'Ngày hết hạn không hợp lệ')
+    .refine((date) => new Date(date) > new Date(), {
+      message: 'Ngày hết hạn phải là thời điểm trong tương lai'
+    }),
   company: z.object({
     name: z.string().min(1, 'Tên công ty không hợp lệ'),
-    slug: z.string().min(1, 'Mã công ty không hợp lệ'),
-    directorSlug: z.string().min(1, 'Mã giám đốc công ty không hợp lệ')
+    slug: z.string().min(1, 'Mã công ty không hợp lệ')
   }),
   project: z.object({
-    slug: z.string().min(1, 'Mã dự án không hợp lệ'),
-    managerSlug: z.string().min(1, 'Mã người quản lý dự án không hợp lệ'),
-    name: z.string().min(1, 'Tên dự án không hợp lệ')
+    name: z.string().min(1, 'Tên dự án không hợp lệ'),
+    slug: z.string().min(1, 'Mã dự án không hợp lệ')
   }),
   site: z.object({
     slug: z.string().min(1, 'Mã công trình không hợp lệ'),
-    managerSlug: z.string().min(1, 'Mã người quản lý công trình không hợp lệ'),
     name: z.string().min(1, 'Tên công trình không hợp lệ')
   }),
   type: z.enum(['normal', 'urgent']),
@@ -25,7 +28,7 @@ export const productSchema = z.object({
     z.object({
       code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
       name: z.string().min(1, 'Tên sản phẩm không hợp lệ'),
-      productSlug: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
+      product: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
       provider: z.string().min(1, 'Nhà cung cấp không hợp lệ'),
       unit: z.string().min(1, 'Đơn vị không hợp lệ'),
       requestQuantity: z.number().min(1, 'Số lượng không hợp lệ')
@@ -57,7 +60,7 @@ export const addNewProductSchema = z.object({
 
 export const addNewProductRequestSchema = z.object({
   code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
-  productSlug: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
+  product: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
   name: z.string().min(1, 'Tên sản phẩm không hợp lệ'),
   provider: z.string().min(1, 'Nhà cung cấp không hợp lệ'),
   unit: z.string().min(1, 'Đơn vị không hợp lệ'),

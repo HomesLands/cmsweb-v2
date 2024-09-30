@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { useMemo } from 'react'
 
 import {
   FormField,
@@ -15,12 +15,8 @@ import {
   TableRow,
   TableHead,
   TableBody,
-  TableCell,
-  Button,
-  ScrollArea
+  TableCell
 } from '@/components/ui'
-import { addNewProductRequestSchema } from '@/schemas'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { IRequestRequisitionInfo } from '@/types'
 
 interface IFormRequisitionDetailProps {
@@ -31,22 +27,63 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
   const form = useForm({
     defaultValues: {
       code: data?.code || '',
-      company: data?.company || '',
       createdAt: data?.createdAt || '',
       creator: data?.creator || '',
       status: data?.status || '',
       description: data?.description || '',
       project: data?.project || '',
-      site: data?.site || '',
-      type: data?.type || ''
+      type: data?.type || '',
+      requestProducts: data?.requestProducts || [],
+      displayStatus: '',
+      statusColor: ''
     }
   })
+
+  const statusInfo = useMemo(() => {
+    if (!data) return { displayStatus: '', statusColor: '' }
+
+    const { status, isRecalled } = data
+    let displayStatus = ''
+    let statusColor = ''
+
+    if (status === 'waiting' && !isRecalled) {
+      displayStatus = 'Vừa tạo, đang chờ duyệt bước 1'
+      statusColor = 'yellow'
+    } else if (status === 'cancel' && isRecalled) {
+      displayStatus = 'Đã bị hoàn ở bước 1'
+      statusColor = 'orange'
+    } else if (status === 'accepted_stage_1' && !isRecalled) {
+      displayStatus = 'Đã duyệt bước 1'
+      statusColor = 'green'
+    } else if (status === 'waiting' && isRecalled) {
+      displayStatus = 'Đã bị hoàn ở bước 2'
+      statusColor = 'orange'
+    } else if (status === 'accepted_stage_2' && !isRecalled) {
+      displayStatus = 'Đã duyệt bước 2'
+      statusColor = 'green'
+    } else if (status === 'accepted_stage_1' && isRecalled) {
+      displayStatus = 'Đã bị hoàn ở bước 3'
+      statusColor = 'orange'
+    } else if (status === 'waiting_export' && !isRecalled) {
+      displayStatus = 'Đã duyệt bước 3'
+      statusColor = 'blue'
+    } else if (status === 'cancel' && !isRecalled) {
+      displayStatus = 'Đã bị hủy'
+      statusColor = 'red'
+    }
+
+    return { displayStatus, statusColor }
+  }, [data])
+
+  // Update form values with status info
+  form.setValue('displayStatus', statusInfo.displayStatus)
+  form.setValue('statusColor', statusInfo.statusColor)
 
   return (
     <div className="mt-3">
       <Form {...form}>
         <form className="space-y-6">
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 gap-2">
             <FormField
               control={form.control}
               name="createdAt"
@@ -90,41 +127,14 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
                 </FormItem>
               )}
             />
+          </div>
+          <div className="grid grid-cols-2 gap-2">
             <FormField
               control={form.control}
               name="creator"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Người tạo</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <FormField
-              control={form.control}
-              name="company"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Công ty</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="project"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Dự án</FormLabel>
                   <FormControl>
                     <Input {...field} readOnly />
                   </FormControl>
@@ -134,10 +144,10 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
             />
             <FormField
               control={form.control}
-              name="site"
+              name="project"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Địa điểm</FormLabel>
+                  <FormLabel>Dự án</FormLabel>
                   <FormControl>
                     <Input {...field} readOnly />
                   </FormControl>
@@ -157,6 +167,24 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
                       readOnly
                       value={field.value === 'normal' ? 'Bình thường' : 'Cần gấp'}
                       className={field.value === 'urgent' ? 'text-red-500' : ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="displayStatus"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Trạng thái</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      readOnly
+                      className={`text-${form.getValues('statusColor')}-500`}
                     />
                   </FormControl>
                   <FormMessage />
@@ -187,26 +215,20 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
                   <TableHead>Mã sản phẩm</TableHead>
                   <TableHead>Tên sản phẩm</TableHead>
                   <TableHead>Số lượng yêu cầu</TableHead>
+                  <TableHead>Mô tả</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data?.requestProducts.map((product, index) => (
+                {form.getValues('requestProducts').map((product, index) => (
                   <TableRow key={index}>
                     <TableCell>{product.code}</TableCell>
                     <TableCell>{product.name}</TableCell>
                     <TableCell>{product.requestQuantity}</TableCell>
-                    {/* <TableCell>{product.description}</TableCell> */}
+                    <TableCell>{product.provider}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
-          </div>
-          <div>
-            <h3 className="mb-2 text-lg font-semibold">Xác nhận duyệt</h3>
-            <div className="flex justify-end gap-2">
-              <Button variant="outline">Hủy</Button>
-              <Button>Xác nhận duyệt</Button>
-            </div>
           </div>
         </form>
       </Form>

@@ -21,6 +21,8 @@
     "note": "Ghi chú",
     "noteDescription": "Nhập ghi chú",
     "priority": "Mức độ ưu tiên",
+    "deadlineApproval": "Hạn duyệt",
+    "deadlineApprovalDescription": "Chọn ngày hết hạn duyệt",
     "back": "Trở lại",
     "next": "Tiếp theo",
     "add": "Thêm",

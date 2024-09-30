@@ -1,5 +1,9 @@
 import { IQuery } from './base.type'
-import { ApprovalLogStatus, RequestRequisitionStatus } from './request-requisition.type'
+import {
+  ApprovalLogStatus,
+  RequestRequisitionStatus,
+  RequestRequisitionType
+} from './request-requisition.type'
 
 export interface IProductApprovalInfo {
   id: string
@@ -18,22 +22,20 @@ export interface IProductApprovalInfo {
 export interface IProductRequirementInfoCreate {
   code: string
   requester: string
+  deadlineApproval: string
   company: {
     slug: string
-    directorSlug: string
     name: string
   }
   site: {
     slug: string
-    managerSlug: string
     name: string
   }
   project: {
     slug: string
-    managerSlug: string
     name: string
   }
-  type: 'normal' | 'urgent'
+  type: RequestRequisitionType
   requestProducts: IProductRequisitionInfo[]
   userApprovals: {
     userSlug: string
@@ -44,18 +46,12 @@ export interface IProductRequirementInfoCreate {
 
 export interface IFinalProductRequisition {
   code: string
-  companySlug: string
-  siteSlug: string
-  projectSlug: string
+  project: string //Project slug
   type: 'normal' | 'urgent'
   description: string
   requestProducts: {
-    productSlug: string
+    product: string
     requestQuantity: number
-  }[]
-  userApprovals: {
-    userSlug: string
-    roleApproval: string
   }[]
 }
 
@@ -85,7 +81,7 @@ export interface IProductInfo {
 
 export interface IProductRequisitionInfo {
   code: string
-  productSlug: string
+  product: string
   name: string
   provider: string
   status?: string

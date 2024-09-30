@@ -9,7 +9,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   Button,
-  Checkbox,
   DataTableColumnHeader
 } from '@/components/ui'
 import { IRequestRequisitionInfo, RequestRequisitionStatus } from '@/types'

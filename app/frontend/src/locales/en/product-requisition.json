@@ -21,6 +21,8 @@
     "note": "Note",
     "noteDescription": "Enter the note",
     "priority": "Priority",
+    "deadlineApproval": "Deadline approval",
+    "deadlineApprovalDescription": "Choose deadline approval",
     "next": "Next",
     "add": "Add",
     "confirm": "Confirm",

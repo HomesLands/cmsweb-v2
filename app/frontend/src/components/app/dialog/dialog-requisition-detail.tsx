@@ -6,7 +6,8 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
+  ScrollArea
 } from '@/components/ui'
 
 import { RequisitionDetailForm } from '@/components/app/form'
@@ -25,17 +26,24 @@ export function DialogRequisitionDetail({
   component,
   onOpenChange
 }: DialogRequisitionDetailProps) {
+  console.log(requisition)
   const { t } = useTranslation('productRequisition')
 
   return (
     <Dialog open={openDialog} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{component}</DialogTrigger>
-      <DialogContent className="max-w-[64rem]">
-        <DialogHeader>
-          <DialogTitle>{t('requisitionDetail.requestDetail')}</DialogTitle>
-          <DialogDescription>{t('requisitionDetail.requestDetailDescription')}</DialogDescription>
-        </DialogHeader>
-        <RequisitionDetailForm data={requisition || undefined} />
+      <DialogContent className="max-w-[64rem] p-0">
+        <ScrollArea className="max-h-[80vh]">
+          <div className="p-6">
+            <DialogHeader>
+              <DialogTitle>{t('requisitionDetail.requestDetail')}</DialogTitle>
+              <DialogDescription>
+                {t('requisitionDetail.requestDetailDescription')}
+              </DialogDescription>
+            </DialogHeader>
+            <RequisitionDetailForm data={requisition || undefined} />
+          </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   )

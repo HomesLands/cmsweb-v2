@@ -1,5 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { format, parseISO } from 'date-fns'
 
 import { Button, DataTableRequisition } from '@/components/ui'
 import {
@@ -40,16 +41,13 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
       code: requisition.code,
       companySlug: requisition.company.slug,
       siteSlug: requisition.site.slug,
-      projectSlug: requisition.project.slug,
+      project: requisition.project.slug,
       type: requisition.type,
+      deadlineApproval: requisition.deadlineApproval,
       description: requisition.note || '',
       requestProducts: requisition.requestProducts.map((product) => ({
-        productSlug: product.productSlug,
+        product: product.product,
         requestQuantity: product.requestQuantity
-      })),
-      userApprovals: requisition.userApprovals.map((approval) => ({
-        userSlug: approval.userSlug,
-        roleApproval: approval.roleApproval
       }))
     }
   }
@@ -60,24 +58,39 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
     onConfirm(apiFormattedRequisition)
   }
 
+  const formatDeadline = (dateString: string | undefined) => {
+    if (!dateString) return ''
+    try {
+      const date = parseISO(dateString)
+      return format(date, 'HH:mm dd/MM/yyyy')
+    } catch (error) {
+      console.error('Error formatting date:', error)
+      return dateString
+    }
+  }
+
   return (
     <div className="mt-3">
       <div className="flex flex-col justify-center gap-4">
         <div className="grid items-center justify-between grid-cols-6 py-3 mb-4 border-b-2">
           {getRequisition()?.company.name.includes('Thái Bình') ? (
-            <img className="w-full col-span-1" src={TbeLogo} height={56} width={56} />
+            <div className="w-full col-span-1">
+              <img src={TbeLogo} height={72} width={72} />
+            </div>
           ) : getRequisition()?.company.name.includes('Mekong') ? (
             <div className="w-full h-full col-span-1">
-              <img src={MetekLogo} height={72} width={72} />
+              <img src={MetekLogo} height={150} width={150} />
             </div>
           ) : (
-            <img className="w-full col-span-1" src={SongnamLogo} />
+            <div className="w-full col-span-1">
+              <img src={SongnamLogo} height={72} width={72} />
+            </div>
           )}
           <span className="col-span-4 text-xl font-bold text-center text-normal font-beVietNam">
             {t('productRequisition.confirmProductRequisitions')}
           </span>
           <div className="col-span-1">
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col text-xs font-beVietNam">
               <div className="flex flex-row gap-1 p-1">
                 <span>KMH:</span>
                 <span>QR3-01/001</span>
@@ -96,6 +109,10 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
               <span className={requisition?.type === 'urgent' ? 'text-red-600 font-bold' : ''}>
                 {requisition?.type === 'normal' ? 'Bình thường' : 'Cần gấp'}
               </span>
+            </div>
+            <div>
+              <strong>Thời hạn duyệt: </strong>
+              <span>{formatDeadline(requisition?.deadlineApproval)}</span>
             </div>
             <div>
               <strong>Mã phiếu yêu cầu: </strong>
