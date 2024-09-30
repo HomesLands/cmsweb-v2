@@ -1,4 +1,5 @@
 import { AutoMap } from "@automapper/classes";
+import { ProductRequisitionFormResponseDto } from "@dto/response";
 import { BaseResponseDto } from "./base-response.dto";
 
 export class ProjectResponseDto extends BaseResponseDto {
@@ -11,7 +12,13 @@ export class ProjectResponseDto extends BaseResponseDto {
   @AutoMap()
   description?: string;
 
-  managerFullname?: string;
+  @AutoMap()
+  slug?: string;
 
-  managerSlug?: string;
+  site?: string;
+
+  siteSlug?: string;
+
+  @AutoMap(() => [ProductRequisitionFormResponseDto])
+  productRequisitionFormResponseDto?: ProductRequisitionFormResponseDto[];
 }

@@ -25,14 +25,26 @@ class UserService {
       take: pageSize,
       skip: (page - 1) * pageSize,
       order: { createdAt: options.order },
+      relations: [
+        'userDepartments',
+        'userDepartments.department',
+      ]
     });
     const results = mapper.mapArray(users, User, UserResponseDto);
     return results;
   }
 
   public async getUser(userId: string): Promise<UserResponseDto> {
-    const user = await userRepository.findOneBy({
-      id: userId,
+    const user = await userRepository.findOne({
+      where: {
+        id: userId
+      },
+      relations: [
+        'userDepartments',
+        'userDepartments.department',
+        'userDepartments.department.site',
+        'userDepartments.department.site.company',
+      ]
     });
     if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 

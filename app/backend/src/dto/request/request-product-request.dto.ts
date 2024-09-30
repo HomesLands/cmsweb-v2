@@ -1,6 +1,5 @@
 import {
   IsNotEmpty,
-  IsOptional,
   Min,
 } from 'class-validator';
 import { Expose } from 'class-transformer';
@@ -10,7 +9,7 @@ export class CreateRequestProductRequestDto {
   @IsNotEmpty({ message: "INVALID_PRODUCT_SLUG" })
   @Expose()
   @AutoMap()
-  productSlug?: string;
+  product?: string;
 
   @IsNotEmpty({ message: "INVALID_REQUEST_PRODUCT_QUANTITY" })
   @Min(1, { message: "INVALID_REQUEST_PRODUCT_QUANTITY"})

@@ -12,9 +12,14 @@ import {
   UserApprovalResponseDto,
   ProductRequisitionFormResponseDto,
   UserApprovalFormResponseDto,
+  AssignedUserApprovalResponseDto,
 } from "@dto/response";
-import { ApprovalLog, UserApproval, ProductRequisitionForm } from "@entities";
-import { CreateUserApprovalRequestDto } from "@dto/request";
+import { 
+  ApprovalLog,
+  UserApproval,
+  ProductRequisitionForm,
+  AssignedUserApproval,
+} from "@entities";
 import { baseMapper } from "./base.mapper";
 
 export const userApprovalMapper: MappingProfile = (mapper: Mapper) => {
@@ -25,11 +30,11 @@ export const userApprovalMapper: MappingProfile = (mapper: Mapper) => {
     UserApprovalResponseDto,
     forMember(
       (destination) => destination.userFullname,
-      mapFrom((source) => source.user?.fullname)
+      mapFrom((source) => source.assignedUserApproval?.user?.fullname)
     ),
     forMember(
       (destination) => destination.userSlug,
-      mapFrom((source) => source.user?.slug)
+      mapFrom((source) => source.assignedUserApproval?.user?.slug)
     ),
     forMember(
       (destination) => destination.approvalLogs,
@@ -37,6 +42,14 @@ export const userApprovalMapper: MappingProfile = (mapper: Mapper) => {
         ApprovalLogResponseDto,
         ApprovalLog,
         (source) => source.approvalLogs
+      )
+    ),
+    forMember(
+      (destination) => destination.assignedUserApproval,
+      mapWith(
+        AssignedUserApprovalResponseDto,
+        AssignedUserApproval,
+        (source) => source.assignedUserApproval
       )
     ),
     extend(baseMapper(mapper))
@@ -52,6 +65,10 @@ export const userApprovalMapper: MappingProfile = (mapper: Mapper) => {
       mapFrom((source) => source.slug)
     ),
     forMember(
+      (destination) => destination.roleApproval,
+      mapFrom((source) => source.assignedUserApproval?.roleApproval)
+    ),
+    forMember(
       (destination) => destination.productRequisitionForm,
       mapWith(
         ProductRequisitionFormResponseDto,
@@ -63,5 +80,5 @@ export const userApprovalMapper: MappingProfile = (mapper: Mapper) => {
   );
 
   // Map request object to entity
-  createMap(mapper, CreateUserApprovalRequestDto, UserApproval);
+  // createMap(mapper, CreateUserApprovalRequestDto, UserApproval);
 };

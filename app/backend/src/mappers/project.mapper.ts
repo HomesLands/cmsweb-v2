@@ -6,10 +6,17 @@ import {
   forMember,
   extend,
   typeConverter,
+  mapWith,
 } from "@automapper/core";
-import { ProjectResponseDto } from "@dto/response";
+import { 
+  ProjectResponseDto, 
+  ProductRequisitionFormResponseDto,
+} from "@dto/response";
 import { CreateProjectRequestDto } from "@dto/request";
-import { Project } from "@entities";
+import { 
+  Project,
+  ProductRequisitionForm
+ } from "@entities";
 import moment from "moment";
 import { baseMapper } from "./base.mapper";
 
@@ -21,12 +28,20 @@ export const projectMapper: MappingProfile = (mapper: Mapper) => {
     Project,
     ProjectResponseDto,
     forMember(
-      (destination) => destination.managerFullname,
-      mapFrom((source) => source.manager?.fullname)
+      (destination) => destination.site,
+      mapFrom((source) => source.site?.name)
     ),
     forMember(
-      (destination) => destination.managerSlug,
-      mapFrom((source) => source.manager?.slug)
+      (destination) => destination.siteSlug,
+      mapFrom((source) => source.site?.slug)
+    ),
+    forMember(
+      (destination) => destination.productRequisitionFormResponseDto,
+      mapWith(
+        ProductRequisitionFormResponseDto,
+        ProductRequisitionForm,
+        (source) => source.productRequisitionForms
+      )
     ),
     typeConverter(Date, String, (startDate) => moment(startDate).toString()),
     extend(baseMapper(mapper))

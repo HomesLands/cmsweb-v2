@@ -20,6 +20,12 @@ import { authorityRoute } from "./authority.route";
 import { permissionRoute } from "./permission.route";
 import { userRoleRoute } from "./user-role.route";
 import { userApprovalRoute } from "./user-approval.route";
+import { departmentRoute } from "./department.route";
+import { userDepartmentRoute } from "./user-department.route";
+import { assignedUserApprovalRoute } from "./assigned-user-approval.route";
+import { warehouseRoute } from "./warehouse.route";
+import { productWarehouseRoute } from "./product-warehouse.route";
+import { fileRoute } from "./file.route";
 
 const baseApi: Router = Router();
 
@@ -30,7 +36,13 @@ export const registerRoutes = (app: Express) => {
 
   baseApi.use("/users", userRoute);
 
+  baseApi.use("/files", fileRoute);
+
   baseApi.use("/products", productRoute);
+
+  baseApi.use("/productWarehouses", productWarehouseRoute);
+
+  baseApi.use("/warehouses", warehouseRoute);
 
   baseApi.use("/requestProducts", requestProductRoute);
 
@@ -41,6 +53,8 @@ export const registerRoutes = (app: Express) => {
   baseApi.use("/companies", companyRoute);
 
   baseApi.use("/projects", projectRoute);
+
+  baseApi.use("/departments", departmentRoute);
 
   baseApi.use("/productRequisitionForms", productRequisitionFormRoute);
 
@@ -57,6 +71,10 @@ export const registerRoutes = (app: Express) => {
   baseApi.use("/userRoles", userRoleRoute);
 
   baseApi.use("/userApprovals", userApprovalRoute);
+
+  baseApi.use("/userDepartments", userDepartmentRoute);
+
+  baseApi.use("/assignedUserApprovals", assignedUserApprovalRoute);
 
   app.use("/api/v1", baseApi);
 

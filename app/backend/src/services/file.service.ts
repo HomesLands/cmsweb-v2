@@ -1,6 +1,6 @@
 import multer, { FileFilterCallback } from "multer";
 import { Request, Response } from "express";
-import { ImageRepository } from "@repositories";
+import { fileRepository } from "@repositories";
 import fs from "fs";
 
 const allowedTypes = [
@@ -42,8 +42,6 @@ const fileFilter = (
 const uploadToDB = multer({ storage: memoryStorage }).single("file");
 
 export class FileUploadService {
-  private imageRepo = new ImageRepository();
-
   // vailidate + upload
   public async validateAndUploadLocal(
     req: Request,
@@ -103,6 +101,7 @@ export class FileUploadService {
             limits: { fileSize: maxSize },
           }).single("file");
 
+      console.log({ fileeee: req.file });
       console.log({ fileeee: req.files });
       validateInstance(req, res, (err: any) => {
         if (err) {
@@ -170,9 +169,8 @@ export class FileUploadService {
   //         const fileName = file.originalname.split(".")[0];
   //         const fileType = file.originalname.split(".")[1];
 
-  //         const dataSaved = this.imageRepo.save({
+  //         const dataSaved = await fileRepository.save({
   //           data: ,
-  //           // data: file.mimetype,
   //           fileName: `${fileName}-${Date.now()}.${fileType}`,
   //         });
 
@@ -189,10 +187,9 @@ export class FileUploadService {
   //       const fileName = file.originalname.split(".")[0];
   //       const fileType = file.originalname.split(".")[1];
 
-  //       const dataSaved = this.imageRepo.save({
+  //       const dataSaved = await fileRepository.save({
   //         data: base64String,
-  //         // data: file.mimetype,
-  //         fileName: `${fileName}-${Date.now()}.${fileType}`,
+  //         name: `${fileName}-${Date.now()}.${fileType}`,
   //       });
   //       resolve({
   //         success: true,
@@ -204,14 +201,14 @@ export class FileUploadService {
   //   });
   // }
 
-  public async getImgFromDB(id: string): Promise<Blob | undefined> {
-    const imageData = await this.imageRepo.findOneBy({ id });
-    if (!imageData) {
-      return;
-    }
-    const base64Data = imageData.data;
-    return base64Data;
-  }
+  // public async getImgFromDB(id: string): Promise<Blob | undefined> {
+  //   const imageData = await this.imageRepo.findOneBy({ id });
+  //   if (!imageData) {
+  //     return;
+  //   }
+  //   const base64Data = imageData.data;
+  //   return base64Data;
+  // }
 }
 
 export default new FileUploadService();

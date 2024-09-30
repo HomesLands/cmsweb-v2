@@ -1,21 +1,18 @@
 export type TCreateProductRequisitionFormRequestDto = {
   code?: string;
-  companySlug?: string;
+  project?: string;
   type?: string; //normal, urgent
+  deadlineApproval?: string;
   description?: string;
   requestProducts: {
-    productSlug?: string;
+    product?: string;
     requestQuantity?: number;
   }[];
-  userApprovals: {
-    userSlug?: string;
-    roleApproval?: string; // approval_stage_1, approval_stage_2, approval_stage_3
-  }[];
-};
+}
 
 export type TApprovalProductRequisitionFormRequestDto = {
   formSlug?: string;
-  approvalUserSlug?: string;
+  // approvalUserSlug?: string;
   approvalLogStatus?: string;
   approvalLogContent?: string;
 };

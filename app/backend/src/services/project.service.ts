@@ -1,4 +1,4 @@
-import { projectRepository, userRepository } from "@repositories";
+import { projectRepository, siteRepository, userRepository } from "@repositories";
 import { mapper } from "@mappers";
 import { Project } from "@entities";
 import { ProjectResponseDto } from "@dto/response";
@@ -11,7 +11,10 @@ import { validate } from "class-validator";
 class ProjectService {
   public async getAllProjects(): Promise<ProjectResponseDto[]> {
     const projectsData = await projectRepository.find({
-      relations: ['manager']
+      relations: [
+        'productRequisitionForms',
+        'site'
+      ]
     });
 
     const projectsDto: ProjectResponseDto[] = mapper.mapArray(
@@ -29,13 +32,13 @@ class ProjectService {
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
 
-    const manager = await userRepository.findOneBy({ slug: requestData.manager });
-    if (!manager) {
-      throw new GlobalError(ErrorCodes.USER_ASSIGNED_NOT_FOUND);
+    const site = await siteRepository.findOneBy({ slug: requestData.site });
+    if (!site) {
+      throw new GlobalError(ErrorCodes.SITE_NOT_FOUND);
     }
 
     const projectData = mapper.map(requestData, CreateProjectRequestDto, Project);    
-    projectData.manager = manager;
+    projectData.site = site;
 
     const projectDataCreated = await projectRepository.createAndSave(projectData);
 
