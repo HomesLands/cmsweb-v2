@@ -77,13 +77,15 @@ export interface IProductInfo {
   slug: string
   name: string
   provider: string
-  status?: string
+  // status?: string
   description?: string
   unit: string
   quantity: number
 }
 
 export interface IProductRequisitionInfo {
+  createdAt?: string
+  updatedAt?: string
   code: string
   productSlug: string
   name: string

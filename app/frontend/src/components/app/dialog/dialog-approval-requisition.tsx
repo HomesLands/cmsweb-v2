@@ -53,7 +53,7 @@ export const DialogApprovalRequisition: React.FC<DialogApprovalRequisitionProps>
       case 'accept':
         return t('productRequisition.accept')
       case 'give_back':
-        return t('productRequisition.give_back')
+        return t('productRequisition.giveBack')
       case 'cancel':
         return t('productRequisition.cancel')
       default:
@@ -77,7 +77,7 @@ export const DialogApprovalRequisition: React.FC<DialogApprovalRequisitionProps>
           {openDialog === 'accept' && t('productRequisition.acceptConfirmMessage')}
           {openDialog === 'give_back' &&
             (roleApproval === 'approval_stage_1'
-              ? t('productRequisition.giveBackConfirmMessageStage1')
+              ? t('productRequisition.giveBackConfirmMessage')
               : t('productRequisition.giveBackConfirmMessage'))}
           {openDialog === 'cancel' &&
             roleApproval !== 'approval_stage_1' &&

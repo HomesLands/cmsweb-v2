@@ -1,4 +1,4 @@
-import { IProductRequisitionInfo } from './product.type'
+import { IProductInfo } from './product.type'
 
 export type RequestRequisitionStatus =
   | 'cancel'
@@ -31,7 +31,13 @@ export interface IRequestRequisitionInfo {
   projectSlug: string
   creator: string
   creatorSlug: string
-  requestProducts: IProductRequisitionInfo[]
+  requestProducts: {
+    createdAt: string
+    description: string
+    slug: string
+    updatedAt: string
+    product: IProductInfo
+  }
   slug: string
   userApprovals: {
     roleApproval: string
@@ -48,8 +54,8 @@ export interface IRequestRequisitionInfo {
     }[]
     slug: string
   }[]
-  createdAt: string
-  updatedAt: string
+  createdAt?: string
+  updatedAt?: string
 }
 
 export interface IRequisitionFormResponseForApprover {

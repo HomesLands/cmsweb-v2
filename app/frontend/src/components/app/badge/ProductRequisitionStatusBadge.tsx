@@ -68,7 +68,7 @@ export const ProductRequisitionStatusBadge: React.FC<RequestStatusBadgeProps> = 
 }) => {
   return (
     <span
-      className={`py-1.5 px-2.5 ${getBadgeColorClass(status, roleApproval, isRecalled)} rounded-full text-white`}
+      className={`inline-block py-1.5 px-2.5 min-w-[7rem] text-center ${getBadgeColorClass(status, roleApproval, isRecalled)} rounded-full text-white`}
     >
       {getBadgeText(status, roleApproval, isRecalled)}
     </span>

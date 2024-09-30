@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontal } from 'lucide-react'
 
@@ -9,54 +10,53 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   Button,
-  Checkbox,
   DataTableColumnHeader
 } from '@/components/ui'
 import { IRequestRequisitionInfo, RequestRequisitionStatus } from '@/types'
 import { ProductRequisitionByCreatorStatusBadge } from '@/components/app/badge'
-import { AcceptRequisitionDropdownMenuItem } from '@/components/app/dropdown/accept-requisition-dropdown'
-import { RequisitionTypeBadge } from '@/components/app/badge/RequisitionTypeBadge'
-import { useState } from 'react'
+import { RequisitionTypeBadge } from '@/components/app/badge'
 import { DialogRequisitionDetail } from '@/components/app/dialog/dialog-requisition-detail'
+import { RecalledStatusBadge } from '@/components/app/badge'
+
+import { format } from 'date-fns'
 
 export const useColumnsRequisitionListCreator = (): ColumnDef<IRequestRequisitionInfo>[] => {
-  const [openDialog, setOpenDialog] = useState(false)
+  const [openViewDialog, setOpenViewDialog] = useState(false)
+  const [openEditDialog, setOpenEditDialog] = useState(false)
   const [selectedRequisition, setSelectedRequisition] = useState<IRequestRequisitionInfo | null>(
     null
   )
-  const handleOpenDialog = (requisition: IRequestRequisitionInfo) => {
-    setOpenDialog(true)
+
+  const handleOpenViewDialog = (requisition: IRequestRequisitionInfo) => {
+    setOpenViewDialog(true)
     setSelectedRequisition(requisition)
   }
-  const onOpenChange = () => {
-    setOpenDialog(false)
+
+  const handleOpenEditDialog = (requisition: IRequestRequisitionInfo) => {
+    setOpenEditDialog(true)
+    setSelectedRequisition(requisition)
   }
+
+  const onViewDialogOpenChange = () => {
+    setOpenViewDialog(false)
+  }
+
+  const onEditDialogOpenChange = () => {
+    setOpenEditDialog(false)
+  }
+
   return [
-    // {
-    //   id: 'select',
-    //   header: ({ table }) => (
-    //     <Checkbox
-    //       checked={
-    //         table.getIsAllPageRowsSelected() ||
-    //         (table.getIsSomePageRowsSelected() && 'indeterminate')
-    //       }
-    //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-    //       aria-label="Select all"
-    //     />
-    //   ),
-    //   cell: ({ row }) => (
-    //     <Checkbox
-    //       checked={row.getIsSelected()}
-    //       onCheckedChange={(value) => row.toggleSelected(!!value)}
-    //       aria-label="Select row"
-    //     />
-    //   ),
-    //   enableSorting: false,
-    //   enableHiding: false
-    // },
     {
       accessorKey: 'code',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Mã yêu cầu" />
+    },
+    {
+      accessorKey: 'createdAt',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày tạo" />,
+      cell: ({ row }) => {
+        const date = new Date(row.original.createdAt || '')
+        return format(date, 'HH:mm dd/MM/yyyy')
+      }
     },
     {
       accessorKey: 'productRequisitionForm',
@@ -73,6 +73,14 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IRequestRequisitio
     {
       accessorKey: 'company',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />
+    },
+    {
+      accessorKey: 'isRecalled',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Trạng thái hoàn" />,
+      cell: ({ row }) => {
+        const { status, isRecalled } = row.original
+        return <RecalledStatusBadge status={status} isRecalled={isRecalled} />
+      }
     },
     {
       accessorFn: (row) => row.status,
@@ -92,9 +100,13 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IRequestRequisitio
     },
     {
       id: 'actions',
-      header: () => <div className="text-[0.8rem] min-w-20">Thao tác</div>,
+      header: () => <div className="text-[0.8rem] min-w-[4rem]">Thao tác</div>,
       cell: ({ row }) => {
         const requisition = row.original
+        const canEdit =
+          (requisition.status === 'waiting' && !requisition.isRecalled) ||
+          (requisition.status === 'cancel' && requisition.isRecalled)
+
         return (
           <div>
             <DropdownMenu>
@@ -107,20 +119,31 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IRequestRequisitio
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => handleOpenDialog(requisition)}>
+                <DropdownMenuItem onClick={() => handleOpenViewDialog(requisition)}>
                   Xem chi tiết
                 </DropdownMenuItem>
-
-                <AcceptRequisitionDropdownMenuItem>Duyệt</AcceptRequisitionDropdownMenuItem>
-                <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
+                {canEdit && (
+                  <DropdownMenuItem onClick={() => handleOpenEditDialog(requisition)}>
+                    Sửa yêu cầu
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
-            {selectedRequisition === requisition && openDialog && (
+            {selectedRequisition === requisition && openViewDialog && (
               <DialogRequisitionDetail
-                openDialog={openDialog}
+                openDialog={openViewDialog}
                 requisition={requisition}
                 component={null}
-                onOpenChange={onOpenChange}
+                onOpenChange={onViewDialogOpenChange}
+              />
+            )}
+            {selectedRequisition === requisition && openEditDialog && (
+              <DialogRequisitionDetail
+                openDialog={openEditDialog}
+                requisition={requisition}
+                component={null}
+                onOpenChange={onEditDialogOpenChange}
+                isEditing={true}
               />
             )}
           </div>

@@ -6,13 +6,15 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
+  ScrollArea
 } from '@/components/ui'
 
-import { RequisitionDetailForm } from '@/components/app/form'
+import { RequisitionDetailForm, RequisitionEditForm } from '@/components/app/form'
 import { IRequestRequisitionInfo } from '@/types'
 
 interface DialogRequisitionDetailProps {
+  isEditing?: boolean
   openDialog: boolean
   requisition?: IRequestRequisitionInfo | null
   component: React.ReactNode
@@ -20,6 +22,7 @@ interface DialogRequisitionDetailProps {
 }
 
 export function DialogRequisitionDetail({
+  isEditing,
   openDialog,
   requisition,
   component,
@@ -30,12 +33,24 @@ export function DialogRequisitionDetail({
   return (
     <Dialog open={openDialog} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{component}</DialogTrigger>
-      <DialogContent className="max-w-[64rem]">
+      <DialogContent className="max-w-[64rem] max-h-[90vh]">
         <DialogHeader>
-          <DialogTitle>{t('requisitionDetail.requestDetail')}</DialogTitle>
-          <DialogDescription>{t('requisitionDetail.requestDetailDescription')}</DialogDescription>
+          <DialogTitle>
+            {isEditing ? t('requisitionEdit.requestEdit') : t('requisitionDetail.requestDetail')}
+          </DialogTitle>
+          <DialogDescription className="text-sm">
+            {isEditing
+              ? t('requisitionEdit.requestEditDescription')
+              : t('requisitionDetail.requestDetailDescription')}
+          </DialogDescription>
         </DialogHeader>
-        <RequisitionDetailForm data={requisition || undefined} />
+        <ScrollArea className="h-full max-h-[calc(90vh-120px)]">
+          {isEditing ? (
+            <RequisitionEditForm data={requisition as IRequestRequisitionInfo} />
+          ) : (
+            <RequisitionDetailForm data={requisition as IRequestRequisitionInfo} />
+          )}
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   )

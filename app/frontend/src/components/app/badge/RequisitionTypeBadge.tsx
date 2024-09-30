@@ -24,7 +24,9 @@ const getBadgeText = (type: RequestRequisitionType) => {
 
 export const RequisitionTypeBadge: React.FC<RequestTypeBadgeProps> = ({ type }) => {
   return (
-    <span className={`py-1.5 px-2.5 ${getBadgeColorClass(type)} rounded-full text-white`}>
+    <span
+      className={`inline-block py-1.5 px-2.5 min-w-[7rem] text-xs font-beVietNam text-center ${getBadgeColorClass(type)} rounded-full text-white`}
+    >
       {getBadgeText(type)}
     </span>
   )

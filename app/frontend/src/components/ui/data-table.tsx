@@ -367,22 +367,10 @@ export function DataTableByCreator<TData, TValue>({
           { id: 'isRecalled', value: false }
         ]
         break
-      case 'returned_stage_1':
-        filterConditions = [
-          { id: 'status', value: 'cancel' },
-          { id: 'isRecalled', value: true }
-        ]
-        break
       case 'approved_stage_1':
         filterConditions = [
           { id: 'status', value: 'accepted_stage_1' },
           { id: 'isRecalled', value: false }
-        ]
-        break
-      case 'returned_stage_2':
-        filterConditions = [
-          { id: 'status', value: 'waiting' },
-          { id: 'isRecalled', value: true }
         ]
         break
       case 'approved_stage_2':
@@ -391,16 +379,16 @@ export function DataTableByCreator<TData, TValue>({
           { id: 'isRecalled', value: false }
         ]
         break
-      case 'returned_stage_3':
-        filterConditions = [
-          { id: 'status', value: 'accepted_stage_1' },
-          { id: 'isRecalled', value: true }
-        ]
-        break
       case 'approved_stage_3':
         filterConditions = [
           { id: 'status', value: 'waiting_export' },
           { id: 'isRecalled', value: false }
+        ]
+        break
+      case 'returned_stage_3':
+        filterConditions = [
+          { id: 'status', value: 'accepted_stage_1' },
+          { id: 'isRecalled', value: true }
         ]
         break
       case 'canceled':
@@ -427,11 +415,11 @@ export function DataTableByCreator<TData, TValue>({
 
           <SelectContent side="top">
             <SelectItem value="all">{t('tableData.all')}</SelectItem>
-            <SelectItem value="waiting">{t('tableData.waiting')}</SelectItem>
+            <SelectItem value="waiting_approval_1">{t('tableData.waiting_approval_1')}</SelectItem>
             <SelectItem value="approved_stage_1">{t('tableData.approved_stage_1')}</SelectItem>
             <SelectItem value="approved_stage_2">{t('tableData.approved_stage_2')}</SelectItem>
-            <SelectItem value="waiting_export">{t('tableData.waiting_export')}</SelectItem>
-            <SelectItem value="recalled">{t('tableData.recalled')}</SelectItem>
+            <SelectItem value="approved_stage_3">{t('tableData.approved_stage_3')}</SelectItem>
+            <SelectItem value="returned_stage_3">{t('tableData.returned_stage_3')}</SelectItem>
             <SelectItem value="canceled">{t('tableData.canceled')}</SelectItem>
           </SelectContent>
         </Select>
@@ -618,7 +606,7 @@ export function DataTableColumnHeader<TData, TValue>({
   }
 
   return (
-    <div className={cn('flex items-center min-w-32 space-x-2 text-[0.8rem]', className)}>
+    <div className={cn('flex items-center min-w-[7.8rem] space-x-2 text-[0.8rem]', className)}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="sm" className="-ml-3 h-8 data-[state=open]:bg-accent">

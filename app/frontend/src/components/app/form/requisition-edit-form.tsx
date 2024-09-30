@@ -23,11 +23,11 @@ import { addNewProductRequestSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IRequestRequisitionInfo } from '@/types'
 
-interface IFormRequisitionDetailProps {
+interface IFormRequisitionEditProps {
   data?: IRequestRequisitionInfo
 }
 
-export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ data }) => {
+export const RequisitionEditForm: React.FC<IFormRequisitionEditProps> = ({ data }) => {
   console.log(data)
   const form = useForm({
     defaultValues: {

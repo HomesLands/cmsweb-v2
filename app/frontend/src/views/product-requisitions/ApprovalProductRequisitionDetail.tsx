@@ -13,6 +13,7 @@ import { useColumnsDetail } from './DataTable/columnsDetail'
 import {
   ApprovalLogStatus,
   IApproveProductRequisition,
+  IProductRequisitionInfo,
   IRequisitionFormResponseForApprover,
   RequestRequisitionRoleApproval
 } from '@/types'
@@ -122,6 +123,10 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
     setOpenDialog(null)
   }
 
+  const requestProducts: IProductRequisitionInfo[] = Array.isArray(data?.result?.requestProducts)
+    ? data.result.requestProducts
+    : []
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
@@ -131,7 +136,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
         </Label>
         <div className="flex gap-4">
           <Button variant="outline" onClick={() => navigate(-1)}>
-            Back
+            {t('productRequisition.back')}
           </Button>
           {roleApproval === 'approval_stage_1' && (
             <>
@@ -194,7 +199,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
                 <img src={SongnamLogo} height={72} width={72} />
               </div>
             )}
-            <span className="col-span-4 text-2xl font-extrabold text-center text-normal font-beVietNam uppercase">
+            <span className="col-span-4 text-2xl font-extrabold text-center uppercase text-normal font-beVietNam">
               {t('productRequisition.confirmProductRequisitions')}
             </span>
             <div className="col-span-1">
@@ -244,10 +249,10 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
         <DataTableRequisition
           isLoading={false}
           columns={columns}
-          data={data?.result?.requestProducts || []}
+          data={requestProducts}
           pages={1}
           page={1}
-          pageSize={data?.result?.requestProducts?.length || 0}
+          pageSize={requestProducts.length}
           onPageChange={() => {}}
         />
 
