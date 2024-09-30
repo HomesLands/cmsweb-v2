@@ -1,8 +1,14 @@
 {
   "toast": {
-    "request_success": "Yêu cầu được tạo thành công",
-    "request_error": "Yêu cầu được tạo thất bại",
-    "confirm_success": "Yêu cầu được xác nhận gửi thành công",
-    "confirm_error": "Yêu cầu được xác nhận gửi thất bại"
+    "requestSuccess": "Yêu cầu được tạo thành công",
+    "requestError": "Yêu cầu được tạo thất bại",
+    "confirmSuccess": "Yêu cầu được xác nhận gửi thành công",
+    "confirmError": "Yêu cầu được xác nhận gửi thất bại",
+    "approveRequestSuccess": "Yêu cầu được duyệt thành công",
+    "approveRequestError": "Yêu cầu được duyệt thất bại",
+    "giveBackRequestSuccess": "Yêu cầu được hoàn lại thành công",
+    "giveBackRequestError": "Yêu cầu được hoàn lại thất bại",
+    "cancelRequestSuccess": "Yêu cầu được hủy thành công",
+    "cancelRequestError": "Yêu cầu được hủy thất bại"
   }
 }

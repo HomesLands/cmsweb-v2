@@ -12,40 +12,27 @@ import {
   UserAvatar
 } from '@/components/ui'
 import { DialogLogout } from '@/components/app/dialog'
-import { useUser } from '@/hooks'
 import { useAuthStore, useUserInfoPermissionsStore, useUserStore } from '@/stores'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { ROUTE } from '@/constants'
 
-export function DropdownHeader() {
+export function HeaderDropdown() {
   const { t } = useTranslation('auth')
   const { setLogout } = useAuthStore()
   const [open, setOpen] = useState(false)
   // const mutation = useLogout()
-  const { data } = useUser()
-  const { removeUserInfo } = useUserStore()
+  const { removeUserInfo, userInfo } = useUserStore()
   const { clearUserRoles } = useUserInfoPermissionsStore()
   const navigate = useNavigate()
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     setLogout()
     removeUserInfo()
     clearUserRoles()
+    navigate(ROUTE.LOGIN)
     toast.success(t('logout.logoutSuccess'))
-    navigate('/auth/login')
-    // const requestData = {
-    //   token: token || 'token',
-    //   refreshToken: refreshToken || 'refreshToken'
-    // } as ILogoutRequest
-    // await mutation.mutateAsync(requestData, {
-    //   onSuccess: () => {
-    //     setLogout()
-    //     removeUserInfo()
-    //     toast.success(t('logout.logoutSuccess'))
-    //     navigate('/auth/login')
-    //   }
-    // })
   }
 
   return (
@@ -59,7 +46,7 @@ export function DropdownHeader() {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-[14rem]" align="end">
           <DropdownMenuLabel>
-            {t('userInfo.hello')} {data?.result?.fullname}
+            {t('userInfo.hello')} {userInfo?.fullname}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           {/* <DropdownMenuItem className="cursor-pointer">Thông tin tài khoản</DropdownMenuItem> */}

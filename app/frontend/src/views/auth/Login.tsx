@@ -1,28 +1,32 @@
 import React, { useState } from 'react'
+import { isAxiosError } from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { jwtDecode } from 'jwt-decode'
+import _ from 'lodash'
 
 import { loginSChema } from '@/schemas'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
 import { LoginBackground } from '@/assets/images'
 import { LoginForm } from '@/components/app/form'
-import { useLogin, useUserInfoPermission } from '@/hooks'
+import { useLogin, useUser, useUserInfoPermission } from '@/hooks'
 import { IApiResponse, ILoginResponse } from '@/types'
-import { useAuthStore, useUserInfoPermissionsStore } from '@/stores'
+import { useAuthStore, useUserInfoPermissionsStore, useUserStore } from '@/stores'
+import { ROUTE } from '@/constants'
 
 const Login: React.FC = () => {
   const { t } = useTranslation(['auth'])
   const { setToken, setRefreshToken, setExpireTime, setExpireTimeRefreshToken, setSlug } =
     useAuthStore()
   const { setUserRoles } = useUserInfoPermissionsStore()
+  const { setUserInfo } = useUserStore()
   const navigate = useNavigate()
   const mutation = useLogin()
   const [isLoading, setIsLoading] = useState(false)
-
   const { refetch: refetchUserInfoPermission } = useUserInfoPermission()
+  const { refetch: refetchUserInfo } = useUser()
 
   const handleSubmit = async (data: z.infer<typeof loginSChema>) => {
     setIsLoading(true)
@@ -37,30 +41,19 @@ const Login: React.FC = () => {
       setExpireTime(response.result.expireTime)
       setExpireTimeRefreshToken(response.result.expireTimeRefreshToken)
 
-      // Fetch user permissions
-      const { data: userInfoPermissionData } = await refetchUserInfoPermission()
-      if (
-        userInfoPermissionData &&
-        Array.isArray(userInfoPermissionData) &&
-        userInfoPermissionData.length > 0
-      ) {
-        setUserRoles(userInfoPermissionData)
-      } else {
-        throw new Error('User info permission data is invalid or undefined')
-      }
+      // Fetch user info and permissions
+      const { data: userRoles } = await refetchUserInfoPermission()
+      const { data: userInfo } = await refetchUserInfo()
+      setUserRoles(Array.isArray(userRoles) ? userRoles : []) // Handle roles being non-array safely
+      setUserInfo(userInfo || {})
 
-      navigate('/product-requisitions/list')
+      navigate(ROUTE.HOME)
       toast.success(t('login.loginSuccess'))
     } catch (error) {
-      console.error('Login error:', error)
-      if (error instanceof Error) {
-        toast.error(
-          t(
-            `login.${error.message === 'User info permission data is invalid or undefined' ? 'permissionError' : 'loginError'}`
-          )
-        )
-      } else {
-        toast.error(t('login.loginError'))
+      if (isAxiosError(error)) {
+        if (error.code === 'ECONNABORTED') {
+          toast.error(t('login.loginFailed'))
+        }
       }
     } finally {
       setIsLoading(false)

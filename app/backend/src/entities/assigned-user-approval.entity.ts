@@ -12,7 +12,7 @@ import {
 // => couple formType + roleApproval is unique
 // apply with row have isDeleted: false
 // because default when create isDeleted = false
-@Index(["formType", "roleApproval", "isDeleted"], {
+@Index(["formType", "roleApproval"], {
   unique: true,
   // where: '"isDeleted" = true'
 })
@@ -24,7 +24,7 @@ export class AssignedUserApproval extends Base {
 
   @Column({ name: "role_approval_column" })
   @AutoMap()
-  // @Unique(['formType', 'roleApproval', "isDeleted"]) 
+  // @Unique(['formType', 'roleApproval']) 
   roleApproval?: string; //RoleApproval in enums
 
   @ManyToOne(() => User, (user) => user.assignedUserApprovals)

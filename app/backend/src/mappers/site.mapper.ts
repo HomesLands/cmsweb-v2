@@ -7,9 +7,14 @@ import {
   extend,
   mapWith,
 } from "@automapper/core";
-import { SiteResponseDto, ProjectResponseDto, DepartmentResponseDto } from "@dto/response";
+import { 
+  SiteResponseDto, 
+  ProjectResponseDto, 
+  DepartmentResponseDto,
+  CompanyResponseDto 
+} from "@dto/response";
 import { CreateSiteRequestDto } from "@dto/request";
-import { Project, Site, Department } from "@entities";
+import { Project, Site, Department, Company } from "@entities";
 import { baseMapper } from "./base.mapper";
 
 // Define the mapping profile
@@ -21,15 +26,10 @@ export const siteMapper: MappingProfile = (mapper: Mapper) => {
     SiteResponseDto,
     forMember(
       (destination) => destination.company,
-      mapFrom(
-        (source) => source.company?.name
-      )
-    ),
-    forMember(
-      (destination) => destination.companySlug,
-      mapFrom(
-        (source) => source.company?.slug
-      )
+      mapWith(
+        CompanyResponseDto,
+        Company,
+        (source) => source.company)
     ),
     forMember(
       (destination) => destination.projects,

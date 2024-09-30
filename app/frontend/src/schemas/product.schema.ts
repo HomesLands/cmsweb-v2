@@ -66,4 +66,8 @@ export const addNewProductRequestSchema = z.object({
   status: z.string().optional()
 })
 
+export const approvalRequisitionSchema = z.object({
+  message: z.string().min(1, 'Lời nhắn không được để trống')
+})
+
 export type TProductSchema = z.infer<typeof productSchema>

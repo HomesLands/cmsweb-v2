@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Column,
+  DeleteDateColumn,
 } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 import shortid from "shortid";
@@ -23,6 +24,6 @@ export class Base {
   @UpdateDateColumn({ type: "timestamp", name: "updated_at_column" })
   updatedAt?: Date;
 
-  @Column({ name: "is_deleted_column", default: false })
-  isDeleted?: boolean;
+  @DeleteDateColumn({ name: "deleted_at_column" }) // This will handle soft deletes
+  deletedAt?: Date; // This column will automatically manage soft delete timestamps
 }

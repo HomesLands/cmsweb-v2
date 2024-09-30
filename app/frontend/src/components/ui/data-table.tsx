@@ -56,6 +56,7 @@ interface DataTableProps<TData, TValue> {
   pageSize: number
   onPageChange: (pageIndex: number) => void
   onPageSizeChange?: (pageSize: number) => void
+  onRowClick?: (row: TData) => void
   CustomComponent?: React.ElementType<{ table: ReactTable<TData> }>
 }
 
@@ -64,6 +65,8 @@ import {
   RequestRequisitionRoleApproval,
   RequestRequisitionStatus
 } from '@/types'
+
+import { useNavigate } from 'react-router-dom'
 
 export function DataTable<TData, TValue>({
   isLoading,
@@ -74,7 +77,8 @@ export function DataTable<TData, TValue>({
   pageSize,
   onPageChange,
   onPageSizeChange,
-  CustomComponent
+  CustomComponent,
+  onRowClick
 }: DataTableProps<TData, TValue>) {
   const { t } = useTranslation('tableData')
 
@@ -258,6 +262,8 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() ? t('tablePaging.selected') : undefined}
+                  className="relative cursor-pointer hover:bg-muted/50"
+                  onClick={() => onRowClick && onRowClick(row.original)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -276,10 +282,209 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex-1 mt-2 text-sm text-muted-foreground">
+      {/* <div className="flex-1 mt-2 text-sm text-muted-foreground">
         {table.getFilteredSelectedRowModel().rows.length} {t('tablePaging.select')}
         {table.getFilteredRowModel().rows.length} {t('tablePaging.rows')}
+      </div> */}
+      <div className="flex items-center justify-end py-4 space-x-2">
+        <DataTablePagination
+          table={table}
+          pages={pages}
+          page={pagination.pageIndex + 1}
+          pageSize={pagination.pageSize}
+          onPageChange={(pageIndex) => {
+            setPagination((prev) => ({ ...prev, pageIndex: pageIndex - 1 }))
+            onPageChange(pageIndex)
+          }}
+          onPageSizeChange={(pageSize) => {
+            setPagination((prev) => ({ ...prev, pageSize }))
+            if (onPageSizeChange) {
+              onPageSizeChange(pageSize)
+            }
+          }}
+        />
       </div>
+    </div>
+  )
+}
+
+export function DataTableByCreator<TData, TValue>({
+  isLoading,
+  columns,
+  data,
+  pages,
+  page,
+  pageSize,
+  onPageChange,
+  onPageSizeChange,
+  CustomComponent
+}: DataTableProps<TData, TValue>) {
+  const { t } = useTranslation('tableData')
+
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [filterValue, setFilterValue] = useState<string>('all')
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = useState({})
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: page - 1,
+    pageSize
+  })
+
+  const table = useReactTable({
+    data,
+    columns,
+    pageCount: pages,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+      pagination
+    },
+    onPaginationChange: setPagination,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    manualPagination: true,
+    debugTable: true
+  })
+
+  const handleFilterChange = (value: string) => {
+    setFilterValue(value)
+
+    let filterConditions: ColumnFiltersState = []
+
+    switch (value) {
+      case 'waiting_approval_1':
+        filterConditions = [
+          { id: 'status', value: 'waiting' },
+          { id: 'isRecalled', value: false }
+        ]
+        break
+      case 'returned_stage_1':
+        filterConditions = [
+          { id: 'status', value: 'cancel' },
+          { id: 'isRecalled', value: true }
+        ]
+        break
+      case 'approved_stage_1':
+        filterConditions = [
+          { id: 'status', value: 'accepted_stage_1' },
+          { id: 'isRecalled', value: false }
+        ]
+        break
+      case 'returned_stage_2':
+        filterConditions = [
+          { id: 'status', value: 'waiting' },
+          { id: 'isRecalled', value: true }
+        ]
+        break
+      case 'approved_stage_2':
+        filterConditions = [
+          { id: 'status', value: 'accepted_stage_2' },
+          { id: 'isRecalled', value: false }
+        ]
+        break
+      case 'returned_stage_3':
+        filterConditions = [
+          { id: 'status', value: 'accepted_stage_1' },
+          { id: 'isRecalled', value: true }
+        ]
+        break
+      case 'approved_stage_3':
+        filterConditions = [
+          { id: 'status', value: 'waiting_export' },
+          { id: 'isRecalled', value: false }
+        ]
+        break
+      case 'canceled':
+        filterConditions = [
+          { id: 'status', value: 'cancel' },
+          { id: 'isRecalled', value: true }
+        ]
+        break
+      default:
+        filterConditions = []
+    }
+
+    setColumnFilters(filterConditions)
+  }
+
+  return (
+    <div>
+      <div className="flex justify-between gap-2">
+        {CustomComponent && <CustomComponent table={table} />}
+        <Select value={filterValue} onValueChange={handleFilterChange}>
+          <SelectTrigger className="w-[12rem]">
+            <SelectValue placeholder={t('tablePaging.filter')} />
+          </SelectTrigger>
+
+          <SelectContent side="top">
+            <SelectItem value="all">{t('tableData.all')}</SelectItem>
+            <SelectItem value="waiting">{t('tableData.waiting')}</SelectItem>
+            <SelectItem value="approved_stage_1">{t('tableData.approved_stage_1')}</SelectItem>
+            <SelectItem value="approved_stage_2">{t('tableData.approved_stage_2')}</SelectItem>
+            <SelectItem value="waiting_export">{t('tableData.waiting_export')}</SelectItem>
+            <SelectItem value="recalled">{t('tableData.recalled')}</SelectItem>
+            <SelectItem value="canceled">{t('tableData.canceled')}</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="mt-3 border rounded-md">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder ? null : (
+                      <div>{flexRender(header.column.columnDef.header, header.getContext())}</div>
+                    )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="w-full h-full mx-auto text-center">
+                  <Loader2Icon className="w-6 h-6 mx-auto text-primary animate-spin" />
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() ? t('tablePaging.selected') : undefined}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-full text-center">
+                  {t('tablePaging.noData')}
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      {/* <div className="flex-1 mt-2 text-sm text-muted-foreground">
+        {table.getFilteredSelectedRowModel().rows.length} {t('tablePaging.select')}
+        {table.getFilteredRowModel().rows.length} {t('tablePaging.rows')}
+      </div> */}
       <div className="flex items-center justify-end py-4 space-x-2">
         <DataTablePagination
           table={table}

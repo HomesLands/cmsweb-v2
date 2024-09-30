@@ -3,23 +3,18 @@ import { useTranslation } from 'react-i18next'
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui'
 import { USFlag, VIFlag } from '@/assets/images'
-import { showToast } from '@/utils'
 
 export const SelectLanguage: React.FC = () => {
   const { i18n } = useTranslation()
+  const defaultLang = React.useMemo(() => localStorage.getItem('i18nextLng') || 'vi', [])
 
   const handleLanguageChange = (value: string) => {
     i18n.changeLanguage(value)
-    if (value === 'en') {
-      showToast('Current language: English')
-    } else {
-      showToast('Ngôn ngữ hiện tại: Tiếng Việt')
-    }
   }
 
   return (
-    <Select onValueChange={handleLanguageChange} defaultValue="vi">
-      <SelectTrigger className="w-[80px]">
+    <Select onValueChange={handleLanguageChange} defaultValue={defaultLang}>
+      <SelectTrigger className="p-0 border-none">
         <SelectValue placeholder="Select a language" />
       </SelectTrigger>
       <SelectContent className="">

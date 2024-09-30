@@ -15,9 +15,9 @@ export type TApprovalProductRequisitionFormRequestDto = {
   // approvalUserSlug?: string;
   approvalLogStatus?: string;
   approvalLogContent?: string;
-}
+};
 
 export type TResubmitProductRequisitionFormRequestDto = {
   slug?: string;
   description?: string;
-}
+};

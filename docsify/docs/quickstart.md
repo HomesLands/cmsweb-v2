@@ -132,7 +132,7 @@ docker compose -f .deploy/docker-compose.dev.yaml up -d --build
 
 ## Preview your site
 
-You can preview your site in your browser on `http://localhost:5137`.
+You can preview your site in your browser on `http://localhost:5173`.
 
 ## Monitor
 
@@ -224,4 +224,4 @@ npm run dev
 
 ### Preview your site
 
-You can preview your site in your browser on `http://localhost:5137`.
+You can preview your site in your browser on `http://localhost:5173`.

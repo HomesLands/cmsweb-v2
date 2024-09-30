@@ -71,7 +71,7 @@ class ProductRequisitionFormService {
     const forms = await productRequisitionFormRepository.find({
       take: pageSize,
       skip: (page - 1) * pageSize,
-      order: { createdAt: options.order },
+      order: { type: "DESC", createdAt: options.order },
       relations: [
         "project",
         "creator",
@@ -120,7 +120,6 @@ class ProductRequisitionFormService {
     const creator = await userRepository.findOne({
       where: {
         id: creatorId,
-        isDeleted: false,
       },
       relations: [
         'userDepartments',

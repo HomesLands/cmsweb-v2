@@ -2,7 +2,7 @@ import { NavLink, Outlet } from 'react-router-dom'
 import { PinLeftIcon, PinRightIcon } from '@radix-ui/react-icons'
 import { Button } from '@/components/ui'
 
-import { DropdownHeader } from '@/components/app/dropdown'
+import { HeaderDropdown } from '@/components/app/dropdown'
 import { SidebarDrawerMobile, SidebarDrawer } from '@/components/app/drawer'
 import { useLayoutStore } from '@/stores'
 import { TbeLogo } from '@/assets/images'
@@ -75,7 +75,7 @@ const DashboardLayout = () => {
           <div className="flex flex-row items-center justify-end gap-2 h-14">
             <SelectLanguage />
             <PopoverNotification />
-            <DropdownHeader />
+            <HeaderDropdown />
           </div>
         </header>
 

@@ -1,11 +1,4 @@
-import {
-  IApiResponse,
-  IPaginationResponse,
-  IQuery,
-  IUserInfoPermission,
-  IUserInfoPermissionsStore,
-  IUserPermission
-} from '@/types'
+import { IApiResponse, IPaginationResponse, IQuery } from '@/types'
 import { IUserInfo, IUserRoleResponse } from '@/types/user.type'
 import { http } from '@/utils'
 
@@ -24,6 +17,7 @@ export async function getUser() {
 }
 
 export async function getUserInfoPermission(): Promise<IApiResponse<IUserRoleResponse[]>> {
+  console.log('here')
   const response = await http.get<IApiResponse<IUserRoleResponse[]>>(`/users/info/permissions`)
   return response.data
 }

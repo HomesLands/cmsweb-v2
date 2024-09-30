@@ -1,10 +1,10 @@
 import {
+  ApprovalLogStatus,
   IApiResponse,
   IFinalProductRequisition,
   IPaginationResponse,
   IProductInfo,
   IProductQuery,
-  IProductRequirementInfoCreate,
   IRequestRequisitionInfo,
   IRequisitionFormResponseForApprover
 } from '@/types'
@@ -98,15 +98,36 @@ export async function createProductRequisition(data: IFinalProductRequisition) {
 }
 
 export async function getProductRequisitionBySlug(slug: string) {
-  const response = await http.get<IApiResponse<IProductInfo>>(`/productRequisitionForms/${slug}`)
-  return response
+  const response = await http.get<IApiResponse<IRequestRequisitionInfo>>(
+    `/productRequisitionForms/${slug}`
+  )
+  return response.data
 }
 
 export async function getProductRequisitionByCreator(params: IProductQuery) {
-  const response = await http.get<
-    IApiResponse<IPaginationResponse<IRequisitionFormResponseForApprover>>
-  >('/productRequisitionForms/creator', {
-    params
-  })
+  const response = await http.get<IApiResponse<IPaginationResponse<IRequestRequisitionInfo>>>(
+    '/productRequisitionForms',
+    {
+      params
+    }
+  )
+  return response.data
+}
+
+export async function approveProductRequisition(
+  formSlug: string,
+  approvalUserSlug: string,
+  approvalLogStatus: ApprovalLogStatus,
+  approvalLogContent: string
+) {
+  const response = await http.patch<IApiResponse<IRequestRequisitionInfo>>(
+    `/productRequisitionForms/approval`,
+    {
+      approvalUserSlug,
+      formSlug,
+      approvalLogStatus,
+      approvalLogContent
+    }
+  )
   return response.data
 }
