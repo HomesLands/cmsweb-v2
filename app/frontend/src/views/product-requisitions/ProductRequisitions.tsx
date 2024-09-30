@@ -72,7 +72,9 @@ const ProductRequisitions: React.FC = () => {
       </Label>
       <DataTableByCreator
         isLoading={isLoading}
-        columns={useColumnsRequisitionListCreator()}
+        columns={useColumnsRequisitionListCreator(
+          userInfo?.userDepartments[0].department.site.company.name ?? ''
+        )}
         data={dataWithDisplayStatus}
         pages={data?.result?.totalPages || 0}
         page={pagination.pageIndex + 1}

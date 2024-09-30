@@ -86,7 +86,7 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
               <img src={SongnamLogo} height={72} width={72} />
             </div>
           )}
-          <span className="col-span-4 text-xl font-bold text-center text-normal font-beVietNam">
+          <span className="col-span-4 text-2xl font-extrabold text-center uppercase text-normal font-beVietNam">
             {t('productRequisition.confirmProductRequisitions')}
           </span>
           <div className="col-span-1">

@@ -17,6 +17,7 @@ interface DialogRequisitionDetailProps {
   openDialog: boolean
   requisition?: IRequestRequisitionInfo | null
   component: React.ReactNode
+  companyName: string
   onOpenChange: () => void
 }
 
@@ -24,6 +25,7 @@ export function DialogRequisitionDetail({
   openDialog,
   requisition,
   component,
+  companyName,
   onOpenChange
 }: DialogRequisitionDetailProps) {
   console.log(requisition)
@@ -41,7 +43,7 @@ export function DialogRequisitionDetail({
                 {t('requisitionDetail.requestDetailDescription')}
               </DialogDescription>
             </DialogHeader>
-            <RequisitionDetailForm data={requisition || undefined} />
+            <RequisitionDetailForm companyName={companyName} data={requisition || undefined} />
           </div>
         </ScrollArea>
       </DialogContent>

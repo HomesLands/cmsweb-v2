@@ -39,7 +39,12 @@ class UserService {
       where: {
         id: userId
       },
-      relations: ['userDepartments']
+      relations: [
+        'userDepartments',
+        'userDepartments.department',
+        'userDepartments.department.site',
+        'userDepartments.department.site.company',
+      ]
     });
     if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 

@@ -15,8 +15,8 @@ export class File extends Base {
   @Column({ type: "mediumblob", name: "data_column" })
   data?: string;
 
-  @Column({ name: "length_column", nullable: true })
-  length?: number;
+  @Column({ name: "size_column", nullable: true })
+  size?: number;
 
   @ManyToOne(() => RequestProduct, (requestProduct) => requestProduct.codeImages)
   requestProduct?: RequestProduct;

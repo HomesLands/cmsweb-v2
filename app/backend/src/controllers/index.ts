@@ -19,3 +19,4 @@ export { default as userDepartmentController } from "./user-department.controlle
 export { default as assignedUserApprovalController } from "./assigned-user-approval.controller";
 export { default as warehouseController } from "./warehouse.controller";
 export { default as productWarehouseController } from "./product-warehouse.controller";
+export { default as fileController } from "./file.controller";

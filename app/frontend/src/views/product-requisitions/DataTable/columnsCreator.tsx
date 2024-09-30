@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontal } from 'lucide-react'
 
@@ -13,12 +14,13 @@ import {
 } from '@/components/ui'
 import { IRequestRequisitionInfo, RequestRequisitionStatus } from '@/types'
 import { ProductRequisitionByCreatorStatusBadge } from '@/components/app/badge'
-import { AcceptRequisitionDropdownMenuItem } from '@/components/app/dropdown/accept-requisition-dropdown'
-import { RequisitionTypeBadge } from '@/components/app/badge/RequisitionTypeBadge'
-import { useState } from 'react'
-import { DialogRequisitionDetail } from '@/components/app/dialog/dialog-requisition-detail'
+import { RequisitionTypeBadge } from '@/components/app/badge'
+import { DialogRequisitionDetail } from '@/components/app/dialog'
 
-export const useColumnsRequisitionListCreator = (): ColumnDef<IRequestRequisitionInfo>[] => {
+export const useColumnsRequisitionListCreator = (
+  companyName: string
+): ColumnDef<IRequestRequisitionInfo>[] => {
+  console.log(companyName)
   const [openDialog, setOpenDialog] = useState(false)
   const [selectedRequisition, setSelectedRequisition] = useState<IRequestRequisitionInfo | null>(
     null
@@ -30,29 +32,15 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IRequestRequisitio
   const onOpenChange = () => {
     setOpenDialog(false)
   }
+
+  // Add this new function
+  const handleEditRequisition = (requisition: IRequestRequisitionInfo) => {
+    // Implement the logic for editing the requisition
+    console.log('Editing requisition:', requisition)
+    // You might want to open a modal for editing or navigate to an edit page
+  }
+
   return [
-    // {
-    //   id: 'select',
-    //   header: ({ table }) => (
-    //     <Checkbox
-    //       checked={
-    //         table.getIsAllPageRowsSelected() ||
-    //         (table.getIsSomePageRowsSelected() && 'indeterminate')
-    //       }
-    //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-    //       aria-label="Select all"
-    //     />
-    //   ),
-    //   cell: ({ row }) => (
-    //     <Checkbox
-    //       checked={row.getIsSelected()}
-    //       onCheckedChange={(value) => row.toggleSelected(!!value)}
-    //       aria-label="Select row"
-    //     />
-    //   ),
-    //   enableSorting: false,
-    //   enableHiding: false
-    // },
     {
       accessorKey: 'code',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Mã yêu cầu" />
@@ -70,8 +58,9 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IRequestRequisitio
       header: ({ column }) => <DataTableColumnHeader column={column} title="Người tạo" />
     },
     {
-      accessorKey: 'company',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />
+      id: 'company',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />,
+      cell: () => companyName
     },
     {
       accessorFn: (row) => row.status,
@@ -94,6 +83,11 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IRequestRequisitio
       header: () => <div className="text-[0.8rem] min-w-20">Thao tác</div>,
       cell: ({ row }) => {
         const requisition = row.original
+        const canEdit =
+          (requisition.status === 'waiting' && !requisition.isRecalled) ||
+          (requisition.status === 'cancel' && requisition.isRecalled) ||
+          (requisition.status === 'cancel' && !requisition.isRecalled)
+
         return (
           <div>
             <DropdownMenu>
@@ -109,9 +103,11 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IRequestRequisitio
                 <DropdownMenuItem onClick={() => handleOpenDialog(requisition)}>
                   Xem chi tiết
                 </DropdownMenuItem>
-
-                <AcceptRequisitionDropdownMenuItem>Duyệt</AcceptRequisitionDropdownMenuItem>
-                <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
+                {canEdit && (
+                  <DropdownMenuItem onClick={() => handleEditRequisition(requisition)}>
+                    Sửa yêu cầu
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
             {selectedRequisition === requisition && openDialog && (
@@ -119,6 +115,7 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IRequestRequisitio
                 openDialog={openDialog}
                 requisition={requisition}
                 component={null}
+                companyName={companyName}
                 onOpenChange={onOpenChange}
               />
             )}

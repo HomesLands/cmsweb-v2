@@ -49,10 +49,7 @@ export function SidebarDrawer() {
         }))
         .map((item) => translatedSidebarRoute(item))
         .map((submenu) => {
-          const isSubmenuActive = submenu.children?.some((item) =>
-            location.pathname.startsWith(item.path)
-          )
-
+          const isSubmenuActive = location.pathname.startsWith(submenu.path)
           return (
             <AccordionItem key={submenu.title} value={submenu.title}>
               <AccordionTrigger
@@ -91,6 +88,7 @@ export function SidebarDrawer() {
                     <Card className="border-none">
                       {submenu.children.map((item) => (
                         <NavLink
+                          end
                           key={item.title}
                           to={item.path}
                           className={({ isActive }) =>

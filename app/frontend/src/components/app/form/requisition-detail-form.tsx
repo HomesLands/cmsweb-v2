@@ -20,10 +20,14 @@ import {
 import { IRequestRequisitionInfo } from '@/types'
 
 interface IFormRequisitionDetailProps {
+  companyName: string
   data?: IRequestRequisitionInfo
 }
 
-export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ data }) => {
+export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({
+  companyName,
+  data
+}) => {
   const form = useForm({
     defaultValues: {
       code: data?.code || '',
@@ -31,6 +35,8 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
       creator: data?.creator || '',
       status: data?.status || '',
       description: data?.description || '',
+      // deadlineApproval: data?.deadlineApproval || '',
+      companyName: companyName || '',
       project: data?.project || '',
       type: data?.type || '',
       requestProducts: data?.requestProducts || [],
@@ -127,8 +133,19 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
                 </FormItem>
               )}
             />
-          </div>
-          <div className="grid grid-cols-2 gap-2">
+            <FormField
+              control={form.control}
+              name="companyName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tên công ty</FormLabel>
+                  <FormControl>
+                    <Input {...field} readOnly />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="creator"
@@ -142,6 +159,8 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
                 </FormItem>
               )}
             />
+          </div>
+          <div className="grid grid-cols-2 gap-2">
             <FormField
               control={form.control}
               name="project"

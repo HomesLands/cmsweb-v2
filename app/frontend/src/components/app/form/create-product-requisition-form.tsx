@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
 import { format } from 'date-fns'
 import { cn } from '@/lib/utils'
-import { useState } from 'react'
-import { addMinutes } from 'date-fns'
+import { CalendarIcon } from 'lucide-react'
 
 import {
   FormField,
@@ -25,16 +24,15 @@ import {
 import { productSchema } from '@/schemas'
 import {
   SelectProject,
-  SelectSite,
-  RequestPrioritySelect,
-  SelectCompany
+  // SelectSite,
+  RequestPrioritySelect
+  // SelectCompany
 } from '@/components/app/select'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { generateProductRequisitionCode } from '@/utils'
 import { useRequisitionStore, useUserStore } from '@/stores'
 import { RequestRequisitionType } from '@/types'
-import { CalendarIcon } from 'lucide-react'
 import { DateTimePicker } from '@/components/app/picker'
 
 interface IFormCreateProductProps {
@@ -50,7 +48,6 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
     requisition?.deadlineApproval ? new Date(requisition.deadlineApproval) : undefined
   )
 
-  // Update this function to validate the selected date
   const validateDate = (selectedDate: Date | undefined) => {
     if (!selectedDate) return false
     const now = new Date()
@@ -66,16 +63,12 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
         ? format(new Date(requisition.deadlineApproval), 'yyyy-MM-dd HH:mm:ss')
         : undefined,
       company: {
-        slug: requisition?.company?.slug || '',
-        name: requisition?.company?.name || ''
-      },
-      project: {
-        slug: requisition?.project.slug || '',
-        name: requisition?.project.name || ''
+        slug: userInfo?.userDepartments[0]?.department?.site?.company?.slug || '',
+        name: userInfo?.userDepartments[0]?.department?.site?.company?.name || ''
       },
       site: {
-        slug: requisition?.site.slug || '',
-        name: requisition?.site.name || ''
+        slug: userInfo?.userDepartments[0]?.department?.site?.slug || '',
+        name: userInfo?.userDepartments[0]?.department?.site?.name || ''
       },
       type: 'normal',
       requestProducts: [],
@@ -210,15 +203,12 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
     company: (
       <FormField
         control={form.control}
-        name="company"
+        name="company.name"
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t('productRequisition.companyName')}</FormLabel>
             <FormControl>
-              <SelectCompany
-                defaultValue={requisition?.company?.slug}
-                onChange={(slug: string, name: string) => field.onChange({ slug, name })}
-              />
+              <Input readOnly {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -228,15 +218,12 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
     site: (
       <FormField
         control={form.control}
-        name="site"
+        name="site.name"
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t('productRequisition.constructionSite')}</FormLabel>
             <FormControl>
-              <SelectSite
-                defaultValue={requisition?.site.slug}
-                onChange={(slug: string, name: string) => field.onChange({ slug, name })}
-              />
+              <Input readOnly {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
