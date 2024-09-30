@@ -200,7 +200,7 @@ class ProductRequisitionFormController {
     try {
       const query = req.query as unknown as TQueryRequest;
       const creatorId = req.userId as string;
-      logger.info(`[ProductRequisitionFormController.name]`, query);
+      logger.info(`[${ProductRequisitionFormController.name}]`, query);
       const results =
         await productRequisitionFormService.getAllProductRequisitionForms(
           creatorId,

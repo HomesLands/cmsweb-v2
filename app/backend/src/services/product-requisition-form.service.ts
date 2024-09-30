@@ -31,13 +31,16 @@ import {
 import { mapper } from "@mappers";
 import {
   ApprovalLog,
+  Company,
   ProductRequisitionForm,
+  Project,
   RequestProduct,
+  Site,
+  User,
   UserApproval,
 } from "@entities";
 import { GlobalError, ErrorCodes, ValidationError } from "@exception";
 import {
-  ProductRequisitionFormType,
   ProductRequisitionFormStatus,
   FormApprovalType,
   RoleApproval,
@@ -75,7 +78,7 @@ class ProductRequisitionFormService {
     const forms = await productRequisitionFormRepository.find({
       take: pageSize,
       skip: (page - 1) * pageSize,
-      order: { createdAt: options.order },
+      order: { type: "DESC", createdAt: options.order },
       relations: [
         "company",
         "site",
@@ -116,22 +119,9 @@ class ProductRequisitionFormService {
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
 
-    // const codeExisted = await productRequisitionFormRepository.existsBy({
-    //   code: requestData.code,
-    // });
-    // if (codeExisted)
-    //   throw new GlobalError(ErrorCodes.PRODUCT_REQUISITION_FORM_CODE_EXIST);
-
-    if (requestData.type === ProductRequisitionFormType.NORMAL) {
-      if (requestData.userApprovals.length !== 3) {
-        throw new GlobalError(ErrorCodes.INVALID_QUANTITY_USER_APPROVAL);
-      }
-    }
-    if (requestData.type === ProductRequisitionFormType.URGENT) {
-      if (requestData.userApprovals.length !== 1) {
-        throw new GlobalError(ErrorCodes.INVALID_QUANTITY_USER_APPROVAL);
-      }
-    } // cần kiểm tra thêm các userApprovals có bị trùng roleApproval không
+    const requiredUserApprovals = 3;
+    if (requestData.userApprovals.length !== requiredUserApprovals)
+      throw new GlobalError(ErrorCodes.INVALID_QUANTITY_USER_APPROVAL);
 
     const creator = await userRepository.findOneBy({ id: creatorId });
     if (!creator) throw new GlobalError(ErrorCodes.INVALID_CREATOR);
@@ -156,6 +146,7 @@ class ProductRequisitionFormService {
         slug: In(userSlugs),
       },
     });
+
     if (userApprovals.length < userSlugs.length)
       throw new GlobalError(ErrorCodes.MISSING_USER_APPROVAL);
 
@@ -174,14 +165,23 @@ class ProductRequisitionFormService {
       CreateProductRequisitionFormRequestDto,
       ProductRequisitionForm
     );
-    form.status = ProductRequisitionFormStatus.WAITING;
-    form.company = company;
-    form.site = site;
-    form.project = project;
-    form.creator = creator;
+    const newData: {
+      status: ProductRequisitionFormStatus;
+      company: Company;
+      site: Site;
+      project: Project;
+      creator: User;
+    } = {
+      status: ProductRequisitionFormStatus.WAITING,
+      company,
+      site,
+      project,
+      creator,
+    };
+    Object.assign(form, newData);
+
     const createdForm =
       await productRequisitionFormRepository.createAndSave(form);
-    console.log({ createdForm });
 
     const requestProductList: RequestProduct[] = [];
     for (let i: number = 0; i < requestData.requestProducts.length; i++) {

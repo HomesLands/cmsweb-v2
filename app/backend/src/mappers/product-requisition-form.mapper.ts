@@ -4,8 +4,8 @@ import {
   createMap,
   forMember,
   mapFrom,
-  mapWith, 
-  extend
+  mapWith,
+  extend,
 } from "@automapper/core";
 import {
   ProductRequisitionFormResponseDto,
@@ -20,7 +20,9 @@ import {
 import { CreateProductRequisitionFormRequestDto } from "@dto/request";
 import { baseMapper } from "./base.mapper";
 
-export const productRequisitionFormMapper: MappingProfile = (mapper: Mapper) =>{
+export const productRequisitionFormMapper: MappingProfile = (
+  mapper: Mapper
+) => {
   // Map entity to response object
   createMap(
     mapper,
@@ -28,61 +30,63 @@ export const productRequisitionFormMapper: MappingProfile = (mapper: Mapper) =>{
     ProductRequisitionFormResponseDto,
     forMember(
       (destination) => destination.company,
-      mapFrom((source) => source.company?.name) 
+      mapFrom((source) => source.company?.name)
     ),
     forMember(
       (destination) => destination.companySlug,
-      mapFrom((source) => source.company?.slug) 
+      mapFrom((source) => source.company?.slug)
     ),
     forMember(
       (destination) => destination.site,
-      mapFrom((source) => source.site?.name) 
+      mapFrom((source) => source.site?.name)
     ),
     forMember(
       (destination) => destination.siteSlug,
-      mapFrom((source) => source.site?.slug) 
+      mapFrom((source) => source.site?.slug)
     ),
     forMember(
       (destination) => destination.project,
-      mapFrom((source) => source.project?.name) 
+      mapFrom((source) => source.project?.name)
     ),
     forMember(
       (destination) => destination.projectSlug,
-      mapFrom((source) => source.project?.slug) 
+      mapFrom((source) => source.project?.slug)
     ),
     forMember(
       (destination) => destination.projectSlug,
-      mapFrom((source) => source.project?.slug) 
+      mapFrom((source) => source.project?.slug)
     ),
     forMember(
       (destination) => destination.creator,
-      mapFrom((source) => source.creator?.fullname) 
+      mapFrom((source) => source.creator?.fullname)
     ),
     forMember(
       (destination) => destination.creatorSlug,
-      mapFrom((source) => source.creator?.slug) 
+      mapFrom((source) => source.creator?.slug)
     ),
     forMember(
       (destination) => destination.userApprovals,
       mapWith(
         UserApprovalResponseDto,
         UserApproval,
-        (source) => source.userApprovals)
+        (source) => source.userApprovals
+      )
     ),
     forMember(
       (destination) => destination.requestProducts,
       mapWith(
         RequestProductResponseDto,
         RequestProduct,
-        (source) => source.requestProducts)
+        (source) => source.requestProducts
+      )
     ),
-    extend(baseMapper(mapper)),
+    extend(baseMapper(mapper))
   );
 
   // Map request object to entity
   createMap(
     mapper,
     CreateProductRequisitionFormRequestDto,
-    ProductRequisitionForm,
-  )
-}
+    ProductRequisitionForm
+  );
+};
