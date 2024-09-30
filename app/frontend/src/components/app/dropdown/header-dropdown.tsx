@@ -58,7 +58,7 @@ export function HeaderDropdown() {
           >
             <div className="flex items-center gap-2">
               <ExitIcon className="danger-icon" />
-              Đăng xuất
+              {t('logout.title')}
             </div>
           </DropdownMenuItem>
         </DropdownMenuContent>

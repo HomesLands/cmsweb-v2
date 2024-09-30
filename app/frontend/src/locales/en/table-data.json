@@ -29,11 +29,14 @@
     "filter": "Filter",
     "all": "All",
     "waiting_approval_1": "Waiting approval",
-    "approved_stage_1": "Approved stage",
+    "approved_stage_1": "Approved stage 1",
+    "approved_stage_2": "Approved stage 2",
     "canceled_stage_1": "Canceled stage",
-    "accepted_stage_2": "Accepted stage",
     "waiting_approval_2": "Waiting approval",
+    "waiting": "Waiting",
     "waiting_export": "Waiting export",
-    "canceled_stage_final": "Canceled"
+    "canceled_stage_final": "Canceled",
+    "canceled": "Canceled",
+    "recalled": "Recalled"
   }
 }

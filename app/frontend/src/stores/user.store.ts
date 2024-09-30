@@ -18,11 +18,10 @@ export const useUserStore = create<IUserStore>()(
 
 export const useUserInfoPermissionsStore = create<IUserInfoPermissionsStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       userRoles: [],
       setUserRoles: (roles: IUserRoleResponse[]) => set({ userRoles: roles }),
       clearUserRoles: () => {
-        console.log({ userRoles: get().userRoles })
         set({ userRoles: [] })
       }
     }),

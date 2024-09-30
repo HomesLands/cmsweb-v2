@@ -13,7 +13,7 @@ import {
   Input
 } from '@/components/ui'
 import { DialogAddProductRequest } from '@/components/app/dialog'
-import { IProductInfo, IProductRequisitionInfo } from '@/types'
+import { IProductRequisitionInfo } from '@/types'
 
 interface ColumnVisibilityDropdownProps<TData> {
   table: Table<TData>
