@@ -6,6 +6,7 @@ import { useRequestStore } from '@/stores/request.store'
 import { useAuthStore } from '@/stores'
 import { IApiResponse, IRefreshTokenResponse } from '@/types'
 import { showErrorToast } from './toast'
+import { ROUTE } from '@/constants'
 
 NProgress.configure({ showSpinner: false, trickleSpeed: 200 })
 
@@ -87,7 +88,7 @@ axiosInstance.interceptors.request.use(
         // redirect('/auth/login')
         showErrorToast(1017)
         // You can redirect to the login page
-        window.location.href = '/auth/login'
+        window.location.href = ROUTE.LOGIN
       } finally {
         isRefreshing = false
       }
@@ -129,22 +130,16 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     if (!error.config?.doNotShowLoading) setProgressBarDone()
     if (error.response) {
-      const { code } = error.response.data
-      const { status } = error.response
-
       // if (status === 401) {
       //   showErrorToast(code)
       // }
-
       // if (status === 403) {
       //   showErrorToast(code)
       //   window.location.href = '/auth/login'
       // }
-
       // if (status === 404) {
       //   showErrorToast(code)
       // }
-
       // if (status === 500) {
       //   showErrorToast(code)
       // }

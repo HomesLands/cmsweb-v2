@@ -1,7 +1,5 @@
-import { NavLink } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { Loader2 } from 'lucide-react'
 
 import {
   FormField,
@@ -11,7 +9,8 @@ import {
   FormMessage,
   Input,
   Form,
-  Button
+  Button,
+  PasswordInput
 } from '@/components/ui'
 import { loginSChema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -62,7 +61,7 @@ export const LoginForm: React.FC<IFormRegisterProps> = ({ onSubmit, isLoading })
                 <FormItem>
                   <FormLabel>{t('login.password')}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('login.enterPassword')} {...field} type="password" />
+                    <PasswordInput placeholder={t('login.enterPassword')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -70,16 +69,9 @@ export const LoginForm: React.FC<IFormRegisterProps> = ({ onSubmit, isLoading })
             />
           </div>
           <div className="flex items-center justify-between w-full">
-            <Button type="submit" className="md:w-[6rem]" disabled={isLoading}>
+            <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? <ButtonLoading /> : t('login.login')}
             </Button>
-            <div className="text-sm text-center">
-              {t('login.dontHaveAccount')}
-              <NavLink to="/auth/register" className="underline">
-                {' '}
-                {t('login.register')}
-              </NavLink>
-            </div>
           </div>
         </form>
       </Form>

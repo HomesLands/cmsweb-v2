@@ -1,4 +1,4 @@
-import { IUserInfo } from './user.type'
+import { IUserInfo, IUserRoleResponse } from './user.type'
 
 export interface ILayoutStore {
   isMinimized: boolean
@@ -33,24 +33,8 @@ export interface IRequestProductRequisitionStore {
   decrementRequestQueueSize: () => void
 }
 
-export interface IUserRole {
-  role: string
-  authorities: string[]
-}
-
-export interface IUserPermission {
-  authority: string
-}
-
 export interface IUserInfoPermissionsStore {
-  userRoles: IUserRole[]
-  getUserRoles: () => IUserRole[]
-  setUserRoles: (roles: IUserRole[]) => void
+  userRoles: IUserRoleResponse[]
+  setUserRoles: (roles: IUserRoleResponse[]) => void
   clearUserRoles: () => void
 }
-
-// export interface IUserInfoPermissionsStore {
-//   userRole: IUserRole | null
-//   setUserRole: (role: IUserRole) => void
-//   clearUserRole: () => void
-// }

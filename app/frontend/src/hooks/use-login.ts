@@ -7,9 +7,10 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: async (data: ILoginRequest) => {
       return loginApi(data)
+    },
+    onSuccess: () => {
+      // After login success, fetch user info
+      // queryClient.invalidateQueries({ queryKey: ['user-info-permission'] })
     }
-    // meta: {
-    //   ignoreGlobalError: true
-    // }
   })
 }

@@ -22,7 +22,9 @@ import {
 import { CreateProductRequisitionFormRequestDto } from "@dto/request";
 import { baseMapper } from "./base.mapper";
 
-export const productRequisitionFormMapper: MappingProfile = (mapper: Mapper) =>{
+export const productRequisitionFormMapper: MappingProfile = (
+  mapper: Mapper
+) => {
   // Map entity to response object
   createMap(
     mapper,
@@ -30,33 +32,35 @@ export const productRequisitionFormMapper: MappingProfile = (mapper: Mapper) =>{
     ProductRequisitionFormResponseDto,
     forMember(
       (destination) => destination.project,
-      mapFrom((source) => source.project?.name) 
+      mapFrom((source) => source.project?.name)
     ),
     forMember(
       (destination) => destination.projectSlug,
-      mapFrom((source) => source.project?.slug) 
+      mapFrom((source) => source.project?.slug)
     ),
     forMember(
       (destination) => destination.creator,
-      mapFrom((source) => source.creator?.fullname) 
+      mapFrom((source) => source.creator?.fullname)
     ),
     forMember(
       (destination) => destination.creatorSlug,
-      mapFrom((source) => source.creator?.slug) 
+      mapFrom((source) => source.creator?.slug)
     ),
     forMember(
       (destination) => destination.userApprovals,
       mapWith(
         UserApprovalResponseDto,
         UserApproval,
-        (source) => source.userApprovals)
+        (source) => source.userApprovals
+      )
     ),
     forMember(
       (destination) => destination.requestProducts,
       mapWith(
         RequestProductResponseDto,
         RequestProduct,
-        (source) => source.requestProducts)
+        (source) => source.requestProducts
+      )
     ),
     typeConverter(
       Date, String, (deadlineApproval) => moment(deadlineApproval).toString()

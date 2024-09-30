@@ -8,3 +8,5 @@ export * from './dialog-logout'
 export * from './dialog-edit-product-requisition'
 // eslint-disable-next-line react-refresh/only-export-components
 export * from './dialog-edit-product-requisition'
+// eslint-disable-next-line react-refresh/only-export-components
+export * from './dialog-approval-requisition'

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 
@@ -20,14 +20,14 @@ const ProductRequisitionForm: React.FC = () => {
   const { t } = useTranslation('productRequisition')
   const { t: tToast } = useTranslation('toast')
   const { currentStep, handleStepChange } = useMultiStep(1)
-  const { setRequisition, clearRequisition, updateRequisition } = useRequisitionStore()
+  const { setRequisition, clearRequisition } = useRequisitionStore()
 
   const mutation = useMutation({
     mutationFn: async (data: IFinalProductRequisition) => {
       return createProductRequisition(data)
     },
     onSuccess: () => {
-      showToast(tToast('toast.request_success'))
+      showToast(tToast('toast.requestSuccess'))
       clearRequisition()
     }
   })
@@ -127,7 +127,7 @@ const ProductRequisitionForm: React.FC = () => {
               <div className="flex flex-row gap-1">
                 <p>{t('productRequisition.confirmProductRequisitionsSuccessDescription')}</p>
                 <NavLink
-                  to="/product-requisitions/list"
+                  to="/product-requisitions"
                   className="text-blue-500 transition-all duration-300 hover:underline"
                 >
                   {t('productRequisition.here')}

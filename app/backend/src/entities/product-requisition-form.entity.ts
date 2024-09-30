@@ -33,7 +33,7 @@ export class ProductRequisitionForm extends Base {
   // save opinion of creator
   @Column({ name: "description_column", nullable: true })
   @AutoMap()
-  description?: string; 
+  description?: string;
 
   // a ProductRequisition have many request product
   @OneToMany(
@@ -49,10 +49,13 @@ export class ProductRequisitionForm extends Base {
   userApprovals?: UserApproval[];
 
   @ManyToOne(() => User, (user) => user.productRequisitionForms)
-  @JoinColumn({ name: "creator_column"})
+  @JoinColumn({ name: "creator_column" })
   creator?: User;
 
   @ManyToOne(() => Project, (project) => project.productRequisitionForms)
   @JoinColumn({ name: "project_column" })
   project?: Project;
+
+  @AutoMap()
+  approvalDeadline: Date;
 }

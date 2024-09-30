@@ -33,7 +33,7 @@ i18n
         toast: viToast
       }
     },
-    lng: 'vi',
+    lng: window.localStorage.getItem('i18nextLng') || 'vi',
     fallbackLng: 'vi', // Ngôn ngữ mặc định
     interpolation: {
       escapeValue: false // React đã tự động bảo vệ trước XSS

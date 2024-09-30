@@ -29,7 +29,9 @@ export class CreateProductRequisitionFormRequestDto {
   project?: string;
 
   @IsNotEmpty({ message: "INVALID_TYPE_PRODUCT_REQUISITION_FORM" })
-  @IsEnum(ProductRequisitionFormType, { message: "INVALID_TYPE_PRODUCT_REQUISITION_FORM" })
+  @IsEnum(ProductRequisitionFormType, {
+    message: "INVALID_TYPE_PRODUCT_REQUISITION_FORM",
+  })
   @Expose()
   @AutoMap()
   type?: string;
@@ -44,8 +46,8 @@ export class CreateProductRequisitionFormRequestDto {
   @AutoMap()
   description?: string;
 
-  @IsArray({ message: "INVALID_REQUEST_PRODUCT_ARRAY"})
-  @ArrayNotEmpty({ message: "INVALID_REQUEST_PRODUCT_ARRAY"})
+  @IsArray({ message: "INVALID_REQUEST_PRODUCT_ARRAY" })
+  @ArrayNotEmpty({ message: "INVALID_REQUEST_PRODUCT_ARRAY" })
   @ValidateNested({ each: true })
   @Type(() => CreateRequestProductRequestDto)
   @Expose()
@@ -72,7 +74,7 @@ export class ApprovalProductRequisitionFormRequestDto {
   @IsNotEmpty({ message: "INVALID_CONTENT_APPROVAL_LOG" })
   @Expose()
   @AutoMap()
-  approvalLogContent?: string;  
+  approvalLogContent?: string;
 }
 
 export class ResubmitProductRequisitionFormRequestDto {

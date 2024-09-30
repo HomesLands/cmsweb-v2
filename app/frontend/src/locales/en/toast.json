@@ -1,8 +1,14 @@
 {
   "toast": {
-    "request_success": "Request created successfully",
-    "request_error": "Request created failed",
-    "confirm_success": "Request confirmed successfully",
-    "confirm_error": "Request confirmed failed"
+    "requestSuccess": "Request created successfully",
+    "requestError": "Request created failed",
+    "confirmSuccess": "Request confirmed successfully",
+    "confirmError": "Request confirmed failed",
+    "approveRequestSuccess": "Approve request successfully",
+    "approveRequestError": "Approve request failed",
+    "giveBackRequestSuccess": "Give back request successfully",
+    "giveBackRequestError": "Give back request failed",
+    "cancelRequestSuccess": "Cancel request successfully",
+    "cancelRequestError": "Cancel request failed"
   }
 }
