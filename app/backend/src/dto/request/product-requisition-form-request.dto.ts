@@ -5,16 +5,11 @@ import {
   ArrayNotEmpty,
   IsEnum,
   IsOptional,
-} from 'class-validator';
-import { Expose, Type } from 'class-transformer';
-import { AutoMap } from '@automapper/classes';
-import {
-  ProductRequisitionFormType,
-  ApprovalLogStatus,
-} from "@enums";
-import {
-  CreateRequestProductRequestDto,
-} from "./request-product-request.dto";
+} from "class-validator";
+import { Expose, Type } from "class-transformer";
+import { AutoMap } from "@automapper/classes";
+import { ProductRequisitionFormType, ApprovalLogStatus } from "@enums";
+import { CreateRequestProductRequestDto } from "./request-product-request.dto";
 import { CreateUserApprovalRequestDto } from "./user-approval-request.dto";
 
 export class CreateProductRequisitionFormRequestDto {
@@ -24,7 +19,9 @@ export class CreateProductRequisitionFormRequestDto {
   code?: string;
 
   @IsNotEmpty({ message: "INVALID_TYPE_PRODUCT_REQUISITION_FORM" })
-  @IsEnum(ProductRequisitionFormType, { message: "INVALID_TYPE_PRODUCT_REQUISITION_FORM" })
+  @IsEnum(ProductRequisitionFormType, {
+    message: "INVALID_TYPE_PRODUCT_REQUISITION_FORM",
+  })
   @Expose()
   @AutoMap()
   type?: string;
@@ -44,15 +41,15 @@ export class CreateProductRequisitionFormRequestDto {
   @AutoMap()
   projectSlug?: string;
 
-  @IsArray({ message: "INVALID_REQUEST_PRODUCT_ARRAY"})
-  @ArrayNotEmpty({ message: "INVALID_REQUEST_PRODUCT_ARRAY"})
+  @IsArray({ message: "INVALID_REQUEST_PRODUCT_ARRAY" })
+  @ArrayNotEmpty({ message: "INVALID_REQUEST_PRODUCT_ARRAY" })
   @ValidateNested({ each: true })
   @Type(() => CreateRequestProductRequestDto)
   @Expose()
   requestProducts: CreateRequestProductRequestDto[];
 
-  @IsArray({ message: "INVALID_APPROVAL_USER_ARRAY"})
-  @ArrayNotEmpty({ message: "INVALID_APPROVAL_USER_ARRAY"})
+  @IsArray({ message: "INVALID_APPROVAL_USER_ARRAY" })
+  @ArrayNotEmpty({ message: "INVALID_APPROVAL_USER_ARRAY" })
   @ValidateNested({ each: true })
   @Type(() => CreateUserApprovalRequestDto)
   @Expose()
@@ -61,7 +58,7 @@ export class CreateProductRequisitionFormRequestDto {
   @IsOptional()
   @Expose()
   @AutoMap()
-  description?: string;  
+  description?: string;
 }
 
 export class ApprovalProductRequisitionFormRequestDto {
@@ -84,7 +81,7 @@ export class ApprovalProductRequisitionFormRequestDto {
   @IsNotEmpty({ message: "INVALID_CONTENT_APPROVAL_LOG" })
   @Expose()
   @AutoMap()
-  approvalLogContent?: string;  
+  approvalLogContent?: string;
 }
 
 export class ResubmitProductRequisitionFormRequestDto {

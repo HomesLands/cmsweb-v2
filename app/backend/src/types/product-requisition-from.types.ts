@@ -8,19 +8,19 @@ export type TCreateProductRequisitionFormRequestDto = {
     requestQuantity?: number;
   }[];
   userApprovals: {
-    userSlug?: string,
-    roleApproval?: string // approval_stage_1, approval_stage_2, approval_stage_3
+    userSlug?: string;
+    roleApproval?: string; // approval_stage_1, approval_stage_2, approval_stage_3
   }[];
-}
+};
 
 export type TApprovalProductRequisitionFormRequestDto = {
   formSlug?: string;
   approvalUserSlug?: string;
   approvalLogStatus?: string;
   approvalLogContent?: string;
-}
+};
 
 export type TResubmitProductRequisitionFormRequestDto = {
   slug?: string;
   description?: string;
-}
+};
