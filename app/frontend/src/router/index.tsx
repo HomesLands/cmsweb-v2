@@ -11,7 +11,9 @@ import {
   ProductRequisitionFormPage,
   ApprovalProductRequisitionPage,
   ApprovalProductRequisitionDetailPage,
-  HomePage
+  HomePage,
+  RolePage,
+  CreateRolePage
 } from './loadable'
 
 export const router = createBrowserRouter([
@@ -46,6 +48,48 @@ export const router = createBrowserRouter([
           <ProtectedElement
             element={<SuspenseElement component={ProductRequisitionFormPage} />}
             allowedAuthorities={[Authority.CREATE_PRODUCT_REQUISITION]}
+          />
+        )
+      },
+      {
+        path: 'approval',
+        element: (
+          <ProtectedElement
+            element={<SuspenseElement component={ApprovalProductRequisitionPage} />}
+            allowedAuthorities={[Authority.APPROVE_PRODUCT_REQUISITION]}
+          />
+        )
+      },
+      {
+        path: 'approval/:slug',
+        element: (
+          <ProtectedElement
+            element={<SuspenseElement component={ApprovalProductRequisitionDetailPage} />}
+            allowedAuthorities={[Authority.APPROVE_PRODUCT_REQUISITION]}
+          />
+        )
+      }
+    ]
+  },
+  {
+    path: ROUTE.ROLE,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: (
+          <ProtectedElement
+            allowedAuthorities={[Authority.READ_ROLE]}
+            element={<SuspenseElement component={RolePage} />}
+          />
+        )
+      },
+      {
+        path: 'add',
+        element: (
+          <ProtectedElement
+            element={<SuspenseElement component={CreateRolePage} />}
+            allowedAuthorities={[Authority.CREATE_ROLE]}
           />
         )
       },

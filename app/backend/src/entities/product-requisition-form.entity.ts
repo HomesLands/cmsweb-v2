@@ -1,12 +1,6 @@
 import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from "typeorm";
 import { AutoMap } from "@automapper/classes";
-import { 
-  Base, 
-  RequestProduct, 
-  UserApproval, 
-  User, 
-  Project
-} from "@entities"
+import { Base, RequestProduct, UserApproval, User, Project } from "@entities";
 
 @Entity("product_requisition_form_tbl")
 export class ProductRequisitionForm extends Base {
@@ -38,7 +32,8 @@ export class ProductRequisitionForm extends Base {
   // a ProductRequisition have many request product
   @OneToMany(
     () => RequestProduct,
-    (requestProduct) => requestProduct.productRequisitionForm)
+    (requestProduct) => requestProduct.productRequisitionForm
+  )
   requestProducts?: RequestProduct[];
 
   // a product requisition form have many user approval
@@ -55,7 +50,4 @@ export class ProductRequisitionForm extends Base {
   @ManyToOne(() => Project, (project) => project.productRequisitionForms)
   @JoinColumn({ name: "project_column" })
   project?: Project;
-
-  @AutoMap()
-  approvalDeadline: Date;
 }
