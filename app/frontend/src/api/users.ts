@@ -17,7 +17,6 @@ export async function getUser() {
 }
 
 export async function getUserInfoPermission(): Promise<IApiResponse<IUserRoleResponse[]>> {
-  console.log('here')
   const response = await http.get<IApiResponse<IUserRoleResponse[]>>(`/users/info/permissions`)
   return response.data
 }

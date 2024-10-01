@@ -37,14 +37,14 @@ class AssignedUserApprovalController {
    * @swagger
    * tags:
    *   - name: AssignedUserApproval
-   *     description: The assignedUserApproval managing API
+   *     description: The assigned user approval managing API
    */
 
   /**
    * @swagger
    * /assignedUserApprovals:
    *   post:
-   *     summary: Create new assignedUserApproval
+   *     summary: Create new assigned user approval
    *     tags: [AssignedUserApproval]
    *     requestBody:
    *       required: true
@@ -54,7 +54,7 @@ class AssignedUserApprovalController {
    *              $ref: '#/components/schemas/CreateAssignedUserApprovalRequestDto'
    *     responses:
    *       201:
-   *         description: New assignedUserApproval created successfully.
+   *         description: New assigned user approval created successfully.
    *         content:
    *           application/json:
    *             schema:
@@ -70,13 +70,15 @@ class AssignedUserApprovalController {
   ): Promise<void> {
     try {
       const requestData = req.body as TCreateAssignedUserApprovalRequestDto;
-      const assignedUserApprovalData = 
-        await assignedUserApprovalService.createAssignedUserApproval(requestData);
+      const assignedUserApprovalData =
+        await assignedUserApprovalService.createAssignedUserApproval(
+          requestData
+        );
 
       const response: TApiResponse<AssignedUserApprovalResponseDto> = {
         code: StatusCodes.CREATED,
         error: false,
-        message: "Create assignedUserApproval successfully",
+        message: "New assigned user approval created successfully",
         method: req.method,
         path: req.originalUrl,
         result: assignedUserApprovalData,
@@ -106,7 +108,8 @@ class AssignedUserApprovalController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const assignedUserApprovalsData = await assignedUserApprovalService.getAllAssignedUserApprovals();
+      const assignedUserApprovalsData =
+        await assignedUserApprovalService.getAllAssignedUserApprovals();
 
       const response: TApiResponse<AssignedUserApprovalResponseDto[]> = {
         code: StatusCodes.OK,

@@ -1,68 +1,28 @@
-import { Archive } from 'lucide-react'
-import i18next from 'i18next'
+import { Archive, KeyRoundIcon, ScanFaceIcon, UserCogIcon } from 'lucide-react'
 import { ArchiveIcon, CubeIcon } from '@radix-ui/react-icons'
 
 import type { ISidebarRoute } from '@/types'
 import { Authority, ROUTE } from '@/constants'
 
 export const sidebarRoutes: ISidebarRoute[] = [
-  // {
-  //   title: 'Quản lý nhân viên',
-  //   path: '/employees',
-  //   icon: PersonIcon,
-  //   component: () =>
-  //     import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
-  //   children: [
-  //     {
-  //       title: 'Danh sách nhân viên',
-  //       path: '/employees/list',
-  //       icon: AlignJustify,
-  //       component: () =>
-  //         import('@/views/employees').then((module) => ({
-  //           default: module.Employees
-  //         }))
-  //     }
-  //   ]
-  // },
-  // {
-  //   title: 'Quản lý dự án',
-  //   path: '/projects',
-  //   icon: FileTextIcon,
-  //   component: () =>
-  //     import('@/components/app/layouts').then((module) => ({ default: module.DashboardLayout })),
-  //   children: [
-  //     {
-  //       title: 'Danh sách dự án',
-  //       path: '/projects/list',
-  //       icon: Archive,
-  //       component: () =>
-  //         import('@/views/projects').then((module) => ({
-  //           default: module.Projects
-  //         }))
-  //     }
-  //   ]
-  // },
   {
-    title: i18next.t('sidebar.productRequisitions'),
+    title: 'sidebar.productRequisitions',
     path: ROUTE.PRODUCT_REQUISITIONS,
     icon: ArchiveIcon,
     children: [
       {
-        title: i18next.t('sidebar.productRequisitionsList'),
+        title: 'sidebar.productRequisitionsList',
         path: ROUTE.PRODUCT_REQUISITIONS,
-        icon: Archive,
         authorities: [Authority.READ_PRODUCT_REQUISITION]
       },
       {
-        title: i18next.t('sidebar.createProductRequisitions'),
+        title: 'sidebar.createProductRequisitions',
         path: ROUTE.ADD_PRODUCT_REQUISITIONS,
-        icon: Archive,
         authorities: [Authority.CREATE_PRODUCT_REQUISITION]
       },
       {
-        title: i18next.t('sidebar.approvalProductRequisitions'),
+        title: 'sidebar.approvalProductRequisitions',
         path: '/product-requisitions/approval',
-        icon: Archive,
         authorities: [Authority.APPROVE_PRODUCT_REQUISITION]
       }
     ]
@@ -81,6 +41,57 @@ export const sidebarRoutes: ISidebarRoute[] = [
         title: 'Danh sách vật tư',
         path: '/warehouse/list',
         icon: Archive
+      }
+    ]
+  },
+  {
+    title: 'sidebar.roles',
+    path: ROUTE.ROLE,
+    icon: UserCogIcon,
+    children: [
+      {
+        title: 'sidebar.roles',
+        path: ROUTE.ROLE,
+        authorities: [Authority.READ_ROLE]
+      },
+      {
+        title: 'sidebar.createRole',
+        path: ROUTE.ADD_ROLE,
+        authorities: [Authority.CREATE_ROLE]
+      }
+    ]
+  },
+  {
+    title: 'sidebar.permissions',
+    path: ROUTE.PERMISSION,
+    icon: KeyRoundIcon,
+    children: [
+      {
+        title: 'sidebar.permissions',
+        path: ROUTE.PERMISSION,
+        authorities: [Authority.READ_PERMISSION]
+      },
+      {
+        title: 'sidebar.createPermission',
+        path: ROUTE.ADD_AUTHORITY,
+        authorities: [Authority.CREATE_PERMISSION]
+      }
+    ]
+  },
+  {
+    title: 'sidebar.authorities',
+    path: ROUTE.AUTHORITY,
+    icon: ScanFaceIcon,
+    children: [
+      {
+        title: 'sidebar.authorities',
+        path: ROUTE.AUTHORITY,
+        authorities: [Authority.READ_AUTHORITY]
+      },
+      {
+        title: 'sidebar.createAuthority',
+        path: ROUTE.ADD_AUTHORITY,
+        authorities: [Authority.CREATE_AUTHORITY]
       }
     ]
   }

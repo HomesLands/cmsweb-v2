@@ -51,3 +51,13 @@ export const HomePage = React.lazy(() =>
     default: module.HomePage
   }))
 )
+export const RolePage = React.lazy(() =>
+  import('@/views/roles').then((module) => ({
+    default: module.Roles
+  }))
+)
+export const CreateRolePage = React.lazy(() =>
+  import('@/views/roles').then((module) => ({
+    default: module.CreateRole
+  }))
+)

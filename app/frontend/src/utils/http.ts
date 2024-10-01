@@ -14,8 +14,6 @@ let isRefreshing = false
 let failedQueue: { resolve: (token: string) => void; reject: (error: unknown) => void }[] = []
 const baseURL = import.meta.env.VITE_BASE_API_URL
 
-console.log({ failedQueue })
-
 const processQueue = (error: unknown, token: string | null = null) => {
   failedQueue.forEach((prom) => {
     if (token) {

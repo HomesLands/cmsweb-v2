@@ -7,6 +7,7 @@ import {
   Button,
   DialogFooter
 } from '@/components/ui'
+import { useTranslation } from 'react-i18next'
 
 export function DialogLogout({
   open,
@@ -17,19 +18,21 @@ export function DialogLogout({
   setOpen: (open: boolean) => void
   handleLogout: () => void
 }) {
+  const { t } = useTranslation('auth')
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-[28rem] max-h-[32rem] overflow-hidden hover:overflow-y-auto transition-all duration-300">
         <DialogHeader>
-          <DialogTitle>Đăng xuất</DialogTitle>
-          <DialogDescription>Bạn có chắc chắn muốn đăng xuất không?</DialogDescription>
+          <DialogTitle>{t('logout.title')}</DialogTitle>
+          <DialogDescription>{t('logout.description')}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)}>
-            Hủy
+            {t('logout.cancel')}
           </Button>
           <Button variant="destructive" onClick={() => handleLogout()}>
-            Đăng xuất
+            {t('logout.title')}
           </Button>
         </DialogFooter>
       </DialogContent>

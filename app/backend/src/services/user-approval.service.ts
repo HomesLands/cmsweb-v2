@@ -19,12 +19,29 @@ class UserApprovalService {
         ? parseInt(options.page, 10)
         : options.page;
 
+    // let roleApproval = RoleApproval.APPROVAL_STAGE_1;
+
+    // const site = await siteRepository.findOneBy({
+    //   manager: { id: userId },
+    // });
+    // const company = await companyRepository.findOneBy({
+    //   director: {
+    //     id: userId,
+    //   },
+    // });
+
+    // if (site) {
+    //   roleApproval = RoleApproval.APPROVAL_STAGE_2;
+    // } else if (company) {
+    //   roleApproval = RoleApproval.APPROVAL_STAGE_3;
+    // }
+
     const totalApprovalForms = await userApprovalRepository.count({
       where: {
         assignedUserApproval: {
           user: {
-            id: userId
-          }
+            id: userId,
+          },
         },
       },
     });
@@ -40,13 +57,17 @@ class UserApprovalService {
       where: {
         assignedUserApproval: {
           user: {
-            id: userId
-          }
+            id: userId,
+          },
         },
+        // roleApproval: roleApproval,
       },
       take: pageSize,
       skip: (page - 1) * pageSize,
-      order: { createdAt: options.order },
+      order: {
+        productRequisitionForm: { type: "DESC" },
+        createdAt: options.order,
+      },
       relations: [
         "assignedUserApproval",
         // "productRequisitionForm",
