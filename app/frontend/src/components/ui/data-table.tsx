@@ -45,6 +45,11 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTranslation } from 'react-i18next'
+import {
+  IRequisitionFormResponseForApprover,
+  RequestRequisitionRoleApproval,
+  RequestRequisitionStatus
+} from '@/types'
 
 // DataTable Component
 interface DataTableProps<TData, TValue> {
@@ -59,14 +64,6 @@ interface DataTableProps<TData, TValue> {
   onRowClick?: (row: TData) => void
   CustomComponent?: React.ElementType<{ table: ReactTable<TData> }>
 }
-
-import {
-  IRequisitionFormResponseForApprover,
-  RequestRequisitionRoleApproval,
-  RequestRequisitionStatus
-} from '@/types'
-
-import { useNavigate } from 'react-router-dom'
 
 export function DataTable<TData, TValue>({
   isLoading,

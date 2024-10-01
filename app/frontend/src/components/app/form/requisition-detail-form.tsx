@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import {
   FormField,
@@ -15,12 +14,8 @@ import {
   TableRow,
   TableHead,
   TableBody,
-  TableCell,
-  Button,
-  ScrollArea
+  TableCell
 } from '@/components/ui'
-import { addNewProductRequestSchema } from '@/schemas'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { IRequestRequisitionInfo } from '@/types'
 
 interface IFormRequisitionDetailProps {

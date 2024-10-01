@@ -5,10 +5,9 @@ import {
   UserApprovalResponseDto,
 } from "@dto/response";
 
-export class ProductRequisitionFormResponseDto {
-  @AutoMap()
-  slug?: string;
-
+export class ProductRequisitionFormResponseDto 
+// extends BaseResponseDto
+{
   @AutoMap()
   code?: string;
 
@@ -21,19 +20,13 @@ export class ProductRequisitionFormResponseDto {
   @AutoMap()
   isRecalled?: boolean;
 
+  deadlineApproval?: string;
+
   @AutoMap()
   description?: boolean;
 
-  company?: string;
-
-  companySlug?: string;
-
-  site?: string;
-
-  siteSlug?: string;
-
   project?: string;
-
+  
   projectSlug?: string;
 
   creator?: string;

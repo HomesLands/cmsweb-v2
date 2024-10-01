@@ -1,12 +1,7 @@
 import { UserApprovalFormResponseDto } from "@dto/response";
 import { UserApproval } from "@entities";
-import { RoleApproval } from "@enums";
 import { mapper } from "@mappers";
-import {
-  companyRepository,
-  siteRepository,
-  userApprovalRepository,
-} from "@repositories";
+import { userApprovalRepository } from "@repositories";
 import { TPaginationOptionResponse, TQueryRequest } from "@types";
 
 class UserApprovalService {
@@ -24,27 +19,30 @@ class UserApprovalService {
         ? parseInt(options.page, 10)
         : options.page;
 
-    let roleApproval = RoleApproval.APPROVAL_STAGE_1;
+    // let roleApproval = RoleApproval.APPROVAL_STAGE_1;
 
-    const site = await siteRepository.findOneBy({
-      manager: { id: userId },
-    });
-    const company = await companyRepository.findOneBy({
-      director: {
-        id: userId,
-      },
-    });
+    // const site = await siteRepository.findOneBy({
+    //   manager: { id: userId },
+    // });
+    // const company = await companyRepository.findOneBy({
+    //   director: {
+    //     id: userId,
+    //   },
+    // });
 
-    if (site) {
-      roleApproval = RoleApproval.APPROVAL_STAGE_2;
-    } else if (company) {
-      roleApproval = RoleApproval.APPROVAL_STAGE_3;
-    }
+    // if (site) {
+    //   roleApproval = RoleApproval.APPROVAL_STAGE_2;
+    // } else if (company) {
+    //   roleApproval = RoleApproval.APPROVAL_STAGE_3;
+    // }
 
     const totalApprovalForms = await userApprovalRepository.count({
       where: {
-        user: { id: userId },
-        roleApproval: roleApproval,
+        assignedUserApproval: {
+          user: {
+            id: userId,
+          },
+        },
       },
     });
 
@@ -57,10 +55,12 @@ class UserApprovalService {
 
     const approvalForms = await userApprovalRepository.find({
       where: {
-        user: {
-          id: userId,
+        assignedUserApproval: {
+          user: {
+            id: userId,
+          },
         },
-        roleApproval: roleApproval,
+        // roleApproval: roleApproval,
       },
       take: pageSize,
       skip: (page - 1) * pageSize,
@@ -69,15 +69,15 @@ class UserApprovalService {
         createdAt: options.order,
       },
       relations: [
+        "assignedUserApproval",
         "productRequisitionForm",
-        "productRequisitionForm.company",
-        "productRequisitionForm.site",
         "productRequisitionForm.project",
         "productRequisitionForm.creator",
         "productRequisitionForm.requestProducts",
         "productRequisitionForm.requestProducts.product",
         "productRequisitionForm.userApprovals",
-        "productRequisitionForm.userApprovals.user",
+        "productRequisitionForm.userApprovals.assignedUserApproval",
+        "productRequisitionForm.userApprovals.assignedUserApproval.user",
         "productRequisitionForm.userApprovals.approvalLogs",
       ],
     });

@@ -1,19 +1,17 @@
-import { Entity, Column, JoinColumn, ManyToOne, OneToMany } from "typeorm";
-import { Base, User, ProductRequisitionForm, ApprovalLog } from "@entities";
-import { AutoMap } from "@automapper/classes";
+import { Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import { 
+  Base, 
+  ProductRequisitionForm, 
+  ApprovalLog,
+  AssignedUserApproval, 
+} from "@entities";
 
 @Entity("user_approval_tbl")
 export class UserApproval extends Base {
-  @ManyToOne(() => User, (user) => user.userApprovals)
-  @JoinColumn({ name: "user_column" })
-  user?: User
-
-  @Column({ name: "form_type_column" })
-  formType?: string; // FormApprovalType in enums
-
-  @Column({ name: "role_approval_column" })
-  @AutoMap()
-  roleApproval?: string; // RoleApproval in enums
+  @ManyToOne(() => AssignedUserApproval,
+    (assignedUserApproval) => assignedUserApproval.userApprovals)
+  @JoinColumn({ name: "assigned_user_approval_column" })
+  assignedUserApproval?: AssignedUserApproval;
 
   // with other form, do the same
   @ManyToOne(() => ProductRequisitionForm,

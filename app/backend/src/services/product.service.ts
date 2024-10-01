@@ -45,7 +45,9 @@ class ProductService {
       take: pageSize,
       skip: (page - 1) * pageSize,
       order: { createdAt: options.order },
-      relations: ["unit"],
+      relations: [
+        "unit",
+      ],
       where: searchConditions,
     });
 
@@ -78,9 +80,7 @@ class ProductService {
     }
 
     const unit = await unitRepository.findOneBy({ slug: requestData.unit });
-    if (!unit) {
-      throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
-    }
+    if(!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
 
     const productData = mapper.map(
       requestData,
@@ -104,10 +104,11 @@ class ProductService {
 
     let product = await productRepository.findOneBy({ slug: requestData.slug });
     if(!product) throw new GlobalError(ErrorCodes.PRODUCT_NOT_FOUND);
-    Object.assign(product, requestData);
 
     const unit = await unitRepository.findOneBy({ slug: requestData.unit });
-    if(!unit) throw new GlobalError(ErrorCodes.INVALID_PRODUCT_UNIT);
+    if(!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
+    
+    Object.assign(product, requestData);
     product.unit = unit;
 
     product = await productRepository.save(product);

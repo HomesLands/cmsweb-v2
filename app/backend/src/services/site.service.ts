@@ -1,4 +1,4 @@
-import { siteRepository, userRepository,  productRequisitionFormRepository } from "@repositories";
+import { siteRepository, companyRepository } from "@repositories";
 import { mapper } from "@mappers";
 import { plainToClass } from "class-transformer";
 
@@ -12,7 +12,11 @@ import { validate } from "class-validator";
 class SiteService {
   public async getAllSites(): Promise<SiteResponseDto[] | []> {
     const sitesData = await siteRepository.find({
-      relations: ['manager']
+      relations: [
+        'departments',
+        'company',
+        'projects',
+      ]
     });
 
     const sitesDto: SiteResponseDto[] = mapper.mapArray(
@@ -30,14 +34,11 @@ class SiteService {
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
 
-    const manager = await userRepository.findOneBy({ slug: requestData.manager });
-
-    if (!manager) {
-      throw new GlobalError(ErrorCodes.USER_ASSIGNED_NOT_FOUND);
-    }
+    const company = await companyRepository.findOneBy({ slug: requestData.company });
+    if(!company) throw new GlobalError(ErrorCodes.COMPANY_NOT_FOUND);
 
     const siteData = mapper.map(requestData, CreateSiteRequestDto, Site);
-    siteData.manager = manager;
+    siteData.company = company;
 
     const dataSiteCreated = await siteRepository.createAndSave(siteData);
     
