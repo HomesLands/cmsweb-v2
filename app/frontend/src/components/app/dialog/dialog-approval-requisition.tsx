@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
   Button,
   Input,
   Form,
@@ -15,11 +17,10 @@ import {
   FormControl,
   FormMessage
 } from '@/components/ui'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 import { approvalRequisitionSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ApprovalLogStatus, RequestRequisitionRoleApproval } from '@/types'
+import { ApprovalAction, UserApprovalStage } from '@/constants'
 
 interface DialogApprovalRequisitionProps {
   openDialog: ApprovalLogStatus
@@ -50,11 +51,11 @@ export const DialogApprovalRequisition: React.FC<DialogApprovalRequisitionProps>
 
   const getButtonText = () => {
     switch (openDialog) {
-      case 'accept':
+      case ApprovalAction.ACCEPT:
         return t('productRequisition.accept')
-      case 'give_back':
+      case ApprovalAction.GIVE_BACK:
         return t('productRequisition.giveBack')
-      case 'cancel':
+      case ApprovalAction.CANCEL:
         return t('productRequisition.cancel')
       default:
         return t('productRequisition.confirm')
@@ -66,21 +67,22 @@ export const DialogApprovalRequisition: React.FC<DialogApprovalRequisitionProps>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="font-beVietNam">
-            {openDialog === 'accept' && t('productRequisition.acceptConfirmTitle')}
-            {openDialog === 'give_back' && t('productRequisition.giveBackConfirmTitle')}
-            {openDialog === 'cancel' &&
-              roleApproval !== 'approval_stage_1' &&
+            {openDialog === ApprovalAction.ACCEPT && t('productRequisition.acceptConfirmTitle')}
+            {openDialog === ApprovalAction.GIVE_BACK &&
+              t('productRequisition.giveBackConfirmTitle')}
+            {openDialog === ApprovalAction.CANCEL &&
+              roleApproval !== UserApprovalStage.APPROVAL_STAGE_1 &&
               t('productRequisition.cancelConfirmTitle')}
           </DialogTitle>
         </DialogHeader>
         <p>
-          {openDialog === 'accept' && t('productRequisition.acceptConfirmMessage')}
-          {openDialog === 'give_back' &&
-            (roleApproval === 'approval_stage_1'
+          {openDialog === ApprovalAction.ACCEPT && t('productRequisition.acceptConfirmMessage')}
+          {openDialog === ApprovalAction.GIVE_BACK &&
+            (roleApproval === UserApprovalStage.APPROVAL_STAGE_1
               ? t('productRequisition.giveBackConfirmMessage')
               : t('productRequisition.giveBackConfirmMessage'))}
-          {openDialog === 'cancel' &&
-            roleApproval !== 'approval_stage_1' &&
+          {openDialog === ApprovalAction.CANCEL &&
+            roleApproval !== UserApprovalStage.APPROVAL_STAGE_1 &&
             t('productRequisition.cancelConfirmMessage')}
         </p>
         <Form {...form}>
@@ -105,7 +107,10 @@ export const DialogApprovalRequisition: React.FC<DialogApprovalRequisitionProps>
               <Button type="button" variant="outline" onClick={() => setOpenDialog(null)}>
                 {t('productRequisition.cancel')}
               </Button>
-              <Button type="submit" variant={openDialog === 'accept' ? 'default' : 'destructive'}>
+              <Button
+                type="submit"
+                variant={openDialog === ApprovalAction.ACCEPT ? 'default' : 'destructive'}
+              >
                 {getButtonText()}
               </Button>
             </div>

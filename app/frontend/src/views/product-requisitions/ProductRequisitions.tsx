@@ -14,9 +14,12 @@ const ProductRequisitions: React.FC = () => {
   const { userInfo } = useUserStore()
 
   const { data, isLoading } = useProductRequisitionByCreator({
+    order: 'DESC',
     page: pagination.pageIndex + 1,
     pageSize: pagination.pageSize
   })
+
+  console.log('data in product requisition', data)
 
   const filteredData = useMemo(() => {
     if (!data?.result?.items || data.result.items.length === 0 || !userInfo) return []

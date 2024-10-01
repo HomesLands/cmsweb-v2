@@ -1,3 +1,4 @@
+import { RequisitionStatus, UserApprovalStage } from '@/constants'
 import { RequestRequisitionRoleApproval, RequestRequisitionStatus } from '@/types'
 
 export interface RequestStatusBadgeProps {
@@ -12,22 +13,22 @@ const getBadgeColorClass = (
   isRecalled: boolean
 ) => {
   switch (roleApproval) {
-    case 'approval_stage_1':
-      if (status === 'waiting' && !isRecalled) return 'bg-yellow-500'
-      if (status === 'cancel' && isRecalled) return 'bg-red-500'
-      if (status === 'accepted_stage_1' && !isRecalled) return 'bg-green-500'
+    case UserApprovalStage.APPROVAL_STAGE_1:
+      if (status === RequisitionStatus.WAITING && !isRecalled) return 'bg-yellow-500'
+      if (status === RequisitionStatus.CANCEL && isRecalled) return 'bg-red-500'
+      if (status === RequisitionStatus.ACCEPTED_STAGE_1 && !isRecalled) return 'bg-green-500'
       break
-    case 'approval_stage_2':
-      if (status === 'accepted_stage_1' && !isRecalled) return 'bg-yellow-500'
-      if (status === 'accepted_stage_1' && isRecalled) return 'bg-yellow-500'
-      if (status === 'accepted_stage_2') return 'bg-green-500'
-      if (status === 'cancel' && isRecalled) return 'bg-red-500'
-      if (status === 'waiting' && isRecalled) return 'bg-red-500'
+    case UserApprovalStage.APPROVAL_STAGE_2:
+      if (status === RequisitionStatus.ACCEPTED_STAGE_1 && !isRecalled) return 'bg-yellow-500'
+      if (status === RequisitionStatus.ACCEPTED_STAGE_1 && isRecalled) return 'bg-yellow-500'
+      if (status === RequisitionStatus.ACCEPTED_STAGE_2) return 'bg-green-500'
+      if (status === RequisitionStatus.CANCEL && isRecalled) return 'bg-red-500'
+      if (status === RequisitionStatus.WAITING && isRecalled) return 'bg-red-500'
       break
-    case 'approval_stage_3':
-      if (status === 'accepted_stage_1' && isRecalled) return 'bg-red-500'
-      if (status === 'waiting_export') return 'bg-green-500'
-      if (status === 'cancel' && isRecalled) return 'bg-red-500'
+    case UserApprovalStage.APPROVAL_STAGE_3:
+      if (status === RequisitionStatus.ACCEPTED_STAGE_2) return 'bg-yellow-500'
+      if (status === RequisitionStatus.WAITING_EXPORT) return 'bg-green-500'
+      if (status === RequisitionStatus.CANCEL && isRecalled) return 'bg-red-500'
       break
   }
   return 'bg-gray-500' // Default color if no condition is met
@@ -39,26 +40,26 @@ const getBadgeText = (
   isRecalled: boolean
 ) => {
   switch (roleApproval) {
-    case 'approval_stage_1':
-      if (status === 'waiting' && !isRecalled) return 'Chờ duyệt'
-      if (status === 'cancel' && isRecalled) return 'Đã hủy'
-      if (status === 'accepted_stage_1' && !isRecalled) return 'Đã duyệt'
+    case UserApprovalStage.APPROVAL_STAGE_1:
+      if (status === RequisitionStatus.WAITING && !isRecalled) return 'Chờ duyệt'
+      if (status === RequisitionStatus.CANCEL && isRecalled) return 'Đã hủy'
+      if (status === RequisitionStatus.ACCEPTED_STAGE_1 && !isRecalled) return 'Đã duyệt'
       break
-    case 'approval_stage_2':
-      if (status === 'accepted_stage_1' && !isRecalled) return 'Chờ duyệt'
-      if (status === 'accepted_stage_1' && isRecalled)
+    case UserApprovalStage.APPROVAL_STAGE_2:
+      if (status === RequisitionStatus.ACCEPTED_STAGE_1 && !isRecalled) return 'Chờ duyệt'
+      if (status === RequisitionStatus.ACCEPTED_STAGE_1 && isRecalled)
         return 'Chờ duyệt bước 2 (bị hoàn lại từ bước trên)'
-      if (status === 'accepted_stage_2') return 'Đã duyệt'
-      if (status === 'cancel' && isRecalled) return 'Đã hủy'
-      if (status === 'waiting' && isRecalled) return 'Bị hoàn lại để xem xét'
+      if (status === RequisitionStatus.ACCEPTED_STAGE_2) return 'Đã duyệt'
+      if (status === RequisitionStatus.CANCEL && isRecalled) return 'Đã hủy'
+      if (status === RequisitionStatus.WAITING && isRecalled) return 'Bị hoàn lại để xem xét'
       break
-    case 'approval_stage_3':
-      if (status === 'accepted_stage_1' && isRecalled) return 'Đã bị hoàn để xem xét lại'
-      if (status === 'waiting_export') return 'Đã duyệt'
-      if (status === 'cancel' && isRecalled) return 'Đã hủy'
+    case UserApprovalStage.APPROVAL_STAGE_3:
+      if (status === RequisitionStatus.ACCEPTED_STAGE_2) return 'Đang chờ duyệt'
+      if (status === RequisitionStatus.WAITING_EXPORT) return 'Đã duyệt'
+      if (status === RequisitionStatus.CANCEL && isRecalled) return 'Đã hủy'
       break
   }
-  return 'Không xác định' // Default text if no condition is met
+  return 'Không xác định'
 }
 
 export const ProductRequisitionStatusBadge: React.FC<RequestStatusBadgeProps> = ({

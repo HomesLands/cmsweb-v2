@@ -1,8 +1,10 @@
 import { create } from 'zustand'
+import toast from 'react-hot-toast'
 import { persist } from 'zustand/middleware'
+
 import { IProductRequirementInfoCreate, IProductRequisitionInfo, IRequisitionStore } from '@/types'
 import { showToast, showErrorToast } from '@/utils'
-import toast from 'react-hot-toast'
+import { RequisitionType, UserApprovalStage } from '@/constants'
 
 export const useRequisitionStore = create<IRequisitionStore>()(
   persist(
@@ -12,15 +14,35 @@ export const useRequisitionStore = create<IRequisitionStore>()(
       setRequisition: (requisition: IProductRequirementInfoCreate) => {
         const updatedRequisition = { ...requisition }
 
-        if (requisition.type === 'normal') {
+        if (requisition.type === RequisitionType.NORMAL) {
           updatedRequisition.userApprovals = [
-            { userSlug: requisition.project?.managerSlug ?? '', roleApproval: 'approval_stage_1' },
-            { userSlug: requisition.site?.managerSlug ?? '', roleApproval: 'approval_stage_2' },
-            { userSlug: requisition.company.directorSlug ?? '', roleApproval: 'approval_stage_3' }
+            {
+              userSlug: requisition.project?.managerSlug ?? '',
+              roleApproval: UserApprovalStage.APPROVAL_STAGE_1
+            },
+            {
+              userSlug: requisition.site?.managerSlug ?? '',
+              roleApproval: UserApprovalStage.APPROVAL_STAGE_2
+            },
+            {
+              userSlug: requisition.company.directorSlug ?? '',
+              roleApproval: UserApprovalStage.APPROVAL_STAGE_3
+            }
           ]
-        } else if (requisition.type === 'urgent') {
+        } else if (requisition.type === RequisitionType.URGENT) {
           updatedRequisition.userApprovals = [
-            { userSlug: requisition.company.directorSlug, roleApproval: 'approval_stage_3' }
+            {
+              userSlug: requisition.project?.managerSlug ?? '',
+              roleApproval: UserApprovalStage.APPROVAL_STAGE_1
+            },
+            {
+              userSlug: requisition.site?.managerSlug ?? '',
+              roleApproval: UserApprovalStage.APPROVAL_STAGE_2
+            },
+            {
+              userSlug: requisition.company.directorSlug ?? '',
+              roleApproval: UserApprovalStage.APPROVAL_STAGE_3
+            }
           ]
         }
 

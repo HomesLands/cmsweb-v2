@@ -19,6 +19,7 @@ import { ProductRequisitionStatusBadge } from '@/components/app/badge'
 import { RequisitionTypeBadge } from '@/components/app/badge/RequisitionTypeBadge'
 import { useState } from 'react'
 import { DialogRequisitionDetail } from '@/components/app/dialog/dialog-requisition-detail'
+import { UserApprovalStage } from '@/constants'
 
 export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseForApprover>[] => {
   const [openDialog, setOpenDialog] = useState(false)
@@ -104,16 +105,16 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                {roleApproval === 'approval_stage_1' && (
+                {roleApproval === UserApprovalStage.APPROVAL_STAGE_1 && (
                   <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
                 )}
-                {roleApproval === 'approval_stage_2' && (
+                {roleApproval === UserApprovalStage.APPROVAL_STAGE_2 && (
                   <>
                     <DropdownMenuItem>Hoàn lại</DropdownMenuItem>
                     <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
                   </>
                 )}
-                {roleApproval === 'approval_stage_3' && (
+                {roleApproval === UserApprovalStage.APPROVAL_STAGE_3 && (
                   <>
                     <DropdownMenuItem>Hoàn lại</DropdownMenuItem>
                     <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>

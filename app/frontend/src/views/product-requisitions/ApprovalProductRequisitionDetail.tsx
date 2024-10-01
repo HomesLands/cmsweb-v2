@@ -21,6 +21,7 @@ import { DialogApprovalRequisition } from '@/components/app/dialog'
 import { showToast } from '@/utils'
 import { useMutation } from '@tanstack/react-query'
 import { approveProductRequisition } from '@/api'
+import { ApprovalAction, RequisitionStatus, UserApprovalStage } from '@/constants'
 
 const ApprovalProductRequisitionDetail: React.FC = () => {
   const navigate = useNavigate()
@@ -43,8 +44,12 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
 
   const buttonStates = useMemo(() => {
     if (!data?.result || !selectedRequisition) return {}
+    if (!data?.result || !selectedRequisition) return {}
 
-    const { status, isRecalled } = data.result
+  if (!data?.result || !selectedRequisition) return {}
+
+  const { status, isRecalled } = data.result
+
     const { roleApproval } = selectedRequisition
 
     let acceptEnabled = false
@@ -52,18 +57,18 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
     let cancelEnabled = false
 
     // Nếu đã duyệt bước 2 và không bị recall, disable tất cả các nút
-    if (status === 'accepted_stage_2' && !isRecalled) {
-      return { acceptEnabled, giveBackEnabled, cancelEnabled }
-    }
+    // if (status === 'accepted_stage_2' && !isRecalled) {
+    //   return { acceptEnabled, giveBackEnabled, cancelEnabled }
+    // }
 
     switch (roleApproval) {
-      case 'approval_stage_1':
-        acceptEnabled = status === 'waiting' && !isRecalled
-        giveBackEnabled = status === 'waiting' && !isRecalled
+      case UserApprovalStage.APPROVAL_STAGE_1:
+        acceptEnabled = status === RequisitionStatus.WAITING && !isRecalled
+        giveBackEnabled = status === RequisitionStatus.WAITING && !isRecalled
         break
-      case 'approval_stage_2':
-      case 'approval_stage_3':
-        acceptEnabled = ['accepted_stage_1', 'accepted_stage_2'].includes(status) && !isRecalled
+      case UserApprovalStage.APPROVAL_STAGE_2:
+      case UserApprovalStage.APPROVAL_STAGE_3:
+        acceptEnabled = ['accepted_stage_1', 'accepted_stage_2'].includes(status)
         giveBackEnabled = ['accepted_stage_1', 'accepted_stage_2'].includes(status) && !isRecalled
         cancelEnabled = ['accepted_stage_1', 'accepted_stage_2'].includes(status)
         break
@@ -72,9 +77,9 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
     return { acceptEnabled, giveBackEnabled, cancelEnabled }
   }, [data?.result, selectedRequisition])
 
-  const handleAccept = () => setOpenDialog('accept')
-  const handleGiveBack = () => setOpenDialog('give_back')
-  const handleCancel = () => setOpenDialog('cancel')
+  const handleAccept = () => setOpenDialog(ApprovalAction.ACCEPT)
+  const handleGiveBack = () => setOpenDialog(ApprovalAction.GIVE_BACK)
+  const handleCancel = () => setOpenDialog(ApprovalAction.CANCEL)
 
   const mutation = useMutation({
     mutationFn: async (data: IApproveProductRequisition) => {
@@ -89,20 +94,20 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
       let toastMessage = ''
 
       switch (roleApproval) {
-        case 'approval_stage_1':
-          if (variables.approvalLogStatus === 'accept') {
+        case UserApprovalStage.APPROVAL_STAGE_1:
+          if (variables.approvalLogStatus === ApprovalAction.ACCEPT) {
             toastMessage = tToast('toast.approveRequestSuccess')
-          } else if (variables.approvalLogStatus === 'give_back') {
+          } else if (variables.approvalLogStatus === ApprovalAction.GIVE_BACK) {
             toastMessage = tToast('toast.giveBackRequestSuccess')
           }
           break
-        case 'approval_stage_2':
-        case 'approval_stage_3':
-          if (variables.approvalLogStatus === 'accept') {
+        case UserApprovalStage.APPROVAL_STAGE_2:
+        case UserApprovalStage.APPROVAL_STAGE_3:
+          if (variables.approvalLogStatus === ApprovalAction.ACCEPT) {
             toastMessage = tToast('toast.approveRequestSuccess')
-          } else if (variables.approvalLogStatus === 'give_back') {
+          } else if (variables.approvalLogStatus === ApprovalAction.GIVE_BACK) {
             toastMessage = tToast('toast.giveBackRequestSuccess')
-          } else if (variables.approvalLogStatus === 'cancel') {
+          } else if (variables.approvalLogStatus === ApprovalAction.CANCEL) {
             toastMessage = tToast('toast.cancelRequestSuccess')
           }
           break
@@ -138,7 +143,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           <Button variant="outline" onClick={() => navigate(-1)}>
             {t('productRequisition.back')}
           </Button>
-          {roleApproval === 'approval_stage_1' && (
+          {roleApproval === UserApprovalStage.APPROVAL_STAGE_1 && (
             <>
               <Button
                 variant="outline"
@@ -156,7 +161,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
               </Button>
             </>
           )}
-          {(roleApproval === 'approval_stage_2' || roleApproval === 'approval_stage_3') && (
+          {(roleApproval === UserApprovalStage.APPROVAL_STAGE_2 || roleApproval === UserApprovalStage.APPROVAL_STAGE_3) && (
             <>
               <Button
                 variant="destructive"
@@ -257,7 +262,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
         />
 
         <DialogApprovalRequisition
-          openDialog={openDialog as ApprovalLogStatus}
+          openDialog={openDialog as ApprovalAction}
           setOpenDialog={setOpenDialog}
           onConfirm={handleConfirm}
           roleApproval={roleApproval as RequestRequisitionRoleApproval}
