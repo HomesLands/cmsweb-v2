@@ -9,12 +9,13 @@ import {
 } from "@automapper/core";
 import { 
   ProductResponseDto,
-  ProductWarehouseResponseDto, 
+  ProductWarehouseResponseDto,
+  UnitResponseDto
 } from "@dto/response";
 import {
   CreateProductRequestDto,
 } from "@dto/request";
-import { Product, ProductWarehouse } from "@entities";
+import { Product, ProductWarehouse, Unit } from "@entities";
 import { baseMapper } from "./base.mapper";
 
 export const productMapper: MappingProfile = (mapper: Mapper) => {
@@ -28,7 +29,11 @@ export const productMapper: MappingProfile = (mapper: Mapper) => {
     ProductResponseDto,
     forMember(
       (destination) => destination.unit,
-      mapFrom((source) => source.unit?.name)
+      mapWith(
+        UnitResponseDto,
+        Unit,
+        (source) => source.unit
+      )
     ),
     forMember(
       (destination) => destination.productWarehouses,

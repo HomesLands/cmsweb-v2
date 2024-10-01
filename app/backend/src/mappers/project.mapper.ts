@@ -11,11 +11,13 @@ import {
 import { 
   ProjectResponseDto, 
   ProductRequisitionFormResponseDto,
+  SiteResponseDto
 } from "@dto/response";
 import { CreateProjectRequestDto } from "@dto/request";
 import { 
   Project,
-  ProductRequisitionForm
+  ProductRequisitionForm,
+  Site
  } from "@entities";
 import moment from "moment";
 import { baseMapper } from "./base.mapper";
@@ -29,11 +31,11 @@ export const projectMapper: MappingProfile = (mapper: Mapper) => {
     ProjectResponseDto,
     forMember(
       (destination) => destination.site,
-      mapFrom((source) => source.site?.name)
-    ),
-    forMember(
-      (destination) => destination.siteSlug,
-      mapFrom((source) => source.site?.slug)
+      mapWith(
+        SiteResponseDto,
+        Site,
+        (source) => source.site
+      )
     ),
     forMember(
       (destination) => destination.productRequisitionFormResponseDto,

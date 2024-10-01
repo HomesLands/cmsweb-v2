@@ -49,19 +49,19 @@ class UserApprovalService {
       order: { createdAt: options.order },
       relations: [
         "assignedUserApproval",
-        "productRequisitionForm",
+        // "productRequisitionForm",
         "productRequisitionForm.project",
         "productRequisitionForm.creator",
-        "productRequisitionForm.requestProducts",
+        "productRequisitionForm.creator.userDepartments.department.site.company",
+        // "productRequisitionForm.requestProducts",
         "productRequisitionForm.requestProducts.product",
-        "productRequisitionForm.userApprovals",
-        "productRequisitionForm.userApprovals.assignedUserApproval",
+        "productRequisitionForm.requestProducts.temporaryProduct",
+        // "productRequisitionForm.userApprovals",
+        // "productRequisitionForm.userApprovals.assignedUserApproval",
         "productRequisitionForm.userApprovals.assignedUserApproval.user",
         "productRequisitionForm.userApprovals.approvalLogs",
       ],
     });
-
-    console.log(approvalForms[0].productRequisitionForm?.userApprovals)
 
     const approvalFormsDto: UserApprovalFormResponseDto[] = mapper.mapArray(
       approvalForms,

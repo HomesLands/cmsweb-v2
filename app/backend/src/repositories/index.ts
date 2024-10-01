@@ -19,3 +19,4 @@ export { default as userDepartmentRepository } from "./user-department.repositor
 export { default as assignedUserApprovalRepository } from "./assigned-user-approval.repository";
 export { default as productWarehouseRepository } from "./product-warehouse.repository";
 export { default as warehouseRepository } from "./warehouse.repository";
+export { default as temporaryProductRepository } from "./temporary-product.repository";

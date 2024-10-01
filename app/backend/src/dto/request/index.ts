@@ -16,3 +16,5 @@ export * from "./user-department-request.dto";
 export * from "./assigned-user-approval-request.dto";
 export * from "./warehouse-request.dto";
 export * from "./product-warehouse-request.dto";
+export * from "./temporary-product-request.dto";
+export * from "./temporary-product-request.dto";
