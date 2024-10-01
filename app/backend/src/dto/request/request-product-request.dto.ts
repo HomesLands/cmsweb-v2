@@ -1,12 +1,14 @@
 import {
   IsNotEmpty,
+  IsOptional,
   Min,
 } from 'class-validator';
 import { Expose } from 'class-transformer';
 import { AutoMap } from '@automapper/classes';
 
 export class CreateRequestProductRequestDto {
-  @IsNotEmpty({ message: "INVALID_PRODUCT_SLUG" })
+  // @IsNotEmpty({ message: "INVALID_PRODUCT_SLUG" })
+  @IsOptional()
   @Expose()
   @AutoMap()
   product?: string;
@@ -16,6 +18,27 @@ export class CreateRequestProductRequestDto {
   @Expose()
   @AutoMap()
   requestQuantity?: number;
+
+  @IsNotEmpty({ message: "INVALID_PRODUCT_NAME" })
+  @Expose()
+  @AutoMap()
+  name?: string;
+
+  @IsNotEmpty({ message: "INVALID_PRODUCT_PROVIDER" })
+  @Expose()
+  @AutoMap()
+  provider?: string;
+
+  // @IsNotEmpty({ message: "INVALID_UNIT_SLUG" })
+  @IsOptional()
+  @Expose()
+  @AutoMap()
+  unit?: string;
+
+  @IsNotEmpty({ message: "INVALID_PRODUCT_DESCRIPTION" })
+  @Expose()
+  @AutoMap()
+  description?: string;
 }
 
 export class ChangeQuantityRequestProduct {

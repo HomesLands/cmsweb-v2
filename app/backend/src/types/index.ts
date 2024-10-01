@@ -34,3 +34,4 @@ export * from "./user-department.type";
 export * from "./assigned-user-approval.type";
 export * from "./warehouse.type";
 export * from "./product-warehouse.type";
+export * from "./temporary-product.type";

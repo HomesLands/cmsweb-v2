@@ -409,6 +409,31 @@ export const ErrorCodes: TErrorCode = {
     code: 1092,
     message: `Error when update product quantity"`,
   },
+  INVALID_TEMPORARY_REQUEST_PRODUCT_NAME: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1092,
+    message: `Error when update product quantity"`,
+  },
+  INVALID_QUANTITY_TEMPORARY_REQUEST_PRODUCT: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1092,
+    message: `Error when update product quantity"`,
+  },
+  INVALID_TEMPORARY_REQUEST_PRODUCT_PROVIDER: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1092,
+    message: `Error when update product quantity"`,
+  },
+  INVALID_TEMPORARY_REQUEST_PRODUCT_DESCRIPTION: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1092,
+    message: `Error when update product quantity"`,
+  },
+  INVALID_PRODUCT_DESCRIPTION: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1092,
+    message: `Error when update product quantity"`,
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]

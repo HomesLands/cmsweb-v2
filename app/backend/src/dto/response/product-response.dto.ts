@@ -2,6 +2,7 @@ import { AutoMap } from "@automapper/classes";
 import {
   BaseResponseDto,
   ProductWarehouseResponseDto,
+  UnitResponseDto
 } from "@dto/response";
 
 export class ProductResponseDto 
@@ -22,7 +23,8 @@ export class ProductResponseDto
   @AutoMap()
   quantity?: number;
 
-  unit?: string;
+  @AutoMap(() => UnitResponseDto)
+  unit?: UnitResponseDto;
 
   @AutoMap(() =>[ProductWarehouseResponseDto])
   productWarehouses?: ProductWarehouseResponseDto[];
