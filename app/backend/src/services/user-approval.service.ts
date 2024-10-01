@@ -40,7 +40,10 @@ class UserApprovalService {
       },
       take: pageSize,
       skip: (page - 1) * pageSize,
-      order: { createdAt: options.order },
+      order: {
+        productRequisitionForm: { type: "DESC" },
+        createdAt: options.order,
+      },
       relations: [
         "productRequisitionForm",
         "productRequisitionForm.company",
