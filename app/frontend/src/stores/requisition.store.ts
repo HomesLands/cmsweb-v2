@@ -14,8 +14,8 @@ export const useRequisitionStore = create<IRequisitionStore>()(
 
         if (requisition.type === 'normal') {
           updatedRequisition.userApprovals = [
-            { userSlug: requisition.site?.managerSlug ?? '', roleApproval: 'approval_stage_1' },
-            { userSlug: requisition.project?.managerSlug ?? '', roleApproval: 'approval_stage_2' },
+            { userSlug: requisition.project?.managerSlug ?? '', roleApproval: 'approval_stage_1' },
+            { userSlug: requisition.site?.managerSlug ?? '', roleApproval: 'approval_stage_2' },
             { userSlug: requisition.company.directorSlug ?? '', roleApproval: 'approval_stage_3' }
           ]
         } else if (requisition.type === 'urgent') {
