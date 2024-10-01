@@ -19,3 +19,9 @@ export interface IQuery {
   pageSize?: number
   order?: string
 }
+
+export interface IBase {
+  createdAt?: string
+  updatedAt?: string
+  slug?: string
+}

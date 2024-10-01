@@ -9,6 +9,8 @@
     "permissions": "Permissions",
     "createPermission": "Create permission",
     "roles": "Roles",
-    "createRole": "Create role"
+    "createRole": "Create role",
+    "warehouses": "Warehouses",
+    "createWarehouse": "Create warehouse"
   }
 }

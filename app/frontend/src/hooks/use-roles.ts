@@ -2,7 +2,6 @@ import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
 
 import { createRole, getRoles } from '@/api'
 import { ICreateRole, IQuery } from '@/types'
-import { TCreateRoleSchema } from '@/schemas'
 
 export const useRoles = (q: IQuery) => {
   return useQuery({

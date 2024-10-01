@@ -9,9 +9,13 @@ import { CustomComponent } from './DataTable/CustomComponent'
 
 const Roles: React.FC = () => {
   const { t } = useTranslation(['roles'])
-  const { pagination } = usePagination()
+  const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
 
-  const { data: roles } = useRoles({})
+  const { data: roles } = useRoles({
+    order: 'DESC',
+    page: pagination.pageIndex,
+    pageSize: pagination.pageSize
+  })
 
   return (
     <div className="flex flex-col gap-4">
@@ -21,12 +25,12 @@ const Roles: React.FC = () => {
       </Label>
       <DataTable
         columns={useRoleColumns()}
-        data={roles || []}
-        pages={0}
+        data={roles?.items || []}
+        pages={roles?.totalPages || 0}
         page={pagination.pageIndex + 1}
         pageSize={pagination.pageSize}
-        onPageChange={() => {}}
-        onPageSizeChange={() => {}}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
         CustomComponent={CustomComponent}
         isLoading={false}
       />

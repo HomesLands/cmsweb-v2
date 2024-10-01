@@ -4,9 +4,17 @@
     "productRequisitionsList": "Danh sách yêu cầu vật tư",
     "approvalProductRequisitions": "Danh sách duyệt yêu cầu vật tư",
     "createProductRequisitions": "Tạo yêu cầu vật tư",
+
+    "warehouses": "Kho",
+    "createWarehouse": "Tạo kho",
+
     "authorities": "Thẩm quyền",
     "createAuthority": "Tạo thẩm quyền",
+
     "permissions": "Quyền hạn",
-    "createPermission": "Tạo quyền hạn"
+    "createPermission": "Tạo quyền hạn",
+
+    "roles": "Chức vụ",
+    "createRole": "Tạo chức vụ"
   }
 }
