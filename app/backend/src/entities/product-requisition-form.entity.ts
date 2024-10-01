@@ -5,7 +5,7 @@ import {
   RequestProduct, 
   UserApproval, 
   User, 
-  Project
+  Project,
 } from "@entities"
 
 @Entity("product_requisition_form_tbl")

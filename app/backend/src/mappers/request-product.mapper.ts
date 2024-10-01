@@ -8,13 +8,17 @@ import {
 } from "@automapper/core";
 import {
   ProductResponseDto,
-  RequestProductResponseDto
+  RequestProductResponseDto,
+  TemporaryProductResponseDto,
 } from "@dto/response";
 import {
   Product,
-  RequestProduct
+  RequestProduct,
+  TemporaryProduct,
 } from "@entities";
-import { CreateRequestProductRequestDto } from "@dto/request";
+import { 
+  CreateRequestProductRequestDto, 
+} from "@dto/request";
 import { baseMapper } from "./base.mapper";
 
 export const requestProductMapper: MappingProfile = (mapper: Mapper) =>{
@@ -37,6 +41,13 @@ export const requestProductMapper: MappingProfile = (mapper: Mapper) =>{
         ProductResponseDto,
         Product,
         (source) => source.product)
+    ),
+    forMember(
+      (destination) => destination.temporaryProduct,
+      mapWith(
+        TemporaryProductResponseDto,
+        TemporaryProduct,
+        (source) => source.temporaryProduct)
     ),
     extend(baseMapper(mapper)),
   );

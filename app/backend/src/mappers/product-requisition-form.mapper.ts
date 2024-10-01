@@ -13,11 +13,15 @@ import {
   ProductRequisitionFormResponseDto,
   UserApprovalResponseDto,
   RequestProductResponseDto,
+  UserResponseDto,
+  ProjectResponseDto
 } from "@dto/response";
 import {
   ProductRequisitionForm,
   UserApproval,
   RequestProduct,
+  User,
+  Project,
 } from "@entities";
 import { CreateProductRequisitionFormRequestDto } from "@dto/request";
 import { baseMapper } from "./base.mapper";
@@ -32,19 +36,19 @@ export const productRequisitionFormMapper: MappingProfile = (
     ProductRequisitionFormResponseDto,
     forMember(
       (destination) => destination.project,
-      mapFrom((source) => source.project?.name)
-    ),
-    forMember(
-      (destination) => destination.projectSlug,
-      mapFrom((source) => source.project?.slug)
+      mapWith(
+        ProjectResponseDto,
+        Project,
+        (source) => source.project
+      )
     ),
     forMember(
       (destination) => destination.creator,
-      mapFrom((source) => source.creator?.fullname)
-    ),
-    forMember(
-      (destination) => destination.creatorSlug,
-      mapFrom((source) => source.creator?.slug)
+      mapWith(
+        UserResponseDto,
+        User,
+        (source) => source.creator
+      )
     ),
     forMember(
       (destination) => destination.userApprovals,

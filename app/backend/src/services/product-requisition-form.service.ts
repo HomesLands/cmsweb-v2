@@ -10,6 +10,8 @@ import {
   approvalLogRepository,
   projectRepository,
   assignedUserApprovalRepository,
+  temporaryProductRepository,
+  unitRepository,
 } from "@repositories";
 import {
   TCreateProductRequisitionFormRequestDto,
@@ -25,6 +27,7 @@ import {
   ApprovalProductRequisitionFormRequestDto,
   CreateApprovalLogRequestDto,
   ResubmitProductRequisitionFormRequestDto,
+  CreateTemporaryProductRequestDto,
 } from "@dto/request";
 import { mapper } from "@mappers";
 import {
@@ -32,6 +35,7 @@ import {
   ProductRequisitionForm,
   RequestProduct,
   UserApproval,
+  TemporaryProduct,
 } from "@entities";
 import { GlobalError, ErrorCodes, ValidationError } from "@exception";
 import {
@@ -81,6 +85,7 @@ class ProductRequisitionFormService {
         "userApprovals.approvalLogs",
         "requestProducts",
         "requestProducts.product",
+        "requestProducts.temporaryProduct",
       ],
     });
 
@@ -110,6 +115,12 @@ class ProductRequisitionFormService {
     // Validation
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
+
+    console.log({requestData})
+    console.log({requestData1: requestData.requestProducts})
+
+    // throw new GlobalError(ErrorCodes.PRODUCT_REQUISITION_FORM_CODE_EXIST);
+
 
     const codeExisted = await productRequisitionFormRepository.existsBy({
       code: requestData.code,
@@ -144,13 +155,27 @@ class ProductRequisitionFormService {
     const userApprovalStageOne = assignedUserApproval.find(
       (item) => item.roleApproval === RoleApproval.APPROVAL_STAGE_1
     );
-    console.log({userApprovalStageOne})
     const userApprovalStageTwo = assignedUserApproval.find(
       (item) => item.roleApproval === RoleApproval.APPROVAL_STAGE_2
     );
     const userApprovalStageThree = assignedUserApproval.find(
       (item) => item.roleApproval === RoleApproval.APPROVAL_STAGE_3
     );
+
+    // const temporaryRequestProductData = mapper.map(
+    //   requestData.requestProducts[0],
+    //   CreateTemporaryProductRequestDto,
+    //   TemporaryProduct
+    // );
+    // console.log({temporaryRequestProductData})
+
+    // const requestProductData = mapper.map(
+    //   requestData.requestProducts[0],
+    //   CreateRequestProductRequestDto,
+    //   RequestProduct
+    // );
+    // console.log({requestProductData})
+    // throw new GlobalError(ErrorCodes.PROJECT_NOT_FOUND);
 
     if(!(
       userApprovalStageOne
@@ -163,14 +188,7 @@ class ProductRequisitionFormService {
     });
     if (!project) throw new GlobalError(ErrorCodes.PROJECT_NOT_FOUND);
 
-    for (let i: number = 0; i < requestData.requestProducts.length; i++) {
-      const product = await productRepository.findOneBy({
-        slug: requestData.requestProducts[i].product,
-      });
-      // note: Tạm thời chỉ lấy các sản phẩm có trong db
-      if (!product) throw new GlobalError(ErrorCodes.PRODUCT_NOT_FOUND);
-    }
-
+    
     // Create product requisition form
     const form = mapper.map(
       requestData,
@@ -190,16 +208,45 @@ class ProductRequisitionFormService {
       });
 
       if (product) {
-        const requestProductData = mapper.map(
+        const requestProductMapped = mapper.map(
           requestData.requestProducts[i],
           CreateRequestProductRequestDto,
           RequestProduct
         );
-        requestProductData.product = product;
-        requestProductData.productRequisitionForm = createdForm;
+        requestProductMapped.product = product;
+        requestProductMapped.productRequisitionForm = createdForm;
 
         const createdRequestProduct =
-          await requestProductRepository.createAndSave(requestProductData);
+          await requestProductRepository.createAndSave(requestProductMapped);
+        requestProductList.push(createdRequestProduct);
+      } else {
+        // product not exist
+        const requestProductData = requestData.requestProducts[i];
+        const unit = await unitRepository.findOneBy({
+          slug: requestProductData.unit
+        });
+        // note: có nên check trước khi tạo???
+        if(!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
+
+        const temporaryRequestProductData = mapper.map(
+          requestProductData,
+          CreateTemporaryProductRequestDto,
+          TemporaryProduct
+        );
+        temporaryRequestProductData.unit = unit;
+        const temporaryProduct = 
+        await temporaryProductRepository.createAndSave(temporaryRequestProductData);
+        console.log({temporaryRequestProductData})
+        const requestProductMapped = mapper.map(
+          requestData.requestProducts[0],
+          CreateRequestProductRequestDto,
+          RequestProduct
+        );
+        requestProductMapped.temporaryProduct = temporaryProduct;
+        requestProductMapped.productRequisitionForm = createdForm;
+        requestProductMapped.isExistProduct = false;
+        const createdRequestProduct =
+          await requestProductRepository.createAndSave(requestProductMapped);
         requestProductList.push(createdRequestProduct);
       }
     }
@@ -245,6 +292,7 @@ class ProductRequisitionFormService {
         "userApprovals.approvalLogs",
         "requestProducts",
         "requestProducts.product",
+        "requestProducts.temporaryProduct",
       ],
     });
 
@@ -307,6 +355,7 @@ class ProductRequisitionFormService {
         "userApprovals.approvalLogs",
         "requestProducts",
         "requestProducts.product",
+        "requestProducts.temporaryProduct",
       ],
     });
     if (!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
@@ -457,6 +506,7 @@ class ProductRequisitionFormService {
         "userApprovals.approvalLogs",
         "requestProducts",
         "requestProducts.product",
+        "requestProducts.temporaryProduct",
       ],
     });
     console.log({ form });

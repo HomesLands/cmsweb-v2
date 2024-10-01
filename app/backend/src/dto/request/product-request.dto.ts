@@ -33,7 +33,7 @@ export class CreateProductRequestDto {
   // if code empty, must have description
   // if have code, description is optional 
   @ValidateIf(o => !o.code)
-  @IsNotEmpty({message: "INVALID_PRODUCT_UNIT"})
+  @IsNotEmpty({message: "INVALID_PRODUCT_DESCRIPTION"})
   @Expose()
   @AutoMap()
   description?: string;

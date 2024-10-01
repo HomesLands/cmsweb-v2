@@ -20,6 +20,7 @@ import { userDepartmentMapper } from "./user-department.mapper";
 import { assignedUserApprovalMapper } from "./assigned-user-approval.mapper";
 import { warehouseMapper } from "./warehouse.mapper";
 import { productWarehouseMapper } from "./product-warehouse.mapper";
+import { temporaryProductMapper } from "./temporary-product.mapper"
 
 export const mapper = createMapper({
   strategyInitializer: classes(),
@@ -45,3 +46,4 @@ userDepartmentMapper(mapper);
 assignedUserApprovalMapper(mapper);
 warehouseMapper(mapper);
 productWarehouseMapper(mapper);
+temporaryProductMapper(mapper);

@@ -3,6 +3,8 @@ import {
   BaseResponseDto,
   RequestProductResponseDto,
   UserApprovalResponseDto,
+  UserResponseDto,
+  ProjectResponseDto
 } from "@dto/response";
 
 export class ProductRequisitionFormResponseDto 
@@ -25,13 +27,11 @@ export class ProductRequisitionFormResponseDto
   @AutoMap()
   description?: boolean;
 
-  project?: string;
+  @AutoMap(() => ProjectResponseDto)
+  project?: ProjectResponseDto;
   
-  projectSlug?: string;
-
-  creator?: string;
-
-  creatorSlug?: string;
+  @AutoMap(() => UserResponseDto)
+  creator?: UserResponseDto;
 
   @AutoMap(() => [RequestProductResponseDto])
   requestProducts?: RequestProductResponseDto[];

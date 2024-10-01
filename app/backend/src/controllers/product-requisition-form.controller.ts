@@ -24,6 +24,10 @@ class ProductRequisitionFormController {
    *       required:
    *         - product
    *         - requestQuantity
+   *         - name
+   *         - provider
+   *         - unit
+   *         - description
    *       properties:
    *         product:
    *           type: string
@@ -31,9 +35,25 @@ class ProductRequisitionFormController {
    *         requestQuantity:
    *           type: integer
    *           description: The quantity of the product being requested.
+   *         name:
+   *           type: string
+   *           description: The name of the product being requested.
+   *         provider:
+   *           type: string
+   *           description: The provider of the product being requested.
+   *         unit:
+   *           type: string
+   *           description: The unit slug of the product being requested.
+   *         description:
+   *           type: string
+   *           description: The description of the request product.
    *       example:
    *         product: KeYdkmeNg
    *         requestQuantity: 10
+   *         name: Máy cắt bê tông
+   *         provider: BOSCH
+   *         unit: unit-slug-123
+   *         description: Loại nhỏ
    *
    *     CreateProductRequisitionFormRequestDto:
    *       type: object
@@ -74,6 +94,10 @@ class ProductRequisitionFormController {
    *         requestProducts:
    *           - product: KeYdkmeNg
    *             requestQuantity: 10
+   *             name: Máy cắt bê tông
+   *             provider: BOSCH
+   *             unit: unit-slug-123
+   *             description: Loại nhỏ
    *
    *     ApprovalProductRequisitionFormRequestDto:
    *       type: object
