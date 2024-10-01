@@ -4,6 +4,7 @@ import {
   UpdateDateColumn,
   Column,
   DeleteDateColumn,
+  BeforeInsert,
 } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 import shortid from "shortid";

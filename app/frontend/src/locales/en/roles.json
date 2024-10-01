@@ -1,0 +1,10 @@
+{
+  "roles": {
+    "list": "List of roles",
+    "createRole": "Create role",
+    "CreateRoleDescription": "Create new role",
+    "description": "Description",
+    "nameNormalize": "Normalized name"
+  }
+   
+}

@@ -1,7 +1,7 @@
-import { Entity, Column, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 
-import { Base, Unit, RequestProduct } from "@entities";
+import { Base, ProductWarehouse, RequestProduct, Unit } from "@entities";
 
 @Entity("product_tbl")
 export class Product extends Base {
@@ -21,10 +21,6 @@ export class Product extends Base {
   @AutoMap()
   provider?: string;
 
-  @Column({ name: "rfid_column", nullable: true })
-  @AutoMap()
-  rfid?: string;
-
   @Column({ name: "description_column", nullable: true, type: "text" })
   @AutoMap()
   description?: string;
@@ -36,4 +32,9 @@ export class Product extends Base {
   // a product have many request product
   @OneToMany(() => RequestProduct, (requestProduct) => requestProduct.product)
   requestProducts?: RequestProduct[];
+
+  // a product have many productWarehouse
+  @OneToMany(() => ProductWarehouse, 
+    (productWarehouse) => productWarehouse.product)
+  productWarehouses?: ProductWarehouse[];
 }

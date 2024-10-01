@@ -4,18 +4,24 @@ import {
   createMap,
   forMember,
   mapFrom,
-  mapWith,
+  mapWith, 
   extend,
+  typeConverter
 } from "@automapper/core";
+import moment from "moment";
 import {
   ProductRequisitionFormResponseDto,
   UserApprovalResponseDto,
   RequestProductResponseDto,
+  UserResponseDto,
+  ProjectResponseDto
 } from "@dto/response";
 import {
   ProductRequisitionForm,
   UserApproval,
   RequestProduct,
+  User,
+  Project,
 } from "@entities";
 import { CreateProductRequisitionFormRequestDto } from "@dto/request";
 import { baseMapper } from "./base.mapper";
@@ -29,40 +35,20 @@ export const productRequisitionFormMapper: MappingProfile = (
     ProductRequisitionForm,
     ProductRequisitionFormResponseDto,
     forMember(
-      (destination) => destination.company,
-      mapFrom((source) => source.company?.name)
-    ),
-    forMember(
-      (destination) => destination.companySlug,
-      mapFrom((source) => source.company?.slug)
-    ),
-    forMember(
-      (destination) => destination.site,
-      mapFrom((source) => source.site?.name)
-    ),
-    forMember(
-      (destination) => destination.siteSlug,
-      mapFrom((source) => source.site?.slug)
-    ),
-    forMember(
       (destination) => destination.project,
-      mapFrom((source) => source.project?.name)
-    ),
-    forMember(
-      (destination) => destination.projectSlug,
-      mapFrom((source) => source.project?.slug)
-    ),
-    forMember(
-      (destination) => destination.projectSlug,
-      mapFrom((source) => source.project?.slug)
+      mapWith(
+        ProjectResponseDto,
+        Project,
+        (source) => source.project
+      )
     ),
     forMember(
       (destination) => destination.creator,
-      mapFrom((source) => source.creator?.fullname)
-    ),
-    forMember(
-      (destination) => destination.creatorSlug,
-      mapFrom((source) => source.creator?.slug)
+      mapWith(
+        UserResponseDto,
+        User,
+        (source) => source.creator
+      )
     ),
     forMember(
       (destination) => destination.userApprovals,
@@ -80,13 +66,20 @@ export const productRequisitionFormMapper: MappingProfile = (
         (source) => source.requestProducts
       )
     ),
-    extend(baseMapper(mapper))
+    typeConverter(
+      Date, String, (deadlineApproval) => moment(deadlineApproval).toString()
+    ),
+    extend(baseMapper(mapper)),
   );
 
   // Map request object to entity
   createMap(
     mapper,
     CreateProductRequisitionFormRequestDto,
-    ProductRequisitionForm
-  );
-};
+    ProductRequisitionForm,
+    forMember(
+      (destination) => destination.deadlineApproval,
+      mapFrom((source) => moment(source.deadlineApproval).toDate())
+    )
+  )
+}

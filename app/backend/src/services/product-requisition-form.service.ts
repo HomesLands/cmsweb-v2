@@ -5,12 +5,13 @@ import {
   productRequisitionFormRepository,
   userRepository,
   productRepository,
-  companyRepository,
   requestProductRepository,
   userApprovalRepository,
   approvalLogRepository,
-  siteRepository,
   projectRepository,
+  assignedUserApprovalRepository,
+  temporaryProductRepository,
+  unitRepository,
 } from "@repositories";
 import {
   TCreateProductRequisitionFormRequestDto,
@@ -23,21 +24,18 @@ import { ProductRequisitionFormResponseDto } from "@dto/response";
 import {
   CreateProductRequisitionFormRequestDto,
   CreateRequestProductRequestDto,
-  CreateUserApprovalRequestDto,
   ApprovalProductRequisitionFormRequestDto,
   CreateApprovalLogRequestDto,
   ResubmitProductRequisitionFormRequestDto,
+  CreateTemporaryProductRequestDto,
 } from "@dto/request";
 import { mapper } from "@mappers";
 import {
   ApprovalLog,
-  Company,
   ProductRequisitionForm,
-  Project,
   RequestProduct,
-  Site,
-  User,
   UserApproval,
+  TemporaryProduct,
 } from "@entities";
 import { GlobalError, ErrorCodes, ValidationError } from "@exception";
 import {
@@ -46,7 +44,6 @@ import {
   RoleApproval,
   ApprovalLogStatus,
 } from "@enums";
-import { In } from "typeorm";
 
 class ProductRequisitionFormService {
   public async getAllProductRequisitionForms(
@@ -80,15 +77,15 @@ class ProductRequisitionFormService {
       skip: (page - 1) * pageSize,
       order: { type: "DESC", createdAt: options.order },
       relations: [
-        "company",
-        "site",
         "project",
         "creator",
         "userApprovals",
-        "userApprovals.user",
+        "userApprovals.assignedUserApproval",
+        "userApprovals.assignedUserApproval.user",
         "userApprovals.approvalLogs",
         "requestProducts",
         "requestProducts.product",
+        "requestProducts.temporaryProduct",
       ],
     });
 
@@ -119,110 +116,151 @@ class ProductRequisitionFormService {
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
 
-    const requiredUserApprovals = 3;
-    if (requestData.userApprovals.length !== requiredUserApprovals)
+    console.log({requestData})
+    console.log({requestData1: requestData.requestProducts})
+
+    // throw new GlobalError(ErrorCodes.PRODUCT_REQUISITION_FORM_CODE_EXIST);
+
+
+    const codeExisted = await productRequisitionFormRepository.existsBy({
+      code: requestData.code,
+    });
+    if (codeExisted)
+      throw new GlobalError(ErrorCodes.PRODUCT_REQUISITION_FORM_CODE_EXIST);
+
+    const creator = await userRepository.findOne({
+      where: {
+        id: creatorId,
+      },
+      relations: [
+        'userDepartments',
+        'userDepartments.department',
+      ]
+    });
+
+    if (!creator) throw new GlobalError(ErrorCodes.INVALID_CREATOR);
+  
+    const assignedUserApproval = await assignedUserApprovalRepository.find({
+      where: {
+        formType: FormApprovalType.PRODUCT_REQUISITION_FORM,
+      },
+      relations: [
+        'user',
+      ]
+    });
+
+    if(assignedUserApproval.length !== 3)
       throw new GlobalError(ErrorCodes.INVALID_QUANTITY_USER_APPROVAL);
 
-    const creator = await userRepository.findOneBy({ id: creatorId });
-    if (!creator) throw new GlobalError(ErrorCodes.INVALID_CREATOR);
+    const userApprovalStageOne = assignedUserApproval.find(
+      (item) => item.roleApproval === RoleApproval.APPROVAL_STAGE_1
+    );
+    const userApprovalStageTwo = assignedUserApproval.find(
+      (item) => item.roleApproval === RoleApproval.APPROVAL_STAGE_2
+    );
+    const userApprovalStageThree = assignedUserApproval.find(
+      (item) => item.roleApproval === RoleApproval.APPROVAL_STAGE_3
+    );
 
-    const site = await siteRepository.findOneBy({ slug: requestData.siteSlug });
-    if (!site) throw new GlobalError(ErrorCodes.SITE_NOT_FOUND);
+    // const temporaryRequestProductData = mapper.map(
+    //   requestData.requestProducts[0],
+    //   CreateTemporaryProductRequestDto,
+    //   TemporaryProduct
+    // );
+    // console.log({temporaryRequestProductData})
+
+    // const requestProductData = mapper.map(
+    //   requestData.requestProducts[0],
+    //   CreateRequestProductRequestDto,
+    //   RequestProduct
+    // );
+    // console.log({requestProductData})
+    // throw new GlobalError(ErrorCodes.PROJECT_NOT_FOUND);
+
+    if(!(
+      userApprovalStageOne
+      && userApprovalStageTwo
+      && userApprovalStageThree
+    )) throw new GlobalError(ErrorCodes.MISSING_USER_APPROVAL);
 
     const project = await projectRepository.findOneBy({
-      slug: requestData.projectSlug,
+      slug: requestData.project,
     });
     if (!project) throw new GlobalError(ErrorCodes.PROJECT_NOT_FOUND);
 
-    const company = await companyRepository.findOneBy({
-      slug: requestData.companySlug,
-    });
-    if (!company) throw new GlobalError(ErrorCodes.COMPANY_NOT_FOUND);
-
-    // Validate user approvals
-    const userSlugs = requestData.userApprovals.map((item) => item.userSlug);
-    const userApprovals = await userRepository.find({
-      where: {
-        slug: In(userSlugs),
-      },
-    });
-
-    if (userApprovals.length < userSlugs.length)
-      throw new GlobalError(ErrorCodes.MISSING_USER_APPROVAL);
-
-    for (let i: number = 0; i < requestData.requestProducts.length; i++) {
-      const product = await productRepository.findOneBy({
-        slug: requestData.requestProducts[i].productSlug,
-      });
-      // tạm thời tạo với những sản phẩm có sẵn
-      // Create if not exist
-      if (!product) throw new GlobalError(ErrorCodes.PRODUCT_NOT_FOUND);
-    }
-
-    // Create product pequisition form
+    
+    // Create product requisition form
     const form = mapper.map(
       requestData,
       CreateProductRequisitionFormRequestDto,
       ProductRequisitionForm
     );
-    const newData: {
-      status: ProductRequisitionFormStatus;
-      company: Company;
-      site: Site;
-      project: Project;
-      creator: User;
-    } = {
-      status: ProductRequisitionFormStatus.WAITING,
-      company,
-      site,
-      project,
-      creator,
-    };
-    Object.assign(form, newData);
-
+    form.status = ProductRequisitionFormStatus.WAITING;
+    form.project = project;
+    form.creator = creator;
     const createdForm =
       await productRequisitionFormRepository.createAndSave(form);
 
     const requestProductList: RequestProduct[] = [];
     for (let i: number = 0; i < requestData.requestProducts.length; i++) {
       const product = await productRepository.findOneBy({
-        slug: requestData.requestProducts[i].productSlug,
+        slug: requestData.requestProducts[i].product,
       });
 
       if (product) {
-        const requestProductData = mapper.map(
+        const requestProductMapped = mapper.map(
           requestData.requestProducts[i],
           CreateRequestProductRequestDto,
           RequestProduct
         );
-        requestProductData.product = product;
-        requestProductData.productRequisitionForm = createdForm;
+        requestProductMapped.product = product;
+        requestProductMapped.productRequisitionForm = createdForm;
 
         const createdRequestProduct =
-          await requestProductRepository.createAndSave(requestProductData);
+          await requestProductRepository.createAndSave(requestProductMapped);
+        requestProductList.push(createdRequestProduct);
+      } else {
+        // product not exist
+        const requestProductData = requestData.requestProducts[i];
+        const unit = await unitRepository.findOneBy({
+          slug: requestProductData.unit
+        });
+        // note: có nên check trước khi tạo???
+        if(!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
+
+        const temporaryRequestProductData = mapper.map(
+          requestProductData,
+          CreateTemporaryProductRequestDto,
+          TemporaryProduct
+        );
+        temporaryRequestProductData.unit = unit;
+        const temporaryProduct = 
+        await temporaryProductRepository.createAndSave(temporaryRequestProductData);
+        console.log({temporaryRequestProductData})
+        const requestProductMapped = mapper.map(
+          requestData.requestProducts[0],
+          CreateRequestProductRequestDto,
+          RequestProduct
+        );
+        requestProductMapped.temporaryProduct = temporaryProduct;
+        requestProductMapped.productRequisitionForm = createdForm;
+        requestProductMapped.isExistProduct = false;
+        const createdRequestProduct =
+          await requestProductRepository.createAndSave(requestProductMapped);
         requestProductList.push(createdRequestProduct);
       }
     }
 
     const userApprovalList: UserApproval[] = [];
-    for (let i: number = 0; i < requestData.userApprovals.length; i++) {
-      const user = await userRepository.findOneBy({
-        slug: requestData.userApprovals[i].userSlug,
-      });
-      if (user) {
-        const userApprovalData = mapper.map(
-          requestData.userApprovals[i],
-          CreateUserApprovalRequestDto,
-          UserApproval
-        );
-        userApprovalData.user = user;
-        userApprovalData.productRequisitionForm = createdForm;
-        userApprovalData.formType = FormApprovalType.PRODUCT_REQUISITION_FORM;
+    for (let i: number = 0; i < assignedUserApproval.length; i++) {
+      const userApproval = new UserApproval();
+      userApproval.assignedUserApproval = assignedUserApproval[i];
+      userApproval.productRequisitionForm = form;
 
-        const createdUserApproval =
-          await userApprovalRepository.createAndSave(userApprovalData);
-        userApprovalList.push(createdUserApproval);
-      }
+
+      const createdUserApproval =
+        await userApprovalRepository.createAndSave(userApproval);
+      userApprovalList.push(createdUserApproval);
     }
 
     createdForm.userApprovals = userApprovalList;
@@ -246,15 +284,15 @@ class ProductRequisitionFormService {
         slug,
       },
       relations: [
-        "company",
-        "site",
         "project",
         "creator",
         "userApprovals",
-        "userApprovals.user",
+        "userApprovals.assignedUserApproval",
+        "userApprovals.assignedUserApproval.user",
         "userApprovals.approvalLogs",
         "requestProducts",
         "requestProducts.product",
+        "requestProducts.temporaryProduct",
       ],
     });
 
@@ -270,7 +308,8 @@ class ProductRequisitionFormService {
   }
 
   public async approvalProductRequisitionForm(
-    plainData: TApprovalProductRequisitionFormRequestDto
+    plainData: TApprovalProductRequisitionFormRequestDto,
+    userId: string
   ): Promise<ProductRequisitionFormResponseDto> {
     const requestData = plainToClass(
       ApprovalProductRequisitionFormRequestDto,
@@ -281,35 +320,54 @@ class ProductRequisitionFormService {
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
 
+    const userApproval = await userApprovalRepository.findOne({
+      where: {
+        assignedUserApproval: {
+          user: {
+            id: userId
+          }
+        },
+        productRequisitionForm: {
+          slug: requestData.formSlug
+        }
+      },
+      relations: [
+        'assignedUserApproval',
+        'assignedUserApproval.user',
+        'productRequisitionForm',
+        'productRequisitionForm.requestProducts',
+        'productRequisitionForm.requestProducts.product',
+        'approvalLogs'
+      ]
+    });
+
+    if(!userApproval) throw new GlobalError(ErrorCodes.FORBIDDEN_APPROVAL_FORM);
+
     let form = await productRequisitionFormRepository.findOne({
       where: {
         slug: requestData.formSlug,
       },
       relations: [
-        "company",
         "creator",
         "userApprovals",
-        "userApprovals.user",
+        "userApprovals.assignedUserApproval",
+        "userApprovals.assignedUserApproval.user",
         "userApprovals.approvalLogs",
         "requestProducts",
         "requestProducts.product",
+        "requestProducts.temporaryProduct",
       ],
     });
     if (!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
-    const approvalUser = await userApprovalRepository.findOne({
-      where: {
-        slug: requestData.approvalUserSlug,
-      },
-      relations: ["user"],
-    });
-    if (!approvalUser?.user)
-      throw new GlobalError(ErrorCodes.USER_APPROVAL_NOT_FOUND);
-
-    // Waiting && approvalUser === approval_stage_1 ==> wait approval_stage_1 approve
     if (form.status === ProductRequisitionFormStatus.WAITING) {
-      if (approvalUser.roleApproval !== RoleApproval.APPROVAL_STAGE_1)
-        throw new GlobalError(ErrorCodes.INVALID_USER_APPROVAL);
+      // form : waiting => approvalUser: approval_stage_1 > wait approval_stage_1 approve
+      //checking
+      if (userApproval.assignedUserApproval?.roleApproval !== RoleApproval.APPROVAL_STAGE_1) {
+        throw new GlobalError(
+          ErrorCodes.FORBIDDEN_APPROVAL_FORM
+        );
+      }
 
       // change status form
       if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
@@ -328,7 +386,7 @@ class ProductRequisitionFormService {
         CreateApprovalLogRequestDto,
         ApprovalLog
       );
-      approvalLogData.userApproval = approvalUser;
+      approvalLogData.userApproval = userApproval;
       await approvalLogRepository.createAndSave(approvalLogData);
 
       const formDto = mapper.map(
@@ -341,8 +399,11 @@ class ProductRequisitionFormService {
 
     if (form.status === ProductRequisitionFormStatus.ACCEPTED_STAGE_1) {
       // form : accepted_stage_1 => approvalUser: approval_stage_2 > wait approval_stage_2 approve
-      if (approvalUser.roleApproval !== RoleApproval.APPROVAL_STAGE_2)
-        throw new GlobalError(ErrorCodes.INVALID_USER_APPROVAL);
+      if (userApproval.assignedUserApproval?.roleApproval !== RoleApproval.APPROVAL_STAGE_2) {
+        throw new GlobalError(
+          ErrorCodes.FORBIDDEN_APPROVAL_FORM
+        );
+      }
 
       if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
         // update status
@@ -366,7 +427,7 @@ class ProductRequisitionFormService {
         CreateApprovalLogRequestDto,
         ApprovalLog
       );
-      approvalLogData.userApproval = approvalUser;
+      approvalLogData.userApproval = userApproval;
       await approvalLogRepository.createAndSave(approvalLogData);
 
       const formDto = mapper.map(
@@ -379,8 +440,10 @@ class ProductRequisitionFormService {
 
     if (form.status === ProductRequisitionFormStatus.ACCEPTED_STAGE_2) {
       // form : accepted_stage_2 => approvalUser: approval_stage_3 > wait approval_stage_1 approve
-      if (approvalUser.roleApproval !== RoleApproval.APPROVAL_STAGE_3) {
-        throw new GlobalError(ErrorCodes.INVALID_USER_APPROVAL);
+      if (userApproval.assignedUserApproval?.roleApproval !== RoleApproval.APPROVAL_STAGE_3) {
+        throw new GlobalError(
+          ErrorCodes.FORBIDDEN_APPROVAL_FORM
+        );
       }
 
       if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
@@ -404,7 +467,7 @@ class ProductRequisitionFormService {
         CreateApprovalLogRequestDto,
         ApprovalLog
       );
-      approvalLogData.userApproval = approvalUser;
+      approvalLogData.userApproval = userApproval;
       await approvalLogRepository.createAndSave(approvalLogData);
       const formDto = mapper.map(
         form,
@@ -435,15 +498,15 @@ class ProductRequisitionFormService {
         slug: requestData.slug,
       },
       relations: [
-        "company",
-        "site",
         "project",
         "creator",
         "userApprovals",
-        "userApprovals.user",
+        "userApprovals.assignedUserApproval",
+        "userApprovals.assignedUserApproval.user",
         "userApprovals.approvalLogs",
         "requestProducts",
         "requestProducts.product",
+        "requestProducts.temporaryProduct",
       ],
     });
     console.log({ form });

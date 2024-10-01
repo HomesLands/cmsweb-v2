@@ -66,9 +66,8 @@ export function SidebarDrawer() {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger onClick={isMinimized ? toggleMinimized : undefined}>
-                        {' '}
                         {/* Add onClick */}
-                        <IconWrapper Icon={submenu.icon} className="w-4 h-4" />
+                        {submenu.icon && <IconWrapper Icon={submenu.icon} className="w-4 h-4" />}
                       </TooltipTrigger>
                       <TooltipContent side="right">
                         <span className="font-sans text-xs">{submenu.title}</span>

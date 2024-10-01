@@ -1,7 +1,5 @@
 import * as z from 'zod'
 
-import { USERNAME_REGEX } from '@/constants/regex'
-
 export const productSchema = z.object({
   code: z.string().min(1, 'Mã yêu cầu không hợp lệ'),
   requester: z.string().min(1, 'Tên người yêu cầu không hợp lệ'),

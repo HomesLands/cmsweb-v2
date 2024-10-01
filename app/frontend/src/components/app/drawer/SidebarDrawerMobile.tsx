@@ -55,7 +55,9 @@ export function SidebarDrawerMobile() {
                 minimized={false}
               >
                 <div className="flex items-center gap-2">
-                  <IconWrapper Icon={submenu.icon} className="w-5 h-5 text-normal" />
+                  {submenu.icon && (
+                    <IconWrapper Icon={submenu.icon} className="w-5 h-5 text-normal" />
+                  )}
                   <span className="text-base font-beVietnamPro">{submenu.title}</span>
                 </div>
               </AccordionTrigger>

@@ -5,18 +5,28 @@ import {
   ArrayNotEmpty,
   IsEnum,
   IsOptional,
-} from "class-validator";
-import { Expose, Type } from "class-transformer";
-import { AutoMap } from "@automapper/classes";
-import { ProductRequisitionFormType, ApprovalLogStatus } from "@enums";
-import { CreateRequestProductRequestDto } from "./request-product-request.dto";
-import { CreateUserApprovalRequestDto } from "./user-approval-request.dto";
+} from 'class-validator';
+import { Expose, Type } from 'class-transformer';
+import { AutoMap } from '@automapper/classes';
+import {
+  ProductRequisitionFormType,
+  ApprovalLogStatus,
+} from "@enums";
+import {
+  CreateRequestProductRequestDto,
+} from "./request-product-request.dto";
+import { IsDateStringWithMessage } from "decorator";
 
 export class CreateProductRequisitionFormRequestDto {
   @IsNotEmpty({ message: "INVALID_CODE_FORM" })
   @Expose()
   @AutoMap()
   code?: string;
+
+  @IsNotEmpty({ message: "INVALID_PROJECT_SLUG" })
+  @Expose()
+  @AutoMap()
+  project?: string;
 
   @IsNotEmpty({ message: "INVALID_TYPE_PRODUCT_REQUISITION_FORM" })
   @IsEnum(ProductRequisitionFormType, {
@@ -26,20 +36,15 @@ export class CreateProductRequisitionFormRequestDto {
   @AutoMap()
   type?: string;
 
-  @IsNotEmpty({ message: "INVALID_COMPANY_SLUG" })
+  @IsNotEmpty({ message: "INVALID_DEADLINE_DATE_APPROVAL_FORM" })
+  @IsDateStringWithMessage({ message: "INVALID_DATE_FORMAT" })
   @Expose()
-  @AutoMap()
-  companySlug?: string;
+  deadlineApproval?: string;
 
-  @IsNotEmpty({ message: "INVALID_SITE_SLUG" })
+  @IsOptional()
   @Expose()
   @AutoMap()
-  siteSlug?: string;
-
-  @IsNotEmpty({ message: "INVALID_PROJECT_SLUG" })
-  @Expose()
-  @AutoMap()
-  projectSlug?: string;
+  description?: string;
 
   @IsArray({ message: "INVALID_REQUEST_PRODUCT_ARRAY" })
   @ArrayNotEmpty({ message: "INVALID_REQUEST_PRODUCT_ARRAY" })
@@ -47,18 +52,6 @@ export class CreateProductRequisitionFormRequestDto {
   @Type(() => CreateRequestProductRequestDto)
   @Expose()
   requestProducts: CreateRequestProductRequestDto[];
-
-  @IsArray({ message: "INVALID_APPROVAL_USER_ARRAY" })
-  @ArrayNotEmpty({ message: "INVALID_APPROVAL_USER_ARRAY" })
-  @ValidateNested({ each: true })
-  @Type(() => CreateUserApprovalRequestDto)
-  @Expose()
-  userApprovals: CreateUserApprovalRequestDto[];
-
-  @IsOptional()
-  @Expose()
-  @AutoMap()
-  description?: string;
 }
 
 export class ApprovalProductRequisitionFormRequestDto {
@@ -73,10 +66,10 @@ export class ApprovalProductRequisitionFormRequestDto {
   @AutoMap()
   approvalLogStatus?: string;
 
-  @IsNotEmpty({ message: "INVALID_APPROVAL_USER_SLUG" })
-  @Expose()
-  @AutoMap()
-  approvalUserSlug?: string;
+  // @IsNotEmpty({ message: "INVALID_APPROVAL_USER_SLUG" })
+  // @Expose()
+  // @AutoMap()
+  // approvalUserSlug?: string;
 
   @IsNotEmpty({ message: "INVALID_CONTENT_APPROVAL_LOG" })
   @Expose()

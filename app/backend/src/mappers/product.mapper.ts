@@ -2,15 +2,20 @@ import {
   MappingProfile,
   Mapper,
   createMap,
-  mapFrom,
-  forMember,
   extend,
+  forMember,
+  mapFrom,
+  mapWith,
 } from "@automapper/core";
-import { ProductResponseDto } from "@dto/response";
+import { 
+  ProductResponseDto,
+  ProductWarehouseResponseDto,
+  UnitResponseDto
+} from "@dto/response";
 import {
   CreateProductRequestDto,
 } from "@dto/request";
-import { Product } from "@entities";
+import { Product, ProductWarehouse, Unit } from "@entities";
 import { baseMapper } from "./base.mapper";
 
 export const productMapper: MappingProfile = (mapper: Mapper) => {
@@ -24,7 +29,19 @@ export const productMapper: MappingProfile = (mapper: Mapper) => {
     ProductResponseDto,
     forMember(
       (destination) => destination.unit,
-      mapFrom((source) => source.unit?.name)
+      mapWith(
+        UnitResponseDto,
+        Unit,
+        (source) => source.unit
+      )
+    ),
+    forMember(
+      (destination) => destination.productWarehouses,
+      mapWith(
+        ProductWarehouseResponseDto,
+        ProductWarehouse,
+        (source) => source.productWarehouses
+      )
     ),
     extend(baseMapper(mapper))
   );

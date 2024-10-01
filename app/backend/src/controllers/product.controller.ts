@@ -30,15 +30,12 @@ class ProductController {
    *         code:
    *           type: string
    *           description: productCode - barcode
+   *         unit:
+   *           type: string
+   *           description: unit slug for product
    *         provider:
    *           type: string
    *           description: productProvider
-   *         unit:
-   *           type: string
-   *           description: unitSlugForProduct
-   *         quantity:
-   *           type: integer
-   *           description: quantity of product
    *         description:
    *           type: string
    *           description: descriptionProduct
@@ -49,8 +46,7 @@ class ProductController {
    *         name: Máy khoan động lực điện Bosch GSB 10 RE 500W
    *         code: 8886008101053
    *         provider: BOSCH
-   *         unit: M_aSwDaaau
-   *         quantity: 10
+   *         unit: slug-1234
    *         description: Dùng điện, Có chổi than
    * 
    *     UpdateProductRequestDto:
@@ -64,21 +60,15 @@ class ProductController {
    *         name:
    *           type: string
    *           description: The name of product
-   *         quantity:
-   *           type: integer
-   *           description: The quantity of product
+   *         unit:
+   *           type: string
+   *           description: The unit slug for product
    *         code:
    *           type: string
    *           description: productCode - barcode
    *         provider:
    *           type: string
    *           description: productProvider
-   *         rfid:
-   *           type: string
-   *           description: The rfid of product
-   *         unit:
-   *           type: string
-   *           description: unitSlugForProduct
    *         description:
    *           type: string
    *           description: descriptionProduct
@@ -89,10 +79,8 @@ class ProductController {
    *         slug: slug-123 
    *         name: Máy khoan động lực điện Bosch GSB 10 RE 500W
    *         code: 8886008101053
-   *         rfid: 0A3F4B92C5
    *         provider: BOSCH
-   *         unit: M_aSwDaaau
-   *         quantity: 10
+   *         unit: slug-1234
    *         description: Dùng điện, Có chổi than
    */
 

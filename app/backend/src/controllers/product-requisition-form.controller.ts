@@ -22,62 +22,61 @@ class ProductRequisitionFormController {
    *     CreateRequestProductDto:
    *       type: object
    *       required:
-   *         - productSlug
+   *         - product
    *         - requestQuantity
+   *         - name
+   *         - provider
+   *         - unit
+   *         - description
    *       properties:
-   *         productSlug:
+   *         product:
    *           type: string
    *           description: The slug of the product.
    *         requestQuantity:
    *           type: integer
    *           description: The quantity of the product being requested.
+   *         name:
+   *           type: string
+   *           description: The name of the product being requested.
+   *         provider:
+   *           type: string
+   *           description: The provider of the product being requested.
+   *         unit:
+   *           type: string
+   *           description: The unit slug of the product being requested.
+   *         description:
+   *           type: string
+   *           description: The description of the request product.
    *       example:
-   *         productSlug: KeYdkmeNg
+   *         product: KeYdkmeNg
    *         requestQuantity: 10
-   *
-   *     CreateUserApprovalDto:
-   *       type: object
-   *       required:
-   *         - userSlug
-   *         - roleApproval
-   *       properties:
-   *         userSlug:
-   *           type: string
-   *           description: The slug of the user who is approving.
-   *         roleApproval:
-   *           type: string
-   *           description: The approval stage (approval_stage_1, approval_stage_2, approval_stage_3).
-   *       example:
-   *         userSlug: KeYdkmeNg
-   *         roleApproval: approval_stage_1
+   *         name: Máy cắt bê tông
+   *         provider: BOSCH
+   *         unit: unit-slug-123
+   *         description: Loại nhỏ
    *
    *     CreateProductRequisitionFormRequestDto:
    *       type: object
    *       required:
    *         - code
-   *         - companySlug
-   *         - siteSlug
-   *         - projectSlug
+   *         - project
    *         - type
-   *         - requestProducts
-   *         - userApprovals
+   *         - deadlineApproval
    *         - description
+   *         - requestProducts
    *       properties:
    *         code:
    *           type: string
    *           description: The code for the requisition form.
-   *         companySlug:
-   *           type: string
-   *           description: The slug of the company.
-   *         siteSlug:
-   *           type: string
-   *           description: The slug of the site.
-   *         projectSlug:
+   *         project:
    *           type: string
    *           description: The slug of the project.
    *         type:
    *           type: string
    *           description: The type of form.
+   *         deadlineApproval:
+   *           type: string
+   *           description: The date expire approval form.
    *         description:
    *           type: string
    *           description: The opinion of creator.
@@ -86,39 +85,30 @@ class ProductRequisitionFormController {
    *           description: List of products being requested.
    *           items:
    *             $ref: '#/components/schemas/CreateRequestProductDto'
-   *         userApprovals:
-   *           type: array
-   *           description: List of user approvals for the form.
-   *           items:
-   *             $ref: '#/components/schemas/CreateUserApprovalDto'
    *       example:
    *         code: YCVT123
-   *         companySlug: company-789
-   *         siteSlug: site-789
-   *         projectSlug: project-789
+   *         project: project-789
+   *         deadlineApproval: 2024-09-12 20:45:15
    *         type: urgent
    *         description: Ý kiến người tạo
    *         requestProducts:
-   *           - productSlug: KeYdkmeNg
+   *           - product: KeYdkmeNg
    *             requestQuantity: 10
-   *         userApprovals:
-   *           - userSlug: user-456
-   *             roleApproval: approval_stage_3
+   *             name: Máy cắt bê tông
+   *             provider: BOSCH
+   *             unit: unit-slug-123
+   *             description: Loại nhỏ
    *
    *     ApprovalProductRequisitionFormRequestDto:
    *       type: object
    *       required:
    *         - formSlug
-   *         - approvalUserSlug
    *         - approvalLogStatus
    *         - approvalLogContent
    *       properties:
    *         formSlug:
    *           type: string
    *           description: The slug of the form.
-   *         approvalUserSlug:
-   *           type: string
-   *           description: The slug of approval user for form.
    *         approvalLogStatus:
    *           type: string
    *           description: The status approval form (accept/give_back/cancel)
@@ -127,7 +117,6 @@ class ProductRequisitionFormController {
    *           description: The reason approval form.
    *       example:
    *         formSlug: XUWyA6fr7i
-   *         approvalUserSlug: rIsvuLZgnE_
    *         approvalLogStatus: accept
    *         approvalLogContent: Yêu cầu đã ok
    *
@@ -347,10 +336,12 @@ class ProductRequisitionFormController {
     next: NextFunction
   ): Promise<void> {
     try {
+      const userId = req.userId as string;
       const data = req.body as TApprovalProductRequisitionFormRequestDto;
       const form =
         await productRequisitionFormService.approvalProductRequisitionForm(
-          data
+          data,
+          userId
         );
 
       const response: TApiResponse<ProductRequisitionFormResponseDto> = {

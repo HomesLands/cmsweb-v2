@@ -1,21 +1,21 @@
+import { TCreateRequestProductRequestDto } from "@types";
+
 export type TCreateProductRequisitionFormRequestDto = {
   code?: string;
-  companySlug?: string;
+  project?: string;
   type?: string; //normal, urgent
+  deadlineApproval?: string;
   description?: string;
-  requestProducts: {
-    productSlug?: string;
-    requestQuantity?: number;
-  }[];
-  userApprovals: {
-    userSlug?: string;
-    roleApproval?: string; // approval_stage_1, approval_stage_2, approval_stage_3
-  }[];
-};
+  // requestProducts: {
+  //   product?: string;
+  //   requestQuantity?: number;
+  // }[];
+  requestProducts: TCreateRequestProductRequestDto[];
+}
 
 export type TApprovalProductRequisitionFormRequestDto = {
   formSlug?: string;
-  approvalUserSlug?: string;
+  // approvalUserSlug?: string;
   approvalLogStatus?: string;
   approvalLogContent?: string;
 };

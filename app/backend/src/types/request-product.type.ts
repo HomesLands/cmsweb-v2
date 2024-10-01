@@ -10,6 +10,11 @@ export type TAddNewRequestProductRequestDto = {
 }
 
 export type TCreateRequestProductRequestDto = {
-  productSlug?: string;
+  product?: string; // slug
   requestQuantity?: number;
+
+  name?: string;
+  provider?: string;
+  unit?: string; // slug
+  description?: string;
 }

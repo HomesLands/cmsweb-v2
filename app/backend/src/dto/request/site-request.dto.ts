@@ -8,12 +8,7 @@ export class CreateSiteRequestDto {
   @AutoMap()
   name?: string;
 
-  @IsNotEmpty({message: "INVALID_SITE_ADDRESS"})
+  @IsNotEmpty({message: "INVALID_COMPANY_SLUG"})
   @Expose()
-  @AutoMap()
-  address?: string;
-
-  @IsNotEmpty({message: "INVALID_SITE_MANAGER"})
-  @Expose()
-  manager?: string;
+  company?: string;
 }
