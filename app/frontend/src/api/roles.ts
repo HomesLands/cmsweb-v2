@@ -1,9 +1,8 @@
-import { TCreateRoleSchema } from '@/schemas'
-import { IApiResponse, ICreateRole, IQuery, IRole } from '@/types'
+import { IApiResponse, ICreateRole, IPaginationResponse, IQuery, IRole } from '@/types'
 import { http } from '@/utils'
 
-export async function getRoles(params: IQuery): Promise<IApiResponse<IRole[]>> {
-  const response = await http.get<IApiResponse<IRole[]>>('/roles', {
+export async function getRoles(params: IQuery): Promise<IApiResponse<IPaginationResponse<IRole>>> {
+  const response = await http.get<IApiResponse<IPaginationResponse<IRole>>>('/roles', {
     params
   })
   return response.data

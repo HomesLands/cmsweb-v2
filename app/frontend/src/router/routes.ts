@@ -28,19 +28,17 @@ export const sidebarRoutes: ISidebarRoute[] = [
     ]
   },
   {
-    title: 'Kho',
+    title: 'sidebar.warehouses',
     path: '/warehouse',
     icon: CubeIcon,
     children: [
       {
-        title: 'Thêm vật tư',
-        path: '/warehouse/add',
-        icon: Archive
+        title: 'sidebar.warehouses',
+        path: '/warehouses'
       },
       {
-        title: 'Danh sách vật tư',
-        path: '/warehouse/list',
-        icon: Archive
+        title: 'sidebar.createWarehouse',
+        path: '/warehouse/add'
       }
     ]
   },
