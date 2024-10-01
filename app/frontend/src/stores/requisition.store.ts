@@ -14,37 +14,20 @@ export const useRequisitionStore = create<IRequisitionStore>()(
       setRequisition: (requisition: IProductRequirementInfoCreate) => {
         const updatedRequisition = { ...requisition }
 
-        if (requisition.type === RequisitionType.NORMAL) {
-          updatedRequisition.userApprovals = [
-            {
-              userSlug: requisition.project?.managerSlug ?? '',
-              roleApproval: UserApprovalStage.APPROVAL_STAGE_1
-            },
-            {
-              userSlug: requisition.site?.managerSlug ?? '',
-              roleApproval: UserApprovalStage.APPROVAL_STAGE_2
-            },
-            {
-              userSlug: requisition.company.directorSlug ?? '',
-              roleApproval: UserApprovalStage.APPROVAL_STAGE_3
-            }
-          ]
-        } else if (requisition.type === RequisitionType.URGENT) {
-          updatedRequisition.userApprovals = [
-            {
-              userSlug: requisition.project?.managerSlug ?? '',
-              roleApproval: UserApprovalStage.APPROVAL_STAGE_1
-            },
-            {
-              userSlug: requisition.site?.managerSlug ?? '',
-              roleApproval: UserApprovalStage.APPROVAL_STAGE_2
-            },
-            {
-              userSlug: requisition.company.directorSlug ?? '',
-              roleApproval: UserApprovalStage.APPROVAL_STAGE_3
-            }
-          ]
-        }
+        updatedRequisition.userApprovals = [
+          {
+            userSlug: requisition.project?.managerSlug ?? '',
+            roleApproval: UserApprovalStage.APPROVAL_STAGE_1
+          },
+          {
+            userSlug: requisition.site?.managerSlug ?? '',
+            roleApproval: UserApprovalStage.APPROVAL_STAGE_2
+          },
+          {
+            userSlug: requisition.company.directorSlug ?? '',
+            roleApproval: UserApprovalStage.APPROVAL_STAGE_3
+          }
+        ]
 
         set((state) => ({
           requisition: {
