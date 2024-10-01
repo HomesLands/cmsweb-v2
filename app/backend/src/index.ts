@@ -14,6 +14,8 @@ import {
   initializeDataSource,
   registerSwagger,
   registerMorgan,
+  producer,
+  consumer,
 } from "@configs";
 import { logger } from "@lib";
 
@@ -26,6 +28,23 @@ dotenv.config();
   app.use(express.json());
   app.use(express.static(path.join(__dirname, "../public")));
   app.use(express.urlencoded({ extended: true }));
+
+  await producer.connect();
+  await producer.send({
+    topic: "first_kafka_topic",
+    //convert value to a JSON string and send it
+    messages: [{ value: "Hello" }],
+  });
+  console.log("producer connected successfully");
+
+  await consumer.connect();
+  await consumer.subscribe({ topic: "first_kafka_topic", fromBeginning: true });
+  await consumer.run({
+    eachMessage: async ({ message }) => {
+      console.log("****************** Arrived in Consumer ******************");
+      console.log({ message: message.value?.toString() });
+    },
+  });
 
   // Config database
   // Default auto retries 5
