@@ -69,7 +69,7 @@ export const useColumnsResult = (
       )
     },
     {
-      accessorKey: 'unit',
+      accessorKey: 'unit.name',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.unit')} />
       )

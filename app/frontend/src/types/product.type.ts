@@ -52,6 +52,10 @@ export interface IFinalProductRequisition {
   requestProducts: {
     product: string
     requestQuantity: number
+    name: string
+    provider: string
+    unit: string
+    description: string
   }[]
 }
 
@@ -60,7 +64,10 @@ export interface IRequestProduct {
   name?: string
   provider?: string
   description?: string
-  unit?: string
+  unit: {
+    slug: string
+    name: string
+  }
   quantity?: number
 }
 
@@ -75,7 +82,10 @@ export interface IProductInfo {
   provider: string
   // status?: string
   description?: string
-  unit: string
+  unit: {
+    slug: string
+    name: string
+  }
   quantity: number
 }
 
@@ -88,7 +98,10 @@ export interface IProductRequisitionInfo {
   provider: string
   status?: string
   description?: string
-  unit: string
+  unit: {
+    slug: string
+    name: string
+  }
   requestQuantity: number
   // product: IProductInfo
 }

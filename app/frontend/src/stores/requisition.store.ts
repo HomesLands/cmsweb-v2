@@ -34,6 +34,7 @@ export const useRequisitionStore = create<IRequisitionStore>()(
       clearRequisition: () => set({ requisition: undefined }),
       addProductToRequisition: (product: IProductRequisitionInfo) => {
         const currentRequisition = get().requisition
+        console.log('product', product)
         if (currentRequisition) {
           const productExists = currentRequisition.requestProducts.some(
             (p) => p.code === product.code
@@ -46,7 +47,14 @@ export const useRequisitionStore = create<IRequisitionStore>()(
                 ...currentRequisition,
                 requestProducts: [
                   ...currentRequisition.requestProducts,
-                  { ...product, product: product.product }
+                  {
+                    ...product,
+                    product: product.product,
+                    name: product.name,
+                    provider: product.provider,
+                    unit: { slug: product.unit.slug, name: product.unit.name },
+                    description: product.description
+                  }
                 ]
               }
             })

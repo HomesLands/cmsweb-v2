@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useRequisitionStore } from '@/stores'
 import { useProducts } from '@/hooks'
-import { IProductInfo, IProductNameSearch, IProductQuery, IProductRequisitionInfo } from '@/types'
+import { IProductNameSearch, IProductQuery, IProductRequisitionInfo } from '@/types'
 
 import { Button, DataTable, DataTableRequisition, Label } from '@/components/ui'
 import { CustomComponentRequest } from '@/views/product-requisitions/CustomComponentRequest'
@@ -30,8 +30,7 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
 
   const { data: allProduct, isLoading } = useProducts(query)
 
-  const { getRequisition, updateProductToRequisition, deleteProductToRequisition } =
-    useRequisitionStore()
+  const { updateProductToRequisition, deleteProductToRequisition } = useRequisitionStore()
 
   const handleEditRequisition = (product: IProductRequisitionInfo) => {
     updateProductToRequisition(product, product.requestQuantity)

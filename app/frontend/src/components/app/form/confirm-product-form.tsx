@@ -47,6 +47,10 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
       description: requisition.note || '',
       requestProducts: requisition.requestProducts.map((product) => ({
         product: product.product,
+        name: product.name,
+        provider: product.provider,
+        unit: product.unit.slug, // Chỉ gửi slug của unit
+        description: product.description,
         requestQuantity: product.requestQuantity
       }))
     }
@@ -54,8 +58,17 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
 
   const handleConfirm = () => {
     const requisition = getRequisition() as IProductRequirementInfoCreate
+    console.log('requisition', requisition)
     const apiFormattedRequisition = transformRequisitionToApiFormat(requisition)
-    onConfirm(apiFormattedRequisition)
+    const finalRequisition: IFinalProductRequisition = {
+      ...apiFormattedRequisition,
+      requestProducts: apiFormattedRequisition.requestProducts.map((product) => ({
+        ...product,
+        description: product.description || '',
+        unit: product.unit
+      }))
+    }
+    onConfirm(finalRequisition)
   }
 
   const formatDeadline = (dateString: string | undefined) => {

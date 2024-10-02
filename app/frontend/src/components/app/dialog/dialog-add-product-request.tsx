@@ -13,6 +13,7 @@ import { addNewProductRequestSchema } from '@/schemas'
 import { AddNewProductRequestForm } from '@/components/app/form'
 import { IProductRequisitionInfo } from '@/types'
 import { useRequisitionStore } from '@/stores'
+import { useTranslation } from 'react-i18next'
 
 interface DialogAddProductRequestProps {
   openDialog: boolean
@@ -27,6 +28,7 @@ export function DialogAddProductRequest({
   component,
   onOpenChange
 }: DialogAddProductRequestProps) {
+  const { t } = useTranslation('tableData')
   const { addProductToRequisition } = useRequisitionStore()
   const handleAddRequest = (product: IProductRequisitionInfo) => {
     addProductToRequisition(product)
@@ -35,7 +37,12 @@ export function DialogAddProductRequest({
   const handleSubmit = (data: z.infer<typeof addNewProductRequestSchema>) => {
     const completeData: IProductRequisitionInfo = {
       ...data,
-      requestQuantity: Number(data.requestQuantity)
+      description: '',
+      requestQuantity: Number(data.requestQuantity),
+      unit: {
+        slug: data.unit.slug,
+        name: data.unit.name
+      }
     }
     handleAddRequest(completeData)
     onOpenChange()
@@ -46,8 +53,8 @@ export function DialogAddProductRequest({
       <DialogTrigger asChild>{component}</DialogTrigger>
       <DialogContent className="max-w-[44rem]">
         <DialogHeader>
-          <DialogTitle>Thêm vật tư yêu cầu</DialogTitle>
-          <DialogDescription>Nhập đầy đủ thông tin bên dưới để thêm vật tư mới</DialogDescription>
+          <DialogTitle>{t('tableData.addNewProduct')}</DialogTitle>
+          <DialogDescription>{t('tableData.addNewProductDescription')}</DialogDescription>
         </DialogHeader>
         <AddNewProductRequestForm data={product || undefined} onSubmit={handleSubmit} />
       </DialogContent>

@@ -12,15 +12,26 @@ import {
 } from '@/components/ui'
 import { IProductInfo, IProductRequisitionInfo } from '@/types'
 import { DialogAddProductRequest } from '@/components/app/dialog'
+import { useTranslation } from 'react-i18next'
 
 export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
+  const { t } = useTranslation('tableData')
   const [selectedProduct, setSelectedProduct] = useState<IProductRequisitionInfo | null>(null)
   const [openDialog, setOpenDialog] = useState(false)
 
   const handleButtonClick = (product: IProductInfo) => {
     setOpenDialog(true)
-    const { quantity, slug, ...rest } = product
-    setSelectedProduct({ ...rest, requestQuantity: quantity, product: slug })
+    const { quantity, slug, unit, ...rest } = product
+    setSelectedProduct({
+      ...rest,
+      requestQuantity: quantity,
+      product: slug,
+      unit: {
+        slug: unit.slug,
+        name: unit.name
+      },
+      description: ''
+    })
   }
 
   const onOpenChange = () => {
@@ -30,7 +41,9 @@ export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
   return [
     {
       accessorKey: 'addRequest',
-      header: 'Thêm vào phiếu yêu cầu',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('tableData.addNewProduct')} />
+      ),
       cell: ({ row }) => {
         const product = row.original
         return (
@@ -52,7 +65,7 @@ export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
                 </div>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Thêm vào phiếu yêu cầu</p>
+                <p>{t('tableData.addNewProduct')}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -73,7 +86,11 @@ export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
     },
     {
       accessorKey: 'unit',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Đơn vị" />
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Đơn vị" />,
+      cell: ({ row }) => {
+        const unit = row.original.unit
+        return <span>{unit.name}</span>
+      }
     },
     {
       accessorKey: 'description',

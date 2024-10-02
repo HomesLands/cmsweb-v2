@@ -19,14 +19,16 @@
     "lastPage": "Trang cuối"
   },
   "tableData": {
+    "addNewProduct": "Thêm vật tư",
+    "addNewProductDescription": "Nhập đầy đủ thông tin bên dưới để thêm vật tư mới",
     "productCode": "Mã sản phẩm",
     "productName": "Tên sản phẩm",
     "model": "Model",
     "provider": "Nhà cung cấp",
     "quantity": "Số lượng",
     "unit": "Đơn vị",
-    "price": "Giá",
-    "total": "Tổng",
+    "description": "Mô tả",
+    "add": "Thêm",
     "action": "Hành động",
     "filter": "Lọc",
     "all": "Tất cả",

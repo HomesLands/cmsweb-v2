@@ -50,6 +50,7 @@ const ProductRequisitionForm: React.FC = () => {
   }
 
   const handleConfirmRequest = (data: IFinalProductRequisition) => {
+    console.log('data', data)
     if (data) {
       mutation.mutate(data)
     }
@@ -82,7 +83,18 @@ const ProductRequisitionForm: React.FC = () => {
               </div>
             </CardHeader>
             <CardContent className="flex flex-col">
-              <CreateProductRequisitionForm onSubmit={handleFormCreateSubmit} />
+              <CreateProductRequisitionForm
+                onSubmit={(data) =>
+                  handleFormCreateSubmit({
+                    ...data,
+                    requestProducts: data.requestProducts.map((product) => ({
+                      ...product,
+                      description: '',
+                      unit: { slug: product.unit, name: product.unit }
+                    }))
+                  })
+                }
+              />
             </CardContent>
           </Card>
         )}

@@ -14,6 +14,7 @@ import {
 import { addNewProductRequestSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IProductRequisitionInfo } from '@/types'
+import { useTranslation } from 'react-i18next'
 
 interface IFormAddNewProductProps {
   data?: IProductRequisitionInfo
@@ -21,6 +22,7 @@ interface IFormAddNewProductProps {
 }
 
 export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ data, onSubmit }) => {
+  const { t } = useTranslation('tableData')
   console.log('data in form', data)
   const form = useForm<z.infer<typeof addNewProductRequestSchema>>({
     resolver: zodResolver(addNewProductRequestSchema),
@@ -29,7 +31,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
       product: data?.product || '',
       name: data?.name || '',
       provider: data?.provider || '',
-      unit: data?.unit || '',
+      unit: data?.unit || { name: '', slug: '' },
       requestQuantity: data?.requestQuantity || 1,
       description: data?.description || '',
       status: data?.status || ''
@@ -41,7 +43,10 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
     const completeData: IProductRequisitionInfo = {
       ...values,
       requestQuantity: Number(values.requestQuantity),
-      product: values.product
+      unit: {
+        name: values.unit.name,
+        slug: values.unit.slug
+      }
     }
     onSubmit(completeData)
   }
@@ -56,7 +61,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
               name="code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mã vật tư</FormLabel>
+                  <FormLabel>{t('tableData.productCode')}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -69,7 +74,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Tên vật tư</FormLabel>
+                  <FormLabel>{t('tableData.productName')}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -82,7 +87,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
               name="provider"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nhà cung cấp</FormLabel>
+                  <FormLabel>{t('tableData.provider')}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -97,12 +102,12 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
               name="requestQuantity"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Số lượng</FormLabel>
+                  <FormLabel>{t('tableData.quantity')}</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
                       min="1"
-                      placeholder="Nhập số lượng"
+                      placeholder={t('tableData.quantity')}
                       {...field}
                       value={field.value || 1}
                       onChange={(e) => field.onChange(Number(e.target.value))}
@@ -115,10 +120,10 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
 
             <FormField
               control={form.control}
-              name="unit"
+              name="unit.name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Đơn vị</FormLabel>
+                  <FormLabel>{t('tableData.unit')}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -131,7 +136,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mô tả</FormLabel>
+                  <FormLabel>{t('tableData.description')}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -141,7 +146,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
             />
           </div>
           <div className="flex justify-end w-full">
-            <Button type="submit">Thêm</Button>
+            <Button type="submit">{t('tableData.add')}</Button>
           </div>
         </form>
       </Form>
