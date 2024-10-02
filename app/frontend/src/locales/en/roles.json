@@ -4,7 +4,8 @@
     "createRole": "Create role",
     "CreateRoleDescription": "Create new role",
     "description": "Description",
-    "nameNormalize": "Normalized name"
+    "nameNormalize": "Normalized name",
+    "createRoleSuccessfully": "Create role successfully"
   }
    
 }

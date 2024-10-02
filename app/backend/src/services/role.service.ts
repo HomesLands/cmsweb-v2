@@ -17,7 +17,7 @@ class RoleService {
   public async getAllRoles(
     options: TQueryRequest
   ): Promise<TPaginationOptionResponse<RoleResponseDto[]>> {
-    // Get the total number of products
+    // Get the total number of roles
     const totalRoles = await roleRepository.count();
 
     // Parse and validate pagination parameters

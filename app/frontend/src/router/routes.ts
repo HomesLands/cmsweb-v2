@@ -71,7 +71,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
       },
       {
         title: 'sidebar.createPermission',
-        path: ROUTE.ADD_AUTHORITY,
+        path: ROUTE.ADD_PERMISSION,
         authorities: [Authority.CREATE_PERMISSION]
       }
     ]

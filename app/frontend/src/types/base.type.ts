@@ -17,7 +17,7 @@ export interface IPaginationResponse<T> {
 export interface IQuery {
   page?: number
   pageSize?: number
-  order?: string
+  order?: 'ASC' | 'DESC'
 }
 
 export interface IBase {

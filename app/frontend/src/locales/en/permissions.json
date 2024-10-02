@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "list": "List of permissions",
+    "createPermission": "Create permission",
+    "CreateAuthorityDescription": "Create new permission",
+    "nameNormalize": "Name normalize",
+    "description": "Description",
+    "slug": "Slug",
+    "createPermissionSuccessfully": "Create permission successfully"    
+  }
+}

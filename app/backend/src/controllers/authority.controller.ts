@@ -2,7 +2,12 @@ import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { authorityService } from "@services";
-import { TApiResponse, TCreateAuthorityRequestDto } from "@types";
+import {
+  TApiResponse,
+  TCreateAuthorityRequestDto,
+  TPaginationOptionResponse,
+  TQueryRequest,
+} from "@types";
 import { AuthorityResponseDto } from "@dto/response";
 
 class AuthorityController {
@@ -40,9 +45,32 @@ class AuthorityController {
    *   get:
    *     summary: Get all authorities
    *     tags: [Authority]
+   *     parameters:
+   *       - in: query
+   *         name: order
+   *         schema:
+   *           type: string
+   *           enum: [ASC, DESC]
+   *         required: true
+   *         description: The order in which the authorities are sorted (ASC, DESC)
+   *         example: ASC
+   *       - in: query
+   *         name: page
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of authorities to skip
+   *         example: 1
+   *       - in: query
+   *         name: pageSize
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of authorities to retrieve
+   *         example: 10
    *     responses:
    *       200:
-   *         description: Get all authorities successfully.
+   *         description: Authorities have been retrieved successfully.
    *       500:
    *         description: Server error
    */
@@ -52,8 +80,12 @@ class AuthorityController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const results = await authorityService.getAllAuthorities();
-      const response: TApiResponse<AuthorityResponseDto[]> = {
+      const plainData = req.query as unknown as TQueryRequest;
+      const results = await authorityService.getAllAuthorities(plainData);
+
+      const response: TApiResponse<
+        TPaginationOptionResponse<AuthorityResponseDto[]>
+      > = {
         code: StatusCodes.OK,
         error: false,
         message: "Authorities have been retrieved successfully",
