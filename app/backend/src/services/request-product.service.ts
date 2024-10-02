@@ -122,7 +122,8 @@ class RequestProductService {
       },
       relations: [
         'requestProducts',
-        'requestProducts.product',
+        'requestProducts.product.unit',
+        'requestProducts.temporaryProduct.unit',
         'creator'
       ]
     });

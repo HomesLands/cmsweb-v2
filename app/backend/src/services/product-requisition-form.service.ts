@@ -84,8 +84,8 @@ class ProductRequisitionFormService {
         "userApprovals.assignedUserApproval.user",
         "userApprovals.approvalLogs",
         // "requestProducts",
-        "requestProducts.product",
-        "requestProducts.temporaryProduct",
+        "requestProducts.product.unit",
+        "requestProducts.temporaryProduct.unit",
       ],
     });
 
@@ -291,8 +291,8 @@ class ProductRequisitionFormService {
         "userApprovals.assignedUserApproval.user",
         "userApprovals.approvalLogs",
         "requestProducts",
-        "requestProducts.product",
-        "requestProducts.temporaryProduct",
+        "requestProducts.product.unit",
+        "requestProducts.temporaryProduct.unit",
       ],
     });
 
@@ -354,8 +354,8 @@ class ProductRequisitionFormService {
         "userApprovals.assignedUserApproval.user",
         "userApprovals.approvalLogs",
         "requestProducts",
-        "requestProducts.product",
-        "requestProducts.temporaryProduct",
+        "requestProducts.product.unit",
+        "requestProducts.temporaryProduct.unit",
       ],
     });
     if (!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
@@ -505,8 +505,8 @@ class ProductRequisitionFormService {
         "userApprovals.assignedUserApproval.user",
         "userApprovals.approvalLogs",
         "requestProducts",
-        "requestProducts.product",
-        "requestProducts.temporaryProduct",
+        "requestProducts.product.unit",
+        "requestProducts.temporaryProduct.unit",
       ],
     });
     console.log({ form });
