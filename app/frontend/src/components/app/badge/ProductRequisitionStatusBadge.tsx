@@ -1,15 +1,15 @@
 import { RequisitionStatus, UserApprovalStage } from '@/constants'
-import { RequestRequisitionRoleApproval, RequestRequisitionStatus } from '@/types'
+import { ProductRequisitionRoleApproval, ProductRequisitionStatus } from '@/types'
 
 export interface RequestStatusBadgeProps {
   isRecalled: boolean
-  status: RequestRequisitionStatus
-  roleApproval: RequestRequisitionRoleApproval
+  status: ProductRequisitionStatus
+  roleApproval: ProductRequisitionRoleApproval
 }
 
 const getBadgeColorClass = (
-  status: RequestRequisitionStatus,
-  roleApproval: RequestRequisitionRoleApproval,
+  status: ProductRequisitionStatus,
+  roleApproval: ProductRequisitionRoleApproval,
   isRecalled: boolean
 ) => {
   switch (roleApproval) {
@@ -35,8 +35,8 @@ const getBadgeColorClass = (
 }
 
 const getBadgeText = (
-  status: RequestRequisitionStatus,
-  roleApproval: RequestRequisitionRoleApproval,
+  status: ProductRequisitionStatus,
+  roleApproval: ProductRequisitionRoleApproval,
   isRecalled: boolean
 ) => {
   switch (roleApproval) {

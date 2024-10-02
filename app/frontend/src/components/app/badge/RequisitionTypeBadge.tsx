@@ -1,10 +1,10 @@
-import { RequestRequisitionType } from '@/types'
+import { ProductRequisitionType } from '@/types'
 
 export interface RequestTypeBadgeProps {
-  type: RequestRequisitionType
+  type: ProductRequisitionType
 }
 
-const getBadgeColorClass = (type: RequestRequisitionType) => {
+const getBadgeColorClass = (type: ProductRequisitionType) => {
   switch (type) {
     case 'normal':
       return 'bg-green-500'
@@ -13,7 +13,7 @@ const getBadgeColorClass = (type: RequestRequisitionType) => {
   }
 }
 
-const getBadgeText = (type: RequestRequisitionType) => {
+const getBadgeText = (type: ProductRequisitionType) => {
   switch (type) {
     case 'normal':
       return 'Bình thường'

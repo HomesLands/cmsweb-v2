@@ -12,8 +12,8 @@ import {
 } from '@/components/ui'
 import {
   IRequisitionFormResponseForApprover,
-  RequestRequisitionRoleApproval,
-  RequestRequisitionStatus
+  ProductRequisitionRoleApproval,
+  ProductRequisitionStatus
 } from '@/types'
 import { ProductRequisitionStatusBadge } from '@/components/app/badge'
 import { RequisitionTypeBadge } from '@/components/app/badge/RequisitionTypeBadge'
@@ -68,8 +68,8 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
         return (
           <ProductRequisitionStatusBadge
             isRecalled={row.original.productRequisitionForm.isRecalled}
-            status={row.original.productRequisitionForm.status as RequestRequisitionStatus}
-            roleApproval={row.original.roleApproval as RequestRequisitionRoleApproval}
+            status={row.original.productRequisitionForm.status as ProductRequisitionStatus}
+            roleApproval={row.original.roleApproval as ProductRequisitionRoleApproval}
           />
         )
       },
@@ -117,7 +117,10 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
                 openDialog={openDialog}
                 requisition={requisition.productRequisitionForm}
                 component={null}
-                companyName={requisition.productRequisitionForm.company}
+                companyName={
+                  requisition.productRequisitionForm.creator.userDepartments[0].department.site
+                    .company.name
+                }
                 onOpenChange={onOpenChange}
               />
             )}

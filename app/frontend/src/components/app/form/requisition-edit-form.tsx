@@ -21,10 +21,10 @@ import {
 } from '@/components/ui'
 import { addNewProductRequestSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { IRequestRequisitionInfo } from '@/types'
+import { IProductRequisitionFormInfo } from '@/types'
 
 interface IFormRequisitionEditProps {
-  data?: IRequestRequisitionInfo
+  data?: IProductRequisitionFormInfo
 }
 
 export const RequisitionEditForm: React.FC<IFormRequisitionEditProps> = ({ data }) => {
@@ -32,13 +32,13 @@ export const RequisitionEditForm: React.FC<IFormRequisitionEditProps> = ({ data 
   const form = useForm({
     defaultValues: {
       code: data?.code || '',
-      company: data?.company || '',
+      company: data?.creator.userDepartments[0].department.site.company.name || '',
       createdAt: data?.createdAt || '',
       creator: data?.creator || '',
       // status: data?.status || '',
       description: data?.description || '',
       project: data?.project || '',
-      site: data?.site || '',
+      site: data?.creator.userDepartments[0].department.site.name || '',
       type: data?.type || ''
     }
   })
@@ -93,12 +93,12 @@ export const RequisitionEditForm: React.FC<IFormRequisitionEditProps> = ({ data 
             />
             <FormField
               control={form.control}
-              name="creator"
+              name="creator.fullname"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Người tạo</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} readOnly />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -121,7 +121,7 @@ export const RequisitionEditForm: React.FC<IFormRequisitionEditProps> = ({ data 
             />
             <FormField
               control={form.control}
-              name="project"
+              name="project.name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Dự án</FormLabel>

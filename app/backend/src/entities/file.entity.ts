@@ -17,7 +17,4 @@ export class File extends Base {
 
   @Column({ name: "size_column", nullable: true })
   size?: number;
-
-  @ManyToOne(() => RequestProduct, (requestProduct) => requestProduct.codeImages)
-  requestProduct?: RequestProduct;
 }

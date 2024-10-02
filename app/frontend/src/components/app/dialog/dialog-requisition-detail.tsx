@@ -11,12 +11,12 @@ import {
 } from '@/components/ui'
 
 import { RequisitionDetailForm, RequisitionEditForm } from '@/components/app/form'
-import { IRequestRequisitionInfo } from '@/types'
+import { IProductRequisitionFormInfo } from '@/types'
 
 interface DialogRequisitionDetailProps {
   isEditing?: boolean
   openDialog: boolean
-  requisition?: IRequestRequisitionInfo | null
+  requisition?: IProductRequisitionFormInfo | null
   component: React.ReactNode
   companyName: string
   onOpenChange: () => void

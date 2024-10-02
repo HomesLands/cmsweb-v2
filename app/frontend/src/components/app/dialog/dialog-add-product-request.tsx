@@ -9,15 +9,15 @@ import {
   DialogTrigger
 } from '@/components/ui'
 
-import { addNewProductRequestSchema } from '@/schemas'
+import { addNewProductRequestSchema, TAddNewProductRequestSchema } from '@/schemas'
 import { AddNewProductRequestForm } from '@/components/app/form'
-import { IProductRequisitionInfo } from '@/types'
+import { IProductInfo, IProductRequisitionInfo } from '@/types'
 import { useRequisitionStore } from '@/stores'
 import { useTranslation } from 'react-i18next'
 
 interface DialogAddProductRequestProps {
   openDialog: boolean
-  product?: IProductRequisitionInfo | null
+  product?: IProductInfo | null
   component: React.ReactNode
   onOpenChange: () => void
 }
@@ -34,29 +34,33 @@ export function DialogAddProductRequest({
     addProductToRequisition(product)
     onOpenChange()
   }
-  const handleSubmit = (data: z.infer<typeof addNewProductRequestSchema>) => {
-    const completeData: IProductRequisitionInfo = {
-      ...data,
-      description: '',
-      requestQuantity: Number(data.requestQuantity),
-      unit: {
-        slug: data.unit.slug,
-        name: data.unit.name
-      }
-    }
-    handleAddRequest(completeData)
+  const handleSubmit = (data: TAddNewProductRequestSchema) => {
+    // const completeData: IProductRequisitionInfo = {
+    //   ...data,
+    //   requestQuantity: Number(data.product.quantity),
+    //   // slug: data.product.slug
+    //   // unit: {
+    //   //   slug: data.unit.slug,
+    //   //   name: data.unit.name
+    //   // }
+    // }
+    // handleAddRequest(completeData)
+    handleAddRequest(data)
     onOpenChange()
   }
 
   return (
     <Dialog open={openDialog} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{component}</DialogTrigger>
-      <DialogContent className="max-w-[44rem]">
+      <DialogContent className="max-w-[60rem]">
         <DialogHeader>
           <DialogTitle>{t('tableData.addNewProduct')}</DialogTitle>
           <DialogDescription>{t('tableData.addNewProductDescription')}</DialogDescription>
         </DialogHeader>
-        <AddNewProductRequestForm data={product || undefined} onSubmit={handleSubmit} />
+        <AddNewProductRequestForm
+          data={product || undefined}
+          onSubmit={(data: IProductRequisitionInfo) => handleSubmit(data)}
+        />
       </DialogContent>
     </Dialog>
   )

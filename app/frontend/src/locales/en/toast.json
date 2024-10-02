@@ -1,5 +1,6 @@
 {
   "toast": {
+    "requestFailed": "Please add product to requisition",
     "requestSuccess": "Request created successfully",
     "requestError": "Request created failed",
     "confirmSuccess": "Request confirmed successfully",

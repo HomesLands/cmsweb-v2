@@ -1,10 +1,10 @@
-import { IProductRequirementInfoCreate, IProductRequisitionInfo } from './product.type'
+import { IProductRequisitionFormCreate, IProductRequisitionInfo } from './product.type'
 
 export interface IRequisitionStore {
-  requisition: IProductRequirementInfoCreate | undefined
-  getRequisition: () => IProductRequirementInfoCreate | undefined
-  setRequisition: (requisition: IProductRequirementInfoCreate) => void
-  updateRequisition: (updatedFields: Partial<IProductRequirementInfoCreate>) => void
+  requisition: IProductRequisitionFormCreate | undefined
+  getRequisition: () => IProductRequisitionFormCreate | undefined
+  setRequisition: (requisition: IProductRequisitionFormCreate) => void
+  updateRequisition: (updatedFields: Partial<IProductRequisitionFormCreate>) => void
   clearRequisition: () => void
   addProductToRequisition: (product: IProductRequisitionInfo) => void
   updateProductToRequisition: (product: IProductRequisitionInfo, requestQuantity: number) => void

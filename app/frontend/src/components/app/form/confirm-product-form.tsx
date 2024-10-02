@@ -5,7 +5,7 @@ import { format, parseISO } from 'date-fns'
 import { Button, DataTableRequisition } from '@/components/ui'
 import {
   IFinalProductRequisition,
-  IProductRequirementInfoCreate,
+  IProductRequisitionFormCreate,
   IProductRequisitionInfo
 } from '@/types'
 import { useColumnsConfirm } from '@/views/product-requisitions/DataTable/columnsConfirm'
@@ -36,39 +36,42 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
 
   const columns = useColumnsConfirm(handleEditRequest, handleDeleteProduct)
 
-  const transformRequisitionToApiFormat = (requisition: IProductRequirementInfoCreate) => {
+  const transformRequisitionToApiFormat = (requisition: IProductRequisitionFormCreate) => {
     return {
       code: requisition.code,
-      companySlug: requisition.company.slug,
-      siteSlug: requisition.site.slug,
+      // companySlug: requisition.company.slug,
+      // siteSlug: requisition.site.slug,
       project: requisition.project.slug,
       type: requisition.type,
       deadlineApproval: requisition.deadlineApproval,
       description: requisition.note || '',
       requestProducts: requisition.requestProducts.map((product) => ({
-        product: product.product,
-        name: product.name,
-        provider: product.provider,
-        unit: product.unit.slug, // Chỉ gửi slug của unit
-        description: product.description,
-        requestQuantity: product.requestQuantity
+        product: product.product.slug,
+        requestQuantity: product.requestQuantity,
+        name: product.product.name,
+        provider: product.product.provider,
+        unit: product.product.unit.slug, // Change this line
+        description: product.product.description
       }))
     }
   }
 
   const handleConfirm = () => {
-    const requisition = getRequisition() as IProductRequirementInfoCreate
+    const requisition = getRequisition() as IProductRequisitionFormCreate
     console.log('requisition', requisition)
-    const apiFormattedRequisition = transformRequisitionToApiFormat(requisition)
-    const finalRequisition: IFinalProductRequisition = {
-      ...apiFormattedRequisition,
-      requestProducts: apiFormattedRequisition.requestProducts.map((product) => ({
-        ...product,
-        description: product.description || '',
-        unit: product.unit
-      }))
-    }
-    onConfirm(finalRequisition)
+    const formattedRequisition = transformRequisitionToApiFormat(requisition)
+    // const finalRequisition: IFinalProductRequisition = {
+    //   ...apiFormattedRequisition,
+    //   requestProducts: apiFormattedRequisition.requestProducts.map((product) => ({
+    //     product: product.product.slug,
+    //     requestQuantity: product.requestQuantity,
+    //     name: product.name,
+    //     provider: product.provider,
+    //     unit: product.unit,
+    //     description: product.description || ''
+    //   }))
+    // }
+    onConfirm(formattedRequisition)
   }
 
   const formatDeadline = (dateString: string | undefined) => {

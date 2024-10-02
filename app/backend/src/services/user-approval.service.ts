@@ -25,6 +25,7 @@ class UserApprovalService {
         : options.page;
 
     // let roleApproval = RoleApproval.APPROVAL_STAGE_1;
+    // let roleApproval = RoleApproval.APPROVAL_STAGE_1;
 
     // const site = await siteRepository.findOneBy({
     //   manager: { id: userId },
@@ -34,7 +35,20 @@ class UserApprovalService {
     //     id: userId,
     //   },
     // });
+    // const site = await siteRepository.findOneBy({
+    //   manager: { id: userId },
+    // });
+    // const company = await companyRepository.findOneBy({
+    //   director: {
+    //     id: userId,
+    //   },
+    // });
 
+    // if (site) {
+    //   roleApproval = RoleApproval.APPROVAL_STAGE_2;
+    // } else if (company) {
+    //   roleApproval = RoleApproval.APPROVAL_STAGE_3;
+    // }
     // if (site) {
     //   roleApproval = RoleApproval.APPROVAL_STAGE_2;
     // } else if (company) {
@@ -70,13 +84,15 @@ class UserApprovalService {
       },
       relations: [
         "assignedUserApproval",
-        "productRequisitionForm",
+        // "productRequisitionForm",
         "productRequisitionForm.project",
         "productRequisitionForm.creator",
-        "productRequisitionForm.requestProducts",
+        "productRequisitionForm.creator.userDepartments.department.site.company",
+        // "productRequisitionForm.requestProducts",
         "productRequisitionForm.requestProducts.product",
-        "productRequisitionForm.userApprovals",
-        "productRequisitionForm.userApprovals.assignedUserApproval",
+        "productRequisitionForm.requestProducts.temporaryProduct",
+        // "productRequisitionForm.userApprovals",
+        // "productRequisitionForm.userApprovals.assignedUserApproval",
         "productRequisitionForm.userApprovals.assignedUserApproval.user",
         "productRequisitionForm.userApprovals.approvalLogs",
       ],

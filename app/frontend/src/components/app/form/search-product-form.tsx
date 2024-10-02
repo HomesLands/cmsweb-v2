@@ -11,7 +11,8 @@ import { useColumnsSearch } from '@/views/product-requisitions/DataTable/columns
 import { useColumnsResult } from '@/views/product-requisitions/DataTable/columnsResult'
 
 interface IFormAddProductProps {
-  onSubmit: (data: IProductNameSearch) => void
+  // onSubmit: (data: IProductNameSearch) => void
+  onSubmit: () => void
   onBack: () => void
 }
 
@@ -25,7 +26,7 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
   })
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
-  const [selectedProducts, setSelectedProducts] = useState<IProductRequisitionInfo[]>([])
+  // const [selectedProducts, setSelectedProducts] = useState<IProductRequisitionInfo[]>([])
   const { requisition } = useRequisitionStore()
 
   const { data: allProduct, isLoading } = useProducts(query)
@@ -41,10 +42,11 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
   }
 
   const handleNext = () => {
-    const productNameSearch: IProductNameSearch = {
-      name: selectedProducts.map((product) => product.name).join(', ')
-    }
-    onSubmit(productNameSearch)
+    // const productNameSearch: IProductNameSearch = {
+    //   name: selectedProducts.map((product) => product.product.name).join(', ')
+    // }
+    // onSubmit(productNameSearch)
+    onSubmit()
   }
 
   const columns = useColumnsResult(handleEditRequisition, handleDeleteProduct)

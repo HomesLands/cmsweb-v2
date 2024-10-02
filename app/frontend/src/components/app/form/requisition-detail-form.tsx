@@ -17,11 +17,11 @@ import {
   TableBody,
   TableCell
 } from '@/components/ui'
-import { IRequestRequisitionInfo } from '@/types'
+import { IProductRequisitionFormInfo } from '@/types'
 
 interface IFormRequisitionDetailProps {
   companyName: string
-  data?: IRequestRequisitionInfo
+  data?: IProductRequisitionFormInfo
 }
 
 export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({
@@ -148,7 +148,7 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({
             />
             <FormField
               control={form.control}
-              name="creator"
+              name="creator.fullname"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Người tạo</FormLabel>
@@ -163,7 +163,7 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({
           <div className="grid grid-cols-2 gap-2">
             <FormField
               control={form.control}
-              name="project"
+              name="project.name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Dự án</FormLabel>
@@ -234,7 +234,6 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({
                   <TableHead>Mã sản phẩm</TableHead>
                   <TableHead>Tên sản phẩm</TableHead>
                   <TableHead>Số lượng yêu cầu</TableHead>
-                  <TableHead>Mô tả</TableHead>
                   <TableHead>Mô tả</TableHead>
                 </TableRow>
               </TableHeader>

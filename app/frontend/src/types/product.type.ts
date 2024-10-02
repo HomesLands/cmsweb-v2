@@ -1,8 +1,8 @@
 import { IQuery } from './base.type'
 import {
   ApprovalLogStatus,
-  RequestRequisitionStatus,
-  RequestRequisitionType
+  ProductRequisitionStatus,
+  ProductRequisitionType
 } from './request-requisition.type'
 
 export interface IProductApprovalInfo {
@@ -10,16 +10,16 @@ export interface IProductApprovalInfo {
   createdBy: string
   createdAt?: string
   updatedAt?: string
-  commanderApprovalStatus: RequestRequisitionStatus
+  commanderApprovalStatus: ProductRequisitionStatus
   commanderApprovalContent?: string
-  projectManagerApprovalStatus: RequestRequisitionStatus
+  projectManagerApprovalStatus: ProductRequisitionStatus
   projectManagerApprovalContent?: string
-  directorApprovalStatus: RequestRequisitionStatus
+  directorApprovalStatus: ProductRequisitionStatus
   directorApprovalContent?: string
   notes?: string
 }
 
-export interface IProductRequirementInfoCreate {
+export interface IProductRequisitionFormCreate {
   code: string
   requester: string
   deadlineApproval: string
@@ -35,7 +35,7 @@ export interface IProductRequirementInfoCreate {
     slug: string
     name: string
   }
-  type: RequestRequisitionType
+  type: ProductRequisitionType
   requestProducts: IProductRequisitionInfo[]
   userApprovals: {
     userSlug: string
@@ -49,6 +49,7 @@ export interface IFinalProductRequisition {
   project: string //Project slug
   type: 'normal' | 'urgent'
   description: string
+  deadlineApproval: string
   requestProducts: {
     product: string
     requestQuantity: number
@@ -63,7 +64,7 @@ export interface IRequestProduct {
   code?: string
   name?: string
   provider?: string
-  description?: string
+  description: string
   unit: {
     slug: string
     name: string
@@ -80,8 +81,7 @@ export interface IProductInfo {
   slug: string
   name: string
   provider: string
-  // status?: string
-  description?: string
+  description: string
   unit: {
     slug: string
     name: string
@@ -90,20 +90,14 @@ export interface IProductInfo {
 }
 
 export interface IProductRequisitionInfo {
-  createdAt?: string
-  updatedAt?: string
-  code: string
-  product: string
-  name: string
-  provider: string
-  status?: string
-  description?: string
-  unit: {
-    slug: string
-    name: string
-  }
+  // createdAt?: string
+  // updatedAt?: string
+  // slug: string
   requestQuantity: number
-  // product: IProductInfo
+  // description: string
+  // isExistProduct: boolean;
+  product: IProductInfo
+  // temporaryProduct: string | null;
 }
 
 export interface IProductQuery extends IQuery {

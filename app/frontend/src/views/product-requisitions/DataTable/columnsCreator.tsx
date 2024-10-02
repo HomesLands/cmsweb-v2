@@ -12,7 +12,7 @@ import {
   Button,
   DataTableColumnHeader
 } from '@/components/ui'
-import { IRequestRequisitionInfo, RequestRequisitionStatus } from '@/types'
+import { IProductRequisitionFormInfo, ProductRequisitionStatus } from '@/types'
 import { ProductRequisitionByCreatorStatusBadge } from '@/components/app/badge'
 import { RequisitionTypeBadge } from '@/components/app/badge'
 import { DialogRequisitionDetail } from '@/components/app/dialog/dialog-requisition-detail'
@@ -22,20 +22,18 @@ import { format } from 'date-fns'
 
 export const useColumnsRequisitionListCreator = (
   companyName: string
-): ColumnDef<IRequestRequisitionInfo>[] => {
-  console.log(companyName)
+): ColumnDef<IProductRequisitionFormInfo>[] => {
   const [openViewDialog, setOpenViewDialog] = useState(false)
   const [openEditDialog, setOpenEditDialog] = useState(false)
-  const [selectedRequisition, setSelectedRequisition] = useState<IRequestRequisitionInfo | null>(
-    null
-  )
+  const [selectedRequisition, setSelectedRequisition] =
+    useState<IProductRequisitionFormInfo | null>(null)
 
-  const handleOpenViewDialog = (requisition: IRequestRequisitionInfo) => {
+  const handleOpenViewDialog = (requisition: IProductRequisitionFormInfo) => {
     setOpenViewDialog(true)
     setSelectedRequisition(requisition)
   }
 
-  const handleOpenEditDialog = (requisition: IRequestRequisitionInfo) => {
+  const handleOpenEditDialog = (requisition: IProductRequisitionFormInfo) => {
     setOpenEditDialog(true)
     setSelectedRequisition(requisition)
   }
@@ -49,7 +47,7 @@ export const useColumnsRequisitionListCreator = (
   }
 
   // Add this new function
-  const handleEditRequisition = (requisition: IRequestRequisitionInfo) => {
+  const handleEditRequisition = (requisition: IProductRequisitionFormInfo) => {
     // Implement the logic for editing the requisition
     console.log('Editing requisition:', requisition)
     // You might want to open a modal for editing or navigate to an edit page
@@ -77,7 +75,7 @@ export const useColumnsRequisitionListCreator = (
       }
     },
     {
-      accessorKey: 'creator',
+      accessorKey: 'creator.fullname',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Người tạo" />
     },
     {
@@ -103,7 +101,7 @@ export const useColumnsRequisitionListCreator = (
         return (
           <ProductRequisitionByCreatorStatusBadge
             isRecalled={row.original.isRecalled}
-            status={row.original.status as RequestRequisitionStatus}
+            status={row.original.status as ProductRequisitionStatus}
           />
         )
       },

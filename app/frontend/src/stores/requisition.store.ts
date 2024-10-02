@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import toast from 'react-hot-toast'
 import { persist } from 'zustand/middleware'
 
-import { IProductRequirementInfoCreate, IProductRequisitionInfo, IRequisitionStore } from '@/types'
+import { IProductRequisitionFormCreate, IProductRequisitionInfo, IRequisitionStore } from '@/types'
 import { showToast, showErrorToast } from '@/utils'
 import { RequisitionType, UserApprovalStage } from '@/constants'
 
@@ -11,7 +11,7 @@ export const useRequisitionStore = create<IRequisitionStore>()(
     (set, get) => ({
       requisition: undefined,
       getRequisition: () => get().requisition,
-      setRequisition: (requisition: IProductRequirementInfoCreate) => {
+      setRequisition: (requisition: IProductRequisitionFormCreate) => {
         set((state) => ({
           requisition: {
             ...requisition,
@@ -20,7 +20,7 @@ export const useRequisitionStore = create<IRequisitionStore>()(
         }))
         showToast('Tạo phiếu yêu cầu thành công!')
       },
-      updateRequisition: (updatedFields: Partial<IProductRequirementInfoCreate>) => {
+      updateRequisition: (updatedFields: Partial<IProductRequisitionFormCreate>) => {
         set((state) => ({
           requisition: state.requisition
             ? {
@@ -37,7 +37,7 @@ export const useRequisitionStore = create<IRequisitionStore>()(
         console.log('product', product)
         if (currentRequisition) {
           const productExists = currentRequisition.requestProducts.some(
-            (p) => p.code === product.code
+            (p) => p.product.slug === product.product.slug
           )
           if (productExists) {
             showErrorToast(1000)
@@ -48,12 +48,12 @@ export const useRequisitionStore = create<IRequisitionStore>()(
                 requestProducts: [
                   ...currentRequisition.requestProducts,
                   {
-                    ...product,
-                    product: product.product,
-                    name: product.name,
-                    provider: product.provider,
-                    unit: { slug: product.unit.slug, name: product.unit.name },
-                    description: product.description
+                    ...product
+                    // product: product.product,
+                    // name: product.product.name, // Corrected assignment
+                    // provider: product.product.provider,
+                    // unit: { slug: product.product.unit.slug, name: product.product.unit.name },
+                    // description: product.product.description
                   }
                 ]
               }
@@ -66,7 +66,7 @@ export const useRequisitionStore = create<IRequisitionStore>()(
         const currentRequisition = get().requisition
         if (currentRequisition) {
           const productIndex = currentRequisition.requestProducts.findIndex(
-            (p) => p.code === product.code
+            (p) => p.product.slug === product.product.slug
           )
           if (productIndex === -1) {
             showErrorToast(1000)
@@ -82,7 +82,7 @@ export const useRequisitionStore = create<IRequisitionStore>()(
         const currentRequisition = get().requisition
         if (currentRequisition) {
           const updatedProducts = currentRequisition.requestProducts.filter(
-            (p) => p.code !== product.code
+            (p) => p.product.slug !== product.product.slug
           )
           set({ requisition: { ...currentRequisition, requestProducts: updatedProducts } })
           showToast('Đã xóa vật tư trong phiếu yêu cầu!')

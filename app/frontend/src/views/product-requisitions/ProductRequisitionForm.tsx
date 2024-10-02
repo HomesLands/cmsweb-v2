@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
-import { IFinalProductRequisition, IProductRequirementInfoCreate } from '@/types'
+import { IFinalProductRequisition, IProductRequisitionFormCreate } from '@/types'
 import {
   CreateProductRequisitionForm,
   SearchProductForm,
@@ -20,7 +20,7 @@ const ProductRequisitionForm: React.FC = () => {
   const { t } = useTranslation('productRequisition')
   const { t: tToast } = useTranslation('toast')
   const { currentStep, handleStepChange } = useMultiStep(1)
-  const { setRequisition, clearRequisition } = useRequisitionStore()
+  const { setRequisition, clearRequisition, requisition } = useRequisitionStore()
 
   const mutation = useMutation({
     mutationFn: async (data: IFinalProductRequisition) => {
@@ -30,14 +30,14 @@ const ProductRequisitionForm: React.FC = () => {
       showToast(tToast('toast.requestSuccess'))
       clearRequisition()
       handleStepChange(4)
-    },
-    onError: () => {
-      showToast(tToast('toast.requestFailed'))
     }
+    // onError: () => {
+    //   showToast(tToast('toast.requestFailed'))
+    // }
   })
 
-  const handleFormCreateSubmit = (data: IProductRequirementInfoCreate) => {
-    const newRequisition: IProductRequirementInfoCreate = {
+  const handleFormCreateSubmit = (data: IProductRequisitionFormCreate) => {
+    const newRequisition: IProductRequisitionFormCreate = {
       ...data
     }
     // updateRequisition(newRequisition)
@@ -46,6 +46,11 @@ const ProductRequisitionForm: React.FC = () => {
   }
 
   const handleFormSearchSubmit = () => {
+    //check if not add any product to requisition
+    if (requisition?.requestProducts.length === 0) {
+      showToast(tToast('toast.notAddProductToRequisition'))
+      return
+    }
     handleStepChange(3)
   }
 
@@ -83,18 +88,7 @@ const ProductRequisitionForm: React.FC = () => {
               </div>
             </CardHeader>
             <CardContent className="flex flex-col">
-              <CreateProductRequisitionForm
-                onSubmit={(data) =>
-                  handleFormCreateSubmit({
-                    ...data,
-                    requestProducts: data.requestProducts.map((product) => ({
-                      ...product,
-                      description: '',
-                      unit: { slug: product.unit, name: product.unit }
-                    }))
-                  })
-                }
-              />
+              <CreateProductRequisitionForm onSubmit={handleFormCreateSubmit} />
             </CardContent>
           </Card>
         )}

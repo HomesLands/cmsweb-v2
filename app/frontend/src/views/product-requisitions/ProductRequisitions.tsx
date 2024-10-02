@@ -21,14 +21,14 @@ const ProductRequisitions: React.FC = () => {
 
   console.log('data in product requisition', data)
 
-  const filteredData = useMemo(() => {
-    if (!data?.result?.items || data.result.items.length === 0 || !userInfo) return []
+  // const filteredData = useMemo(() => {
+  //   if (!data?.result?.items || data.result.items.length === 0 || !userInfo) return []
 
-    return data.result.items.filter((item) => item.creatorSlug === userInfo.slug)
-  }, [data?.result.items, userInfo])
+  //   return data.result.items.filter((item) => item.creatorSlug === userInfo.slug)
+  // }, [data?.result.items, userInfo])
 
   const dataWithDisplayStatus = useMemo(() => {
-    return filteredData.map((item) => {
+    return data?.result?.items.map((item) => {
       const { status, isRecalled } = item
       let displayStatus = ''
       let statusColor = ''
@@ -65,7 +65,7 @@ const ProductRequisitions: React.FC = () => {
         statusColor
       }
     })
-  }, [filteredData])
+  }, [data?.result?.items])
 
   return (
     <div className="flex flex-col gap-4">
@@ -78,7 +78,7 @@ const ProductRequisitions: React.FC = () => {
         columns={useColumnsRequisitionListCreator(
           userInfo?.userDepartments[0].department.site.company.name ?? ''
         )}
-        data={dataWithDisplayStatus}
+        data={dataWithDisplayStatus || []}
         pages={data?.result?.totalPages || 0}
         page={pagination.pageIndex + 1}
         pageSize={pagination.pageSize}

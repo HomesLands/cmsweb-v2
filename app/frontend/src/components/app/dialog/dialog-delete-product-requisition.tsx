@@ -53,8 +53,8 @@ export function DialogDeleteProductRequisition({
           </DialogDescription>
 
           <div className="py-4 text-sm text-gray-500">
-            Bạn sắp sửa xóa vật tư <span className="font-bold">{product?.name}</span> với mã vật tư{' '}
-            <span className="font-bold">{product?.code}</span>.
+            Bạn sắp sửa xóa vật tư <span className="font-bold">{product?.product.name}</span> với mã
+            vật tư <span className="font-bold">{product?.product.code}</span>.
             <br />
             Hành động này không thể hoàn tác. Dữ liệu về vật tư sẽ bị xóa khỏi yêu cầu vật tư!
           </div>

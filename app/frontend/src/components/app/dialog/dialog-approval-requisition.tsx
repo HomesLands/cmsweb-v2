@@ -19,14 +19,14 @@ import {
 } from '@/components/ui'
 import { approvalRequisitionSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ApprovalLogStatus, RequestRequisitionRoleApproval } from '@/types'
+import { ApprovalLogStatus, ProductRequisitionRoleApproval } from '@/types'
 import { ApprovalAction, UserApprovalStage } from '@/constants'
 
 interface DialogApprovalRequisitionProps {
   openDialog: ApprovalLogStatus
   setOpenDialog: (value: ApprovalLogStatus | null) => void
   onConfirm: (message: string, status: ApprovalLogStatus) => void // Updated this line
-  roleApproval: RequestRequisitionRoleApproval
+  roleApproval: ProductRequisitionRoleApproval
 }
 
 export const DialogApprovalRequisition: React.FC<DialogApprovalRequisitionProps> = ({

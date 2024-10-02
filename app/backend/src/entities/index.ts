@@ -21,3 +21,4 @@ export * from "./user-department.entity";
 export * from "./product-warehouse.entity";
 export * from "./warehouse.entity";
 export * from "./rfid.entity";
+export * from "./temporary-product.entity";

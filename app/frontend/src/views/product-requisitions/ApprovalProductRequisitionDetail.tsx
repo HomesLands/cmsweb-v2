@@ -15,7 +15,7 @@ import {
   IApproveProductRequisition,
   IProductRequisitionInfo,
   IRequisitionFormResponseForApprover,
-  RequestRequisitionRoleApproval
+  ProductRequisitionRoleApproval
 } from '@/types'
 import { DialogApprovalRequisition } from '@/components/app/dialog'
 import { showToast } from '@/utils'
@@ -33,8 +33,6 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
   const selectedRequisition = location.state?.selectedRequisition as
     | IRequisitionFormResponseForApprover
     | undefined
-  console.log('form slug: ', data?.result.slug)
-  console.log('approval user slug: ', selectedRequisition?.approvalUserSlug)
 
   const { roleApproval } = selectedRequisition || {}
 
@@ -235,15 +233,15 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
               </div>
               <div>
                 <strong>Người yêu cầu: </strong>
-                {data?.result?.creator}
+                {data?.result?.creator.fullname}
               </div>
               <div>
                 <strong>Công trình sử dụng: </strong>
-                {data?.result?.site}
+                {data?.result?.creator.userDepartments[0].department.site.name}
               </div>
               <div>
                 <strong>Dự án: </strong>
-                {data?.result?.project}
+                {data?.result?.project.name}
               </div>
               <div>
                 <strong>Ghi chú: </strong>
@@ -266,7 +264,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           openDialog={openDialog as ApprovalAction}
           setOpenDialog={setOpenDialog}
           onConfirm={handleConfirm}
-          roleApproval={roleApproval as RequestRequisitionRoleApproval}
+          roleApproval={roleApproval as ProductRequisitionRoleApproval}
         />
       </div>
     </div>

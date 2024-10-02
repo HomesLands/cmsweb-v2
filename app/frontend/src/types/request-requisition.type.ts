@@ -1,6 +1,7 @@
 import { IProductInfo } from './product.type'
+import { IUserInfo } from './user.type'
 
-export type RequestRequisitionStatus =
+export type ProductRequisitionStatus =
   | 'cancel'
   | 'waiting'
   | 'accepted_stage_1'
@@ -8,43 +9,44 @@ export type RequestRequisitionStatus =
   | 'waiting_export'
   | 'exporting'
   | 'done'
-export type RequestRequisitionType = 'normal' | 'urgent'
+export type ProductRequisitionType = 'normal' | 'urgent'
 
 export type ApprovalLogStatus = 'cancel' | 'accept' | 'give_back'
 
-export type RequestRequisitionRoleApproval =
+export type ProductRequisitionRoleApproval =
   | 'approval_stage_1'
   | 'approval_stage_2'
   | 'approval_stage_3'
 
-export interface IRequestRequisitionInfo {
+export interface IProductRequisitionFormInfo {
   code: string
-  type: RequestRequisitionType
-  status: RequestRequisitionStatus
+  type: ProductRequisitionType
+  status: ProductRequisitionStatus
   isRecalled: boolean
   description: string | null
-  company: string
-  companySlug: string
-  site: string
-  siteSlug: string
-  project: string
-  projectSlug: string
-  creator: string
-  creatorSlug: string
-  requestProducts: {
-    createdAt: string
+  project: {
+    name: string
+    startDate: string
     description: string
-    slug: string
+    createdAt: string
     updatedAt: string
-    product: IProductInfo
+    slug: string
   }
+  creator: IUserInfo
+  requestProducts: {
+    requestQuantity: number
+    description: string
+    isExistProduct: boolean
+    product: IProductInfo
+    temporaryProduct?: string | null
+    createdAt: string
+    updatedAt: string
+    slug: string
+  }[]
   slug: string
   userApprovals: {
-    roleApproval: string
     userFullname: string
     userSlug: string
-    createdAt: string
-    updatedAt: string
     approvalLogs: {
       status: string
       content: string
@@ -52,6 +54,17 @@ export interface IRequestRequisitionInfo {
       updatedAt: string
       slug: string
     }[]
+    assignedUserApproval: {
+      formType: string
+      roleApproval: string
+      user: {
+        fullname: string
+        username: string
+        slug: string
+      }
+    }
+    createdAt: string
+    updatedAt: string
     slug: string
   }[]
   createdAt?: string
@@ -64,13 +77,13 @@ export interface IRequisitionFormResponseForApprover {
   approvalUserSlug: string
   roleApproval: string
   slug: string
-  productRequisitionForm: IRequestRequisitionInfo
+  productRequisitionForm: IProductRequisitionFormInfo
 }
 
 // export interface IRequisitionFormResponseForCreator {
 //   code: string
-//   type: RequestRequisitionType
-//   status: RequestRequisitionStatus
+//   type: ProductRequisitionType
+//   status: ProductRequisitionStatus
 //   isRecalled: boolean
 //   description: string | null
 //   company: string

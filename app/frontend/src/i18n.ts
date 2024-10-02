@@ -5,12 +5,14 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 import enAuth from '@/locales/en/auth.json'
 import enSidebar from '@/locales/en/sidebar.json'
 import enProductRequisition from '@/locales/en/product-requisition.json'
+import enRoles from '@/locales/en/roles.json'
 import enTableData from '@/locales/en/table-data.json'
 import enToast from '@/locales/en/toast.json'
 
 import viAuth from '@/locales/vi/auth.json'
 import viSidebar from '@/locales/vi/sidebar.json'
 import viProductRequisition from '@/locales/vi/product-requisition.json'
+import viRoles from '@/locales/vi/roles.json'
 import viTableData from '@/locales/vi/table-data.json'
 import viToast from '@/locales/vi/toast.json'
 i18n
@@ -22,6 +24,7 @@ i18n
         auth: enAuth,
         sidebar: enSidebar,
         productRequisition: enProductRequisition,
+        roles: enRoles,
         tableData: enTableData,
         toast: enToast
       },
@@ -29,6 +32,7 @@ i18n
         auth: viAuth,
         sidebar: viSidebar,
         productRequisition: viProductRequisition,
+        roles: viRoles,
         tableData: viTableData,
         toast: viToast
       }

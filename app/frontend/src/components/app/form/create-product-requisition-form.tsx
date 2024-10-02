@@ -21,7 +21,7 @@ import {
   PopoverContent,
   Calendar
 } from '@/components/ui'
-import { productSchema } from '@/schemas'
+import { productRequisitionSchema, TProductRequisitionSchema } from '@/schemas'
 import {
   SelectProject,
   // SelectSite,
@@ -32,11 +32,11 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { generateProductRequisitionCode } from '@/utils'
 import { useRequisitionStore, useUserStore } from '@/stores'
-import { RequestRequisitionType } from '@/types'
+import { ProductRequisitionType } from '@/types'
 import { DateTimePicker } from '@/components/app/picker'
 
 interface IFormCreateProductProps {
-  onSubmit: (data: z.infer<typeof productSchema>) => void
+  onSubmit: (data: TProductRequisitionSchema) => void
 }
 
 export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = ({ onSubmit }) => {
@@ -54,8 +54,8 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
     return selectedDate > now
   }
 
-  const form = useForm<z.infer<typeof productSchema>>({
-    resolver: zodResolver(productSchema),
+  const form = useForm<TProductRequisitionSchema>({
+    resolver: zodResolver(productRequisitionSchema),
     defaultValues: {
       code: requisition?.code || generateProductRequisitionCode(),
       requester: userInfo?.fullname || '',
@@ -81,12 +81,12 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
     }
   })
 
-  const handleSubmit = (values: z.infer<typeof productSchema>) => {
+  const handleSubmit = (values: TProductRequisitionSchema) => {
     console.log('values', values)
     onSubmit(values)
   }
 
-  const handleChoosePriority = (value: RequestRequisitionType) => {
+  const handleChoosePriority = (value: ProductRequisitionType) => {
     form.setValue('type', value)
   }
 

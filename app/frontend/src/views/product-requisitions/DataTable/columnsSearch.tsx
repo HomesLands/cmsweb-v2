@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { PlusCircledIcon } from '@radix-ui/react-icons'
+import { useTranslation } from 'react-i18next'
 
 import {
   Button,
@@ -10,28 +11,20 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui'
-import { IProductInfo, IProductRequisitionInfo } from '@/types'
+import { IProductInfo } from '@/types'
 import { DialogAddProductRequest } from '@/components/app/dialog'
-import { useTranslation } from 'react-i18next'
 
 export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
   const { t } = useTranslation('tableData')
-  const [selectedProduct, setSelectedProduct] = useState<IProductRequisitionInfo | null>(null)
+  const [selectedProduct, setSelectedProduct] = useState<IProductInfo | null>(null)
   const [openDialog, setOpenDialog] = useState(false)
 
   const handleButtonClick = (product: IProductInfo) => {
     setOpenDialog(true)
-    const { quantity, slug, unit, ...rest } = product
-    setSelectedProduct({
-      ...rest,
-      requestQuantity: quantity,
-      product: slug,
-      unit: {
-        slug: unit.slug,
-        name: unit.name
-      },
-      description: ''
-    })
+    console.log(product)
+    // const { name, quantity, slug, unit, ...rest } = product
+    setSelectedProduct(product)
+    console.log(selectedProduct)
   }
 
   const onOpenChange = () => {
@@ -54,10 +47,10 @@ export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
                   <Button variant="ghost" onClick={() => handleButtonClick(product)}>
                     <PlusCircledIcon className="w-4 h-4" />
                   </Button>
-                  {selectedProduct && selectedProduct.code === product.code && (
+                  {selectedProduct && selectedProduct.slug === product.slug && (
                     <DialogAddProductRequest
                       openDialog={openDialog}
-                      product={selectedProduct}
+                      product={product}
                       component={null}
                       onOpenChange={onOpenChange}
                     />

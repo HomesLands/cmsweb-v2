@@ -45,6 +45,11 @@ import {
   DropdownMenuSeparator
 } from '@/components/ui'
 import { cn } from '@/lib/utils'
+import {
+  IRequisitionFormResponseForApprover,
+  ProductRequisitionRoleApproval,
+  ProductRequisitionStatus
+} from '@/types'
 
 // DataTable Component
 interface DataTableProps<TData, TValue> {
@@ -59,12 +64,6 @@ interface DataTableProps<TData, TValue> {
   onRowClick?: (row: TData) => void
   CustomComponent?: React.ElementType<{ table: ReactTable<TData> }>
 }
-
-import {
-  IRequisitionFormResponseForApprover,
-  RequestRequisitionRoleApproval,
-  RequestRequisitionStatus
-} from '@/types'
 import { FilterRequisitionStatus, RequisitionStatus, UserApprovalStage } from '@/constants'
 
 export function DataTable<TData, TValue>({
@@ -130,8 +129,8 @@ export function DataTable<TData, TValue>({
     let filterConditions: ColumnFiltersState = []
 
     const applyFilter = (
-      roleApproval: RequestRequisitionRoleApproval,
-      status: RequestRequisitionStatus,
+      roleApproval: ProductRequisitionRoleApproval,
+      status: ProductRequisitionStatus,
       isRecalled: boolean
     ) => {
       filterConditions = [

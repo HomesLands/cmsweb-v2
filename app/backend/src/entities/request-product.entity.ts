@@ -1,6 +1,6 @@
-import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from "typeorm";
+import { Entity, Column, ManyToOne, JoinColumn } from "typeorm";
 import { ProductRequisitionForm } from "@entities/product-requisition-form.entity";
-import { Product, File, Base } from "@entities";
+import { Product, Base, TemporaryProduct } from "@entities";
 import { AutoMap } from "@automapper/classes";
 
 @Entity("request_product_tbl")
@@ -13,17 +13,22 @@ export class RequestProduct extends Base {
   @AutoMap()
   description?: string;
 
-  // a Request product have one or many image code
-  @OneToMany(() => File, (file) => file.requestProduct, { eager: true, nullable: true })
-  codeImages?: File[];
-
   @ManyToOne(() => ProductRequisitionForm,
     (productRequisitionForm) => productRequisitionForm.requestProducts)
     @JoinColumn({ name: "product_requisition_form_column" }) 
   productRequisitionForm?: ProductRequisitionForm;
 
   @ManyToOne(() => Product, 
-    (product) => product.requestProducts)
-  @JoinColumn({ name: "product_id_column" })
+    (product) => product.requestProducts, { nullable: true })
+  @JoinColumn({ name: "product_column" })
   product?: Product;
+
+  @Column({ name: "is_exist_product", default: true })
+  @AutoMap()
+  isExistProduct?: boolean;
+
+  @ManyToOne(() => TemporaryProduct, 
+    (temporaryProduct) => temporaryProduct.requestProducts, { nullable: true })
+  @JoinColumn({ name: "temporary_product_column" })
+  temporaryProduct?: TemporaryProduct;
 }

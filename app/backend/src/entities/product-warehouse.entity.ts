@@ -1,4 +1,4 @@
-import { AfterInsert, AfterUpdate, Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 
 import {
@@ -28,12 +28,4 @@ export class ProductWarehouse extends Base {
   @ManyToOne(() => Product, (product) => product.productWarehouses)
   @JoinColumn({ name: "product_column" })
   product?: Product;
-
-  // @AfterInsert()
-  // @AfterUpdate()
-  // async updateProductQuantity() {
-  //   if (this.product) {
-  //     await this.product.updateTotalQuantity();
-  //   }
-  // }
 }

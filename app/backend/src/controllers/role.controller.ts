@@ -2,8 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { roleService } from "@services";
-import { TApiResponse, TCreateRoleRequestDto } from "@types";
-import { RoleResponseDto, UserResponseDto } from "@dto/response";
+import {
+  TApiResponse,
+  TCreateRoleRequestDto,
+  TPaginationOptionResponse,
+  TQueryRequest,
+} from "@types";
+import { RoleResponseDto } from "@dto/response";
 import { logger } from "@lib/logger";
 
 class RoleController {
@@ -41,9 +46,32 @@ class RoleController {
    *   get:
    *     summary: Get all roles
    *     tags: [Role]
+   *     parameters:
+   *       - in: query
+   *         name: order
+   *         schema:
+   *           type: string
+   *           enum: [ASC, DESC]
+   *         required: true
+   *         description: The order in which the roles are sorted (ASC, DESC)
+   *         example: ASC
+   *       - in: query
+   *         name: page
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of roles to skip
+   *         example: 1
+   *       - in: query
+   *         name: pageSize
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of roles to retrieve
+   *         example: 10
    *     responses:
    *       200:
-   *         description: Get all roles successfully.
+   *         description: Roles have been retrieved successfully.
    *       500:
    *         description: Server error
    */
@@ -53,8 +81,12 @@ class RoleController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const results = await roleService.getAllRoles();
-      const response: TApiResponse<RoleResponseDto[]> = {
+      const plainData = req.query as unknown as TQueryRequest;
+      const results = await roleService.getAllRoles(plainData);
+
+      const response: TApiResponse<
+        TPaginationOptionResponse<RoleResponseDto[]>
+      > = {
         code: StatusCodes.OK,
         error: false,
         message: "Roles have been retrieved successfully",
