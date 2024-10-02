@@ -1,8 +1,10 @@
 import { create } from 'zustand'
+import toast from 'react-hot-toast'
 import { persist } from 'zustand/middleware'
+
 import { IProductRequirementInfoCreate, IProductRequisitionInfo, IRequisitionStore } from '@/types'
 import { showToast, showErrorToast } from '@/utils'
-import toast from 'react-hot-toast'
+import { RequisitionType, UserApprovalStage } from '@/constants'
 
 export const useRequisitionStore = create<IRequisitionStore>()(
   persist(

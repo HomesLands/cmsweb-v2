@@ -35,8 +35,8 @@
     "acceptConfirmMessage": "Bạn có chắc chắn muốn duyệt yêu cầu này?",
     "rejectConfirmTitle": "Từ chối yêu cầu",
     "rejectConfirmMessage": "Bạn có chắc chắn muốn từ chối yêu cầu này?",
-    "returnConfirmTitle": "Hoàn lại yêu cầu",
-    "returnConfirmMessage": "Bạn có chắc chắn muốn hoàn lại yêu cầu này?",
+    "giveBackConfirmTitle": "Hoàn lại yêu cầu",
+    "giveBackConfirmMessage": "Bạn có chắc chắn muốn hoàn lại yêu cầu này?",
     "cancelConfirmTitle": "Hủy yêu cầu",
     "cancelConfirmMessage": "Bạn có chắc chắn muốn hủy yêu cầu này?",
     "messageInputLabel": "Nội dung",
@@ -65,5 +65,9 @@
   "requisitionDetail": {
     "requestDetail": "Chi tiết yêu cầu vật tư",
     "requestDetailDescription": "Thông tin chi tiết của yêu cầu vật tư"
+  },
+  "requisitionEdit": {
+    "requestEdit": "Sửa yêu cầu vật tư",
+    "requestEditDescription": "Thông tin chi tiết của yêu cầu vật tư"
   }
 }

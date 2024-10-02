@@ -19,6 +19,8 @@ import { ProductRequisitionStatusBadge } from '@/components/app/badge'
 import { RequisitionTypeBadge } from '@/components/app/badge/RequisitionTypeBadge'
 import { useState } from 'react'
 import { DialogRequisitionDetail } from '@/components/app/dialog/dialog-requisition-detail'
+import { UserApprovalStage } from '@/constants'
+import { format } from 'date-fns'
 
 export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseForApprover>[] => {
   const [openDialog, setOpenDialog] = useState(false)
@@ -26,29 +28,10 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
   const onOpenChange = () => {
     setOpenDialog(false)
   }
+  const formatDate = (date: Date) => {
+    return format(date, 'HH:mm dd/MM/yyyy')
+  }
   return [
-    // {
-    //   id: 'select',
-    //   header: ({ table }) => (
-    //     <Checkbox
-    //       checked={
-    //         table.getIsAllPageRowsSelected() ||
-    //         (table.getIsSomePageRowsSelected() && 'indeterminate')
-    //       }
-    //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-    //       aria-label="Select all"
-    //     />
-    //   ),
-    //   cell: ({ row }) => (
-    //     <Checkbox
-    //       checked={row.getIsSelected()}
-    //       onCheckedChange={(value) => row.toggleSelected(!!value)}
-    //       aria-label="Select row"
-    //     />
-    //   ),
-    //   enableSorting: false,
-    //   enableHiding: false
-    // },
     {
       accessorKey: 'productRequisitionForm.code',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Mã yêu cầu" />
@@ -59,6 +42,14 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
       cell: ({ row }) => {
         const { type } = row.original.productRequisitionForm
         return <RequisitionTypeBadge type={type} />
+      }
+    },
+    {
+      accessorKey: 'createdAt',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày tạo" />,
+      cell: ({ row }) => {
+        const { createdAt } = row.original
+        return <div>{formatDate(new Date(createdAt))}</div>
       }
     },
     {
@@ -104,16 +95,16 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                {roleApproval === 'approval_stage_1' && (
+                {roleApproval === UserApprovalStage.APPROVAL_STAGE_1 && (
                   <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
                 )}
-                {roleApproval === 'approval_stage_2' && (
+                {roleApproval === UserApprovalStage.APPROVAL_STAGE_2 && (
                   <>
                     <DropdownMenuItem>Hoàn lại</DropdownMenuItem>
                     <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
                   </>
                 )}
-                {roleApproval === 'approval_stage_3' && (
+                {roleApproval === UserApprovalStage.APPROVAL_STAGE_3 && (
                   <>
                     <DropdownMenuItem>Hoàn lại</DropdownMenuItem>
                     <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
@@ -126,6 +117,7 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
                 openDialog={openDialog}
                 requisition={requisition.productRequisitionForm}
                 component={null}
+                companyName={requisition.productRequisitionForm.company}
                 onOpenChange={onOpenChange}
               />
             )}

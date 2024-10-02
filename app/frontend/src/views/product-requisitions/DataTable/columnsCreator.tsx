@@ -15,22 +15,37 @@ import {
 import { IRequestRequisitionInfo, RequestRequisitionStatus } from '@/types'
 import { ProductRequisitionByCreatorStatusBadge } from '@/components/app/badge'
 import { RequisitionTypeBadge } from '@/components/app/badge'
-import { DialogRequisitionDetail } from '@/components/app/dialog'
+import { DialogRequisitionDetail } from '@/components/app/dialog/dialog-requisition-detail'
+import { RecalledStatusBadge } from '@/components/app/badge'
+
+import { format } from 'date-fns'
 
 export const useColumnsRequisitionListCreator = (
   companyName: string
 ): ColumnDef<IRequestRequisitionInfo>[] => {
   console.log(companyName)
-  const [openDialog, setOpenDialog] = useState(false)
+  const [openViewDialog, setOpenViewDialog] = useState(false)
+  const [openEditDialog, setOpenEditDialog] = useState(false)
   const [selectedRequisition, setSelectedRequisition] = useState<IRequestRequisitionInfo | null>(
     null
   )
-  const handleOpenDialog = (requisition: IRequestRequisitionInfo) => {
-    setOpenDialog(true)
+
+  const handleOpenViewDialog = (requisition: IRequestRequisitionInfo) => {
+    setOpenViewDialog(true)
     setSelectedRequisition(requisition)
   }
-  const onOpenChange = () => {
-    setOpenDialog(false)
+
+  const handleOpenEditDialog = (requisition: IRequestRequisitionInfo) => {
+    setOpenEditDialog(true)
+    setSelectedRequisition(requisition)
+  }
+
+  const onViewDialogOpenChange = () => {
+    setOpenViewDialog(false)
+  }
+
+  const onEditDialogOpenChange = () => {
+    setOpenEditDialog(false)
   }
 
   // Add this new function
@@ -44,6 +59,14 @@ export const useColumnsRequisitionListCreator = (
     {
       accessorKey: 'code',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Mã yêu cầu" />
+    },
+    {
+      accessorKey: 'createdAt',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày tạo" />,
+      cell: ({ row }) => {
+        const date = new Date(row.original.createdAt || '')
+        return format(date, 'HH:mm dd/MM/yyyy')
+      }
     },
     {
       accessorKey: 'productRequisitionForm',
@@ -60,7 +83,17 @@ export const useColumnsRequisitionListCreator = (
     {
       id: 'company',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />,
-      cell: () => companyName
+      cell: () => {
+        return <div className="min-w-[12rem] text-[0.8rem]">{companyName}</div>
+      }
+    },
+    {
+      accessorKey: 'isRecalled',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Trạng thái hoàn" />,
+      cell: ({ row }) => {
+        const { status, isRecalled } = row.original
+        return <RecalledStatusBadge status={status} isRecalled={isRecalled} />
+      }
     },
     {
       accessorFn: (row) => row.status,
@@ -80,7 +113,7 @@ export const useColumnsRequisitionListCreator = (
     },
     {
       id: 'actions',
-      header: () => <div className="text-[0.8rem] min-w-20">Thao tác</div>,
+      header: () => <div className="text-[0.8rem] min-w-[4rem]">Thao tác</div>,
       cell: ({ row }) => {
         const requisition = row.original
         const canEdit =
@@ -100,7 +133,7 @@ export const useColumnsRequisitionListCreator = (
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => handleOpenDialog(requisition)}>
+                <DropdownMenuItem onClick={() => handleOpenViewDialog(requisition)}>
                   Xem chi tiết
                 </DropdownMenuItem>
                 {canEdit && (
@@ -110,13 +143,23 @@ export const useColumnsRequisitionListCreator = (
                 )}
               </DropdownMenuContent>
             </DropdownMenu>
-            {selectedRequisition === requisition && openDialog && (
+            {selectedRequisition === requisition && openViewDialog && (
               <DialogRequisitionDetail
-                openDialog={openDialog}
+                openDialog={openViewDialog}
                 requisition={requisition}
                 component={null}
                 companyName={companyName}
-                onOpenChange={onOpenChange}
+                onOpenChange={onViewDialogOpenChange}
+              />
+            )}
+            {selectedRequisition === requisition && openEditDialog && (
+              <DialogRequisitionDetail
+                openDialog={openEditDialog}
+                requisition={requisition}
+                component={null}
+                companyName={companyName}
+                onOpenChange={onEditDialogOpenChange}
+                isEditing={true}
               />
             )}
           </div>

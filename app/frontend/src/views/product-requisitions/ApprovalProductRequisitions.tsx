@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ReaderIcon } from '@radix-ui/react-icons'
 import { useNavigate } from 'react-router-dom'
@@ -16,103 +16,108 @@ const ApprovalProductRequisitions: React.FC = () => {
   const navigate = useNavigate()
 
   const { data, isLoading } = useProductRequisitionByApprover({
+    order: 'DESC',
     page: pagination.pageIndex + 1,
     pageSize: pagination.pageSize
   })
 
-  const filteredData = useMemo(() => {
-    if (!data?.result?.items || data.result.items.length === 0) return []
+  console.log('data in approval', data)
 
-    const roleApproval = data.result.items[0].roleApproval
+  // const filteredData = useMemo(() => {
+  //   if (!data?.result?.items || data.result.items.length === 0) return []
 
-    return data.result.items.filter((item) => {
-      const { status, isRecalled } = item.productRequisitionForm
+  //   return data.result.items.filter((item) => {
+  //     const { status, isRecalled } = item.productRequisitionForm
+  //     const { roleApproval } = item
+  //     // console.log('roleApproval in approval', roleApproval)
 
-      switch (roleApproval) {
-        case 'approval_stage_1':
-          return (
-            (status === 'waiting' && !isRecalled) ||
-            (status === 'cancel' && isRecalled) ||
-            (status === 'accepted_stage_1' && !isRecalled)
-          )
-        case 'approval_stage_2':
-          return (
-            (status === 'accepted_stage_1' && !isRecalled) ||
-            (status === 'accepted_stage_1' && isRecalled) ||
-            status === 'accepted_stage_2' ||
-            (status === 'cancel' && isRecalled) ||
-            (status === 'waiting' && isRecalled)
-          )
-        case 'approval_stage_3':
-          return (
-            (status === 'accepted_stage_1' && isRecalled) ||
-            status === 'waiting_export' ||
-            (status === 'cancel' && isRecalled)
-          )
-        default:
-          return false
-      }
-    })
-  }, [data?.result?.items])
+  //     switch (roleApproval) {
+  //       case 'approval_stage_1':
+  //         return (
+  //           (status === 'waiting' && !isRecalled) ||
+  //           (status === 'cancel' && isRecalled) ||
+  //           (status === 'accepted_stage_1' && !isRecalled)
+  //         )
+  //       case 'approval_stage_2':
+  //         return (
+  //           (status === 'accepted_stage_1' && !isRecalled) ||
+  //           (status === 'accepted_stage_1' && isRecalled) ||
+  //           status === 'accepted_stage_2' ||
+  //           (status === 'cancel' && isRecalled) ||
+  //           (status === 'waiting' && isRecalled)
+  //         )
+  //       case 'approval_stage_3':
+  //         return (
+  //           status === 'accepted_stage_2' ||
+  //           // status === 'waiting_export' ||
+  //           (status === 'cancel' && isRecalled)
+  //         )
+  //       default:
+  //         return false
+  //     }
+  //   })
+  // }, [data?.result?.items])
 
-  const dataWithDisplayStatus = useMemo(() => {
-    return filteredData.map((item) => {
-      const { status, isRecalled } = item.productRequisitionForm
-      let displayStatus = ''
-      let statusColor = ''
+  // console.log('filteredData in approval', filteredData)
 
-      switch (item.roleApproval) {
-        case 'approval_stage_1':
-          if (status === 'waiting' && !isRecalled) {
-            displayStatus = 'Chờ duyệt'
-            statusColor = 'yellow'
-          } else if (status === 'cancel' && isRecalled) {
-            displayStatus = 'Đã hủy'
-            statusColor = 'red'
-          } else if (status === 'accepted_stage_1' && !isRecalled) {
-            displayStatus = 'Đã duyệt'
-            statusColor = 'green'
-          }
-          break
-        case 'approval_stage_2':
-          if (status === 'accepted_stage_1' && !isRecalled) {
-            displayStatus = 'Chờ duyệt bước 2'
-            statusColor = 'yellow'
-          } else if (status === 'accepted_stage_1' && isRecalled) {
-            displayStatus = 'Chờ duyệt bước 2 (bị hoàn lại từ bước trên)'
-            statusColor = 'yellow'
-          } else if (status === 'accepted_stage_2') {
-            displayStatus = 'Đã duyệt'
-            statusColor = 'green'
-          } else if (status === 'cancel' && isRecalled) {
-            displayStatus = 'Hủy'
-            statusColor = 'red'
-          } else if (status === 'waiting' && isRecalled) {
-            displayStatus = 'Bị hoàn lại để xem xét'
-            statusColor = 'orange'
-          }
-          break
-        case 'approval_stage_3':
-          if (status === 'accepted_stage_1' && isRecalled) {
-            displayStatus = 'Đã bị hoàn để xem xét lại'
-            statusColor = 'red'
-          } else if (status === 'waiting_export') {
-            displayStatus = 'Đã duyệt'
-            statusColor = 'green'
-          } else if (status === 'cancel' && isRecalled) {
-            displayStatus = 'Hủy'
-            statusColor = 'red'
-          }
-          break
-      }
+  // const dataWithDisplayStatus = useMemo(() => {
+  //   return filteredData.map((item) => {
+  //     const { status, isRecalled } = item.productRequisitionForm
+  //     let displayStatus = ''
+  //     let statusColor = ''
 
-      return {
-        ...item,
-        displayStatus,
-        statusColor
-      }
-    })
-  }, [filteredData])
+  //     switch (item.roleApproval) {
+  //       case 'approval_stage_1':
+  //         if (status === 'waiting' && !isRecalled) {
+  //           displayStatus = 'Chờ duyệt'
+  //           statusColor = 'yellow'
+  //         } else if (status === 'cancel' && isRecalled) {
+  //           displayStatus = 'Đã hủy'
+  //           statusColor = 'red'
+  //         } else if (status === 'accepted_stage_1' && !isRecalled) {
+  //           displayStatus = 'Đã duyệt'
+  //           statusColor = 'green'
+  //         }
+  //         break
+  //       case 'approval_stage_2':
+  //         if (status === 'accepted_stage_1' && !isRecalled) {
+  //           displayStatus = 'Chờ duyệt bước 2'
+  //           statusColor = 'yellow'
+  //         } else if (status === 'accepted_stage_1' && isRecalled) {
+  //           displayStatus = 'Chờ duyệt bước 2 (bị hoàn lại từ bước trên)'
+  //           statusColor = 'yellow'
+  //         } else if (status === 'accepted_stage_2') {
+  //           displayStatus = 'Đã duyệt'
+  //           statusColor = 'green'
+  //         } else if (status === 'cancel' && isRecalled) {
+  //           displayStatus = 'Hủy'
+  //           statusColor = 'red'
+  //         } else if (status === 'waiting' && isRecalled) {
+  //           displayStatus = 'Bị hoàn lại để xem xét'
+  //           statusColor = 'orange'
+  //         }
+  //         break
+  //       case 'approval_stage_3':
+  //         if (status === 'accepted_stage_2') {
+  //           displayStatus = 'Đang chờ duyệt'
+  //           statusColor = 'yellow'
+  //         } else if (status === 'waiting_export') {
+  //           displayStatus = 'Đã duyệt'
+  //           statusColor = 'green'
+  //         } else if (status === 'cancel' && isRecalled) {
+  //           displayStatus = 'Hủy'
+  //           statusColor = 'red'
+  //         }
+  //         break
+  //     }
+
+  //     return {
+  //       ...item,
+  //       displayStatus,
+  //       statusColor
+  //     }
+  //   })
+  // }, [filteredData])
 
   const handleRowClick = (requisition: IRequisitionFormResponseForApprover) => {
     setSelectedRequisition(requisition)
@@ -130,7 +135,7 @@ const ApprovalProductRequisitions: React.FC = () => {
       <DataTable
         isLoading={isLoading}
         columns={useColumnsRequisitionList()}
-        data={dataWithDisplayStatus}
+        data={data?.result?.items || []}
         pages={data?.result?.totalPages || 0}
         page={pagination.pageIndex + 1}
         pageSize={pagination.pageSize}
