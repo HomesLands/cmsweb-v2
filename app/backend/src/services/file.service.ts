@@ -101,8 +101,8 @@ export class FileUploadService {
             limits: { fileSize: maxSize },
           }).single("file");
 
-      console.log({ fileeee: req.file });
-      console.log({ fileeee: req.files });
+      console.log({ file: req.file });
+      console.log({ files: req.files });
       validateInstance(req, res, (err: any) => {
         if (err) {
           resolve({

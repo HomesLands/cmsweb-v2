@@ -11,7 +11,7 @@ class FileController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const isMultiple: boolean = false;
+      const isMultiple: boolean = true;
       // const validate = await fileService.validateFiles(req, res, isMultiple);
       const validate = await fileService.validateFiles(req, res, isMultiple);
       console.log({validate})
