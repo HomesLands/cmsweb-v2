@@ -434,6 +434,11 @@ export const ErrorCodes: TErrorCode = {
     code: 1097,
     message: `Invalid product description`,
   },
+  FILE_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1098,
+    message: `File not found`,
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]
