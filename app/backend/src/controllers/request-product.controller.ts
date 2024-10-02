@@ -29,23 +29,43 @@ class RequestProductController {
  *     AddNewRequestProductRequestDto:
  *       type: object
  *       required:
- *         - productSlug
- *         - formSlug
+ *         - form
+ *         - product
  *         - requestQuantity
+ *         - name
+ *         - provider
+ *         - unit
+ *         - description
  *       properties:
- *         productSlug:
+ *         product:
  *           type: string
  *           description: The slug of the product being added.
- *         formSlug:
+ *         form:
  *           type: string
  *           description: The slug of the form to add the new request product.
  *         requestQuantity:
  *           type: integer
  *           description: The quantity of the requested product.
+ *         name:
+ *           type: string
+ *           description: The name of product.
+ *         provider:
+ *           type: string
+ *           description: The provider of product.
+ *         unit:
+ *           type: string
+ *           description: The slug of unit for new product not exist.
+ *         description:
+ *           type: string
+ *           description: The description of product.
  *       example:
- *         productSlug: KeYdkmeNg
- *         formSlug: formSlug-123
+ *         form: KeYdkmeNg
+ *         product: KeYdkmeNg
  *         requestQuantity: 10
+ *         name: Máy tiện
+ *         provider: BOSCH
+ *         unit: unit-slug-123
+ *         description: description
  */
 
   /**

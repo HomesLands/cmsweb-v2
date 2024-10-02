@@ -2,6 +2,8 @@ import multer, { FileFilterCallback } from "multer";
 import { Request, Response } from "express";
 import { fileRepository } from "@repositories";
 import fs from "fs";
+import { GlobalError } from "@exception/global-error";
+import { ErrorCodes } from "@exception/error-code";
 
 const allowedTypes = [
   "image/jpeg",
@@ -37,6 +39,7 @@ const fileFilter = (
     return cb(null, false);
   }
   cb(null, true);
+  // throw new GlobalError(ErrorCodes.FILE_NOT_FOUND);
 };
 
 const uploadToDB = multer({ storage: memoryStorage }).single("file");
@@ -60,6 +63,9 @@ export class FileUploadService {
             fileFilter: fileFilter,
             limits: { fileSize: maxSize },
           }).single("file");
+
+      console.log({file: req.file})
+      console.log({files: req.files})
 
       uploadInstance(req, res, (err: any) => {
         if (err) {
@@ -101,8 +107,8 @@ export class FileUploadService {
             limits: { fileSize: maxSize },
           }).single("file");
 
-      console.log({ fileeee: req.file });
-      console.log({ fileeee: req.files });
+      console.log({ file: req.file });
+      console.log({ files: req.files });
       validateInstance(req, res, (err: any) => {
         if (err) {
           resolve({
@@ -164,13 +170,13 @@ export class FileUploadService {
   //     if (isMultiple && req.files) {
   //       const ids: any[] = [];
 
-  //       (req.files as Express.Multer.File[]).forEach((file) => {
+  //       (req.files as Express.Multer.File[]).forEach(async(file) => {
   //         const base64String = file.buffer.toString("base64");
   //         const fileName = file.originalname.split(".")[0];
   //         const fileType = file.originalname.split(".")[1];
 
   //         const dataSaved = await fileRepository.save({
-  //           data: ,
+  //           data: base64String,
   //           fileName: `${fileName}-${Date.now()}.${fileType}`,
   //         });
 
