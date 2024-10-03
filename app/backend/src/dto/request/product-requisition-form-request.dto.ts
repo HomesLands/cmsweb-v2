@@ -10,7 +10,6 @@ import { Expose, Type } from 'class-transformer';
 import { AutoMap } from '@automapper/classes';
 import {
   ProductRequisitionFormType,
-  ApprovalLogStatus,
 } from "@enums";
 import {
   CreateRequestProductRequestDto,
@@ -19,7 +18,7 @@ import {
 import { IsDateStringWithMessage } from "decorator";
 
 export class CreateProductRequisitionFormRequestDto {
-  @IsNotEmpty({ message: "INVALID_CODE_FORM" })
+  @IsNotEmpty({ message: "INVALID_FORM_CODE" })
   @Expose()
   @AutoMap()
   code?: string;

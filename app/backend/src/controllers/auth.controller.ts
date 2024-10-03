@@ -128,6 +128,10 @@ class AuthController {
    *         description: Unauthorized
    *       1021:
    *         description: Token expiration is not exist
+   *       1003:
+   *         description: Username is not valid
+   *       1008:
+   *         description: Password is not valid
    *
    */
   public async authenticate(
@@ -171,6 +175,8 @@ class AuthController {
    *             schema:
    *       1003:
    *         description: Username is not valid
+   *       1006:
+   *         description: User exist
    *       1008:
    *         description: Password is not valid
    *       1011:
@@ -277,10 +283,15 @@ class AuthController {
    *             schema:
    *       500:
    *         description: Server error
-   *       1021:
-   *         description: Token expiration is not exist
+   *       1012:
+   *         description: Token is not valid
+   *       1018:
+   *         description: Refresh token is not valid
    *       1019:
    *         description: Token id is not exist
+   *       1021:
+   *         description: Token expiration is not exist
+   *       
    */
   public async logout(
     req: Request,

@@ -154,8 +154,12 @@ class RequestProductController {
    *         description: Request product not found
    *       1046:
    *         description: Form not found
+   *       1066:
+   *         description: Invalid request product quantity
    *       1072:
    *         description: Forbidden edit form
+   *       1073:
+   *         description: Invalid request product slug
    *
    */
   public async changeQuantityRequestProductInProductRequisitionForm(
@@ -205,14 +209,26 @@ class RequestProductController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1024:
+   *         description: Unit not found
+   *       1026:
+   *         description: Invalid product provider
+   *       1027:
+   *         description: Invalid product name
    *       1046:
    *         description: Form not found
+   *       1063:
+   *         description: Invalid form slug
+   *       1066:
+   *         description: Invalid request product quantity
    *       1072:
    *         description: Forbidden edit form
    *       1076:
    *         description: Request product exist
-   *       1024:
-   *         description: Unit not found
+   *       1088:
+   *         description: Invalid unit slug
+   *       1097:
+   *         description: Invalid product description
    *
    */
   public async addNewRequestProductInProductRequisitionForm(

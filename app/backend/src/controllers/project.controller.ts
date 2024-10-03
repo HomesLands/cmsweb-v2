@@ -107,8 +107,18 @@ class ProjectController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1033:
+   *         description: Invalid project name
+   *       1034:
+   *         description: Invalid project start date
+   *       1036:
+   *         description: Invalid project description
+   *       1037:
+   *         description: Invalid project file description
    *       1051:
    *         description: Site not found
+   *       1059:
+   *         description: Invalid site slug
    *
    */
   public async createProject(

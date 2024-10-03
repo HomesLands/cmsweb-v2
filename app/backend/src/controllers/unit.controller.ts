@@ -51,6 +51,8 @@ class UnitController {
    *         description: Server error
    *       1023:
    *         description: Unit existed
+   *       1039:
+   *         description: Invalid unit name
    *
    */
 
