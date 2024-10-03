@@ -23,17 +23,18 @@ const ApprovalProductRequisitions: React.FC = () => {
 
   console.log('data in approval', data)
 
-  const tableData = useMemo(() => {
+  const tableData: IRequisitionFormResponseForApprover[] = useMemo(() => {
     return (
-      data?.result?.items?.map((item) => ({
-        productRequisitionForm: item.productRequisitionForm,
-        createdAt: item.productRequisitionForm.createdAt,
-        description: item.productRequisitionForm.description,
-        updatedAt: item.productRequisitionForm.updatedAt,
-        status: item.productRequisitionForm.status,
-        isRecalled: item.productRequisitionForm.isRecalled,
-        roleApproval: item.roleApproval
-      })) || []
+      data?.result?.items?.map(
+        (item): IRequisitionFormResponseForApprover => ({
+          createdAt: item.createdAt,
+          updatedAt: item.updatedAt,
+          approvalUserSlug: item.approvalUserSlug,
+          roleApproval: item.roleApproval,
+          slug: item.slug,
+          productRequisitionForm: item.productRequisitionForm
+        })
+      ) || []
     )
   }, [data?.result?.items])
 
@@ -52,7 +53,7 @@ const ApprovalProductRequisitions: React.FC = () => {
         <ReaderIcon className="header-icon" />
         {t('productRequisition.list')}
       </Label>
-      {/* <DataTable
+      <DataTable
         isLoading={isLoading}
         columns={columns}
         data={tableData}
@@ -63,7 +64,7 @@ const ApprovalProductRequisitions: React.FC = () => {
         onPageSizeChange={handlePageSizeChange}
         CustomComponent={CustomComponent}
         onRowClick={handleRowClick}
-      /> */}
+      />
     </div>
   )
 }

@@ -71,6 +71,22 @@ export interface IProductRequisitionFormInfo {
   updatedAt?: string
 }
 
+export interface IUserApprovalInfo {
+  userFullname: string
+  userSlug: string
+  assignedUserApproval: {
+    formType: string
+    roleApproval: string
+  }
+  approvalLogs: {
+    status: string
+    content: string
+    createdAt: string
+    updatedAt: string
+    slug: string
+  }[]
+}
+
 export interface IRequisitionFormResponseForApprover {
   createdAt: string
   updatedAt: string

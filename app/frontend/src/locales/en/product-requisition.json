@@ -30,6 +30,7 @@
     "accept": "Approve",
     "returnToPrevious": "Return to previous",
     "reject": "Reject",
+    "approvalLog": "Approval log",
     "acceptConfirmTitle": "Approve requisition",
     "acceptConfirmMessage": "Are you sure you want to approve this requisition?",
     "rejectConfirmTitle": "Reject requisition",
@@ -47,6 +48,13 @@
     "confirmProductRequisitionsSuccess": "Confirm product requisitions success",
     "confirmProductRequisitionsSuccessDescription": "Confirm product requisitions success description",
     "here": "here"
+  },
+  "roleApproval": {
+    "approvalLevel": "Approval level",
+    "approvalContent": "Approval content",
+    "approvalStage1": "Approval stage 1",
+    "approvalStage2": "Approval stage 2",
+    "approvalStage3": "Approval stage 3"
   },
   "progress": {
     "createProductRequisitions": "Create requisition",

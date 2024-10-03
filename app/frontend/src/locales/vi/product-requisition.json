@@ -29,6 +29,7 @@
     "confirm": "Xác nhận",
     "giveBack": "Hoàn lại",
     "accept": "Duyệt",
+    "approvalLog": "Nội dung duyệt",
     "returnToPrevious": "Trở lại",
     "reject": "Từ chối",
     "acceptConfirmTitle": "Duyệt yêu cầu",
@@ -51,6 +52,13 @@
     "confirmProductRequisitionsSuccess": "Xác nhận yêu cầu thành công",
     "confirmProductRequisitionsSuccessDescription": "Phiếu yêu cầu đã được gửi đi. Bạn có thể xem danh sách",
     "here": "tại đây"
+  },
+  "roleApproval": {
+    "approvalLevel": "Cấp duyệt",
+    "approvalContent": "Nội dung duyệt",
+    "approvalStage1": "Duyệt cấp 1",
+    "approvalStage2": "Duyệt cấp 2",
+    "approvalStage3": "Duyệt cấp 3"
   },
   "progress": {
     "createProductRequisitions": "Tạo phiếu yêu cầu",

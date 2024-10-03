@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
+import { format } from 'date-fns'
 import { MoreHorizontal } from 'lucide-react'
 
 import {
@@ -16,11 +18,9 @@ import {
   ProductRequisitionStatus
 } from '@/types'
 import { ProductRequisitionStatusBadge } from '@/components/app/badge'
-import { RequisitionTypeBadge } from '@/components/app/badge/RequisitionTypeBadge'
-import { useState } from 'react'
-import { DialogRequisitionDetail } from '@/components/app/dialog/dialog-requisition-detail'
+import { RequisitionTypeBadge } from '@/components/app/badge'
+import { DialogRequisitionDetail } from '@/components/app/dialog'
 import { UserApprovalStage } from '@/constants'
-import { format } from 'date-fns'
 
 export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseForApprover>[] => {
   const [openDialog, setOpenDialog] = useState(false)
@@ -53,12 +53,17 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
       }
     },
     {
-      accessorKey: 'productRequisitionForm.creator',
+      accessorKey: 'productRequisitionForm.creator.fullname',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Người tạo" />
     },
     {
-      accessorKey: 'productRequisitionForm.company',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />
+      accessorKey: 'productRequisitionForm.creator.userDepartments[0].department.site.company.name',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />,
+      cell: ({ row }) => {
+        const { company } =
+          row.original.productRequisitionForm.creator.userDepartments[0].department.site
+        return <div>{company.name}</div>
+      }
     },
     {
       accessorFn: (row) => row.productRequisitionForm.status,
@@ -75,57 +80,6 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
       },
       filterFn: (row, id, value) => {
         return row.original.productRequisitionForm.status === value
-      }
-    },
-    {
-      id: 'actions',
-      header: 'Thao tác',
-      cell: ({ row }) => {
-        const requisition = row.original
-        const { roleApproval } = requisition
-        console.log('requisition info', requisition)
-        return (
-          <div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="w-8 h-8 p-0">
-                  <span className="sr-only">Thao tác</span>
-                  <MoreHorizontal className="w-4 h-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                {roleApproval === UserApprovalStage.APPROVAL_STAGE_1 && (
-                  <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
-                )}
-                {roleApproval === UserApprovalStage.APPROVAL_STAGE_2 && (
-                  <>
-                    <DropdownMenuItem>Hoàn lại</DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
-                  </>
-                )}
-                {roleApproval === UserApprovalStage.APPROVAL_STAGE_3 && (
-                  <>
-                    <DropdownMenuItem>Hoàn lại</DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
-                  </>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            {selectedRequisition === requisition && openDialog && (
-              <DialogRequisitionDetail
-                openDialog={openDialog}
-                requisition={requisition.productRequisitionForm}
-                component={null}
-                companyName={
-                  requisition.productRequisitionForm.creator.userDepartments[0].department.site
-                    .company.name
-                }
-                onOpenChange={onOpenChange}
-              />
-            )}
-          </div>
-        )
       }
     }
   ]
