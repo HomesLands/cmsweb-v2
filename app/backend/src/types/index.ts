@@ -35,3 +35,5 @@ export * from "./assigned-user-approval.type";
 export * from "./warehouse.type";
 export * from "./product-warehouse.type";
 export * from "./temporary-product.type";
+export * from "./file.type";
+export * from "./approval-log.types";

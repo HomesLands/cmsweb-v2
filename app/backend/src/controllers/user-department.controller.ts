@@ -54,6 +54,10 @@ class UserDepartmentController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1004:
+   *         description: User not found
+   *       1082:
+   *         description: Department not found
    *
    */
 

@@ -96,6 +96,12 @@ class RequestProductController {
    *         description: Delete request product successfully.
    *       500:
    *         description: Server error
+   *       1074:
+   *         description: Request product not found
+   *       1046:
+   *         description: Form not found
+   *       1072:
+   *         description: Forbidden edit form
    */
   public async deleteRequestProductInProductRequisitionForm(
     req: Request,
@@ -144,6 +150,12 @@ class RequestProductController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1074:
+   *         description: Request product not found
+   *       1046:
+   *         description: Form not found
+   *       1072:
+   *         description: Forbidden edit form
    *
    */
   public async changeQuantityRequestProductInProductRequisitionForm(
@@ -193,6 +205,14 @@ class RequestProductController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1046:
+   *         description: Form not found
+   *       1072:
+   *         description: Forbidden edit form
+   *       1076:
+   *         description: Request product exist
+   *       1024:
+   *         description: Unit not found
    *
    */
   public async addNewRequestProductInProductRequisitionForm(

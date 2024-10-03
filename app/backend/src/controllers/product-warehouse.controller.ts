@@ -59,6 +59,14 @@ class ProductWarehouseController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1090:
+   *         description: Warehouse not found
+   *       1045:
+   *         description: Product not found
+   *       1091:
+   *         description: Missing quantity product warehouse add new
+   *       1092:
+   *         description: Error when update product quantity
    *
    */
 

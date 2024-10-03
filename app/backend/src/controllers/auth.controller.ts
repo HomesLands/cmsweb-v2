@@ -126,6 +126,8 @@ class AuthController {
    *               $ref: '#/components/schemas/AuthenticationResponseDto'
    *       401:
    *         description: Unauthorized
+   *       1021:
+   *         description: Token expiration is not exist
    *
    */
   public async authenticate(
@@ -224,6 +226,12 @@ class AuthController {
    *         description: Refresh token expired, cannot create new token.
    *       1018:
    *         description: Refresh token is not valid
+   *       1021:
+   *         description: Token expiration is not exist
+   *       1019:
+   *         description: Token id is not exist
+   *       1015:
+   *         description: Subject is not exist
    */
   public async refreshToken(
     req: Request,
@@ -269,6 +277,10 @@ class AuthController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1021:
+   *         description: Token expiration is not exist
+   *       1019:
+   *         description: Token id is not exist
    */
   public async logout(
     req: Request,

@@ -9,6 +9,7 @@ import { TokenUtils } from "@utils";
 
 // Define a list of whitelisted routes with allowed methods
 const whitelist = [
+  { path: "/files", method: HTTPMethod.GET },
   { path: "/auth/authenticate", method: HTTPMethod.POST },
   { path: "/auth/register", method: HTTPMethod.POST },
   { path: "/auth/refresh", method: HTTPMethod.POST },
