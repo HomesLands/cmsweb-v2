@@ -6,11 +6,12 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui'
+import { FilterRequisitionStatus, RequisitionStatus, UserApprovalStage } from '@/constants'
 import {
   IRequisitionFormResponseForApprover,
   IRole,
-  RequestRequisitionRoleApproval,
-  RequestRequisitionStatus
+  ProductRequisitionRoleApproval,
+  ProductRequisitionStatus
 } from '@/types'
 import { ColumnFiltersState } from '@tanstack/react-table'
 import { useEffect, useState } from 'react'
@@ -30,8 +31,8 @@ export default function DataTableFilterOptions({
     let filterConditions: ColumnFiltersState = []
 
     const applyFilter = (
-      roleApproval: RequestRequisitionRoleApproval,
-      status: RequestRequisitionStatus,
+      roleApproval: ProductRequisitionRoleApproval,
+      status: ProductRequisitionStatus,
       isRecalled: boolean
     ) => {
       filterConditions = [
@@ -43,42 +44,42 @@ export default function DataTableFilterOptions({
 
     switch (value) {
       // Approval Stage 1
-      case 'waiting_approval_1':
-        applyFilter('approval_stage_1', 'waiting', false)
+      case FilterRequisitionStatus.WAITING_APPROVAL_1:
+        applyFilter(UserApprovalStage.APPROVAL_STAGE_1, RequisitionStatus.WAITING, false)
         break
-      case 'approved_stage_1':
-        applyFilter('approval_stage_1', 'accepted_stage_1', false)
+      case FilterRequisitionStatus.APPROVED_STAGE_1:
+        applyFilter(UserApprovalStage.APPROVAL_STAGE_1, RequisitionStatus.ACCEPTED_STAGE_1, false)
         break
-      case 'canceled_stage_1':
-        applyFilter('approval_stage_1', 'cancel', true)
+      case FilterRequisitionStatus.CANCELED_STAGE_1:
+        applyFilter(UserApprovalStage.APPROVAL_STAGE_1, RequisitionStatus.CANCEL, true)
         break
 
       // Approval Stage 2
-      case 'waiting_approval_2':
-        applyFilter('approval_stage_2', 'accepted_stage_1', false)
+      case FilterRequisitionStatus.WAITING_APPROVAL_2:
+        applyFilter(UserApprovalStage.APPROVAL_STAGE_2, RequisitionStatus.ACCEPTED_STAGE_1, false)
         break
-      case 'approved_stage_2':
-        applyFilter('approval_stage_2', 'accepted_stage_2', false)
+      case FilterRequisitionStatus.APPROVED_STAGE_2:
+        applyFilter(UserApprovalStage.APPROVAL_STAGE_2, RequisitionStatus.ACCEPTED_STAGE_2, false)
         break
-      case 'returned_stage_2':
-        applyFilter('approval_stage_2', 'waiting', true)
+      case FilterRequisitionStatus.RETURNED_STAGE_2:
+        applyFilter(UserApprovalStage.APPROVAL_STAGE_2, RequisitionStatus.WAITING, true)
         break
-      case 'canceled_stage_2':
-        applyFilter('approval_stage_2', 'cancel', true)
+      case FilterRequisitionStatus.CANCELED_STAGE_2:
+        applyFilter(UserApprovalStage.APPROVAL_STAGE_2, RequisitionStatus.CANCEL, true)
         break
 
       // Approval Stage 3
-      case 'waiting_approval_3':
-        applyFilter('approval_stage_3', 'accepted_stage_2', false)
+      case FilterRequisitionStatus.WAITING_APPROVAL_3:
+        applyFilter(UserApprovalStage.APPROVAL_STAGE_3, RequisitionStatus.ACCEPTED_STAGE_2, false)
         break
-      case 'approved_stage_3':
-        applyFilter('approval_stage_3', 'waiting_export', false)
+      case FilterRequisitionStatus.APPROVED_STAGE_3:
+        applyFilter(UserApprovalStage.APPROVAL_STAGE_3, RequisitionStatus.WAITING_EXPORT, false)
         break
-      case 'returned_stage_3':
-        applyFilter('approval_stage_3', 'accepted_stage_1', true)
+      case FilterRequisitionStatus.RETURNED_STAGE_3:
+        applyFilter(UserApprovalStage.APPROVAL_STAGE_3, RequisitionStatus.ACCEPTED_STAGE_1, true)
         break
-      case 'canceled_stage_3':
-        applyFilter('approval_stage_3', 'cancel', true)
+      case FilterRequisitionStatus.CANCELED_STAGE_3:
+        applyFilter(UserApprovalStage.APPROVAL_STAGE_3, RequisitionStatus.CANCEL, true)
         break
 
       default:

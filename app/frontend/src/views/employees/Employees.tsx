@@ -2,10 +2,8 @@ import React from 'react'
 
 import { ReaderIcon } from '@radix-ui/react-icons'
 
-import { DataTable, Label } from '@/components/ui'
-import { columns } from './DataTable/columns'
-import { useUsers, usePagination } from '@/hooks'
-import { CustomComponent } from './CustomComponent'
+import { Label } from '@/components/ui'
+import { usePagination } from '@/hooks'
 
 const Employees: React.FC = () => {
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
@@ -26,11 +24,8 @@ const Employees: React.FC = () => {
         columns={columns}
         data={data?.result.items || []}
         pages={data?.result.totalPages || 0}
-        page={pagination.pageIndex + 1}
-        pageSize={pagination.pageSize}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
-        CustomComponent={CustomComponent}
       /> */}
     </div>
   )

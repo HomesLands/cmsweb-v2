@@ -5,7 +5,7 @@ import {
   IPaginationResponse,
   IProductInfo,
   IProductQuery,
-  IRequestRequisitionInfo,
+  IProductRequisitionFormInfo,
   IRequisitionFormResponseForApprover
 } from '@/types'
 import { http } from '@/utils'
@@ -35,7 +35,7 @@ export async function getProducts(
 //   priority: string
 //   products: IProductInfo[]
 //   createdAt: string
-// }): Promise<IProductRequirementInfoCreate> {
+// }): Promise<IProductRequisitionFormCreate> {
 //   const lowercaseParams = {
 //     requestCode: params.requestCode,
 //     requester: params.requester.toLowerCase(),
@@ -73,7 +73,7 @@ export async function getAllProduct(params: {
 }
 
 export async function getAllProductRequisition(params: IProductQuery) {
-  const response = await http.get<IApiResponse<IPaginationResponse<IRequestRequisitionInfo>>>(
+  const response = await http.get<IApiResponse<IPaginationResponse<IProductRequisitionFormInfo>>>(
     '/productRequisitionForms',
     {
       params
@@ -98,14 +98,14 @@ export async function createProductRequisition(data: IFinalProductRequisition) {
 }
 
 export async function getProductRequisitionBySlug(slug: string) {
-  const response = await http.get<IApiResponse<IRequestRequisitionInfo>>(
+  const response = await http.get<IApiResponse<IProductRequisitionFormInfo>>(
     `/productRequisitionForms/${slug}`
   )
   return response.data
 }
 
 export async function getProductRequisitionByCreator(params: IProductQuery) {
-  const response = await http.get<IApiResponse<IPaginationResponse<IRequestRequisitionInfo>>>(
+  const response = await http.get<IApiResponse<IPaginationResponse<IProductRequisitionFormInfo>>>(
     '/productRequisitionForms',
     {
       params
@@ -120,7 +120,7 @@ export async function approveProductRequisition(
   approvalLogStatus: ApprovalLogStatus,
   approvalLogContent: string
 ) {
-  const response = await http.patch<IApiResponse<IRequestRequisitionInfo>>(
+  const response = await http.patch<IApiResponse<IProductRequisitionFormInfo>>(
     `/productRequisitionForms/approval`,
     {
       approvalUserSlug,

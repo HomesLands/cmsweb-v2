@@ -54,20 +54,9 @@ export class ChangeQuantityRequestProduct {
   newQuantity?: number;
 }
 
-export class AddNewRequestProduct {
-  @IsNotEmpty({ message: "INVALID_PRODUCT_SLUG" })
-  @Expose()
-  @AutoMap()
-  productSlug?: string;
-
+export class AddNewRequestProductRequestDto extends CreateRequestProductRequestDto {
   @IsNotEmpty({ message: "INVALID_FORM_SLUG" })
   @Expose()
   @AutoMap()
-  formSlug?: string;
-
-  @IsNotEmpty({ message: "INVALID_REQUEST_PRODUCT_QUANTITY" })
-  @Min(1, { message: "INVALID_REQUEST_PRODUCT_QUANTITY"})
-  @Expose()
-  @AutoMap()
-  requestQuantity?: number;
+  form?: string;
 }

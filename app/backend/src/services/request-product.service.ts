@@ -1,9 +1,11 @@
 import { RequestProductResponseDto } from "@dto/response";
-import { RequestProduct } from "@entities";
+import { RequestProduct, TemporaryProduct } from "@entities";
 import {
   requestProductRepository,
   productRequisitionFormRepository,
   productRepository,
+  unitRepository,
+  temporaryProductRepository,
 } from "@repositories";
 import { GlobalError, ErrorCodes, ValidationError } from "@exception";
 import { mapper } from "@mappers";
@@ -15,11 +17,13 @@ import {
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
 import {
-  AddNewRequestProduct,
+  AddNewRequestProductRequestDto,
   ChangeQuantityRequestProduct,
-  CreateRequestProductRequestDto, 
+  CreateRequestProductRequestDto,
+  CreateTemporaryProductRequestDto, 
 } from "@dto/request";
 import { PermissionUtils } from "@utils";
+import { Like } from "typeorm";
 
 class RequestProductService {
   public async deleteRequestProductInProductRequisitionForm (
@@ -108,22 +112,18 @@ class RequestProductService {
     creatorId: string
   ): Promise<RequestProductResponseDto> {
     // CHECKING
-    const requestData = plainToClass(AddNewRequestProduct, plainData);
+    const requestData = plainToClass(AddNewRequestProductRequestDto, plainData);
     const errors = await validate(requestData);
     if(errors.length > 0) throw new ValidationError(errors);
 
-    const product = await productRepository.findOneBy({
-      slug: requestData.productSlug,
-    });
-    if (!product) throw new GlobalError(ErrorCodes.PRODUCT_NOT_FOUND);
-
     const form = await productRequisitionFormRepository.findOne({
       where: {
-        slug: requestData.formSlug
+        slug: requestData.form
       },
       relations: [
         'requestProducts',
-        'requestProducts.product',
+        'requestProducts.product.unit',
+        'requestProducts.temporaryProduct.unit',
         'creator'
       ]
     });
@@ -137,28 +137,14 @@ class RequestProductService {
       throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
     }
 
-    const formCheck = await productRequisitionFormRepository.findOne({
-      where: {
-        slug: requestData.formSlug,
-        requestProducts: {
-          product: {
-            id: product.id
-          }
-        }
-      },
-    });
-
-    if(formCheck) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_EXIST);
-
     const isPermitEdit: boolean = PermissionUtils.isPermitEditProductRequisitionForm(
       form.status,
       form.isRecalled
     );
     if(!isPermitEdit) throw new GlobalError(ErrorCodes.CAN_NOT_EDIT_FORM);
 
-    // UPDATE
     const dataCreateRequestProduct: TCreateRequestProductRequestDto = {
-      product: requestData.productSlug,
+      product: requestData.product,
       requestQuantity: requestData.requestQuantity,
     };
 
@@ -168,13 +154,68 @@ class RequestProductService {
       RequestProduct
     );
     requestProductMapper.productRequisitionForm = form;
-    requestProductMapper.product = product;
+
+    let product = await productRepository.findOneBy({
+      slug: requestData.product,
+    });
+    // khi product là null hoặc undefined, 
+    // typeORM sẽ bỏ qua và lấy phần tử đầu tiên chứ không trả thẳng về null
+    if(requestData.product === null || requestData.product === undefined) {
+      product = null;
+    }
+    
+    if (product) {
+      const formCheck = await productRequisitionFormRepository.findOne({
+        where: {
+          slug: requestData.form,
+          requestProducts: {
+            product: {
+              id: product.id
+            }
+          }
+        },
+      });
+      if(formCheck) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_EXIST);
+      requestProductMapper.product = product;
+    } else {
+      // note: if the name of new product like and shorter than existed temporary product => error
+      const formCheck = await productRequisitionFormRepository.findOne({
+        where: {
+          slug: requestData.form,
+          requestProducts: {
+            temporaryProduct: {
+              name: Like(`%${requestData.name}%`)
+            }
+          }  
+        },
+      });
+      if(formCheck) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_EXIST);
+
+      const unit = await unitRepository.findOneBy({
+        slug: requestData.unit
+      });
+      if(!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
+
+      const temporaryRequestProductData = mapper.map(
+        requestData,
+        CreateTemporaryProductRequestDto,
+        TemporaryProduct
+      );
+      temporaryRequestProductData.unit = unit;
+      const temporaryProduct = 
+        await temporaryProductRepository.createAndSave(temporaryRequestProductData);
+
+      requestProductMapper.temporaryProduct = temporaryProduct;
+      requestProductMapper.isExistProduct = false;
+    }
+
     const createdRequestProduct = await requestProductRepository.createAndSave(requestProductMapper);
     const requestProductDto = mapper.map(
       createdRequestProduct,
       RequestProduct,
       RequestProductResponseDto,
     );
+    
     return requestProductDto;
   }
 }

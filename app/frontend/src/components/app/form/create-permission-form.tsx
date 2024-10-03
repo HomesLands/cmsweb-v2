@@ -11,7 +11,7 @@ import {
   Form,
   Button
 } from '@/components/ui'
-import { createPermissionSchema, TCreateAuthoritySchema, TCreatePermissionSchema } from '@/schemas'
+import { createPermissionSchema, TCreatePermissionSchema } from '@/schemas'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SelectAuthority, SelectRole } from '../select'
@@ -26,40 +26,54 @@ export const CreatePermissionForm: React.FC<IFormCreatePermissionProps> = ({ onS
   const form = useForm<TCreatePermissionSchema>({
     resolver: zodResolver(createPermissionSchema),
     defaultValues: {
-      nameNormalize: '',
-      description: ''
+      role: {
+        label: '',
+        value: ''
+      },
+      authority: {
+        label: '',
+        value: ''
+      }
     }
   })
 
-  const handleSubmit = (values: TCreateAuthoritySchema) => {
+  const handleSubmit = (values: TCreatePermissionSchema) => {
     onSubmit(values)
   }
 
   const formFields = {
-    nameNormalize: (
+    role: (
       <FormField
         control={form.control}
-        name="nameNormalize"
+        name="role"
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t('permissions.selectRole')}</FormLabel>
             <FormControl>
-              <SelectRole onChange={() => {}} />
+              <SelectRole
+                onChange={(values) => {
+                  form.setValue('role', { label: values?.label || '', value: values?.value || '' })
+                }}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
     ),
-    description: (
+    authority: (
       <FormField
         control={form.control}
-        name="description"
+        name="authority"
         render={() => (
           <FormItem>
             <FormLabel>{t('permissions.selectAuthority')}</FormLabel>
             <FormControl>
-              <SelectAuthority onChange={() => {}} />
+              <SelectAuthority
+                onChange={(values) => {
+                  form.setValue('role', { label: values?.label || '', value: values?.value || '' })
+                }}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

@@ -1,39 +1,41 @@
 import { IQuery } from './base.type'
-import { ApprovalLogStatus, RequestRequisitionStatus } from './request-requisition.type'
+import {
+  ApprovalLogStatus,
+  ProductRequisitionStatus,
+  ProductRequisitionType
+} from './request-requisition.type'
 
 export interface IProductApprovalInfo {
   id: string
   createdBy: string
   createdAt?: string
   updatedAt?: string
-  commanderApprovalStatus: RequestRequisitionStatus
+  commanderApprovalStatus: ProductRequisitionStatus
   commanderApprovalContent?: string
-  projectManagerApprovalStatus: RequestRequisitionStatus
+  projectManagerApprovalStatus: ProductRequisitionStatus
   projectManagerApprovalContent?: string
-  directorApprovalStatus: RequestRequisitionStatus
+  directorApprovalStatus: ProductRequisitionStatus
   directorApprovalContent?: string
   notes?: string
 }
 
-export interface IProductRequirementInfoCreate {
+export interface IProductRequisitionFormCreate {
   code: string
   requester: string
+  deadlineApproval: string
   company: {
     slug: string
-    directorSlug: string
     name: string
   }
   site: {
     slug: string
-    managerSlug: string
     name: string
   }
   project: {
     slug: string
-    managerSlug: string
     name: string
   }
-  type: 'normal' | 'urgent'
+  type: ProductRequisitionType
   requestProducts: IProductRequisitionInfo[]
   userApprovals: {
     userSlug: string
@@ -44,18 +46,17 @@ export interface IProductRequirementInfoCreate {
 
 export interface IFinalProductRequisition {
   code: string
-  companySlug: string
-  siteSlug: string
-  projectSlug: string
+  project: string //Project slug
   type: 'normal' | 'urgent'
   description: string
+  deadlineApproval: string
   requestProducts: {
-    productSlug: string
+    product: string
     requestQuantity: number
-  }[]
-  userApprovals: {
-    userSlug: string
-    roleApproval: string
+    name: string
+    provider: string
+    unit: string
+    description: string
   }[]
 }
 
@@ -63,8 +64,11 @@ export interface IRequestProduct {
   code?: string
   name?: string
   provider?: string
-  description?: string
-  unit?: string
+  description: string
+  unit: {
+    slug: string
+    name: string
+  }
   quantity?: number
 }
 
@@ -77,22 +81,23 @@ export interface IProductInfo {
   slug: string
   name: string
   provider: string
-  status?: string
-  description?: string
-  unit: string
+  description: string
+  unit: {
+    slug: string
+    name: string
+  }
   quantity: number
 }
 
 export interface IProductRequisitionInfo {
-  code: string
-  productSlug: string
-  name: string
-  provider: string
-  status?: string
-  description?: string
-  unit: string
+  // createdAt?: string
+  // updatedAt?: string
+  // slug: string
   requestQuantity: number
-  // product: IProductInfo
+  // description: string
+  // isExistProduct: boolean;
+  product: IProductInfo
+  // temporaryProduct: string | null;
 }
 
 export interface IProductQuery extends IQuery {

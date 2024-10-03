@@ -5,7 +5,6 @@ import { ReaderIcon } from '@radix-ui/react-icons'
 import { DataTable, Label } from '@/components/ui'
 import { usePagination, usePermissions } from '@/hooks'
 import { usePermissionColumns } from './DataTable/columns'
-import { CustomComponent } from './DataTable/CustomComponent'
 
 const Permissions: React.FC = () => {
   const { t } = useTranslation(['authorities'])
@@ -27,11 +26,8 @@ const Permissions: React.FC = () => {
         columns={usePermissionColumns()}
         data={authorities?.items || []}
         pages={authorities?.totalPages || 0}
-        page={pagination.pageIndex + 1}
-        pageSize={pagination.pageSize}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
-        CustomComponent={CustomComponent}
         isLoading={false}
       />
     </div>

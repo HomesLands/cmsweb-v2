@@ -1,29 +1,51 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import ReactSelect from 'react-select'
+import ReactSelect, { SingleValue } from 'react-select'
 
 import { usePagination, useRoles } from '@/hooks'
 
 interface SelectRoleProps {
-  onChange: (slug: string, directorSlug: string, name: string) => void
-  defaultValue?: string
+  onChange: (
+    values: SingleValue<{
+      value: string
+      label: string
+    }>
+  ) => void
 }
 
-export const SelectRole: FC<SelectRoleProps> = ({ onChange, defaultValue }) => {
+export const SelectRole: FC<SelectRoleProps> = ({ onChange }) => {
+  const [allRoles, setAllRoles] = useState<{ value: string; label: string }[]>([])
   const { t } = useTranslation('productRequisition')
+  const { pagination, handlePageChange } = usePagination()
   const { data: roles } = useRoles({
     order: 'DESC',
-    page: 1,
-    pageSize: 10
+    page: pagination.pageIndex,
+    pageSize: pagination.pageSize
   })
 
-  const handleOnChange = () => {}
-
   const handleScrollToBottom = () => {
-    // if (hasMore && !loading) {
-    //   setPage((prevPage) => prevPage + 1) // Load next page
-    // }
+    if (roles?.page && roles.totalPages) {
+      if (roles.page < roles.totalPages) handlePageChange(pagination.pageIndex + 1)
+    }
   }
 
-  return <ReactSelect onMenuScrollToBottom={handleScrollToBottom} />
+  // Effect to append new roles to the local state when roles are fetched
+  useEffect(() => {
+    if (roles?.items) {
+      const newRoles = roles.items.map((item) => ({
+        value: item.slug || '',
+        label: item.nameNormalize || ''
+      }))
+      // Append new roles to the previous roles
+      setAllRoles((prevRoles) => [...prevRoles, ...newRoles])
+    }
+  }, [roles])
+
+  return (
+    <ReactSelect
+      onMenuScrollToBottom={handleScrollToBottom}
+      options={allRoles}
+      onChange={onChange}
+    />
+  )
 }

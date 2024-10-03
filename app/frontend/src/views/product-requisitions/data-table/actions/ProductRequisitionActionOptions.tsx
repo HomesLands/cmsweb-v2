@@ -10,11 +10,11 @@ import { ChevronDown } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { PlusCircledIcon } from '@radix-ui/react-icons'
 import { useTranslation } from 'react-i18next'
-import { IRequestRequisitionInfo } from '@/types'
+import { IProductRequisitionFormInfo } from '@/types'
 
 export default function ProductRequisitionActionOptions({
   table
-}: DataTableActionOptionsProps<IRequestRequisitionInfo>) {
+}: DataTableActionOptionsProps<IProductRequisitionFormInfo>) {
   const { t } = useTranslation('productRequisition')
   const { t: tTablePaging } = useTranslation('tableData')
   return (

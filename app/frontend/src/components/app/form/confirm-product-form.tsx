@@ -1,10 +1,11 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { format, parseISO } from 'date-fns'
 
 import { Button, DataTable } from '@/components/ui'
 import {
   IFinalProductRequisition,
-  IProductRequirementInfoCreate,
+  IProductRequisitionFormCreate,
   IProductRequisitionInfo
 } from '@/types'
 import { useColumnsConfirm } from '@/views/product-requisitions/data-table/columns/columnsConfirm'
@@ -35,29 +36,53 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
 
   const columns = useColumnsConfirm(handleEditRequest, handleDeleteProduct)
 
-  const transformRequisitionToApiFormat = (requisition: IProductRequirementInfoCreate) => {
+  const transformRequisitionToApiFormat = (requisition: IProductRequisitionFormCreate) => {
     return {
       code: requisition.code,
-      companySlug: requisition.company.slug,
-      siteSlug: requisition.site.slug,
-      projectSlug: requisition.project.slug,
+      // companySlug: requisition.company.slug,
+      // siteSlug: requisition.site.slug,
+      project: requisition.project.slug,
       type: requisition.type,
+      deadlineApproval: requisition.deadlineApproval,
       description: requisition.note || '',
       requestProducts: requisition.requestProducts.map((product) => ({
-        productSlug: product.productSlug,
-        requestQuantity: product.requestQuantity
-      })),
-      userApprovals: requisition.userApprovals.map((approval) => ({
-        userSlug: approval.userSlug,
-        roleApproval: approval.roleApproval
+        product: product.product.slug,
+        requestQuantity: product.requestQuantity,
+        name: product.product.name,
+        provider: product.product.provider,
+        unit: product.product.unit.slug, // Change this line
+        description: product.product.description
       }))
     }
   }
 
   const handleConfirm = () => {
-    const requisition = getRequisition() as IProductRequirementInfoCreate
-    const apiFormattedRequisition = transformRequisitionToApiFormat(requisition)
-    onConfirm(apiFormattedRequisition)
+    const requisition = getRequisition() as IProductRequisitionFormCreate
+    console.log('requisition', requisition)
+    const formattedRequisition = transformRequisitionToApiFormat(requisition)
+    // const finalRequisition: IFinalProductRequisition = {
+    //   ...apiFormattedRequisition,
+    //   requestProducts: apiFormattedRequisition.requestProducts.map((product) => ({
+    //     product: product.product.slug,
+    //     requestQuantity: product.requestQuantity,
+    //     name: product.name,
+    //     provider: product.provider,
+    //     unit: product.unit,
+    //     description: product.description || ''
+    //   }))
+    // }
+    onConfirm(formattedRequisition)
+  }
+
+  const formatDeadline = (dateString: string | undefined) => {
+    if (!dateString) return ''
+    try {
+      const date = parseISO(dateString)
+      return format(date, 'HH:mm dd/MM/yyyy')
+    } catch (error) {
+      console.error('Error formatting date:', error)
+      return dateString
+    }
   }
 
   return (
@@ -65,17 +90,23 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
       <div className="flex flex-col justify-center gap-4">
         <div className="grid items-center justify-between grid-cols-6 py-3 mb-4 border-b-2">
           {getRequisition()?.company.name.includes('Thái Bình') ? (
-            <img className="w-24 col-span-1" src={TbeLogo} />
+            <div className="w-full col-span-1">
+              <img src={TbeLogo} height={72} width={72} />
+            </div>
           ) : getRequisition()?.company.name.includes('Mekong') ? (
-            <img src={MetekLogo} className="w-40" />
+            <div className="w-full h-full col-span-1">
+              <img src={MetekLogo} height={150} width={150} />
+            </div>
           ) : (
-            <img className="w-40 col-span-1" src={SongnamLogo} />
+            <div className="w-full col-span-1">
+              <img src={SongnamLogo} height={72} width={72} />
+            </div>
           )}
-          <span className="col-span-4 text-2xl font-extrabold text-center text-normal font-beVietNam uppercase">
+          <span className="col-span-4 text-2xl font-extrabold text-center uppercase text-normal font-beVietNam">
             {t('productRequisition.confirmProductRequisitions')}
           </span>
           <div className="col-span-1">
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col text-xs font-beVietNam">
               <div className="flex flex-row gap-1 p-1">
                 <span>KMH:</span>
                 <span>QR3-01/001</span>
@@ -94,6 +125,10 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
               <span className={requisition?.type === 'urgent' ? 'text-red-600 font-bold' : ''}>
                 {requisition?.type === 'normal' ? 'Bình thường' : 'Cần gấp'}
               </span>
+            </div>
+            <div>
+              <strong>Thời hạn duyệt: </strong>
+              <span>{formatDeadline(requisition?.deadlineApproval)}</span>
             </div>
             <div>
               <strong>Mã phiếu yêu cầu: </strong>

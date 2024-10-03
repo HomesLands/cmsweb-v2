@@ -1,7 +1,12 @@
 import { UserApprovalFormResponseDto } from "@dto/response";
 import { UserApproval } from "@entities";
+// import { RoleApproval } from "@enums";
 import { mapper } from "@mappers";
-import { userApprovalRepository } from "@repositories";
+import {
+  // companyRepository,
+  // siteRepository,
+  userApprovalRepository,
+} from "@repositories";
 import { TPaginationOptionResponse, TQueryRequest } from "@types";
 
 class UserApprovalService {
@@ -20,7 +25,16 @@ class UserApprovalService {
         : options.page;
 
     // let roleApproval = RoleApproval.APPROVAL_STAGE_1;
+    // let roleApproval = RoleApproval.APPROVAL_STAGE_1;
 
+    // const site = await siteRepository.findOneBy({
+    //   manager: { id: userId },
+    // });
+    // const company = await companyRepository.findOneBy({
+    //   director: {
+    //     id: userId,
+    //   },
+    // });
     // const site = await siteRepository.findOneBy({
     //   manager: { id: userId },
     // });
@@ -35,14 +49,16 @@ class UserApprovalService {
     // } else if (company) {
     //   roleApproval = RoleApproval.APPROVAL_STAGE_3;
     // }
+    // if (site) {
+    //   roleApproval = RoleApproval.APPROVAL_STAGE_2;
+    // } else if (company) {
+    //   roleApproval = RoleApproval.APPROVAL_STAGE_3;
+    // }
 
     const totalApprovalForms = await userApprovalRepository.count({
       where: {
-        assignedUserApproval: {
-          user: {
-            id: userId,
-          },
-        },
+        // user: { id: userId },
+        // roleApproval: roleApproval,
       },
     });
 
@@ -55,11 +71,9 @@ class UserApprovalService {
 
     const approvalForms = await userApprovalRepository.find({
       where: {
-        assignedUserApproval: {
-          user: {
-            id: userId,
-          },
-        },
+        // user: {
+        //   id: userId,
+        // },
         // roleApproval: roleApproval,
       },
       take: pageSize,
@@ -75,8 +89,8 @@ class UserApprovalService {
         "productRequisitionForm.creator",
         "productRequisitionForm.creator.userDepartments.department.site.company",
         // "productRequisitionForm.requestProducts",
-        "productRequisitionForm.requestProducts.product",
-        "productRequisitionForm.requestProducts.temporaryProduct",
+        "productRequisitionForm.requestProducts.product.unit",
+        "productRequisitionForm.requestProducts.temporaryProduct.unit",
         // "productRequisitionForm.userApprovals",
         // "productRequisitionForm.userApprovals.assignedUserApproval",
         "productRequisitionForm.userApprovals.assignedUserApproval.user",

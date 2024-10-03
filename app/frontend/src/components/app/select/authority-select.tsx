@@ -1,53 +1,45 @@
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui'
 import { useAuthorites } from '@/hooks'
+import ReactSelect, { SingleValue } from 'react-select'
 
 interface SelectAuthorityProps {
-  onChange: (slug: string, directorSlug: string, name: string) => void
-  defaultValue?: string
+  onChange: (
+    values: SingleValue<{
+      value: string
+      label: string
+    }>
+  ) => void
 }
 
-export const SelectAuthority: FC<SelectAuthorityProps> = ({ onChange, defaultValue }) => {
+export const SelectAuthority: FC<SelectAuthorityProps> = ({ onChange }) => {
   const { t } = useTranslation('productRequisition')
   const { data: authorities } = useAuthorites({ order: 'DESC', page: 1, pageSize: 10 })
 
-  const handleValueChange = (value: string) => {
-    // if (Array.isArray(companyList)) {
-    //   const selectedCompany = companyList.find(
-    //     (company: { slug: string; directorSlug: string; name: string }) => company.slug === value
-    //   )
-    //   if (selectedCompany) {
-    //     onChange(selectedCompany.slug, selectedCompany.directorSlug, selectedCompany.name)
-    //   }
-    // }
-  }
+  // const handleScrollToBottom = () => {
+  //   if (authorities?.page && authorities.totalPages) {
+  //     if (authorities.page < authorities.totalPages) handlePageChange(pagination.pageIndex + 1)
+  //   }
+  // }
 
-  return (
-    <Select onValueChange={handleValueChange} defaultValue={defaultValue}>
-      <SelectTrigger>
-        <SelectValue placeholder={t('productRequisition.companyNameDescription')} />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>{t('productRequisition.companyName')}</SelectLabel>
-          {Array.isArray(authorities?.items) &&
-            authorities.items.map((item) => (
-              <SelectItem key={item.slug} value={item.slug || ''}>
-                {item.nameNormalize}
-              </SelectItem>
-            ))}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-  )
+  // // Effect to append new roles to the local state when roles are fetched
+  // useEffect(() => {
+  //   if (roles?.items) {
+  //     const newRoles = roles.items.map((item) => ({
+  //       value: item.slug || '',
+  //       label: item.nameNormalize || ''
+  //     }))
+  //     // Append new roles to the previous roles
+  //     setAllRoles((prevRoles) => [...prevRoles, ...newRoles])
+  //   }
+  // }, [roles])
+
+  // return (
+  //   <ReactSelect
+  //     onMenuScrollToBottom={handleScrollToBottom}
+  //     options={allRoles}
+  //     onChange={onChange}
+  //   />
+  // )
 }

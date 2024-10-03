@@ -14,12 +14,13 @@ import {
   ApprovalLogStatus,
   IApproveProductRequisition,
   IRequisitionFormResponseForApprover,
-  RequestRequisitionRoleApproval
+  ProductRequisitionRoleApproval
 } from '@/types'
 import { DialogApprovalRequisition } from '@/components/app/dialog'
 import { showToast } from '@/utils'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { approveProductRequisition } from '@/api'
+import { ApprovalAction, RequisitionStatus, UserApprovalStage } from '@/constants'
 
 const ApprovalProductRequisitionDetail: React.FC = () => {
   const navigate = useNavigate()
@@ -31,13 +32,10 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
   const selectedRequisition = location.state?.selectedRequisition as
     | IRequisitionFormResponseForApprover
     | undefined
-  console.log('form slug: ', data?.result.slug)
-  console.log('approval user slug: ', selectedRequisition?.approvalUserSlug)
 
   const { roleApproval } = selectedRequisition || {}
 
   const columns = useColumnsDetail()
-
   const [openDialog, setOpenDialog] = useState<'accept' | 'give_back' | 'cancel' | null>(null)
 
   const buttonStates = useMemo(() => {
@@ -49,31 +47,47 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
     let acceptEnabled = false
     let giveBackEnabled = false
     let cancelEnabled = false
-
-    // Nếu đã duyệt bước 2 và không bị recall, disable tất cả các nút
-    if (status === 'accepted_stage_2' && !isRecalled) {
-      return { acceptEnabled, giveBackEnabled, cancelEnabled }
-    }
+    let showButtons = true
 
     switch (roleApproval) {
-      case 'approval_stage_1':
-        acceptEnabled = status === 'waiting' && !isRecalled
-        giveBackEnabled = status === 'waiting' && !isRecalled
+      case UserApprovalStage.APPROVAL_STAGE_1:
+        if (status === RequisitionStatus.WAITING && !isRecalled) {
+          acceptEnabled = true
+          giveBackEnabled = true
+        } else {
+          showButtons = false
+        }
         break
-      case 'approval_stage_2':
-      case 'approval_stage_3':
-        acceptEnabled = ['accepted_stage_1', 'accepted_stage_2'].includes(status) && !isRecalled
-        giveBackEnabled = ['accepted_stage_1', 'accepted_stage_2'].includes(status) && !isRecalled
-        cancelEnabled = ['accepted_stage_1', 'accepted_stage_2'].includes(status)
+      case UserApprovalStage.APPROVAL_STAGE_2:
+        if (status === RequisitionStatus.ACCEPTED_STAGE_1) {
+          acceptEnabled = true
+          giveBackEnabled = !isRecalled
+          cancelEnabled = true
+        } else {
+          showButtons = false
+        }
         break
+      case UserApprovalStage.APPROVAL_STAGE_3:
+        if (status === RequisitionStatus.ACCEPTED_STAGE_2) {
+          acceptEnabled = true
+          giveBackEnabled = !isRecalled
+          cancelEnabled = true
+        } else {
+          showButtons = false
+        }
+        break
+      default:
+        showButtons = false
     }
 
-    return { acceptEnabled, giveBackEnabled, cancelEnabled }
+    return { acceptEnabled, giveBackEnabled, cancelEnabled, showButtons }
   }, [data?.result, selectedRequisition])
 
-  const handleAccept = () => setOpenDialog('accept')
-  const handleGiveBack = () => setOpenDialog('give_back')
-  const handleCancel = () => setOpenDialog('cancel')
+  const handleAccept = () => setOpenDialog(ApprovalAction.ACCEPT)
+  const handleGiveBack = () => setOpenDialog(ApprovalAction.GIVE_BACK)
+  const handleCancel = () => setOpenDialog(ApprovalAction.CANCEL)
+
+  const queryClient = useQueryClient()
 
   const mutation = useMutation({
     mutationFn: async (data: IApproveProductRequisition) => {
@@ -88,26 +102,29 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
       let toastMessage = ''
 
       switch (roleApproval) {
-        case 'approval_stage_1':
-          if (variables.approvalLogStatus === 'accept') {
+        case UserApprovalStage.APPROVAL_STAGE_1:
+          if (variables.approvalLogStatus === ApprovalAction.ACCEPT) {
             toastMessage = tToast('toast.approveRequestSuccess')
-          } else if (variables.approvalLogStatus === 'give_back') {
+          } else if (variables.approvalLogStatus === ApprovalAction.GIVE_BACK) {
             toastMessage = tToast('toast.giveBackRequestSuccess')
           }
           break
-        case 'approval_stage_2':
-        case 'approval_stage_3':
-          if (variables.approvalLogStatus === 'accept') {
+        case UserApprovalStage.APPROVAL_STAGE_2:
+        case UserApprovalStage.APPROVAL_STAGE_3:
+          if (variables.approvalLogStatus === ApprovalAction.ACCEPT) {
             toastMessage = tToast('toast.approveRequestSuccess')
-          } else if (variables.approvalLogStatus === 'give_back') {
+          } else if (variables.approvalLogStatus === ApprovalAction.GIVE_BACK) {
             toastMessage = tToast('toast.giveBackRequestSuccess')
-          } else if (variables.approvalLogStatus === 'cancel') {
+          } else if (variables.approvalLogStatus === ApprovalAction.CANCEL) {
             toastMessage = tToast('toast.cancelRequestSuccess')
           }
           break
       }
 
       showToast(toastMessage)
+
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['productRequisitionBySlug', slug] })
     }
   })
 
@@ -122,6 +139,12 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
     setOpenDialog(null)
   }
 
+  const userApprovals = useMemo(() => {
+    return Array.isArray(data?.result?.userApprovals) ? data.result.userApprovals : []
+  }, [data])
+
+  console.log('check approval: ', userApprovals)
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
@@ -131,49 +154,54 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
         </Label>
         <div className="flex gap-4">
           <Button variant="outline" onClick={() => navigate(-1)}>
-            Back
+            {t('productRequisition.back')}
           </Button>
-          {roleApproval === 'approval_stage_1' && (
+          {buttonStates.showButtons && (
             <>
-              <Button
-                variant="outline"
-                onClick={handleGiveBack}
-                disabled={!buttonStates.giveBackEnabled}
-              >
-                {t('productRequisition.giveBack')}
-              </Button>
-              <Button
-                variant="default"
-                onClick={handleAccept}
-                disabled={!buttonStates.acceptEnabled}
-              >
-                {t('productRequisition.accept')}
-              </Button>
-            </>
-          )}
-          {(roleApproval === 'approval_stage_2' || roleApproval === 'approval_stage_3') && (
-            <>
-              <Button
-                variant="destructive"
-                onClick={handleCancel}
-                disabled={!buttonStates.cancelEnabled}
-              >
-                {t('productRequisition.cancel')}
-              </Button>
-              <Button
-                variant="outline"
-                onClick={handleGiveBack}
-                disabled={!buttonStates.giveBackEnabled}
-              >
-                {t('productRequisition.giveBack')}
-              </Button>
-              <Button
-                variant="default"
-                onClick={handleAccept}
-                disabled={!buttonStates.acceptEnabled}
-              >
-                {t('productRequisition.accept')}
-              </Button>
+              {roleApproval === UserApprovalStage.APPROVAL_STAGE_1 && (
+                <>
+                  <Button
+                    variant="outline"
+                    onClick={handleGiveBack}
+                    disabled={!buttonStates.giveBackEnabled}
+                  >
+                    {t('productRequisition.giveBack')}
+                  </Button>
+                  <Button
+                    variant="default"
+                    onClick={handleAccept}
+                    disabled={!buttonStates.acceptEnabled}
+                  >
+                    {t('productRequisition.accept')}
+                  </Button>
+                </>
+              )}
+              {(roleApproval === UserApprovalStage.APPROVAL_STAGE_2 ||
+                roleApproval === UserApprovalStage.APPROVAL_STAGE_3) && (
+                <>
+                  <Button
+                    variant="destructive"
+                    onClick={handleCancel}
+                    disabled={!buttonStates.cancelEnabled}
+                  >
+                    {t('productRequisition.cancel')}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={handleGiveBack}
+                    disabled={!buttonStates.giveBackEnabled}
+                  >
+                    {t('productRequisition.giveBack')}
+                  </Button>
+                  <Button
+                    variant="default"
+                    onClick={handleAccept}
+                    disabled={!buttonStates.acceptEnabled}
+                  >
+                    {t('productRequisition.accept')}
+                  </Button>
+                </>
+              )}
             </>
           )}
         </div>
@@ -181,11 +209,15 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
       <div className="mt-3">
         <div className="flex flex-col justify-center gap-4">
           <div className="grid items-center justify-between grid-cols-6 py-3 mb-4 border-b-2">
-            {data?.result?.company.includes('Thái Bình') ? (
+            {data?.result?.creator.userDepartments[0].department.site.company.name.includes(
+              'Thái Bình'
+            ) ? (
               <div className="w-full col-span-1">
                 <img src={TbeLogo} height={72} width={72} />
               </div>
-            ) : data?.result?.company.includes('Mekong') ? (
+            ) : data?.result?.creator.userDepartments[0].department.site.company.name.includes(
+                'Mekong'
+              ) ? (
               <div className="w-full col-span-1">
                 <img src={MetekLogo} height={150} width={150} />
               </div>
@@ -194,7 +226,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
                 <img src={SongnamLogo} height={72} width={72} />
               </div>
             )}
-            <span className="col-span-4 text-2xl font-extrabold text-center text-normal font-beVietNam uppercase">
+            <span className="col-span-4 text-2xl font-extrabold text-center uppercase text-normal font-beVietNam">
               {t('productRequisition.confirmProductRequisitions')}
             </span>
             <div className="col-span-1">
@@ -224,15 +256,15 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
               </div>
               <div>
                 <strong>Người yêu cầu: </strong>
-                {data?.result?.creator}
+                {data?.result?.creator.fullname}
               </div>
               <div>
                 <strong>Công trình sử dụng: </strong>
-                {data?.result?.site}
+                {data?.result?.creator.userDepartments[0].department.site.name}
               </div>
               <div>
                 <strong>Dự án: </strong>
-                {data?.result?.project}
+                {data?.result?.project.name}
               </div>
               <div>
                 <strong>Ghi chú: </strong>
@@ -251,10 +283,10 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
         />
 
         <DialogApprovalRequisition
-          openDialog={openDialog as ApprovalLogStatus}
+          openDialog={openDialog as ApprovalAction}
           setOpenDialog={setOpenDialog}
           onConfirm={handleConfirm}
-          roleApproval={roleApproval as RequestRequisitionRoleApproval}
+          roleApproval={roleApproval as ProductRequisitionRoleApproval}
         />
       </div>
     </div>

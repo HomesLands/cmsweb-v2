@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -12,6 +14,13 @@ import {
   Column,
   Table as ReactTable
 } from '@tanstack/react-table'
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  Loader2Icon
+} from 'lucide-react'
 
 import {
   Table,
@@ -33,16 +42,8 @@ import {
   DropdownMenuSeparator,
   Input
 } from '@/components/ui'
-import React, { useState } from 'react'
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  Loader2Icon
-} from 'lucide-react'
+import React from 'react'
 import { cn } from '@/lib/utils'
-import { useTranslation } from 'react-i18next'
 import { DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons'
 
 interface DataTablePaginationProps<TData> {
@@ -75,7 +76,6 @@ interface DataTableProps<TData, TValue> {
   onPageChange: (pageIndex: number) => void
   onPageSizeChange: (pageSize: number) => void
   onRowClick?: (row: TData) => void
-  CustomComponent?: React.ElementType<{ table: ReactTable<TData> }>
   filterOptions?: React.FC<DataTableFilterOptionsProps<TData>>
   actionOptions?: React.FC<DataTableActionOptionsProps<TData>>
 }
@@ -89,8 +89,7 @@ export function DataTable<TData, TValue>({
   onPageSizeChange,
   onRowClick,
   filterOptions: DataTableFilterOptions,
-  actionOptions: DataTableActionOptions,
-  CustomComponent
+  actionOptions: DataTableActionOptions
 }: DataTableProps<TData, TValue>) {
   const { t } = useTranslation('tableData')
 
@@ -129,7 +128,6 @@ export function DataTable<TData, TValue>({
 
         <div className="flex gap-2 items-center">
           {/* Actions */}
-          {CustomComponent && <CustomComponent table={table} />}
           {DataTableActionOptions && <DataTableActionOptions table={table} />}
           {/* Filter */}
           {DataTableFilterOptions && (
@@ -211,7 +209,7 @@ export function DataTableColumnHeader<TData, TValue>({
   }
 
   return (
-    <div className={cn('flex items-center min-w-32 space-x-2 text-[0.8rem]', className)}>
+    <div className={cn('flex items-center min-w-[7.8rem] space-x-2 text-[0.8rem]', className)}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="sm" className="-ml-3 h-8 data-[state=open]:bg-accent">
@@ -340,8 +338,6 @@ export function DataTablePagination<TData>({
   onPageChange,
   onPageSizeChange
 }: DataTablePaginationProps<TData>) {
-  const { t } = useTranslation('tableData')
-
   return (
     <div className="flex items-center justify-between px-2 flex-wrap">
       <div className="flex items-center space-x-6 lg:space-x-8">

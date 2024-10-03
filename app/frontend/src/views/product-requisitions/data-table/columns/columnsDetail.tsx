@@ -1,21 +1,8 @@
 import { ColumnDef } from '@tanstack/react-table'
 import i18next from 'i18next'
-import { MoreHorizontal } from 'lucide-react'
 
-import {
-  Button,
-  DataTableColumnHeader,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui'
+import { DataTableColumnHeader } from '@/components/ui'
 import { IProductRequisitionInfo } from '@/types'
-import { useState } from 'react'
-import { DialogEditProductRequisition } from '@/components/app/dialog'
-import { DialogDeleteProductRequisition } from '@/components/app/dialog/dialog-delete-product-requisition'
 
 export const useColumnsDetail = (): ColumnDef<IProductRequisitionInfo>[] => {
   return [
@@ -38,7 +25,7 @@ export const useColumnsDetail = (): ColumnDef<IProductRequisitionInfo>[] => {
       )
     },
     {
-      accessorKey: 'product.unit',
+      accessorKey: 'product.unit.name',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.unit')} />
       )

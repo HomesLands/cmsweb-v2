@@ -12,13 +12,13 @@ const CreatePermission: React.FC = () => {
   const { t } = useTranslation(['permissions'])
   const mutation = useCreateAuthority()
 
-  const onSubmit = (values: TCreateAuthoritySchema) => {
-    const requestData = { ...values } as ICreateAuthority
-    mutation.mutate(requestData, {
-      onSuccess: () => {
-        toast.success(t('permissions.createPermissionSuccessfully'))
-      }
-    })
+  const onSubmit = (values: TCreatePermissionSchema) => {
+    // const requestData = { ...values } as ICreateAuthority
+    // mutation.mutate(requestData, {
+    //   onSuccess: () => {
+    //     toast.success(t('permissions.createPermissionSuccessfully'))
+    //   }
+    // })
   }
 
   return (

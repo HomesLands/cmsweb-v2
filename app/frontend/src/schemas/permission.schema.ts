@@ -1,8 +1,14 @@
 import * as z from 'zod'
 
 export const createPermissionSchema = z.object({
-  nameNormalize: z.string().min(1, 'Mã yêu cầu không hợp lệ'),
-  description: z.string().min(1, 'Tên người yêu cầu không hợp lệ')
+  role: z.object({
+    label: z.string().min(1),
+    value: z.string().min(1)
+  }),
+  authority: z.object({
+    label: z.string().min(1),
+    value: z.string().min(1)
+  })
 })
 
 export type TCreatePermissionSchema = z.infer<typeof createPermissionSchema>

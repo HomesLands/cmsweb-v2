@@ -10,3 +10,5 @@ export * from './dialog-edit-product-requisition'
 export * from './dialog-edit-product-requisition'
 // eslint-disable-next-line react-refresh/only-export-components
 export * from './dialog-approval-requisition'
+// eslint-disable-next-line react-refresh/only-export-components
+export * from './dialog-requisition-detail'

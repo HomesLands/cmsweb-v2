@@ -15,14 +15,16 @@ import { addNewProductRequestSchema, TAddNewProductRequestSchema } from '@/schem
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IProductInfo, IProductRequisitionInfo } from '@/types'
 import { useTranslation } from 'react-i18next'
+import { useRequisitionStore } from '@/stores'
 
-interface IFormAddNewProductProps {
-  data?: IProductInfo
+interface IFormEditProductProps {
+  data?: IProductRequisitionInfo
   onSubmit: (data: IProductRequisitionInfo) => void
 }
 
-export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ data, onSubmit }) => {
+export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ data, onSubmit }) => {
   const { t } = useTranslation('tableData')
+  const { requisition } = useRequisitionStore()
   console.log('data in form', data)
   const form = useForm<TAddNewProductRequestSchema>({
     resolver: zodResolver(addNewProductRequestSchema),
@@ -30,16 +32,16 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
       // code: data?.product.code || '',
       // slug: data?.product.slug || '',
       product: {
-        code: data?.code || '',
-        slug: data?.slug || '',
-        name: data?.name || '',
-        provider: data?.provider || '',
-        unit: data?.unit || { name: '', slug: '' },
-        quantity: 1,
-        description: data?.description
+        code: data?.product.code || '',
+        slug: data?.product.slug || '',
+        name: data?.product.name || '',
+        provider: data?.product.provider || '',
+        unit: { name: data?.product.unit.name || '', slug: data?.product.unit.slug || '' },
+        quantity: data?.product.quantity || 1,
+        description: data?.product.description
       },
-      requestQuantity: data?.quantity || 1
-      // description: data?.description || ''
+      requestQuantity: data?.requestQuantity || 1
+      //   description: data?.description || ''
     }
   })
 
@@ -48,7 +50,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
     const completeData: IProductRequisitionInfo = {
       ...values,
       requestQuantity: Number(values.requestQuantity)
-      // description: values.description || ''
+      //   description: values.description || ''
       // slug: values.product.slug
       // product: {
       //   name: values.product.name,

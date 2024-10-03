@@ -3,15 +3,18 @@ import { useTranslation } from 'react-i18next'
 
 import { useRequisitionStore } from '@/stores'
 import { useProducts } from '@/hooks'
-import { IProductNameSearch, IProductQuery, IProductRequisitionInfo } from '@/types'
+import { IProductQuery, IProductRequisitionInfo } from '@/types'
 
 import { Button, DataTable, Label } from '@/components/ui'
-import { CustomComponentRequest } from '@/views/product-requisitions/CustomComponentRequest'
-import { useColumnsSearch } from '@/views/product-requisitions/data-table/columns/columnsSearch'
-import { useColumnsResult } from '@/views/product-requisitions/data-table/columns/columnsResult'
+import {
+  ProductActionOptions,
+  useColumnsSearch,
+  useColumnsResult
+} from '@/views/product-requisitions/data-table'
 
 interface IFormAddProductProps {
-  onSubmit: (data: IProductNameSearch) => void
+  // onSubmit: (data: IProductNameSearch) => void
+  onSubmit: () => void
   onBack: () => void
 }
 
@@ -25,13 +28,11 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
   })
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
-  const [selectedProducts, setSelectedProducts] = useState<IProductRequisitionInfo[]>([])
   const { requisition } = useRequisitionStore()
 
   const { data: allProduct, isLoading } = useProducts(query)
 
-  const { getRequisition, updateProductToRequisition, deleteProductToRequisition } =
-    useRequisitionStore()
+  const { updateProductToRequisition, deleteProductToRequisition } = useRequisitionStore()
 
   const handleEditRequisition = (product: IProductRequisitionInfo) => {
     updateProductToRequisition(product, product.requestQuantity)
@@ -42,10 +43,7 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
   }
 
   const handleNext = () => {
-    const productNameSearch: IProductNameSearch = {
-      name: selectedProducts.map((product) => product.name).join(', ')
-    }
-    onSubmit(productNameSearch)
+    onSubmit()
   }
 
   const columns = useColumnsResult(handleEditRequisition, handleDeleteProduct)
@@ -59,7 +57,7 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
         pages={allProduct?.result?.totalPages || 0}
         onPageChange={setPage}
         onPageSizeChange={setPageSize}
-        CustomComponent={(props) => <CustomComponentRequest {...props} />}
+        actionOptions={ProductActionOptions}
       />
 
       <div className="flex flex-col gap-2">
@@ -77,7 +75,6 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
             pages={1}
             onPageChange={() => {}}
             onPageSizeChange={() => {}}
-            CustomComponent={undefined}
           />
         </div>
       </div>
