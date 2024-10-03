@@ -13,8 +13,8 @@ import {
 import { useSites } from '@/hooks'
 
 interface SelectSiteProps {
+  onChange: (slug: string, name: string) => void
   defaultValue?: string
-  onChange: (value: { slug: string; managerSlug: string; name: string }) => void
 }
 
 export const SelectSite: FC<SelectSiteProps> = ({ onChange, defaultValue }) => {
@@ -26,11 +26,7 @@ export const SelectSite: FC<SelectSiteProps> = ({ onChange, defaultValue }) => {
   const handleValueChange = (value: string) => {
     const selectedSite = siteList?.find((site) => site.slug === value)
     if (selectedSite) {
-      onChange({
-        slug: selectedSite.slug,
-        managerSlug: selectedSite.managerSlug,
-        name: selectedSite.name
-      })
+      onChange(selectedSite.slug, selectedSite.name)
     }
   }
 

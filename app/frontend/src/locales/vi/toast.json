@@ -1,5 +1,7 @@
 {
   "toast": {
+    "notAddProductToRequisition": "Vui lòng thêm sản phẩm vào yêu cầu",
+    "requestFailed": "Đã có lỗi xảy ra",
     "requestSuccess": "Yêu cầu được tạo thành công",
     "requestError": "Yêu cầu được tạo thất bại",
     "confirmSuccess": "Yêu cầu được xác nhận gửi thành công",

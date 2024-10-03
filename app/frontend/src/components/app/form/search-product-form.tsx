@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useRequisitionStore } from '@/stores'
 import { useProducts } from '@/hooks'
-import { IProductInfo, IProductNameSearch, IProductQuery, IProductRequisitionInfo } from '@/types'
+import { IProductNameSearch, IProductQuery, IProductRequisitionInfo } from '@/types'
 
 import { Button, DataTable, DataTableRequisition, Label } from '@/components/ui'
 import { CustomComponentRequest } from '@/views/product-requisitions/CustomComponentRequest'
@@ -11,7 +11,8 @@ import { useColumnsSearch } from '@/views/product-requisitions/DataTable/columns
 import { useColumnsResult } from '@/views/product-requisitions/DataTable/columnsResult'
 
 interface IFormAddProductProps {
-  onSubmit: (data: IProductNameSearch) => void
+  // onSubmit: (data: IProductNameSearch) => void
+  onSubmit: () => void
   onBack: () => void
 }
 
@@ -25,13 +26,12 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
   })
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
-  const [selectedProducts, setSelectedProducts] = useState<IProductRequisitionInfo[]>([])
+  // const [selectedProducts, setSelectedProducts] = useState<IProductRequisitionInfo[]>([])
   const { requisition } = useRequisitionStore()
 
   const { data: allProduct, isLoading } = useProducts(query)
 
-  const { getRequisition, updateProductToRequisition, deleteProductToRequisition } =
-    useRequisitionStore()
+  const { updateProductToRequisition, deleteProductToRequisition } = useRequisitionStore()
 
   const handleEditRequisition = (product: IProductRequisitionInfo) => {
     updateProductToRequisition(product, product.requestQuantity)
@@ -42,10 +42,11 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
   }
 
   const handleNext = () => {
-    const productNameSearch: IProductNameSearch = {
-      name: selectedProducts.map((product) => product.name).join(', ')
-    }
-    onSubmit(productNameSearch)
+    // const productNameSearch: IProductNameSearch = {
+    //   name: selectedProducts.map((product) => product.product.name).join(', ')
+    // }
+    // onSubmit(productNameSearch)
+    onSubmit()
   }
 
   const columns = useColumnsResult(handleEditRequisition, handleDeleteProduct)

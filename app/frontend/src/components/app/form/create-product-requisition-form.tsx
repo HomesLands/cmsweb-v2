@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
+import { format } from 'date-fns'
+import { cn } from '@/lib/utils'
+import { CalendarIcon } from 'lucide-react'
 
 import {
   FormField,
@@ -12,22 +15,28 @@ import {
   Input,
   Form,
   Button,
-  Textarea
+  Textarea,
+  PopoverTrigger,
+  Popover,
+  PopoverContent,
+  Calendar
 } from '@/components/ui'
-import { productSchema } from '@/schemas'
+import { productRequisitionSchema, TProductRequisitionSchema } from '@/schemas'
 import {
   SelectProject,
-  SelectSite,
-  RequestPrioritySelect,
-  SelectCompany
+  // SelectSite,
+  RequestPrioritySelect
+  // SelectCompany
 } from '@/components/app/select'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { generateProductRequisitionCode } from '@/utils'
 import { useRequisitionStore, useUserStore } from '@/stores'
+import { ProductRequisitionType } from '@/types'
+import { DateTimePicker } from '@/components/app/picker'
 
 interface IFormCreateProductProps {
-  onSubmit: (data: z.infer<typeof productSchema>) => void
+  onSubmit: (data: TProductRequisitionSchema) => void
 }
 
 export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = ({ onSubmit }) => {
@@ -35,38 +44,49 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
   const { userInfo } = useUserStore()
   const { requisition } = useRequisitionStore()
 
-  const form = useForm<z.infer<typeof productSchema>>({
-    resolver: zodResolver(productSchema),
+  const [date, setDate] = useState<Date | undefined>(
+    requisition?.deadlineApproval ? new Date(requisition.deadlineApproval) : undefined
+  )
+
+  const validateDate = (selectedDate: Date | undefined) => {
+    if (!selectedDate) return false
+    const now = new Date()
+    return selectedDate > now
+  }
+
+  const form = useForm<TProductRequisitionSchema>({
+    resolver: zodResolver(productRequisitionSchema),
     defaultValues: {
       code: requisition?.code || generateProductRequisitionCode(),
       requester: userInfo?.fullname || '',
+      deadlineApproval: requisition?.deadlineApproval
+        ? format(new Date(requisition.deadlineApproval), 'yyyy-MM-dd HH:mm:ss')
+        : undefined,
       company: {
-        slug: requisition?.company?.slug || '',
-        directorSlug: requisition?.company?.directorSlug || '',
-        name: requisition?.company?.name || ''
-      },
-      project: {
-        slug: requisition?.project.slug || '',
-        managerSlug: requisition?.project.managerSlug || '',
-        name: requisition?.project.name || ''
+        slug: userInfo?.userDepartments[0]?.department?.site?.company?.slug || '',
+        name: userInfo?.userDepartments[0]?.department?.site?.company?.name || ''
       },
       site: {
-        slug: requisition?.site.slug || '',
-        managerSlug: requisition?.site.managerSlug || '',
-        name: requisition?.site.name || ''
+        slug: userInfo?.userDepartments[0]?.department?.site?.slug || '',
+        name: userInfo?.userDepartments[0]?.department?.site?.name || ''
       },
       type: 'normal',
       requestProducts: [],
       userApprovals: [],
+      project: {
+        slug: requisition?.project.slug || '',
+        name: requisition?.project.name || ''
+      },
       note: requisition?.note || ''
     }
   })
 
-  const handleSubmit = (values: z.infer<typeof productSchema>) => {
+  const handleSubmit = (values: TProductRequisitionSchema) => {
+    console.log('values', values)
     onSubmit(values)
   }
 
-  const handleChoosePriority = (value: 'normal' | 'urgent') => {
+  const handleChoosePriority = (value: ProductRequisitionType) => {
     form.setValue('type', value)
   }
 
@@ -104,6 +124,68 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
         )}
       />
     ),
+    deadlineApproval: (
+      <FormField
+        control={form.control}
+        name="deadlineApproval"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('productRequisition.deadlineApproval')}</FormLabel>
+            <Popover>
+              <PopoverTrigger asChild>
+                <FormControl>
+                  <Button
+                    variant={'outline'}
+                    className={cn(
+                      'w-full justify-start text-left font-normal',
+                      !field.value && 'text-muted-foreground'
+                    )}
+                  >
+                    <CalendarIcon className="w-4 h-4 mr-2" />
+                    {field.value ? field.value : <span>Chọn ngày và thời gian</span>}
+                  </Button>
+                </FormControl>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={(newDate) => {
+                    if (newDate) {
+                      const newDateTime = date
+                        ? new Date(
+                            date.setFullYear(
+                              newDate.getFullYear(),
+                              newDate.getMonth(),
+                              newDate.getDate()
+                            )
+                          )
+                        : newDate
+                      if (validateDate(newDateTime)) {
+                        setDate(newDateTime)
+                        field.onChange(format(newDateTime, 'yyyy-MM-dd HH:mm:ss'))
+                      }
+                    }
+                  }}
+                  initialFocus
+                  disabled={(date) => date < new Date()}
+                />
+                <DateTimePicker
+                  date={date}
+                  setDate={(newDate) => {
+                    if (newDate && validateDate(newDate)) {
+                      setDate(newDate)
+                      field.onChange(format(newDate, 'yyyy-MM-dd HH:mm:ss'))
+                    }
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
     requester: (
       <FormField
         control={form.control}
@@ -126,38 +208,27 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
     company: (
       <FormField
         control={form.control}
-        name="company"
+        name="company.name"
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t('productRequisition.companyName')}</FormLabel>
             <FormControl>
-              <SelectCompany
-                defaultValue={requisition?.company?.slug}
-                onChange={(slug: string, directorSlug: string, name: string) =>
-                  field.onChange({ slug, directorSlug, name })
-                }
-              />
+              <Input readOnly {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
     ),
-
     site: (
       <FormField
         control={form.control}
-        name="site"
+        name="site.name"
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t('productRequisition.constructionSite')}</FormLabel>
             <FormControl>
-              <SelectSite
-                defaultValue={requisition?.site.slug}
-                onChange={(value: { slug: string; managerSlug: string; name: string }) =>
-                  field.onChange(value)
-                }
-              />
+              <Input readOnly {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -174,9 +245,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
             <FormControl>
               <SelectProject
                 defaultValue={requisition?.project.slug}
-                onChange={(value: { slug: string; managerSlug: string; name: string }) =>
-                  field.onChange(value)
-                }
+                onChange={(slug: string, name: string) => field.onChange({ slug, name })}
               />
             </FormControl>
             <FormMessage />

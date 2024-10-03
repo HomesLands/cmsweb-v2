@@ -1,9 +1,10 @@
 import React from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
+import { NavLink } from 'react-router-dom'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
-import { IFinalProductRequisition, IProductRequirementInfoCreate } from '@/types'
+import { IFinalProductRequisition, IProductRequisitionFormCreate } from '@/types'
 import {
   CreateProductRequisitionForm,
   SearchProductForm,
@@ -14,13 +15,12 @@ import { useMultiStep } from '@/hooks'
 import { createProductRequisition } from '@/api/products'
 import { showToast } from '@/utils'
 import { useRequisitionStore } from '@/stores'
-import { NavLink } from 'react-router-dom'
 
 const ProductRequisitionForm: React.FC = () => {
   const { t } = useTranslation('productRequisition')
   const { t: tToast } = useTranslation('toast')
   const { currentStep, handleStepChange } = useMultiStep(1)
-  const { setRequisition, clearRequisition } = useRequisitionStore()
+  const { setRequisition, clearRequisition, requisition } = useRequisitionStore()
 
   const mutation = useMutation({
     mutationFn: async (data: IFinalProductRequisition) => {
@@ -29,11 +29,15 @@ const ProductRequisitionForm: React.FC = () => {
     onSuccess: () => {
       showToast(tToast('toast.requestSuccess'))
       clearRequisition()
+      handleStepChange(4)
     }
+    // onError: () => {
+    //   showToast(tToast('toast.requestFailed'))
+    // }
   })
 
-  const handleFormCreateSubmit = (data: IProductRequirementInfoCreate) => {
-    const newRequisition: IProductRequirementInfoCreate = {
+  const handleFormCreateSubmit = (data: IProductRequisitionFormCreate) => {
+    const newRequisition: IProductRequisitionFormCreate = {
       ...data
     }
     // updateRequisition(newRequisition)
@@ -42,13 +46,18 @@ const ProductRequisitionForm: React.FC = () => {
   }
 
   const handleFormSearchSubmit = () => {
+    //check if not add any product to requisition
+    if (requisition?.requestProducts.length === 0) {
+      showToast(tToast('toast.notAddProductToRequisition'))
+      return
+    }
     handleStepChange(3)
   }
 
   const handleConfirmRequest = (data: IFinalProductRequisition) => {
+    console.log('data', data)
     if (data) {
       mutation.mutate(data)
-      handleStepChange(4)
     }
   }
 

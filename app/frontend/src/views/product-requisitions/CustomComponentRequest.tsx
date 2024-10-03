@@ -71,7 +71,7 @@ export function CustomComponentRequest<TData>({ table }: ColumnVisibilityDropdow
       {openDialog && (
         <DialogAddProductRequest
           openDialog={openDialog}
-          product={selectedProduct}
+          product={selectedProduct?.product}
           component={null}
           onOpenChange={onOpenChange}
         />

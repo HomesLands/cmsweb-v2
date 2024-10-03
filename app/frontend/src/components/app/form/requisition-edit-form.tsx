@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { useMemo } from 'react'
+import { z } from 'zod'
 
 import {
   FormField,
@@ -15,81 +15,39 @@ import {
   TableRow,
   TableHead,
   TableBody,
-  TableCell
+  TableCell,
+  Button,
+  ScrollArea
 } from '@/components/ui'
+import { addNewProductRequestSchema } from '@/schemas'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { IProductRequisitionFormInfo } from '@/types'
 
-interface IFormRequisitionDetailProps {
-  companyName: string
+interface IFormRequisitionEditProps {
   data?: IProductRequisitionFormInfo
 }
 
-export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({
-  companyName,
-  data
-}) => {
+export const RequisitionEditForm: React.FC<IFormRequisitionEditProps> = ({ data }) => {
+  console.log(data)
   const form = useForm({
     defaultValues: {
       code: data?.code || '',
+      company: data?.creator.userDepartments[0].department.site.company.name || '',
       createdAt: data?.createdAt || '',
       creator: data?.creator || '',
       // status: data?.status || '',
       description: data?.description || '',
-      // deadlineApproval: data?.deadlineApproval || '',
-      companyName: companyName || '',
       project: data?.project || '',
-      type: data?.type || '',
-      requestProducts: data?.requestProducts || [],
-      displayStatus: '',
-      statusColor: ''
+      site: data?.creator.userDepartments[0].department.site.name || '',
+      type: data?.type || ''
     }
   })
-
-  const statusInfo = useMemo(() => {
-    if (!data) return { displayStatus: '', statusColor: '' }
-
-    const { status, isRecalled } = data
-    let displayStatus = ''
-    let statusColor = ''
-
-    if (status === 'waiting' && !isRecalled) {
-      displayStatus = 'Vừa tạo, đang chờ duyệt bước 1'
-      statusColor = 'yellow'
-    } else if (status === 'cancel' && isRecalled) {
-      displayStatus = 'Đã bị hoàn ở bước 1'
-      statusColor = 'orange'
-    } else if (status === 'accepted_stage_1' && !isRecalled) {
-      displayStatus = 'Đã duyệt bước 1'
-      statusColor = 'green'
-    } else if (status === 'waiting' && isRecalled) {
-      displayStatus = 'Đã bị hoàn ở bước 2'
-      statusColor = 'orange'
-    } else if (status === 'accepted_stage_2' && !isRecalled) {
-      displayStatus = 'Đã duyệt bước 2'
-      statusColor = 'green'
-    } else if (status === 'accepted_stage_1' && isRecalled) {
-      displayStatus = 'Đã bị hoàn ở bước 3'
-      statusColor = 'orange'
-    } else if (status === 'waiting_export' && !isRecalled) {
-      displayStatus = 'Đã duyệt bước 3'
-      statusColor = 'blue'
-    } else if (status === 'cancel' && !isRecalled) {
-      displayStatus = 'Đã bị hủy'
-      statusColor = 'red'
-    }
-
-    return { displayStatus, statusColor }
-  }, [data])
-
-  // Update form values with status info
-  form.setValue('displayStatus', statusInfo.displayStatus)
-  form.setValue('statusColor', statusInfo.statusColor)
 
   return (
     <div className="mt-3">
       <Form {...form}>
         <form className="space-y-6">
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-3 gap-2">
             <FormField
               control={form.control}
               name="createdAt"
@@ -135,19 +93,6 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({
             />
             <FormField
               control={form.control}
-              name="companyName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tên công ty</FormLabel>
-                  <FormControl>
-                    <Input {...field} readOnly />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name="creator.fullname"
               render={({ field }) => (
                 <FormItem>
@@ -163,10 +108,36 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({
           <div className="grid grid-cols-2 gap-2">
             <FormField
               control={form.control}
+              name="company"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Công ty</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="project.name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Dự án</FormLabel>
+                  <FormControl>
+                    <Input {...field} readOnly />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="site"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Địa điểm</FormLabel>
                   <FormControl>
                     <Input {...field} readOnly />
                   </FormControl>
@@ -186,24 +157,6 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({
                       readOnly
                       value={field.value === 'normal' ? 'Bình thường' : 'Cần gấp'}
                       className={field.value === 'urgent' ? 'text-red-500' : ''}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="displayStatus"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Trạng thái</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      readOnly
-                      className={`text-${form.getValues('statusColor')}-500`}
                     />
                   </FormControl>
                   <FormMessage />

@@ -45,25 +45,25 @@ export const useColumnsConfirm = (
 
   return [
     {
-      accessorKey: 'code',
+      accessorKey: 'product.code',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.productCode')} />
       )
     },
     {
-      accessorKey: 'name',
+      accessorKey: 'product.name',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.productName')} />
       )
     },
     {
-      accessorKey: 'provider',
+      accessorKey: 'product.provider',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.provider')} />
       )
     },
     {
-      accessorKey: 'unit',
+      accessorKey: 'product.unit.name',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.unit')} />
       )

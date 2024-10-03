@@ -1,20 +1,35 @@
 import { IQuery } from './base.type'
 
 export interface IUserInfo {
-  // id: string
-  // avatar: string
-  fullname?: string
-  // email: string
-  username?: string
-  slug?: string
-  // phoneNumber: string
-  // role: string
-  // dob: string
-  // address: string
-  // department: string
-  // site: string
-  createdAt?: Date
-  updatedAt?: Date
+  fullname: string
+  username: string
+  userDepartments: {
+    department: {
+      nameNormalize: string
+      description: string
+      site: {
+        name: string
+        company: {
+          name: string
+          createdAt: string
+          updatedAt: string
+          slug: string
+        }
+        createdAt: string
+        updatedAt: string
+        slug: string
+      }
+      createdAt: string
+      updatedAt: string
+      slug: string
+    }
+    createdAt: string
+    updatedAt: string
+    slug: string
+  }[]
+  createdAt: string
+  updatedAt: string
+  slug: string
 }
 
 export type IUserQuery = IQuery

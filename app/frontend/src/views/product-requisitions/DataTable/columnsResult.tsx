@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import i18next from 'i18next'
 import { MoreHorizontal } from 'lucide-react'
@@ -13,7 +14,6 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui'
 import { IProductRequisitionInfo } from '@/types'
-import { useState } from 'react'
 import { DialogEditProductRequisition } from '@/components/app/dialog'
 import { DialogDeleteProductRequisition } from '@/components/app/dialog/dialog-delete-product-requisition'
 
@@ -45,19 +45,19 @@ export const useColumnsResult = (
 
   return [
     {
-      accessorKey: 'code',
+      accessorKey: 'product.code',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.productCode')} />
       )
     },
     {
-      accessorKey: 'name',
+      accessorKey: 'product.name',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.productName')} />
       )
     },
     {
-      accessorKey: 'provider',
+      accessorKey: 'product.provider',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.provider')} />
       )
@@ -69,7 +69,7 @@ export const useColumnsResult = (
       )
     },
     {
-      accessorKey: 'unit',
+      accessorKey: 'product.unit.name',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.unit')} />
       )
@@ -110,7 +110,7 @@ export const useColumnsResult = (
             )}
             {selectedProduct === product && openDelete && (
               <DialogDeleteProductRequisition
-                handleDeleteProduct={handleDelete}
+                handleDeleteProduct={handleDeleteProduct}
                 openDialog={openDelete}
                 product={product}
                 component={null}

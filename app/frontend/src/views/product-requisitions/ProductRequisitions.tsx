@@ -14,18 +14,21 @@ const ProductRequisitions: React.FC = () => {
   const { userInfo } = useUserStore()
 
   const { data, isLoading } = useProductRequisitionByCreator({
+    order: 'DESC',
     page: pagination.pageIndex + 1,
     pageSize: pagination.pageSize
   })
 
-  const filteredData = useMemo(() => {
-    if (!data?.result?.items || data.result.items.length === 0 || !userInfo) return []
+  console.log('data in product requisition', data)
 
-    return data.result.items.filter((item) => item.creatorSlug === userInfo.slug)
-  }, [data?.result.items, userInfo])
+  // const filteredData = useMemo(() => {
+  //   if (!data?.result?.items || data.result.items.length === 0 || !userInfo) return []
+
+  //   return data.result.items.filter((item) => item.creatorSlug === userInfo.slug)
+  // }, [data?.result.items, userInfo])
 
   const dataWithDisplayStatus = useMemo(() => {
-    return filteredData.map((item) => {
+    return data?.result?.items.map((item) => {
       const { status, isRecalled } = item
       let displayStatus = ''
       let statusColor = ''
@@ -62,7 +65,7 @@ const ProductRequisitions: React.FC = () => {
         statusColor
       }
     })
-  }, [filteredData])
+  }, [data?.result?.items])
 
   return (
     <div className="flex flex-col gap-4">
@@ -72,8 +75,10 @@ const ProductRequisitions: React.FC = () => {
       </Label>
       <DataTableByCreator
         isLoading={isLoading}
-        columns={useColumnsRequisitionListCreator()}
-        data={dataWithDisplayStatus}
+        columns={useColumnsRequisitionListCreator(
+          userInfo?.userDepartments[0].department.site.company.name ?? ''
+        )}
+        data={dataWithDisplayStatus || []}
         pages={data?.result?.totalPages || 0}
         page={pagination.pageIndex + 1}
         pageSize={pagination.pageSize}
