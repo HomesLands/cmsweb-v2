@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
+import { format } from 'date-fns'
 import { MoreHorizontal } from 'lucide-react'
 
 import {
@@ -12,13 +14,13 @@ import {
 } from '@/components/ui'
 import {
   IRequisitionFormResponseForApprover,
-  RequestRequisitionRoleApproval,
-  RequestRequisitionStatus
+  ProductRequisitionRoleApproval,
+  ProductRequisitionStatus
 } from '@/types'
 import { ProductRequisitionStatusBadge } from '@/components/app/badge'
-import { RequisitionTypeBadge } from '@/components/app/badge/RequisitionTypeBadge'
-import { useState } from 'react'
-import { DialogRequisitionDetail } from '@/components/app/dialog/dialog-requisition-detail'
+import { RequisitionTypeBadge } from '@/components/app/badge'
+import { DialogRequisitionDetail } from '@/components/app/dialog'
+import { UserApprovalStage } from '@/constants'
 
 export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseForApprover>[] => {
   const [openDialog, setOpenDialog] = useState(false)
@@ -26,29 +28,10 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
   const onOpenChange = () => {
     setOpenDialog(false)
   }
+  const formatDate = (date: Date) => {
+    return format(date, 'HH:mm dd/MM/yyyy')
+  }
   return [
-    // {
-    //   id: 'select',
-    //   header: ({ table }) => (
-    //     <Checkbox
-    //       checked={
-    //         table.getIsAllPageRowsSelected() ||
-    //         (table.getIsSomePageRowsSelected() && 'indeterminate')
-    //       }
-    //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-    //       aria-label="Select all"
-    //     />
-    //   ),
-    //   cell: ({ row }) => (
-    //     <Checkbox
-    //       checked={row.getIsSelected()}
-    //       onCheckedChange={(value) => row.toggleSelected(!!value)}
-    //       aria-label="Select row"
-    //     />
-    //   ),
-    //   enableSorting: false,
-    //   enableHiding: false
-    // },
     {
       accessorKey: 'productRequisitionForm.code',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Mã yêu cầu" />
@@ -62,12 +45,25 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
       }
     },
     {
-      accessorKey: 'productRequisitionForm.creator',
+      accessorKey: 'createdAt',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày tạo" />,
+      cell: ({ row }) => {
+        const { createdAt } = row.original
+        return <div>{formatDate(new Date(createdAt))}</div>
+      }
+    },
+    {
+      accessorKey: 'productRequisitionForm.creator.fullname',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Người tạo" />
     },
     {
-      accessorKey: 'productRequisitionForm.company',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />
+      accessorKey: 'productRequisitionForm.creator.userDepartments[0].department.site.company.name',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />,
+      cell: ({ row }) => {
+        const { company } =
+          row.original.productRequisitionForm.creator.userDepartments[0].department.site
+        return <div>{company.name}</div>
+      }
     },
     {
       accessorFn: (row) => row.productRequisitionForm.status,
@@ -77,60 +73,13 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
         return (
           <ProductRequisitionStatusBadge
             isRecalled={row.original.productRequisitionForm.isRecalled}
-            status={row.original.productRequisitionForm.status as RequestRequisitionStatus}
-            roleApproval={row.original.roleApproval as RequestRequisitionRoleApproval}
+            status={row.original.productRequisitionForm.status as ProductRequisitionStatus}
+            roleApproval={row.original.roleApproval as ProductRequisitionRoleApproval}
           />
         )
       },
       filterFn: (row, id, value) => {
         return row.original.productRequisitionForm.status === value
-      }
-    },
-    {
-      id: 'actions',
-      header: 'Thao tác',
-      cell: ({ row }) => {
-        const requisition = row.original
-        const { roleApproval } = requisition
-        console.log('requisition info', requisition)
-        return (
-          <div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="w-8 h-8 p-0">
-                  <span className="sr-only">Thao tác</span>
-                  <MoreHorizontal className="w-4 h-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                {roleApproval === 'approval_stage_1' && (
-                  <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
-                )}
-                {roleApproval === 'approval_stage_2' && (
-                  <>
-                    <DropdownMenuItem>Hoàn lại</DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
-                  </>
-                )}
-                {roleApproval === 'approval_stage_3' && (
-                  <>
-                    <DropdownMenuItem>Hoàn lại</DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-500">Hủy</DropdownMenuItem>
-                  </>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            {selectedRequisition === requisition && openDialog && (
-              <DialogRequisitionDetail
-                openDialog={openDialog}
-                requisition={requisition.productRequisitionForm}
-                component={null}
-                onOpenChange={onOpenChange}
-              />
-            )}
-          </div>
-        )
       }
     }
   ]

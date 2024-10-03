@@ -13,21 +13,23 @@ import {
 import { useCompanies } from '@/hooks'
 
 interface SelectCompanyProps {
-  onChange: (slug: string, directorSlug: string, name: string) => void
+  onChange: (slug: string, name: string) => void
   defaultValue?: string
 }
 
 export const SelectCompany: FC<SelectCompanyProps> = ({ onChange, defaultValue }) => {
   const { t } = useTranslation('productRequisition')
   const { data: companies } = useCompanies()
+
   const companyList = companies?.data.result
+
   const handleValueChange = (value: string) => {
     if (Array.isArray(companyList)) {
       const selectedCompany = companyList.find(
-        (company: { slug: string; directorSlug: string; name: string }) => company.slug === value
+        (company: { slug: string; name: string }) => company.slug === value
       )
       if (selectedCompany) {
-        onChange(selectedCompany.slug, selectedCompany.directorSlug, selectedCompany.name)
+        onChange(selectedCompany.slug, selectedCompany.name)
       }
     }
   }

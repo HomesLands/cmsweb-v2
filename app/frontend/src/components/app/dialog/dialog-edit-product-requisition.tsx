@@ -1,5 +1,3 @@
-import { z } from 'zod'
-
 import {
   Dialog,
   DialogContent,
@@ -9,9 +7,9 @@ import {
   DialogTrigger
 } from '@/components/ui'
 
-import { AddNewProductRequestForm } from '@/components/app/form'
 import { IProductRequisitionInfo } from '@/types'
-import { addNewProductRequestSchema } from '@/schemas'
+import { TAddNewProductRequestSchema } from '@/schemas'
+import { EditProductRequisitionForm } from '../form/edit-product-requisition-form'
 
 interface DialogEditProductRequisitionProps {
   handleAddRequest: (product: IProductRequisitionInfo) => void
@@ -28,11 +26,12 @@ export function DialogEditProductRequisition({
   component,
   onOpenChange
 }: DialogEditProductRequisitionProps) {
-  console.log('product in dialoggg', product)
-  const handleSubmit = (data: z.infer<typeof addNewProductRequestSchema>) => {
+  const handleSubmit = (data: TAddNewProductRequestSchema) => {
     const completeData: IProductRequisitionInfo = {
       ...data,
       requestQuantity: Number(data.requestQuantity)
+      // description: data.description
+      // slug: product?.slug || ''
     }
     handleAddRequest(completeData)
     onOpenChange()
@@ -48,10 +47,7 @@ export function DialogEditProductRequisition({
             Nhập đầy đủ thông tin bên dưới để chỉnh sửa thông tin vật tư
           </DialogDescription>
         </DialogHeader>
-        <AddNewProductRequestForm
-          data={product || ({} as IProductRequisitionInfo)}
-          onSubmit={handleSubmit}
-        />
+        <EditProductRequisitionForm data={product ?? undefined} onSubmit={handleSubmit} />
       </DialogContent>
     </Dialog>
   )

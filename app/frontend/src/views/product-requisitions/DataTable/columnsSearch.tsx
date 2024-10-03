@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { PlusCircledIcon } from '@radix-ui/react-icons'
+import { useTranslation } from 'react-i18next'
 
 import {
   Button,
@@ -10,17 +11,20 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui'
-import { IProductInfo, IProductRequisitionInfo } from '@/types'
+import { IProductInfo } from '@/types'
 import { DialogAddProductRequest } from '@/components/app/dialog'
 
 export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
-  const [selectedProduct, setSelectedProduct] = useState<IProductRequisitionInfo | null>(null)
+  const { t } = useTranslation('tableData')
+  const [selectedProduct, setSelectedProduct] = useState<IProductInfo | null>(null)
   const [openDialog, setOpenDialog] = useState(false)
 
   const handleButtonClick = (product: IProductInfo) => {
     setOpenDialog(true)
-    const { quantity, slug, ...rest } = product
-    setSelectedProduct({ ...rest, requestQuantity: quantity, productSlug: slug })
+    console.log(product)
+    // const { name, quantity, slug, unit, ...rest } = product
+    setSelectedProduct(product)
+    console.log(selectedProduct)
   }
 
   const onOpenChange = () => {
@@ -30,7 +34,9 @@ export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
   return [
     {
       accessorKey: 'addRequest',
-      header: 'Thêm vào phiếu yêu cầu',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('tableData.addNewProduct')} />
+      ),
       cell: ({ row }) => {
         const product = row.original
         return (
@@ -41,10 +47,10 @@ export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
                   <Button variant="ghost" onClick={() => handleButtonClick(product)}>
                     <PlusCircledIcon className="w-4 h-4" />
                   </Button>
-                  {selectedProduct && selectedProduct.code === product.code && (
+                  {selectedProduct && selectedProduct.slug === product.slug && (
                     <DialogAddProductRequest
                       openDialog={openDialog}
-                      product={selectedProduct}
+                      product={product}
                       component={null}
                       onOpenChange={onOpenChange}
                     />
@@ -52,7 +58,7 @@ export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
                 </div>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Thêm vào phiếu yêu cầu</p>
+                <p>{t('tableData.addNewProduct')}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -73,7 +79,11 @@ export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
     },
     {
       accessorKey: 'unit',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Đơn vị" />
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Đơn vị" />,
+      cell: ({ row }) => {
+        const unit = row.original.unit
+        return <span>{unit.name}</span>
+      }
     },
     {
       accessorKey: 'description',

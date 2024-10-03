@@ -21,20 +21,23 @@
     "note": "Ghi chú",
     "noteDescription": "Nhập ghi chú",
     "priority": "Mức độ ưu tiên",
+    "deadlineApproval": "Hạn duyệt",
+    "deadlineApprovalDescription": "Chọn ngày hết hạn duyệt",
     "back": "Trở lại",
     "next": "Tiếp theo",
     "add": "Thêm",
     "confirm": "Xác nhận",
     "giveBack": "Hoàn lại",
     "accept": "Duyệt",
+    "approvalLog": "Nội dung duyệt",
     "returnToPrevious": "Trở lại",
     "reject": "Từ chối",
     "acceptConfirmTitle": "Duyệt yêu cầu",
     "acceptConfirmMessage": "Bạn có chắc chắn muốn duyệt yêu cầu này?",
     "rejectConfirmTitle": "Từ chối yêu cầu",
     "rejectConfirmMessage": "Bạn có chắc chắn muốn từ chối yêu cầu này?",
-    "returnConfirmTitle": "Hoàn lại yêu cầu",
-    "returnConfirmMessage": "Bạn có chắc chắn muốn hoàn lại yêu cầu này?",
+    "giveBackConfirmTitle": "Hoàn lại yêu cầu",
+    "giveBackConfirmMessage": "Bạn có chắc chắn muốn hoàn lại yêu cầu này?",
     "cancelConfirmTitle": "Hủy yêu cầu",
     "cancelConfirmMessage": "Bạn có chắc chắn muốn hủy yêu cầu này?",
     "messageInputLabel": "Nội dung",
@@ -50,6 +53,13 @@
     "confirmProductRequisitionsSuccessDescription": "Phiếu yêu cầu đã được gửi đi. Bạn có thể xem danh sách",
     "here": "tại đây"
   },
+  "roleApproval": {
+    "approvalLevel": "Cấp duyệt",
+    "approvalContent": "Nội dung duyệt",
+    "approvalStage1": "Duyệt cấp 1",
+    "approvalStage2": "Duyệt cấp 2",
+    "approvalStage3": "Duyệt cấp 3"
+  },
   "progress": {
     "createProductRequisitions": "Tạo phiếu yêu cầu",
     "addProductToRequest": "Thêm vật tư",
@@ -63,5 +73,9 @@
   "requisitionDetail": {
     "requestDetail": "Chi tiết yêu cầu vật tư",
     "requestDetailDescription": "Thông tin chi tiết của yêu cầu vật tư"
+  },
+  "requisitionEdit": {
+    "requestEdit": "Sửa yêu cầu vật tư",
+    "requestEditDescription": "Thông tin chi tiết của yêu cầu vật tư"
   }
 }

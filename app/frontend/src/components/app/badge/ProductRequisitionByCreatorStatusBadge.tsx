@@ -1,11 +1,11 @@
-import { RequestRequisitionStatus } from '@/types'
+import { ProductRequisitionStatus } from '@/types'
 
 export interface ProductRequisitionByCreatorStatusBadgeProps {
   isRecalled: boolean
-  status: RequestRequisitionStatus
+  status: ProductRequisitionStatus
 }
 
-const getBadgeColorClass = (status: RequestRequisitionStatus, isRecalled: boolean): string => {
+const getBadgeColorClass = (status: ProductRequisitionStatus, isRecalled: boolean): string => {
   if (isRecalled) {
     return 'bg-red-500'
   }
@@ -23,7 +23,7 @@ const getBadgeColorClass = (status: RequestRequisitionStatus, isRecalled: boolea
   }
 }
 
-const getBadgeText = (status: RequestRequisitionStatus, isRecalled: boolean): string => {
+const getBadgeText = (status: ProductRequisitionStatus, isRecalled: boolean): string => {
   if (isRecalled) {
     switch (status) {
       case 'cancel':
@@ -57,7 +57,7 @@ export const ProductRequisitionByCreatorStatusBadge: React.FC<
 > = ({ status, isRecalled }) => {
   return (
     <span
-      className={`py-1.5 px-2.5 ${getBadgeColorClass(status, isRecalled)} rounded-full text-white`}
+      className={`inline-block py-1.5 px-2.5 min-w-[8rem] text-center ${getBadgeColorClass(status, isRecalled)} rounded-full text-white`}
     >
       {getBadgeText(status, isRecalled)}
     </span>

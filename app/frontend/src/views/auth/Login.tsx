@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { LoginBackground } from '@/assets/images'
 import { LoginForm } from '@/components/app/form'
 import { useLogin, useUser, useUserInfoPermission } from '@/hooks'
-import { IApiResponse, ILoginResponse } from '@/types'
+import { IApiResponse, ILoginResponse, IUserInfo } from '@/types'
 import { useAuthStore, useUserInfoPermissionsStore, useUserStore } from '@/stores'
 import { ROUTE } from '@/constants'
 
@@ -45,7 +45,7 @@ const Login: React.FC = () => {
       const { data: userRoles } = await refetchUserInfoPermission()
       const { data: userInfo } = await refetchUserInfo()
       setUserRoles(Array.isArray(userRoles) ? userRoles : []) // Handle roles being non-array safely
-      setUserInfo(userInfo || {})
+      setUserInfo(userInfo as IUserInfo)
 
       navigate(ROUTE.HOME)
       toast.success(t('login.loginSuccess'))

@@ -14,7 +14,7 @@ import { useProjects } from '@/hooks'
 
 interface SelectProjectProps {
   defaultValue?: string
-  onChange: (value: { slug: string; managerSlug: string; name: string }) => void
+  onChange: (slug: string, name: string) => void
 }
 
 export const SelectProject: FC<SelectProjectProps> = ({ onChange, defaultValue }) => {
@@ -26,11 +26,7 @@ export const SelectProject: FC<SelectProjectProps> = ({ onChange, defaultValue }
   const handleValueChange = (value: string) => {
     const selectedProject = projectList?.find((project) => project.slug === value)
     if (selectedProject) {
-      onChange({
-        slug: selectedProject.slug,
-        managerSlug: selectedProject.managerSlug,
-        name: selectedProject.name
-      })
+      onChange(selectedProject.slug, selectedProject.name)
     }
   }
 
