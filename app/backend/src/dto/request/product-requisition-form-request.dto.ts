@@ -14,7 +14,8 @@ import {
 } from "@enums";
 import {
   CreateRequestProductRequestDto,
-} from "./request-product-request.dto";
+  CreateApprovalLogRequestDto
+} from "@dto/request";
 import { IsDateStringWithMessage } from "decorator";
 
 export class CreateProductRequisitionFormRequestDto {
@@ -60,21 +61,22 @@ export class ApprovalProductRequisitionFormRequestDto {
   @AutoMap()
   formSlug?: string;
 
-  @IsNotEmpty({ message: "INVALID_APPROVAL_STATUS" })
-  @IsEnum(ApprovalLogStatus, { message: "INVALID_APPROVAL_STATUS" })
-  @Expose()
   @AutoMap()
-  approvalLogStatus?: string;
+  @Expose()
+  @ValidateNested() 
+  @Type(() => CreateApprovalLogRequestDto) 
+  approvalLog?: CreateApprovalLogRequestDto;
 
-  // @IsNotEmpty({ message: "INVALID_APPROVAL_USER_SLUG" })
+  // @IsNotEmpty({ message: "INVALID_APPROVAL_STATUS" })
+  // @IsEnum(ApprovalLogStatus, { message: "INVALID_APPROVAL_STATUS" })
   // @Expose()
   // @AutoMap()
-  // approvalUserSlug?: string;
+  // approvalLogStatus?: string;
 
-  @IsNotEmpty({ message: "INVALID_CONTENT_APPROVAL_LOG" })
-  @Expose()
-  @AutoMap()
-  approvalLogContent?: string;
+  // @IsNotEmpty({ message: "INVALID_CONTENT_APPROVAL_LOG" })
+  // @Expose()
+  // @AutoMap()
+  // approvalLogContent?: string;
 }
 
 export class ResubmitProductRequisitionFormRequestDto {

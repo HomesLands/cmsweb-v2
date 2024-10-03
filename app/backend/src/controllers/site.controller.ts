@@ -54,6 +54,8 @@ class SiteController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1043:
+   *         description: Company not found
    *
    */
 

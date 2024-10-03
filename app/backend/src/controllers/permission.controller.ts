@@ -85,6 +85,8 @@ class PermissionController {
    *         description: Get permission successfully
    *       500:
    *         description: Server error
+   *       1072:
+   *         description: Permission could not be found
    */
   public async getPermissionBySlug(
     req: Request,
@@ -125,6 +127,8 @@ class PermissionController {
    *         description: Create role successfully.
    *       500:
    *         description: Server error
+   *       1070:
+   *         description: Role could not be found
    */
   public async createPermission(
     req: Request,

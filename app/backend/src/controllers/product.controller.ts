@@ -178,6 +178,10 @@ class ProductController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1025:
+   *         description: Code product exist
+   *       1024:
+   *         description: Unit not found
    *
    */
 
@@ -224,6 +228,10 @@ class ProductController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1045:
+   *         description: Product not found
+   *       1024:
+   *         description: Unit not found
    *
    */
 

@@ -99,26 +99,42 @@ class ProductRequisitionFormController {
    *             unit: unit-slug-123
    *             description: Loại nhỏ
    *
+   *     CreateApprovalLogRequestDto:
+   *       type: object
+   *       required:
+   *         - status
+   *         - content
+   *       properties:
+   *         status:
+   *           type: string
+   *           description: The slug of approval user (accept/give_back/cancel)
+   *         content:
+   *           type: string
+   *           description: The content of approval user
+   *       example:
+   *         status: accept
+   *         content: yêu cầu ổn
+   *
+   * 
    *     ApprovalProductRequisitionFormRequestDto:
    *       type: object
    *       required:
    *         - formSlug
-   *         - approvalLogStatus
-   *         - approvalLogContent
+   *         - approvalLog
    *       properties:
    *         formSlug:
    *           type: string
    *           description: The slug of the form.
-   *         approvalLogStatus:
-   *           type: string
-   *           description: The status approval form (accept/give_back/cancel)
-   *         approvalLogContent:
-   *           type: string
-   *           description: The reason approval form.
+   *         approvalLog:
+   *           type: object
+   *           description: Object approval log.
+   *           items:
+   *             $ref: '#/components/schemas/CreateApprovalLogRequestDto'
    *       example:
    *         formSlug: XUWyA6fr7i
-   *         approvalLogStatus: accept
-   *         approvalLogContent: Yêu cầu đã ok
+   *         requestProducts:
+   *           - status: accept
+   *             content: Yêu cầu ổn
    *
    *     ResubmitProductRequisitionFormRequestDto:
    *       type: object
@@ -232,6 +248,16 @@ class ProductRequisitionFormController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1042:
+   *         description: Product requisition form code exist
+   *       1053:
+   *         description: Invalid creator
+   *       1044:
+   *         description: Invalid quantity user approval
+   *       1069:
+   *         description: Missing user approval
+   *       1052:
+   *         description: Project not found
    *
    */
   public async createProductRequisitionForm(
@@ -281,6 +307,8 @@ class ProductRequisitionFormController {
    *         description: get product requisition form successfully.
    *       500:
    *         description: Server error
+   *       1046:
+   *         description: Form not found
    *
    */
 
@@ -327,6 +355,16 @@ class ProductRequisitionFormController {
    *         description: update status for product requisition form successfully.
    *       500:
    *         description: Server error
+   *       1085:
+   *         description: Forbidden approval form
+   *       1046:
+   *         description: Form not found
+   *       1050:
+   *         description: Product requisition form done approval
+   *       1054:
+   *         description: Invalid approval status
+   *       1055:
+   *         description: Invalid content approval log
    *
    */
 
@@ -375,6 +413,10 @@ class ProductRequisitionFormController {
    *         description: resubmit product requisition form successfully.
    *       500:
    *         description: Server error
+   *       1046:
+   *         description: Form not found
+   *       1072:
+   *         description: Forbidden edit form
    *
    */
 

@@ -59,6 +59,8 @@ class DepartmentController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1051:
+   *         description: Site not found
    *
    */
 

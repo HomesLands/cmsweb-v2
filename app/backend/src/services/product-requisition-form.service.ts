@@ -79,11 +79,8 @@ class ProductRequisitionFormService {
       relations: [
         "project",
         "creator.userDepartments.department.site.company",
-        // "userApprovals",
-        // "userApprovals.assignedUserApproval",
         "userApprovals.assignedUserApproval.user",
         "userApprovals.approvalLogs",
-        // "requestProducts",
         "requestProducts.product.unit",
         "requestProducts.temporaryProduct.unit",
       ],
@@ -115,12 +112,6 @@ class ProductRequisitionFormService {
     // Validation
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
-
-    console.log({requestData})
-    console.log({requestData1: requestData.requestProducts})
-
-    // throw new GlobalError(ErrorCodes.PRODUCT_REQUISITION_FORM_CODE_EXIST);
-
 
     const codeExisted = await productRequisitionFormRepository.existsBy({
       code: requestData.code,
@@ -161,21 +152,6 @@ class ProductRequisitionFormService {
     const userApprovalStageThree = assignedUserApproval.find(
       (item) => item.roleApproval === RoleApproval.APPROVAL_STAGE_3
     );
-
-    // const temporaryRequestProductData = mapper.map(
-    //   requestData.requestProducts[0],
-    //   CreateTemporaryProductRequestDto,
-    //   TemporaryProduct
-    // );
-    // console.log({temporaryRequestProductData})
-
-    // const requestProductData = mapper.map(
-    //   requestData.requestProducts[0],
-    //   CreateRequestProductRequestDto,
-    //   RequestProduct
-    // );
-    // console.log({requestProductData})
-    // throw new GlobalError(ErrorCodes.PROJECT_NOT_FOUND);
 
     if(!(
       userApprovalStageOne
@@ -370,7 +346,8 @@ class ProductRequisitionFormService {
       }
 
       // change status form
-      if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
+      // if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
+      if (requestData.approvalLog?.status === ApprovalLogStatus.ACCEPT) {
         form.status = ProductRequisitionFormStatus.ACCEPTED_STAGE_1;
         form.isRecalled = false;
       } else {
@@ -382,7 +359,7 @@ class ProductRequisitionFormService {
 
       // create approval log
       const approvalLogData = mapper.map(
-        requestData,
+        requestData.approvalLog,
         CreateApprovalLogRequestDto,
         ApprovalLog
       );
@@ -405,12 +382,14 @@ class ProductRequisitionFormService {
         );
       }
 
-      if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
+      // if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
+      if (requestData.approvalLog?.status === ApprovalLogStatus.ACCEPT) {
         // update status
         form.status = ProductRequisitionFormStatus.ACCEPTED_STAGE_2;
         form.isRecalled = false;
       } else if (
-        requestData.approvalLogStatus === ApprovalLogStatus.GIVE_BACK
+        // requestData.approvalLogStatus === ApprovalLogStatus.GIVE_BACK
+        requestData.approvalLog?.status === ApprovalLogStatus.GIVE_BACK
       ) {
         form.status = ProductRequisitionFormStatus.WAITING;
         form.isRecalled = true;
@@ -423,7 +402,7 @@ class ProductRequisitionFormService {
 
       // create approval log
       const approvalLogData = mapper.map(
-        requestData,
+        requestData.approvalLog,
         CreateApprovalLogRequestDto,
         ApprovalLog
       );
@@ -446,11 +425,13 @@ class ProductRequisitionFormService {
         );
       }
 
-      if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
+      // if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
+      if (requestData.approvalLog?.status === ApprovalLogStatus.ACCEPT) {
         form.status = ProductRequisitionFormStatus.WAITING_EXPORT;
         form.isRecalled = false;
       } else if (
-        requestData.approvalLogStatus === ApprovalLogStatus.GIVE_BACK
+        // requestData.approvalLogStatus === ApprovalLogStatus.GIVE_BACK
+        requestData.approvalLog?.status === ApprovalLogStatus.GIVE_BACK
       ) {
         form.status = ProductRequisitionFormStatus.ACCEPTED_STAGE_1;
         form.isRecalled = true;
@@ -463,7 +444,7 @@ class ProductRequisitionFormService {
 
       // create approval log
       const approvalLogData = mapper.map(
-        requestData,
+        requestData.approvalLog,
         CreateApprovalLogRequestDto,
         ApprovalLog
       );
@@ -509,7 +490,6 @@ class ProductRequisitionFormService {
         "requestProducts.temporaryProduct.unit",
       ],
     });
-    console.log({ form });
     if (!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
     if (form.creator) {
@@ -523,15 +503,12 @@ class ProductRequisitionFormService {
     form.isRecalled = false;
     form.description = requestData.description;
 
-    console.log({ form1: form });
-
     form = await productRequisitionFormRepository.save(form);
     const formDto = mapper.map(
       form,
       ProductRequisitionForm,
       ProductRequisitionFormResponseDto
     );
-    console.log({ formDto });
     return formDto;
   }
 }

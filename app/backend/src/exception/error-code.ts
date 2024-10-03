@@ -32,7 +32,7 @@ export const ErrorCodes: TErrorCode = {
   UNIT_EXIST: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1023,
-    message: "Unit exist",
+    message: `Unit existed`,
   },
   UNIT_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -267,7 +267,7 @@ export const ErrorCodes: TErrorCode = {
   ROLE_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1070,
-    message: "Authority could not be found",
+    message: "Role could not be found",
   },
   AUTHORITY_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -277,7 +277,7 @@ export const ErrorCodes: TErrorCode = {
   PERMISSION_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1072,
-    message: "Authority could not be found",
+    message: "Permission could not be found",
   },
   USER_ROLE_EXIST: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -322,7 +322,7 @@ export const ErrorCodes: TErrorCode = {
   REQUEST_PRODUCT_EXIST: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1076,
-    message: "Request product exist",
+    message: "Request product existed",
   },
   INVALID_REASON_RESUBMIT_FORM: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -397,7 +397,7 @@ export const ErrorCodes: TErrorCode = {
   WAREHOUSE_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1090,
-    message: `Warehouse not found"`,
+    message: `Warehouse not found`,
   },
   MISSING_QUANTITY_PRODUCT_WAREHOUSE_ADD_NEW: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
