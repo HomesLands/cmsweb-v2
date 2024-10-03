@@ -359,7 +359,7 @@ class ProductRequisitionFormService {
 
       // create approval log
       const approvalLogData = mapper.map(
-        requestData,
+        requestData.approvalLog,
         CreateApprovalLogRequestDto,
         ApprovalLog
       );
@@ -444,7 +444,7 @@ class ProductRequisitionFormService {
 
       // create approval log
       const approvalLogData = mapper.map(
-        requestData,
+        requestData.approvalLog,
         CreateApprovalLogRequestDto,
         ApprovalLog
       );

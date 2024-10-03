@@ -361,6 +361,10 @@ class ProductRequisitionFormController {
    *         description: Form not found
    *       1050:
    *         description: Product requisition form done approval
+   *       1054:
+   *         description: Invalid approval status
+   *       1055:
+   *         description: Invalid content approval log
    *
    */
 
