@@ -15,7 +15,7 @@ interface ColumnVisibilityDropdownProps<TData> {
   table: Table<TData>
 }
 
-export function CustomComponent<TData>({ table }: ColumnVisibilityDropdownProps<TData>) {
+export default function CustomComponent<TData>({ table }: ColumnVisibilityDropdownProps<TData>) {
   const { t } = useTranslation('productRequisition')
   const { t: tTablePaging } = useTranslation('tableData')
   return (

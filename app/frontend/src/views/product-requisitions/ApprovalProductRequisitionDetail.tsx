@@ -3,13 +3,13 @@ import { useTranslation } from 'react-i18next'
 import { ReaderIcon } from '@radix-ui/react-icons'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
-import { DataTableRequisition, Label, Button } from '@/components/ui'
+import { Label, Button, DataTable } from '@/components/ui'
 import { useProductRequisitionBySlug } from '@/hooks'
 
 import { TbeLogo } from '@/assets/images'
 import { MetekLogo } from '@/assets/images'
 import { SongnamLogo } from '@/assets/images'
-import { useColumnsDetail } from './DataTable/columnsDetail'
+import { useColumnsDetail } from './data-table/columns/columnsDetail'
 import {
   ApprovalLogStatus,
   IApproveProductRequisition,
@@ -241,14 +241,13 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
             </div>
           )}
         </div>
-        <DataTableRequisition
+        <DataTable
           isLoading={false}
           columns={columns}
           data={data?.result?.requestProducts || []}
           pages={1}
-          page={1}
-          pageSize={data?.result?.requestProducts?.length || 0}
           onPageChange={() => {}}
+          onPageSizeChange={() => {}}
         />
 
         <DialogApprovalRequisition

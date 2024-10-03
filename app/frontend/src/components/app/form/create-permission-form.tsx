@@ -8,20 +8,13 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-  Input,
   Form,
-  Button,
-  Textarea
+  Button
 } from '@/components/ui'
-import {
-  createAuthoritySchema,
-  createPermissionSchema,
-  TCreateAuthoritySchema,
-  TCreatePermissionSchema
-} from '@/schemas'
+import { createPermissionSchema, TCreateAuthoritySchema, TCreatePermissionSchema } from '@/schemas'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SelectRole } from '../select'
+import { SelectAuthority, SelectRole } from '../select'
 
 interface IFormCreatePermissionProps {
   onSubmit: (data: TCreatePermissionSchema) => void
@@ -49,7 +42,7 @@ export const CreatePermissionForm: React.FC<IFormCreatePermissionProps> = ({ onS
         name="nameNormalize"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('authorities.nameNormalize')}</FormLabel>
+            <FormLabel>{t('permissions.selectRole')}</FormLabel>
             <FormControl>
               <SelectRole onChange={() => {}} />
             </FormControl>
@@ -64,12 +57,9 @@ export const CreatePermissionForm: React.FC<IFormCreatePermissionProps> = ({ onS
         name="description"
         render={() => (
           <FormItem>
-            <FormLabel>{t('authorities.description')}</FormLabel>
+            <FormLabel>{t('permissions.selectAuthority')}</FormLabel>
             <FormControl>
-              <Textarea
-                placeholder={t('authorities.CreateAuthorityDescription')}
-                onChange={(e) => form.setValue('description', e.target.value)}
-              />
+              <SelectAuthority onChange={() => {}} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -91,7 +81,7 @@ export const CreatePermissionForm: React.FC<IFormCreatePermissionProps> = ({ onS
           </div>
           <div className="flex justify-end">
             <Button className="flex justify-end" type="submit">
-              {t('authorities.createAuthority')}
+              {t('permissions.createPermission')}
             </Button>
           </div>
         </form>

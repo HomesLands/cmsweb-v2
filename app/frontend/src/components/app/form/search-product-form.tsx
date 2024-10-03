@@ -3,12 +3,12 @@ import { useTranslation } from 'react-i18next'
 
 import { useRequisitionStore } from '@/stores'
 import { useProducts } from '@/hooks'
-import { IProductInfo, IProductNameSearch, IProductQuery, IProductRequisitionInfo } from '@/types'
+import { IProductNameSearch, IProductQuery, IProductRequisitionInfo } from '@/types'
 
-import { Button, DataTable, DataTableRequisition, Label } from '@/components/ui'
+import { Button, DataTable, Label } from '@/components/ui'
 import { CustomComponentRequest } from '@/views/product-requisitions/CustomComponentRequest'
-import { useColumnsSearch } from '@/views/product-requisitions/DataTable/columnsSearch'
-import { useColumnsResult } from '@/views/product-requisitions/DataTable/columnsResult'
+import { useColumnsSearch } from '@/views/product-requisitions/data-table/columns/columnsSearch'
+import { useColumnsResult } from '@/views/product-requisitions/data-table/columns/columnsResult'
 
 interface IFormAddProductProps {
   onSubmit: (data: IProductNameSearch) => void
@@ -57,8 +57,6 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
         columns={useColumnsSearch()}
         data={allProduct?.result?.items || []}
         pages={allProduct?.result?.totalPages || 0}
-        page={page}
-        pageSize={pageSize}
         onPageChange={setPage}
         onPageSizeChange={setPageSize}
         CustomComponent={(props) => <CustomComponentRequest {...props} />}
@@ -72,13 +70,11 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
           {t('productRequisition.addedProductToRequestDescription')}
         </span>
         <div className="flex flex-col gap-2">
-          <DataTableRequisition
+          <DataTable
             isLoading={isLoading}
             columns={columns}
             data={requisition?.requestProducts || []}
             pages={1}
-            page={1}
-            pageSize={requisition?.requestProducts?.length || 0}
             onPageChange={() => {}}
             onPageSizeChange={() => {}}
             CustomComponent={undefined}

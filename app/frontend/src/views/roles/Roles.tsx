@@ -4,14 +4,13 @@ import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
 import { usePagination, useRoles } from '@/hooks'
-import { useRoleColumns } from './DataTable/columns'
-import { CustomComponent } from './DataTable/CustomComponent'
+import { useRoleColumns } from './DataTable'
 
 const Roles: React.FC = () => {
   const { t } = useTranslation(['roles'])
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
 
-  const { data: roles } = useRoles({
+  const { data: roles, isLoading } = useRoles({
     order: 'DESC',
     page: pagination.pageIndex,
     pageSize: pagination.pageSize
@@ -27,12 +26,9 @@ const Roles: React.FC = () => {
         columns={useRoleColumns()}
         data={roles?.items || []}
         pages={roles?.totalPages || 0}
-        page={pagination.pageIndex + 1}
-        pageSize={pagination.pageSize}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
-        CustomComponent={CustomComponent}
-        isLoading={false}
+        isLoading={isLoading}
       />
     </div>
   )

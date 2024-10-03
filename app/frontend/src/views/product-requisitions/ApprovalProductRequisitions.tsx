@@ -4,10 +4,10 @@ import { ReaderIcon } from '@radix-ui/react-icons'
 import { useNavigate } from 'react-router-dom'
 
 import { DataTable, Label } from '@/components/ui'
-import { useColumnsRequisitionList } from './DataTable/columns'
+import { useColumnsRequisitionList } from './data-table/columns/columns'
 import { usePagination, useProductRequisitionByApprover } from '@/hooks'
-import { CustomComponent } from './CustomComponent'
 import { IRequisitionFormResponseForApprover } from '@/types'
+import { DataTableFilterOptions } from './data-table'
 
 const ApprovalProductRequisitions: React.FC = () => {
   const { t } = useTranslation(['productRequisition'])
@@ -16,8 +16,9 @@ const ApprovalProductRequisitions: React.FC = () => {
   const navigate = useNavigate()
 
   const { data, isLoading } = useProductRequisitionByApprover({
-    page: pagination.pageIndex + 1,
-    pageSize: pagination.pageSize
+    page: pagination.pageIndex,
+    pageSize: pagination.pageSize,
+    order: 'DESC'
   })
 
   const filteredData = useMemo(() => {
@@ -127,17 +128,16 @@ const ApprovalProductRequisitions: React.FC = () => {
         <ReaderIcon className="header-icon" />
         {t('productRequisition.list')}
       </Label>
+
       <DataTable
         isLoading={isLoading}
         columns={useColumnsRequisitionList()}
-        data={dataWithDisplayStatus}
+        data={data?.result.items || []}
         pages={data?.result?.totalPages || 0}
-        page={pagination.pageIndex + 1}
-        pageSize={pagination.pageSize}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
-        CustomComponent={CustomComponent}
         onRowClick={handleRowClick}
+        filterOptions={DataTableFilterOptions}
       />
     </div>
   )
