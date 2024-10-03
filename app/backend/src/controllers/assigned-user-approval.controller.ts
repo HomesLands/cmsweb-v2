@@ -62,6 +62,12 @@ class AssignedUserApprovalController {
    *         description: Server error
    *       1004:
    *         description: User not found
+   *       1083:
+   *         description: Invalid form type
+   *       1068:
+   *         description: Invalid role approval
+   *       1080:
+   *         description: Invalid user slug
    *
    */
 

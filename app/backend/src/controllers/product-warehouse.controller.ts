@@ -63,10 +63,16 @@ class ProductWarehouseController {
    *         description: Warehouse not found
    *       1045:
    *         description: Product not found
+   *       1065:
+   *         description: Invalid product slug
+   *       1089:
+   *         description: Invalid quantity product warehouse
    *       1091:
    *         description: Missing quantity product warehouse add new
    *       1092:
    *         description: Error when update product quantity
+   *       1100:
+   *         description: Invalid warehouse slug
    *
    */
 

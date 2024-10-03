@@ -158,6 +158,8 @@ class RoleController {
    *         description: Create role successfully.
    *       500:
    *         description: Server error
+   *       1087:
+   *         description: Role must start with "ROLE_"
    */
   public async createRole(
     req: Request,

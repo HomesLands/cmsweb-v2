@@ -248,16 +248,38 @@ class ProductRequisitionFormController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1026:
+   *         description: Invalid product provider
+   *       1027:
+   *         description: Invalid product name
+   *       1039:
+   *         description: Invalid date format
    *       1042:
    *         description: Product requisition form code exist
-   *       1053:
-   *         description: Invalid creator
    *       1044:
    *         description: Invalid quantity user approval
-   *       1069:
-   *         description: Missing user approval
    *       1052:
    *         description: Project not found
+   *       1053:
+   *         description: Invalid creator
+   *       1056:
+   *         description: Invalid form code
+   *       1057:
+   *         description: Invalid type of product requisition form
+   *       1060:
+   *         description: Invalid project slug
+   *       1061:
+   *         description: Invalid request product array
+   *       1066:
+   *         description: Invalid request product quantity
+   *       1069:
+   *         description: Missing user approval
+   *       1084:
+   *         description: Invalid deadline date approval form
+   *       1088:
+   *         description: Invalid unit slug
+   *       1097:
+   *         description: Invalid product description
    *
    */
   public async createProductRequisitionForm(
@@ -355,16 +377,12 @@ class ProductRequisitionFormController {
    *         description: update status for product requisition form successfully.
    *       500:
    *         description: Server error
-   *       1085:
-   *         description: Forbidden approval form
    *       1046:
    *         description: Form not found
    *       1050:
    *         description: Product requisition form done approval
-   *       1054:
-   *         description: Invalid approval status
-   *       1055:
-   *         description: Invalid content approval log
+   *       1085:
+   *         description: Forbidden approval form
    *
    */
 
@@ -415,8 +433,12 @@ class ProductRequisitionFormController {
    *         description: Server error
    *       1046:
    *         description: Form not found
+   *       1063:
+   *         description: Invalid form slug
    *       1072:
    *         description: Forbidden edit form
+   *       1077:
+   *         description: Invalid reason resubmit form
    *
    */
 

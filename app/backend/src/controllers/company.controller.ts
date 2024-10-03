@@ -88,6 +88,8 @@ class CompanyController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1040:
+   *         description: Invalid company name
    *       1041:
    *         description: Company name exist
    *

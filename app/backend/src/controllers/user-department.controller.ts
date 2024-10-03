@@ -56,6 +56,10 @@ class UserDepartmentController {
    *         description: Server error
    *       1004:
    *         description: User not found
+   *       1080:
+   *         description: Invalid user slug
+   *       1081:
+   *         description: Invalid department slug
    *       1082:
    *         description: Department not found
    *

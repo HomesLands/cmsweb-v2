@@ -61,6 +61,12 @@ class DepartmentController {
    *         description: Server error
    *       1051:
    *         description: Site not found
+   *       1059:
+   *         description: Invalid site slug
+   *       1086:
+   *         description: Invalid description department
+   *       1099:
+   *         description: Name normalize department must end with "_DEPARTMENT"
    *
    */
 
