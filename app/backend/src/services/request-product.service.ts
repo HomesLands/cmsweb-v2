@@ -60,7 +60,7 @@ class RequestProductService {
     );
     if(!isPermitEdit) throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
 
-    await requestProductRepository.remove(requestProduct);
+    await requestProductRepository.softRemove(requestProduct);
     const deletedRequestProductDto = mapper.map(requestProduct, RequestProduct, RequestProductResponseDto);
     return deletedRequestProductDto;
   }

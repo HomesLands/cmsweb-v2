@@ -8,7 +8,7 @@ import {
   TQueryRequest,
 } from "@types";
 import { plainToClass } from "class-transformer";
-import { CreateAuthorityRequestDto } from "@dto/request";
+import { CreateAuthorityRequestDto, UpdateAuthorityRequestDto } from "@dto/request";
 import { validate } from "class-validator";
 import { ErrorCodes, GlobalError, ValidationError } from "@exception";
 
@@ -80,6 +80,23 @@ class AuthorityService {
     const createdAuthority = await authorityRepository.createAndSave(authority);
 
     return mapper.map(createdAuthority, Authority, AuthorityResponseDto);
+  }
+
+  public async updateAuthority(
+    slug: string, 
+    plainData: UpdateAuthorityRequestDto
+  ): Promise<AuthorityResponseDto> {
+    const requestData = plainToClass(UpdateAuthorityRequestDto, plainData);
+    const errors = await validate(requestData);
+    if(errors.length > 0) throw new ValidationError(errors);
+
+    const authority = await authorityRepository.findOneBy({ slug });
+    if(!authority) throw new GlobalError(ErrorCodes.AUTHORITY_NOT_FOUND);
+
+    Object.assign(authority, requestData);
+    const updatedAuthority = await authorityRepository.save(authority);
+    const authorityDto = mapper.map(updatedAuthority, Authority, AuthorityResponseDto);
+    return authorityDto;
   }
 }
 

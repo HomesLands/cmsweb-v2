@@ -11,3 +11,6 @@ authorityRoute.route("/").post(authorityController.createAuthority);
 
 // [GET] /api/v1/authorities/{slug}
 authorityRoute.route("/:slug").get(authorityController.getAuthorityBySlug);
+
+// [PATCH] /api/v1/authorities/{slug}
+authorityRoute.route("/:slug").patch(authorityController.updateAuthority);

@@ -212,7 +212,6 @@ class ProductRequisitionFormService {
         temporaryRequestProductData.unit = unit;
         const temporaryProduct = 
         await temporaryProductRepository.createAndSave(temporaryRequestProductData);
-        console.log({temporaryRequestProductData})
         const requestProductMapped = mapper.map(
           requestData.requestProducts[0],
           CreateRequestProductRequestDto,
