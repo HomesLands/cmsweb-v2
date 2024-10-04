@@ -2,11 +2,13 @@ import { mapper } from "@mappers";
 import { User } from "@entities";
 import { UserPermissionResponseDto, UserResponseDto } from "@dto/response";
 import { userRepository } from "@repositories";
-import { TQueryRequest } from "@types";
+import { TPaginationOptionResponse, TQueryRequest } from "@types";
 import { GlobalError, ErrorCodes } from "@exception";
 
 class UserService {
-  public async getAllUsers(options: TQueryRequest): Promise<UserResponseDto[]> {
+  public async getAllUsers(
+    options: TQueryRequest
+  ): Promise<TPaginationOptionResponse<UserResponseDto[]>> {
     // Parse and validate pagination parameters
     let pageSize =
       typeof options.pageSize === "string"
@@ -21,30 +23,38 @@ class UserService {
     if (isNaN(page) || page <= 0) page = 1;
     if (isNaN(pageSize) || pageSize <= 0) pageSize = 10; // Default pageSize if invalid
 
+    // Get the total number of roles
+    const totalUsers = await userRepository.count();
+
+    // Calculate pagination details
+    const totalPages = Math.ceil(totalUsers / pageSize);
+
     const users = await userRepository.find({
       take: pageSize,
       skip: (page - 1) * pageSize,
       order: { createdAt: options.order },
-      relations: [
-        'userDepartments',
-        'userDepartments.department',
-      ]
+      relations: ["userDepartments", "userDepartments.department"],
     });
     const results = mapper.mapArray(users, User, UserResponseDto);
-    return results;
+    return {
+      items: results,
+      page,
+      pageSize,
+      totalPages,
+    };
   }
 
   public async getUser(userId: string): Promise<UserResponseDto> {
     const user = await userRepository.findOne({
       where: {
-        id: userId
+        id: userId,
       },
       relations: [
-        'userDepartments',
-        'userDepartments.department',
-        'userDepartments.department.site',
-        'userDepartments.department.site.company',
-      ]
+        "userDepartments",
+        "userDepartments.department",
+        "userDepartments.department.site",
+        "userDepartments.department.site.company",
+      ],
     });
     if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 

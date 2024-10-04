@@ -28,7 +28,8 @@ export const CreateAuthorityForm: React.FC<IFormCreateAuthorityProps> = ({ onSub
     resolver: zodResolver(createAuthoritySchema),
     defaultValues: {
       nameNormalize: '',
-      description: ''
+      description: '',
+      nameDisplay: ''
     }
   })
 
@@ -46,6 +47,21 @@ export const CreateAuthorityForm: React.FC<IFormCreateAuthorityProps> = ({ onSub
             <FormLabel>{t('authorities.nameNormalize')}</FormLabel>
             <FormControl>
               <Input {...field} placeholder="CREATE_USER" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    nameDisplay: (
+      <FormField
+        control={form.control}
+        name="nameDisplay"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('authorities.nameDisplay')}</FormLabel>
+            <FormControl>
+              <Input {...field} placeholder="Tạo người dùng" />
             </FormControl>
             <FormMessage />
           </FormItem>

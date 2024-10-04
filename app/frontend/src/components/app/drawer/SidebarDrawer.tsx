@@ -17,7 +17,7 @@ import { cn } from '@/lib/utils'
 import { sidebarRoutes } from '@/router/routes'
 import { IconWrapper } from './IconWrapper'
 import { useLayoutStore } from '@/stores'
-import { hasAuthority } from '@/utils/auth'
+import { hasRequiredPermissions } from '@/utils/auth'
 import { ISidebarRoute } from '@/types'
 
 export function SidebarDrawer() {
@@ -37,7 +37,7 @@ export function SidebarDrawer() {
 
   // Filter and translate submenu items based on user authority
   const authorizedSidebarRoute = (sidebarRoute: ISidebarRoute) =>
-    !sidebarRoute.authorities || hasAuthority(sidebarRoute.authorities)
+    !sidebarRoute.authorities || hasRequiredPermissions(sidebarRoute.authorities)
 
   return (
     <Accordion type="single" collapsible className="w-full">

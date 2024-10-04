@@ -17,7 +17,8 @@ import {
   AuthorityPage,
   CreateAuthorityPage,
   PermissionPage,
-  CreatePermissionPage
+  CreatePermissionPage,
+  EmployeePage
 } from './loadable'
 
 export const router = createBrowserRouter([
@@ -76,6 +77,21 @@ export const router = createBrowserRouter([
     ]
   },
   {
+    path: ROUTE.EMPLOYEE,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: (
+          <ProtectedElement
+            allowedAuthorities={[Authority.READ_USER]}
+            element={<SuspenseElement component={EmployeePage} />}
+          />
+        )
+      }
+    ]
+  },
+  {
     path: ROUTE.ROLE,
     element: <SuspenseElement component={DashboardLayout} />,
     children: [
@@ -94,24 +110,6 @@ export const router = createBrowserRouter([
           <ProtectedElement
             element={<SuspenseElement component={CreateRolePage} />}
             allowedAuthorities={[Authority.CREATE_ROLE]}
-          />
-        )
-      },
-      {
-        path: 'approval',
-        element: (
-          <ProtectedElement
-            element={<SuspenseElement component={ApprovalProductRequisitionPage} />}
-            allowedAuthorities={[Authority.APPROVE_PRODUCT_REQUISITION]}
-          />
-        )
-      },
-      {
-        path: 'approval/:slug',
-        element: (
-          <ProtectedElement
-            element={<SuspenseElement component={ApprovalProductRequisitionDetailPage} />}
-            allowedAuthorities={[Authority.APPROVE_PRODUCT_REQUISITION]}
           />
         )
       }

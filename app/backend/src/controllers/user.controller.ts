@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { userService } from "@services";
-import { TApiResponse, TQueryRequest } from "@types";
+import { TApiResponse, TPaginationOptionResponse, TQueryRequest } from "@types";
 import { UserPermissionResponseDto, UserResponseDto } from "@dto/response";
 
 class UserController {
@@ -68,7 +68,9 @@ class UserController {
     try {
       const plainData = req.query as unknown as TQueryRequest;
       const results = await userService.getAllUsers(plainData);
-      const response: TApiResponse<UserResponseDto[]> = {
+      const response: TApiResponse<
+        TPaginationOptionResponse<UserResponseDto[]>
+      > = {
         code: StatusCodes.OK,
         error: false,
         message: "Get all users successfully",

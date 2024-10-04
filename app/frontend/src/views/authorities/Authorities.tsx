@@ -10,7 +10,7 @@ const Authorities: React.FC = () => {
   const { t } = useTranslation(['authorities'])
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
 
-  const { data: authorities } = useAuthorites({
+  const { data: authorities, isLoading } = useAuthorites({
     order: 'DESC',
     page: pagination.pageIndex,
     pageSize: pagination.pageSize
@@ -28,7 +28,7 @@ const Authorities: React.FC = () => {
         pages={authorities?.totalPages || 0}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
-        isLoading={false}
+        isLoading={isLoading}
       />
     </div>
   )

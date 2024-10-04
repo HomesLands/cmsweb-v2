@@ -15,6 +15,7 @@ export class CreateRoleRequestDto {
 
   @Expose()
   @AutoMap()
+  @IsNotEmpty({ message: "INVALID_NAME_DISPLAY" })
   nameDisplay?: string;
 }
 
@@ -26,6 +27,7 @@ export class UpdateRoleRequestDto {
 
   @Expose()
   @AutoMap()
+  @IsNotEmpty({ message: "INVALID_NAME_DISPLAY" })
   nameDisplay?: string;
 
   @Expose()

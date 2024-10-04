@@ -66,7 +66,7 @@ export class FileUploadService {
 
   public async uploadFile(
     req: Request,
-    res: Response,
+    res: Response
   ): Promise<{ success: boolean; file?: File }> {
     return new Promise((resolve, reject) => {
       const uploadInstance = multer({
@@ -87,7 +87,7 @@ export class FileUploadService {
             const file = req.file as Express.Multer.File;
 
             const fileData = await fileRepository.createAndSave({
-              data: file.buffer.toString('base64'),
+              data: file.buffer.toString("base64"),
               name: `${file.originalname.split(".")[0]}-${Date.now()}`,
               extension: file.originalname.split(".")[1],
               mimetype: file.mimetype,
@@ -106,14 +106,14 @@ export class FileUploadService {
 
   public async uploadFiles(
     req: Request,
-    res: Response,
+    res: Response
   ): Promise<{ success: boolean; files?: File[] }> {
     return new Promise((resolve, reject) => {
       const uploadInstance = multer({
-            storage: memoryStorage,
-            fileFilter: fileFilter,
-            limits: { fileSize: maxSize },
-          }).array("file", 20)
+        storage: memoryStorage,
+        fileFilter: fileFilter,
+        limits: { fileSize: maxSize },
+      }).array("file", 20);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       uploadInstance(req, res, async (err: any) => {
@@ -126,9 +126,9 @@ export class FileUploadService {
           const fileList: File[] = [];
           if (req.files) {
             const files = req.files as Express.Multer.File[];
-            for( let i = 0; i < files.length; i++) {
+            for (let i = 0; i < files.length; i++) {
               const fileData = await fileRepository.createAndSave({
-                data: files[i].buffer.toString('base64'),
+                data: files[i].buffer.toString("base64"),
                 name: `${files[i].originalname.split(".")[0]}-${Date.now()}`,
                 extension: files[i].originalname.split(".")[1],
                 mimetype: files[i].mimetype,
@@ -136,31 +136,30 @@ export class FileUploadService {
               });
               fileList.push(fileData);
             }
-          } 
+          }
           resolve({ success: true, files: fileList });
         }
       });
     });
   }
 
-  public async getFileFromDB(
-    name: string
-  ): Promise<TFileData> {
+  public async getFileFromDB(name: string): Promise<TFileData> {
     const imageData = await fileRepository.findOneBy({ name });
-    if (!imageData) throw new GlobalError(ErrorCodes.FILE_NOT_FOUND); 
 
-    if(!(imageData.data
-      && imageData.name
-      && imageData.extension
-      && imageData.mimetype
-    )) throw new GlobalError(ErrorCodes.FILE_NOT_FOUND);
+    if (
+      !imageData?.data
+      // !imageData.name ||
+      // !imageData.extension ||
+      // !imageData.mimetype
+    )
+      throw new GlobalError(ErrorCodes.FILE_NOT_FOUND);
 
-    const buffer = Buffer.from(imageData.data, 'base64');
+    const buffer = Buffer.from(imageData.data, "base64");
     return {
       data: buffer,
       extension: imageData.extension,
       mimetype: imageData.mimetype,
-      length: buffer.length
+      length: buffer.length,
     };
   }
 }

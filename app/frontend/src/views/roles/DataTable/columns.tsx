@@ -23,6 +23,10 @@ export const useRoleColumns = (): ColumnDef<IRole>[] => {
       header: ({ column }) => <DataTableColumnHeader column={column} title="Name normalize" />
     },
     {
+      accessorKey: 'nameDisplay',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Display name" />
+    },
+    {
       accessorKey: 'description',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Description" />
     },

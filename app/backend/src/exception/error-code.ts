@@ -454,6 +454,16 @@ export const ErrorCodes: TErrorCode = {
     code: 1102,
     message: `Invalid warehouse address"`,
   },
+  INVALID_NAME_DISPLAY: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1103,
+    message: `Invalid display name"`,
+  },
+  INVALID_NAME_NORMALIZE: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1104,
+    message: `Invalid normalize name"`,
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]
@@ -536,5 +546,13 @@ export const ErrorCodes: TErrorCode = {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1021,
     message: "Token expiration is not exist",
+  },
+
+  // DB error
+  // Code range: [4100 - 4299]
+  DUPLICATE_ENTRY: {
+    httpStatusCode: StatusCodes.CONFLICT,
+    code: 4100,
+    message: `Duplicate entry`,
   },
 } as const;
