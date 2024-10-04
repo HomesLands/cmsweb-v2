@@ -1,9 +1,8 @@
 import { AutoMap } from "@automapper/classes";
-import { UserDepartmentResponseDto, BaseResponseDto } from "@dto/response";
+import { UserDepartmentResponseDto } from "@dto/response";
+import { BaseResponseDto } from "./base-response.dto";
 
-export class UserResponseDto 
-// extends BaseResponseDto 
-{
+export class UserResponseDto extends BaseResponseDto {
   @AutoMap()
   fullname?: string;
 

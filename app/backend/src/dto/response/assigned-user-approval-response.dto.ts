@@ -2,8 +2,8 @@ import { AutoMap } from "@automapper/classes";
 import { 
   UserApprovalResponseDto, 
   UserResponseDto,
-  BaseResponseDto, 
 } from "@dto/response";
+import { BaseResponseDto } from "./base-response.dto";
 
 export class AssignedUserApprovalResponseDto extends BaseResponseDto {
   @AutoMap()
