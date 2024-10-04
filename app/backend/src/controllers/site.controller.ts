@@ -54,6 +54,12 @@ class SiteController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1030:
+   *         description: Invalid site name
+   *       1043:
+   *         description: Company not found
+   *       1058:
+   *         description: Invalid company slug
    *
    */
 

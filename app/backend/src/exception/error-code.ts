@@ -32,7 +32,7 @@ export const ErrorCodes: TErrorCode = {
   UNIT_EXIST: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1023,
-    message: "Unit exist",
+    message: `Unit existed`,
   },
   UNIT_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -194,10 +194,10 @@ export const ErrorCodes: TErrorCode = {
     code: 1055,
     message: "Invalid content approval log",
   },
-  INVALID_CODE_FORM: {
+  INVALID_FORM_CODE: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1056,
-    message: "Invalid code form",
+    message: "Invalid form code",
   },
   INVALID_TYPE_PRODUCT_REQUISITION_FORM: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -267,7 +267,7 @@ export const ErrorCodes: TErrorCode = {
   ROLE_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1070,
-    message: "Authority could not be found",
+    message: "Role could not be found",
   },
   AUTHORITY_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -277,7 +277,7 @@ export const ErrorCodes: TErrorCode = {
   PERMISSION_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1072,
-    message: "Authority could not be found",
+    message: "Permission could not be found",
   },
   USER_ROLE_EXIST: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -322,7 +322,7 @@ export const ErrorCodes: TErrorCode = {
   REQUEST_PRODUCT_EXIST: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1076,
-    message: "Request product exist",
+    message: "Request product existed",
   },
   INVALID_REASON_RESUBMIT_FORM: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -362,7 +362,7 @@ export const ErrorCodes: TErrorCode = {
   INVALID_DEADLINE_DATE_APPROVAL_FORM: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1084,
-    message: "Invalid form type",
+    message: "Invalid deadline date approval form",
   },
   FORBIDDEN_APPROVAL_FORM: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -384,11 +384,6 @@ export const ErrorCodes: TErrorCode = {
     code: 1088,
     message: `Invalid unit slug"`,
   },
-  INVALID_WAREHOUSE_SLUG: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1089,
-    message: `Invalid warehouse slug"`,
-  },
   INVALID_QUANTITY_PRODUCT_WAREHOUSE: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1089,
@@ -397,7 +392,7 @@ export const ErrorCodes: TErrorCode = {
   WAREHOUSE_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1090,
-    message: `Warehouse not found"`,
+    message: `Warehouse not found`,
   },
   MISSING_QUANTITY_PRODUCT_WAREHOUSE_ADD_NEW: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -438,6 +433,26 @@ export const ErrorCodes: TErrorCode = {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1098,
     message: `File not found`,
+  },
+  INVALID_NAME_NORMALIZE_DEPARTMENT: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1099,
+    message: `Name normalize department must end with "_DEPARTMENT"`,
+  },
+  INVALID_WAREHOUSE_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1100,
+    message: `Invalid warehouse slug"`,
+  },
+  INVALID_WAREHOUSE_NAME: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1101,
+    message: `Invalid warehouse name"`,
+  },
+  INVALID_WAREHOUSE_ADDRESS: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1102,
+    message: `Invalid warehouse address"`,
   },
 
   // AuthenticationErrors

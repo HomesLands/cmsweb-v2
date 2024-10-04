@@ -73,6 +73,8 @@ class AuthorityController {
    *         description: Authorities have been retrieved successfully.
    *       500:
    *         description: Server error
+   *       1071:
+   *         description: Authority could not be found
    */
   public async getAllAuthorities(
     req: Request,
@@ -117,6 +119,8 @@ class AuthorityController {
    *         description: Get all authorities successfully.
    *       500:
    *         description: Server error
+   *       1071:
+   *         description: Authority could not be found
    */
   public async getAuthorityBySlug(
     req: Request,

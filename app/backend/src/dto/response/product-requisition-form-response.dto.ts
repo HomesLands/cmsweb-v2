@@ -22,6 +22,7 @@ export class ProductRequisitionFormResponseDto
   @AutoMap()
   isRecalled?: boolean;
 
+  @AutoMap()
   deadlineApproval?: string;
 
   @AutoMap()

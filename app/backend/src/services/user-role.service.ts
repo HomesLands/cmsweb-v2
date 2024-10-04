@@ -11,7 +11,6 @@ import { CreateUserRoleRequestDto } from "@dto/request";
 import { validate } from "class-validator";
 import { ErrorCodes, GlobalError, ValidationError } from "@exception";
 import { UserRole } from "@entities";
-import { logger } from "@lib";
 
 class UserRoleService {
   public async createUserRole(

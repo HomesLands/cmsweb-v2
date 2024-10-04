@@ -51,6 +51,12 @@ class UserRoleController {
    *         description: Create user role successfully.
    *       500:
    *         description: Server error
+   *       1070:
+   *         description: Role could not be found
+   *       1004:
+   *         description: User not found
+   *       1072:
+   *         description: User role is existed
    */
   public async createUserRole(
     req: Request,

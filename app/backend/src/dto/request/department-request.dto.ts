@@ -2,8 +2,11 @@ import { AutoMap } from "@automapper/classes";
 import { Expose } from "class-transformer";
 import { IsNotEmpty } from "class-validator";
 
+import { DepartmentPostfix } from "@decorator";
+
 export class CreateDepartmentRequestDto {
-  @IsNotEmpty({ message: "INVALID_NAME_NORMALIZE_DEPARTMENT"})
+  @IsNotEmpty({ message: "INVALID_NAME_NORMALIZE_DEPARTMENT" })
+  @DepartmentPostfix({ message: "INVALID_NAME_NORMALIZE_DEPARTMENT" })
   @Expose()
   @AutoMap()
   nameNormalize?: string;

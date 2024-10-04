@@ -29,8 +29,7 @@ export class CreateRequestProductRequestDto {
   @AutoMap()
   provider?: string;
 
-  // @IsNotEmpty({ message: "INVALID_UNIT_SLUG" })
-  @IsOptional()
+  @IsNotEmpty({ message: "INVALID_UNIT_SLUG" })
   @Expose()
   @AutoMap()
   unit?: string;

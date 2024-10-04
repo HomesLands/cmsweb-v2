@@ -36,17 +36,17 @@ export const approvalLogMapper: MappingProfile = (mapper: Mapper) =>{
     mapper,
     CreateApprovalLogRequestDto,
     ApprovalLog,
-    forMember(
-      (destination) => destination.content,
-      mapFrom(
-        (source) => source.approvalLogContent
-      )
-    ),
-    forMember(
-      (destination) => destination.status,
-      mapFrom(
-        (source) => source.approvalLogStatus
-      )
-    )
+    // forMember(
+    //   (destination) => destination.content,
+    //   mapFrom(
+    //     (source) => source.approvalLogContent
+    //   )
+    // ),
+    // forMember(
+    //   (destination) => destination.status,
+    //   mapFrom(
+    //     (source) => source.approvalLogStatus
+    //   )
+    // )
   );
 }

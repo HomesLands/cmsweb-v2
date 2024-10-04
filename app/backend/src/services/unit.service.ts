@@ -24,13 +24,14 @@ class UnitService {
   public async createUnit(plainData: TCreateUnitRequestDto): Promise<UnitResponseDto> {
     // Map plain object to request dto
     const requestData = plainToClass(CreateUnitRequestDto, plainData);
+    requestData.name = requestData.name?.toLowerCase();
 
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
 
     // Find exist
     const hasExisted = await unitRepository.existsBy({
-      name: requestData.name,
+      name: requestData.name?.toLowerCase(),
     });
     if (hasExisted) throw new GlobalError(ErrorCodes.UNIT_EXIST);
 

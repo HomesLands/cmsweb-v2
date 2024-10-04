@@ -13,7 +13,7 @@ export class Product extends Base {
   @AutoMap()
   quantity?: number;
 
-  @Column({ name: "code_column", nullable: true })
+  @Column({ name: "code_column", nullable: true, unique: true })
   @AutoMap()
   code?: string;
 

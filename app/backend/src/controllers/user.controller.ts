@@ -93,6 +93,8 @@ class UserController {
    *         description: The user has been retrieved successfully.
    *       500:
    *         description: Server error
+   *       1004:
+   *         description: User not found
    */
   public async getUser(
     req: Request,
