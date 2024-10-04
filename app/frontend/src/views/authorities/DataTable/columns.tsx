@@ -29,6 +29,12 @@ export const useAuthorityColumns = (): ColumnDef<IAuthority>[] => {
       )
     },
     {
+      accessorKey: 'nameDisplay',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('authorities.nameDisplay')} />
+      )
+    },
+    {
       accessorKey: 'description',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t('authorities.description')} />

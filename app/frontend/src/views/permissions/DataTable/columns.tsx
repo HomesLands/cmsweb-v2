@@ -23,9 +23,9 @@ export const usePermissionColumns = (): ColumnDef<IPermission>[] => {
       )
     },
     {
-      accessorKey: 'nameNormalize',
+      accessorKey: 'nameDisplay',
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('permissions.roleNameNormalize')} />
+        <DataTableColumnHeader column={column} title={t('permissions.roleNameDisplay')} />
       ),
       cell: ({ row }) => {
         const { role } = row.original
@@ -33,9 +33,9 @@ export const usePermissionColumns = (): ColumnDef<IPermission>[] => {
       }
     },
     {
-      accessorKey: 'description',
+      accessorKey: 'nameDisplay',
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('permissions.authorityNameNormalize')} />
+        <DataTableColumnHeader column={column} title={t('permissions.authorityNameDisplay')} />
       ),
       cell: ({ row }) => {
         const { authority } = row.original

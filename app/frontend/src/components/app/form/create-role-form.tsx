@@ -29,7 +29,8 @@ export const CreateRoleForm: React.FC<IFormCreateRoleProps> = ({ onSubmit }) => 
     resolver: zodResolver(createRoleSchema),
     defaultValues: {
       nameNormalize: '',
-      description: ''
+      description: '',
+      nameDisplay: ''
     }
   })
 
@@ -46,7 +47,22 @@ export const CreateRoleForm: React.FC<IFormCreateRoleProps> = ({ onSubmit }) => 
           <FormItem>
             <FormLabel>{t('roles.nameNormalize')}</FormLabel>
             <FormControl>
-              <Input {...field} placeholder="ROLE_USER" />
+              <Input {...field} placeholder="ROLE_DIRECTOR" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    nameDisplay: (
+      <FormField
+        control={form.control}
+        name="nameDisplay"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('roles.nameDisplay')}</FormLabel>
+            <FormControl>
+              <Input {...field} placeholder="Giám đốc" />
             </FormControl>
             <FormMessage />
           </FormItem>

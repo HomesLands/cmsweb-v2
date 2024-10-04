@@ -23,6 +23,7 @@ class RoleController {
    *         - nameNormalize
    *         - nameDisplay
    *         - description
+   *         - nameDisplay
    *       properties:
    *         nameNormalize:
    *           type: string
@@ -37,7 +38,7 @@ class RoleController {
    *         nameNormalize: ROLE_DIRECTOR
    *         nameDisplay: Giám đốc
    *         description: Được phép tạo người dùng
-   * 
+   *
    *     UpdateRoleRequestDto:
    *       type: object
    *       required:
@@ -53,6 +54,11 @@ class RoleController {
    *           description: Description for role name
    *         nameDisplay:
    *           type: string
+   *           description: Display name for role name
+   *       example:
+   *         nameNormalize: ROLE_DIRECTOR
+   *         description: Chức vụ giám đốc
+   *         nameDisplay: Giám đốc
    *           description: Name display for role
    *       example:
    *         nameNormalize: ROLE_DIRECTOR
@@ -195,7 +201,7 @@ class RoleController {
   ): Promise<void> {
     try {
       const requestData = req.body as TCreateRoleRequestDto;
-      logger.info("", { filename: RoleController.name, requestData });
+      logger.info(`[${RoleController.name}]`, requestData);
 
       const result: RoleResponseDto = await roleService.createRole(requestData);
       const response: TApiResponse<RoleResponseDto> = {

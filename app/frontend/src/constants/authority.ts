@@ -13,5 +13,11 @@ export enum Authority {
 
   // Role
   READ_ROLE = 'READ_ROLE',
-  CREATE_ROLE = 'CREATE_ROLE'
+  CREATE_ROLE = 'CREATE_ROLE',
+
+  // Employee
+  READ_USER = 'READ_USER',
+
+  // UserRole
+  CREATE_USER_ROLE = 'CREATE_USER_ROLE'
 }
