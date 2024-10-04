@@ -31,9 +31,6 @@ const ProductRequisitionForm: React.FC = () => {
       clearRequisition()
       handleStepChange(4)
     }
-    // onError: () => {
-    //   showToast(tToast('toast.requestFailed'))
-    // }
   })
 
   const handleFormCreateSubmit = (data: IProductRequisitionFormCreate) => {

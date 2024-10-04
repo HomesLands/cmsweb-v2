@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "list": "Danh sách quyền",
+    "createPermission": "Thêm quyền",
+    "createPermissionDescription": "Thêm quyền mới",
+    "nameNormalize": "Mã chuẩn hóa",
+    "description": "Mô tả",
+    "slug": "Slug",
+    "createPermissionSuccessfully": "Tạo quyền mới thành công"    ,
+    "selectRole": "Lựa chọn chức vụ",
+    "selectAuthority": "Lựa chọn thẩm quyền"
+  }
+}

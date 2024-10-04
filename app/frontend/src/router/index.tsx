@@ -13,7 +13,11 @@ import {
   ApprovalProductRequisitionDetailPage,
   HomePage,
   RolePage,
-  CreateRolePage
+  CreateRolePage,
+  AuthorityPage,
+  CreateAuthorityPage,
+  PermissionPage,
+  CreatePermissionPage
 } from './loadable'
 
 export const router = createBrowserRouter([
@@ -108,6 +112,54 @@ export const router = createBrowserRouter([
           <ProtectedElement
             element={<SuspenseElement component={ApprovalProductRequisitionDetailPage} />}
             allowedAuthorities={[Authority.APPROVE_PRODUCT_REQUISITION]}
+          />
+        )
+      }
+    ]
+  },
+  {
+    path: ROUTE.AUTHORITY,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: (
+          <ProtectedElement
+            allowedAuthorities={[Authority.READ_AUTHORITY]}
+            element={<SuspenseElement component={AuthorityPage} />}
+          />
+        )
+      },
+      {
+        path: 'add',
+        element: (
+          <ProtectedElement
+            element={<SuspenseElement component={CreateAuthorityPage} />}
+            allowedAuthorities={[Authority.CREATE_AUTHORITY]}
+          />
+        )
+      }
+    ]
+  },
+  {
+    path: ROUTE.PERMISSION,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: (
+          <ProtectedElement
+            allowedAuthorities={[Authority.READ_PERMISSION]}
+            element={<SuspenseElement component={PermissionPage} />}
+          />
+        )
+      },
+      {
+        path: 'add',
+        element: (
+          <ProtectedElement
+            element={<SuspenseElement component={CreatePermissionPage} />}
+            allowedAuthorities={[Authority.CREATE_PERMISSION]}
           />
         )
       }

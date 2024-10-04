@@ -1,0 +1,11 @@
+{
+  "authorities": {
+    "list": "Danh sách thẩm quyền",
+    "createAuthority": "Tạo thẩm quyền",
+    "CreateAuthorityDescription": "Tạo thêm một thẩm quyền mới",
+    "nameNormalize": "Mã chuẩn hóa",
+    "description": "Mô tả",
+    "slug": "Mã thẩm quyền",
+    "createAuthoritySuccessfully": "Create authority successfully"    
+  }
+}

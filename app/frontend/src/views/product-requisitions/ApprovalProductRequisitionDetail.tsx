@@ -3,19 +3,17 @@ import { useTranslation } from 'react-i18next'
 import { ReaderIcon } from '@radix-ui/react-icons'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
-import { DataTableRequisition, Label, Button, DataTable } from '@/components/ui'
+import { Label, Button, DataTable } from '@/components/ui'
 import { useProductRequisitionBySlug } from '@/hooks'
 
 import { TbeLogo } from '@/assets/images'
 import { MetekLogo } from '@/assets/images'
 import { SongnamLogo } from '@/assets/images'
-import { useColumnsDetail } from './DataTable/columnsDetail'
+import { useColumnsDetail } from './data-table/columns/columnsDetail'
 import {
   ApprovalLogStatus,
   IApproveProductRequisition,
-  IProductRequisitionInfo,
   IRequisitionFormResponseForApprover,
-  IUserApprovalInfo,
   ProductRequisitionRoleApproval
 } from '@/types'
 import { DialogApprovalRequisition } from '@/components/app/dialog'
@@ -23,7 +21,6 @@ import { showToast } from '@/utils'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { approveProductRequisition } from '@/api'
 import { ApprovalAction, RequisitionStatus, UserApprovalStage } from '@/constants'
-import { useColumnsApprovalLog } from './DataTable/columnsApprovalLog'
 
 const ApprovalProductRequisitionDetail: React.FC = () => {
   const navigate = useNavigate()
@@ -39,7 +36,6 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
   const { roleApproval } = selectedRequisition || {}
 
   const columns = useColumnsDetail()
-  const columnsApprovalLog = useColumnsApprovalLog()
   const [openDialog, setOpenDialog] = useState<'accept' | 'give_back' | 'cancel' | null>(null)
 
   const buttonStates = useMemo(() => {
@@ -143,29 +139,9 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
     setOpenDialog(null)
   }
 
-  const requestProducts: IProductRequisitionInfo[] = Array.isArray(data?.result?.requestProducts)
-    ? data.result.requestProducts
-    : []
-
   const userApprovals = useMemo(() => {
     return Array.isArray(data?.result?.userApprovals) ? data.result.userApprovals : []
   }, [data])
-
-  const sortedUserApprovals = useMemo(() => {
-    const approvalOrder = {
-      approval_stage_1: 1,
-      approval_stage_2: 2,
-      approval_stage_3: 3
-    }
-
-    return [...userApprovals].sort((a, b) => {
-      const orderA =
-        approvalOrder[a.assignedUserApproval.roleApproval as keyof typeof approvalOrder] || 0
-      const orderB =
-        approvalOrder[b.assignedUserApproval.roleApproval as keyof typeof approvalOrder] || 0
-      return orderA - orderB
-    })
-  }, [userApprovals])
 
   console.log('check approval: ', userApprovals)
 
@@ -297,29 +273,14 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
             </div>
           )}
         </div>
-        <div className="flex flex-col gap-5">
-          <DataTableRequisition
-            isLoading={false}
-            columns={columns}
-            data={requestProducts}
-            pages={1}
-            page={1}
-            pageSize={requestProducts.length}
-            onPageChange={() => {}}
-          />
-
-          <span className="text-lg font-bold">{t('productRequisition.approvalLog')}</span>
-
-          <DataTableRequisition
-            isLoading={false}
-            columns={columnsApprovalLog}
-            data={sortedUserApprovals}
-            pages={1}
-            page={1}
-            pageSize={sortedUserApprovals.length}
-            onPageChange={() => {}}
-          />
-        </div>
+        <DataTable
+          isLoading={false}
+          columns={columns}
+          data={data?.result?.requestProducts || []}
+          pages={1}
+          onPageChange={() => {}}
+          onPageSizeChange={() => {}}
+        />
 
         <DialogApprovalRequisition
           openDialog={openDialog as ApprovalAction}

@@ -20,11 +20,8 @@ const Projects: React.FC = () => {
         columns={columns}
         data={data?.result || []}
         pages={0}
-        page={pagination.pageIndex + 1}
-        pageSize={pagination.pageSize}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
-        // CustomComponent={CustomComponent}
       />
     </div>
   )

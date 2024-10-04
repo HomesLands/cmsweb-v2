@@ -10,6 +10,10 @@ export class Role extends Base {
   @AutoMap()
   nameNormalize?: string;
 
+  @Column({ name: "name_display_column" })
+  @AutoMap()
+  nameDisplay?: string;
+
   @Column({ name: "description_column", nullable: false })
   @AutoMap()
   description?: string;

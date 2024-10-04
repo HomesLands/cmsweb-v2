@@ -1,12 +1,6 @@
 import React from 'react'
-import { DataTable, Label } from '@/components/ui'
-import { columns } from './DataTable/columns'
-import { useUsers, usePagination } from '@/hooks'
-import { ReaderIcon } from '@radix-ui/react-icons'
-import { CustomComponent } from './CustomComponent'
 
 const Warehouse: React.FC = () => {
-  console.log('Employees')
   return null
   // const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
   // const { data, isLoading } = useUsers({
@@ -29,7 +23,6 @@ const Warehouse: React.FC = () => {
   //       pageSize={pagination.pageSize}
   //       onPageChange={handlePageChange}
   //       onPageSizeChange={handlePageSizeChange}
-  //       CustomComponent={CustomComponent}
   //     />
   //   </div>
   // )

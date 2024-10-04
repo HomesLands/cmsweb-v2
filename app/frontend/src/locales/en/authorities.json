@@ -1,0 +1,11 @@
+{
+  "authorities": {
+    "list": "List of authorites",
+    "createAuthority": "Create authority",
+    "CreateAuthorityDescription": "Create new authority",
+    "nameNormalize": "Name normalize",
+    "description": "Description",
+    "slug": "Slug",
+    "createAuthoritySuccessfully": "Create authority successfully"    
+  }
+}

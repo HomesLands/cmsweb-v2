@@ -33,11 +33,6 @@ export const useColumnsRequisitionListCreator = (
     setSelectedRequisition(requisition)
   }
 
-  const handleOpenEditDialog = (requisition: IProductRequisitionFormInfo) => {
-    setOpenEditDialog(true)
-    setSelectedRequisition(requisition)
-  }
-
   const onViewDialogOpenChange = () => {
     setOpenViewDialog(false)
   }
@@ -47,11 +42,7 @@ export const useColumnsRequisitionListCreator = (
   }
 
   // Add this new function
-  const handleEditRequisition = (requisition: IProductRequisitionFormInfo) => {
-    // Implement the logic for editing the requisition
-    console.log('Editing requisition:', requisition)
-    // You might want to open a modal for editing or navigate to an edit page
-  }
+  const handleEditRequisition = (requisition: IProductRequisitionFormInfo) => {}
 
   return [
     {

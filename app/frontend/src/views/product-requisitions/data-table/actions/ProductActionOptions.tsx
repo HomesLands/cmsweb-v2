@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Table } from '@tanstack/react-table'
 import { ChevronDown } from 'lucide-react'
 import { PlusCircledIcon } from '@radix-ui/react-icons'
 
@@ -10,16 +9,13 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
   Button,
-  Input
+  Input,
+  DataTableActionOptionsProps
 } from '@/components/ui'
 import { DialogAddProductRequest } from '@/components/app/dialog'
-import { IProductRequisitionInfo } from '@/types'
+import { IProductInfo, IProductRequisitionInfo } from '@/types'
 
-interface ColumnVisibilityDropdownProps<TData> {
-  table: Table<TData>
-}
-
-export function CustomComponentRequest<TData>({ table }: ColumnVisibilityDropdownProps<TData>) {
+export default function ProductActionOptions({ table }: DataTableActionOptionsProps<IProductInfo>) {
   const { t } = useTranslation('tableData')
   const [openDialog, setOpenDialog] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<IProductRequisitionInfo | null>(null)

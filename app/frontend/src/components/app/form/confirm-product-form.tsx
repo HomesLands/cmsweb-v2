@@ -2,13 +2,13 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { format, parseISO } from 'date-fns'
 
-import { Button, DataTableRequisition } from '@/components/ui'
+import { Button, DataTable } from '@/components/ui'
 import {
   IFinalProductRequisition,
   IProductRequisitionFormCreate,
   IProductRequisitionInfo
 } from '@/types'
-import { useColumnsConfirm } from '@/views/product-requisitions/DataTable/columnsConfirm'
+import { useColumnsConfirm } from '@/views/product-requisitions/data-table/columns/columnsConfirm'
 import { useRequisitionStore } from '@/stores'
 
 import { TbeLogo } from '@/assets/images'
@@ -153,14 +153,13 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
           </div>
         )}
       </div>
-      <DataTableRequisition
+      <DataTable
         isLoading={false}
         columns={columns}
         data={getRequisition()?.requestProducts || []}
         pages={1}
-        page={1}
-        pageSize={requisition?.requestProducts?.length || 0}
         onPageChange={() => {}}
+        onPageSizeChange={() => {}}
       />
 
       <div className="flex justify-end w-full gap-2 mt-4">

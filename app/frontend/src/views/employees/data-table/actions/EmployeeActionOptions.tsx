@@ -3,27 +3,29 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-  Button
+  Button,
+  Input,
+  DataTableActionOptionsProps
 } from '@/components/ui'
 import { ChevronDown } from 'lucide-react'
-import { Table } from '@tanstack/react-table'
-import { NavLink } from 'react-router-dom'
-import { PlusCircledIcon } from '@radix-ui/react-icons'
+import { DialogAddUser } from '@/components/app/dialog'
 import { useTranslation } from 'react-i18next'
+import { IUserInfo } from '@/types'
 
-interface ColumnVisibilityDropdownProps<TData> {
-  table: Table<TData>
-}
-
-export function CustomComponent<TData>({ table }: ColumnVisibilityDropdownProps<TData>) {
-  const { t } = useTranslation('productRequisition')
-  const { t: tTablePaging } = useTranslation('tableData')
+export default function EmployeeActionOptions({ table }: DataTableActionOptionsProps<IUserInfo>) {
+  const { t } = useTranslation('tableData')
   return (
     <>
+      <Input
+        placeholder="Nhập họ tên..."
+        value={table.getColumn('createdBy')?.getFilterValue() as string}
+        onChange={(event) => table.getColumn('createdBy')?.setFilterValue(event.target.value)}
+        className="max-w-sm"
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="ml-auto text-normal">
-            {tTablePaging('tablePaging.chooseColumn')}
+            {t('tablePaging.chooseColumn')}
             <ChevronDown className="w-4 h-4 ml-2" />
           </Button>
         </DropdownMenuTrigger>
@@ -43,12 +45,7 @@ export function CustomComponent<TData>({ table }: ColumnVisibilityDropdownProps<
             ))}
         </DropdownMenuContent>
       </DropdownMenu>
-      <NavLink to="/product-requisitions/add">
-        <Button variant="outline" className="flex gap-1 font-beVietNam text-normal">
-          <PlusCircledIcon className="icon" />
-          {t('productRequisition.createProductRequisitions')}
-        </Button>
-      </NavLink>
+      <DialogAddUser />
     </>
   )
 }
