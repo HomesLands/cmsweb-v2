@@ -9,6 +9,10 @@ export class Authority extends Base {
   @AutoMap()
   nameNormalize?: string;
 
+  @Column({ name: "name_display_column" })
+  @AutoMap()
+  nameDisplay?: string;
+
   @Column({ name: "description_column" })
   @AutoMap()
   description?: string;

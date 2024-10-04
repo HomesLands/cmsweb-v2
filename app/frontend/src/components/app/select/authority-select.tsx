@@ -1,7 +1,7 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useAuthorites } from '@/hooks'
+import { useAuthorites, usePagination } from '@/hooks'
 import ReactSelect, { SingleValue } from 'react-select'
 
 interface SelectAuthorityProps {
@@ -14,32 +14,38 @@ interface SelectAuthorityProps {
 }
 
 export const SelectAuthority: FC<SelectAuthorityProps> = ({ onChange }) => {
+  const [allAuthorities, setAllAuthorities] = useState<{ value: string; label: string }[]>([])
   const { t } = useTranslation('productRequisition')
-  const { data: authorities } = useAuthorites({ order: 'DESC', page: 1, pageSize: 10 })
+  const { pagination, handlePageChange } = usePagination({ isSearchParams: false })
+  const { data: authorities } = useAuthorites({
+    order: 'DESC',
+    page: pagination.pageIndex,
+    pageSize: pagination.pageSize
+  })
 
-  // const handleScrollToBottom = () => {
-  //   if (authorities?.page && authorities.totalPages) {
-  //     if (authorities.page < authorities.totalPages) handlePageChange(pagination.pageIndex + 1)
-  //   }
-  // }
+  const handleScrollToBottom = () => {
+    if (authorities?.page && authorities.totalPages) {
+      if (authorities.page < authorities.totalPages) handlePageChange(pagination.pageIndex + 1)
+    }
+  }
 
-  // // Effect to append new roles to the local state when roles are fetched
-  // useEffect(() => {
-  //   if (roles?.items) {
-  //     const newRoles = roles.items.map((item) => ({
-  //       value: item.slug || '',
-  //       label: item.nameNormalize || ''
-  //     }))
-  //     // Append new roles to the previous roles
-  //     setAllRoles((prevRoles) => [...prevRoles, ...newRoles])
-  //   }
-  // }, [roles])
+  // Effect to append new authorities to the local state when roles are fetched
+  useEffect(() => {
+    if (authorities?.items) {
+      const newAuthorities = authorities.items.map((item) => ({
+        value: item.slug || '',
+        label: item.nameNormalize || ''
+      }))
+      // Append new roles to the previous roles
+      setAllAuthorities((prevRoles) => [...prevRoles, ...newAuthorities])
+    }
+  }, [authorities])
 
-  // return (
-  //   <ReactSelect
-  //     onMenuScrollToBottom={handleScrollToBottom}
-  //     options={allRoles}
-  //     onChange={onChange}
-  //   />
-  // )
+  return (
+    <ReactSelect
+      onMenuScrollToBottom={handleScrollToBottom}
+      options={allAuthorities}
+      onChange={onChange}
+    />
+  )
 }

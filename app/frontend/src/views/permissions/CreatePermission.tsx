@@ -1,24 +1,27 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import toast from 'react-hot-toast'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
 import { CreatePermissionForm } from '@/components/app/form'
-import { TCreateAuthoritySchema } from '@/schemas'
-import { ICreateAuthority } from '@/types'
-import { useCreateAuthority } from '@/hooks'
-import toast from 'react-hot-toast'
+import { TCreatePermissionSchema } from '@/schemas'
+import { ICreatePermission } from '@/types'
+import { useCreatePermission } from '@/hooks'
 
 const CreatePermission: React.FC = () => {
   const { t } = useTranslation(['permissions'])
-  const mutation = useCreateAuthority()
+  const mutation = useCreatePermission()
 
   const onSubmit = (values: TCreatePermissionSchema) => {
-    // const requestData = { ...values } as ICreateAuthority
-    // mutation.mutate(requestData, {
-    //   onSuccess: () => {
-    //     toast.success(t('permissions.createPermissionSuccessfully'))
-    //   }
-    // })
+    const requestData = {
+      roleSlug: values.role.value,
+      authoritySlug: values.authority.value
+    } as ICreatePermission
+    mutation.mutate(requestData, {
+      onSuccess: () => {
+        toast.success(t('permissions.createPermissionSuccessfully'))
+      }
+    })
   }
 
   return (

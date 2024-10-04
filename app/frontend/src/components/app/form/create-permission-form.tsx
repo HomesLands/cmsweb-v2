@@ -46,7 +46,7 @@ export const CreatePermissionForm: React.FC<IFormCreatePermissionProps> = ({ onS
       <FormField
         control={form.control}
         name="role"
-        render={({ field }) => (
+        render={() => (
           <FormItem>
             <FormLabel>{t('permissions.selectRole')}</FormLabel>
             <FormControl>
@@ -71,7 +71,10 @@ export const CreatePermissionForm: React.FC<IFormCreatePermissionProps> = ({ onS
             <FormControl>
               <SelectAuthority
                 onChange={(values) => {
-                  form.setValue('role', { label: values?.label || '', value: values?.value || '' })
+                  form.setValue('authority', {
+                    label: values?.label || '',
+                    value: values?.value || ''
+                  })
                 }}
               />
             </FormControl>

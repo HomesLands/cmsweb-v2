@@ -16,7 +16,7 @@ interface SelectRoleProps {
 export const SelectRole: FC<SelectRoleProps> = ({ onChange }) => {
   const [allRoles, setAllRoles] = useState<{ value: string; label: string }[]>([])
   const { t } = useTranslation('productRequisition')
-  const { pagination, handlePageChange } = usePagination()
+  const { pagination, handlePageChange } = usePagination({ isSearchParams: false })
   const { data: roles } = useRoles({
     order: 'DESC',
     page: pagination.pageIndex,
