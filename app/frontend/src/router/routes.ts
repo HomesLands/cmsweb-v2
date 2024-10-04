@@ -1,4 +1,4 @@
-import { Archive, KeyRoundIcon, ScanFaceIcon, UserCogIcon } from 'lucide-react'
+import { KeyRoundIcon, ScanFaceIcon, UserCogIcon, UserIcon, UsersIcon } from 'lucide-react'
 import { ArchiveIcon, CubeIcon } from '@radix-ui/react-icons'
 
 import type { ISidebarRoute } from '@/types'
@@ -9,6 +9,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
     title: 'sidebar.productRequisitions',
     path: ROUTE.PRODUCT_REQUISITIONS,
     icon: ArchiveIcon,
+    authorities: [Authority.READ_PRODUCT_REQUISITION],
     children: [
       {
         title: 'sidebar.productRequisitionsList',
@@ -27,18 +28,31 @@ export const sidebarRoutes: ISidebarRoute[] = [
       }
     ]
   },
+  // {
+  //   title: 'sidebar.warehouses',
+  //   path: '/warehouse',
+  //   icon: CubeIcon,
+  //   children: [
+  //     {
+  //       title: 'sidebar.warehouses',
+  //       path: '/warehouses'
+  //     },
+  //     {
+  //       title: 'sidebar.createWarehouse',
+  //       path: '/warehouse/add'
+  //     }
+  //   ]
+  // },
   {
-    title: 'sidebar.warehouses',
-    path: '/warehouse',
-    icon: CubeIcon,
+    title: 'sidebar.employees',
+    path: ROUTE.EMPLOYEE,
+    icon: UsersIcon,
+    authorities: [Authority.READ_USER],
     children: [
       {
-        title: 'sidebar.warehouses',
-        path: '/warehouses'
-      },
-      {
-        title: 'sidebar.createWarehouse',
-        path: '/warehouse/add'
+        title: 'sidebar.employees',
+        path: ROUTE.EMPLOYEE,
+        authorities: [Authority.READ_USER]
       }
     ]
   },
@@ -46,6 +60,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
     title: 'sidebar.roles',
     path: ROUTE.ROLE,
     icon: UserCogIcon,
+    authorities: [Authority.READ_ROLE],
     children: [
       {
         title: 'sidebar.roles',
@@ -63,6 +78,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
     title: 'sidebar.permissions',
     path: ROUTE.PERMISSION,
     icon: KeyRoundIcon,
+    authorities: [Authority.READ_PERMISSION],
     children: [
       {
         title: 'sidebar.permissions',
@@ -80,6 +96,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
     title: 'sidebar.authorities',
     path: ROUTE.AUTHORITY,
     icon: ScanFaceIcon,
+    authorities: [Authority.READ_AUTHORITY],
     children: [
       {
         title: 'sidebar.authorities',

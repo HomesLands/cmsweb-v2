@@ -1,7 +1,5 @@
-import { Entity, Column, ManyToOne } from "typeorm";
-import { 
-  Base,
-} from "@entities";
+import { Entity, Column } from "typeorm";
+import { Base } from "@entities";
 
 @Entity("file_tbl")
 export class File extends Base {

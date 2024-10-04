@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import { Code, QueryFailedError } from "typeorm";
 
 import { TApiResponse } from "types";
-import { GlobalError, ValidationError } from "@exception";
+import { ErrorCodes, GlobalError, ValidationError } from "@exception";
+import _ from "lodash";
 
 class ErrorHandlerMiddleware {
   public handler(
@@ -21,16 +23,30 @@ class ErrorHandlerMiddleware {
         path: req.originalUrl,
       };
       res.status(error.errorCodeValue.httpStatusCode).json(response);
-    } else {
-      const response: TApiResponse<void> = {
-        code: StatusCodes.INTERNAL_SERVER_ERROR.valueOf(),
-        error: true,
-        message: error.message,
-        method: req.method,
-        path: req.originalUrl,
-      };
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+      return;
     }
+    if (error instanceof QueryFailedError && _.has(error, "code")) {
+      if (error.code === "ER_DUP_ENTRY") {
+        const response: TApiResponse<void> = {
+          code: ErrorCodes.DUPLICATE_ENTRY.code,
+          error: true,
+          message: error.message,
+          method: req.method,
+          path: req.originalUrl,
+        };
+        res.status(StatusCodes.CONFLICT).json(response);
+      }
+      return;
+    }
+    const response: TApiResponse<void> = {
+      code: StatusCodes.INTERNAL_SERVER_ERROR.valueOf(),
+      error: true,
+      message: error.message,
+      method: req.method,
+      path: req.originalUrl,
+    };
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    return;
   }
 }
 

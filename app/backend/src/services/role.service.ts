@@ -63,7 +63,6 @@ class RoleService {
     plainData: TCreateRoleRequestDto
   ): Promise<RoleResponseDto> {
     const requestData = plainToClass(CreateRoleRequestDto, plainData);
-    logger.info("", { filename: RoleService.name, requestData });
 
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);

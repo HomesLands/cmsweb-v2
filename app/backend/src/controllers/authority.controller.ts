@@ -20,6 +20,7 @@ class AuthorityController {
    *       required:
    *         - nameNormalize
    *         - description
+   *         - nameDisplay
    *       properties:
    *         nameNormalize:
    *           type: string
@@ -27,9 +28,13 @@ class AuthorityController {
    *         description:
    *           type: string
    *           description: Description for authority
+   *         nameDisplay:
+   *           type: string
+   *           description: Display name for authority
    *       example:
    *         nameNormalize: CREATE_USER
    *         description: Enable create user
+   *         nameDisplay: Tạo người dùng
    */
 
   /**
