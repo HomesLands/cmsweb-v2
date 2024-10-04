@@ -1,13 +1,11 @@
 import { AutoMap } from "@automapper/classes";
 import { 
   ProductResponseDto,
-   BaseResponseDto,
    TemporaryProductResponseDto, 
   } from "@dto/response";
+  import { BaseResponseDto } from "./base-response.dto";
 
-export class RequestProductResponseDto
-// extends BaseResponseDto
-{
+export class RequestProductResponseDto extends BaseResponseDto {
   @AutoMap()
   requestQuantity?: number;
 

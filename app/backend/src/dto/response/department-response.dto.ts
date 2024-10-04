@@ -1,5 +1,6 @@
 import { AutoMap } from "@automapper/classes";
-import { BaseResponseDto, SiteResponseDto, UserDepartmentResponseDto } from "@dto/response";
+import { SiteResponseDto, UserDepartmentResponseDto } from "@dto/response";
+import { BaseResponseDto } from "./base-response.dto";
 
 export class DepartmentResponseDto extends BaseResponseDto{
   @AutoMap()

@@ -5,9 +5,7 @@ import {
   ProductResponseDto
 } from "@dto/response"
 
-export class ProductWarehouseResponseDto
-extends BaseResponseDto
-{
+export class ProductWarehouseResponseDto extends BaseResponseDto {
   @AutoMap()
   quantity?: number;
 
