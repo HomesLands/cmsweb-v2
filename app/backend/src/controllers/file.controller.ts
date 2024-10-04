@@ -11,8 +11,7 @@ class FileController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const isMultiple: boolean = true;
-      const validate = await fileService.uploadFilesDB(req, res, isMultiple);
+      const validate = await fileService.uploadFile(req, res);
       console.log({validate})
 
       const response: TApiResponse<void> = {

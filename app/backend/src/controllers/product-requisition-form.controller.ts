@@ -132,8 +132,8 @@ class ProductRequisitionFormController {
    *             $ref: '#/components/schemas/CreateApprovalLogRequestDto'
    *       example:
    *         formSlug: XUWyA6fr7i
-   *         requestProducts:
-   *           - status: accept
+   *         approvalLog:
+   *             status: accept
    *             content: Yêu cầu ổn
    *
    *     ResubmitProductRequisitionFormRequestDto:

@@ -7,4 +7,7 @@ export class AuthorityResponseDto extends BaseResponseDto {
 
   @AutoMap()
   description?: string;
+
+  @AutoMap()
+  nameDisplay?: string;
 }
