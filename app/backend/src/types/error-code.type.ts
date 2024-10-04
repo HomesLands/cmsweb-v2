@@ -107,6 +107,7 @@ export type TErrorCodeKey =
   | "INVALID_NAME_DISPLAY"
   | "DUPLICATE_ENTRY"
   | "INVALID_NAME_NORMALIZE"
+  | "INVALID_FORM_DESCRIPTION"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {

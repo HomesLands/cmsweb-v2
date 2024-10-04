@@ -3,6 +3,7 @@ import {
   TPaginationOptionResponse,
   TQueryRequest,
   TResubmitProductRequisitionFormRequestDto,
+  TUpdateGeneralInformationProductRequisitionFormRequestDto,
 } from "@types";
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
@@ -150,6 +151,32 @@ class ProductRequisitionFormController {
    *           description: The reason resubmit form.
    *       example:
    *         slug: XUWyA6fr7i
+   *         description: Đã chỉnh sửa
+   * 
+   *     UpdateGeneralInformationProductRequisitionFormRequestDto:
+   *       type: object
+   *       required:
+   *         - project
+   *         - type
+   *         - deadlineApproval
+   *         - description
+   *       properties:
+   *         project:
+   *           type: string
+   *           description: Project slug
+   *         type:
+   *           type: string
+   *           description: Type of product requisition form, it can be normal or urgent
+   *         deadlineApproval:
+   *           type: string
+   *           description: Deadline approval for product requisition form
+   *         description:
+   *           type: string
+   *           description: Description for product requisition form
+   *       example:
+   *         project: project-slug-123
+   *         type: normal
+   *         deadlineApproval: 2024-09-15 10:25:45
    *         description: Đã chỉnh sửa
    *
    */
@@ -442,7 +469,7 @@ class ProductRequisitionFormController {
    *
    */
 
-  public async resubmitRequisitionForm(
+  public async resubmitProductRequisitionForm(
     req: Request,
     res: Response,
     next: NextFunction
@@ -453,7 +480,7 @@ class ProductRequisitionFormController {
       logger.info("ResubmitProductRequisitionFormRequest", { data });
 
       const result =
-        await productRequisitionFormService.resubmitRequisitionForm(
+        await productRequisitionFormService.resubmitProductRequisitionForm(
           data,
           creatorId
         );
@@ -462,6 +489,78 @@ class ProductRequisitionFormController {
         code: StatusCodes.OK,
         error: false,
         message: "Product requisition form has been submitted successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result: result,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+
+  /**
+   * @swagger
+   * /productRequisitionForms/{slug}:
+   *   patch:
+   *     summary: Update general information of product requisition form
+   *     tags: [ProductRequisitionForm]
+   *     parameters:
+   *       - name: slug
+   *         in: path
+   *         required: true
+   *         type: string
+   *         description: Form slug
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/UpdateGeneralInformationProductRequisitionFormRequestDto'
+   *     responses:
+   *       200:
+   *         description: Product requisition form update successfully.
+   *         content:
+   *           application/json:
+   *             schema:
+   *       500:
+   *         description: Server error
+   *       1039:
+   *         description: Invalid date format
+   *       1046:
+   *         description: Form not found
+   *       1052:
+   *         description: Project not found
+   *       1057:
+   *         description: Invalid type of product requisition form
+   *       1060:
+   *         description: Invalid project slug
+   *       1084:
+   *         description: Invalid deadline date approval form
+   *
+   */
+  public async updateGeneralInformationForm(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const creatorId = req.userId as string;
+      const data = req.body as TUpdateGeneralInformationProductRequisitionFormRequestDto;
+      const slug = req.params.slug;
+
+      const result =
+        await productRequisitionFormService.updateGeneralInformationForm(
+          creatorId,
+          slug,
+          data
+        );
+
+      const response: TApiResponse<ProductRequisitionFormResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "Product requisition form has been updated successfully",
         method: req.method,
         path: req.originalUrl,
         result: result,

@@ -464,6 +464,11 @@ export const ErrorCodes: TErrorCode = {
     code: 1104,
     message: `Invalid normalize name"`,
   },
+  INVALID_FORM_DESCRIPTION: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1105,
+    message: `Invalid form description"`,
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]

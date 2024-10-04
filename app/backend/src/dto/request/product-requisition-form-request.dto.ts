@@ -89,3 +89,28 @@ export class ResubmitProductRequisitionFormRequestDto {
   @AutoMap()
   description?: string;
 }
+
+export class UpdateGeneralInformationProductRequisitionFormRequestDto {
+  @IsNotEmpty({ message: "INVALID_PROJECT_SLUG" })
+  @Expose()
+  @AutoMap()
+  project?: string;
+
+  @IsNotEmpty({ message: "INVALID_TYPE_PRODUCT_REQUISITION_FORM" })
+  @IsEnum(ProductRequisitionFormType, {
+    message: "INVALID_TYPE_PRODUCT_REQUISITION_FORM",
+  })
+  @Expose()
+  @AutoMap()
+  type?: string;
+
+  @IsNotEmpty({ message: "INVALID_DEADLINE_DATE_APPROVAL_FORM" })
+  @IsDateStringWithMessage({ message: "INVALID_DATE_FORMAT" })
+  @Expose()
+  deadlineApproval?: string;
+
+  @IsNotEmpty({ message: "INVALID_FORM_DESCRIPTION" })
+  @Expose()
+  @AutoMap()
+  description?: string;
+}
