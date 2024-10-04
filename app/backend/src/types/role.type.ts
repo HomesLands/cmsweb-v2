@@ -3,3 +3,9 @@ export type TCreateRoleRequestDto = {
   description?: string;
   nameDisplay?: string;
 };
+
+export type TUpdateRoleRequestDto = {
+  nameNormalize?: string;
+  description?: string;
+  nameDisplay?: string;
+};

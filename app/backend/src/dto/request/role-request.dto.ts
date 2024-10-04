@@ -18,3 +18,19 @@ export class CreateRoleRequestDto {
   @IsNotEmpty({ message: "INVALID_NAME_DISPLAY" })
   nameDisplay?: string;
 }
+
+export class UpdateRoleRequestDto {
+  @RolePrefix({ message: "INVALID_ROLE_PREFIX" })
+  @Expose()
+  @AutoMap()
+  nameNormalize?: string;
+
+  @Expose()
+  @AutoMap()
+  @IsNotEmpty({ message: "INVALID_NAME_DISPLAY" })
+  nameDisplay?: string;
+
+  @Expose()
+  @AutoMap()
+  description?: string;
+}

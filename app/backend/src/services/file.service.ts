@@ -64,23 +64,56 @@ export class FileUploadService {
     });
   }
 
-  public async uploadFilesDB(
+  public async uploadFile(
     req: Request,
-    res: Response,
-    isMultiple: boolean
+    res: Response
+  ): Promise<{ success: boolean; file?: File }> {
+    return new Promise((resolve, reject) => {
+      const uploadInstance = multer({
+        storage: memoryStorage,
+        fileFilter: fileFilter,
+        limits: { fileSize: maxSize },
+      }).single("file");
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      uploadInstance(req, res, async (err: any) => {
+        if (err) {
+          reject({
+            error: true,
+            message: err.message,
+          });
+        } else {
+          if (req.file) {
+            const file = req.file as Express.Multer.File;
+
+            const fileData = await fileRepository.createAndSave({
+              data: file.buffer.toString("base64"),
+              name: `${file.originalname.split(".")[0]}-${Date.now()}`,
+              extension: file.originalname.split(".")[1],
+              mimetype: file.mimetype,
+              size: file.size,
+            });
+            resolve({ success: true, file: fileData });
+          }
+          reject({
+            error: true,
+            message: "Can't upload file",
+          });
+        }
+      });
+    });
+  }
+
+  public async uploadFiles(
+    req: Request,
+    res: Response
   ): Promise<{ success: boolean; files?: File[] }> {
     return new Promise((resolve, reject) => {
-      const uploadInstance = isMultiple
-        ? multer({
-            storage: memoryStorage,
-            fileFilter: fileFilter,
-            limits: { fileSize: maxSize },
-          }).array("file", 20)
-        : multer({
-            storage: memoryStorage,
-            fileFilter: fileFilter,
-            limits: { fileSize: maxSize },
-          }).single("file");
+      const uploadInstance = multer({
+        storage: memoryStorage,
+        fileFilter: fileFilter,
+        limits: { fileSize: maxSize },
+      }).array("file", 20);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       uploadInstance(req, res, async (err: any) => {
@@ -91,7 +124,7 @@ export class FileUploadService {
           });
         } else {
           const fileList: File[] = [];
-          if (isMultiple && req.files) {
+          if (req.files) {
             const files = req.files as Express.Multer.File[];
             for (let i = 0; i < files.length; i++) {
               const fileData = await fileRepository.createAndSave({
@@ -103,17 +136,6 @@ export class FileUploadService {
               });
               fileList.push(fileData);
             }
-          } else if (req.file) {
-            const file = req.file as Express.Multer.File;
-
-            const fileData = await fileRepository.createAndSave({
-              data: file.buffer.toString("base64"),
-              name: `${file.originalname.split(".")[0]}-${Date.now()}`,
-              extension: file.originalname.split(".")[1],
-              mimetype: file.mimetype,
-              size: file.size,
-            });
-            fileList.push(fileData);
           }
           resolve({ success: true, files: fileList });
         }

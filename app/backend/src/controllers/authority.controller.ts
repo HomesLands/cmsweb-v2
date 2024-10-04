@@ -7,6 +7,7 @@ import {
   TCreateAuthorityRequestDto,
   TPaginationOptionResponse,
   TQueryRequest,
+  TUpdateAuthorityRequestDto,
 } from "@types";
 import { AuthorityResponseDto } from "@dto/response";
 
@@ -25,6 +26,9 @@ class AuthorityController {
    *         nameNormalize:
    *           type: string
    *           description: Authority code.
+   *         nameDisplay:
+   *           type: string
+   *           description: Name display for authority
    *         description:
    *           type: string
    *           description: Description for authority
@@ -33,8 +37,34 @@ class AuthorityController {
    *           description: Display name for authority
    *       example:
    *         nameNormalize: CREATE_USER
+   *         nameDisplay: Create user
    *         description: Enable create user
+<<<<<<< HEAD
    *         nameDisplay: Tạo người dùng
+=======
+   * 
+   *     UpdateAuthorityRequestDto:
+   *       type: object
+   *       required:
+   *         - nameNormalize
+   *         - description
+   *         - nameDisplay
+   *       properties:
+   *         nameNormalize:
+   *           type: string
+   *           description:  Authority code
+   *         description:
+   *           type: string
+   *           description: Description for authority
+   *         nameDisplay:
+   *           type: string
+   *           description: Name display for authority
+   *       example:
+   *         nameNormalize: CREATE_USER
+   *         nameDisplay: Tạo người dùng
+   *         description: Cho phép tạo người dùng mới
+   * 
+>>>>>>> 14a5a7bbfa0c163e5a83957faa431b031b4889f5
    */
 
   /**
@@ -187,6 +217,65 @@ class AuthorityController {
       };
 
       res.status(StatusCodes.CREATED).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /authorities/{slug}:
+   *   patch:
+   *     summary: Update authority
+   *     tags: [Authority]
+   *     parameters:
+   *       - name: slug
+   *         in: path
+   *         required: true
+   *         type: string
+   *         description: Authority slug
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/UpdateAuthorityRequestDto'
+   *     responses:
+   *       200:
+   *         description: Update authority successfully.
+   *         content:
+   *           application/json:
+   *             schema:
+   *       500:
+   *         description: Server error
+   *       1071:
+   *         description: Authority could not be found
+   *
+   */
+  public async updateAuthority(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const slug = req.params.slug as string;
+      const requestData = req.body as TUpdateAuthorityRequestDto;
+
+      const result: AuthorityResponseDto = 
+        await authorityService.updateAuthority(
+          slug,
+          requestData
+        );
+      const response: TApiResponse<AuthorityResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "The authority updated successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result,
+      };
+
+      res.status(StatusCodes.OK).json(response);
     } catch (error) {
       next(error);
     }
