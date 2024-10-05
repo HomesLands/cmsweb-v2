@@ -25,7 +25,7 @@ const ProductRequisitions: React.FC = () => {
 
       <DataTable
         isLoading={isLoading}
-        columns={useColumnsRequisitionListCreator('')}
+        columns={useColumnsRequisitionListCreator()}
         data={data?.result.items || []}
         pages={data?.result?.totalPages || 0}
         onPageChange={handlePageChange}

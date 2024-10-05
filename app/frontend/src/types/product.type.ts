@@ -3,7 +3,7 @@ import {
   ApprovalLogStatus,
   ProductRequisitionStatus,
   ProductRequisitionType
-} from './request-requisition.type'
+} from './product-requisition.type'
 
 export interface IProductApprovalInfo {
   id: string
@@ -17,6 +17,11 @@ export interface IProductApprovalInfo {
   directorApprovalStatus: ProductRequisitionStatus
   directorApprovalContent?: string
   notes?: string
+}
+
+export interface IUnit {
+  slug: string
+  name: string
 }
 
 export interface IProductRequisitionFormCreate {
@@ -51,7 +56,7 @@ export interface IFinalProductRequisition {
   description: string
   deadlineApproval: string
   requestProducts: {
-    product: string
+    product?: string
     requestQuantity: number
     name: string
     provider: string
@@ -78,7 +83,7 @@ export interface IProductNameSearch {
 
 export interface IProductInfo {
   code: string
-  slug: string
+  slug?: string
   name: string
   provider: string
   description: string
@@ -87,6 +92,13 @@ export interface IProductInfo {
     name: string
   }
   quantity: number
+}
+
+//Update product requisition quantity
+export interface IRequestProductInfo {
+  slug: string
+  product: IProductInfo
+  requestQuantity: number
 }
 
 export interface IProductRequisitionInfo {
@@ -104,9 +116,17 @@ export interface IProductQuery extends IQuery {
   searchTerm?: string
 }
 
+// export interface IApproveProductRequisition {
+//   formSlug: string
+//   approvalUserSlug: string
+//   approvalLogStatus: ApprovalLogStatus
+//   approvalLogContent: string
+// }
+
 export interface IApproveProductRequisition {
   formSlug: string
-  approvalUserSlug: string
-  approvalLogStatus: ApprovalLogStatus
-  approvalLogContent: string
+  approvalLog: {
+    status: ApprovalLogStatus
+    content: string
+  }
 }

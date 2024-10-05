@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import i18next from 'i18next'
 import { MoreHorizontal } from 'lucide-react'
@@ -13,12 +14,11 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui'
 import { IProductRequisitionInfo } from '@/types'
-import { useState } from 'react'
 import { DialogEditProductRequisition } from '@/components/app/dialog'
-import { DialogDeleteProductRequisition } from '@/components/app/dialog/dialog-delete-product-requisition'
+import { DialogDeleteProductRequisition } from '@/components/app/dialog'
 
 export const useColumnsConfirm = (
-  handleEditRequest: (product: IProductRequisitionInfo) => void,
+  handleEditProduct: (product: IProductRequisitionInfo) => void,
   handleDeleteProduct: (product: IProductRequisitionInfo) => void
 ): ColumnDef<IProductRequisitionInfo>[] => {
   const [selectedProduct, setSelectedProduct] = useState<IProductRequisitionInfo | null>(null)
@@ -101,9 +101,9 @@ export const useColumnsConfirm = (
             </DropdownMenu>
             {selectedProduct === product && openEdit && (
               <DialogEditProductRequisition
-                handleAddRequest={handleEditRequest}
+                handleEditProduct={handleEditProduct}
                 openDialog={openEdit}
-                product={product}
+                requisition={product}
                 component={null}
                 onOpenChange={onOpenChange}
               />

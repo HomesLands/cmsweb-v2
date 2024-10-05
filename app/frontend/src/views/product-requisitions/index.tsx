@@ -2,3 +2,4 @@ export { default as ApprovalProductRequisitions } from './ApprovalProductRequisi
 export { default as ProductRequisitionForm } from './ProductRequisitionForm'
 export { default as ProductRequisitions } from './ProductRequisitions'
 export { default as ApprovalProductRequisitionDetail } from './ApprovalProductRequisitionDetail'
+export { default as UpdateProductRequisition } from './UpdateProductRequisition'

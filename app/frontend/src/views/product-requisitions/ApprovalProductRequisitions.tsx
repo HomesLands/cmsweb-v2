@@ -21,6 +21,8 @@ const ApprovalProductRequisitions: React.FC = () => {
     order: 'DESC'
   })
 
+  console.log('data in approval', data)
+
   const tableData: IRequisitionFormResponseForApprover[] = useMemo(() => {
     return (
       data?.result?.items?.map(
@@ -29,7 +31,7 @@ const ApprovalProductRequisitions: React.FC = () => {
           updatedAt: item.updatedAt,
           approvalUserSlug: item.approvalUserSlug,
           roleApproval: item.roleApproval,
-          slug: item.slug,
+          slug: item.productRequisitionForm.slug,
           productRequisitionForm: item.productRequisitionForm
         })
       ) || []

@@ -11,39 +11,35 @@ import {
   DialogTrigger
 } from '@/components/ui'
 
-import { IProductRequisitionInfo, IRequestProductInfo } from '@/types'
+import { IRequestProductInfo } from '@/types'
 
-interface DialogDeleteProductRequisitionProps {
-  handleDeleteProduct: (product: IProductRequisitionInfo) => void
+interface DialogDeleteProductInRequisitionUpdateProps {
+  handleDeleteProduct: (requestProductSlug: string) => void
   openDialog: boolean
-  product: IProductRequisitionInfo | null
+  product: IRequestProductInfo | null
   component: React.ReactNode
   onOpenChange: () => void
 }
 
-export function DialogDeleteProductRequisition({
+export function DialogDeleteProductInRequisitionUpdate({
   handleDeleteProduct,
   openDialog,
   product,
   component,
   onOpenChange
-}: DialogDeleteProductRequisitionProps) {
-  const handleSubmit = (data: IProductRequisitionInfo) => {
-    const completeData: IProductRequisitionInfo = {
-      ...data
-    }
-    handleDeleteProduct(completeData)
+}: DialogDeleteProductInRequisitionUpdateProps) {
+  const handleSubmit = (data: IRequestProductInfo) => {
+    handleDeleteProduct(data.slug)
     onOpenChange()
   }
 
   return (
     <Dialog open={openDialog} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{component}</DialogTrigger>
-
-      <DialogContent className="max-w-[32rem] font-beVietNam">
+      <DialogContent className="max-w-[36rem] font-beVietNam">
         <DialogHeader>
-          <DialogTitle className="pb-4 border-b border-destructive text-destructive">
-            <div className="flex gap-2 items-center">
+          <DialogTitle className="pb-6 text-destructive">
+            <div className="flex items-center gap-2">
               <TriangleAlert className="w-6 h-6" />
               Xóa vật tư
             </div>
@@ -52,11 +48,9 @@ export function DialogDeleteProductRequisition({
             Lưu ý: Hành động này không thể hoàn tác!
           </DialogDescription>
 
-          <div className="py-4 text-sm text-gray-500">
+          <div className="py-2 text-sm text-gray-500 ">
             Bạn sắp sửa xóa vật tư <span className="font-bold">{product?.product.name}</span> với mã
             vật tư <span className="font-bold">{product?.product.code}</span>.
-            <br />
-            Hành động này không thể hoàn tác. Dữ liệu về vật tư sẽ bị xóa khỏi yêu cầu vật tư!
           </div>
         </DialogHeader>
         <DialogFooter>

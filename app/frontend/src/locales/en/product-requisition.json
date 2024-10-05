@@ -6,6 +6,7 @@
     "listEmployeeDescription": "List of created product requisitions",
     "create": "Create product requisitions",
     "createProductRequisitions": "Create product requisitions",
+    "updateProductRequisitions": "Update product requisitions",
     "createProductRequisitionsDescription": "Tool to create product requisitions",
     "requestCode": "Request code",
     "requester": "Requester",
@@ -23,6 +24,8 @@
     "priority": "Priority",
     "deadlineApproval": "Deadline approval",
     "deadlineApprovalDescription": "Choose deadline approval",
+    "productInformation": "Product information",
+    "productInformationDescription": "Confirm product information",
     "next": "Next",
     "add": "Add",
     "confirm": "Confirm",
@@ -47,7 +50,9 @@
     "confirmProductRequisitionsDescription": "Confirm product requisitions description",
     "confirmProductRequisitionsSuccess": "Confirm product requisitions success",
     "confirmProductRequisitionsSuccessDescription": "Confirm product requisitions success description",
-    "here": "here"
+    "here": "here",
+    "updateProductRequisition": "Update product requisition",
+    "approvalHistory": "Approval history"
   },
   "roleApproval": {
     "approvalLevel": "Approval level",

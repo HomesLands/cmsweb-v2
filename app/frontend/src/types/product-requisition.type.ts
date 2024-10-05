@@ -23,7 +23,8 @@ export interface IProductRequisitionFormInfo {
   type: ProductRequisitionType
   status: ProductRequisitionStatus
   isRecalled: boolean
-  description: string | null
+  deadlineApproval: string
+  description: string
   project: {
     name: string
     startDate: string
@@ -96,37 +97,7 @@ export interface IRequisitionFormResponseForApprover {
   productRequisitionForm: IProductRequisitionFormInfo
 }
 
-// export interface IRequisitionFormResponseForCreator {
-//   code: string
-//   type: ProductRequisitionType
-//   status: ProductRequisitionStatus
-//   isRecalled: boolean
-//   description: string | null
-//   company: string
-//   companySlug: string
-//   site: string
-//   siteSlug: string
-//   project: string
-//   projectSlug: string
-//   creator: string
-//   creatorSlug: string
-//   requestProducts: IProductRequisitionInfo[]
-//   slug: string
-//   userApprovals: {
-//     roleApproval: string
-//     userFullname: string
-//     userSlug: string
-//     createdAt: string
-//     updatedAt: string
-//     approvalLogs: {
-//       status: string
-//       content: string
-//       createdAt: string
-//       updatedAt: string
-//       slug: string
-//     }[]
-//     slug: string
-//   }[]
-//   createdAt: string
-//   updatedAt: string
-// }
+export interface IUpdateProductRequisitionQuantity {
+  slug: string //requestProductSlug
+  newQuantity: number
+}
