@@ -18,12 +18,13 @@ import { SelectUnit } from '../select/unit-select'
 
 interface IFormAddNewProductProps {
   data?: IProductInfo
-  onSubmit: (data: IProductRequisitionInfo) => void
+  onSubmit: (data: TAddNewProductRequestSchema) => void
 }
 
 export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ data, onSubmit }) => {
   const { t } = useTranslation('tableData')
   const isEditMode = !!data
+  console.log('data in form', data)
 
   const form = useForm<TAddNewProductRequestSchema>({
     resolver: zodResolver(addNewProductRequestSchema),
@@ -32,20 +33,21 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
       slug: data?.slug || '',
       product: {
         code: data?.code || '',
-        slug: data?.slug || undefined,
+        slug: data?.slug || '',
         name: data?.name || '',
         provider: data?.provider || '',
         unit: { name: data?.unit.name || '', slug: data?.unit.slug || '' },
         quantity: data?.quantity || 1,
         description: data?.description || ''
       },
+      isExistProduct: !!data,
       requestQuantity: data?.quantity || 1
     }
   })
 
   const handleSubmit = (values: TAddNewProductRequestSchema) => {
     console.log('values in form', values)
-    const completeData: IProductRequisitionInfo = {
+    const completeData: TAddNewProductRequestSchema = {
       ...values,
       requestQuantity: Number(values.requestQuantity),
       product: {

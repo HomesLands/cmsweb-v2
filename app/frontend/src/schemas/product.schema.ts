@@ -24,6 +24,7 @@ export const productRequisitionSchema = z.object({
   type: z.enum(['normal', 'urgent']),
   requestProducts: z.array(
     z.object({
+      isExistProduct: z.boolean(),
       slug: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
       requestQuantity: z.number().min(1, 'Số lượng không hợp lệ'),
       description: z.string(),
@@ -67,10 +68,11 @@ export const addNewProductSchema = z.object({
 
 export const addNewProductRequestSchema = z.object({
   // code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
-  slug: z.string().min(1, 'Mã sản phẩm không hợp lệ').optional(),
+  isExistProduct: z.boolean(),
+  slug: z.optional(z.string()),
   product: z.object({
     code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
-    slug: z.string().min(1, 'Mã sản phẩm không hợp lệ').optional(),
+    slug: z.optional(z.string()),
     name: z.string().min(1, 'Tên sản phẩm không hợp lệ'),
     provider: z.string().min(1, 'Nhà cung cấp không hợp lệ'),
     quantity: z.number().min(1, 'Số lượng không hợp lệ'),
@@ -93,11 +95,12 @@ export const addNewProductRequestSchema = z.object({
 
 export const updateProductRequestSchema = z.object({
   // code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
-  slug: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
+  slug: z.optional(z.string()),
+  isExistProduct: z.boolean(),
   // newQuantity: z.number().min(1, 'Số lượng không hợp lệ'),
   product: z.object({
     code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
-    slug: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
+    slug: z.optional(z.string()),
     name: z.string().min(1, 'Tên sản phẩm không hợp lệ'),
     provider: z.string().min(1, 'Nhà cung cấp không hợp lệ'),
     quantity: z.number().min(1, 'Số lượng không hợp lệ'),

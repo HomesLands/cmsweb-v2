@@ -98,6 +98,6 @@ export interface IRequisitionFormResponseForApprover {
 }
 
 export interface IUpdateProductRequisitionQuantity {
-  slug: string //requestProductSlug
+  slug?: string //requestProductSlug
   newQuantity: number
 }

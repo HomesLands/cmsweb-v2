@@ -28,6 +28,7 @@ export function DialogAddProductRequest({
   component,
   onOpenChange
 }: DialogAddProductRequestProps) {
+  console.log('check product', product)
   const { t } = useTranslation('tableData')
   const { addProductToRequisition } = useRequisitionStore()
   const handleAddRequest = (product: IProductRequisitionInfo) => {
@@ -49,7 +50,7 @@ export function DialogAddProductRequest({
         </DialogHeader>
         <AddNewProductRequestForm
           data={product || undefined}
-          onSubmit={(data: IProductRequisitionInfo) => handleSubmit(data)}
+          onSubmit={(data: TAddNewProductRequestSchema) => handleSubmit(data)}
         />
       </DialogContent>
     </Dialog>

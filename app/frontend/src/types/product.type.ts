@@ -65,17 +65,17 @@ export interface IFinalProductRequisition {
   }[]
 }
 
-export interface IRequestProduct {
-  code?: string
-  name?: string
-  provider?: string
-  description: string
-  unit: {
-    slug: string
-    name: string
-  }
-  quantity?: number
-}
+// export interface IRequestProduct {
+//   code?: string
+//   name?: string
+//   provider?: string
+//   description: string
+//   unit: {
+//     slug: string
+//     name: string
+//   }
+//   quantity?: number
+// }
 
 export interface IProductNameSearch {
   name: string
@@ -97,6 +97,7 @@ export interface IProductInfo {
 //Update product requisition quantity
 export interface IRequestProductInfo {
   slug: string
+  isExistProduct: boolean
   product: IProductInfo
   requestQuantity: number
 }
@@ -105,6 +106,7 @@ export interface IProductRequisitionInfo {
   // createdAt?: string
   // updatedAt?: string
   // slug: string
+  isExistProduct: boolean
   requestQuantity: number
   // description: string
   // isExistProduct: boolean;

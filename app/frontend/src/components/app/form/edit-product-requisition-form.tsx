@@ -28,13 +28,15 @@ interface IFormEditProductProps {
 
 export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ data, onSubmit }) => {
   const { t } = useTranslation('tableData')
-  const isEditMode = !!data // Add this line to define isEditMode
+  const isEditMode = !!data
+  const isExistingProduct = data?.isExistProduct || false
 
   const form = useForm<TUpdateProductRequestSchema>({
     resolver: zodResolver(updateProductRequestSchema),
     defaultValues: {
       // code: data?.product.code || '',
       slug: data?.product.slug || '',
+      isExistProduct: isExistingProduct,
       product: {
         code: data?.product.code || '',
         slug: data?.product.slug || '',
@@ -78,7 +80,7 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
                 <FormItem>
                   <FormLabel>{t('tableData.productCode')}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} readOnly={isExistingProduct} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -91,7 +93,7 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
                 <FormItem>
                   <FormLabel>{t('tableData.productName')}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} readOnly={isExistingProduct} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -104,7 +106,7 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
                 <FormItem>
                   <FormLabel>{t('tableData.provider')}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} readOnly={isExistingProduct} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -149,7 +151,7 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
                           ? { value: data.product.unit.slug, label: data.product.unit.name }
                           : undefined
                       }
-                      isDisabled={isEditMode}
+                      isDisabled={isExistingProduct}
                     />
                   </FormControl>
                   <FormMessage />
@@ -163,7 +165,7 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
                 <FormItem>
                   <FormLabel>{t('tableData.description')}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} readOnly={isExistingProduct} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

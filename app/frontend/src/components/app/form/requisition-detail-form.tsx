@@ -239,14 +239,16 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({
               </TableHeader>
               <TableBody>
                 {Array.isArray(data?.requestProducts)
-                  ? data.requestProducts.map((product, index) => (
-                      <TableRow key={index}>
-                        <TableCell>{product.product.code}</TableCell>
-                        <TableCell>{product.product.name}</TableCell>
-                        <TableCell>{product.requestQuantity}</TableCell>
-                        <TableCell>{product.product.description || 'N/A'}</TableCell>
-                      </TableRow>
-                    ))
+                  ? data.requestProducts.map((product, index) =>
+                      product && product.product ? (
+                        <TableRow key={index}>
+                          <TableCell>{product.product.code}</TableCell>
+                          <TableCell>{product.product.name}</TableCell>
+                          <TableCell>{product.requestQuantity}</TableCell>
+                          <TableCell>{product.product.description || 'N/A'}</TableCell>
+                        </TableRow>
+                      ) : null
+                    )
                   : null}
               </TableBody>
             </Table>
