@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import { companyRepository, userRepository } from "@repositories";
 import { CompanyResponseDto } from "@dto/response";
 import { mapper } from "@mappers";
@@ -14,6 +15,7 @@ import { ErrorCodes, GlobalError, ValidationError } from "@exception";
 
 import { validate } from "class-validator";
 import { plainToClass } from "class-transformer";
+import fileService from "./file.service";
 
 class CompanyService {
   public async getAllCompanies(): Promise<CompanyResponseDto[]> {
@@ -82,6 +84,30 @@ class CompanyService {
   //   const companyDto = mapper.map(updatedCompany, Company, CompanyResponseDto);
   //   return companyDto;
   // }
+
+  public async uploadCompanyLogo(
+    companySlug: string,
+    req: Request,
+    res: Response,
+  ): Promise<CompanyResponseDto> {
+    const company = await companyRepository.findOneBy({ slug: companySlug });
+    if(!company) throw new GlobalError(ErrorCodes.COMPANY_NOT_FOUND);
+    const legacyFile = company.logo;
+
+    const fileData = await fileService.getFileFromRequest(req, res);
+    if(fileData.error) throw new GlobalError(ErrorCodes.ERROR_GET_FILE_FROM_REQUEST);
+    if(!fileData.file) throw new GlobalError(ErrorCodes.ERROR_GET_FILE_FROM_REQUEST);
+    const fileName = await fileService.saveFileToDB(fileData.file);
+
+    Object.assign(company, { logo: fileName })
+    const updatedCompany= await companyRepository.save(company);
+
+    if(legacyFile)
+      await fileService.removeFileByName(legacyFile);
+
+    const companyDto = mapper.map(updatedCompany, Company, CompanyResponseDto);
+    return companyDto;
+  }
 }
 
 export default new CompanyService();

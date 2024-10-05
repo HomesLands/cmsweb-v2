@@ -1,9 +1,11 @@
+import { Request, Response } from "express";
 import { mapper } from "@mappers";
 import { User } from "@entities";
 import { UserPermissionResponseDto, UserResponseDto } from "@dto/response";
 import { userRepository } from "@repositories";
 import { TPaginationOptionResponse, TQueryRequest } from "@types";
 import { GlobalError, ErrorCodes } from "@exception";
+import fileService from "./file.service";
 
 class UserService {
   public async getAllUsers(
@@ -61,6 +63,7 @@ class UserService {
     const results = mapper.map(user, User, UserResponseDto);
     return results;
   }
+
   public async getUserPermissions(
     userId: string
   ): Promise<UserPermissionResponseDto[]> {
@@ -94,6 +97,54 @@ class UserService {
       ); // Filters out undefined results
 
     return scope;
+  }
+
+  public async uploadUserSignature(
+    req: Request,
+    res: Response,
+  ): Promise<UserResponseDto> {
+    const userId = req.userId as string;
+    const user = await userRepository.findOneBy({ id: userId });
+    if(!user) throw new GlobalError(ErrorCodes.FORBIDDEN_USER);
+    const legacyFile = user.signature;
+
+    const fileData = await fileService.getFileFromRequest(req, res);
+    if(fileData.error) throw new GlobalError(ErrorCodes.ERROR_GET_FILE_FROM_REQUEST);
+    if(!fileData.file) throw new GlobalError(ErrorCodes.ERROR_GET_FILE_FROM_REQUEST);
+    const fileName = await fileService.saveFileToDB(fileData.file);
+
+    Object.assign(user, { signature: fileName })
+    const updatedUser = await userRepository.save(user);
+
+    if(legacyFile)
+      await fileService.removeFileByName(legacyFile);
+    
+    const userDto = mapper.map(updatedUser, User, UserResponseDto);
+    return userDto;
+  }
+
+  public async uploadUserAvatar(
+    req: Request,
+    res: Response,
+  ): Promise<UserResponseDto> {
+    const userId = req.userId as string;
+    const user = await userRepository.findOneBy({ id: userId });
+    if(!user) throw new GlobalError(ErrorCodes.FORBIDDEN_USER);
+    const legacyFile = user.avatar;
+
+    const fileData = await fileService.getFileFromRequest(req, res);
+    if(fileData.error) throw new GlobalError(ErrorCodes.ERROR_GET_FILE_FROM_REQUEST);
+    if(!fileData.file) throw new GlobalError(ErrorCodes.ERROR_GET_FILE_FROM_REQUEST);
+    const fileName = await fileService.saveFileToDB(fileData.file);
+
+    Object.assign(user, { avatar: fileName })
+    const updatedUser = await userRepository.save(user);
+
+    if(legacyFile)
+      await fileService.removeFileByName(legacyFile);
+
+    const userDto = mapper.map(updatedUser, User, UserResponseDto);
+    return userDto;
   }
 }
 

@@ -108,6 +108,9 @@ export type TErrorCodeKey =
   | "DUPLICATE_ENTRY"
   | "INVALID_NAME_NORMALIZE"
   | "INVALID_FORM_DESCRIPTION"
+  | "SAVE_FILE_FAIL"
+  | "FORBIDDEN_USER"
+  | "ERROR_GET_FILE_FROM_REQUEST"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {

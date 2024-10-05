@@ -9,13 +9,17 @@ export class UserResponseDto extends BaseResponseDto {
   @AutoMap()
   username?: string;
 
+  @AutoMap()
+  signature?: string;
+
+  @AutoMap()
+  avatar?: string;
+
   @AutoMap(() => [UserDepartmentResponseDto])
   userDepartments?: UserDepartmentResponseDto[];
 }
 
-export class UserPermissionResponseDto 
-// extends BaseResponseDto 
-{
+export class UserPermissionResponseDto extends BaseResponseDto {
   @AutoMap()
   role?: string;
 

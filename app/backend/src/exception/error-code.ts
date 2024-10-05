@@ -469,6 +469,21 @@ export const ErrorCodes: TErrorCode = {
     code: 1105,
     message: `Invalid form description"`,
   },
+  SAVE_FILE_FAIL: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1106,
+    message: `Save file fail`,
+  },
+  FORBIDDEN_USER: {
+    httpStatusCode: StatusCodes.FORBIDDEN,
+    code: 1107,
+    message: "Forbidden user",
+  },
+  ERROR_GET_FILE_FROM_REQUEST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1108,
+    message: "Error get file from request",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]
