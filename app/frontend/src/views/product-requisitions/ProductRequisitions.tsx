@@ -19,54 +19,6 @@ const ProductRequisitions: React.FC = () => {
     pageSize: pagination.pageSize
   })
 
-  console.log('data in product requisition', data)
-
-  // const filteredData = useMemo(() => {
-  //   if (!data?.result?.items || data.result.items.length === 0 || !userInfo) return []
-
-  //   return data.result.items.filter((item) => item.creatorSlug === userInfo.slug)
-  // }, [data?.result.items, userInfo])
-
-  const dataWithDisplayStatus = useMemo(() => {
-    return data?.result?.items.map((item) => {
-      const { status, isRecalled } = item
-      let displayStatus = ''
-      let statusColor = ''
-
-      if (status === 'waiting' && !isRecalled) {
-        displayStatus = 'Vừa tạo, đang chờ duyệt bước 1'
-        statusColor = 'yellow'
-      } else if (status === 'cancel' && isRecalled) {
-        displayStatus = 'Đã bị hoàn ở bước 1'
-        statusColor = 'orange'
-      } else if (status === 'accepted_stage_1' && !isRecalled) {
-        displayStatus = 'Đã duyệt bước 1'
-        statusColor = 'green'
-      } else if (status === 'waiting' && isRecalled) {
-        displayStatus = 'Đã bị hoàn ở bước 2'
-        statusColor = 'orange'
-      } else if (status === 'accepted_stage_2' && !isRecalled) {
-        displayStatus = 'Đã duyệt bước 2'
-        statusColor = 'green'
-      } else if (status === 'accepted_stage_1' && isRecalled) {
-        displayStatus = 'Đã bị hoàn ở bước 3'
-        statusColor = 'orange'
-      } else if (status === 'waiting_export' && !isRecalled) {
-        displayStatus = 'Đã duyệt bước 3'
-        statusColor = 'blue'
-      } else if (status === 'cancel' && !isRecalled) {
-        displayStatus = 'Đã bị hủy'
-        statusColor = 'red'
-      }
-
-      return {
-        ...item,
-        displayStatus,
-        statusColor
-      }
-    })
-  }, [data?.result?.items])
-
   return (
     <div className="flex flex-col gap-4">
       <Label className="flex items-center gap-1 font-semibold text-normal text-md font-beVietNam">
@@ -75,10 +27,11 @@ const ProductRequisitions: React.FC = () => {
       </Label>
       <DataTableByCreator
         isLoading={isLoading}
-        columns={useColumnsRequisitionListCreator(
-          userInfo?.userDepartments[0].department.site.company.name ?? ''
-        )}
-        data={dataWithDisplayStatus || []}
+        // columns={useColumnsRequisitionListCreator(
+        //   userInfo?.userDepartments[0].department.site.company.name ?? ''
+        // )}
+        columns={useColumnsRequisitionListCreator()}
+        data={data?.result?.items || []}
         pages={data?.result?.totalPages || 0}
         page={pagination.pageIndex + 1}
         pageSize={pagination.pageSize}

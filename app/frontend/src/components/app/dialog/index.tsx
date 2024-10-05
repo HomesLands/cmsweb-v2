@@ -7,8 +7,12 @@ export * from './dialog-logout'
 // eslint-disable-next-line react-refresh/only-export-components
 export * from './dialog-edit-product-requisition'
 // eslint-disable-next-line react-refresh/only-export-components
-export * from './dialog-edit-product-requisition'
+export * from './dialog-delete-product-requisition'
 // eslint-disable-next-line react-refresh/only-export-components
 export * from './dialog-approval-requisition'
 // eslint-disable-next-line react-refresh/only-export-components
 export * from './dialog-requisition-detail'
+// eslint-disable-next-line react-refresh/only-export-components
+export * from './dialog-update-product-quantity-requisition'
+// eslint-disable-next-line react-refresh/only-export-components
+export * from './dialog-delete-product-in-requisition-update'

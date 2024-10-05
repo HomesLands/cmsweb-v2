@@ -6,7 +6,8 @@ import {
   IProductInfo,
   IProductQuery,
   IProductRequisitionFormInfo,
-  IRequisitionFormResponseForApprover
+  IRequisitionFormResponseForApprover,
+  IUpdateProductRequisitionQuantity
 } from '@/types'
 import { http } from '@/utils'
 
@@ -116,17 +117,37 @@ export async function getProductRequisitionByCreator(params: IProductQuery) {
 
 export async function approveProductRequisition(
   formSlug: string,
-  approvalUserSlug: string,
-  approvalLogStatus: ApprovalLogStatus,
-  approvalLogContent: string
+  approvalLog: {
+    status: ApprovalLogStatus
+    content: string
+  }
 ) {
   const response = await http.patch<IApiResponse<IProductRequisitionFormInfo>>(
     `/productRequisitionForms/approval`,
     {
-      approvalUserSlug,
       formSlug,
-      approvalLogStatus,
-      approvalLogContent
+      approvalLog
+    }
+  )
+  return response.data
+}
+
+export async function updateProductRequisitionQuantity(params: IUpdateProductRequisitionQuantity) {
+  const response = await http.patch<IApiResponse<IProductRequisitionFormInfo>>(
+    `/requestProducts/updateQuantity`,
+    {
+      slug: params.slug,
+      newQuantity: params.newQuantity
+    }
+  )
+  return response.data
+}
+
+export async function deleteProductRequisition(requestProductSlug: string) {
+  const response = await http.delete<IApiResponse<IProductRequisitionFormInfo>>(
+    `/requestProducts/${requestProductSlug}`,
+    {
+      params: { requestProductSlug }
     }
   )
   return response.data

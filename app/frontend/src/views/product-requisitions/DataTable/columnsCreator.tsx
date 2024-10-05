@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontal } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 import {
   DropdownMenu,
@@ -20,21 +21,15 @@ import { RecalledStatusBadge } from '@/components/app/badge'
 
 import { format } from 'date-fns'
 
-export const useColumnsRequisitionListCreator = (
-  companyName: string
-): ColumnDef<IProductRequisitionFormInfo>[] => {
+export const useColumnsRequisitionListCreator = () // companyName: string
+: ColumnDef<IProductRequisitionFormInfo>[] => {
   const [openViewDialog, setOpenViewDialog] = useState(false)
-  const [openEditDialog, setOpenEditDialog] = useState(false)
   const [selectedRequisition, setSelectedRequisition] =
     useState<IProductRequisitionFormInfo | null>(null)
+  const navigate = useNavigate()
 
   const handleOpenViewDialog = (requisition: IProductRequisitionFormInfo) => {
     setOpenViewDialog(true)
-    setSelectedRequisition(requisition)
-  }
-
-  const handleOpenEditDialog = (requisition: IProductRequisitionFormInfo) => {
-    setOpenEditDialog(true)
     setSelectedRequisition(requisition)
   }
 
@@ -42,15 +37,9 @@ export const useColumnsRequisitionListCreator = (
     setOpenViewDialog(false)
   }
 
-  const onEditDialogOpenChange = () => {
-    setOpenEditDialog(false)
-  }
-
-  // Add this new function
+  // Replace handleEditRequisition function
   const handleEditRequisition = (requisition: IProductRequisitionFormInfo) => {
-    // Implement the logic for editing the requisition
-    console.log('Editing requisition:', requisition)
-    // You might want to open a modal for editing or navigate to an edit page
+    navigate(`/product-requisitions/edit/${requisition.slug}`)
   }
 
   return [
@@ -79,11 +68,11 @@ export const useColumnsRequisitionListCreator = (
       header: ({ column }) => <DataTableColumnHeader column={column} title="Người tạo" />
     },
     {
-      id: 'company',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />,
-      cell: () => {
-        return <div className="min-w-[12rem] text-[0.8rem]">{companyName}</div>
-      }
+      id: 'creator.company',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />
+      // cell: () => {
+      //   return <div className="min-w-[12rem] text-[0.8rem]">{companyName}</div>
+      // }
     },
     {
       accessorKey: 'isRecalled',
@@ -146,18 +135,8 @@ export const useColumnsRequisitionListCreator = (
                 openDialog={openViewDialog}
                 requisition={requisition}
                 component={null}
-                companyName={companyName}
+                // companyName={companyName}
                 onOpenChange={onViewDialogOpenChange}
-              />
-            )}
-            {selectedRequisition === requisition && openEditDialog && (
-              <DialogRequisitionDetail
-                openDialog={openEditDialog}
-                requisition={requisition}
-                component={null}
-                companyName={companyName}
-                onOpenChange={onEditDialogOpenChange}
-                isEditing={true}
               />
             )}
           </div>

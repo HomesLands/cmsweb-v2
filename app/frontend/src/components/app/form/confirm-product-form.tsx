@@ -26,7 +26,7 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
   const { requisition, getRequisition, updateProductToRequisition, deleteProductToRequisition } =
     useRequisitionStore()
 
-  const handleEditRequest = (product: IProductRequisitionInfo) => {
+  const handleEditProduct = (product: IProductRequisitionInfo) => {
     updateProductToRequisition(product, product.requestQuantity)
   }
 
@@ -34,7 +34,7 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
     deleteProductToRequisition(product)
   }
 
-  const columns = useColumnsConfirm(handleEditRequest, handleDeleteProduct)
+  const columns = useColumnsConfirm(handleEditProduct, handleDeleteProduct)
 
   const transformRequisitionToApiFormat = (requisition: IProductRequisitionFormCreate) => {
     return {
@@ -60,17 +60,6 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
     const requisition = getRequisition() as IProductRequisitionFormCreate
     console.log('requisition', requisition)
     const formattedRequisition = transformRequisitionToApiFormat(requisition)
-    // const finalRequisition: IFinalProductRequisition = {
-    //   ...apiFormattedRequisition,
-    //   requestProducts: apiFormattedRequisition.requestProducts.map((product) => ({
-    //     product: product.product.slug,
-    //     requestQuantity: product.requestQuantity,
-    //     name: product.name,
-    //     provider: product.provider,
-    //     unit: product.unit,
-    //     description: product.description || ''
-    //   }))
-    // }
     onConfirm(formattedRequisition)
   }
 

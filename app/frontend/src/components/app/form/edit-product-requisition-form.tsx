@@ -11,11 +11,23 @@ import {
   Form,
   Button
 } from '@/components/ui'
-import { addNewProductRequestSchema, TAddNewProductRequestSchema } from '@/schemas'
+import {
+  addNewProductRequestSchema,
+  TAddNewProductRequestSchema,
+  TUpdateProductRequestSchema,
+  updateProductRequestSchema
+} from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { IProductInfo, IProductRequisitionInfo } from '@/types'
+import {
+  IProductInfo,
+  IProductRequisitionInfo,
+  IRequestProductInfo,
+  IUpdateProductRequisitionQuantity
+} from '@/types'
 import { useTranslation } from 'react-i18next'
 import { useRequisitionStore } from '@/stores'
+import { useParams } from 'react-router'
+import { useProductRequisitionBySlug } from '@/hooks'
 
 interface IFormEditProductProps {
   data?: IProductRequisitionInfo
@@ -25,12 +37,17 @@ interface IFormEditProductProps {
 export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ data, onSubmit }) => {
   const { t } = useTranslation('tableData')
   const { requisition } = useRequisitionStore()
-  console.log('data in form', data)
-  const form = useForm<TAddNewProductRequestSchema>({
-    resolver: zodResolver(addNewProductRequestSchema),
+  // const { slug } = useParams()
+  // const { data: requisitionData, isLoading } = useProductRequisitionBySlug(slug as string)
+
+  // const productRequisition = requisitionData?.result
+
+  // console.log('data in form', data)
+  const form = useForm<TUpdateProductRequestSchema>({
+    resolver: zodResolver(updateProductRequestSchema),
     defaultValues: {
       // code: data?.product.code || '',
-      // slug: data?.product.slug || '',
+      slug: data?.product.slug || '',
       product: {
         code: data?.product.code || '',
         slug: data?.product.slug || '',

@@ -1,15 +1,22 @@
-import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import {
   approveProductRequisition,
   createProductRequisition,
+  deleteProductRequisition,
   getAllProductRequisition,
   getProductRequisitionByApprover,
   getProductRequisitionByCreator,
   getProductRequisitionBySlug,
-  getProducts
+  getProducts,
+  updateProductRequisitionQuantity
 } from '@/api/products'
-import { IApproveProductRequisition, IFinalProductRequisition, IProductQuery } from '@/types'
+import {
+  IApproveProductRequisition,
+  IFinalProductRequisition,
+  IProductQuery,
+  IUpdateProductRequisitionQuantity
+} from '@/types'
 
 export const useProducts = (q: IProductQuery) => {
   return useQuery({
@@ -46,16 +53,35 @@ export const useProductRequisitionByCreator = (q: IProductQuery) => {
     queryFn: () => getProductRequisitionByCreator(q)
   })
 }
+
+export const useUpdateProductRequisitionQuantity = (slug: string) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (data: IUpdateProductRequisitionQuantity) => updateProductRequisitionQuantity(data),
+    onSuccess: () => {
+      console.log('success')
+      queryClient.invalidateQueries({ queryKey: ['productRequisitionBySlug', slug] })
+    }
+  })
+}
+
+export const useDeleteProductInRequisition = (slug: string) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (requestProductSlug: string) => deleteProductRequisition(requestProductSlug),
+    onSuccess: () => {
+      console.log('success')
+      queryClient.invalidateQueries({ queryKey: ['productRequisitionBySlug', slug] })
+    }
+  })
+}
+
 //Approve Product Requisition for Approver
 export const useApproveProductRequisition = () => {
   return useMutation({
     mutationFn: (data: IApproveProductRequisition) =>
-      approveProductRequisition(
-        data.formSlug,
-        data.approvalUserSlug,
-        data.approvalLogStatus,
-        data.approvalLogContent
-      )
+      approveProductRequisition(data.formSlug, data.approvalLog)
   })
 }
 

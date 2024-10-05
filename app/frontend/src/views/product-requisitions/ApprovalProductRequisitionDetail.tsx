@@ -95,31 +95,26 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
 
   const mutation = useMutation({
     mutationFn: async (data: IApproveProductRequisition) => {
-      return approveProductRequisition(
-        data.formSlug,
-        data.approvalUserSlug,
-        data.approvalLogStatus,
-        data.approvalLogContent
-      )
+      return approveProductRequisition(data.formSlug, data.approvalLog)
     },
     onSuccess: (_, variables) => {
       let toastMessage = ''
 
       switch (roleApproval) {
         case UserApprovalStage.APPROVAL_STAGE_1:
-          if (variables.approvalLogStatus === ApprovalAction.ACCEPT) {
+          if (variables.approvalLog.status === ApprovalAction.ACCEPT) {
             toastMessage = tToast('toast.approveRequestSuccess')
-          } else if (variables.approvalLogStatus === ApprovalAction.GIVE_BACK) {
+          } else if (variables.approvalLog.status === ApprovalAction.GIVE_BACK) {
             toastMessage = tToast('toast.giveBackRequestSuccess')
           }
           break
         case UserApprovalStage.APPROVAL_STAGE_2:
         case UserApprovalStage.APPROVAL_STAGE_3:
-          if (variables.approvalLogStatus === ApprovalAction.ACCEPT) {
+          if (variables.approvalLog.status === ApprovalAction.ACCEPT) {
             toastMessage = tToast('toast.approveRequestSuccess')
-          } else if (variables.approvalLogStatus === ApprovalAction.GIVE_BACK) {
+          } else if (variables.approvalLog.status === ApprovalAction.GIVE_BACK) {
             toastMessage = tToast('toast.giveBackRequestSuccess')
-          } else if (variables.approvalLogStatus === ApprovalAction.CANCEL) {
+          } else if (variables.approvalLog.status === ApprovalAction.CANCEL) {
             toastMessage = tToast('toast.cancelRequestSuccess')
           }
           break
@@ -135,9 +130,10 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
   const handleConfirm = (message: string, status: ApprovalLogStatus) => {
     mutation.mutate({
       formSlug: data?.result.slug as string,
-      approvalUserSlug: selectedRequisition?.approvalUserSlug as string,
-      approvalLogStatus: status,
-      approvalLogContent: message
+      approvalLog: {
+        status: status,
+        content: message
+      }
     })
 
     setOpenDialog(null)

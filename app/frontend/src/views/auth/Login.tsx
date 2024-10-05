@@ -23,7 +23,7 @@ const Login: React.FC = () => {
   const { setUserRoles } = useUserInfoPermissionsStore()
   const { setUserInfo } = useUserStore()
   const navigate = useNavigate()
-  const mutation = useLogin()
+  const loginMutation = useLogin()
   const [isLoading, setIsLoading] = useState(false)
   const { refetch: refetchUserInfoPermission } = useUserInfoPermission()
   const { refetch: refetchUserInfo } = useUser()
@@ -31,7 +31,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (data: z.infer<typeof loginSChema>) => {
     setIsLoading(true)
     try {
-      const response: IApiResponse<ILoginResponse> = await mutation.mutateAsync(data)
+      const response: IApiResponse<ILoginResponse> = await loginMutation.mutateAsync(data)
 
       // Save to auth store
       const decodedToken = jwtDecode(response.result.token) as { sub: string }

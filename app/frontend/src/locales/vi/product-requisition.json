@@ -23,6 +23,8 @@
     "priority": "Mức độ ưu tiên",
     "deadlineApproval": "Hạn duyệt",
     "deadlineApprovalDescription": "Chọn ngày hết hạn duyệt",
+    "productInformation": "Thông tin vật tư",
+    "productInformationDescription": "Xác nhận thông tin vật tư",
     "back": "Trở lại",
     "next": "Tiếp theo",
     "add": "Thêm",
@@ -51,7 +53,8 @@
     "confirmProductRequisitionsDescription": "Thông tin chi tiết của yêu cầu vật tư",
     "confirmProductRequisitionsSuccess": "Xác nhận yêu cầu thành công",
     "confirmProductRequisitionsSuccessDescription": "Phiếu yêu cầu đã được gửi đi. Bạn có thể xem danh sách",
-    "here": "tại đây"
+    "here": "tại đây",
+    "updateProductRequisition": "Cập nhật yêu cầu vật tư"
   },
   "roleApproval": {
     "approvalLevel": "Cấp duyệt",

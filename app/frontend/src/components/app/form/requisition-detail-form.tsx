@@ -20,12 +20,12 @@ import {
 import { IProductRequisitionFormInfo } from '@/types'
 
 interface IFormRequisitionDetailProps {
-  companyName: string
+  // companyName: string
   data?: IProductRequisitionFormInfo
 }
 
 export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({
-  companyName,
+  // companyName,
   data
 }) => {
   const form = useForm({
@@ -36,7 +36,7 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({
       // status: data?.status || '',
       description: data?.description || '',
       // deadlineApproval: data?.deadlineApproval || '',
-      companyName: companyName || '',
+      companyName: data?.creator.userDepartments[0].department.site.company.name || '',
       project: data?.project || '',
       type: data?.type || '',
       requestProducts: data?.requestProducts || [],

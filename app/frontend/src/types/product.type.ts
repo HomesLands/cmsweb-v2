@@ -3,7 +3,7 @@ import {
   ApprovalLogStatus,
   ProductRequisitionStatus,
   ProductRequisitionType
-} from './request-requisition.type'
+} from './product-requisition.type'
 
 export interface IProductApprovalInfo {
   id: string
@@ -89,6 +89,13 @@ export interface IProductInfo {
   quantity: number
 }
 
+//Update product requisition quantity
+export interface IRequestProductInfo {
+  slug: string
+  product: IProductInfo
+  requestQuantity: number
+}
+
 export interface IProductRequisitionInfo {
   // createdAt?: string
   // updatedAt?: string
@@ -104,9 +111,17 @@ export interface IProductQuery extends IQuery {
   searchTerm?: string
 }
 
+// export interface IApproveProductRequisition {
+//   formSlug: string
+//   approvalUserSlug: string
+//   approvalLogStatus: ApprovalLogStatus
+//   approvalLogContent: string
+// }
+
 export interface IApproveProductRequisition {
   formSlug: string
-  approvalUserSlug: string
-  approvalLogStatus: ApprovalLogStatus
-  approvalLogContent: string
+  approvalLog: {
+    status: ApprovalLogStatus
+    content: string
+  }
 }
