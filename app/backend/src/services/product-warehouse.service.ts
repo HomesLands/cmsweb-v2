@@ -21,10 +21,6 @@ class ProductWarehouseService {
       ]
     });
 
-    console.log(productWarehousesData[0])
-    console.log(productWarehousesData[0].product)
-    console.log(productWarehousesData[0].product?.unit)
-
     const productWarehousesDto: ProductWarehouseResponseDto[] = mapper.mapArray(
       productWarehousesData,
       ProductWarehouse,

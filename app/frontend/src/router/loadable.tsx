@@ -66,3 +66,23 @@ export const CreateRolePage = React.lazy(() =>
     default: module.CreateRole
   }))
 )
+export const AuthorityPage = React.lazy(() =>
+  import('@/views/authorities').then((module) => ({
+    default: module.Authorities
+  }))
+)
+export const CreateAuthorityPage = React.lazy(() =>
+  import('@/views/authorities').then((module) => ({
+    default: module.CreateAuthority
+  }))
+)
+export const PermissionPage = React.lazy(() =>
+  import('@/views/permissions').then((module) => ({
+    default: module.Permissions
+  }))
+)
+export const CreatePermissionPage = React.lazy(() =>
+  import('@/views/permissions').then((module) => ({
+    default: module.CreatePermission
+  }))
+)

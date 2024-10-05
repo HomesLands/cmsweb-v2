@@ -19,7 +19,8 @@ import {
   Popover,
   PopoverContent,
   Calendar,
-  DataTableRequisition
+  // DataTableRequisition,
+  DataTable
 } from '@/components/ui'
 import { productRequisitionSchema, TProductRequisitionSchema } from '@/schemas'
 import { SelectProject, RequestPrioritySelect } from '@/components/app/select'
@@ -32,7 +33,7 @@ import {
   ProductRequisitionType
 } from '@/types'
 import { DateTimePicker } from '@/components/app/picker'
-import { useColumnsUpdateRequisition } from '@/views/product-requisitions/DataTable/columnsUpdateRequisition'
+import { useColumnsUpdateRequisition } from '@/views/product-requisitions/data-table/columns/columnsUpdateRequisition'
 
 interface IUpdateRequisitionFormProps {
   requisition: IProductRequisitionFormInfo
@@ -327,7 +328,17 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
           </div>
         </form>
       </Form>
-      <DataTableRequisition
+      <DataTable
+        isLoading={isLoading}
+        columns={columns}
+        data={requisition?.requestProducts || []}
+        // page={1}
+        pages={1}
+        // pageSize={requisition?.requestProducts?.length || 0}
+        onPageChange={() => {}}
+        onPageSizeChange={() => {}}
+      />
+      {/* <DataTableRequisition
         isLoading={isLoading}
         columns={columns}
         data={requisition?.requestProducts || []}
@@ -335,7 +346,7 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
         pages={1}
         pageSize={requisition?.requestProducts?.length || 0}
         onPageChange={() => {}}
-      />
+      /> */}
     </div>
   )
 }

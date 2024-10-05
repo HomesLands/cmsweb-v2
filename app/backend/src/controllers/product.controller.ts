@@ -178,6 +178,20 @@ class ProductController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1024:
+   *         description: Unit not found
+   *       1025:
+   *         description: Code product exist
+   *       1026:
+   *         description: Invalid product provider
+   *       1027:
+   *         description: Invalid product name
+   *       1029:
+   *         description: Invalid product code
+   *       1088:
+   *         description: Invalid unit slug
+   *       1097:
+   *         description: Invalid product description
    *
    */
 
@@ -224,6 +238,24 @@ class ProductController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1024:
+   *         description: Unit not found
+   *       1025:
+   *         description: Code product exist
+   *       1026:
+   *         description: Invalid product provider
+   *       1027:
+   *         description: Invalid product name
+   *       1029:
+   *         description: Invalid product code
+   *       1045:
+   *         description: Product not found
+   *       1065:
+   *         description: Invalid product slug
+   *       1088:
+   *         description: Invalid unit slug
+   *       1097:
+   *         description: Invalid product description
    *
    */
 

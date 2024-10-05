@@ -35,16 +35,6 @@ export function DialogAddProductRequest({
     onOpenChange()
   }
   const handleSubmit = (data: TAddNewProductRequestSchema) => {
-    // const completeData: IProductRequisitionInfo = {
-    //   ...data,
-    //   requestQuantity: Number(data.product.quantity),
-    //   // slug: data.product.slug
-    //   // unit: {
-    //   //   slug: data.unit.slug,
-    //   //   name: data.unit.name
-    //   // }
-    // }
-    // handleAddRequest(completeData)
     handleAddRequest(data)
     onOpenChange()
   }

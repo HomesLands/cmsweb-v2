@@ -43,7 +43,8 @@ class RequestProductService {
     });
     if(!requestProduct) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_NOT_FOUND);
 
-    if(!requestProduct.productRequisitionForm) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+    if(!requestProduct.productRequisitionForm) 
+      throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
     if(requestProduct.productRequisitionForm.creator) {
       if(requestProduct.productRequisitionForm.creator?.id !== creatorId) 
@@ -57,9 +58,9 @@ class RequestProductService {
       requestProduct.productRequisitionForm.status,
       requestProduct.productRequisitionForm.isRecalled
     );
-    if(!isPermitEdit) throw new GlobalError(ErrorCodes.CAN_NOT_EDIT_FORM);
+    if(!isPermitEdit) throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
 
-    await requestProductRepository.remove(requestProduct);
+    await requestProductRepository.softRemove(requestProduct);
     const deletedRequestProductDto = mapper.map(requestProduct, RequestProduct, RequestProductResponseDto);
     return deletedRequestProductDto;
   }
@@ -98,7 +99,7 @@ class RequestProductService {
       requestProduct.productRequisitionForm.status,
       requestProduct.productRequisitionForm.isRecalled
     );
-    if(!isPermitEdit) throw new GlobalError(ErrorCodes.CAN_NOT_EDIT_FORM);
+    if(!isPermitEdit) throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
     
     // UPDATE
     requestProduct.requestQuantity = requestData.newQuantity;
@@ -141,7 +142,7 @@ class RequestProductService {
       form.status,
       form.isRecalled
     );
-    if(!isPermitEdit) throw new GlobalError(ErrorCodes.CAN_NOT_EDIT_FORM);
+    if(!isPermitEdit) throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
 
     const dataCreateRequestProduct: TCreateRequestProductRequestDto = {
       product: requestData.product,
@@ -179,17 +180,17 @@ class RequestProductService {
       requestProductMapper.product = product;
     } else {
       // note: if the name of new product like and shorter than existed temporary product => error
-      const formCheck = await productRequisitionFormRepository.findOne({
-        where: {
-          slug: requestData.form,
-          requestProducts: {
-            temporaryProduct: {
-              name: Like(`%${requestData.name}%`)
-            }
-          }  
-        },
-      });
-      if(formCheck) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_EXIST);
+      // const formCheck = await productRequisitionFormRepository.findOne({
+      //   where: {
+      //     slug: requestData.form,
+      //     requestProducts: {
+      //       temporaryProduct: {
+      //         name: Like(`%${requestData.name}%`)
+      //       }
+      //     }  
+      //   },
+      // });
+      // if(formCheck) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_EXIST);
 
       const unit = await unitRepository.findOneBy({
         slug: requestData.unit

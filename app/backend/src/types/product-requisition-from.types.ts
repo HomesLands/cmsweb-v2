@@ -1,4 +1,7 @@
-import { TCreateRequestProductRequestDto } from "@types";
+import { 
+  TCreateRequestProductRequestDto,
+  TCreateApprovalLogRequestDto, 
+} from "@types";
 
 export type TCreateProductRequisitionFormRequestDto = {
   code?: string;
@@ -16,8 +19,9 @@ export type TCreateProductRequisitionFormRequestDto = {
 export type TApprovalProductRequisitionFormRequestDto = {
   formSlug?: string;
   // approvalUserSlug?: string;
-  approvalLogStatus?: string;
-  approvalLogContent?: string;
+  // approvalLogStatus?: string;
+  // approvalLogContent?: string;
+  approvalLog?: TCreateApprovalLogRequestDto;
 };
 
 export type TResubmitProductRequisitionFormRequestDto = {

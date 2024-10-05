@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next'
 
 import { DataTableColumnHeader } from '@/components/ui'
 import { IUserApprovalInfo } from '@/types'
-import { UserApprovalStage } from '@/constants'
+import { ApprovalLogStatus, UserApprovalStage } from '@/constants'
+import { format } from 'date-fns'
 
 export const useColumnsApprovalLog = (): ColumnDef<IUserApprovalInfo>[] => {
   const { t } = useTranslation('productRequisition')
@@ -35,6 +36,27 @@ export const useColumnsApprovalLog = (): ColumnDef<IUserApprovalInfo>[] => {
       }
     },
     {
+      accessorKey: 'status',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('tableData.status')} />
+      ),
+      cell: ({ row }) => {
+        const approvalLogs = row.original.approvalLogs
+        if (approvalLogs && approvalLogs.length > 0) {
+          const status = approvalLogs[0].status
+          switch (status) {
+            case ApprovalLogStatus.ACCEPT:
+              return t('status.accept')
+            case ApprovalLogStatus.REJECT:
+              return t('status.reject')
+            case ApprovalLogStatus.GIVE_BACK:
+              return t('status.giveBack')
+          }
+        }
+        return t('status.waiting')
+      }
+    },
+    {
       accessorKey: 'approvalLogs',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t('tableData.approvalContent')} />
@@ -42,7 +64,23 @@ export const useColumnsApprovalLog = (): ColumnDef<IUserApprovalInfo>[] => {
       cell: ({ row }) => {
         const approvalLogs = row.original.approvalLogs
         if (approvalLogs && approvalLogs.length > 0) {
-          return approvalLogs[0].content
+          const { content } = approvalLogs[0]
+          return `${content}`
+        }
+        return ''
+      }
+    },
+    // New column for approval time
+    {
+      accessorKey: 'createdAt',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('tableData.approvalTime')} />
+      ),
+      cell: ({ row }) => {
+        const approvalLogs = row.original.approvalLogs
+        if (approvalLogs && approvalLogs.length > 0) {
+          const { createdAt } = approvalLogs[0]
+          return format(new Date(createdAt), 'HH:mm dd/MM/yyyy')
         }
         return ''
       }

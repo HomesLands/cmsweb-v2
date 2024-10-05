@@ -1,3 +1,5 @@
 export * from './auth.schema'
 export * from './product.schema'
 export * from './role.schema'
+export * from './authority.schema'
+export * from './permission.schema'

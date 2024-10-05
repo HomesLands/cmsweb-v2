@@ -15,5 +15,8 @@ export const ROUTE = {
 
   // Role
   ROLE: '/roles',
-  ADD_ROLE: '/roles/add'
+  ADD_ROLE: '/roles/add',
+
+  // Emoloyee
+  EMPLOYEE: '/employees'
 }

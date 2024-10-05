@@ -5,6 +5,7 @@ import {
   createProductRequisition,
   deleteProductRequisition,
   getAllProductRequisition,
+  getAllUnit,
   getProductRequisitionByApprover,
   getProductRequisitionByCreator,
   getProductRequisitionBySlug,
@@ -23,6 +24,13 @@ export const useProducts = (q: IProductQuery) => {
     queryKey: ['products', JSON.stringify(q)],
     queryFn: () => getProducts(q),
     placeholderData: keepPreviousData
+  })
+}
+
+export const useUnits = () => {
+  return useQuery({
+    queryKey: ['units'],
+    queryFn: () => getAllUnit()
   })
 }
 

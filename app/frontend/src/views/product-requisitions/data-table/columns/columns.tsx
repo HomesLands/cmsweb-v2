@@ -19,15 +19,8 @@ import {
 } from '@/types'
 import { ProductRequisitionStatusBadge } from '@/components/app/badge'
 import { RequisitionTypeBadge } from '@/components/app/badge'
-import { DialogRequisitionDetail } from '@/components/app/dialog'
-import { UserApprovalStage } from '@/constants'
 
 export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseForApprover>[] => {
-  const [openDialog, setOpenDialog] = useState(false)
-  const [selectedRequisition] = useState<IRequisitionFormResponseForApprover | null>(null)
-  const onOpenChange = () => {
-    setOpenDialog(false)
-  }
   const formatDate = (date: Date) => {
     return format(date, 'HH:mm dd/MM/yyyy')
   }
@@ -74,7 +67,6 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
           <ProductRequisitionStatusBadge
             isRecalled={row.original.productRequisitionForm.isRecalled}
             status={row.original.productRequisitionForm.status as ProductRequisitionStatus}
-            roleApproval={row.original.roleApproval as ProductRequisitionRoleApproval}
           />
         )
       },

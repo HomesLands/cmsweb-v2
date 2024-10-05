@@ -14,7 +14,12 @@ import {
   ApprovalProductRequisitionDetailPage,
   HomePage,
   RolePage,
-  CreateRolePage
+  CreateRolePage,
+  AuthorityPage,
+  CreateAuthorityPage,
+  PermissionPage,
+  CreatePermissionPage,
+  EmployeePage
 } from './loadable'
 
 export const router = createBrowserRouter([
@@ -82,6 +87,21 @@ export const router = createBrowserRouter([
     ]
   },
   {
+    path: ROUTE.EMPLOYEE,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: (
+          <ProtectedElement
+            allowedAuthorities={[Authority.READ_USER]}
+            element={<SuspenseElement component={EmployeePage} />}
+          />
+        )
+      }
+    ]
+  },
+  {
     path: ROUTE.ROLE,
     element: <SuspenseElement component={DashboardLayout} />,
     children: [
@@ -102,22 +122,52 @@ export const router = createBrowserRouter([
             allowedAuthorities={[Authority.CREATE_ROLE]}
           />
         )
-      },
+      }
+    ]
+  },
+  {
+    path: ROUTE.AUTHORITY,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
       {
-        path: 'approval',
+        index: true,
         element: (
           <ProtectedElement
-            element={<SuspenseElement component={ApprovalProductRequisitionPage} />}
-            allowedAuthorities={[Authority.APPROVE_PRODUCT_REQUISITION]}
+            allowedAuthorities={[Authority.READ_AUTHORITY]}
+            element={<SuspenseElement component={AuthorityPage} />}
           />
         )
       },
       {
-        path: 'approval/:slug',
+        path: 'add',
         element: (
           <ProtectedElement
-            element={<SuspenseElement component={ApprovalProductRequisitionDetailPage} />}
-            allowedAuthorities={[Authority.APPROVE_PRODUCT_REQUISITION]}
+            element={<SuspenseElement component={CreateAuthorityPage} />}
+            allowedAuthorities={[Authority.CREATE_AUTHORITY]}
+          />
+        )
+      }
+    ]
+  },
+  {
+    path: ROUTE.PERMISSION,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: (
+          <ProtectedElement
+            allowedAuthorities={[Authority.READ_PERMISSION]}
+            element={<SuspenseElement component={PermissionPage} />}
+          />
+        )
+      },
+      {
+        path: 'add',
+        element: (
+          <ProtectedElement
+            element={<SuspenseElement component={CreatePermissionPage} />}
+            allowedAuthorities={[Authority.CREATE_PERMISSION]}
           />
         )
       }

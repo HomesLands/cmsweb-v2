@@ -11,6 +11,7 @@
     "roles": "Roles",
     "createRole": "Create role",
     "warehouses": "Warehouses",
-    "createWarehouse": "Create warehouse"
+    "createWarehouse": "Create warehouse",
+    "employees": "Employees"
   }
 }

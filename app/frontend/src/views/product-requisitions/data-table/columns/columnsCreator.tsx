@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontal } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
 
 import {
   DropdownMenu,
@@ -20,10 +19,11 @@ import { DialogRequisitionDetail } from '@/components/app/dialog/dialog-requisit
 import { RecalledStatusBadge } from '@/components/app/badge'
 
 import { format } from 'date-fns'
+import { useNavigate } from 'react-router'
 
-export const useColumnsRequisitionListCreator = () // companyName: string
-: ColumnDef<IProductRequisitionFormInfo>[] => {
+export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitionFormInfo>[] => {
   const [openViewDialog, setOpenViewDialog] = useState(false)
+  // const [openEditDialog, setOpenEditDialog] = useState(false)
   const [selectedRequisition, setSelectedRequisition] =
     useState<IProductRequisitionFormInfo | null>(null)
   const navigate = useNavigate()
@@ -74,6 +74,13 @@ export const useColumnsRequisitionListCreator = () // companyName: string
       //   return <div className="min-w-[12rem] text-[0.8rem]">{companyName}</div>
       // }
     },
+    // {
+    //   id: 'company',
+    //   header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />,
+    //   cell: () => {
+    //     return <div className="min-w-[12rem] text-[0.8rem]">{companyName}</div>
+    //   }
+    // },
     {
       accessorKey: 'isRecalled',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Trạng thái hoàn" />,
@@ -139,6 +146,16 @@ export const useColumnsRequisitionListCreator = () // companyName: string
                 onOpenChange={onViewDialogOpenChange}
               />
             )}
+            {/* {selectedRequisition === requisition && openEditDialog && (
+              <DialogRequisitionDetail
+                openDialog={openEditDialog}
+                requisition={requisition}
+                component={null}
+                companyName={companyName}
+                onOpenChange={onEditDialogOpenChange}
+                isEditing={true}
+              />
+            )} */}
           </div>
         )
       }

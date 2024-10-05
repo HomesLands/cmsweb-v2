@@ -7,4 +7,7 @@ export class RoleResponseDto extends BaseResponseDto {
 
   @AutoMap()
   description?: string;
+
+  @AutoMap()
+  nameDisplay?: string;
 }

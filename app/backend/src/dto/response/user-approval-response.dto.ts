@@ -4,8 +4,9 @@ import {
   ProductRequisitionFormResponseDto,
   AssignedUserApprovalResponseDto,
 } from "@dto/response";
+import { BaseResponseDto } from "./base-response.dto";
 
-export class UserApprovalResponseDto {
+export class UserApprovalResponseDto extends BaseResponseDto {
   userSlug?: string;
 
   userFullname?: string;

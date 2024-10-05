@@ -9,3 +9,10 @@ export enum ApprovalAction {
   GIVE_BACK = 'give_back',
   CANCEL = 'cancel'
 }
+
+export enum ApprovalLogStatus {
+  ACCEPT = 'accept',
+  REJECT = 'reject',
+  GIVE_BACK = 'give_back',
+  WAITING = 'waiting'
+}

@@ -3,4 +3,8 @@ import { fileController } from "@controllers";
 
 export const fileRoute: Router = Router();
 
-fileRoute.route("/").post(fileController.uploadFileTest);
+// [POS] /api/v1/files
+fileRoute.route("/").post(fileController.uploadFileDB);
+
+// [GET] /api/v1/files
+fileRoute.route("/:name").get(fileController.getImgByName);

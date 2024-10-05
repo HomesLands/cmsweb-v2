@@ -5,15 +5,13 @@ import { StatusCodes } from "http-status-codes";
 import { TApiResponse } from "@types";
 
 class FileController {
-  public async uploadFileTest(
+  public async uploadFileDB(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const isMultiple: boolean = true;
-      // const validate = await fileService.validateFiles(req, res, isMultiple);
-      const validate = await fileService.validateFiles(req, res, isMultiple);
+      const validate = await fileService.uploadFile(req, res);
       console.log({validate})
 
       const response: TApiResponse<void> = {
@@ -25,6 +23,26 @@ class FileController {
       };
       res.status(StatusCodes.OK).json(response);
 
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async getImgByName(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const name = req.params.name;
+      const fileData = await fileService.getFileFromDB(name);
+
+      res.writeHead(200, {
+        'Content-Type': fileData.mimetype,
+        'Content-Length': fileData.length,
+        'Content-Disposition': `attachment; filename="file.${fileData.extension}"`
+      });
+      res.end(fileData.data);
     } catch (error) {
       next(error);
     }

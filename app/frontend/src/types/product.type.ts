@@ -19,6 +19,11 @@ export interface IProductApprovalInfo {
   notes?: string
 }
 
+export interface IUnit {
+  slug: string
+  name: string
+}
+
 export interface IProductRequisitionFormCreate {
   code: string
   requester: string
@@ -51,7 +56,7 @@ export interface IFinalProductRequisition {
   description: string
   deadlineApproval: string
   requestProducts: {
-    product: string
+    product?: string
     requestQuantity: number
     name: string
     provider: string
@@ -78,7 +83,7 @@ export interface IProductNameSearch {
 
 export interface IProductInfo {
   code: string
-  slug: string
+  slug?: string
   name: string
   provider: string
   description: string

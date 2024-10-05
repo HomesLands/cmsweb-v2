@@ -58,6 +58,10 @@ class WarehouseController {
    *             schema:
    *       500:
    *         description: Server error
+   *       1101:
+   *         description: Invalid warehouse name
+   *       1102:
+   *         description: Invalid warehouse address
    *
    */
 

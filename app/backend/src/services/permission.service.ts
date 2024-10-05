@@ -5,7 +5,11 @@ import {
   roleRepository,
 } from "@repositories";
 import { PermissionResponseDto } from "@dto/response";
-import { TCreatePermissionRequestDto } from "@types";
+import {
+  TCreatePermissionRequestDto,
+  TPaginationOptionResponse,
+  TQueryRequest,
+} from "@types";
 import { plainToClass } from "class-transformer";
 import { CreatePermissionRequestDto } from "@dto/request";
 import { validate } from "class-validator";
@@ -14,10 +18,32 @@ import { logger } from "@lib";
 import { Permission } from "@entities";
 
 class PermissionService {
-  public async getAllPermissions(): Promise<PermissionResponseDto[]> {
+  public async getAllPermissions(
+    options: TQueryRequest
+  ): Promise<TPaginationOptionResponse<PermissionResponseDto[]>> {
+    // Get the total number of authorities
+    const totalPermissions = await authorityRepository.count();
+
+    // Parse and validate pagination parameters
+    let pageSize =
+      typeof options.pageSize === "string"
+        ? parseInt(options.pageSize, 10)
+        : options.pageSize;
+    let page =
+      typeof options.page === "string"
+        ? parseInt(options.page, 10)
+        : options.page;
+
+    // Ensure page and pageSize are positive numbers
+    if (isNaN(page) || page <= 0) page = 1;
+    if (isNaN(pageSize) || pageSize <= 0) pageSize = 10; // Default pageSize if invalid
+    // Calculate pagination details
+    const totalPages = Math.ceil(totalPermissions / pageSize);
+
     const permissions = await permissionRepository.find({
-      order: { createdAt: "DESC" },
-      relationLoadStrategy: "query",
+      order: { role: { nameNormalize: "DESC" }, createdAt: "DESC" },
+      take: pageSize,
+      skip: (page - 1) * pageSize,
       relations: ["role", "authority"],
     });
 
@@ -26,7 +52,12 @@ class PermissionService {
       Permission,
       PermissionResponseDto
     );
-    return results;
+    return {
+      items: results,
+      page,
+      pageSize,
+      totalPages,
+    };
   }
 
   public async getPermissionBySlug(

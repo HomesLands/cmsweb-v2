@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { useTranslation } from 'react-i18next'
 
 import {
   FormField,
@@ -18,16 +18,8 @@ import {
   updateProductRequestSchema
 } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  IProductInfo,
-  IProductRequisitionInfo,
-  IRequestProductInfo,
-  IUpdateProductRequisitionQuantity
-} from '@/types'
-import { useTranslation } from 'react-i18next'
-import { useRequisitionStore } from '@/stores'
-import { useParams } from 'react-router'
-import { useProductRequisitionBySlug } from '@/hooks'
+import { IProductRequisitionInfo } from '@/types'
+import { SelectUnit } from '../select/unit-select'
 
 interface IFormEditProductProps {
   data?: IProductRequisitionInfo
@@ -36,13 +28,8 @@ interface IFormEditProductProps {
 
 export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ data, onSubmit }) => {
   const { t } = useTranslation('tableData')
-  const { requisition } = useRequisitionStore()
-  // const { slug } = useParams()
-  // const { data: requisitionData, isLoading } = useProductRequisitionBySlug(slug as string)
+  const isEditMode = !!data // Add this line to define isEditMode
 
-  // const productRequisition = requisitionData?.result
-
-  // console.log('data in form', data)
   const form = useForm<TUpdateProductRequestSchema>({
     resolver: zodResolver(updateProductRequestSchema),
     defaultValues: {
@@ -54,6 +41,7 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
         name: data?.product.name || '',
         provider: data?.product.provider || '',
         unit: { name: data?.product.unit.name || '', slug: data?.product.unit.slug || '' },
+        // unit: data?.product.unit || { name: '', slug: '' },
         quantity: data?.product.quantity || 1,
         description: data?.product.description
       },
@@ -66,20 +54,14 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
     console.log('values in form', values)
     const completeData: IProductRequisitionInfo = {
       ...values,
-      requestQuantity: Number(values.requestQuantity)
-      //   description: values.description || ''
-      // slug: values.product.slug
-      // product: {
-      //   name: values.product.name,
-      //   slug: values.product.slug,
-      //   code: values.product.code,
-      //   provider: values.product.provider,
-      //   quantity: values.product.quantity,
-      //   unit: {
-      //     name: values.product.unit.name,
-      //     slug: values.product.unit.slug
-      //   }
-      // }
+      requestQuantity: Number(values.requestQuantity),
+      product: {
+        ...values.product,
+        unit: {
+          name: values.product.unit.name,
+          slug: values.product.unit.slug
+        }
+      }
     }
     onSubmit(completeData)
   }
@@ -153,12 +135,22 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
 
             <FormField
               control={form.control}
-              name="product.unit.name"
+              name="product.unit"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t('tableData.unit')}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <SelectUnit
+                      onChange={(value) =>
+                        field.onChange({ name: value?.label || '', slug: value?.value || '' })
+                      }
+                      defaultValue={
+                        data?.product.unit
+                          ? { value: data.product.unit.slug, label: data.product.unit.name }
+                          : undefined
+                      }
+                      isDisabled={isEditMode}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -179,7 +171,7 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
             />
           </div>
           <div className="flex justify-end w-full">
-            <Button type="submit">{t('tableData.add')}</Button>
+            <Button type="submit">{isEditMode ? t('tableData.update') : t('tableData.add')}</Button>
           </div>
         </form>
       </Form>

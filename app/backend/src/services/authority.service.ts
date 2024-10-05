@@ -2,21 +2,56 @@ import { mapper } from "@mappers";
 import { Authority } from "@entities";
 import { authorityRepository } from "@repositories";
 import { AuthorityResponseDto } from "@dto/response";
-import { TCreateAuthorityRequestDto } from "@types";
+import {
+  TCreateAuthorityRequestDto,
+  TPaginationOptionResponse,
+  TQueryRequest,
+} from "@types";
 import { plainToClass } from "class-transformer";
-import { CreateAuthorityRequestDto } from "@dto/request";
+import { CreateAuthorityRequestDto, UpdateAuthorityRequestDto } from "@dto/request";
 import { validate } from "class-validator";
 import { ErrorCodes, GlobalError, ValidationError } from "@exception";
 
 class AuthorityService {
-  public async getAllAuthorities(): Promise<AuthorityResponseDto[]> {
-    const authorities = await authorityRepository.find();
+  public async getAllAuthorities(
+    options: TQueryRequest
+  ): Promise<TPaginationOptionResponse<AuthorityResponseDto[]>> {
+    // Get the total number of authorities
+    const totalAuthorities = await authorityRepository.count();
+
+    // Parse and validate pagination parameters
+    let pageSize =
+      typeof options.pageSize === "string"
+        ? parseInt(options.pageSize, 10)
+        : options.pageSize;
+    let page =
+      typeof options.page === "string"
+        ? parseInt(options.page, 10)
+        : options.page;
+
+    // Ensure page and pageSize are positive numbers
+    if (isNaN(page) || page <= 0) page = 1;
+    if (isNaN(pageSize) || pageSize <= 0) pageSize = 10; // Default pageSize if invalid
+    // Calculate pagination details
+    const totalPages = Math.ceil(totalAuthorities / pageSize);
+
+    const authorities = await authorityRepository.find({
+      take: pageSize,
+      skip: (page - 1) * pageSize,
+      order: { createdAt: options.order },
+    });
+
     const results = mapper.mapArray(
       authorities,
       Authority,
       AuthorityResponseDto
     );
-    return results;
+    return {
+      items: results,
+      page,
+      pageSize,
+      totalPages,
+    };
   }
 
   public async getAuthorityBySlug(slug: string): Promise<AuthorityResponseDto> {
@@ -45,6 +80,23 @@ class AuthorityService {
     const createdAuthority = await authorityRepository.createAndSave(authority);
 
     return mapper.map(createdAuthority, Authority, AuthorityResponseDto);
+  }
+
+  public async updateAuthority(
+    slug: string, 
+    plainData: UpdateAuthorityRequestDto
+  ): Promise<AuthorityResponseDto> {
+    const requestData = plainToClass(UpdateAuthorityRequestDto, plainData);
+    const errors = await validate(requestData);
+    if(errors.length > 0) throw new ValidationError(errors);
+
+    const authority = await authorityRepository.findOneBy({ slug });
+    if(!authority) throw new GlobalError(ErrorCodes.AUTHORITY_NOT_FOUND);
+
+    Object.assign(authority, requestData);
+    const updatedAuthority = await authorityRepository.save(authority);
+    const authorityDto = mapper.map(updatedAuthority, Authority, AuthorityResponseDto);
+    return authorityDto;
   }
 }
 

@@ -67,10 +67,10 @@ export const addNewProductSchema = z.object({
 
 export const addNewProductRequestSchema = z.object({
   // code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
-  // slug: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
+  slug: z.string().min(1, 'Mã sản phẩm không hợp lệ').optional(),
   product: z.object({
     code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
-    slug: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
+    slug: z.string().min(1, 'Mã sản phẩm không hợp lệ').optional(),
     name: z.string().min(1, 'Tên sản phẩm không hợp lệ'),
     provider: z.string().min(1, 'Nhà cung cấp không hợp lệ'),
     quantity: z.number().min(1, 'Số lượng không hợp lệ'),

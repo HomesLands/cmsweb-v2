@@ -31,6 +31,8 @@
     "approverName": "Người duyệt",
     "approvalLevel": "Cấp duyệt",
     "approvalContent": "Nội dung duyệt",
+    "approvalTime": "Thời gian duyệt",
+    "status": "Trạng thái",
     "add": "Thêm",
     "action": "Hành động",
     "filter": "Lọc",

@@ -54,7 +54,8 @@
     "confirmProductRequisitionsSuccess": "Xác nhận yêu cầu thành công",
     "confirmProductRequisitionsSuccessDescription": "Phiếu yêu cầu đã được gửi đi. Bạn có thể xem danh sách",
     "here": "tại đây",
-    "updateProductRequisition": "Cập nhật yêu cầu vật tư"
+    "updateProductRequisition": "Cập nhật yêu cầu vật tư",
+    "approvalHistory": "Lịch sử duyệt"
   },
   "roleApproval": {
     "approvalLevel": "Cấp duyệt",
@@ -62,6 +63,12 @@
     "approvalStage1": "Duyệt cấp 1",
     "approvalStage2": "Duyệt cấp 2",
     "approvalStage3": "Duyệt cấp 3"
+  },
+  "status": {
+    "accept": "Duyệt",
+    "reject": "Từ chối",
+    "giveBack": "Hoàn lại",
+    "waiting": "Chờ duyệt"
   },
   "progress": {
     "createProductRequisitions": "Tạo phiếu yêu cầu",

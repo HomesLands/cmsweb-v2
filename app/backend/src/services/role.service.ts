@@ -8,16 +8,16 @@ import {
   TQueryRequest,
 } from "@types";
 import { plainToClass } from "class-transformer";
-import { CreateRoleRequestDto } from "@dto/request";
+import { CreateRoleRequestDto, UpdateRoleRequestDto } from "@dto/request";
 import { validate } from "class-validator";
-import { ValidationError } from "@exception";
+import { ErrorCodes, GlobalError, ValidationError } from "@exception";
 import { logger } from "@lib/logger";
 
 class RoleService {
   public async getAllRoles(
     options: TQueryRequest
   ): Promise<TPaginationOptionResponse<RoleResponseDto[]>> {
-    // Get the total number of products
+    // Get the total number of roles
     const totalRoles = await roleRepository.count();
 
     // Parse and validate pagination parameters
@@ -63,7 +63,6 @@ class RoleService {
     plainData: TCreateRoleRequestDto
   ): Promise<RoleResponseDto> {
     const requestData = plainToClass(CreateRoleRequestDto, plainData);
-    logger.info("", { filename: RoleService.name, requestData });
 
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
@@ -73,6 +72,25 @@ class RoleService {
     const createdRole = await roleRepository.createAndSave(role);
 
     return mapper.map(createdRole, Role, RoleResponseDto);
+  }
+
+  public async updateRole(
+    slug: string,
+    plainData: UpdateRoleRequestDto
+  ): Promise<RoleResponseDto> {
+    const requestData = plainToClass(UpdateRoleRequestDto, plainData);
+
+    const errors = await validate(requestData);
+    if(errors.length > 0) throw new ValidationError(errors);
+
+    const role = await roleRepository.findOneBy({ slug });
+    if(!role) throw new GlobalError(ErrorCodes.ROLE_NOT_FOUND);
+
+    Object.assign(role, requestData);
+    const updatedRole = await roleRepository.save(role);
+
+    const roleDto = mapper.map(updatedRole, Role, RoleResponseDto);
+    return roleDto;
   }
 }
 

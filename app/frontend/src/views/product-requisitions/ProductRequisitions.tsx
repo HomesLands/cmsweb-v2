@@ -1,22 +1,19 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { ReaderIcon } from '@radix-ui/react-icons'
 
-import { DataTableByCreator, Label } from '@/components/ui'
+import { DataTable, Label } from '@/components/ui'
 import { usePagination, useProductRequisitionByCreator } from '@/hooks'
-import { CustomComponent } from './CustomComponent'
-import { useColumnsRequisitionListCreator } from './DataTable/columnsCreator'
-import { useUserStore } from '@/stores'
+import { ProductRequisitionActionOptions, useColumnsRequisitionListCreator } from './data-table'
 
 const ProductRequisitions: React.FC = () => {
   const { t } = useTranslation(['productRequisition'])
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
-  const { userInfo } = useUserStore()
 
   const { data, isLoading } = useProductRequisitionByCreator({
-    order: 'DESC',
-    page: pagination.pageIndex + 1,
-    pageSize: pagination.pageSize
+    page: pagination.pageIndex,
+    pageSize: pagination.pageSize,
+    order: 'DESC'
   })
 
   return (
@@ -25,19 +22,15 @@ const ProductRequisitions: React.FC = () => {
         <ReaderIcon className="header-icon" />
         {t('productRequisition.listEmployee')}
       </Label>
-      <DataTableByCreator
+
+      <DataTable
         isLoading={isLoading}
-        // columns={useColumnsRequisitionListCreator(
-        //   userInfo?.userDepartments[0].department.site.company.name ?? ''
-        // )}
         columns={useColumnsRequisitionListCreator()}
-        data={data?.result?.items || []}
+        data={data?.result.items || []}
         pages={data?.result?.totalPages || 0}
-        page={pagination.pageIndex + 1}
-        pageSize={pagination.pageSize}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
-        CustomComponent={CustomComponent}
+        actionOptions={ProductRequisitionActionOptions}
       />
     </div>
   )

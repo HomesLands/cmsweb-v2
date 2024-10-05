@@ -2,7 +2,12 @@ import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { permissionService } from "@services";
-import { TApiResponse, TCreatePermissionRequestDto } from "@types";
+import {
+  TApiResponse,
+  TCreatePermissionRequestDto,
+  TPaginationOptionResponse,
+  TQueryRequest,
+} from "@types";
 import { PermissionResponseDto } from "@dto/response";
 
 class PermissionController {
@@ -40,9 +45,32 @@ class PermissionController {
    *   get:
    *     summary: Get all permissions
    *     tags: [Permission]
+   *     parameters:
+   *       - in: query
+   *         name: order
+   *         schema:
+   *           type: string
+   *           enum: [ASC, DESC]
+   *         required: true
+   *         description: The order in which the permissions are sorted (ASC, DESC)
+   *         example: ASC
+   *       - in: query
+   *         name: page
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of permissions to skip
+   *         example: 1
+   *       - in: query
+   *         name: pageSize
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of permissions to retrieve
+   *         example: 10
    *     responses:
    *       200:
-   *         description: Get all permissions successfully.
+   *         description: Permissions have been retrieved successfully
    *       500:
    *         description: Server error
    */
@@ -52,8 +80,11 @@ class PermissionController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const results = await permissionService.getAllPermissions();
-      const response: TApiResponse<PermissionResponseDto[]> = {
+      const plainData = req.query as unknown as TQueryRequest;
+      const results = await permissionService.getAllPermissions(plainData);
+      const response: TApiResponse<
+        TPaginationOptionResponse<PermissionResponseDto[]>
+      > = {
         code: StatusCodes.OK,
         error: false,
         message: "Permissions have been retrieved successfully",
@@ -85,6 +116,8 @@ class PermissionController {
    *         description: Get permission successfully
    *       500:
    *         description: Server error
+   *       1072:
+   *         description: Permission could not be found
    */
   public async getPermissionBySlug(
     req: Request,
@@ -125,6 +158,8 @@ class PermissionController {
    *         description: Create role successfully.
    *       500:
    *         description: Server error
+   *       1070:
+   *         description: Role could not be found
    */
   public async createPermission(
     req: Request,

@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { useTranslation } from 'react-i18next'
 
 import {
   FormField,
@@ -14,7 +14,7 @@ import {
 import { addNewProductRequestSchema, TAddNewProductRequestSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IProductInfo, IProductRequisitionInfo } from '@/types'
-import { useTranslation } from 'react-i18next'
+import { SelectUnit } from '../select/unit-select'
 
 interface IFormAddNewProductProps {
   data?: IProductInfo
@@ -23,23 +23,23 @@ interface IFormAddNewProductProps {
 
 export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ data, onSubmit }) => {
   const { t } = useTranslation('tableData')
-  console.log('data in form', data)
+  const isEditMode = !!data
+
   const form = useForm<TAddNewProductRequestSchema>({
     resolver: zodResolver(addNewProductRequestSchema),
     defaultValues: {
-      // code: data?.product.code || '',
-      // slug: data?.product.slug || '',
+      // code: data?.code || '',
+      slug: data?.slug || '',
       product: {
         code: data?.code || '',
-        slug: data?.slug || '',
+        slug: data?.slug || undefined,
         name: data?.name || '',
         provider: data?.provider || '',
-        unit: data?.unit || { name: '', slug: '' },
-        quantity: 1,
-        description: data?.description
+        unit: { name: data?.unit.name || '', slug: data?.unit.slug || '' },
+        quantity: data?.quantity || 1,
+        description: data?.description || ''
       },
       requestQuantity: data?.quantity || 1
-      // description: data?.description || ''
     }
   })
 
@@ -47,20 +47,14 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
     console.log('values in form', values)
     const completeData: IProductRequisitionInfo = {
       ...values,
-      requestQuantity: Number(values.requestQuantity)
-      // description: values.description || ''
-      // slug: values.product.slug
-      // product: {
-      //   name: values.product.name,
-      //   slug: values.product.slug,
-      //   code: values.product.code,
-      //   provider: values.product.provider,
-      //   quantity: values.product.quantity,
-      //   unit: {
-      //     name: values.product.unit.name,
-      //     slug: values.product.unit.slug
-      //   }
-      // }
+      requestQuantity: Number(values.requestQuantity),
+      product: {
+        ...values.product,
+        unit: {
+          name: values.product.unit.name,
+          slug: values.product.unit.slug
+        }
+      }
     }
     onSubmit(completeData)
   }
@@ -77,7 +71,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
                 <FormItem>
                   <FormLabel>{t('tableData.productCode')}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} readOnly={isEditMode} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -90,7 +84,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
                 <FormItem>
                   <FormLabel>{t('tableData.productName')}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} readOnly={isEditMode} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -103,7 +97,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
                 <FormItem>
                   <FormLabel>{t('tableData.provider')}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} readOnly={isEditMode} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -134,17 +128,26 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
 
             <FormField
               control={form.control}
-              name="product.unit.name"
+              name="product.unit"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t('tableData.unit')}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <SelectUnit
+                      onChange={(value) =>
+                        field.onChange({ name: value?.label || '', slug: value?.value || '' })
+                      }
+                      defaultValue={
+                        data?.unit ? { value: data.unit.slug, label: data.unit.name } : undefined
+                      }
+                      isDisabled={isEditMode}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="product.description"
@@ -152,7 +155,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
                 <FormItem>
                   <FormLabel>{t('tableData.description')}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} readOnly={isEditMode} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -160,7 +163,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
             />
           </div>
           <div className="flex justify-end w-full">
-            <Button type="submit">{t('tableData.add')}</Button>
+            <Button type="submit">{isEditMode ? t('tableData.add') : t('tableData.add')}</Button>
           </div>
         </form>
       </Form>

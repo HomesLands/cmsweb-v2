@@ -26,6 +26,8 @@
     "approverName": "Approver name",
     "approvalLevel": "Approval level",
     "approvalContent": "Approval content",
+    "approvalTime": "Approval time",
+    "status": "Status",
     "action": "Action",
     "filter": "Filter",
     "all": "All",

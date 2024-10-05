@@ -21,10 +21,7 @@ export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
 
   const handleButtonClick = (product: IProductInfo) => {
     setOpenDialog(true)
-    console.log(product)
-    // const { name, quantity, slug, unit, ...rest } = product
     setSelectedProduct(product)
-    console.log(selectedProduct)
   }
 
   const onOpenChange = () => {

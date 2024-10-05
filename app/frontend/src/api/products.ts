@@ -7,6 +7,7 @@ import {
   IProductQuery,
   IProductRequisitionFormInfo,
   IRequisitionFormResponseForApprover,
+  IUnit,
   IUpdateProductRequisitionQuantity
 } from '@/types'
 import { http } from '@/utils'
@@ -150,5 +151,10 @@ export async function deleteProductRequisition(requestProductSlug: string) {
       params: { requestProductSlug }
     }
   )
+  return response.data
+}
+
+export async function getAllUnit() {
+  const response = await http.get<IApiResponse<IUnit[]>>('/units')
   return response.data
 }

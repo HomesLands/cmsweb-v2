@@ -2,7 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { authorityService } from "@services";
-import { TApiResponse, TCreateAuthorityRequestDto } from "@types";
+import {
+  TApiResponse,
+  TCreateAuthorityRequestDto,
+  TPaginationOptionResponse,
+  TQueryRequest,
+  TUpdateAuthorityRequestDto,
+} from "@types";
 import { AuthorityResponseDto } from "@dto/response";
 
 class AuthorityController {
@@ -15,16 +21,50 @@ class AuthorityController {
    *       required:
    *         - nameNormalize
    *         - description
+   *         - nameDisplay
    *       properties:
    *         nameNormalize:
    *           type: string
    *           description: Authority code.
+   *         nameDisplay:
+   *           type: string
+   *           description: Name display for authority
    *         description:
    *           type: string
    *           description: Description for authority
+   *         nameDisplay:
+   *           type: string
+   *           description: Display name for authority
    *       example:
    *         nameNormalize: CREATE_USER
+   *         nameDisplay: Create user
    *         description: Enable create user
+<<<<<<< HEAD
+   *         nameDisplay: Tạo người dùng
+=======
+   * 
+   *     UpdateAuthorityRequestDto:
+   *       type: object
+   *       required:
+   *         - nameNormalize
+   *         - description
+   *         - nameDisplay
+   *       properties:
+   *         nameNormalize:
+   *           type: string
+   *           description:  Authority code
+   *         description:
+   *           type: string
+   *           description: Description for authority
+   *         nameDisplay:
+   *           type: string
+   *           description: Name display for authority
+   *       example:
+   *         nameNormalize: CREATE_USER
+   *         nameDisplay: Tạo người dùng
+   *         description: Cho phép tạo người dùng mới
+   * 
+>>>>>>> 14a5a7bbfa0c163e5a83957faa431b031b4889f5
    */
 
   /**
@@ -40,11 +80,36 @@ class AuthorityController {
    *   get:
    *     summary: Get all authorities
    *     tags: [Authority]
+   *     parameters:
+   *       - in: query
+   *         name: order
+   *         schema:
+   *           type: string
+   *           enum: [ASC, DESC]
+   *         required: true
+   *         description: The order in which the authorities are sorted (ASC, DESC)
+   *         example: ASC
+   *       - in: query
+   *         name: page
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of authorities to skip
+   *         example: 1
+   *       - in: query
+   *         name: pageSize
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of authorities to retrieve
+   *         example: 10
    *     responses:
    *       200:
-   *         description: Get all authorities successfully.
+   *         description: Authorities have been retrieved successfully.
    *       500:
    *         description: Server error
+   *       1071:
+   *         description: Authority could not be found
    */
   public async getAllAuthorities(
     req: Request,
@@ -52,8 +117,12 @@ class AuthorityController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const results = await authorityService.getAllAuthorities();
-      const response: TApiResponse<AuthorityResponseDto[]> = {
+      const plainData = req.query as unknown as TQueryRequest;
+      const results = await authorityService.getAllAuthorities(plainData);
+
+      const response: TApiResponse<
+        TPaginationOptionResponse<AuthorityResponseDto[]>
+      > = {
         code: StatusCodes.OK,
         error: false,
         message: "Authorities have been retrieved successfully",
@@ -85,6 +154,8 @@ class AuthorityController {
    *         description: Get all authorities successfully.
    *       500:
    *         description: Server error
+   *       1071:
+   *         description: Authority could not be found
    */
   public async getAuthorityBySlug(
     req: Request,
@@ -146,6 +217,65 @@ class AuthorityController {
       };
 
       res.status(StatusCodes.CREATED).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /authorities/{slug}:
+   *   patch:
+   *     summary: Update authority
+   *     tags: [Authority]
+   *     parameters:
+   *       - name: slug
+   *         in: path
+   *         required: true
+   *         type: string
+   *         description: Authority slug
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/UpdateAuthorityRequestDto'
+   *     responses:
+   *       200:
+   *         description: Update authority successfully.
+   *         content:
+   *           application/json:
+   *             schema:
+   *       500:
+   *         description: Server error
+   *       1071:
+   *         description: Authority could not be found
+   *
+   */
+  public async updateAuthority(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const slug = req.params.slug as string;
+      const requestData = req.body as TUpdateAuthorityRequestDto;
+
+      const result: AuthorityResponseDto = 
+        await authorityService.updateAuthority(
+          slug,
+          requestData
+        );
+      const response: TApiResponse<AuthorityResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "The authority updated successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result,
+      };
+
+      res.status(StatusCodes.OK).json(response);
     } catch (error) {
       next(error);
     }

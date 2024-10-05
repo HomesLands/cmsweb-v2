@@ -8,6 +8,8 @@ import enProductRequisition from '@/locales/en/product-requisition.json'
 import enRoles from '@/locales/en/roles.json'
 import enTableData from '@/locales/en/table-data.json'
 import enToast from '@/locales/en/toast.json'
+import enAuthorities from '@/locales/en/authorities.json'
+import enPermissions from '@/locales/en/permissions.json'
 
 import viAuth from '@/locales/vi/auth.json'
 import viSidebar from '@/locales/vi/sidebar.json'
@@ -15,6 +17,9 @@ import viProductRequisition from '@/locales/vi/product-requisition.json'
 import viRoles from '@/locales/vi/roles.json'
 import viTableData from '@/locales/vi/table-data.json'
 import viToast from '@/locales/vi/toast.json'
+import viAuthorities from '@/locales/vi/authorities.json'
+import viPermissions from '@/locales/vi/permissions.json'
+
 i18n
   .use(LanguageDetector) // Tự động phát hiện ngôn ngữ
   .use(initReactI18next) // Passes i18n down to react-i18next
@@ -25,8 +30,10 @@ i18n
         sidebar: enSidebar,
         productRequisition: enProductRequisition,
         roles: enRoles,
+        authorities: enAuthorities,
         tableData: enTableData,
-        toast: enToast
+        toast: enToast,
+        permissions: enPermissions
       },
       vi: {
         auth: viAuth,
@@ -34,7 +41,9 @@ i18n
         productRequisition: viProductRequisition,
         roles: viRoles,
         tableData: viTableData,
-        toast: viToast
+        toast: viToast,
+        authorities: viAuthorities,
+        permissions: viPermissions
       }
     },
     lng: window.localStorage.getItem('i18nextLng') || 'vi',

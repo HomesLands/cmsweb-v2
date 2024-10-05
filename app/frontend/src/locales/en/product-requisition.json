@@ -51,7 +51,8 @@
     "confirmProductRequisitionsSuccess": "Confirm product requisitions success",
     "confirmProductRequisitionsSuccessDescription": "Confirm product requisitions success description",
     "here": "here",
-    "updateProductRequisition": "Update product requisition"
+    "updateProductRequisition": "Update product requisition",
+    "approvalHistory": "Approval history"
   },
   "roleApproval": {
     "approvalLevel": "Approval level",

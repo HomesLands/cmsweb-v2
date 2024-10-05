@@ -1,18 +1,18 @@
-import { Entity, Column, ManyToOne } from "typeorm";
-import { 
-  Base,
-  RequestProduct, 
-} from "@entities";
+import { Entity, Column } from "typeorm";
+import { Base } from "@entities";
 
 @Entity("file_tbl")
 export class File extends Base {
-  @Column({ name: "name_column" })
+  @Column({ name: "name_column", unique: true })
   name?: string;
 
-  @Column({ name: "type_column" })
-  type?: string;
+  @Column({ name: "extension_column" })
+  extension?: string;
 
-  @Column({ type: "mediumblob", name: "data_column" })
+  @Column({ name: "mimetype_column" })
+  mimetype?: string;
+
+  @Column({ type: "longtext", name: "data_column" })
   data?: string;
 
   @Column({ name: "size_column", nullable: true })
