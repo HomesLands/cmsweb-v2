@@ -13,6 +13,7 @@ import { http } from '@/utils'
 export async function getProducts(
   params: IProductQuery
 ): Promise<IApiResponse<IPaginationResponse<IProductInfo>>> {
+  console.log({ params })
   const response = await http.get<IApiResponse<IPaginationResponse<IProductInfo>>>('/products', {
     params
   })

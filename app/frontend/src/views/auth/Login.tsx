@@ -53,6 +53,11 @@ const Login: React.FC = () => {
       if (isAxiosError(error)) {
         if (error.code === 'ECONNABORTED') {
           toast.error(t('login.loginFailed'))
+          return
+        }
+        if (error.code === 'ERR_NETWORK') {
+          toast.error(t('login.serverError'))
+          return
         }
       }
     } finally {
