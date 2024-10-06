@@ -39,8 +39,6 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
   const transformRequisitionToApiFormat = (requisition: IProductRequisitionFormCreate) => {
     return {
       code: requisition.code,
-      // companySlug: requisition.company.slug,
-      // siteSlug: requisition.site.slug,
       project: requisition.project.slug,
       type: requisition.type,
       deadlineApproval: requisition.deadlineApproval,
@@ -50,7 +48,7 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
         requestQuantity: product.requestQuantity,
         name: product.product.name,
         provider: product.product.provider,
-        unit: product.product.unit.slug, // Change this line
+        unit: product.product.unit.slug,
         description: product.product.description
       }))
     }
@@ -58,7 +56,6 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
 
   const handleConfirm = () => {
     const requisition = getRequisition() as IProductRequisitionFormCreate
-    console.log('requisition', requisition)
     const formattedRequisition = transformRequisitionToApiFormat(requisition)
     onConfirm(formattedRequisition)
   }

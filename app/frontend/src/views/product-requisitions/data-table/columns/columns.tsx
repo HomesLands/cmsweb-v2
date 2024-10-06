@@ -1,22 +1,8 @@
-import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
-import { MoreHorizontal } from 'lucide-react'
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-  Button,
-  DataTableColumnHeader
-} from '@/components/ui'
-import {
-  IRequisitionFormResponseForApprover,
-  ProductRequisitionRoleApproval,
-  ProductRequisitionStatus
-} from '@/types'
+import { DataTableColumnHeader } from '@/components/ui'
+import { IRequisitionFormResponseForApprover, ProductRequisitionStatus } from '@/types'
 import { ProductRequisitionStatusBadge } from '@/components/app/badge'
 import { RequisitionTypeBadge } from '@/components/app/badge'
 
@@ -50,12 +36,12 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
       header: ({ column }) => <DataTableColumnHeader column={column} title="Người tạo" />
     },
     {
-      accessorKey: 'productRequisitionForm.creator.userDepartments[0].department.site.company.name',
+      id: 'company',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />,
       cell: ({ row }) => {
-        const { company } =
-          row.original.productRequisitionForm.creator.userDepartments[0].department.site
-        return <div>{company.name}</div>
+        const { creator } = row.original.productRequisitionForm
+        const companyName = creator?.userDepartments?.[0]?.department?.site?.company?.name
+        return <div className="min-w-[12rem] text-[0.8rem]">{companyName || 'Không có'}</div>
       }
     },
     {

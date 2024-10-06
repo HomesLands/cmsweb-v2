@@ -28,7 +28,6 @@ export function DialogAddProductRequest({
   component,
   onOpenChange
 }: DialogAddProductRequestProps) {
-  console.log('check product', product)
   const { t } = useTranslation('tableData')
   const { addProductToRequisition } = useRequisitionStore()
   const handleAddRequest = (product: IProductRequisitionInfo) => {

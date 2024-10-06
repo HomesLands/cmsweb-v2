@@ -13,7 +13,6 @@ import {
 } from '@/views/product-requisitions/data-table'
 
 interface IFormAddProductProps {
-  // onSubmit: (data: IProductNameSearch) => void
   onSubmit: () => void
   onBack: () => void
 }

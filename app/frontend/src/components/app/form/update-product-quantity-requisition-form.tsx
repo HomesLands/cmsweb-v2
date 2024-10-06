@@ -16,12 +16,14 @@ import {
 import { TUpdateProductRequestSchema, updateProductRequestSchema } from '@/schemas'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { IRequestProductInfo, IUpdateProductRequisitionQuantity } from '@/types'
-import { useParams } from 'react-router'
-import { useUpdateProductRequisitionQuantity } from '@/hooks'
+import {
+  IRequestProductInfo,
+  IRequestProductInfoUpdate,
+  IUpdateProductRequisitionQuantity
+} from '@/types'
 
 interface IFormEditProductProps {
-  data?: IRequestProductInfo
+  data?: IRequestProductInfoUpdate
   onSubmit: (data: IUpdateProductRequisitionQuantity) => void
 }
 
@@ -30,21 +32,29 @@ export const UpdateProductRequisitionForm: React.FC<IFormEditProductProps> = ({
   onSubmit
 }) => {
   const { t } = useTranslation('tableData')
+  // console.log('data', data)
   const isEditMode = !!data
   const isExistingProduct = data?.isExistProduct || false
+
+  // Determine which product data to use
+  const productData = data?.product || data?.temporaryProduct
 
   const form = useForm<TUpdateProductRequestSchema>({
     resolver: zodResolver(updateProductRequestSchema),
     defaultValues: {
       slug: data?.slug || '',
+      description: data?.description || '',
       isExistProduct: isExistingProduct,
       product: {
-        code: data?.product.code || '',
-        name: data?.product.name || '',
-        provider: data?.product.provider || '',
-        unit: { name: data?.product.unit.name || '', slug: data?.product.unit.slug || '' },
-        quantity: data?.product.quantity || 1,
-        description: data?.product.description
+        code: productData?.code || '',
+        name: productData?.name || '',
+        provider: productData?.provider || '',
+        unit: {
+          name: productData?.unit?.name || '',
+          slug: productData?.unit?.slug || ''
+        },
+        quantity: productData?.quantity || 1,
+        description: data?.description || ''
       },
       requestQuantity: data?.requestQuantity || 1
     }
@@ -60,28 +70,31 @@ export const UpdateProductRequisitionForm: React.FC<IFormEditProductProps> = ({
         slug: values.product.unit.slug
       }
     }
-    console.log('Extracted data:', extractedData)
     onSubmit(extractedData)
   }
+
+  const productCode = form.watch('product.code')
 
   return (
     <div className="mt-3">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="grid grid-cols-3 gap-2">
-            <FormField
-              control={form.control}
-              name="product.code"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('tableData.productCode')}</FormLabel>
-                  <FormControl>
-                    <Input {...field} readOnly={isExistingProduct} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {productCode && (
+              <FormField
+                control={form.control}
+                name="product.code"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('tableData.productCode')}</FormLabel>
+                    <FormControl>
+                      <Input {...field} readOnly />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="product.name"
@@ -108,8 +121,6 @@ export const UpdateProductRequisitionForm: React.FC<IFormEditProductProps> = ({
                 </FormItem>
               )}
             />
-          </div>
-          <div className="grid grid-cols-3 gap-2">
             <FormField
               control={form.control}
               name="requestQuantity"

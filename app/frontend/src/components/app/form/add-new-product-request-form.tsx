@@ -13,8 +13,8 @@ import {
 } from '@/components/ui'
 import { addNewProductRequestSchema, TAddNewProductRequestSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { IProductInfo, IProductRequisitionInfo } from '@/types'
-import { SelectUnit } from '../select/unit-select'
+import { IProductInfo } from '@/types'
+import { SelectUnit } from '@/components/app/select'
 
 interface IFormAddNewProductProps {
   data?: IProductInfo
@@ -24,12 +24,10 @@ interface IFormAddNewProductProps {
 export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ data, onSubmit }) => {
   const { t } = useTranslation('tableData')
   const isEditMode = !!data
-  console.log('data in form', data)
 
   const form = useForm<TAddNewProductRequestSchema>({
     resolver: zodResolver(addNewProductRequestSchema),
     defaultValues: {
-      // code: data?.code || '',
       slug: data?.slug || '',
       product: {
         code: data?.code || '',
@@ -61,24 +59,28 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
     onSubmit(completeData)
   }
 
+  const productCode = form.watch('product.code')
+
   return (
     <div className="mt-3">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="grid grid-cols-3 gap-2">
-            <FormField
-              control={form.control}
-              name="product.code"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('tableData.productCode')}</FormLabel>
-                  <FormControl>
-                    <Input {...field} readOnly={isEditMode} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {productCode && (
+              <FormField
+                control={form.control}
+                name="product.code"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('tableData.productCode')}</FormLabel>
+                    <FormControl>
+                      <Input {...field} readOnly />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="product.name"
@@ -105,8 +107,6 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
                 </FormItem>
               )}
             />
-          </div>
-          <div className="grid grid-cols-3 gap-2">
             <FormField
               control={form.control}
               name="requestQuantity"

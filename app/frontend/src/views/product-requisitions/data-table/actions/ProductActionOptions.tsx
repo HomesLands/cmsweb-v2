@@ -32,8 +32,8 @@ export default function ProductActionOptions({ table }: DataTableActionOptionsPr
     <>
       <Input
         placeholder="Nhập tên vật tư..."
-        value={table.getColumn('code')?.getFilterValue() as string}
-        onChange={(event) => table.getColumn('code')?.setFilterValue(event.target.value)}
+        value={table.getColumn('name')?.getFilterValue() as string}
+        onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
         className="max-w-sm"
       />
       <DropdownMenu>

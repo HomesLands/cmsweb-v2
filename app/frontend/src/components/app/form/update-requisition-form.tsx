@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { format } from 'date-fns'
@@ -19,15 +20,11 @@ import {
   Popover,
   PopoverContent,
   Calendar,
-  // DataTableRequisition,
   DataTable
 } from '@/components/ui'
 import {
   productRequisitionGeneralInfoSchema,
-  productRequisitionSchema,
-  TProductRequisitionGeneralInfoSchema,
-  TProductRequisitionSchema,
-  TUpdateProductRequisitionGeneralInfoSchema
+  TProductRequisitionGeneralInfoSchema
 } from '@/schemas'
 import { SelectProject, RequestPrioritySelect } from '@/components/app/select'
 
@@ -35,19 +32,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import {
   IProductInfo,
   IProductRequisitionFormInfo,
-  IProductRequisitionInfo,
+  IRequestProductInfoUpdate,
   IUpdateProductRequisitionGeneralInfo,
   IUpdateProductRequisitionQuantity,
   ProductRequisitionType
 } from '@/types'
 import { DateTimePicker } from '@/components/app/picker'
 import { useColumnsUpdateRequisition } from '@/views/product-requisitions/data-table/columns/columnsUpdateRequisition'
-import { useParams } from 'react-router'
-import {
-  useUpdateProductRequisitionGeneralInfo,
-  useUpdateProductRequisitionQuantity
-} from '@/hooks'
-import { showToast } from '@/utils'
 
 interface IUpdateRequisitionFormProps {
   requisition: IProductRequisitionFormInfo
@@ -68,7 +59,7 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
   const { t: tToast } = useTranslation('toast')
   const isExistProduct = requisition?.requestProducts.some((product) => product.isExistProduct)
   const { slug } = useParams()
-  const { mutate: updateProduct } = useUpdateProductRequisitionGeneralInfo()
+  // const { mutate: updateProduct } = useUpdateProductRequisitionGeneralInfo()
 
   const [date, setDate] = useState<Date | undefined>(
     requisition?.deadlineApproval ? new Date(requisition.deadlineApproval) : undefined
@@ -95,8 +86,6 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
         name: requisition?.creator.userDepartments[0]?.department?.site?.name || ''
       },
       type: requisition?.type || 'normal',
-      // requestProducts: requisition?.requestProducts || [],
-      // userApprovals: requisition?.userApprovals || [],
       project: {
         slug: requisition?.project.slug || '',
         name: requisition?.project.name || ''
@@ -122,8 +111,6 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
           name: requisition.creator.userDepartments[0]?.department?.site?.name || ''
         },
         type: requisition.type || 'normal',
-        // requestProducts: requisition.requestProducts || [],
-        // userApprovals: requisition.userApprovals || [],
         project: {
           slug: requisition.project.slug || '',
           name: requisition.project.name || ''
@@ -143,8 +130,6 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
   }
 
   const handleUpdateGeneralInfo = (values: TProductRequisitionGeneralInfoSchema) => {
-    console.log('Form values:', values)
-
     const updatedValues: IUpdateProductRequisitionGeneralInfo = {
       slug: slug as string,
       type: values.type,
@@ -374,12 +359,7 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
         <DataTable
           isLoading={isLoading}
           columns={columns}
-          data={
-            requisition?.requestProducts?.map((item) => ({
-              ...item,
-              product: item.product || item.temporaryProduct || ({} as IProductInfo)
-            })) || []
-          }
+          data={requisition?.requestProducts}
           pages={1}
           onPageChange={() => {}}
           onPageSizeChange={() => {}}

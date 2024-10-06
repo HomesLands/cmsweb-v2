@@ -29,7 +29,7 @@ export const productRequisitionSchema = z.object({
       requestQuantity: z.number().min(1, 'Số lượng không hợp lệ'),
       description: z.string(),
       product: z.object({
-        code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
+        code: z.optional(z.string()),
         slug: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
         name: z.string().min(1, 'Tên sản phẩm không hợp lệ'),
         provider: z.string().min(1, 'Nhà cung cấp không hợp lệ'),
@@ -94,7 +94,7 @@ export const updateProductRequisitionGeneralInfoSchema = z.object({
 })
 
 export const addNewProductSchema = z.object({
-  code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
+  code: z.optional(z.string()),
   slug: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
   name: z.string().min(1, 'Tên sản phẩm không hợp lệ'),
   provider: z.string().min(1, 'Nhà cung cấp không hợp lệ'),
@@ -109,7 +109,34 @@ export const addNewProductRequestSchema = z.object({
   isExistProduct: z.boolean(),
   slug: z.optional(z.string()),
   product: z.object({
-    code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
+    code: z.optional(z.string()),
+    slug: z.optional(z.string()),
+    name: z.string().min(1, 'Tên sản phẩm không hợp lệ'),
+    provider: z.string().min(1, 'Nhà cung cấp không hợp lệ'),
+    quantity: z.number().min(1, 'Số lượng không hợp lệ'),
+    unit: z.object({
+      slug: z.string().min(1, 'Mã đơn vị không hợp lệ'),
+      name: z.string().min(1, 'Tên đơn vị không hợp lệ')
+    }),
+    description: z.string().min(1, 'Mô tả không hợp lệ')
+  }),
+  // name: z.string().min(1, 'Tên sản phẩm không hợp lệ'),
+  // provider: z.string().min(1, 'Nhà cung cấp không hợp lệ'),
+  // unit: z.object({
+  //   slug: z.string().min(1, 'Mã đơn vị không hợp lệ'),
+  //   name: z.string().min(1, 'Đơn vị không hợp lệ')
+  // }),
+  requestQuantity: z.number().min(1, 'Số lượng không hợp lệ')
+  // description: z.string().min(1, 'Mô tả không hợp lệ')
+  // status: z.string().optional()
+})
+
+export const addNewNonExistingProductRequisitionSchema = z.object({
+  // code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
+  isExistProduct: z.boolean(),
+  slug: z.optional(z.string()),
+  product: z.object({
+    // code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
     slug: z.optional(z.string()),
     name: z.string().min(1, 'Tên sản phẩm không hợp lệ'),
     provider: z.string().min(1, 'Nhà cung cấp không hợp lệ'),
@@ -135,9 +162,10 @@ export const updateProductRequestSchema = z.object({
   // code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
   slug: z.optional(z.string()),
   isExistProduct: z.boolean(),
+  description: z.string(),
   // newQuantity: z.number().min(1, 'Số lượng không hợp lệ'),
   product: z.object({
-    code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
+    code: z.optional(z.string()),
     slug: z.optional(z.string()),
     name: z.string().min(1, 'Tên sản phẩm không hợp lệ'),
     provider: z.string().min(1, 'Nhà cung cấp không hợp lệ'),
@@ -165,6 +193,9 @@ export const approvalRequisitionSchema = z.object({
 
 export type TProductRequisitionSchema = z.infer<typeof productRequisitionSchema>
 export type TAddNewProductRequestSchema = z.infer<typeof addNewProductRequestSchema>
+export type TAddNewNonExistingProductRequisitionSchema = z.infer<
+  typeof addNewNonExistingProductRequisitionSchema
+>
 export type TProductRequisitionGeneralInfoSchema = z.infer<
   typeof productRequisitionGeneralInfoSchema
 >

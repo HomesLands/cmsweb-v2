@@ -13,25 +13,31 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui'
-import { IRequestProductInfo, IUpdateProductRequisitionQuantity } from '@/types'
+import {
+  IRequestProductInfo,
+  IRequestProductInfoUpdate,
+  IUpdateProductRequisitionQuantity
+} from '@/types'
 import { DialogDeleteProductInRequisitionUpdate } from '@/components/app/dialog/dialog-delete-product-in-requisition-update'
 import { DialogUpdateProductRequisition } from '@/components/app/dialog/dialog-update-product-quantity-requisition'
+import ProductRequisitions from '../../ProductRequisitions'
 
 export const useColumnsUpdateRequisition = (
   isExistProduct: boolean,
   handleEditProduct: (product: IUpdateProductRequisitionQuantity) => void,
   handleDeleteProduct: (requestProductSlug: string) => void
-): ColumnDef<IRequestProductInfo>[] => {
-  const [selectedProduct, setSelectedProduct] = useState<IRequestProductInfo | null>(null)
+): ColumnDef<IRequestProductInfoUpdate>[] => {
+  const [selectedProduct, setSelectedProduct] = useState<IRequestProductInfoUpdate>()
   const [openEdit, setOpenEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
 
-  const handleEdit = (product: IRequestProductInfo) => {
+  const handleEdit = (product: IRequestProductInfoUpdate) => {
+    console.log('product', product)
     setOpenEdit(true)
     setSelectedProduct(product)
   }
 
-  const handleDelete = (product: IRequestProductInfo) => {
+  const handleDelete = (product: IRequestProductInfoUpdate) => {
     setOpenDelete(true)
     setSelectedProduct(product)
   }
@@ -56,28 +62,32 @@ export const useColumnsUpdateRequisition = (
 
   return [
     {
-      accessorKey: isExistProduct ? 'product.code' : 'temporaryProduct.code',
+      accessorKey: 'code',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.productCode')} />
-      )
+      ),
+      accessorFn: (row) => row.product?.code ?? row.temporaryProduct?.code ?? ''
     },
     {
-      accessorKey: isExistProduct ? 'product.name' : 'temporaryProduct.name',
+      accessorKey: 'name',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.productName')} />
-      )
+      ),
+      accessorFn: (row) => row.product?.name ?? row.temporaryProduct?.name ?? ''
     },
     {
-      accessorKey: isExistProduct ? 'product.provider' : 'temporaryProduct.provider',
+      accessorKey: 'provider',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.provider')} />
-      )
+      ),
+      accessorFn: (row) => row.product?.provider ?? row.temporaryProduct?.provider ?? ''
     },
     {
-      accessorKey: isExistProduct ? 'product.unit.name' : 'temporaryProduct.unit.name',
+      accessorKey: 'unit',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.unit')} />
-      )
+      ),
+      accessorFn: (row) => row.product?.unit?.name ?? row.temporaryProduct?.unit?.name ?? ''
     },
     {
       accessorKey: 'requestQuantity',
@@ -89,7 +99,8 @@ export const useColumnsUpdateRequisition = (
       accessorKey: 'actions',
       header: 'Thao tác',
       cell: ({ row }) => {
-        const product = row.original
+        const rowData = row.original
+        // console.log('rowData', rowData)
         return (
           <div>
             <DropdownMenu>
@@ -102,10 +113,10 @@ export const useColumnsUpdateRequisition = (
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => handleEdit(product)}>
+                <DropdownMenuItem onClick={() => handleEdit(rowData)}>
                   Chỉnh sửa thông tin
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleDelete(product)}>
+                <DropdownMenuItem onClick={() => handleDelete(rowData)}>
                   Xóa vật tư
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -113,14 +124,14 @@ export const useColumnsUpdateRequisition = (
             <DialogUpdateProductRequisition
               handleEditProduct={handleConfirmEditProduct}
               openDialog={openEdit}
-              requisition={product}
+              requisition={selectedProduct as IRequestProductInfoUpdate}
               component={null}
               onOpenChange={onOpenEditChange}
             />
             <DialogDeleteProductInRequisitionUpdate
               handleDeleteProduct={handleConfirmDeleteProduct}
               openDialog={openDelete}
-              product={product}
+              product={rowData}
               component={null}
               onOpenChange={onOpenDeleteChange}
             />

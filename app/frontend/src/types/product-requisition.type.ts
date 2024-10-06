@@ -19,7 +19,7 @@ export type ProductRequisitionRoleApproval =
   | 'approval_stage_3'
 
 export interface IProductRequisitionFormInfo {
-  code: string
+  code?: string
   type: ProductRequisitionType
   status: ProductRequisitionStatus
   isRecalled: boolean
@@ -38,8 +38,8 @@ export interface IProductRequisitionFormInfo {
     requestQuantity: number
     description: string
     isExistProduct: boolean
-    product?: IProductInfo
-    temporaryProduct?: IProductInfo
+    product: IProductInfo
+    temporaryProduct: IProductInfo
     createdAt: string
     updatedAt: string
     slug: string
@@ -73,7 +73,7 @@ export interface IProductRequisitionFormInfo {
 }
 
 export interface IProductRequisitionFormWithNewProductInfo {
-  code: string
+  code?: string
   type: ProductRequisitionType
   status: ProductRequisitionStatus
   isRecalled: boolean

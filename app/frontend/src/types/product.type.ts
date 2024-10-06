@@ -25,7 +25,7 @@ export interface IUnit {
 }
 
 export interface IProductRequisitionFormCreate {
-  code: string
+  code?: string
   requester: string
   deadlineApproval: string
   company: {
@@ -50,7 +50,7 @@ export interface IProductRequisitionFormCreate {
 }
 
 export interface IFinalProductRequisition {
-  code: string
+  code?: string
   project: string //Project slug
   type: 'normal' | 'urgent'
   description: string
@@ -70,8 +70,21 @@ export interface IProductNameSearch {
 }
 
 export interface IProductInfo {
-  code: string
+  code?: string
   slug?: string
+  name: string
+  provider: string
+  description: string
+  unit: {
+    slug: string
+    name: string
+  }
+  quantity: number
+}
+
+export interface INonExistingProductInfo {
+  // code: string
+  // slug?: string
   name: string
   provider: string
   description: string
@@ -87,6 +100,15 @@ export interface IRequestProductInfo {
   slug: string
   isExistProduct: boolean
   product: IProductInfo
+  requestQuantity: number
+}
+
+export interface IRequestProductInfoUpdate {
+  slug: string
+  description: string
+  isExistProduct: boolean
+  product: IProductInfo
+  temporaryProduct: IProductInfo
   requestQuantity: number
 }
 
