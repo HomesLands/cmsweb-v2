@@ -1,9 +1,13 @@
-import { Request, Response } from "express";
 import { mapper } from "@mappers";
 import { User } from "@entities";
 import { UserPermissionResponseDto, UserResponseDto } from "@dto/response";
 import { userRepository } from "@repositories";
-import { TPaginationOptionResponse, TQueryRequest } from "@types";
+import {
+  TPaginationOptionResponse,
+  TQueryRequest,
+  TUploadUserAvatarRequestDto,
+  TUploadUserSignRequestDto,
+} from "@types";
 import { GlobalError, ErrorCodes } from "@exception";
 import fileService from "./file.service";
 
@@ -100,48 +104,38 @@ class UserService {
   }
 
   public async uploadUserSignature(
-    req: Request,
-    res: Response,
+    requestData: TUploadUserSignRequestDto
   ): Promise<UserResponseDto> {
-    const userId = req.userId as string;
-    const user = await userRepository.findOneBy({ id: userId });
-    if(!user) throw new GlobalError(ErrorCodes.FORBIDDEN_USER);
-    const legacyFile = user.signature;
+    const user = await userRepository.findOneBy({ id: requestData.userId });
+    if (!user) throw new GlobalError(ErrorCodes.FORBIDDEN_USER);
 
-    const fileData = await fileService.getFileFromRequest(req, res);
-    if(fileData.error) throw new GlobalError(ErrorCodes.ERROR_GET_FILE_FROM_REQUEST);
-    if(!fileData.file) throw new GlobalError(ErrorCodes.ERROR_GET_FILE_FROM_REQUEST);
-    const fileName = await fileService.saveFileToDB(fileData.file);
+    const file = await fileService.uploadFile(requestData.file);
 
-    Object.assign(user, { signature: fileName })
+    // Remove old file
+    const oldFile = user.signature;
+    if (oldFile) await fileService.removeFileByName(oldFile);
+
+    Object.assign(user, { signature: `${file.name}.${file.extension}` });
     const updatedUser = await userRepository.save(user);
 
-    if(legacyFile)
-      await fileService.removeFileByName(legacyFile);
-    
     const userDto = mapper.map(updatedUser, User, UserResponseDto);
     return userDto;
   }
 
   public async uploadUserAvatar(
-    req: Request,
-    res: Response,
+    requestData: TUploadUserAvatarRequestDto
   ): Promise<UserResponseDto> {
-    const userId = req.userId as string;
-    const user = await userRepository.findOneBy({ id: userId });
-    if(!user) throw new GlobalError(ErrorCodes.FORBIDDEN_USER);
-    const legacyFile = user.avatar;
+    console.log({ requestData });
+    const user = await userRepository.findOneBy({ id: requestData.userId });
+    if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 
-    const fileData = await fileService.getFileFromRequest(req, res);
-    if(fileData.error) throw new GlobalError(ErrorCodes.ERROR_GET_FILE_FROM_REQUEST);
-    if(!fileData.file) throw new GlobalError(ErrorCodes.ERROR_GET_FILE_FROM_REQUEST);
-    const fileName = await fileService.saveFileToDB(fileData.file);
+    const file = await fileService.uploadFile(requestData.file);
 
-    Object.assign(user, { avatar: fileName })
+    const oldFile = user.avatar;
+    if (oldFile) await fileService.removeFileByName(oldFile);
+
+    Object.assign(user, { avatar: `${file.name}.${file.extension}` });
     const updatedUser = await userRepository.save(user);
-
-    if(legacyFile)
-      await fileService.removeFileByName(legacyFile);
 
     const userDto = mapper.map(updatedUser, User, UserResponseDto);
     return userDto;

@@ -4,6 +4,7 @@ import { companyService } from "@services";
 import {
   TApiResponse,
   TCreateCompanyRequestDto,
+  TUploadCompanyLogoRequestDto,
   // TUpdateCompanyRequestDto,
 } from "@types";
 import { CompanyResponseDto } from "@dto/response";
@@ -214,12 +215,11 @@ class CompanyController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const companySlug = req.params.company as string;
-      const result = await companyService.uploadCompanyLogo(
-        companySlug,
-        req,
-        res
-      );
+      const requestData = {
+        slug: req.params.company,
+        file: req.file,
+      } as TUploadCompanyLogoRequestDto;
+      const result = await companyService.uploadCompanyLogo(requestData);
       const response: TApiResponse<CompanyResponseDto> = {
         code: StatusCodes.OK,
         error: false,
