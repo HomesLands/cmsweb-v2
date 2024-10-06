@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { HTTPMethod } from "http-method-enum";
 import _ from "lodash";
+import { match } from "path-to-regexp";
 
 import { GlobalError } from "@exception";
 import { userRepository } from "@repositories";
@@ -9,7 +10,7 @@ import { TokenUtils } from "@utils";
 
 // Define a list of whitelisted routes with allowed methods
 const whitelist = [
-  { path: "/files", method: HTTPMethod.GET },
+  { path: "/files/:id", method: HTTPMethod.GET },
   { path: "/auth/authenticate", method: HTTPMethod.POST },
   { path: "/auth/register", method: HTTPMethod.POST },
   { path: "/auth/refresh", method: HTTPMethod.POST },
@@ -35,9 +36,10 @@ class AuthMiddleware {
     if (req.method === HTTPMethod.OPTIONS) return next();
 
     // Check if the current request matches any whitelisted route and method
-    const isWhitelisted = whitelist.some(
-      (route) => route.path === req.path && route.method === req.method
-    );
+    const isWhitelisted = whitelist.some((route) => {
+      const matchPath = match(route.path, { decode: decodeURIComponent });
+      return matchPath(req.path) && route.method === req.method;
+    });
 
     if (isWhitelisted) return next(); // Skip authentication for whitelisted routes
 
