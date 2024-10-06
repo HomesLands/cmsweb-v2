@@ -76,6 +76,7 @@ class ProductRequisitionFormService {
     const totalPages = Math.ceil(totalProductRequisitionForm / pageSize);
 
     const forms = await productRequisitionFormRepository.find({
+      where: { creator: { id: creatorId } },
       take: pageSize,
       skip: (page - 1) * pageSize,
       order: { type: "DESC", createdAt: options.order },
