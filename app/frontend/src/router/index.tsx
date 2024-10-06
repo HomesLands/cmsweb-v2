@@ -9,6 +9,7 @@ import {
   RegisterPage,
   ProductRequisitionPage,
   ProductRequisitionFormPage,
+  UpdateProductRequisitionPage,
   ApprovalProductRequisitionPage,
   ApprovalProductRequisitionDetailPage,
   HomePage,
@@ -71,6 +72,15 @@ export const router = createBrowserRouter([
           <ProtectedElement
             element={<SuspenseElement component={ApprovalProductRequisitionDetailPage} />}
             allowedAuthorities={[Authority.APPROVE_PRODUCT_REQUISITION]}
+          />
+        )
+      },
+      {
+        path: 'edit/:slug',
+        element: (
+          <ProtectedElement
+            element={<SuspenseElement component={UpdateProductRequisitionPage} />}
+            allowedAuthorities={[Authority.UPDATE_PRODUCT_REQUISITION]}
           />
         )
       }

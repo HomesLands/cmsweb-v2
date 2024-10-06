@@ -10,27 +10,24 @@ import {
   ScrollArea
 } from '@/components/ui'
 
-import { RequisitionDetailForm, RequisitionEditForm } from '@/components/app/form'
-import { IProductRequisitionFormInfo } from '@/types'
+import { UpdateProductRequisitionForm } from '@/components/app/form'
+import { IRequestProductInfo, IUpdateProductRequisitionQuantity } from '@/types'
 
-interface DialogRequisitionDetailProps {
-  isEditing?: boolean
+interface DialogUpdateRequisitionProps {
+  handleEditProduct: (product: IUpdateProductRequisitionQuantity) => void
   openDialog: boolean
-  requisition?: IProductRequisitionFormInfo | null
+  requisition: IRequestProductInfo
   component: React.ReactNode
-  // companyName: string
   onOpenChange: () => void
 }
 
-export function DialogRequisitionDetail({
-  isEditing,
+export function DialogUpdateProductRequisition({
+  handleEditProduct,
   openDialog,
   requisition,
   component,
-  // companyName,
   onOpenChange
-}: DialogRequisitionDetailProps) {
-  console.log(requisition)
+}: DialogUpdateRequisitionProps) {
   const { t } = useTranslation('productRequisition')
 
   return (
@@ -45,7 +42,7 @@ export function DialogRequisitionDetail({
                 {t('requisitionDetail.requestDetailDescription')}
               </DialogDescription>
             </DialogHeader>
-            <RequisitionDetailForm data={requisition || undefined} />
+            <UpdateProductRequisitionForm onSubmit={handleEditProduct} data={requisition} />
           </div>
         </ScrollArea>
       </DialogContent>

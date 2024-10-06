@@ -40,9 +40,12 @@ export class User extends Base {
   phoneNumber?: string;
 
   @AutoMap()
-  @OneToOne(() => File, { nullable: true })
-  @JoinColumn({ name: "avatar_column" })
-  avatar?: File;
+  @Column({ name: "avatar_column", nullable: true })
+  avatar?: string;
+
+  @AutoMap()
+  @Column({ name: "signature_column", nullable: true })
+  signature?: string;
 
   // A user can have many roles
   @OneToMany(() => UserRole, (userRole) => userRole.user)

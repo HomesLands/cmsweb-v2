@@ -8,6 +8,10 @@ export class Company extends Base {
   @AutoMap()
   name?: string;
 
+  @Column({ name: "logo_column", nullable: true })
+  @AutoMap()
+  logo?: string;
+
   // a company have many site
   @OneToMany(() => Site, (site) => site.company)
   sites?: Site[];

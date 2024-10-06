@@ -9,7 +9,7 @@ import { useProductRequisitionBySlug } from '@/hooks'
 import { TbeLogo } from '@/assets/images'
 import { MetekLogo } from '@/assets/images'
 import { SongnamLogo } from '@/assets/images'
-import { useColumnsDetail } from './data-table/columns/columnsDetail'
+import { useColumnsDetail, useColumnsApprovalLog } from './data-table'
 import {
   ApprovalLogStatus,
   IApproveProductRequisition,
@@ -36,6 +36,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
   const { roleApproval } = selectedRequisition || {}
 
   const columns = useColumnsDetail()
+  const columnsApprovalLog = useColumnsApprovalLog()
   const [openDialog, setOpenDialog] = useState<'accept' | 'give_back' | 'cancel' | null>(null)
 
   const buttonStates = useMemo(() => {
@@ -83,6 +84,26 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
     return { acceptEnabled, giveBackEnabled, cancelEnabled, showButtons }
   }, [data?.result, selectedRequisition])
 
+  const userApprovals = useMemo(() => {
+    return Array.isArray(data?.result?.userApprovals) ? data.result.userApprovals : []
+  }, [data])
+
+  const sortedUserApprovals = useMemo(() => {
+    const approvalOrder = {
+      approval_stage_1: 1,
+      approval_stage_2: 2,
+      approval_stage_3: 3
+    }
+
+    return [...userApprovals].sort((a, b) => {
+      const orderA =
+        approvalOrder[a.assignedUserApproval.roleApproval as keyof typeof approvalOrder] || 0
+      const orderB =
+        approvalOrder[b.assignedUserApproval.roleApproval as keyof typeof approvalOrder] || 0
+      return orderA - orderB
+    })
+  }, [userApprovals])
+
   const handleAccept = () => setOpenDialog(ApprovalAction.ACCEPT)
   const handleGiveBack = () => setOpenDialog(ApprovalAction.GIVE_BACK)
   const handleCancel = () => setOpenDialog(ApprovalAction.CANCEL)
@@ -91,31 +112,26 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
 
   const mutation = useMutation({
     mutationFn: async (data: IApproveProductRequisition) => {
-      return approveProductRequisition(
-        data.formSlug,
-        data.approvalUserSlug,
-        data.approvalLogStatus,
-        data.approvalLogContent
-      )
+      return approveProductRequisition(data.formSlug, data.approvalLog)
     },
     onSuccess: (_, variables) => {
       let toastMessage = ''
 
       switch (roleApproval) {
         case UserApprovalStage.APPROVAL_STAGE_1:
-          if (variables.approvalLogStatus === ApprovalAction.ACCEPT) {
+          if (variables.approvalLog.status === ApprovalAction.ACCEPT) {
             toastMessage = tToast('toast.approveRequestSuccess')
-          } else if (variables.approvalLogStatus === ApprovalAction.GIVE_BACK) {
+          } else if (variables.approvalLog.status === ApprovalAction.GIVE_BACK) {
             toastMessage = tToast('toast.giveBackRequestSuccess')
           }
           break
         case UserApprovalStage.APPROVAL_STAGE_2:
         case UserApprovalStage.APPROVAL_STAGE_3:
-          if (variables.approvalLogStatus === ApprovalAction.ACCEPT) {
+          if (variables.approvalLog.status === ApprovalAction.ACCEPT) {
             toastMessage = tToast('toast.approveRequestSuccess')
-          } else if (variables.approvalLogStatus === ApprovalAction.GIVE_BACK) {
+          } else if (variables.approvalLog.status === ApprovalAction.GIVE_BACK) {
             toastMessage = tToast('toast.giveBackRequestSuccess')
-          } else if (variables.approvalLogStatus === ApprovalAction.CANCEL) {
+          } else if (variables.approvalLog.status === ApprovalAction.CANCEL) {
             toastMessage = tToast('toast.cancelRequestSuccess')
           }
           break
@@ -131,24 +147,19 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
   const handleConfirm = (message: string, status: ApprovalLogStatus) => {
     mutation.mutate({
       formSlug: data?.result.slug as string,
-      approvalUserSlug: selectedRequisition?.approvalUserSlug as string,
-      approvalLogStatus: status,
-      approvalLogContent: message
+      approvalLog: {
+        status: status,
+        content: message
+      }
     })
 
     setOpenDialog(null)
   }
 
-  const userApprovals = useMemo(() => {
-    return Array.isArray(data?.result?.userApprovals) ? data.result.userApprovals : []
-  }, [data])
-
-  console.log('check approval: ', userApprovals)
-
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <Label className="flex items-center gap-1 font-semibold text-normal text-md font-beVietNam">
+      <div className="flex justify-between items-center">
+        <Label className="flex gap-1 items-center font-semibold text-normal text-md font-beVietNam">
           <ReaderIcon className="header-icon" />
           {t('requisitionDetail.requestDetail')}
         </Label>
@@ -207,22 +218,22 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
         </div>
       </div>
       <div className="mt-3">
-        <div className="flex flex-col justify-center gap-4">
-          <div className="grid items-center justify-between grid-cols-6 py-3 mb-4 border-b-2">
+        <div className="flex flex-col gap-4 justify-center">
+          <div className="grid grid-cols-6 justify-between items-center py-3 mb-4 border-b-2">
             {data?.result?.creator.userDepartments[0].department.site.company.name.includes(
               'Thái Bình'
             ) ? (
-              <div className="w-full col-span-1">
+              <div className="col-span-1 w-full">
                 <img src={TbeLogo} height={72} width={72} />
               </div>
             ) : data?.result?.creator.userDepartments[0].department.site.company.name.includes(
                 'Mekong'
               ) ? (
-              <div className="w-full col-span-1">
+              <div className="col-span-1 w-full">
                 <img src={MetekLogo} height={150} width={150} />
               </div>
             ) : (
-              <div className="w-full col-span-1">
+              <div className="col-span-1 w-full">
                 <img src={SongnamLogo} height={72} width={72} />
               </div>
             )}
@@ -277,6 +288,19 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           isLoading={false}
           columns={columns}
           data={data?.result?.requestProducts || []}
+          pages={1}
+          onPageChange={() => {}}
+          onPageSizeChange={() => {}}
+        />
+
+        <span className="text-lg font-semibold font-beVietNam">
+          {t('productRequisition.approvalHistory')}
+        </span>
+
+        <DataTable
+          isLoading={false}
+          columns={columnsApprovalLog}
+          data={sortedUserApprovals}
           pages={1}
           onPageChange={() => {}}
           onPageSizeChange={() => {}}

@@ -26,7 +26,7 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
   const { requisition, getRequisition, updateProductToRequisition, deleteProductToRequisition } =
     useRequisitionStore()
 
-  const handleEditRequest = (product: IProductRequisitionInfo) => {
+  const handleEditProduct = (product: IProductRequisitionInfo) => {
     updateProductToRequisition(product, product.requestQuantity)
   }
 
@@ -34,7 +34,7 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
     deleteProductToRequisition(product)
   }
 
-  const columns = useColumnsConfirm(handleEditRequest, handleDeleteProduct)
+  const columns = useColumnsConfirm(handleEditProduct, handleDeleteProduct)
 
   const transformRequisitionToApiFormat = (requisition: IProductRequisitionFormCreate) => {
     return {
@@ -60,17 +60,6 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
     const requisition = getRequisition() as IProductRequisitionFormCreate
     console.log('requisition', requisition)
     const formattedRequisition = transformRequisitionToApiFormat(requisition)
-    // const finalRequisition: IFinalProductRequisition = {
-    //   ...apiFormattedRequisition,
-    //   requestProducts: apiFormattedRequisition.requestProducts.map((product) => ({
-    //     product: product.product.slug,
-    //     requestQuantity: product.requestQuantity,
-    //     name: product.name,
-    //     provider: product.provider,
-    //     unit: product.unit,
-    //     description: product.description || ''
-    //   }))
-    // }
     onConfirm(formattedRequisition)
   }
 
@@ -87,18 +76,18 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
 
   return (
     <div className="mt-3">
-      <div className="flex flex-col justify-center gap-4">
-        <div className="grid items-center justify-between grid-cols-6 py-3 mb-4 border-b-2">
+      <div className="flex flex-col gap-4 justify-center">
+        <div className="grid grid-cols-6 justify-between items-center py-3 mb-4 border-b-2">
           {getRequisition()?.company.name.includes('Thái Bình') ? (
-            <div className="w-full col-span-1">
+            <div className="col-span-1 w-full">
               <img src={TbeLogo} height={72} width={72} />
             </div>
           ) : getRequisition()?.company.name.includes('Mekong') ? (
-            <div className="w-full h-full col-span-1">
+            <div className="col-span-1 w-full h-full">
               <img src={MetekLogo} height={150} width={150} />
             </div>
           ) : (
-            <div className="w-full col-span-1">
+            <div className="col-span-1 w-full">
               <img src={SongnamLogo} height={72} width={72} />
             </div>
           )}
@@ -162,7 +151,7 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
         onPageSizeChange={() => {}}
       />
 
-      <div className="flex justify-end w-full gap-2 mt-4">
+      <div className="flex gap-2 justify-end mt-4 w-full">
         <Button variant="outline" onClick={onBack}>
           {t('productRequisition.back')}
         </Button>

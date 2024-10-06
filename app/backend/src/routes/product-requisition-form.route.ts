@@ -24,11 +24,17 @@ productRequisitionFormRoute.patch(
 // [PATCH] /api/v1/productRequisitionForms/resubmit
 productRequisitionFormRoute.patch(
   "/resubmit",
-  productRequisitionFormController.resubmitRequisitionForm
+  productRequisitionFormController.resubmitProductRequisitionForm
 );
 
 // [GET] /api/v1/productRequisitionForms/:slug
 productRequisitionFormRoute.get(
   "/:slug",
   productRequisitionFormController.getProductRequisitionFormBySlug
+);
+
+// [PATCH] /api/v1/productRequisitionForms/:slug
+productRequisitionFormRoute.patch(
+  "/:slug",
+  productRequisitionFormController.updateGeneralInformationForm
 );

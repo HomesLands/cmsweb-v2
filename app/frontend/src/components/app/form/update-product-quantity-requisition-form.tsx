@@ -1,3 +1,4 @@
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -10,38 +11,40 @@ import {
   Input,
   Form,
   Button
+  // DataTableRequisition
 } from '@/components/ui'
-import {
-  addNewProductRequestSchema,
-  TAddNewProductRequestSchema,
-  TUpdateProductRequestSchema,
-  updateProductRequestSchema
-} from '@/schemas'
+import { TUpdateProductRequestSchema, updateProductRequestSchema } from '@/schemas'
+
 import { zodResolver } from '@hookform/resolvers/zod'
-import { IProductRequisitionInfo } from '@/types'
-import { SelectUnit } from '../select/unit-select'
+import { IRequestProductInfo, IUpdateProductRequisitionQuantity } from '@/types'
 
 interface IFormEditProductProps {
-  data?: IProductRequisitionInfo
-  onSubmit: (data: IProductRequisitionInfo) => void
+  data?: IRequestProductInfo
+  onSubmit: (data: IUpdateProductRequisitionQuantity) => void
 }
 
-export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ data, onSubmit }) => {
+export const UpdateProductRequisitionForm: React.FC<IFormEditProductProps> = ({
+  data,
+  onSubmit
+}) => {
   const { t } = useTranslation('tableData')
-  const isEditMode = !!data // Add this line to define isEditMode
+  console.log('requisition data in form', data)
+  // const { slug } = useParams()
+  // const { data: requisitionData, isLoading } = useProductRequisitionBySlug(slug as string)
 
+  // const productRequisition = requisitionData?.result
+
+  // console.log('data in form', data)
   const form = useForm<TUpdateProductRequestSchema>({
     resolver: zodResolver(updateProductRequestSchema),
     defaultValues: {
-      // code: data?.product.code || '',
-      slug: data?.product.slug || '',
+      slug: data?.slug || '',
       product: {
         code: data?.product.code || '',
         slug: data?.product.slug || '',
         name: data?.product.name || '',
         provider: data?.product.provider || '',
         unit: { name: data?.product.unit.name || '', slug: data?.product.unit.slug || '' },
-        // unit: data?.product.unit || { name: '', slug: '' },
         quantity: data?.product.quantity || 1,
         description: data?.product.description
       },
@@ -50,20 +53,14 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
     }
   })
 
-  const handleSubmit = (values: TAddNewProductRequestSchema) => {
+  const handleSubmit = (values: TUpdateProductRequestSchema) => {
     console.log('values in form', values)
-    const completeData: IProductRequisitionInfo = {
-      ...values,
-      requestQuantity: Number(values.requestQuantity),
-      product: {
-        ...values.product,
-        unit: {
-          name: values.product.unit.name,
-          slug: values.product.unit.slug
-        }
-      }
+    const extractedData = {
+      slug: values.slug,
+      newQuantity: Number(values.requestQuantity)
     }
-    onSubmit(completeData)
+    console.log('Extracted data:', extractedData)
+    onSubmit(extractedData)
   }
 
   return (
@@ -135,22 +132,12 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
 
             <FormField
               control={form.control}
-              name="product.unit"
+              name="product.unit.name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t('tableData.unit')}</FormLabel>
                   <FormControl>
-                    <SelectUnit
-                      onChange={(value) =>
-                        field.onChange({ name: value?.label || '', slug: value?.value || '' })
-                      }
-                      defaultValue={
-                        data?.product.unit
-                          ? { value: data.product.unit.slug, label: data.product.unit.name }
-                          : undefined
-                      }
-                      isDisabled={isEditMode}
-                    />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -171,7 +158,7 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
             />
           </div>
           <div className="flex justify-end w-full">
-            <Button type="submit">{isEditMode ? t('tableData.update') : t('tableData.add')}</Button>
+            <Button type="submit">{t('tableData.add')}</Button>
           </div>
         </form>
       </Form>

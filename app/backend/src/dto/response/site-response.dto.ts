@@ -2,14 +2,11 @@ import { AutoMap } from "@automapper/classes";
 import { 
   ProjectResponseDto,
   DepartmentResponseDto, 
-  BaseResponseDto,
   CompanyResponseDto
- } from "@dto/response";
+} from "@dto/response";
+import { BaseResponseDto } from "./base-response.dto";
 
-
-export class SiteResponseDto
-//  extends BaseResponseDto 
- {
+export class SiteResponseDto extends BaseResponseDto {
   @AutoMap()
   name?: string;
 

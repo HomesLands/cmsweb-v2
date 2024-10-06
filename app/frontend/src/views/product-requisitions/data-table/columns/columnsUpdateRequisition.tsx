@@ -13,33 +13,43 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui'
-import { IProductRequisitionInfo } from '@/types'
-import { DialogEditProductRequisition } from '@/components/app/dialog'
-import { DialogDeleteProductRequisition } from '@/components/app/dialog/dialog-delete-product-requisition'
+import { IRequestProductInfo, IUpdateProductRequisitionQuantity } from '@/types'
+import { DialogDeleteProductInRequisitionUpdate } from '@/components/app/dialog/dialog-delete-product-in-requisition-update'
+import { DialogUpdateProductRequisition } from '@/components/app/dialog/dialog-update-product-quantity-requisition'
 
-export const useColumnsResult = (
-  handleEditProduct: (product: IProductRequisitionInfo) => void,
-  handleDeleteProduct: (product: IProductRequisitionInfo) => void
-): ColumnDef<IProductRequisitionInfo>[] => {
-  const [selectedProduct, setSelectedProduct] = useState<IProductRequisitionInfo | null>(null)
+export const useColumnsUpdateRequisition = (
+  handleEditProduct: (product: IUpdateProductRequisitionQuantity) => void,
+  handleDeleteProduct: (requestProductSlug: string) => void
+): ColumnDef<IRequestProductInfo>[] => {
+  const [selectedProduct, setSelectedProduct] = useState<IRequestProductInfo | null>(null)
   const [openEdit, setOpenEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
 
-  const handleEdit = (product: IProductRequisitionInfo) => {
+  const handleEdit = (product: IRequestProductInfo) => {
     setOpenEdit(true)
     setSelectedProduct(product)
   }
 
-  const handleDelete = (product: IProductRequisitionInfo) => {
+  const handleDelete = (product: IRequestProductInfo) => {
     setOpenDelete(true)
     setSelectedProduct(product)
   }
 
-  const onOpenChange = () => {
+  const onOpenEditChange = () => {
     setOpenEdit(false)
   }
 
   const onOpenDeleteChange = () => {
+    setOpenDelete(false)
+  }
+
+  const handleConfirmEditProduct = (data: IUpdateProductRequisitionQuantity) => {
+    handleEditProduct(data)
+    setOpenEdit(false)
+  }
+
+  const handleConfirmDeleteProduct = (requestProductSlug: string) => {
+    handleDeleteProduct(requestProductSlug)
     setOpenDelete(false)
   }
 
@@ -63,15 +73,15 @@ export const useColumnsResult = (
       )
     },
     {
-      accessorKey: 'requestQuantity',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={i18next.t('tableData.quantity')} />
-      )
-    },
-    {
       accessorKey: 'product.unit.name',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.unit')} />
+      )
+    },
+    {
+      accessorKey: 'requestQuantity',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={i18next.t('tableData.quantity')} />
       )
     },
     {
@@ -89,7 +99,7 @@ export const useColumnsResult = (
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => handleEdit(product)}>
                   Chỉnh sửa thông tin
@@ -100,17 +110,17 @@ export const useColumnsResult = (
               </DropdownMenuContent>
             </DropdownMenu>
             {selectedProduct === product && openEdit && (
-              <DialogEditProductRequisition
-                handleEditProduct={handleEditProduct}
+              <DialogUpdateProductRequisition
+                handleEditProduct={handleConfirmEditProduct}
                 openDialog={openEdit}
                 requisition={product}
                 component={null}
-                onOpenChange={onOpenChange}
+                onOpenChange={onOpenEditChange}
               />
             )}
             {selectedProduct === product && openDelete && (
-              <DialogDeleteProductRequisition
-                handleDeleteProduct={handleDeleteProduct}
+              <DialogDeleteProductInRequisitionUpdate
+                handleDeleteProduct={handleConfirmDeleteProduct}
                 openDialog={openDelete}
                 product={product}
                 component={null}

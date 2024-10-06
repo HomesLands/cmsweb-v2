@@ -7,7 +7,7 @@ export class CompanyResponseDto extends BaseResponseDto {
   name?: string;
 
   @AutoMap()
-  slug?: string;
+  logo?: string;
 
   @AutoMap(() => [SiteResponseDto])
   sites?: SiteResponseDto[];

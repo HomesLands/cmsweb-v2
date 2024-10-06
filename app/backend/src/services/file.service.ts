@@ -64,6 +64,51 @@ export class FileUploadService {
     });
   }
 
+  public async getFileFromRequest(
+    req: Request,
+    res: Response
+  ): Promise<{ 
+    error: boolean, 
+    file?: Express.Multer.File, 
+    message?: string 
+  }> {
+    return new Promise((resolve, reject) => {
+      const validateInstance = multer({
+        storage: memoryStorage,
+        fileFilter: fileFilter,
+        limits: { fileSize: maxSize },
+      }).single("file");
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      validateInstance(req, res, (err: any) => {
+        if (err) {
+          reject({
+            error: true,
+            message: err.message,
+          });
+        } else {
+          resolve({ error: false, file: req.file });
+        }
+      });
+    });
+  }
+
+  public async saveFileToDB(
+    file: Express.Multer.File
+  ): Promise<string> {
+    if(!file) throw new GlobalError(ErrorCodes.FILE_NOT_FOUND);
+    const fileData = await fileRepository.createAndSave({
+      data: file.buffer.toString("base64"),
+      name: `${file.originalname.split(".")[0]}-${Date.now()}`,
+      extension: file.originalname.split(".")[1],
+      mimetype: file.mimetype,
+      size: file.size,
+    });
+    if(!fileData) throw new GlobalError(ErrorCodes.SAVE_FILE_FAIL);
+    if(!fileData.name) throw new GlobalError(ErrorCodes.SAVE_FILE_FAIL);
+    return fileData.name
+  }
+
   public async uploadFile(
     req: Request,
     res: Response
@@ -161,6 +206,14 @@ export class FileUploadService {
       mimetype: imageData.mimetype,
       length: buffer.length,
     };
+  }
+
+  public async removeFileByName(
+    name: string
+  ): Promise<void> {
+    const file = await fileRepository.findOneBy({ name });
+    if(!file) return;
+    await fileRepository.remove(file);
   }
 }
 

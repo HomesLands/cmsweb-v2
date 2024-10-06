@@ -5,6 +5,8 @@
     "requestError": "Request created failed",
     "confirmSuccess": "Request confirmed successfully",
     "confirmError": "Request confirmed failed",
+    "updateRequestSuccess": "Yêu cầu được cập nhật thành công",
+    "deleteProductSuccess": "Vật tư được xóa thành công",
     "approveRequestSuccess": "Approve request successfully",
     "approveRequestError": "Approve request failed",
     "giveBackRequestSuccess": "Give back request successfully",

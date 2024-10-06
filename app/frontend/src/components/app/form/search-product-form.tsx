@@ -33,7 +33,7 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
 
   const { updateProductToRequisition, deleteProductToRequisition } = useRequisitionStore()
 
-  const handleEditRequisition = (product: IProductRequisitionInfo) => {
+  const handleEditProduct = (product: IProductRequisitionInfo) => {
     updateProductToRequisition(product, product.requestQuantity)
   }
 
@@ -45,7 +45,7 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
     onSubmit()
   }
 
-  const columns = useColumnsResult(handleEditRequisition, handleDeleteProduct)
+  const columns = useColumnsResult(handleEditProduct, handleDeleteProduct)
 
   return (
     <div className="flex flex-col w-full gap-4 mt-3">

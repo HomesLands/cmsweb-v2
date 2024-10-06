@@ -19,14 +19,14 @@ import { DialogRequisitionDetail } from '@/components/app/dialog/dialog-requisit
 import { RecalledStatusBadge } from '@/components/app/badge'
 
 import { format } from 'date-fns'
+import { useNavigate } from 'react-router'
 
-export const useColumnsRequisitionListCreator = (
-  companyName: string
-): ColumnDef<IProductRequisitionFormInfo>[] => {
+export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitionFormInfo>[] => {
   const [openViewDialog, setOpenViewDialog] = useState(false)
-  const [openEditDialog, setOpenEditDialog] = useState(false)
+  // const [openEditDialog, setOpenEditDialog] = useState(false)
   const [selectedRequisition, setSelectedRequisition] =
     useState<IProductRequisitionFormInfo | null>(null)
+  const navigate = useNavigate()
 
   const handleOpenViewDialog = (requisition: IProductRequisitionFormInfo) => {
     setOpenViewDialog(true)
@@ -37,12 +37,10 @@ export const useColumnsRequisitionListCreator = (
     setOpenViewDialog(false)
   }
 
-  const onEditDialogOpenChange = () => {
-    setOpenEditDialog(false)
+  // Replace handleEditRequisition function
+  const handleEditRequisition = (requisition: IProductRequisitionFormInfo) => {
+    navigate(`/product-requisitions/edit/${requisition.slug}`)
   }
-
-  // Add this new function
-  const handleEditRequisition = (requisition: IProductRequisitionFormInfo) => {}
 
   return [
     {
@@ -70,12 +68,19 @@ export const useColumnsRequisitionListCreator = (
       header: ({ column }) => <DataTableColumnHeader column={column} title="Người tạo" />
     },
     {
-      id: 'company',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />,
-      cell: () => {
-        return <div className="min-w-[12rem] text-[0.8rem]">{companyName}</div>
-      }
+      id: 'creator.company',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />
+      // cell: () => {
+      //   return <div className="min-w-[12rem] text-[0.8rem]">{companyName}</div>
+      // }
     },
+    // {
+    //   id: 'company',
+    //   header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />,
+    //   cell: () => {
+    //     return <div className="min-w-[12rem] text-[0.8rem]">{companyName}</div>
+    //   }
+    // },
     {
       accessorKey: 'isRecalled',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Trạng thái hoàn" />,
@@ -137,11 +142,11 @@ export const useColumnsRequisitionListCreator = (
                 openDialog={openViewDialog}
                 requisition={requisition}
                 component={null}
-                companyName={companyName}
+                // companyName={companyName}
                 onOpenChange={onViewDialogOpenChange}
               />
             )}
-            {selectedRequisition === requisition && openEditDialog && (
+            {/* {selectedRequisition === requisition && openEditDialog && (
               <DialogRequisitionDetail
                 openDialog={openEditDialog}
                 requisition={requisition}
@@ -150,7 +155,7 @@ export const useColumnsRequisitionListCreator = (
                 onOpenChange={onEditDialogOpenChange}
                 isEditing={true}
               />
-            )}
+            )} */}
           </div>
         )
       }
