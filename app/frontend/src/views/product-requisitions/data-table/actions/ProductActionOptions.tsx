@@ -9,7 +9,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
   Button,
-  Input,
   DataTableActionOptionsProps
 } from '@/components/ui'
 import { DialogAddProductRequest } from '@/components/app/dialog'
@@ -30,12 +29,6 @@ export default function ProductActionOptions({ table }: DataTableActionOptionsPr
 
   return (
     <>
-      <Input
-        placeholder="Nhập tên vật tư..."
-        value={table.getColumn('code')?.getFilterValue() as string}
-        onChange={(event) => table.getColumn('code')?.setFilterValue(event.target.value)}
-        className="max-w-sm"
-      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="ml-auto text-normal">

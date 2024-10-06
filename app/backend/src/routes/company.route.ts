@@ -11,5 +11,5 @@ companyRoute.get("/", companyController.getAllCompanies);
 // [POST] /api/v1/companies
 companyRoute.post("/", companyController.createCompany);
 
-// [PATCH] /api/v1/companies/logo
-companyRoute.route("/logo").patch(companyController.uploadCompanyLogo);
+// [PATCH] /api/v1/companies/upload
+companyRoute.route("/upload").patch(companyController.uploadCompanyLogo);

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { HTTPMethod } from "http-method-enum";
 import _ from "lodash";
+import { match } from "path-to-regexp";
 
 import { GlobalError } from "@exception";
 import { userRepository } from "@repositories";
@@ -34,11 +35,11 @@ class AuthMiddleware {
     // Skip if preflight request
     if (req.method === HTTPMethod.OPTIONS) return next();
 
-    console.log({route: req.path})
     // Check if the current request matches any whitelisted route and method
-    const isWhitelisted = whitelist.some(
-      (route) => route.path === req.path && route.method === req.method
-    );
+    const isWhitelisted = whitelist.some((route) => {
+      const matchPath = match(route.path, { decode: decodeURIComponent });
+      return matchPath(req.path) && route.method === req.method;
+    });
 
     if (isWhitelisted) return next(); // Skip authentication for whitelisted routes
 

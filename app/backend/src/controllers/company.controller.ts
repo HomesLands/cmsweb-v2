@@ -171,10 +171,9 @@ class CompanyController {
   //   }
   // }
 
-
   /**
    * @swagger
-   * /companies/logo:
+   * /companies/upload:
    *   patch:
    *     summary: Upload company logo
    *     tags: [Company]
@@ -218,7 +217,7 @@ class CompanyController {
       const companySlug = req.params.company as string;
       const result = await companyService.uploadCompanyLogo(
         companySlug,
-        req, 
+        req,
         res
       );
       const response: TApiResponse<CompanyResponseDto> = {

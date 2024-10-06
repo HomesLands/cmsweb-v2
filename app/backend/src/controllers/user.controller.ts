@@ -157,7 +157,7 @@ class UserController {
 
   /**
    * @swagger
-   * /users/signature:
+   * /users/upload/sign:
    *   patch:
    *     summary: Upload user signature
    *     tags: [User]
@@ -209,7 +209,7 @@ class UserController {
 
   /**
    * @swagger
-   * /users/avatar:
+   * /users/upload/avatar:
    *   patch:
    *     summary: Upload avatar user
    *     tags: [User]

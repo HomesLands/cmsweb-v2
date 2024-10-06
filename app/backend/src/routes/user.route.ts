@@ -17,7 +17,7 @@ userRoute.route("/info/permissions").get(userController.getUserPermissions);
 userRoute.route("/info").get(userController.getUser);
 
 // [PATCH] /api/v1/users/signature
-userRoute.route("/signature").patch(userController.uploadUserSignature);
+userRoute.route("/upload/sign").patch(userController.uploadUserSignature);
 
 // [PATCH] /api/v1/users/avatar
-userRoute.route("/avatar").patch(userController.uploadUserAvatar);
+userRoute.route("/upload/avatar").patch(userController.uploadUserAvatar);

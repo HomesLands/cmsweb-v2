@@ -13,7 +13,8 @@
     "lint:check": "eslint ./src",
     "lint:fix": "eslint --fix ./src",
     "test": "jest -c jest.config.json --passWithNoTests",
-    "test:coverage": "jest --coverage --passWithNoTests"
+    "typeorm": "npx ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js",
+    "typeorm:drop": "npm run typeorm -- schema:drop -d src/configs/db.config.ts"
   },
   "keywords": [],
   "author": "",
@@ -45,6 +46,7 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
+    "path-to-regexp": "^8.2.0",
     "reflect-metadata": "^0.1.14",
     "shortid": "^2.2.16",
     "supertest": "^7.0.0",
