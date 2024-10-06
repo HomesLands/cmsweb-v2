@@ -22,33 +22,53 @@ import {
   // DataTableRequisition,
   DataTable
 } from '@/components/ui'
-import { productRequisitionSchema, TProductRequisitionSchema } from '@/schemas'
+import {
+  productRequisitionGeneralInfoSchema,
+  productRequisitionSchema,
+  TProductRequisitionGeneralInfoSchema,
+  TProductRequisitionSchema,
+  TUpdateProductRequisitionGeneralInfoSchema
+} from '@/schemas'
 import { SelectProject, RequestPrioritySelect } from '@/components/app/select'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
+  IProductInfo,
   IProductRequisitionFormInfo,
   IProductRequisitionInfo,
+  IUpdateProductRequisitionGeneralInfo,
   IUpdateProductRequisitionQuantity,
   ProductRequisitionType
 } from '@/types'
 import { DateTimePicker } from '@/components/app/picker'
 import { useColumnsUpdateRequisition } from '@/views/product-requisitions/data-table/columns/columnsUpdateRequisition'
+import { useParams } from 'react-router'
+import {
+  useUpdateProductRequisitionGeneralInfo,
+  useUpdateProductRequisitionQuantity
+} from '@/hooks'
+import { showToast } from '@/utils'
 
 interface IUpdateRequisitionFormProps {
   requisition: IProductRequisitionFormInfo
   onUpdateProductSubmit: (data: IUpdateProductRequisitionQuantity) => void
+  onUpdateGeneralInfo: (data: IUpdateProductRequisitionGeneralInfo) => void
   onDeleteProductSubmit: (requestProductSlug: string) => void
   isLoading: boolean
 }
 
 export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
   onUpdateProductSubmit,
+  onUpdateGeneralInfo,
   onDeleteProductSubmit,
   requisition,
   isLoading
 }) => {
   const { t } = useTranslation('productRequisition')
+  const { t: tToast } = useTranslation('toast')
+  const isExistProduct = requisition?.requestProducts.some((product) => product.isExistProduct)
+  const { slug } = useParams()
+  const { mutate: updateProduct } = useUpdateProductRequisitionGeneralInfo()
 
   const [date, setDate] = useState<Date | undefined>(
     requisition?.deadlineApproval ? new Date(requisition.deadlineApproval) : undefined
@@ -60,14 +80,12 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
     return selectedDate > now
   }
 
-  const form = useForm<TProductRequisitionSchema>({
-    resolver: zodResolver(productRequisitionSchema),
+  const form = useForm<TProductRequisitionGeneralInfoSchema>({
+    resolver: zodResolver(productRequisitionGeneralInfoSchema),
     defaultValues: {
       code: requisition?.code || '',
       requester: requisition?.creator.fullname || '',
-      deadlineApproval: requisition?.deadlineApproval
-        ? format(new Date(requisition.deadlineApproval), 'yyyy-MM-dd HH:mm:ss')
-        : undefined,
+      deadlineApproval: requisition?.deadlineApproval || '',
       company: {
         slug: requisition?.creator.userDepartments[0]?.department?.site?.company?.slug || '',
         name: requisition?.creator.userDepartments[0]?.department?.site?.company?.name || ''
@@ -77,8 +95,8 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
         name: requisition?.creator.userDepartments[0]?.department?.site?.name || ''
       },
       type: requisition?.type || 'normal',
-      requestProducts: requisition?.requestProducts || [],
-      userApprovals: requisition?.userApprovals || [],
+      // requestProducts: requisition?.requestProducts || [],
+      // userApprovals: requisition?.userApprovals || [],
       project: {
         slug: requisition?.project.slug || '',
         name: requisition?.project.name || ''
@@ -104,8 +122,8 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
           name: requisition.creator.userDepartments[0]?.department?.site?.name || ''
         },
         type: requisition.type || 'normal',
-        requestProducts: requisition.requestProducts || [],
-        userApprovals: requisition.userApprovals || [],
+        // requestProducts: requisition.requestProducts || [],
+        // userApprovals: requisition.userApprovals || [],
         project: {
           slug: requisition.project.slug || '',
           name: requisition.project.name || ''
@@ -124,7 +142,24 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
     onDeleteProductSubmit(requestProductSlug)
   }
 
-  const columns = useColumnsUpdateRequisition(handleEditProduct, handleDeleteProduct)
+  const handleUpdateGeneralInfo = (values: TProductRequisitionGeneralInfoSchema) => {
+    console.log('Form values:', values)
+
+    const updatedValues: IUpdateProductRequisitionGeneralInfo = {
+      slug: slug as string,
+      type: values.type,
+      deadlineApproval: values.deadlineApproval,
+      project: values.project,
+      description: values.note
+    }
+    onUpdateGeneralInfo(updatedValues)
+  }
+
+  const columns = useColumnsUpdateRequisition(
+    isExistProduct,
+    handleEditProduct,
+    handleDeleteProduct
+  )
 
   const handleChoosePriority = (value: ProductRequisitionType) => {
     form.setValue('type', value)
@@ -150,13 +185,17 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
       <FormField
         control={form.control}
         name="type"
-        render={() => (
+        render={({ field }) => (
           <FormItem>
             <FormLabel>{t('productRequisition.priority')}</FormLabel>
             <FormControl>
               <RequestPrioritySelect
                 defaultValue={form.getValues('type')}
-                onChange={handleChoosePriority as (value: string) => void}
+                value={field.value}
+                onChange={(value: ProductRequisitionType) => {
+                  field.onChange(value)
+                  handleChoosePriority(value)
+                }}
               />
             </FormControl>
             <FormMessage />
@@ -181,12 +220,12 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
                       !field.value && 'text-muted-foreground'
                     )}
                   >
-                    <CalendarIcon className="w-4 h-4 mr-2" />
+                    <CalendarIcon className="mr-2 w-4 h-4" />
                     {field.value ? field.value : <span>Chọn ngày và thời gian</span>}
                   </Button>
                 </FormControl>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
+              <PopoverContent className="p-0 w-auto">
                 <Calendar
                   mode="single"
                   selected={date}
@@ -318,7 +357,7 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
   return (
     <div className="mt-3">
       <Form {...form}>
-        <form className="space-y-6">
+        <form onSubmit={form.handleSubmit(handleUpdateGeneralInfo)} className="space-y-6">
           <div className="grid grid-cols-1 gap-2">
             {Object.keys(formFields).map((key) => (
               <React.Fragment key={key}>
@@ -326,27 +365,26 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
               </React.Fragment>
             ))}
           </div>
+          <div className="flex justify-end">
+            <Button type="submit">Cập nhật</Button>
+          </div>
         </form>
       </Form>
-      <DataTable
-        isLoading={isLoading}
-        columns={columns}
-        data={requisition?.requestProducts || []}
-        // page={1}
-        pages={1}
-        // pageSize={requisition?.requestProducts?.length || 0}
-        onPageChange={() => {}}
-        onPageSizeChange={() => {}}
-      />
-      {/* <DataTableRequisition
-        isLoading={isLoading}
-        columns={columns}
-        data={requisition?.requestProducts || []}
-        page={1}
-        pages={1}
-        pageSize={requisition?.requestProducts?.length || 0}
-        onPageChange={() => {}}
-      /> */}
+      <div className="mt-3">
+        <DataTable
+          isLoading={isLoading}
+          columns={columns}
+          data={
+            requisition?.requestProducts?.map((item) => ({
+              ...item,
+              product: item.product || item.temporaryProduct || ({} as IProductInfo)
+            })) || []
+          }
+          pages={1}
+          onPageChange={() => {}}
+          onPageSizeChange={() => {}}
+        />
+      </div>
     </div>
   )
 }

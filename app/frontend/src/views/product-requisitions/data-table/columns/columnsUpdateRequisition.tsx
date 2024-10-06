@@ -18,6 +18,7 @@ import { DialogDeleteProductInRequisitionUpdate } from '@/components/app/dialog/
 import { DialogUpdateProductRequisition } from '@/components/app/dialog/dialog-update-product-quantity-requisition'
 
 export const useColumnsUpdateRequisition = (
+  isExistProduct: boolean,
   handleEditProduct: (product: IUpdateProductRequisitionQuantity) => void,
   handleDeleteProduct: (requestProductSlug: string) => void
 ): ColumnDef<IRequestProductInfo>[] => {
@@ -55,25 +56,25 @@ export const useColumnsUpdateRequisition = (
 
   return [
     {
-      accessorKey: 'product.code',
+      accessorKey: isExistProduct ? 'product.code' : 'temporaryProduct.code',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.productCode')} />
       )
     },
     {
-      accessorKey: 'product.name',
+      accessorKey: isExistProduct ? 'product.name' : 'temporaryProduct.name',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.productName')} />
       )
     },
     {
-      accessorKey: 'product.provider',
+      accessorKey: isExistProduct ? 'product.provider' : 'temporaryProduct.provider',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.provider')} />
       )
     },
     {
-      accessorKey: 'product.unit.name',
+      accessorKey: isExistProduct ? 'product.unit.name' : 'temporaryProduct.unit.name',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.unit')} />
       )
@@ -93,7 +94,7 @@ export const useColumnsUpdateRequisition = (
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="w-8 h-8 p-0">
+                <Button variant="ghost" className="p-0 w-8 h-8">
                   <span className="sr-only">Actions</span>
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
@@ -109,24 +110,20 @@ export const useColumnsUpdateRequisition = (
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            {selectedProduct === product && openEdit && (
-              <DialogUpdateProductRequisition
-                handleEditProduct={handleConfirmEditProduct}
-                openDialog={openEdit}
-                requisition={product}
-                component={null}
-                onOpenChange={onOpenEditChange}
-              />
-            )}
-            {selectedProduct === product && openDelete && (
-              <DialogDeleteProductInRequisitionUpdate
-                handleDeleteProduct={handleConfirmDeleteProduct}
-                openDialog={openDelete}
-                product={product}
-                component={null}
-                onOpenChange={onOpenDeleteChange}
-              />
-            )}
+            <DialogUpdateProductRequisition
+              handleEditProduct={handleConfirmEditProduct}
+              openDialog={openEdit}
+              requisition={product}
+              component={null}
+              onOpenChange={onOpenEditChange}
+            />
+            <DialogDeleteProductInRequisitionUpdate
+              handleDeleteProduct={handleConfirmDeleteProduct}
+              openDialog={openDelete}
+              product={product}
+              component={null}
+              onOpenChange={onOpenDeleteChange}
+            />
           </div>
         )
       }

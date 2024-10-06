@@ -65,18 +65,6 @@ export interface IFinalProductRequisition {
   }[]
 }
 
-// export interface IRequestProduct {
-//   code?: string
-//   name?: string
-//   provider?: string
-//   description: string
-//   unit: {
-//     slug: string
-//     name: string
-//   }
-//   quantity?: number
-// }
-
 export interface IProductNameSearch {
   name: string
 }

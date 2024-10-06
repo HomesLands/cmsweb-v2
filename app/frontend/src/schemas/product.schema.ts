@@ -51,8 +51,46 @@ export const productRequisitionSchema = z.object({
   note: z.string().optional()
 })
 
+export const productRequisitionGeneralInfoSchema = z.object({
+  code: z.string().min(1, 'Mã yêu cầu không hợp lệ'),
+  requester: z.string().min(1, 'Tên người yêu cầu không hợp lệ'),
+  deadlineApproval: z
+    .string()
+    .min(1, 'Ngày hết hạn không hợp lệ')
+    .refine((date) => new Date(date) > new Date(), {
+      message: 'Ngày hết hạn phải là thời điểm trong tương lai'
+    }),
+  company: z.object({
+    slug: z.string().min(1, 'Mã công ty không hợp lệ'),
+    name: z.string().min(1, 'Tên công ty không hợp lệ')
+  }),
+  site: z.object({
+    slug: z.string().min(1, 'Mã công trình không hợp lệ'),
+    name: z.string().min(1, 'Tên công trình không hợp lệ')
+  }),
+  project: z.object({
+    slug: z.string().min(1, 'Mã dự án không hợp lệ'),
+    name: z.string().min(1, 'Tên dự án không hợp lệ')
+  }),
+  type: z.enum(['normal', 'urgent']),
+  note: z.string().min(1, 'Ghi chú không hợp lệ')
+})
+
 export const productSearchSchema = z.object({
   name: z.string().optional().default('')
+})
+
+export const updateProductRequisitionGeneralInfoSchema = z.object({
+  slug: z.string().min(1, 'Mã yêu cầu không hợp lệ'),
+  project: z.string().min(1, 'Mã dự án không hợp lệ'),
+  type: z.enum(['normal', 'urgent']),
+  deadlineApproval: z
+    .string()
+    .min(1, 'Ngày hết hạn không hợp lệ')
+    .refine((date) => new Date(date) > new Date(), {
+      message: 'Ngày hết hạn phải là thời điểm trong tương lai'
+    }),
+  description: z.string().min(1, 'Mô tả không hợp lệ')
 })
 
 export const addNewProductSchema = z.object({
@@ -127,4 +165,10 @@ export const approvalRequisitionSchema = z.object({
 
 export type TProductRequisitionSchema = z.infer<typeof productRequisitionSchema>
 export type TAddNewProductRequestSchema = z.infer<typeof addNewProductRequestSchema>
+export type TProductRequisitionGeneralInfoSchema = z.infer<
+  typeof productRequisitionGeneralInfoSchema
+>
 export type TUpdateProductRequestSchema = z.infer<typeof updateProductRequestSchema>
+export type TUpdateProductRequisitionGeneralInfoSchema = z.infer<
+  typeof updateProductRequisitionGeneralInfoSchema
+>

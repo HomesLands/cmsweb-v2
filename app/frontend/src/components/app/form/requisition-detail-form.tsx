@@ -18,25 +18,21 @@ import {
   TableCell
 } from '@/components/ui'
 import { IProductRequisitionFormInfo } from '@/types'
+import { useParams } from 'react-router'
+import { useUpdateProductRequisitionQuantity } from '@/hooks'
 
 interface IFormRequisitionDetailProps {
-  // companyName: string
   data?: IProductRequisitionFormInfo
 }
 
-export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({
-  // companyName,
-  data
-}) => {
+export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ data }) => {
   const form = useForm({
     defaultValues: {
       code: data?.code || '',
       createdAt: data?.createdAt || '',
       creator: data?.creator || '',
-      // status: data?.status || '',
       description: data?.description || '',
-      // deadlineApproval: data?.deadlineApproval || '',
-      companyName: data?.creator.userDepartments[0].department.site.company.name || '',
+      company: data?.creator?.userDepartments[0]?.department?.site?.company?.name || '',
       project: data?.project || '',
       type: data?.type || '',
       requestProducts: data?.requestProducts || [],
@@ -135,7 +131,7 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({
             />
             <FormField
               control={form.control}
-              name="companyName"
+              name="company"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tên công ty</FormLabel>
@@ -233,22 +229,42 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({
                 <TableRow>
                   <TableHead>Mã sản phẩm</TableHead>
                   <TableHead>Tên sản phẩm</TableHead>
+                  <TableHead>Nhà cung cấp</TableHead>
+                  <TableHead>Đơn vị</TableHead>
                   <TableHead>Số lượng yêu cầu</TableHead>
                   <TableHead>Mô tả</TableHead>
+                  <TableHead>Trạng thái</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {Array.isArray(data?.requestProducts)
-                  ? data.requestProducts.map((product, index) =>
-                      product && product.product ? (
-                        <TableRow key={index}>
-                          <TableCell>{product.product.code}</TableCell>
-                          <TableCell>{product.product.name}</TableCell>
-                          <TableCell>{product.requestQuantity}</TableCell>
-                          <TableCell>{product.product.description || 'N/A'}</TableCell>
-                        </TableRow>
-                      ) : null
-                    )
+                  ? data.requestProducts.map((product, index) => (
+                      <TableRow key={index}>
+                        <TableCell>
+                          {product.isExistProduct
+                            ? product.product?.code
+                            : product.temporaryProduct?.code}
+                        </TableCell>
+                        <TableCell>
+                          {product.isExistProduct
+                            ? product.product?.name
+                            : product.temporaryProduct?.name}
+                        </TableCell>
+                        <TableCell>
+                          {product.isExistProduct
+                            ? product.product?.provider
+                            : product.temporaryProduct?.provider}
+                        </TableCell>
+                        <TableCell>
+                          {product.isExistProduct
+                            ? product.product?.unit?.name
+                            : product.temporaryProduct?.unit?.name}
+                        </TableCell>
+                        <TableCell>{product.requestQuantity}</TableCell>
+                        <TableCell>{product.description || 'N/A'}</TableCell>
+                        <TableCell>{product.isExistProduct ? 'Có sẵn' : 'Sản phẩm mới'}</TableCell>
+                      </TableRow>
+                    ))
                   : null}
               </TableBody>
             </Table>

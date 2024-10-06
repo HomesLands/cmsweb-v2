@@ -10,24 +10,20 @@ import {
   ScrollArea
 } from '@/components/ui'
 
-import { RequisitionDetailForm, RequisitionEditForm } from '@/components/app/form'
+import { RequisitionDetailForm } from '@/components/app/form'
 import { IProductRequisitionFormInfo } from '@/types'
 
 interface DialogRequisitionDetailProps {
-  isEditing?: boolean
   openDialog: boolean
   requisition?: IProductRequisitionFormInfo | null
   component: React.ReactNode
-  // companyName: string
   onOpenChange: () => void
 }
 
 export function DialogRequisitionDetail({
-  isEditing,
   openDialog,
   requisition,
   component,
-  // companyName,
   onOpenChange
 }: DialogRequisitionDetailProps) {
   console.log(requisition)

@@ -68,11 +68,16 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitio
       header: ({ column }) => <DataTableColumnHeader column={column} title="Người tạo" />
     },
     {
-      id: 'creator.company',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />
-      // cell: () => {
-      //   return <div className="min-w-[12rem] text-[0.8rem]">{companyName}</div>
-      // }
+      id: 'company',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />,
+      cell: ({ row }) => {
+        const { creator } = row.original
+        return (
+          <div className="min-w-[12rem] text-[0.8rem]">
+            {creator.userDepartments[0].department.site.company.name}
+          </div>
+        )
+      }
     },
     // {
     //   id: 'company',
@@ -119,7 +124,7 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitio
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="w-8 h-8 p-0">
+                <Button variant="ghost" className="p-0 w-8 h-8">
                   <span className="sr-only">Thao tác</span>
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
