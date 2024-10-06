@@ -34,13 +34,14 @@ class FileController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const name = req.params.name;
-      const fileData = await fileService.getFileFromDB(name);
+      const fullFilename = req.params.name;
+      const fileData = await fileService.getFileFromDB(fullFilename);
 
       res.writeHead(200, {
         'Content-Type': fileData.mimetype,
         'Content-Length': fileData.length,
-        'Content-Disposition': `attachment; filename="file.${fileData.extension}"`
+        // 'Content-Disposition': `inline; filename="file.${fileData.extension}"`
+        'Content-Disposition': `inline; filename="${fileData.name}.${fileData.extension}"`
       });
       res.end(fileData.data);
     } catch (error) {

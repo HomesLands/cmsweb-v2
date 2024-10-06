@@ -106,7 +106,7 @@ export class FileUploadService {
     });
     if(!fileData) throw new GlobalError(ErrorCodes.SAVE_FILE_FAIL);
     if(!fileData.name) throw new GlobalError(ErrorCodes.SAVE_FILE_FAIL);
-    return fileData.name
+    return fileData.name + "." + fileData.extension;
   }
 
   public async uploadFile(
@@ -188,7 +188,8 @@ export class FileUploadService {
     });
   }
 
-  public async getFileFromDB(name: string): Promise<TFileData> {
+  public async getFileFromDB(fullFilename: string): Promise<TFileData> {
+    const name = fullFilename.split(".")[0];
     const imageData = await fileRepository.findOneBy({ name });
 
     if (
@@ -205,6 +206,7 @@ export class FileUploadService {
       extension: imageData.extension,
       mimetype: imageData.mimetype,
       length: buffer.length,
+      name: imageData.name
     };
   }
 
