@@ -28,3 +28,10 @@ export type TResubmitProductRequisitionFormRequestDto = {
   slug?: string;
   description?: string;
 };
+
+export type TUpdateGeneralInformationProductRequisitionFormRequestDto = {
+  project?: string;
+  type?: string;
+  deadlineApproval?: string;
+  description?: string;
+}

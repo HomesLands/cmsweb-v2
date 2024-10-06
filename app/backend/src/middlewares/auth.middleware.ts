@@ -9,7 +9,7 @@ import { TokenUtils } from "@utils";
 
 // Define a list of whitelisted routes with allowed methods
 const whitelist = [
-  { path: "/files", method: HTTPMethod.GET },
+  { path: "/files/:name", method: HTTPMethod.GET },
   { path: "/auth/authenticate", method: HTTPMethod.POST },
   { path: "/auth/register", method: HTTPMethod.POST },
   { path: "/auth/refresh", method: HTTPMethod.POST },
@@ -34,6 +34,7 @@ class AuthMiddleware {
     // Skip if preflight request
     if (req.method === HTTPMethod.OPTIONS) return next();
 
+    console.log({route: req.path})
     // Check if the current request matches any whitelisted route and method
     const isWhitelisted = whitelist.some(
       (route) => route.path === req.path && route.method === req.method

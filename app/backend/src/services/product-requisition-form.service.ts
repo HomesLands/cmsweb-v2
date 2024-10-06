@@ -19,6 +19,7 @@ import {
   TQueryRequest,
   TPaginationOptionResponse,
   TResubmitProductRequisitionFormRequestDto,
+  TUpdateGeneralInformationProductRequisitionFormRequestDto,
 } from "@types";
 import { ProductRequisitionFormResponseDto } from "@dto/response";
 import {
@@ -28,6 +29,7 @@ import {
   CreateApprovalLogRequestDto,
   ResubmitProductRequisitionFormRequestDto,
   CreateTemporaryProductRequestDto,
+  UpdateGeneralInformationProductRequisitionFormRequestDto,
 } from "@dto/request";
 import { mapper } from "@mappers";
 import {
@@ -44,6 +46,7 @@ import {
   RoleApproval,
   ApprovalLogStatus,
 } from "@enums";
+import { PermissionUtils } from "@utils";
 
 class ProductRequisitionFormService {
   public async getAllProductRequisitionForms(
@@ -462,7 +465,7 @@ class ProductRequisitionFormService {
     throw new GlobalError(ErrorCodes.INVALID_FORM_STATUS_TRANSITION);
   }
 
-  public async resubmitRequisitionForm(
+  public async resubmitProductRequisitionForm(
     plainData: TResubmitProductRequisitionFormRequestDto,
     creatorId: string
   ): Promise<ProductRequisitionFormResponseDto> {
@@ -505,6 +508,57 @@ class ProductRequisitionFormService {
     form = await productRequisitionFormRepository.save(form);
     const formDto = mapper.map(
       form,
+      ProductRequisitionForm,
+      ProductRequisitionFormResponseDto
+    );
+    return formDto;
+  }
+
+  public async updateGeneralInformationForm(
+    creatorId: string,
+    slug: string,
+    plainData: TUpdateGeneralInformationProductRequisitionFormRequestDto
+  ): Promise<ProductRequisitionFormResponseDto> {
+    const requestData = plainToClass(
+      UpdateGeneralInformationProductRequisitionFormRequestDto,
+      plainData
+    );
+    const errors = await validate(requestData);
+    if(errors.length > 0) throw new ValidationError(errors);
+
+    const form = await productRequisitionFormRepository.findOne({
+      where: {
+        slug
+      }, 
+      relations: ['creator']
+    });
+    if(!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+
+    if(form.creator) {
+      if(form.creator?.id !== creatorId) 
+        throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    } else {
+      // creator not found
+      throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    }
+
+    const isPermitEdit: boolean = 
+      PermissionUtils.isPermitEditProductRequisitionForm(
+        form.status,
+        form.isRecalled
+      );
+    if(!isPermitEdit) throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+
+    const project = await projectRepository.findOneBy({ slug: requestData.project });
+    if(!project) throw new GlobalError(ErrorCodes.PROJECT_NOT_FOUND);
+
+    Object.assign(form, {
+      ...requestData,
+      project
+    });
+    const updatedForm = await productRequisitionFormRepository.save(form);
+    const formDto = mapper.map(
+      updatedForm,
       ProductRequisitionForm,
       ProductRequisitionFormResponseDto
     );
