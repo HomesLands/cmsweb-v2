@@ -2,7 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { userService } from "@services";
-import { TApiResponse, TPaginationOptionResponse, TQueryRequest } from "@types";
+import {
+  TApiResponse,
+  TPaginationOptionResponse,
+  TQueryRequest,
+  TUploadUserAvatarRequestDto,
+  TUploadUserSignRequestDto,
+} from "@types";
 import { UserPermissionResponseDto, UserResponseDto } from "@dto/response";
 
 class UserController {
@@ -192,14 +198,18 @@ class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const result = await userService.uploadUserSignature(req, res);
+      const requestData = {
+        userId: req.userId,
+        file: req.file,
+      } as TUploadUserSignRequestDto;
+      const result = await userService.uploadUserSignature(requestData);
       const response: TApiResponse<UserResponseDto> = {
         code: StatusCodes.OK,
         error: false,
         message: `Upload signature user successfully`,
         method: req.method,
         path: req.originalUrl,
-        result: result,
+        result,
       };
       res.status(StatusCodes.OK).json(response);
     } catch (error) {
@@ -244,7 +254,12 @@ class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const result = await userService.uploadUserAvatar(req, res);
+      const requestData = {
+        userId: req.userId,
+        file: req.file,
+      } as TUploadUserAvatarRequestDto;
+
+      const result = await userService.uploadUserAvatar(requestData);
       const response: TApiResponse<UserResponseDto> = {
         code: StatusCodes.OK,
         error: false,
