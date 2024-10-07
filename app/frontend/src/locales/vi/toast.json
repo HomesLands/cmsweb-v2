@@ -8,6 +8,8 @@
     "confirmError": "Yêu cầu được xác nhận gửi thất bại",
     "updateRequestSuccess": "Yêu cầu được cập nhật thành công",
     "deleteProductSuccess": "Vật tư được xóa thành công",
+    "addNewProductSuccess": "Vật tư được thêm thành công",
+    "resubmitSuccess": "Yêu cầu được gửi lại thành công",
     "approveRequestSuccess": "Yêu cầu được duyệt thành công",
     "approveRequestError": "Yêu cầu được duyệt thất bại",
     "giveBackRequestSuccess": "Yêu cầu được hoàn lại thành công",

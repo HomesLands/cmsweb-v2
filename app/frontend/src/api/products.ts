@@ -1,5 +1,6 @@
 import {
   ApprovalLogStatus,
+  IAddNewProductInRequisitionUpdate,
   IApiResponse,
   IFinalProductRequisition,
   IPaginationResponse,
@@ -101,11 +102,8 @@ export async function approveProductRequisition(
 
 export async function updateProductRequisitionQuantity(params: IUpdateProductRequisitionQuantity) {
   const response = await http.patch<IApiResponse<IProductRequisitionFormInfo>>(
-    `/requestProducts/updateQuantity`,
-    {
-      slug: params.slug,
-      newQuantity: params.newQuantity
-    }
+    `/requestProducts/${params.slug}`,
+    params
   )
   return response.data
 }
@@ -117,6 +115,14 @@ export async function deleteProductRequisition(requestProductSlug: string) {
     {
       params: { requestProductSlug }
     }
+  )
+  return response.data
+}
+
+export async function addNewProductInRequisitionUpdate(data: IAddNewProductInRequisitionUpdate) {
+  const response = await http.post<IApiResponse<IProductRequisitionFormInfo>>(
+    `/requestProducts`,
+    data
   )
   return response.data
 }

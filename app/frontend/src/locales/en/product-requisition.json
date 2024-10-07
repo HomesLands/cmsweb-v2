@@ -52,6 +52,7 @@
     "confirmProductRequisitionsSuccessDescription": "Confirm product requisitions success description",
     "here": "here",
     "updateProductRequisition": "Update product requisition",
+    "resubmit": "Resubmit",
     "approvalHistory": "Approval history"
   },
   "roleApproval": {

@@ -55,6 +55,7 @@
     "confirmProductRequisitionsSuccessDescription": "Phiếu yêu cầu đã được gửi đi. Bạn có thể xem danh sách",
     "here": "tại đây",
     "updateProductRequisition": "Cập nhật yêu cầu vật tư",
+    "resubmit": "Gửi lại",
     "approvalHistory": "Lịch sử duyệt"
   },
   "roleApproval": {
@@ -81,8 +82,8 @@
     "urgent": "Cần gấp"
   },
   "requisitionDetail": {
-    "requestDetail": "Chi tiết yêu cầu vật tư",
-    "requestDetailDescription": "Thông tin chi tiết của yêu cầu vật tư"
+    "requestDetail": "Chi tiết vật tư yêu cầu",
+    "requestDetailDescription": "Thông tin chi tiết của vật tư yêu cầu"
   },
   "requisitionEdit": {
     "requestEdit": "Sửa yêu cầu vật tư",

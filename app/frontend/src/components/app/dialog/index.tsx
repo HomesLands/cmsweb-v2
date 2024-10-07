@@ -16,3 +16,5 @@ export * from './dialog-requisition-detail'
 export * from './dialog-update-product-quantity-requisition'
 // eslint-disable-next-line react-refresh/only-export-components
 export * from './dialog-delete-product-in-requisition-update'
+// eslint-disable-next-line react-refresh/only-export-components
+export * from './dialog-add-product-in-requisition-update'
