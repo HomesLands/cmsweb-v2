@@ -11,12 +11,16 @@ import {
 } from '@/components/ui'
 
 import { UpdateProductRequisitionForm } from '@/components/app/form'
-import { IRequestProductInfo, IUpdateProductRequisitionQuantity } from '@/types'
+import {
+  IRequestProductInfo,
+  IRequestProductInfoUpdate,
+  IUpdateProductRequisitionQuantity
+} from '@/types'
 
 interface DialogUpdateRequisitionProps {
   handleEditProduct: (product: IUpdateProductRequisitionQuantity) => void
   openDialog: boolean
-  requisition: IRequestProductInfo
+  requisition: IRequestProductInfoUpdate
   component: React.ReactNode
   onOpenChange: () => void
 }
@@ -29,6 +33,7 @@ export function DialogUpdateProductRequisition({
   onOpenChange
 }: DialogUpdateRequisitionProps) {
   const { t } = useTranslation('productRequisition')
+  console.log('requisition', requisition)
 
   return (
     <Dialog open={openDialog} onOpenChange={onOpenChange}>

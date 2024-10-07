@@ -28,62 +28,60 @@ interface IFormEditProductProps {
 
 export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ data, onSubmit }) => {
   const { t } = useTranslation('tableData')
-  const isEditMode = !!data // Add this line to define isEditMode
+  const isEditMode = !!data
+  const isExistingProduct = data?.isExistProduct || false
 
   const form = useForm<TUpdateProductRequestSchema>({
     resolver: zodResolver(updateProductRequestSchema),
     defaultValues: {
-      // code: data?.product.code || '',
       slug: data?.product.slug || '',
+      isExistProduct: isExistingProduct,
       product: {
         code: data?.product.code || '',
         slug: data?.product.slug || '',
         name: data?.product.name || '',
         provider: data?.product.provider || '',
         unit: { name: data?.product.unit.name || '', slug: data?.product.unit.slug || '' },
-        // unit: data?.product.unit || { name: '', slug: '' },
         quantity: data?.product.quantity || 1,
         description: data?.product.description
       },
       requestQuantity: data?.requestQuantity || 1
-      //   description: data?.description || ''
     }
   })
 
   const handleSubmit = (values: TAddNewProductRequestSchema) => {
-    console.log('values in form', values)
     const completeData: IProductRequisitionInfo = {
       ...values,
       requestQuantity: Number(values.requestQuantity),
-      product: {
-        ...values.product,
-        unit: {
-          name: values.product.unit.name,
-          slug: values.product.unit.slug
-        }
-      }
+      slug: data?.slug || ''
     }
+    console.log('completeData', completeData)
     onSubmit(completeData)
   }
+
+  const productCode = form.watch('product.code')
 
   return (
     <div className="mt-3">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="grid grid-cols-3 gap-2">
-            <FormField
-              control={form.control}
-              name="product.code"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('tableData.productCode')}</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {productCode && (
+              <FormField
+                control={form.control}
+                name="product.code"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('tableData.productCode')}</FormLabel>
+                    <FormControl>
+                      <Input {...field} readOnly />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
             <FormField
               control={form.control}
               name="product.name"
@@ -91,7 +89,7 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
                 <FormItem>
                   <FormLabel>{t('tableData.productName')}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} readOnly={isExistingProduct} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -104,14 +102,12 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
                 <FormItem>
                   <FormLabel>{t('tableData.provider')}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} readOnly={isExistingProduct} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          </div>
-          <div className="grid grid-cols-3 gap-2">
             <FormField
               control={form.control}
               name="requestQuantity"
@@ -149,7 +145,7 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
                           ? { value: data.product.unit.slug, label: data.product.unit.name }
                           : undefined
                       }
-                      isDisabled={isEditMode}
+                      isDisabled={isExistingProduct}
                     />
                   </FormControl>
                   <FormMessage />
@@ -163,7 +159,7 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
                 <FormItem>
                   <FormLabel>{t('tableData.description')}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} readOnly={isExistingProduct} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

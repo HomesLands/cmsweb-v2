@@ -10,12 +10,14 @@ import {
   getProductRequisitionByCreator,
   getProductRequisitionBySlug,
   getProducts,
+  updateProductRequisitionGeneralInfo,
   updateProductRequisitionQuantity
 } from '@/api/products'
 import {
   IApproveProductRequisition,
   IFinalProductRequisition,
   IProductQuery,
+  IUpdateProductRequisitionGeneralInfo,
   IUpdateProductRequisitionQuantity
 } from '@/types'
 
@@ -82,6 +84,13 @@ export const useDeleteProductInRequisition = (slug: string) => {
       console.log('success')
       queryClient.invalidateQueries({ queryKey: ['productRequisitionBySlug', slug] })
     }
+  })
+}
+
+export const useUpdateProductRequisitionGeneralInfo = () => {
+  return useMutation({
+    mutationFn: (data: IUpdateProductRequisitionGeneralInfo) =>
+      updateProductRequisitionGeneralInfo(data)
   })
 }
 

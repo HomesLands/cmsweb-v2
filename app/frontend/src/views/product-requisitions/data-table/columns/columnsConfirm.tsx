@@ -49,6 +49,10 @@ export const useColumnsConfirm = (
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={i18next.t('tableData.productCode')} />
       )
+      // cell: ({ row }) => {
+      //   const product = row.original
+      //   return <div>{product.product.code || 'Không có'}</div>
+      // }
     },
     {
       accessorKey: 'product.name',

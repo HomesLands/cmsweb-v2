@@ -25,7 +25,7 @@ export interface IUnit {
 }
 
 export interface IProductRequisitionFormCreate {
-  code: string
+  code?: string
   requester: string
   deadlineApproval: string
   company: {
@@ -50,7 +50,7 @@ export interface IProductRequisitionFormCreate {
 }
 
 export interface IFinalProductRequisition {
-  code: string
+  code?: string
   project: string //Project slug
   type: 'normal' | 'urgent'
   description: string
@@ -65,25 +65,24 @@ export interface IFinalProductRequisition {
   }[]
 }
 
-export interface IRequestProduct {
-  code?: string
-  name?: string
-  provider?: string
-  description: string
-  unit: {
-    slug: string
-    name: string
-  }
-  quantity?: number
-}
-
 export interface IProductNameSearch {
   name: string
 }
 
 export interface IProductInfo {
-  code: string
+  code?: string
   slug?: string
+  name: string
+  provider: string
+  description: string
+  unit: {
+    slug: string
+    name: string
+  }
+  quantity: number
+}
+
+export interface INonExistingProductInfo {
   name: string
   provider: string
   description: string
@@ -97,31 +96,30 @@ export interface IProductInfo {
 //Update product requisition quantity
 export interface IRequestProductInfo {
   slug: string
+  isExistProduct: boolean
   product: IProductInfo
   requestQuantity: number
 }
 
-export interface IProductRequisitionInfo {
-  // createdAt?: string
-  // updatedAt?: string
-  // slug: string
-  requestQuantity: number
-  // description: string
-  // isExistProduct: boolean;
+export interface IRequestProductInfoUpdate {
+  slug: string
+  description: string
+  isExistProduct: boolean
   product: IProductInfo
-  // temporaryProduct: string | null;
+  temporaryProduct: IProductInfo
+  requestQuantity: number
+}
+
+export interface IProductRequisitionInfo {
+  slug: string
+  isExistProduct: boolean
+  requestQuantity: number
+  product: IProductInfo
 }
 
 export interface IProductQuery extends IQuery {
   searchTerm?: string
 }
-
-// export interface IApproveProductRequisition {
-//   formSlug: string
-//   approvalUserSlug: string
-//   approvalLogStatus: ApprovalLogStatus
-//   approvalLogContent: string
-// }
 
 export interface IApproveProductRequisition {
   formSlug: string

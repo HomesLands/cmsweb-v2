@@ -10,22 +10,14 @@ import {
   ScrollArea
 } from '@/components/ui'
 
-import { RequisitionDetailForm } from '@/components/app/form'
-import {
-  IProductRequisitionFormInfo,
-  IProductRequisitionInfo,
-  IRequestProductInfo,
-  IUpdateProductRequisitionQuantity
-} from '@/types'
+import { IProductRequisitionInfo } from '@/types'
 import { EditProductRequisitionForm } from '../form/edit-product-requisition-form'
 
 interface DialogRequisitionDetailProps {
   handleEditProduct: (product: IProductRequisitionInfo) => void
-  // isEditing?: boolean
   openDialog: boolean
   requisition?: IProductRequisitionInfo | null
   component: React.ReactNode
-  // companyName: string
   onOpenChange: () => void
 }
 
@@ -34,10 +26,8 @@ export function DialogEditProductRequisition({
   openDialog,
   requisition,
   component,
-  // companyName,
   onOpenChange
 }: DialogRequisitionDetailProps) {
-  console.log(requisition)
   const { t } = useTranslation('productRequisition')
 
   const handleConfirm = (data: IProductRequisitionInfo) => {
@@ -54,14 +44,12 @@ export function DialogEditProductRequisition({
             <DialogHeader>
               <DialogTitle>{t('productRequisition.productInformation')}</DialogTitle>
               <DialogDescription>
-                {t('productRequisition.productInformationDescription')}
+                {requisition?.isExistProduct
+                  ? t('productRequisition.existingProductDescription')
+                  : t('productRequisition.newProductDescription')}
               </DialogDescription>
             </DialogHeader>
-            <EditProductRequisitionForm
-              // onSubmit={handleEditProduct}
-              onSubmit={handleConfirm}
-              data={requisition || undefined}
-            />
+            <EditProductRequisitionForm onSubmit={handleConfirm} data={requisition || undefined} />
           </div>
         </ScrollArea>
       </DialogContent>
