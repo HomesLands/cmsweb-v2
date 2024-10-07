@@ -13,6 +13,10 @@ export class TemporaryProduct extends Base {
   @AutoMap()
   provider?: string;
 
+  @Column({ name: "description_column" })
+  @AutoMap()
+  description?: string;
+
   @ManyToOne(() => Unit, (unit) => unit.temporaryProducts)
   @JoinColumn({ name: "unit_column" })
   unit?: Unit;
