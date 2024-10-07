@@ -404,21 +404,25 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
           hidenInput={false} // default true
         />
       </div>
-      <div className="mt-3">
-        <span className="font-semibold text-md">Cập nhật sản phẩm</span>
-        <DataTable
-          isLoading={isLoading}
-          columns={columns}
-          data={requisition?.requestProducts}
-          pages={1}
-          onPageChange={() => {}}
-          onPageSizeChange={() => {}}
-        />
-      </div>
-      {(requisition.isRecalled || requisition.status !== 'waiting') && (
-        <div className="flex justify-end mt-3">
-          <Button onClick={() => handleResubmit()}>{t('productRequisition.resubmit')}</Button>
-        </div>
+      {requisition && (
+        <>
+          <div className="mt-3">
+            <span className="font-semibold text-md">Cập nhật sản phẩm</span>
+            <DataTable
+              isLoading={isLoading}
+              columns={columns}
+              data={requisition.requestProducts}
+              pages={1}
+              onPageChange={() => {}}
+              onPageSizeChange={() => {}}
+            />
+          </div>
+          {(requisition.isRecalled === true || requisition.status !== 'waiting') && (
+            <div className="flex justify-end mt-3">
+              <Button onClick={() => handleResubmit()}>{t('productRequisition.resubmit')}</Button>
+            </div>
+          )}
+        </>
       )}
       <DialogResubmitRequisition
         openDialog={openDialog}
