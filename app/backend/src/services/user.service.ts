@@ -2,8 +2,14 @@ import { mapper } from "@mappers";
 import { User } from "@entities";
 import { UserPermissionResponseDto, UserResponseDto } from "@dto/response";
 import { userRepository } from "@repositories";
-import { TPaginationOptionResponse, TQueryRequest } from "@types";
+import {
+  TPaginationOptionResponse,
+  TQueryRequest,
+  TUploadUserAvatarRequestDto,
+  TUploadUserSignRequestDto,
+} from "@types";
 import { GlobalError, ErrorCodes } from "@exception";
+import fileService from "./file.service";
 
 class UserService {
   public async getAllUsers(
@@ -61,6 +67,7 @@ class UserService {
     const results = mapper.map(user, User, UserResponseDto);
     return results;
   }
+
   public async getUserPermissions(
     userId: string
   ): Promise<UserPermissionResponseDto[]> {
@@ -94,6 +101,44 @@ class UserService {
       ); // Filters out undefined results
 
     return scope;
+  }
+
+  public async uploadUserSignature(
+    requestData: TUploadUserSignRequestDto
+  ): Promise<UserResponseDto> {
+    const user = await userRepository.findOneBy({ id: requestData.userId });
+    if (!user) throw new GlobalError(ErrorCodes.FORBIDDEN_USER);
+
+    const file = await fileService.uploadFile(requestData.file);
+
+    // Remove old file
+    const oldFile = user.signature;
+    if (oldFile) await fileService.removeFileByName(oldFile);
+
+    Object.assign(user, { signature: `${file.name}.${file.extension}` });
+    const updatedUser = await userRepository.save(user);
+
+    const userDto = mapper.map(updatedUser, User, UserResponseDto);
+    return userDto;
+  }
+
+  public async uploadUserAvatar(
+    requestData: TUploadUserAvatarRequestDto
+  ): Promise<UserResponseDto> {
+    console.log({ requestData });
+    const user = await userRepository.findOneBy({ id: requestData.userId });
+    if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
+
+    const file = await fileService.uploadFile(requestData.file);
+
+    const oldFile = user.avatar;
+    if (oldFile) await fileService.removeFileByName(oldFile);
+
+    Object.assign(user, { avatar: `${file.name}.${file.extension}` });
+    const updatedUser = await userRepository.save(user);
+
+    const userDto = mapper.map(updatedUser, User, UserResponseDto);
+    return userDto;
   }
 }
 

@@ -1,48 +1,26 @@
 import { NextFunction, Request, Response } from "express";
 
 import { fileService } from "@services";
-import { StatusCodes } from "http-status-codes";
-import { TApiResponse } from "@types";
+import { GlobalError, ErrorCodes } from "@exception";
 
 class FileController {
-  public async uploadFileDB(
+  public async getFileByName(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
-      const validate = await fileService.uploadFile(req, res);
-      console.log({validate})
+      const filename = req.params.name;
+      const fileData = await fileService.getFileByName(filename);
 
-      const response: TApiResponse<void> = {
-        code: StatusCodes.OK,
-        error: false,
-        message: "Upload successfully",
-        method: req.method,
-        path: req.originalUrl,
-      };
-      res.status(StatusCodes.OK).json(response);
-
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  public async getImgByName(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
-    try {
-      const name = req.params.name;
-      const fileData = await fileService.getFileFromDB(name);
+      if (!fileData?.data) throw new GlobalError(ErrorCodes.FILE_NOT_FOUND);
 
       res.writeHead(200, {
-        'Content-Type': fileData.mimetype,
-        'Content-Length': fileData.length,
-        'Content-Disposition': `attachment; filename="file.${fileData.extension}"`
+        "Content-Type": fileData.mimetype,
+        "Content-Length": fileData.size,
+        "Content-Disposition": `inline; filename="${fileData.name}.${fileData.extension}"`,
       });
-      res.end(fileData.data);
+      res.end(Buffer.from(fileData.data, "base64"));
     } catch (error) {
       next(error);
     }

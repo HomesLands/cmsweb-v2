@@ -13,7 +13,8 @@
     "lint:check": "eslint ./src",
     "lint:fix": "eslint --fix ./src",
     "test": "jest -c jest.config.json --passWithNoTests",
-    "test:coverage": "jest --coverage --passWithNoTests"
+    "typeorm": "npx ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js",
+    "typeorm:drop": "npm run typeorm -- schema:drop -d src/configs/db.config.ts"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
   "dependencies": {
     "@automapper/classes": "^8.8.1",
     "@automapper/core": "^8.8.1",
+    "@casl/ability": "^6.7.1",
     "@types/swagger-ui-express": "^4.1.6",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
@@ -45,6 +47,7 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
+    "path-to-regexp": "^8.2.0",
     "reflect-metadata": "^0.1.14",
     "shortid": "^2.2.16",
     "supertest": "^7.0.0",

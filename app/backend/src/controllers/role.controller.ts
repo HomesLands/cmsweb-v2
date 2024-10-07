@@ -57,11 +57,6 @@ class RoleController {
    *           description: Display name for role name
    *       example:
    *         nameNormalize: ROLE_DIRECTOR
-   *         description: Chức vụ giám đốc
-   *         nameDisplay: Giám đốc
-   *           description: Name display for role
-   *       example:
-   *         nameNormalize: ROLE_DIRECTOR
    *         nameDisplay: Giám đốc
    *         description: Cho phép duyệt yêu cầu vật tư
    */

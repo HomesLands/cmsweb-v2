@@ -25,23 +25,17 @@ class AuthorityController {
    *       properties:
    *         nameNormalize:
    *           type: string
-   *           description: Authority code.
+   *           description: Authority code
    *         nameDisplay:
    *           type: string
    *           description: Name display for authority
    *         description:
    *           type: string
    *           description: Description for authority
-   *         nameDisplay:
-   *           type: string
-   *           description: Display name for authority
    *       example:
    *         nameNormalize: CREATE_USER
    *         nameDisplay: Create user
    *         description: Enable create user
-<<<<<<< HEAD
-   *         nameDisplay: Tạo người dùng
-=======
    * 
    *     UpdateAuthorityRequestDto:
    *       type: object
@@ -64,7 +58,6 @@ class AuthorityController {
    *         nameDisplay: Tạo người dùng
    *         description: Cho phép tạo người dùng mới
    * 
->>>>>>> 14a5a7bbfa0c163e5a83957faa431b031b4889f5
    */
 
   /**

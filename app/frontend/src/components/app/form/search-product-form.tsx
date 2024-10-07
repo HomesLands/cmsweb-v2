@@ -1,9 +1,8 @@
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useRequisitionStore } from '@/stores'
-import { useProducts } from '@/hooks'
-import { IProductQuery, IProductRequisitionInfo } from '@/types'
+import { useDebouncedInput, usePagination, useProducts } from '@/hooks'
+import { IProductRequisitionInfo } from '@/types'
 
 import { Button, DataTable, Label } from '@/components/ui'
 import {
@@ -19,17 +18,18 @@ interface IFormAddProductProps {
 
 export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSubmit }) => {
   const { t } = useTranslation('productRequisition')
-  const [query, setQuery] = useState<IProductQuery>({
-    order: 'DESC',
-    page: 1,
-    pageSize: 10,
-    searchTerm: ''
+  const { pagination, handlePageChange, handlePageSizeChange } = usePagination({
+    isSearchParams: false
   })
-  const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
   const { requisition } = useRequisitionStore()
+  const { inputValue, setInputValue, debouncedInputValue } = useDebouncedInput()
 
-  const { data: allProduct, isLoading } = useProducts(query)
+  const { data: allProduct, isLoading } = useProducts({
+    page: pagination.pageIndex,
+    pageSize: pagination.pageSize,
+    order: 'DESC',
+    searchTerm: debouncedInputValue
+  })
 
   const { updateProductToRequisition, deleteProductToRequisition } = useRequisitionStore()
 
@@ -54,9 +54,12 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
         columns={useColumnsSearch()}
         data={allProduct?.result?.items || []}
         pages={allProduct?.result?.totalPages || 0}
-        onPageChange={setPage}
-        onPageSizeChange={setPageSize}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
         actionOptions={ProductActionOptions}
+        inputValue={inputValue}
+        onInputChange={setInputValue}
+        hidenInput={false} // default true
       />
 
       <div className="flex flex-col gap-2">

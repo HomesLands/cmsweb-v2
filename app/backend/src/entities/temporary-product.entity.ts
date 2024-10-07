@@ -5,7 +5,7 @@ import { Base, RequestProduct, Unit } from "@entities";
 
 @Entity("temporary_product_tbl")
 export class TemporaryProduct extends Base {
-  @Column({ name: "name_column", unique: true })
+  @Column({ name: "name_column" })
   @AutoMap()
   name?: string;
 

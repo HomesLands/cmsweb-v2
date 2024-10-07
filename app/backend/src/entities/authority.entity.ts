@@ -1,7 +1,8 @@
-import { Entity, Column, OneToMany } from "typeorm";
+import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from "typeorm";
 import { Base } from "@entities/base.entity";
 import { Permission } from "./permission.entity";
 import { AutoMap } from "@automapper/classes";
+import { Resource } from "./resource.entity";
 
 @Entity("authority_tbl")
 export class Authority extends Base {
@@ -20,4 +21,9 @@ export class Authority extends Base {
   // An authority can have many permissions
   @OneToMany(() => Permission, (permission) => permission.authority)
   permissions: Permission[];
+
+  @ManyToOne(() => Resource, (resource) => resource.authorities)
+  @JoinColumn({ name: "resource_id_column" })
+  @AutoMap()
+  resource: Resource;
 }

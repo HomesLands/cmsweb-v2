@@ -9,8 +9,8 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
   Button,
-  Input,
-  DataTableActionOptionsProps
+  DataTableActionOptionsProps,
+  Input
 } from '@/components/ui'
 import { DialogAddProductRequest } from '@/components/app/dialog'
 import { IProductInfo } from '@/types'
@@ -40,7 +40,7 @@ export default function ProductActionOptions({ table }: DataTableActionOptionsPr
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="ml-auto text-normal">
             {t('tablePaging.chooseColumn')}
-            <ChevronDown className="ml-2 w-4 h-4" />
+            <ChevronDown className="w-4 h-4 ml-2" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -61,7 +61,7 @@ export default function ProductActionOptions({ table }: DataTableActionOptionsPr
       </DropdownMenu>
 
       <Button variant="outline" onClick={() => handleOpenDialog(product as IProductInfo)}>
-        <PlusCircledIcon className="mr-2 w-4 h-4" />
+        <PlusCircledIcon className="w-4 h-4 mr-2" />
         {t('tableData.addNewProduct')}
       </Button>
       {openDialog && (
