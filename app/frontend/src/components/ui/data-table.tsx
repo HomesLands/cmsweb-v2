@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -40,11 +40,17 @@ import {
   SelectValue,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  Input
+  Input,
+  DropdownMenuLabel,
+  DropdownMenuCheckboxItem
 } from '@/components/ui'
 import React from 'react'
 import { cn } from '@/lib/utils'
-import { DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons'
+import {
+  DoubleArrowLeftIcon,
+  DoubleArrowRightIcon,
+  MixerHorizontalIcon
+} from '@radix-ui/react-icons'
 
 interface DataTablePaginationProps<TData> {
   table: ReactTable<TData>
@@ -67,15 +73,22 @@ export interface DataTableActionOptionsProps<TData> {
   table: ReactTable<TData>
 }
 
+interface DataTableViewOptionsProps<TData> {
+  table: ReactTable<TData>
+}
+
 // DataTable Component
 interface DataTableProps<TData, TValue> {
   isLoading: boolean
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   pages: number
+  inputValue?: string
+  hidenInput?: boolean
   onPageChange: (pageIndex: number) => void
   onPageSizeChange: (pageSize: number) => void
   onRowClick?: (row: TData) => void
+  onInputChange?: Dispatch<SetStateAction<string>>
   filterOptions?: React.FC<DataTableFilterOptionsProps<TData>>
   actionOptions?: React.FC<DataTableActionOptionsProps<TData>>
 }
@@ -85,9 +98,12 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   pages,
+  inputValue,
+  hidenInput = true,
   onPageChange,
   onPageSizeChange,
   onRowClick,
+  onInputChange,
   filterOptions: DataTableFilterOptions,
   actionOptions: DataTableActionOptions
 }: DataTableProps<TData, TValue>) {
@@ -122,10 +138,18 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex gap-2 justify-between">
+      <div className="flex justify-end gap-2">
         {/* Input search */}
-        <Input className="max-w-sm" />
-
+        {!hidenInput && (
+          <Input
+            placeholder={`Nhập để tìm kiếm...`}
+            value={inputValue}
+            onChange={(e) => {
+              onInputChange?.(e.target.value)
+            }}
+            className="max-w-sm border-2"
+          />
+        )}
         <div className="flex gap-2 items-center">
           {/* Actions */}
           {DataTableActionOptions && <DataTableActionOptions table={table} />}
@@ -133,6 +157,8 @@ export function DataTable<TData, TValue>({
           {DataTableFilterOptions && (
             <DataTableFilterOptions setFilterOption={setColumnFilters} data={data} />
           )}
+          {/* View options */}
+          <DataTableViewOptions table={table} />
         </div>
       </div>
 
@@ -417,5 +443,37 @@ export function DataTablePagination<TData>({
         </div>
       </div>
     </div>
+  )
+}
+
+export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps<TData>) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="sm" className="h-8 lg:flex gap-1 items-center">
+          <MixerHorizontalIcon className="mr-2 h-4 w-4" />
+          Hiển thị
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-[150px]">
+        <DropdownMenuLabel>Hiện thị cột</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {table
+          .getAllColumns()
+          .filter((column) => typeof column.accessorFn !== 'undefined' && column.getCanHide())
+          .map((column) => {
+            return (
+              <DropdownMenuCheckboxItem
+                key={column.id}
+                className="capitalize cursor-pointer"
+                checked={column.getIsVisible()}
+                onCheckedChange={(value) => column.toggleVisibility(!!value)}
+              >
+                {column.id}
+              </DropdownMenuCheckboxItem>
+            )
+          })}
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

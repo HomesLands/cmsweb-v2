@@ -22,6 +22,7 @@ const queryClient = new QueryClient({
   }),
   mutationCache: new MutationCache({
     onError: (error, _, __, mutation) => {
+      console.log({ error })
       if (has(mutation.meta, 'ignoreGlobalError')) if (mutation.meta.ignoreGlobalError) return
       if (isAxiosError(error)) {
         const axiosError = error as AxiosError<IApiResponse<void>>

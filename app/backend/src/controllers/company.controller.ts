@@ -4,6 +4,7 @@ import { companyService } from "@services";
 import {
   TApiResponse,
   TCreateCompanyRequestDto,
+  TUploadCompanyLogoRequestDto,
   // TUpdateCompanyRequestDto,
 } from "@types";
 import { CompanyResponseDto } from "@dto/response";
@@ -170,6 +171,68 @@ class CompanyController {
   //     next(error);
   //   }
   // }
+
+  /**
+   * @swagger
+   * /companies/upload:
+   *   patch:
+   *     summary: Upload company logo
+   *     tags: [Company]
+   *     parameters:
+   *       - name: company
+   *         in: path
+   *         required: true
+   *         type: string
+   *         description: Company slug
+   *     requestBody:
+   *       require: true
+   *       content:
+   *         multipart/form-data:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               file:
+   *                 type: string
+   *                 format: binary
+   *                 description: The logo file to upload
+   *     responses:
+   *       200:
+   *         description: Upload company logo successfully.
+   *       500:
+   *         description: Server error
+   *       1098:
+   *         description: File not found
+   *       1106:
+   *         description: Save file fail
+   *       1107:
+   *         description: Forbidden user
+   *       1108:
+   *         description: Error get file from request
+   */
+  public async uploadCompanyLogo(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const requestData = {
+        slug: req.params.company,
+        file: req.file,
+      } as TUploadCompanyLogoRequestDto;
+      const result = await companyService.uploadCompanyLogo(requestData);
+      const response: TApiResponse<CompanyResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: `Upload company logo successfully`,
+        method: req.method,
+        path: req.originalUrl,
+        result: result,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new CompanyController();

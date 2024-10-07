@@ -1,3 +1,4 @@
+import { upload } from "@configs";
 import { userController } from "@controllers";
 import { Router } from "express";
 
@@ -11,7 +12,21 @@ userRoute.get(
 );
 
 // [GET] /api/v1/users/info/permissions
-userRoute.route("/info/permissions").get(userController.getUserPermissions);
+userRoute.get("/info/permissions", userController.getUserPermissions);
 
 // [GET] /api/v1/users/info
-userRoute.route("/info").get(userController.getUser);
+userRoute.get("/info", userController.getUser);
+
+// [PATCH] /api/v1/users/signature
+userRoute.patch(
+  "/upload/sign",
+  upload.single("file"),
+  userController.uploadUserSignature
+);
+
+// [PATCH] /api/v1/users/avatar
+userRoute.patch(
+  "/upload/avatar",
+  upload.single("file"),
+  userController.uploadUserAvatar
+);

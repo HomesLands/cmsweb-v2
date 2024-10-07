@@ -2,7 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { userService } from "@services";
-import { TApiResponse, TPaginationOptionResponse, TQueryRequest } from "@types";
+import {
+  TApiResponse,
+  TPaginationOptionResponse,
+  TQueryRequest,
+  TUploadUserAvatarRequestDto,
+  TUploadUserSignRequestDto,
+} from "@types";
 import { UserPermissionResponseDto, UserResponseDto } from "@dto/response";
 
 class UserController {
@@ -148,6 +154,119 @@ class UserController {
         method: req.method,
         path: req.originalUrl,
         result: results,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /users/upload/sign:
+   *   patch:
+   *     summary: Upload user signature
+   *     tags: [User]
+   *     requestBody:
+   *       require: true
+   *       content:
+   *         multipart/form-data:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               file:
+   *                 type: string
+   *                 format: binary
+   *                 description: The signature file to upload
+   *     responses:
+   *       200:
+   *         description: Upload user signature successfully.
+   *       500:
+   *         description: Server error
+   *       1098:
+   *         description: File not found
+   *       1106:
+   *         description: Save file fail
+   *       1107:
+   *         description: Forbidden user
+   *       1108:
+   *         description: Error get file from request
+   */
+  public async uploadUserSignature(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const requestData = {
+        userId: req.userId,
+        file: req.file,
+      } as TUploadUserSignRequestDto;
+      const result = await userService.uploadUserSignature(requestData);
+      const response: TApiResponse<UserResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: `Upload signature user successfully`,
+        method: req.method,
+        path: req.originalUrl,
+        result,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /users/upload/avatar:
+   *   patch:
+   *     summary: Upload avatar user
+   *     tags: [User]
+   *     requestBody:
+   *       require: true
+   *       content:
+   *         multipart/form-data:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               file:
+   *                 type: string
+   *                 format: binary
+   *                 description: The avatar file to upload
+   *     responses:
+   *       200:
+   *         description: Upload avatar user successfully.
+   *       500:
+   *         description: Server error
+   *       1098:
+   *         description: File not found
+   *       1106:
+   *         description: Save file fail
+   *       1107:
+   *         description: Forbidden user
+   *       1108:
+   *         description: Error get file from request
+   */
+  public async uploadUserAvatar(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const requestData = {
+        userId: req.userId,
+        file: req.file,
+      } as TUploadUserAvatarRequestDto;
+
+      const result = await userService.uploadUserAvatar(requestData);
+      const response: TApiResponse<UserResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: `Upload avatar user successfully`,
+        method: req.method,
+        path: req.originalUrl,
+        result: result,
       };
       res.status(StatusCodes.OK).json(response);
     } catch (error) {
