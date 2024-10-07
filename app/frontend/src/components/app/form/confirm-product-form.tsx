@@ -11,9 +11,7 @@ import {
 import { useColumnsConfirm } from '@/views/product-requisitions/data-table/columns/columnsConfirm'
 import { useRequisitionStore } from '@/stores'
 
-import { TbeLogo } from '@/assets/images'
-import { MetekLogo } from '@/assets/images'
-import { SongnamLogo } from '@/assets/images'
+import { baseURL } from '@/constants'
 
 interface IConfirmProductFormProps {
   onConfirm: (data: IFinalProductRequisition) => void
@@ -71,23 +69,17 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
     }
   }
 
+  const getLogoUrl = () => {
+    if (getRequisition()?.company.logo) return `${baseURL}/files/${getRequisition()?.company.logo}`
+  }
+
   return (
     <div className="mt-3">
       <div className="flex flex-col gap-4 justify-center">
         <div className="grid grid-cols-6 justify-between items-center py-3 mb-4 border-b-2">
-          {getRequisition()?.company.name.includes('Thái Bình') ? (
-            <div className="col-span-1 w-full">
-              <img src={TbeLogo} height={72} width={72} />
-            </div>
-          ) : getRequisition()?.company.name.includes('Mekong') ? (
-            <div className="col-span-1 w-full h-full">
-              <img src={MetekLogo} height={150} width={150} />
-            </div>
-          ) : (
-            <div className="col-span-1 w-full">
-              <img src={SongnamLogo} height={72} width={72} />
-            </div>
-          )}
+          <div className="col-span-1 w-full">
+            <img src={getLogoUrl()} className="w-28" />
+          </div>
           <span className="col-span-4 text-2xl font-extrabold text-center uppercase text-normal font-beVietNam">
             {t('productRequisition.confirmProductRequisitions')}
           </span>

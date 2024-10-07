@@ -6,13 +6,12 @@ import { useRequestStore } from '@/stores/request.store'
 import { useAuthStore } from '@/stores'
 import { IApiResponse, IRefreshTokenResponse } from '@/types'
 import { showErrorToast } from './toast'
-import { ROUTE } from '@/constants'
+import { baseURL, ROUTE } from '@/constants'
 
 NProgress.configure({ showSpinner: false, trickleSpeed: 200 })
 
 let isRefreshing = false
 let failedQueue: { resolve: (token: string) => void; reject: (error: unknown) => void }[] = []
-const baseURL = import.meta.env.VITE_BASE_API_URL
 
 const processQueue = (error: unknown, token: string | null = null) => {
   failedQueue.forEach((prom) => {

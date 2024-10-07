@@ -4,7 +4,6 @@ import { persist } from 'zustand/middleware'
 
 import { IProductRequisitionFormCreate, IProductRequisitionInfo, IRequisitionStore } from '@/types'
 import { showToast, showErrorToast } from '@/utils'
-import { RequisitionType, UserApprovalStage } from '@/constants'
 
 export const useRequisitionStore = create<IRequisitionStore>()(
   persist(

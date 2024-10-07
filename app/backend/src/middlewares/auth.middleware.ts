@@ -8,7 +8,7 @@ import { userRepository } from "@repositories";
 import { StatusCodes } from "http-status-codes";
 import { TokenUtils } from "@utils";
 import { constructAbilities } from "@lib";
-import { setUserId } from "@configs/context.config";
+import { getUserId, setUserId } from "@configs/context.config";
 
 // Define a list of whitelisted routes with allowed methods
 const whitelist = [
@@ -66,7 +66,6 @@ class AuthMiddleware {
 
       // Attached decoded user id to request
       Object.assign(req, { userId: user.id, ability });
-      setUserId(user.id); // Store the user ID in context
       next();
     } catch (error) {
       next(error);

@@ -28,6 +28,6 @@ export class Base {
   @DeleteDateColumn({ name: "deleted_at_column" }) // This will handle soft deletes
   deletedAt?: Date; // This column will automatically manage soft delete timestamps
 
-  @Column({ name: "created_by_column" })
-  createdBy?: string = getUserId();
+  // @Column({ name: "created_by_column" })
+  // createdBy?: string = getUserId();
 }

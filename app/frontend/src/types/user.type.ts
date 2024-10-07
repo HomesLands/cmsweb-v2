@@ -14,6 +14,7 @@ export interface IUserInfo {
           createdAt: string
           updatedAt: string
           slug: string
+          logo: string
         }
         createdAt: string
         updatedAt: string
