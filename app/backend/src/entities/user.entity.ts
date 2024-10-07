@@ -1,13 +1,12 @@
-import { Entity, Column, JoinColumn, OneToOne, OneToMany } from "typeorm";
+import { Entity, Column, OneToMany } from "typeorm";
 import { AutoMap } from "@automapper/classes";
+import { Base } from "./base.entity";
 
-import { 
-  File, 
-  Base, 
-  UserRole, 
-  ProductRequisitionForm, 
-  AssignedUserApproval, 
-  UserDepartment
+import {
+  UserRole,
+  ProductRequisitionForm,
+  AssignedUserApproval,
+  UserDepartment,
 } from "@entities";
 
 @Entity("user_tbl")
@@ -53,17 +52,20 @@ export class User extends Base {
 
   // creator
   // a user can create many product requisition form
-  @OneToMany(() => ProductRequisitionForm,
-    (productRequisitionForm) => productRequisitionForm.creator)
+  @OneToMany(
+    () => ProductRequisitionForm,
+    (productRequisitionForm) => productRequisitionForm.creator
+  )
   productRequisitionForms?: ProductRequisitionForm[];
 
   // a user have many assignedUserApproval
-  @OneToMany(() => AssignedUserApproval,
-    (assignedUserApproval) => assignedUserApproval.user)
+  @OneToMany(
+    () => AssignedUserApproval,
+    (assignedUserApproval) => assignedUserApproval.user
+  )
   assignedUserApprovals?: AssignedUserApproval[];
 
   // a user have many userDepartment
-  @OneToMany(() => UserDepartment,
-    (userDepartment) => userDepartment.user)
+  @OneToMany(() => UserDepartment, (userDepartment) => userDepartment.user)
   userDepartments?: UserDepartment[];
 }

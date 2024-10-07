@@ -39,7 +39,11 @@ class UserService {
       take: pageSize,
       skip: (page - 1) * pageSize,
       order: { createdAt: options.order },
-      relations: ["userDepartments", "userDepartments.department"],
+      relations: [
+        "userDepartments",
+        "userDepartments.department",
+        "userRoles.role",
+      ],
     });
     const results = mapper.mapArray(users, User, UserResponseDto);
     return {

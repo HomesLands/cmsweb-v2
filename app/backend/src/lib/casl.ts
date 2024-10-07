@@ -1,17 +1,20 @@
-import { createMongoAbility, AbilityBuilder } from "@casl/ability";
+import { Ability, AbilityBuilder } from "@casl/ability";
 import { User } from "@entities";
 
 export async function constructAbilities(user: User) {
-  const { can, build } = new AbilityBuilder(createMongoAbility);
+  const { can, build } = new AbilityBuilder(Ability);
 
-  //   if (user.role === "admin") {
-  //     can("manage", "all"); // Admins can manage everything
-  //   } else {
-  //     // Users can only edit and delete their own posts
-  //     can("edit", "Post", { user: { id: user.id } });
-  //     can("delete", "Post", { user: { id: user.id } });
-  //     can("create", "Post"); // Users can create posts
-  //   }
+  user.userRoles?.forEach((userRole) => {
+    userRole.role.permissions.forEach((permission) => {
+      const authority = permission.authority;
+      // if (authority.nameNormalize && authority.resource?.name)
+      //   can(authority.nameNormalize, authority.resource.name);
+      if (authority.nameNormalize)
+        can(authority.nameNormalize, "User", {
+          createdBy: user.id,
+        });
+    });
+  });
 
   return build();
 }

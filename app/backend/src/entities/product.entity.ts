@@ -1,7 +1,8 @@
 import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 
-import { Base, ProductWarehouse, RequestProduct, Unit } from "@entities";
+import { Base } from "./base.entity";
+import { ProductWarehouse, RequestProduct, Unit } from "@entities";
 
 @Entity("product_tbl")
 export class Product extends Base {
@@ -34,7 +35,9 @@ export class Product extends Base {
   requestProducts?: RequestProduct[];
 
   // a product have many productWarehouse
-  @OneToMany(() => ProductWarehouse, 
-    (productWarehouse) => productWarehouse.product)
+  @OneToMany(
+    () => ProductWarehouse,
+    (productWarehouse) => productWarehouse.product
+  )
   productWarehouses?: ProductWarehouse[];
 }
