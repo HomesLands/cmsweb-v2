@@ -9,7 +9,7 @@ import {
   DialogTrigger
 } from '@/components/ui'
 
-import { addNewProductRequestSchema, TAddNewProductRequestSchema } from '@/schemas'
+import { TAddNewProductRequestSchema } from '@/schemas'
 import { AddNewProductRequestForm } from '@/components/app/form'
 import { IProductInfo, IProductRequisitionInfo } from '@/types'
 import { useRequisitionStore } from '@/stores'

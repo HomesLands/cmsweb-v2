@@ -23,9 +23,9 @@ export default function ProtectedElement({
     setLogout()
     removeUserInfo()
     clearUserRoles()
-    toast.error(t('sessionExpired'))
+    // toast.error(t('sessionExpired'))
     navigate(ROUTE.LOGIN)
-  }, [setLogout, removeUserInfo, clearUserRoles, navigate, t])
+  }, [setLogout, removeUserInfo, clearUserRoles, navigate])
 
   const hasRequiredPermissions = useCallback(() => {
     return userRoles.some((userRole) =>

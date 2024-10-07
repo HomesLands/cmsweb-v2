@@ -26,7 +26,6 @@ export function DialogRequisitionDetail({
   component,
   onOpenChange
 }: DialogRequisitionDetailProps) {
-  console.log(requisition)
   const { t } = useTranslation('productRequisition')
 
   return (
