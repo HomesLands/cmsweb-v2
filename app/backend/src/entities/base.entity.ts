@@ -7,7 +7,6 @@ import {
 } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 import shortid from "shortid";
-import { getUserId } from "@configs";
 
 export class Base {
   @PrimaryGeneratedColumn("uuid", { name: "id_column" })
