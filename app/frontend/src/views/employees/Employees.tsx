@@ -4,7 +4,7 @@ import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
 import { usePagination, useUsers } from '@/hooks'
-import { employeeColumns } from './data-table'
+import { useEmployeeColumns } from './data-table'
 
 const Employees: React.FC = () => {
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
@@ -23,7 +23,7 @@ const Employees: React.FC = () => {
       </Label>
       <DataTable
         isLoading={isLoading}
-        columns={employeeColumns}
+        columns={useEmployeeColumns()}
         data={data?.result.items || []}
         pages={data?.result.totalPages || 0}
         onPageChange={handlePageChange}

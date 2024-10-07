@@ -110,7 +110,7 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitio
           (requisition.status === 'cancel' && !requisition.isRecalled)
 
         return (
-          <div>
+          <>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="p-0 w-8 h-8">
@@ -136,21 +136,10 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitio
                 openDialog={openViewDialog}
                 requisition={requisition}
                 component={null}
-                // companyName={companyName}
                 onOpenChange={onViewDialogOpenChange}
               />
             )}
-            {/* {selectedRequisition === requisition && openEditDialog && (
-              <DialogRequisitionDetail
-                openDialog={openEditDialog}
-                requisition={requisition}
-                component={null}
-                companyName={companyName}
-                onOpenChange={onEditDialogOpenChange}
-                isEditing={true}
-              />
-            )} */}
-          </div>
+          </>
         )
       }
     }
