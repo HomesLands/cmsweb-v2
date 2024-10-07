@@ -38,7 +38,7 @@ export default function ProtectedElement({
     if (!isAuthenticated()) {
       handleLogout()
     } else if (!hasRequiredPermissions()) {
-      toast.error(t('accessDenied')) // Using translation for error message
+      // toast.error(t('accessDenied')) // Using translation for error message
       navigate(ROUTE.HOME)
     }
     // Make sure to include necessary dependencies

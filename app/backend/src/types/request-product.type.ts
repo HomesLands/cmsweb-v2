@@ -1,8 +1,3 @@
-export type TChangeQuantityRequestProductRequestDto = {
-  slug?: string;
-  newQuantity?: number;
-}
-
 export type TAddNewRequestProductRequestDto = {
   form?: string;
   product?: string;
@@ -20,6 +15,14 @@ export type TCreateRequestProductRequestDto = {
   requestQuantity?: number;
 
   // product not exist
+  name?: string;
+  provider?: string;
+  unit?: string; // slug
+  description?: string;
+}
+
+export type TUpdateRequestProductRequestDto = {
+  requestQuantity?: number;
   name?: string;
   provider?: string;
   unit?: string; // slug
