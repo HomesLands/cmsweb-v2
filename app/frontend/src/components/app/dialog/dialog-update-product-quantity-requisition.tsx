@@ -33,7 +33,6 @@ export function DialogUpdateProductRequisition({
   onOpenChange
 }: DialogUpdateRequisitionProps) {
   const { t } = useTranslation('productRequisition')
-  console.log('requisition', requisition)
 
   return (
     <Dialog open={openDialog} onOpenChange={onOpenChange}>

@@ -54,9 +54,14 @@
     "confirmProductRequisitionsSuccess": "Xác nhận yêu cầu thành công",
     "confirmProductRequisitionsSuccessDescription": "Phiếu yêu cầu đã được gửi đi. Bạn có thể xem danh sách",
     "here": "tại đây",
+    "update": "Cập nhật",
     "updateProductRequisition": "Cập nhật yêu cầu vật tư",
     "resubmit": "Gửi lại",
-    "approvalHistory": "Lịch sử duyệt"
+    "approvalHistory": "Lịch sử duyệt",
+    "resubmitConfirmTitle": "Gửi lại yêu cầu",
+    "descriptionInputLabel": "Nội dung",
+    "descriptionInputPlaceholder": "Nhập nội dung",
+    "resubmitConfirmMessage": "Bạn có chắc chắn muốn gửi lại yêu cầu này?"
   },
   "roleApproval": {
     "approvalLevel": "Cấp duyệt",

@@ -43,6 +43,7 @@ import {
   ProductRequisitionUpdateActionOptions,
   useColumnsAddNewProductInRequisitionUpdate
 } from '@/views/product-requisitions/data-table'
+import { DialogResubmitRequisition } from '../dialog'
 
 interface IUpdateRequisitionFormProps {
   requisition: IProductRequisitionFormInfo
@@ -64,6 +65,7 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
   const { t } = useTranslation('productRequisition')
   const isExistProduct = requisition?.requestProducts.some((product) => product.isExistProduct)
   const { slug } = useParams()
+  const [openDialog, setOpenDialog] = useState(false)
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination({
     isSearchParams: false
   })
@@ -76,6 +78,8 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
     order: 'DESC',
     searchTerm: debouncedInputValue
   })
+
+  console.log('requisition', requisition)
 
   const [date, setDate] = useState<Date | undefined>(
     requisition?.deadlineApproval ? new Date(requisition.deadlineApproval) : undefined
@@ -156,12 +160,13 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
     onUpdateGeneralInfo(updatedValues)
   }
 
-  // const handleAddNewProduct = (data: IAddNewProductInRequisitionUpdate) => {
-  //   onAddNewProduct(data)
-  // }
+  const handleResubmit = () => {
+    setOpenDialog(true)
+  }
 
-  const handleResubmit = (data: IResubmitProductRequisition) => {
-    onResubmit(data)
+  const handleConfirmResubmit = (description: string) => {
+    onResubmit({ slug: slug as string, description })
+    setOpenDialog(false)
   }
 
   const columns = useColumnsUpdateRequisition(
@@ -367,6 +372,23 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
 
   return (
     <div className="">
+      <div className="flex flex-col gap-3 my-6">
+        <span className="font-semibold text-md">Cập nhật thông tin chung</span>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleUpdateGeneralInfo)} className="space-y-6">
+            <div className="grid grid-cols-1 gap-2">
+              {Object.keys(formFields).map((key) => (
+                <React.Fragment key={key}>
+                  {formFields[key as keyof typeof formFields]}
+                </React.Fragment>
+              ))}
+            </div>
+            <div className="flex justify-end">
+              <Button type="submit">{t('productRequisition.update')}</Button>
+            </div>
+          </form>
+        </Form>
+      </div>
       <div className="mb-3">
         <span className="font-semibold text-md">Thêm sản phẩm</span>
         <DataTable
@@ -382,44 +404,31 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
           hidenInput={false} // default true
         />
       </div>
-      <div className="flex flex-col gap-3 my-6">
-        <span className="font-semibold text-md">Cập nhật thông tin chung</span>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleUpdateGeneralInfo)} className="space-y-6">
-            <div className="grid grid-cols-1 gap-2">
-              {Object.keys(formFields).map((key) => (
-                <React.Fragment key={key}>
-                  {formFields[key as keyof typeof formFields]}
-                </React.Fragment>
-              ))}
+      {requisition && (
+        <>
+          <div className="mt-3">
+            <span className="font-semibold text-md">Cập nhật sản phẩm</span>
+            <DataTable
+              isLoading={isLoading}
+              columns={columns}
+              data={requisition.requestProducts}
+              pages={1}
+              onPageChange={() => {}}
+              onPageSizeChange={() => {}}
+            />
+          </div>
+          {(requisition.isRecalled === true || requisition.status !== 'waiting') && (
+            <div className="flex justify-end mt-3">
+              <Button onClick={() => handleResubmit()}>{t('productRequisition.resubmit')}</Button>
             </div>
-            <div className="flex justify-end">
-              <Button type="submit">Cập nhật</Button>
-            </div>
-          </form>
-        </Form>
-      </div>
-
-      <div className="mt-3">
-        <span className="font-semibold text-md">Cập nhật sản phẩm</span>
-        <DataTable
-          isLoading={isLoading}
-          columns={columns}
-          data={requisition?.requestProducts}
-          pages={1}
-          onPageChange={() => {}}
-          onPageSizeChange={() => {}}
-        />
-      </div>
-      <div className="flex justify-end mt-3">
-        <Button
-          onClick={() =>
-            handleResubmit({ slug: slug as string, description: form.getValues('note') })
-          }
-        >
-          {t('productRequisition.resubmit')}
-        </Button>
-      </div>
+          )}
+        </>
+      )}
+      <DialogResubmitRequisition
+        openDialog={openDialog}
+        onOpenChange={setOpenDialog}
+        onConfirm={handleConfirmResubmit}
+      />
     </div>
   )
 }

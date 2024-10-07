@@ -11,16 +11,12 @@ import {
   Input,
   Form,
   Button
-  // DataTableRequisition
 } from '@/components/ui'
 import { TUpdateProductRequestSchema, updateProductRequestSchema } from '@/schemas'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  IRequestProductInfo,
-  IRequestProductInfoUpdate,
-  IUpdateProductRequisitionQuantity
-} from '@/types'
+import { IRequestProductInfoUpdate, IUpdateProductRequisitionQuantity } from '@/types'
+import { SelectUnit } from '../select'
 
 interface IFormEditProductProps {
   data?: IRequestProductInfoUpdate
@@ -32,18 +28,15 @@ export const UpdateProductRequisitionForm: React.FC<IFormEditProductProps> = ({
   onSubmit
 }) => {
   const { t } = useTranslation('tableData')
-  // console.log('data', data)
-  const isEditMode = !!data
+  // const isEditMode = !!data
   const isExistingProduct = data?.isExistProduct || false
 
-  // Determine which product data to use
   const productData = data?.product || data?.temporaryProduct
 
   const form = useForm<TUpdateProductRequestSchema>({
     resolver: zodResolver(updateProductRequestSchema),
     defaultValues: {
       slug: data?.slug || '',
-      // description: data?.description || '',
       isExistProduct: isExistingProduct,
       product: {
         code: productData?.code || '',
@@ -145,12 +138,22 @@ export const UpdateProductRequisitionForm: React.FC<IFormEditProductProps> = ({
 
             <FormField
               control={form.control}
-              name="product.unit.name"
+              name="product.unit"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t('tableData.unit')}</FormLabel>
                   <FormControl>
-                    <Input {...field} readOnly={isExistingProduct} />
+                    <SelectUnit
+                      onChange={(value) =>
+                        field.onChange({ name: value?.label || '', slug: value?.value || '' })
+                      }
+                      defaultValue={
+                        productData?.unit
+                          ? { value: productData.unit.slug, label: productData.unit.name }
+                          : undefined
+                      }
+                      isDisabled={isExistingProduct}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

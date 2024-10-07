@@ -22,7 +22,7 @@ import {
   useUpdateProductRequisitionQuantity
 } from '@/hooks'
 
-const UpdateProductRequisition: React.FC = () => {
+const PersonalAccount: React.FC = () => {
   const { t } = useTranslation(['productRequisition'])
   const { t: tToast } = useTranslation('toast')
   const { slug } = useParams()
@@ -46,7 +46,6 @@ const UpdateProductRequisition: React.FC = () => {
   }
 
   const handleConfirmUpdateProduct = (data: IUpdateProductRequisitionQuantity) => {
-    console.log('data', data)
     if (data) {
       updateProduct(data, {
         onSuccess: () => {
@@ -82,6 +81,7 @@ const UpdateProductRequisition: React.FC = () => {
         <ReaderIcon className="header-icon" />
         {t('productRequisition.updateProductRequisition')}
       </Label>
+      Hello guys!
       <Card className="border-none shadow-none">
         <CardContent className="flex flex-col">
           <UpdateRequisitionForm
@@ -98,4 +98,4 @@ const UpdateProductRequisition: React.FC = () => {
   )
 }
 
-export default UpdateProductRequisition
+export default PersonalAccount

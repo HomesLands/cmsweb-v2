@@ -19,12 +19,28 @@ import {
   CreateAuthorityPage,
   PermissionPage,
   CreatePermissionPage,
-  EmployeePage
+  EmployeePage,
+  PersonalAccountPage
 } from './loadable'
 
 export const router = createBrowserRouter([
   { path: ROUTE.LOGIN, element: <SuspenseElement component={LoginPage} /> },
   { path: ROUTE.REGISTER, element: <SuspenseElement component={RegisterPage} /> },
+  {
+    path: ROUTE.PERSONAL_ACCOUNT,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: (
+          <ProtectedElement
+            allowedAuthorities={[Authority.READ_USER]}
+            element={<SuspenseElement component={PersonalAccountPage} />}
+          />
+        )
+      }
+    ]
+  },
   {
     path: ROUTE.HOME,
     element: <SuspenseElement component={DashboardLayout} />,

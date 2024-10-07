@@ -191,6 +191,10 @@ export const approvalRequisitionSchema = z.object({
   message: z.string().min(1, 'Lời nhắn không được để trống')
 })
 
+export const resubmitRequisitionSchema = z.object({
+  description: z.string().min(1, 'Lời nhắn không được để trống')
+})
+
 export type TProductRequisitionSchema = z.infer<typeof productRequisitionSchema>
 export type TAddNewProductRequestSchema = z.infer<typeof addNewProductRequestSchema>
 export type TAddNewNonExistingProductRequisitionSchema = z.infer<

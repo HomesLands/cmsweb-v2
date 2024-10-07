@@ -51,9 +51,14 @@
     "confirmProductRequisitionsSuccess": "Confirm product requisitions success",
     "confirmProductRequisitionsSuccessDescription": "Confirm product requisitions success description",
     "here": "here",
+    "update": "Update",
     "updateProductRequisition": "Update product requisition",
     "resubmit": "Resubmit",
-    "approvalHistory": "Approval history"
+    "approvalHistory": "Approval history",
+    "resubmitConfirmTitle": "Resubmit requisition",
+    "descriptionInputLabel": "Content",
+    "descriptionInputPlaceholder": "Enter content",
+    "resubmitConfirmMessage": "Are you sure you want to resubmit this requisition?"
   },
   "roleApproval": {
     "approvalLevel": "Approval level",

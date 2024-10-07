@@ -16,7 +16,9 @@ import { useAuthStore, useUserInfoPermissionsStore, useUserStore } from '@/store
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { ROUTE } from '@/constants'
+import { Authority, ROUTE } from '@/constants'
+import { UserIcon } from 'lucide-react'
+import { hasRequiredPermissions } from '@/utils/auth'
 
 export function HeaderDropdown() {
   const { t } = useTranslation('auth')
@@ -49,14 +51,24 @@ export function HeaderDropdown() {
             {t('userInfo.hello')} {userInfo?.fullname}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {/* <DropdownMenuItem className="cursor-pointer">Thông tin tài khoản</DropdownMenuItem> */}
+          <DropdownMenuItem
+            className="cursor-pointer"
+            // onClick={() => navigate(ROUTE.PERSONAL_ACCOUNT)}
+          >
+            {hasRequiredPermissions([Authority.READ_USER]) && (
+              <div className="flex gap-2 items-center">
+                <UserIcon className="danger-icon" />
+                Thông tin tài khoản
+              </div>
+            )}
+          </DropdownMenuItem>
           {/* <DropdownMenuItem className="cursor-pointer">Đổi mật khẩu</DropdownMenuItem> */}
           {/* <DropdownMenuSeparator /> */}
           <DropdownMenuItem
-            className="flex items-center justify-start gap-2 cursor-pointer text-danger hover:bg-red-100"
+            className="flex gap-2 justify-start items-center cursor-pointer text-danger hover:bg-red-100"
             onClick={() => setOpen(true)}
           >
-            <div className="flex items-center gap-2">
+            <div className="flex gap-2 items-center">
               <ExitIcon className="danger-icon" />
               {t('logout.title')}
             </div>

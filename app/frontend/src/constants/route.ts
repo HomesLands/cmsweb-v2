@@ -1,5 +1,6 @@
 export const ROUTE = {
   HOME: '/',
+  PERSONAL_ACCOUNT: '/personal-account',
   LOGIN: '/auth/login',
   REGISTER: '/auth/register',
   PRODUCT_REQUISITIONS: '/product-requisitions',
