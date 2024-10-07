@@ -166,6 +166,11 @@ export interface IUpdateProductRequisitionGeneralInfo {
   description: string
 }
 
+export interface IResubmitProductRequisition {
+  slug: string
+  description: string
+}
+
 export type ProductRequisitionForm =
   | IProductRequisitionFormInfo
   | IProductRequisitionFormWithNewProductInfo

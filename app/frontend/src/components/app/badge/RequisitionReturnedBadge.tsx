@@ -28,5 +28,7 @@ export const RecalledStatusBadge: React.FC<RecalledStatusBadgeProps> = ({ status
     return null
   }
 
-  return <span className={`${textColor} font-beVietNam px-2 py-1`}>{displayStatus}</span>
+  return (
+    <span className={`px-2 py-1 ${textColor} min-w-[6rem] font-beVietNam`}>{displayStatus}</span>
+  )
 }

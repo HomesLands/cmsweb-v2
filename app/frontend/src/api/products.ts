@@ -7,6 +7,7 @@ import {
   IProductQuery,
   IProductRequisitionFormInfo,
   IRequisitionFormResponseForApprover,
+  IResubmitProductRequisition,
   IUnit,
   IUpdateProductRequisitionGeneralInfo,
   IUpdateProductRequisitionQuantity
@@ -136,6 +137,14 @@ export async function updateProductRequisitionGeneralInfo(
       project: data.project.slug,
       description: data.description
     }
+  )
+  return response.data
+}
+
+export async function resubmitProductRequisition(data: IResubmitProductRequisition) {
+  const response = await http.patch<IApiResponse<IProductRequisitionFormInfo>>(
+    `/productRequisitionForms/resubmit`,
+    data
   )
   return response.data
 }

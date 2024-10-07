@@ -80,7 +80,11 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitio
       header: ({ column }) => <DataTableColumnHeader column={column} title="Trạng thái hoàn" />,
       cell: ({ row }) => {
         const { status, isRecalled } = row.original
-        return <RecalledStatusBadge status={status} isRecalled={isRecalled} />
+        return (
+          <div className="min-w-[8rem]">
+            <RecalledStatusBadge status={status} isRecalled={isRecalled} />
+          </div>
+        )
       }
     },
     {

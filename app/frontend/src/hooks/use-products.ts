@@ -10,6 +10,7 @@ import {
   getProductRequisitionByCreator,
   getProductRequisitionBySlug,
   getProducts,
+  resubmitProductRequisition,
   updateProductRequisitionGeneralInfo,
   updateProductRequisitionQuantity
 } from '@/api/products'
@@ -17,6 +18,7 @@ import {
   IApproveProductRequisition,
   IFinalProductRequisition,
   IProductQuery,
+  IResubmitProductRequisition,
   IUpdateProductRequisitionGeneralInfo,
   IUpdateProductRequisitionQuantity
 } from '@/types'
@@ -91,6 +93,16 @@ export const useUpdateProductRequisitionGeneralInfo = () => {
   return useMutation({
     mutationFn: (data: IUpdateProductRequisitionGeneralInfo) =>
       updateProductRequisitionGeneralInfo(data)
+  })
+}
+
+export const useResubmitProductRequisition = (slug: string) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: IResubmitProductRequisition) => resubmitProductRequisition(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['productRequisitionBySlug', slug] })
+    }
   })
 }
 
