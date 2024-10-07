@@ -14,6 +14,7 @@ const getBadgeColorClass = (status: ProductRequisitionStatus, isRecalled: boolea
     case 'accepted_stage_1':
       return 'bg-yellow-500'
     case 'accepted_stage_2':
+      return 'bg-yellow-500'
     case 'waiting_export':
       return 'bg-green-500'
     case 'cancel':

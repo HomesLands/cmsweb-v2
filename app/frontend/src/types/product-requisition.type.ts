@@ -152,7 +152,11 @@ export interface IRequisitionFormResponseForApprover {
 
 export interface IUpdateProductRequisitionQuantity {
   slug?: string //requestProductSlug
-  newQuantity: number
+  name: string
+  provider: string
+  unit: string
+  description: string
+  requestQuantity: number
 }
 
 export interface IUpdateProductRequisitionGeneralInfo {
@@ -163,6 +167,11 @@ export interface IUpdateProductRequisitionGeneralInfo {
   }
   type: ProductRequisitionType
   deadlineApproval: string
+  description: string
+}
+
+export interface IResubmitProductRequisition {
+  slug: string
   description: string
 }
 

@@ -1,6 +1,7 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import {
+  addNewProductInRequisitionUpdate,
   approveProductRequisition,
   createProductRequisition,
   deleteProductRequisition,
@@ -10,13 +11,16 @@ import {
   getProductRequisitionByCreator,
   getProductRequisitionBySlug,
   getProducts,
+  resubmitProductRequisition,
   updateProductRequisitionGeneralInfo,
   updateProductRequisitionQuantity
 } from '@/api/products'
 import {
+  IAddNewProductInRequisitionUpdate,
   IApproveProductRequisition,
   IFinalProductRequisition,
   IProductQuery,
+  IResubmitProductRequisition,
   IUpdateProductRequisitionGeneralInfo,
   IUpdateProductRequisitionQuantity
 } from '@/types'
@@ -87,10 +91,30 @@ export const useDeleteProductInRequisition = (slug: string) => {
   })
 }
 
+export const useAddNewProductInRequisitionUpdate = (slug: string) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: IAddNewProductInRequisitionUpdate) => addNewProductInRequisitionUpdate(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['productRequisitionBySlug', slug] })
+    }
+  })
+}
+
 export const useUpdateProductRequisitionGeneralInfo = () => {
   return useMutation({
     mutationFn: (data: IUpdateProductRequisitionGeneralInfo) =>
       updateProductRequisitionGeneralInfo(data)
+  })
+}
+
+export const useResubmitProductRequisition = (slug: string) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: IResubmitProductRequisition) => resubmitProductRequisition(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['productRequisitionBySlug', slug] })
+    }
   })
 }
 

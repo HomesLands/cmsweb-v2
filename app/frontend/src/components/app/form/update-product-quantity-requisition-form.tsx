@@ -54,7 +54,7 @@ export const UpdateProductRequisitionForm: React.FC<IFormEditProductProps> = ({
           slug: productData?.unit?.slug || ''
         },
         quantity: productData?.quantity || 1,
-        description: data?.description || ''
+        description: productData?.description || ''
       },
       requestQuantity: data?.requestQuantity || 1
     }
@@ -64,11 +64,11 @@ export const UpdateProductRequisitionForm: React.FC<IFormEditProductProps> = ({
     const extractedData = {
       slug: values.slug,
       isExistProduct: values.isExistProduct,
-      newQuantity: Number(values.requestQuantity),
-      unit: {
-        name: values.product.unit.name,
-        slug: values.product.unit.slug
-      }
+      requestQuantity: Number(values.requestQuantity),
+      unit: values.product.unit.slug,
+      name: values.product.name,
+      provider: values.product.provider,
+      description: values.product.description
     }
     onSubmit(extractedData)
   }
