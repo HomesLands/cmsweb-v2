@@ -120,7 +120,8 @@ class RequestProductService {
     Object.assign(requestProduct.temporaryProduct, {
       name: requestData.name,
       provider: requestData.provider,
-      unit: unit
+      unit: unit,
+      description: requestData.description,
     });
     
     Object.assign(requestProduct, {

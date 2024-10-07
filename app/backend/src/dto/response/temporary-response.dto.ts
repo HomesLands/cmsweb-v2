@@ -11,6 +11,9 @@ export class TemporaryProductResponseDto extends BaseResponseDto {
   
   @AutoMap()
   provider?: string;
+
+  @AutoMap()
+  description?: string;
   
   @AutoMap(() => UnitResponseDto)
   unit?: UnitResponseDto;
