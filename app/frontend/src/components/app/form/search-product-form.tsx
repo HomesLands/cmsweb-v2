@@ -7,7 +7,7 @@ import { IProductRequisitionInfo } from '@/types'
 import { Button, DataTable, Label } from '@/components/ui'
 import {
   ProductActionOptions,
-  useColumnsSearch,
+  useColumnsSearchProduct,
   useColumnsResult
 } from '@/views/product-requisitions/data-table'
 
@@ -51,7 +51,7 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
     <div className="flex flex-col w-full gap-4 mt-3">
       <DataTable
         isLoading={isLoading}
-        columns={useColumnsSearch()}
+        columns={useColumnsSearchProduct()}
         data={allProduct?.result?.items || []}
         pages={allProduct?.result?.totalPages || 0}
         onPageChange={handlePageChange}

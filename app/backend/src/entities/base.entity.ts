@@ -7,6 +7,7 @@ import {
 } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 import shortid from "shortid";
+import { getUserId } from "@configs";
 
 export class Base {
   @PrimaryGeneratedColumn("uuid", { name: "id_column" })
@@ -26,4 +27,7 @@ export class Base {
 
   @DeleteDateColumn({ name: "deleted_at_column" }) // This will handle soft deletes
   deletedAt?: Date; // This column will automatically manage soft delete timestamps
+
+  @Column({ name: "created_by_column" })
+  createdBy?: string = getUserId();
 }
