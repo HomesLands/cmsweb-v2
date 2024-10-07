@@ -28,7 +28,11 @@ export class RequestProduct extends Base {
   isExistProduct?: boolean;
 
   @ManyToOne(() => TemporaryProduct, 
-    (temporaryProduct) => temporaryProduct.requestProducts, { nullable: true })
+    (temporaryProduct) => temporaryProduct.requestProducts,
+    { 
+      cascade: ['update'],
+      nullable: true 
+    })
   @JoinColumn({ name: "temporary_product_column" })
   temporaryProduct?: TemporaryProduct;
 }
