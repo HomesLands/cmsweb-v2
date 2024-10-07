@@ -107,7 +107,7 @@ export const addNewProductSchema = z.object({
 export const addNewProductRequestSchema = z.object({
   // code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
   isExistProduct: z.boolean(),
-  slug: z.optional(z.string()),
+  slug: z.string(),
   product: z.object({
     code: z.optional(z.string()),
     slug: z.optional(z.string()),
@@ -160,9 +160,9 @@ export const addNewNonExistingProductRequisitionSchema = z.object({
 
 export const updateProductRequestSchema = z.object({
   // code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
-  slug: z.optional(z.string()),
+  slug: z.string(),
   isExistProduct: z.boolean(),
-  description: z.string(),
+  // description: z.string(),
   // newQuantity: z.number().min(1, 'Số lượng không hợp lệ'),
   product: z.object({
     code: z.optional(z.string()),

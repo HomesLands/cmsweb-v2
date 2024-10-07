@@ -83,8 +83,6 @@ export interface IProductInfo {
 }
 
 export interface INonExistingProductInfo {
-  // code: string
-  // slug?: string
   name: string
   provider: string
   description: string
@@ -113,27 +111,15 @@ export interface IRequestProductInfoUpdate {
 }
 
 export interface IProductRequisitionInfo {
-  // createdAt?: string
-  // updatedAt?: string
-  // slug: string
+  slug: string
   isExistProduct: boolean
   requestQuantity: number
-  // description: string
-  // isExistProduct: boolean;
   product: IProductInfo
-  // temporaryProduct: string | null;
 }
 
 export interface IProductQuery extends IQuery {
   searchTerm?: string
 }
-
-// export interface IApproveProductRequisition {
-//   formSlug: string
-//   approvalUserSlug: string
-//   approvalLogStatus: ApprovalLogStatus
-//   approvalLogContent: string
-// }
 
 export interface IApproveProductRequisition {
   formSlug: string

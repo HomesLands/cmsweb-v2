@@ -53,14 +53,9 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
     const completeData: IProductRequisitionInfo = {
       ...values,
       requestQuantity: Number(values.requestQuantity),
-      product: {
-        ...values.product,
-        unit: {
-          name: values.product.unit.name,
-          slug: values.product.unit.slug
-        }
-      }
+      slug: data?.slug || ''
     }
+    console.log('completeData', completeData)
     onSubmit(completeData)
   }
 

@@ -43,7 +43,7 @@ export const UpdateProductRequisitionForm: React.FC<IFormEditProductProps> = ({
     resolver: zodResolver(updateProductRequestSchema),
     defaultValues: {
       slug: data?.slug || '',
-      description: data?.description || '',
+      // description: data?.description || '',
       isExistProduct: isExistingProduct,
       product: {
         code: productData?.code || '',

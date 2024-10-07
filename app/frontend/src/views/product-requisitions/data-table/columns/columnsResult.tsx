@@ -99,15 +99,13 @@ export const useColumnsResult = (
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            {selectedProduct === product && openEdit && (
-              <DialogEditProductRequisition
-                handleEditProduct={handleEditProduct}
-                openDialog={openEdit}
-                requisition={product}
-                component={null}
-                onOpenChange={onOpenChange}
-              />
-            )}
+            <DialogEditProductRequisition
+              handleEditProduct={handleEditProduct}
+              openDialog={openEdit}
+              requisition={selectedProduct}
+              component={null}
+              onOpenChange={onOpenChange}
+            />
             {selectedProduct === product && openDelete && (
               <DialogDeleteProductRequisition
                 handleDeleteProduct={handleDeleteProduct}
