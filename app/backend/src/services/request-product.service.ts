@@ -11,16 +11,16 @@ import { GlobalError, ErrorCodes, ValidationError } from "@exception";
 import { mapper } from "@mappers";
 import { 
   TAddNewRequestProductRequestDto,
-  TChangeQuantityRequestProductRequestDto,
-  TCreateRequestProductRequestDto, 
+  TCreateRequestProductRequestDto,
+  TUpdateRequestProductRequestDto, 
 } from "@types";
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
 import {
   AddNewRequestProductRequestDto,
-  ChangeQuantityRequestProduct,
   CreateRequestProductRequestDto,
-  CreateTemporaryProductRequestDto, 
+  CreateTemporaryProductRequestDto,
+  UpdateRequestProduct, 
 } from "@dto/request";
 import { PermissionUtils } from "@utils";
 import { Like } from "typeorm";
@@ -65,23 +65,27 @@ class RequestProductService {
     return deletedRequestProductDto;
   }
 
-  public async changeQuantityRequestProductInProductRequisitionForm (
-    plainData: TChangeQuantityRequestProductRequestDto,
-    creatorId: string
+  public async updateRequestProductInProductRequisitionForm (
+    slug: string,
+    plainData: TUpdateRequestProductRequestDto,
+    creatorId: string,
   ): Promise<RequestProductResponseDto> {
     // CHECKING
-    const requestData = plainToClass(ChangeQuantityRequestProduct, plainData);
+    const requestData = plainToClass(UpdateRequestProduct, plainData);
+    console.log({slug})
+    console.log({requestData})
     const errors = await validate(requestData);
     if(errors.length > 0) throw new ValidationError(errors);
     
     const requestProduct = await requestProductRepository.findOne({
       where: {
-        slug: requestData.slug
+        slug
       },
       relations: [
         'productRequisitionForm',
         'productRequisitionForm.creator',
-        'product'
+        'product',
+        'temporaryProduct',
       ]
     });
     if(!requestProduct) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_NOT_FOUND);
@@ -89,7 +93,7 @@ class RequestProductService {
     if(!requestProduct.productRequisitionForm) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
     if(requestProduct.productRequisitionForm.creator) {
-      if(requestProduct.productRequisitionForm.creator?.id !== creatorId) 
+      if(requestProduct.productRequisitionForm.creator?.id !== creatorId)
         throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
     } else {
       // creator not found
@@ -100,9 +104,31 @@ class RequestProductService {
       requestProduct.productRequisitionForm.isRecalled
     );
     if(!isPermitEdit) throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+
+    if(requestProduct.isExistProduct) {
+      requestProduct.requestQuantity = requestData.requestQuantity;
+      const updatedData = await requestProductRepository.save(requestProduct);
+      const updatedDataDto = mapper.map(updatedData, RequestProduct, RequestProductResponseDto);
+      return updatedDataDto;
+    }
     
-    // UPDATE
-    requestProduct.requestQuantity = requestData.newQuantity;
+    // update temporary product
+    if(!requestProduct.temporaryProduct) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_NOT_FOUND);
+    const unit = await unitRepository.findOneBy({ slug: requestData.unit });
+    if(!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
+    
+    Object.assign(requestProduct.temporaryProduct, {
+      name: requestData.name,
+      provider: requestData.provider,
+      unit: unit,
+      description: requestData.description,
+    });
+    
+    Object.assign(requestProduct, {
+      requestQuantity: requestData.requestQuantity,
+      description: requestData.description,
+    })
+
     const updatedData = await requestProductRepository.save(requestProduct);
     const updatedDataDto = mapper.map(updatedData, RequestProduct, RequestProductResponseDto);
     return updatedDataDto;

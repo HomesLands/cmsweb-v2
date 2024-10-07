@@ -93,6 +93,16 @@ export interface INonExistingProductInfo {
   quantity: number
 }
 
+export interface IAddNewProductInRequisitionUpdate {
+  form: string //Form slug
+  product: string //Product slug
+  name: string
+  provider: string
+  description: string
+  unit: string //Unit slug
+  requestQuantity: number
+}
+
 //Update product requisition quantity
 export interface IRequestProductInfo {
   slug: string

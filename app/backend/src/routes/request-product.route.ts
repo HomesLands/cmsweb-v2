@@ -8,9 +8,9 @@ export const requestProductRoute: Router = Router();
 requestProductRoute.route("/")
   .post(requestProductController.addNewRequestProductInProductRequisitionForm);
 
-// [PATCH] /api/v1/requestProducts/updateQuantity
-requestProductRoute.route("/updateQuantity")
-  .patch(requestProductController.changeQuantityRequestProductInProductRequisitionForm);
+// [PATCH] /api/v1/requestProducts/:slug
+requestProductRoute.route("/:slug")
+  .patch(requestProductController.updateRequestProductInProductRequisitionForm);
 
 // [DELETE] /api/v1/requestProducts/:slug
 requestProductRoute.route("/:slug")

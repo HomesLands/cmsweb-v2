@@ -17,4 +17,9 @@ export class CreateTemporaryProductRequestDto {
   @Expose()
   @AutoMap()
   unit?: string;
+
+  @IsNotEmpty({message: "INVALID_TEMPORARY_REQUEST_PRODUCT_DESCRIPTION"})
+  @Expose()
+  @AutoMap()
+  description?: string;
 }

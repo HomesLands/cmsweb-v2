@@ -51,6 +51,7 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
       cell: ({ row }) => {
         return (
           <ProductRequisitionStatusBadge
+            roleApproval={row.original.roleApproval}
             isRecalled={row.original.productRequisitionForm.isRecalled}
             status={row.original.productRequisitionForm.status as ProductRequisitionStatus}
           />

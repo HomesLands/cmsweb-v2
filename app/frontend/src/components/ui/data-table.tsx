@@ -138,7 +138,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex justify-end gap-2">
+      <div className="flex gap-2 justify-end">
         {/* Input search */}
         {!hidenInput && (
           <Input
@@ -235,7 +235,7 @@ export function DataTableColumnHeader<TData, TValue>({
   }
 
   return (
-    <div className={cn('flex items-center min-w-[7.8rem] space-x-2 text-[0.8rem]', className)}>
+    <div className={cn('flex items-center min-w-[6rem] space-x-2 text-[0.8rem]', className)}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="sm" className="-ml-3 h-8 data-[state=open]:bg-accent">
@@ -450,8 +450,8 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 lg:flex gap-1 items-center">
-          <MixerHorizontalIcon className="mr-2 h-4 w-4" />
+        <Button variant="outline" size="sm" className="gap-1 items-center h-8 lg:flex">
+          <MixerHorizontalIcon className="mr-2 w-4 h-4" />
           Hiển thị
         </Button>
       </DropdownMenuTrigger>

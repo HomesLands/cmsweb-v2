@@ -14,13 +14,14 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui'
 import {
-  IRequestProductInfo,
+  IAddNewProductInRequisitionUpdate,
   IRequestProductInfoUpdate,
   IUpdateProductRequisitionQuantity
 } from '@/types'
-import { DialogDeleteProductInRequisitionUpdate } from '@/components/app/dialog/dialog-delete-product-in-requisition-update'
-import { DialogUpdateProductRequisition } from '@/components/app/dialog/dialog-update-product-quantity-requisition'
-import ProductRequisitions from '../../ProductRequisitions'
+import {
+  DialogDeleteProductInRequisitionUpdate,
+  DialogUpdateProductRequisition
+} from '@/components/app/dialog'
 
 export const useColumnsUpdateRequisition = (
   isExistProduct: boolean,
@@ -59,6 +60,10 @@ export const useColumnsUpdateRequisition = (
     handleDeleteProduct(requestProductSlug)
     setOpenDelete(false)
   }
+
+  // const handleAddNewProductInRequisitionUpdate = (data: IAddNewProductInRequisitionUpdate) => {
+  //   handleAddNewProduct(data)
+  // }
 
   return [
     {
@@ -100,7 +105,6 @@ export const useColumnsUpdateRequisition = (
       header: 'Thao tác',
       cell: ({ row }) => {
         const rowData = row.original
-        // console.log('rowData', rowData)
         return (
           <div>
             <DropdownMenu>

@@ -30,18 +30,23 @@ import { SelectProject, RequestPrioritySelect } from '@/components/app/select'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
-  IProductInfo,
   IProductRequisitionFormInfo,
-  IRequestProductInfoUpdate,
+  IResubmitProductRequisition,
   IUpdateProductRequisitionGeneralInfo,
   IUpdateProductRequisitionQuantity,
   ProductRequisitionType
 } from '@/types'
 import { DateTimePicker } from '@/components/app/picker'
 import { useColumnsUpdateRequisition } from '@/views/product-requisitions/data-table/columns/columnsUpdateRequisition'
+import { useDebouncedInput, usePagination, useProducts } from '@/hooks'
+import {
+  ProductRequisitionUpdateActionOptions,
+  useColumnsAddNewProductInRequisitionUpdate
+} from '@/views/product-requisitions/data-table'
 
 interface IUpdateRequisitionFormProps {
   requisition: IProductRequisitionFormInfo
+  onResubmit: (data: IResubmitProductRequisition) => void
   onUpdateProductSubmit: (data: IUpdateProductRequisitionQuantity) => void
   onUpdateGeneralInfo: (data: IUpdateProductRequisitionGeneralInfo) => void
   onDeleteProductSubmit: (requestProductSlug: string) => void
@@ -49,6 +54,7 @@ interface IUpdateRequisitionFormProps {
 }
 
 export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
+  onResubmit,
   onUpdateProductSubmit,
   onUpdateGeneralInfo,
   onDeleteProductSubmit,
@@ -56,10 +62,20 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
   isLoading
 }) => {
   const { t } = useTranslation('productRequisition')
-  const { t: tToast } = useTranslation('toast')
   const isExistProduct = requisition?.requestProducts.some((product) => product.isExistProduct)
   const { slug } = useParams()
-  // const { mutate: updateProduct } = useUpdateProductRequisitionGeneralInfo()
+  const { pagination, handlePageChange, handlePageSizeChange } = usePagination({
+    isSearchParams: false
+  })
+
+  const { inputValue, setInputValue, debouncedInputValue } = useDebouncedInput()
+
+  const { data: allProduct, isLoading: isLoadingProduct } = useProducts({
+    page: pagination.pageIndex,
+    pageSize: pagination.pageSize,
+    order: 'DESC',
+    searchTerm: debouncedInputValue
+  })
 
   const [date, setDate] = useState<Date | undefined>(
     requisition?.deadlineApproval ? new Date(requisition.deadlineApproval) : undefined
@@ -140,11 +156,21 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
     onUpdateGeneralInfo(updatedValues)
   }
 
+  // const handleAddNewProduct = (data: IAddNewProductInRequisitionUpdate) => {
+  //   onAddNewProduct(data)
+  // }
+
+  const handleResubmit = (data: IResubmitProductRequisition) => {
+    onResubmit(data)
+  }
+
   const columns = useColumnsUpdateRequisition(
     isExistProduct,
     handleEditProduct,
     handleDeleteProduct
   )
+
+  const columnsAddNewProduct = useColumnsAddNewProductInRequisitionUpdate(slug as string)
 
   const handleChoosePriority = (value: ProductRequisitionType) => {
     form.setValue('type', value)
@@ -340,22 +366,42 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
   }
 
   return (
-    <div className="mt-3">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleUpdateGeneralInfo)} className="space-y-6">
-          <div className="grid grid-cols-1 gap-2">
-            {Object.keys(formFields).map((key) => (
-              <React.Fragment key={key}>
-                {formFields[key as keyof typeof formFields]}
-              </React.Fragment>
-            ))}
-          </div>
-          <div className="flex justify-end">
-            <Button type="submit">Cập nhật</Button>
-          </div>
-        </form>
-      </Form>
+    <div className="">
+      <div className="mb-3">
+        <span className="font-semibold text-md">Thêm sản phẩm</span>
+        <DataTable
+          isLoading={isLoadingProduct}
+          columns={columnsAddNewProduct}
+          data={allProduct?.result?.items || []}
+          pages={allProduct?.result?.totalPages || 0}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+          actionOptions={ProductRequisitionUpdateActionOptions}
+          inputValue={inputValue}
+          onInputChange={setInputValue}
+          hidenInput={false} // default true
+        />
+      </div>
+      <div className="flex flex-col gap-3 my-6">
+        <span className="font-semibold text-md">Cập nhật thông tin chung</span>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleUpdateGeneralInfo)} className="space-y-6">
+            <div className="grid grid-cols-1 gap-2">
+              {Object.keys(formFields).map((key) => (
+                <React.Fragment key={key}>
+                  {formFields[key as keyof typeof formFields]}
+                </React.Fragment>
+              ))}
+            </div>
+            <div className="flex justify-end">
+              <Button type="submit">Cập nhật</Button>
+            </div>
+          </form>
+        </Form>
+      </div>
+
       <div className="mt-3">
+        <span className="font-semibold text-md">Cập nhật sản phẩm</span>
         <DataTable
           isLoading={isLoading}
           columns={columns}
@@ -364,6 +410,15 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
           onPageChange={() => {}}
           onPageSizeChange={() => {}}
         />
+      </div>
+      <div className="flex justify-end mt-3">
+        <Button
+          onClick={() =>
+            handleResubmit({ slug: slug as string, description: form.getValues('note') })
+          }
+        >
+          {t('productRequisition.resubmit')}
+        </Button>
       </div>
     </div>
   )
