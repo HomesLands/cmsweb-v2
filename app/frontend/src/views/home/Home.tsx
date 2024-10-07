@@ -16,9 +16,9 @@ export default function HomePage() {
     setLogout()
     removeUserInfo()
     clearUserRoles()
-    toast.error(t('sessionExpired'))
+    // toast.error(t('sessionExpired'))
     navigate(ROUTE.LOGIN)
-  }, [setLogout, removeUserInfo, clearUserRoles, navigate, t])
+  }, [setLogout, removeUserInfo, clearUserRoles, navigate])
 
   // Check authentication and permissions
   useEffect(() => {

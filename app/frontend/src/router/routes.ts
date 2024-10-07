@@ -1,5 +1,5 @@
-import { KeyRoundIcon, ScanFaceIcon, UserCogIcon, UserIcon, UsersIcon } from 'lucide-react'
-import { ArchiveIcon, CubeIcon } from '@radix-ui/react-icons'
+import { KeyRoundIcon, ScanFaceIcon, UserCogIcon, UsersIcon } from 'lucide-react'
+import { ArchiveIcon } from '@radix-ui/react-icons'
 
 import type { ISidebarRoute } from '@/types'
 import { Authority, ROUTE } from '@/constants'
@@ -9,7 +9,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
     title: 'sidebar.productRequisitions',
     path: ROUTE.PRODUCT_REQUISITIONS,
     icon: ArchiveIcon,
-    authorities: [Authority.READ_PRODUCT_REQUISITION],
+    authorities: [Authority.READ_PRODUCT_REQUISITION, Authority.READ_USER_APPROVAL],
     children: [
       {
         title: 'sidebar.productRequisitionsList',
