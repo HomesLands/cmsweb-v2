@@ -101,6 +101,7 @@ export async function approveProductRequisition(
 }
 
 export async function updateProductRequisitionQuantity(params: IUpdateProductRequisitionQuantity) {
+  console.log('params', params)
   const response = await http.patch<IApiResponse<IProductRequisitionFormInfo>>(
     `/requestProducts/${params.slug}`,
     params

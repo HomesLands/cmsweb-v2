@@ -13,11 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui'
-import {
-  IAddNewProductInRequisitionUpdate,
-  IRequestProductInfoUpdate,
-  IUpdateProductRequisitionQuantity
-} from '@/types'
+import { IRequestProductInfoUpdate, IUpdateProductRequisitionQuantity } from '@/types'
 import {
   DialogDeleteProductInRequisitionUpdate,
   DialogUpdateProductRequisition
@@ -33,7 +29,6 @@ export const useColumnsUpdateRequisition = (
   const [openDelete, setOpenDelete] = useState(false)
 
   const handleEdit = (product: IRequestProductInfoUpdate) => {
-    console.log('product', product)
     setOpenEdit(true)
     setSelectedProduct(product)
   }
@@ -60,10 +55,6 @@ export const useColumnsUpdateRequisition = (
     handleDeleteProduct(requestProductSlug)
     setOpenDelete(false)
   }
-
-  // const handleAddNewProductInRequisitionUpdate = (data: IAddNewProductInRequisitionUpdate) => {
-  //   handleAddNewProduct(data)
-  // }
 
   return [
     {

@@ -16,6 +16,11 @@ export const RegisterPage = React.lazy(() =>
     default: module.RegisterPage
   }))
 )
+export const PersonalAccountPage = React.lazy(() =>
+  import('@/views/account').then((module) => ({
+    default: module.PersonalAccount
+  }))
+)
 export const EmployeePage = React.lazy(() =>
   import('@/views/employees').then((module) => ({
     default: module.Employees
