@@ -49,7 +49,7 @@ export function DialogAddProductRequest({
         </DialogHeader>
         <AddNewProductRequestForm
           data={product || undefined}
-          onSubmit={(data: IProductRequisitionInfo) => handleSubmit(data)}
+          onSubmit={(data: TAddNewProductRequestSchema) => handleSubmit(data)}
         />
       </DialogContent>
     </Dialog>

@@ -13,6 +13,7 @@ import { useColumnsDetail, useColumnsApprovalLog } from './data-table'
 import {
   ApprovalLogStatus,
   IApproveProductRequisition,
+  IProductInfo,
   IRequisitionFormResponseForApprover,
   ProductRequisitionRoleApproval
 } from '@/types'
@@ -287,7 +288,12 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
         <DataTable
           isLoading={false}
           columns={columns}
-          data={data?.result?.requestProducts || []}
+          data={
+            data?.result?.requestProducts?.map((item) => ({
+              ...item,
+              product: item.product || item.temporaryProduct || ({} as IProductInfo)
+            })) || []
+          }
           pages={1}
           onPageChange={() => {}}
           onPageSizeChange={() => {}}

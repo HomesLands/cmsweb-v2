@@ -8,6 +8,7 @@ import {
   IProductRequisitionFormInfo,
   IRequisitionFormResponseForApprover,
   IUnit,
+  IUpdateProductRequisitionGeneralInfo,
   IUpdateProductRequisitionQuantity
 } from '@/types'
 import { http } from '@/utils'
@@ -21,43 +22,6 @@ export async function getProducts(
   })
   return response.data
 }
-
-// export async function postProductRequest(params: {
-//   requestCode: string
-//   requester: string
-//   project: {
-//     slug: string
-//     name: string
-//   }
-//   site: {
-//     slug: string
-//     name: string
-//   }
-//   approver: string
-//   note: string
-//   priority: string
-//   products: IProductInfo[]
-//   createdAt: string
-// }): Promise<IProductRequisitionFormCreate> {
-//   const lowercaseParams = {
-//     requestCode: params.requestCode,
-//     requester: params.requester.toLowerCase(),
-//     project: {
-//       slug: params.project.slug,
-//       name: params.project.name.toLowerCase()
-//     },
-//     site: {
-//       slug: params.site.slug,
-//       name: params.site.name.toLowerCase()
-//     },
-//     approver: params.approver.toLowerCase(),
-//     note: params.note.toLowerCase(),
-//     priority: params.priority.toLowerCase(),
-//     products: params.products,
-//     createdAt: params.createdAt
-//   }
-//   return lowercaseParams
-// }
 
 export async function getAllProduct(params: {
   order: string
@@ -145,6 +109,7 @@ export async function updateProductRequisitionQuantity(params: IUpdateProductReq
   return response.data
 }
 
+//Delete product in requisition
 export async function deleteProductRequisition(requestProductSlug: string) {
   const response = await http.delete<IApiResponse<IProductRequisitionFormInfo>>(
     `/requestProducts/${requestProductSlug}`,
@@ -157,5 +122,20 @@ export async function deleteProductRequisition(requestProductSlug: string) {
 
 export async function getAllUnit() {
   const response = await http.get<IApiResponse<IUnit[]>>('/units')
+  return response.data
+}
+
+export async function updateProductRequisitionGeneralInfo(
+  data: IUpdateProductRequisitionGeneralInfo
+) {
+  const response = await http.patch<IApiResponse<IProductRequisitionFormInfo>>(
+    `/productRequisitionForms/${data.slug}`,
+    {
+      type: data.type,
+      deadlineApproval: data.deadlineApproval,
+      project: data.project.slug,
+      description: data.description
+    }
+  )
   return response.data
 }

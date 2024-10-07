@@ -11,12 +11,12 @@ import {
   DialogTrigger
 } from '@/components/ui'
 
-import { IRequestProductInfo } from '@/types'
+import { IRequestProductInfo, IRequestProductInfoUpdate } from '@/types'
 
 interface DialogDeleteProductInRequisitionUpdateProps {
   handleDeleteProduct: (requestProductSlug: string) => void
   openDialog: boolean
-  product: IRequestProductInfo | null
+  product: IRequestProductInfoUpdate | null
   component: React.ReactNode
   onOpenChange: () => void
 }
@@ -28,10 +28,14 @@ export function DialogDeleteProductInRequisitionUpdate({
   component,
   onOpenChange
 }: DialogDeleteProductInRequisitionUpdateProps) {
+  console.log(product)
   const handleSubmit = (data: IRequestProductInfo) => {
     handleDeleteProduct(data.slug)
     onOpenChange()
   }
+
+  const productName = product?.product?.name || product?.temporaryProduct?.name || 'Không xác định'
+  const productCode = product?.product?.code || product?.temporaryProduct?.code || 'Không xác định'
 
   return (
     <Dialog open={openDialog} onOpenChange={onOpenChange}>
@@ -49,8 +53,8 @@ export function DialogDeleteProductInRequisitionUpdate({
           </DialogDescription>
 
           <div className="py-2 text-sm text-gray-500 ">
-            Bạn sắp sửa xóa vật tư <span className="font-bold">{product?.product.name}</span> với mã
-            vật tư <span className="font-bold">{product?.product.code}</span>.
+            Bạn sắp sửa xóa vật tư <span className="font-bold">{productName}</span> với mã vật tư{' '}
+            <span className="font-bold">{productCode}</span>.
           </div>
         </DialogHeader>
         <DialogFooter>

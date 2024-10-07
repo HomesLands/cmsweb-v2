@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontal } from 'lucide-react'
+import { format } from 'date-fns'
+import { useNavigate } from 'react-router'
 
 import {
   DropdownMenu,
@@ -15,15 +17,11 @@ import {
 import { IProductRequisitionFormInfo, ProductRequisitionStatus } from '@/types'
 import { ProductRequisitionByCreatorStatusBadge } from '@/components/app/badge'
 import { RequisitionTypeBadge } from '@/components/app/badge'
-import { DialogRequisitionDetail } from '@/components/app/dialog/dialog-requisition-detail'
+import { DialogRequisitionDetail } from '@/components/app/dialog'
 import { RecalledStatusBadge } from '@/components/app/badge'
-
-import { format } from 'date-fns'
-import { useNavigate } from 'react-router'
 
 export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitionFormInfo>[] => {
   const [openViewDialog, setOpenViewDialog] = useState(false)
-  // const [openEditDialog, setOpenEditDialog] = useState(false)
   const [selectedRequisition, setSelectedRequisition] =
     useState<IProductRequisitionFormInfo | null>(null)
   const navigate = useNavigate()
@@ -37,7 +35,6 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitio
     setOpenViewDialog(false)
   }
 
-  // Replace handleEditRequisition function
   const handleEditRequisition = (requisition: IProductRequisitionFormInfo) => {
     navigate(`/product-requisitions/edit/${requisition.slug}`)
   }
@@ -45,14 +42,15 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitio
   return [
     {
       accessorKey: 'code',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Mã yêu cầu" />
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Mã yêu cầu" />,
+      cell: ({ row }) => row.original.code || 'Không có'
     },
     {
       accessorKey: 'createdAt',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày tạo" />,
       cell: ({ row }) => {
-        const date = new Date(row.original.createdAt || '')
-        return format(date, 'HH:mm dd/MM/yyyy')
+        const date = row.original.createdAt ? new Date(row.original.createdAt) : null
+        return date ? format(date, 'HH:mm dd/MM/yyyy') : 'Không có'
       }
     },
     {
@@ -60,27 +58,23 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitio
       header: ({ column }) => <DataTableColumnHeader column={column} title="Loại yêu cầu" />,
       cell: ({ row }) => {
         const { type } = row.original
-        return <RequisitionTypeBadge type={type} />
+        return type ? <RequisitionTypeBadge type={type} /> : 'Không có'
       }
     },
     {
       accessorKey: 'creator.fullname',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Người tạo" />
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Người tạo" />,
+      cell: ({ row }) => row.original.creator?.fullname || 'Không có'
     },
     {
-      id: 'creator.company',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />
-      // cell: () => {
-      //   return <div className="min-w-[12rem] text-[0.8rem]">{companyName}</div>
-      // }
+      id: 'company',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />,
+      cell: ({ row }) => {
+        const { creator } = row.original
+        const companyName = creator?.userDepartments?.[0]?.department?.site?.company?.name
+        return <div className="min-w-[12rem] text-[0.8rem]">{companyName || 'Không có'}</div>
+      }
     },
-    // {
-    //   id: 'company',
-    //   header: ({ column }) => <DataTableColumnHeader column={column} title="Công ty" />,
-    //   cell: () => {
-    //     return <div className="min-w-[12rem] text-[0.8rem]">{companyName}</div>
-    //   }
-    // },
     {
       accessorKey: 'isRecalled',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Trạng thái hoàn" />,
@@ -119,7 +113,7 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitio
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="w-8 h-8 p-0">
+                <Button variant="ghost" className="p-0 w-8 h-8">
                   <span className="sr-only">Thao tác</span>
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>

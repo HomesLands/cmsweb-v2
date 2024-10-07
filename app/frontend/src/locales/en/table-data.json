@@ -29,6 +29,8 @@
     "approvalTime": "Approval time",
     "status": "Status",
     "action": "Action",
+    "update": "Update",
+    "add": "Add",
     "filter": "Filter",
     "all": "All",
     "waiting_approval_1": "Waiting approval stage 1",
