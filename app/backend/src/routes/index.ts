@@ -11,7 +11,7 @@ import { companyRoute } from "@routes/company.route";
 import { productRequisitionFormRoute } from "@routes/product-requisition-form.route";
 import { requestProductRoute } from "@routes/request-product.route";
 
-import { authMiddleware } from "@middlewares";
+import { authMiddleware, storeMiddleware } from "@middlewares";
 import { ErrorCodes, GlobalError } from "@exception";
 import { StatusCodes } from "http-status-codes";
 import { errorCodeRoute } from "./error-code.route";
@@ -30,7 +30,7 @@ import { fileRoute } from "./file.route";
 const baseApi: Router = Router();
 
 export const registerRoutes = (app: Express) => {
-  baseApi.use(authMiddleware.authenticate);
+  baseApi.use(authMiddleware.authenticate, storeMiddleware.handler);
 
   baseApi.use("/auth", authRoute);
 

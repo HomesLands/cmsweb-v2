@@ -4,6 +4,7 @@ import {
   UpdateDateColumn,
   Column,
   DeleteDateColumn,
+  BeforeInsert,
 } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 import shortid from "shortid";
@@ -14,7 +15,7 @@ export class Base {
 
   @Column({ name: "slug_column", unique: true })
   @AutoMap()
-  slug?: string = shortid.generate();
+  slug?: string;
 
   @AutoMap()
   @CreateDateColumn({ type: "timestamp", name: "created_at_column" })
@@ -27,6 +28,11 @@ export class Base {
   @DeleteDateColumn({ name: "deleted_at_column" }) // This will handle soft deletes
   deletedAt?: Date; // This column will automatically manage soft delete timestamps
 
-  // @Column({ name: "created_by_column" })
-  // createdBy?: string = getUserId();
+  @Column({ name: "created_by_column", nullable: true })
+  createdBy?: string;
+
+  @BeforeInsert()
+  initSlug?() {
+    this.slug = shortid.generate();
+  }
 }

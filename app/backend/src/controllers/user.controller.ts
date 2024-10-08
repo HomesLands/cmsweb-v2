@@ -10,6 +10,9 @@ import {
   TUploadUserSignRequestDto,
 } from "@types";
 import { UserPermissionResponseDto, UserResponseDto } from "@dto/response";
+import { Action } from "@enums";
+import { User } from "@entities/user.entity";
+import { asl } from "@configs";
 
 class UserController {
   /**
@@ -72,6 +75,7 @@ class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
+      console.log(asl.getStore());
       const plainData = req.query as unknown as TQueryRequest;
       const results = await userService.getAllUsers(plainData);
       const response: TApiResponse<
@@ -111,7 +115,7 @@ class UserController {
   ): Promise<void> {
     try {
       const { userId = "" } = req;
-      const results = await userService.getUser(userId);
+      const results = await userService.getUser(userId, req.ability);
       const response: TApiResponse<UserResponseDto> = {
         code: StatusCodes.OK,
         error: false,

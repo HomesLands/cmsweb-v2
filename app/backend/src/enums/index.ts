@@ -35,3 +35,11 @@ export enum RoleApproval {
   APPROVAL_STAGE_2 = "approval_stage_2",
   APPROVAL_STAGE_3 = "approval_stage_3",
 }
+
+export enum Action {
+  Manage = "manage",
+  Create = "create",
+  Read = "read",
+  Update = "update",
+  Delete = "delete",
+}

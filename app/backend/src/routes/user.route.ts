@@ -5,11 +5,7 @@ import { Router } from "express";
 export const userRoute: Router = Router();
 
 // [GET] /api/v1/users
-userRoute.get(
-  "/",
-  // authMiddleware.hasAuthority("READ_USER"),
-  userController.getAllUsers
-);
+userRoute.get("/", userController.getAllUsers);
 
 // [GET] /api/v1/users/info/permissions
 userRoute.get("/info/permissions", userController.getUserPermissions);
