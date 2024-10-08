@@ -19,6 +19,7 @@ import { ProductRequisitionByCreatorStatusBadge } from '@/components/app/badge'
 import { RequisitionTypeBadge } from '@/components/app/badge'
 import { DialogRequisitionDetail } from '@/components/app/dialog'
 import { RecalledStatusBadge } from '@/components/app/badge'
+import { ROUTE } from '@/constants'
 
 export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitionFormInfo>[] => {
   const [openViewDialog, setOpenViewDialog] = useState(false)
@@ -36,7 +37,7 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitio
   }
 
   const handleEditRequisition = (requisition: IProductRequisitionFormInfo) => {
-    navigate(`/product-requisitions/edit/${requisition.slug}`)
+    navigate(ROUTE.EDIT_PRODUCT_REQUISITIONS.replace(':slug', requisition.slug))
   }
 
   return [
