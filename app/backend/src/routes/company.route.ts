@@ -12,9 +12,9 @@ companyRoute.get("/", companyController.getAllCompanies);
 // [POST] /api/v1/companies
 companyRoute.post("/", companyController.createCompany);
 
-// [PATCH] /api/v1/companies/upload
+// [PATCH] /api/v1/companies/upload/:company
 companyRoute.patch(
-  "/upload",
+  "/upload/:company",
   upload.single("file"),
   companyController.uploadCompanyLogo
 );

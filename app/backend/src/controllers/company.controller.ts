@@ -174,7 +174,7 @@ class CompanyController {
 
   /**
    * @swagger
-   * /companies/upload:
+   * /companies/upload/{company}:
    *   patch:
    *     summary: Upload company logo
    *     tags: [Company]

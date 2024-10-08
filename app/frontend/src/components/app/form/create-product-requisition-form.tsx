@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
 import { format } from 'date-fns'
 import { cn } from '@/lib/utils'
@@ -22,12 +21,7 @@ import {
   Calendar
 } from '@/components/ui'
 import { productRequisitionSchema, TProductRequisitionSchema } from '@/schemas'
-import {
-  SelectProject,
-  // SelectSite,
-  RequestPrioritySelect
-  // SelectCompany
-} from '@/components/app/select'
+import { SelectProject, RequestPrioritySelect } from '@/components/app/select'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { generateProductRequisitionCode } from '@/utils'
@@ -64,7 +58,8 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
         : undefined,
       company: {
         slug: userInfo?.userDepartments[0]?.department?.site?.company?.slug || '',
-        name: userInfo?.userDepartments[0]?.department?.site?.company?.name || ''
+        name: userInfo?.userDepartments[0]?.department?.site?.company?.name || '',
+        logo: userInfo?.userDepartments[0]?.department?.site?.company?.logo || ''
       },
       site: {
         slug: userInfo?.userDepartments[0]?.department?.site?.slug || '',

@@ -14,7 +14,7 @@ import {
 import { IProductInfo } from '@/types'
 import { DialogAddProductRequest } from '@/components/app/dialog'
 
-export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
+export const useColumnsSearchProduct = (): ColumnDef<IProductInfo>[] => {
   const { t } = useTranslation('tableData')
   const [selectedProduct, setSelectedProduct] = useState<IProductInfo | null>(null)
   const [openDialog, setOpenDialog] = useState(false)
@@ -70,9 +70,10 @@ export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
       accessorKey: 'name',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Tên vật tư" />
     },
+
     {
-      accessorKey: 'provider',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Nhà cung cấp" />
+      accessorKey: 'quantity',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Số lượng" />
     },
     {
       accessorKey: 'unit',
@@ -85,6 +86,10 @@ export const useColumnsSearch = (): ColumnDef<IProductInfo>[] => {
     {
       accessorKey: 'description',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Mô tả" />
+    },
+    {
+      accessorKey: 'provider',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Nhà cung cấp" />
     }
   ]
 }

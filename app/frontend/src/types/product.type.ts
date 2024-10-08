@@ -31,6 +31,7 @@ export interface IProductRequisitionFormCreate {
   company: {
     slug: string
     name: string
+    logo: string
   }
   site: {
     slug: string

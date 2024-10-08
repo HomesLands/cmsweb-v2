@@ -7,6 +7,8 @@ import { GlobalError } from "@exception";
 import { userRepository } from "@repositories";
 import { StatusCodes } from "http-status-codes";
 import { TokenUtils } from "@utils";
+import { constructAbilities } from "@lib";
+import { getUserId, setUserId } from "@configs/context.config";
 
 // Define a list of whitelisted routes with allowed methods
 const whitelist = [
@@ -54,11 +56,16 @@ class AuthMiddleware {
 
       // Get user
       const sub = TokenUtils.extractSubject(authToken);
-      const user = await userRepository.findOneBy({ slug: sub });
-      if (!user) return next(new GlobalError(StatusCodes.UNAUTHORIZED));
+      const user = await userRepository.findOne({
+        where: { slug: sub },
+        relations: ["userRoles.role.permissions.authority.resource"],
+      });
+      if (!user?.id) return next(new GlobalError(StatusCodes.UNAUTHORIZED));
+
+      const ability = await constructAbilities(user);
 
       // Attached decoded user id to request
-      Object.assign(req, { userId: user.id });
+      Object.assign(req, { userId: user.id, ability });
       next();
     } catch (error) {
       next(error);
