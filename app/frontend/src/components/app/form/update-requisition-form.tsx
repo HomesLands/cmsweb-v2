@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useParams } from 'react-router'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -41,7 +41,8 @@ import { useColumnsUpdateRequisition } from '@/views/product-requisitions/data-t
 import { useDebouncedInput, usePagination, useProducts } from '@/hooks'
 import {
   ProductRequisitionUpdateActionOptions,
-  useColumnsAddNewProductInRequisitionUpdate
+  useColumnsAddNewProductInRequisitionUpdate,
+  useColumnsApprovalLog
 } from '@/views/product-requisitions/data-table'
 import { DialogResubmitRequisition } from '../dialog'
 
@@ -174,6 +175,13 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
     handleEditProduct,
     handleDeleteProduct
   )
+  const userApprovalColumns = useColumnsApprovalLog()
+
+  const sortedUserApprovals = useMemo(() => {
+    return [...(requisition?.userApprovals || [])].sort((a, b) =>
+      a.assignedUserApproval.roleApproval.localeCompare(b.assignedUserApproval.roleApproval)
+    )
+  }, [requisition?.userApprovals])
 
   const columnsAddNewProduct = useColumnsAddNewProductInRequisitionUpdate(slug as string)
 
@@ -373,7 +381,7 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
   return (
     <div className="">
       <div className="flex flex-col gap-3 my-6">
-        <span className="font-semibold text-md">Cập nhật thông tin chung</span>
+        <span className="font-semibold text-md">{t('productRequisition.updateGeneralInfo')}</span>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleUpdateGeneralInfo)} className="space-y-6">
             <div className="grid grid-cols-1 gap-2">
@@ -390,7 +398,7 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
         </Form>
       </div>
       <div className="mb-3">
-        <span className="font-semibold text-md">Thêm sản phẩm</span>
+        <span className="font-semibold text-md">{t('productRequisition.addProduct')}</span>
         <DataTable
           isLoading={isLoadingProduct}
           columns={columnsAddNewProduct}
@@ -403,11 +411,20 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
           onInputChange={setInputValue}
           hidenInput={false} // default true
         />
+        <h3 className="mt-4 mb-2 font-semibold">{t('productRequisition.approvalHistory')}</h3>
+        <DataTable
+          isLoading={false}
+          data={sortedUserApprovals}
+          columns={userApprovalColumns}
+          pages={sortedUserApprovals.length}
+          onPageChange={() => {}}
+          onPageSizeChange={() => {}}
+        />
       </div>
       {requisition && (
         <>
           <div className="mt-3">
-            <span className="font-semibold text-md">Cập nhật sản phẩm</span>
+            <span className="font-semibold text-md">{t('productRequisition.updateProduct')}</span>
             <DataTable
               isLoading={isLoading}
               columns={columns}

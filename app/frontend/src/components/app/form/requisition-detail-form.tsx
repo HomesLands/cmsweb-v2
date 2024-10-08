@@ -10,16 +10,11 @@ import {
   Input,
   Form,
   Textarea,
-  Table,
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell
+  DataTable
 } from '@/components/ui'
 import { IProductRequisitionFormInfo } from '@/types'
-import { useParams } from 'react-router'
-import { useUpdateProductRequisitionQuantity } from '@/hooks'
+import { useColumnsApprovalLog, useColumnsDetail } from '@/views/product-requisitions/data-table'
+import { useTranslation } from 'react-i18next'
 
 interface IFormRequisitionDetailProps {
   data?: IProductRequisitionFormInfo
@@ -40,7 +35,10 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
       statusColor: ''
     }
   })
+  const { t } = useTranslation('productRequisition')
 
+  const columns = useColumnsDetail()
+  const userApprovalColumns = useColumnsApprovalLog()
   const statusInfo = useMemo(() => {
     if (!data) return { displayStatus: '', statusColor: '' }
 
@@ -49,43 +47,49 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
     let statusColor = ''
 
     if (status === 'waiting' && !isRecalled) {
-      displayStatus = 'Vừa tạo, đang chờ duyệt bước 1'
+      displayStatus = t('status.waitingStage1')
       statusColor = 'yellow'
     } else if (status === 'cancel' && isRecalled) {
-      displayStatus = 'Đã bị hoàn ở bước 1'
-      statusColor = 'orange'
+      displayStatus = t('status.cancel')
+      statusColor = 'red'
     } else if (status === 'accepted_stage_1' && !isRecalled) {
-      displayStatus = 'Đã duyệt bước 1'
-      statusColor = 'green'
+      displayStatus = t('status.acceptedStage1')
+      statusColor = 'yellow'
     } else if (status === 'waiting' && isRecalled) {
-      displayStatus = 'Đã bị hoàn ở bước 2'
-      statusColor = 'orange'
+      displayStatus = t('status.waitingStage2')
+      statusColor = 'red'
     } else if (status === 'accepted_stage_2' && !isRecalled) {
-      displayStatus = 'Đã duyệt bước 2'
-      statusColor = 'green'
+      displayStatus = t('status.acceptedStage2')
+      statusColor = 'yellow'
     } else if (status === 'accepted_stage_1' && isRecalled) {
-      displayStatus = 'Đã bị hoàn ở bước 3'
-      statusColor = 'orange'
+      displayStatus = t('status.waitingStage3')
+      statusColor = 'red'
     } else if (status === 'waiting_export' && !isRecalled) {
-      displayStatus = 'Đã duyệt bước 3'
-      statusColor = 'blue'
+      displayStatus = t('status.acceptedStage3')
+      statusColor = 'green'
     } else if (status === 'cancel' && !isRecalled) {
-      displayStatus = 'Đã bị hủy'
+      displayStatus = t('status.cancel')
       statusColor = 'red'
     }
 
     return { displayStatus, statusColor }
-  }, [data])
+  }, [data, t])
 
   // Update form values with status info
   form.setValue('displayStatus', statusInfo.displayStatus)
   form.setValue('statusColor', statusInfo.statusColor)
 
+  const sortedUserApprovals = useMemo(() => {
+    return [...(data?.userApprovals || [])].sort((a, b) =>
+      a.assignedUserApproval.roleApproval.localeCompare(b.assignedUserApproval.roleApproval)
+    )
+  }, [data?.userApprovals])
+
   return (
-    <div className="mt-3">
+    <div className="mt-3 max-w-[90vw] sm:max-w-full">
       <Form {...form}>
         <form className="space-y-6">
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             <FormField
               control={form.control}
               name="createdAt"
@@ -223,51 +227,26 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
             />
           </div>
           <div>
-            <h3 className="mb-2 text-lg font-semibold">Sản phẩm yêu cầu</h3>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Mã sản phẩm</TableHead>
-                  <TableHead>Tên sản phẩm</TableHead>
-                  <TableHead>Nhà cung cấp</TableHead>
-                  <TableHead>Đơn vị</TableHead>
-                  <TableHead>Số lượng yêu cầu</TableHead>
-                  <TableHead>Mô tả</TableHead>
-                  <TableHead>Trạng thái</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {Array.isArray(data?.requestProducts)
-                  ? data.requestProducts.map((product, index) => (
-                      <TableRow key={index}>
-                        <TableCell>
-                          {product.isExistProduct
-                            ? product.product?.code
-                            : product.temporaryProduct?.code}
-                        </TableCell>
-                        <TableCell>
-                          {product.isExistProduct
-                            ? product.product?.name
-                            : product.temporaryProduct?.name}
-                        </TableCell>
-                        <TableCell>
-                          {product.isExistProduct
-                            ? product.product?.provider
-                            : product.temporaryProduct?.provider}
-                        </TableCell>
-                        <TableCell>
-                          {product.isExistProduct
-                            ? product.product?.unit?.name
-                            : product.temporaryProduct?.unit?.name}
-                        </TableCell>
-                        <TableCell>{product.requestQuantity}</TableCell>
-                        <TableCell>{product.description || 'N/A'}</TableCell>
-                        <TableCell>{product.isExistProduct ? 'Có sẵn' : 'Sản phẩm mới'}</TableCell>
-                      </TableRow>
-                    ))
-                  : null}
-              </TableBody>
-            </Table>
+            <h3 className="mb-2 text-lg font-semibold">
+              {t('productRequisition.productRequisitionList')}
+            </h3>
+            <DataTable
+              isLoading={false}
+              data={data?.requestProducts || []}
+              columns={columns}
+              pages={data?.requestProducts?.length || 0}
+              onPageChange={() => {}}
+              onPageSizeChange={() => {}}
+            />
+            <h3 className="mt-4 mb-2 text-lg font-semibold">Lịch sử duyệt</h3>
+            <DataTable
+              isLoading={false}
+              data={sortedUserApprovals}
+              columns={userApprovalColumns}
+              pages={sortedUserApprovals.length}
+              onPageChange={() => {}}
+              onPageSizeChange={() => {}}
+            />
           </div>
         </form>
       </Form>

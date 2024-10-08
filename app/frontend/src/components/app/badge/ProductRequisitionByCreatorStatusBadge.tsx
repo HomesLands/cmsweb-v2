@@ -58,7 +58,7 @@ export const ProductRequisitionByCreatorStatusBadge: React.FC<
 > = ({ status, isRecalled }) => {
   return (
     <span
-      className={`inline-block py-1.5 px-2.5 min-w-[8rem] text-center ${getBadgeColorClass(status, isRecalled)} rounded-full text-white`}
+      className={`inline-block py-1.5 px-2.5 min-w-[8.5rem] text-center ${getBadgeColorClass(status, isRecalled)} rounded-full text-white`}
     >
       {getBadgeText(status, isRecalled)}
     </span>
