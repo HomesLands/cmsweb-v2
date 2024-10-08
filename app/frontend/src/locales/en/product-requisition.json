@@ -60,6 +60,8 @@
     "updateProduct": "Update product",
     "updateGeneralInfo": "Update general info",
     "addProduct": "Add product",
+    "productList": "Product list",
+    "generalInfo": "General info",
     "descriptionInputLabel": "Content",
     "descriptionInputPlaceholder": "Enter content",
     "resubmitConfirmMessage": "Are you sure you want to resubmit this requisition?"
