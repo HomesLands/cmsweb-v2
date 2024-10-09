@@ -1,5 +1,8 @@
 import { upload } from "@configs";
 import { userController } from "@controllers";
+import { User } from "@entities";
+import { Action } from "@enums";
+import { authMiddleware } from "@middlewares/auth.middleware";
 import { Router } from "express";
 
 export const userRoute: Router = Router();
@@ -11,7 +14,11 @@ userRoute.get("/", userController.getAllUsers);
 userRoute.get("/info/permissions", userController.getUserPermissions);
 
 // [GET] /api/v1/users/info
-userRoute.get("/info", userController.getUser);
+userRoute.get(
+  "/info",
+  authMiddleware.hasPermission(Action.READ, User),
+  userController.getUser
+);
 
 // [PATCH] /api/v1/users/signature
 userRoute.patch(

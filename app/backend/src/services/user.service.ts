@@ -13,6 +13,7 @@ import fileService from "./file.service";
 import { Ability, MongoQuery } from "@casl/ability";
 import { Action } from "@enums";
 import { Subjects } from "@lib";
+import { StatusCodes } from "http-status-codes";
 
 class UserService {
   public async getAllUsers(
@@ -61,6 +62,8 @@ class UserService {
     userId?: string,
     ability?: Ability<[Action, Subjects], MongoQuery>
   ): Promise<UserResponseDto> {
+    if (!ability) throw new GlobalError(StatusCodes.FORBIDDEN);
+
     const user = await userRepository.findOne({
       where: {
         id: userId,
@@ -74,10 +77,9 @@ class UserService {
     });
     if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 
-    if (ability) {
-      console.log(ability);
-      const hasAbility = ability.can(Action.Update, user);
-      console.log({ hasAbility });
+    const hasAbility = ability.can(Action.READ, user);
+    if (!hasAbility) {
+      throw new GlobalError(StatusCodes.FORBIDDEN);
     }
 
     const results = mapper.map(user, User, UserResponseDto);

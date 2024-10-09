@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany } from "typeorm";
-import { Authority, Base } from "@entities";
+import { Base } from "./base.entity";
+import { Permission } from "./permission.entity";
 
 @Entity("resource_tbl")
 export class Resource extends Base {
@@ -7,6 +8,6 @@ export class Resource extends Base {
   name?: string;
 
   // An Resource can have many Authority
-  @OneToMany(() => Authority, (authority) => authority.resource)
-  authorities: Authority[];
+  @OneToMany(() => Permission, (permission) => permission.resource)
+  permissions: Permission[];
 }

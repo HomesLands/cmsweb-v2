@@ -75,7 +75,6 @@ class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      console.log(asl.getStore());
       const plainData = req.query as unknown as TQueryRequest;
       const results = await userService.getAllUsers(plainData);
       const response: TApiResponse<
