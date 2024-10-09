@@ -6,8 +6,9 @@ export interface ILayoutStore {
 }
 
 export interface IUserStore {
-  userInfo?: IUserInfo
+  userInfo: IUserInfo | null
   setUserInfo: (userInfo: IUserInfo) => void
+  getUserInfo: () => IUserInfo | null
   removeUserInfo: () => void
 }
 

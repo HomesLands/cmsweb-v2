@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 
 import enAuth from '@/locales/en/auth.json'
+import enAccount from '@/locales/en/account.json'
 import enSidebar from '@/locales/en/sidebar.json'
 import enProductRequisition from '@/locales/en/product-requisition.json'
 import enRoles from '@/locales/en/roles.json'
@@ -12,6 +13,7 @@ import enAuthorities from '@/locales/en/authorities.json'
 import enPermissions from '@/locales/en/permissions.json'
 
 import viAuth from '@/locales/vi/auth.json'
+import viAccount from '@/locales/vi/account.json'
 import viSidebar from '@/locales/vi/sidebar.json'
 import viProductRequisition from '@/locales/vi/product-requisition.json'
 import viRoles from '@/locales/vi/roles.json'
@@ -27,6 +29,7 @@ i18n
     resources: {
       en: {
         auth: enAuth,
+        account: enAccount,
         sidebar: enSidebar,
         productRequisition: enProductRequisition,
         roles: enRoles,
@@ -37,6 +40,7 @@ i18n
       },
       vi: {
         auth: viAuth,
+        account: viAccount,
         sidebar: viSidebar,
         productRequisition: viProductRequisition,
         roles: viRoles,

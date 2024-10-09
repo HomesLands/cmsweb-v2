@@ -5,10 +5,11 @@ import { IUserInfo, IUserRoleResponse } from '@/types'
 
 export const useUserStore = create<IUserStore>()(
   persist(
-    (set) => ({
-      userInfo: undefined,
+    (set, get) => ({
+      userInfo: null,
       setUserInfo: (userInfo?: IUserInfo) => set({ userInfo }),
-      removeUserInfo: () => set({ userInfo: undefined })
+      getUserInfo: () => get().userInfo as IUserInfo | null,
+      removeUserInfo: () => set({ userInfo: null })
     }),
     {
       name: 'user-storage' // Key for storage

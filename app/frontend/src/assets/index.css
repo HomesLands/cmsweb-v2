@@ -69,19 +69,22 @@
     @apply bg-background text-foreground;
   }
   .auth-layout{
-    @apply flex items-center justify-center w-full min-h-screen bg-muted text-foreground;
+    @apply flex justify-center items-center w-full min-h-screen bg-muted text-foreground;
   }
   .login-background{
-    @apply absolute inset-0 z-10 object-cover w-full h-full;
+    @apply object-cover absolute inset-0 z-10 w-full h-full;
   }
   .header{
     @apply border-b border-b-gray-200 flex h-14 items-center justify-between gap-4 px-4 lg:h-[60px] lg:px-4;
   }
+  .text-description{
+    @apply text-sm text-gray-400;
+  }
   .text-normal{
-    @apply text-gray-800;
+    @apply text-gray-600;
   }
   .text-danger{
-    @apply text-xs text-red-500;
+    @apply  text-red-500;
   }
   .icon{
     @apply w-3.5 h-3.5 text-gray-500;

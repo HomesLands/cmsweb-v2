@@ -28,6 +28,8 @@ export interface IUserInfo {
     updatedAt: string
     slug: string
   }[]
+  signature: string
+  avatar: string
   createdAt: string
   updatedAt: string
   slug: string
@@ -38,4 +40,11 @@ export type IUserQuery = IQuery
 export interface IUserRoleResponse {
   role: string
   authorities: string[]
+}
+
+export interface IUpdateUserGeneralInfo {
+  fullname: string
+  username: string
+  company: string
+  site: string
 }

@@ -1,0 +1,21 @@
+{
+  "account": {
+    "title": "Account",
+    "profile": "Profile",
+    "generalInfo": "General Information",
+    "updateInfo": "Update Information",
+    "email": "Email",
+    "password": "Password",
+    "company": "Company",
+    "site": "Site",
+    "confirmPassword": "Confirm Password",
+    "update": "Update",
+    "delete": "Delete",
+    "deleteAccount": "Delete Account",
+    "deleteAccountMessage": "Are you sure you want to delete your account? This action cannot be undone.",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "deleteAccountSuccess": "Your account has been deleted.",
+    "deleteAccountError": "An error occurred while deleting your account."
+  }
+}

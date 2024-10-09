@@ -1,7 +1,12 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { getUser, getUserInfoPermission, getUsers } from '@/api'
-import { IQuery } from '@/types'
+import { getUser, getUserInfoPermission, getUsers, updateUser, uploadProfilePicture } from '@/api'
+import {
+  IQuery,
+  IUpdateProductRequisitionGeneralInfo,
+  IUpdateUserGeneralInfo,
+  IUserInfo
+} from '@/types'
 
 export const useUsers = (q: IQuery) => {
   return useQuery({
@@ -26,5 +31,25 @@ export const useUserInfoPermission = () => {
     queryFn: () => getUserInfoPermission(),
     select: (data) => data.result,
     enabled: false // Only run the query if the user is authenticated
+  })
+}
+
+export const useUploadProfilePicture = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (file: File) => uploadProfilePicture(file),
+    onSuccess: () => {
+      // queryClient.invalidateQueries('user-info')
+    }
+  })
+}
+
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: IUpdateUserGeneralInfo) => updateUser(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user-info'] })
+    }
   })
 }
