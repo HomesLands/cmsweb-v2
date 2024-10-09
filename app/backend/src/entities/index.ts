@@ -22,3 +22,4 @@ export * from "./product-warehouse.entity";
 export * from "./warehouse.entity";
 export * from "./rfid.entity";
 export * from "./temporary-product.entity";
+export * from "./resource.entity";

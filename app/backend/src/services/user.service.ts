@@ -77,10 +77,10 @@ class UserService {
     });
     if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 
-    const hasAbility = ability.can(Action.READ, user);
-    if (!hasAbility) {
-      throw new GlobalError(StatusCodes.FORBIDDEN);
-    }
+    // const hasAbility = ability.can(Action.READ, user);
+    // if (!hasAbility) {
+    //   throw new GlobalError(StatusCodes.FORBIDDEN);
+    // }
 
     const results = mapper.map(user, User, UserResponseDto);
     return results;

@@ -484,6 +484,21 @@ export const ErrorCodes: TErrorCode = {
     code: 1108,
     message: "Error get file from request",
   },
+  INVALID_RESOURCE_NAME: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1109,
+    message: "Resource name invalid",
+  },
+  RESOURCE_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1110,
+    message: "Resource not found",
+  },
+  RESOURCE_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1111,
+    message: "Resource is existed",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]

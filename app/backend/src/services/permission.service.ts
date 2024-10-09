@@ -22,7 +22,7 @@ class PermissionService {
     options: TQueryRequest
   ): Promise<TPaginationOptionResponse<PermissionResponseDto[]>> {
     // Get the total number of authorities
-    const totalPermissions = await authorityRepository.count();
+    const totalPermissions = await permissionRepository.count();
 
     // Parse and validate pagination parameters
     let pageSize =
@@ -44,7 +44,7 @@ class PermissionService {
       order: { role: { nameNormalize: "DESC" }, createdAt: "DESC" },
       take: pageSize,
       skip: (page - 1) * pageSize,
-      relations: ["role", "authority"],
+      relations: ["role", "authority", "resource"],
     });
 
     const results = mapper.mapArray(

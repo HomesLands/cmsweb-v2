@@ -18,3 +18,4 @@ export * from "./warehouse-request.dto";
 export * from "./product-warehouse-request.dto";
 export * from "./temporary-product-request.dto";
 export * from "./temporary-product-request.dto";
+export * from "./resource-request.dto";

@@ -94,7 +94,7 @@ class AuthorityService {
     plainData: UpdateAuthorityRequestDto,
     ability?: Ability<[Action, Subjects], MongoQuery>
   ): Promise<AuthorityResponseDto> {
-    if (!ability) throw new GlobalError(StatusCodes.FORBIDDEN);
+    // if (!ability) throw new GlobalError(StatusCodes.FORBIDDEN);
 
     const requestData = plainToClass(UpdateAuthorityRequestDto, plainData);
     const errors = await validate(requestData);
@@ -103,8 +103,8 @@ class AuthorityService {
     const authority = await authorityRepository.findOneBy({ slug });
     if (!authority) throw new GlobalError(ErrorCodes.AUTHORITY_NOT_FOUND);
 
-    if (!ability.can(Action.UPDATE, authority))
-      throw new GlobalError(StatusCodes.FORBIDDEN);
+    // if (!ability.can(Action.UPDATE, authority))
+    //   throw new GlobalError(StatusCodes.FORBIDDEN);
 
     Object.assign(authority, requestData);
     const updatedAuthority = await authorityRepository.save(authority);

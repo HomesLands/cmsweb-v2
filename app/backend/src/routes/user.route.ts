@@ -8,7 +8,11 @@ import { Router } from "express";
 export const userRoute: Router = Router();
 
 // [GET] /api/v1/users
-userRoute.get("/", userController.getAllUsers);
+userRoute.get(
+  "/",
+  authMiddleware.hasPermission(Action.READ, User),
+  userController.getAllUsers
+);
 
 // [GET] /api/v1/users/info/permissions
 userRoute.get("/info/permissions", userController.getUserPermissions);

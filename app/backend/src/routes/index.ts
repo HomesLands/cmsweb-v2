@@ -26,6 +26,7 @@ import { assignedUserApprovalRoute } from "./assigned-user-approval.route";
 import { warehouseRoute } from "./warehouse.route";
 import { productWarehouseRoute } from "./product-warehouse.route";
 import { fileRoute } from "./file.route";
+import { resourceRoute } from "./resource.route";
 
 const baseApi: Router = Router();
 
@@ -75,6 +76,8 @@ export const registerRoutes = (app: Express) => {
   baseApi.use("/userDepartments", userDepartmentRoute);
 
   baseApi.use("/assignedUserApprovals", assignedUserApprovalRoute);
+
+  baseApi.use("/resources", resourceRoute);
 
   app.use("/api/v1", baseApi);
 

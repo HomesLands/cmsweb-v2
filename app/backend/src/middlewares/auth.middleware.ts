@@ -77,7 +77,7 @@ class AuthMiddleware {
   }
 
   /**
-   * Middleware to check role of user.
+   * Middleware to check user permission.
    * @param {Action} action
    * @param {any} entity
    * @returns {<(req: Request, res: Response, next: NextFunction) => void}

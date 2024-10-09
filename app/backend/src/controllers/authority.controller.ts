@@ -150,6 +150,7 @@ class AuthorityController {
    *       1071:
    *         description: Authority could not be found
    */
+
   public async getAuthorityBySlug(
     req: Request,
     res: Response,

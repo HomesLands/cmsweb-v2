@@ -19,3 +19,4 @@ export { default as userDepartmentService } from "./user-department.service";
 export { default as assignedUserApprovalService } from "./assigned-user-approval.service";
 export { default as warehouseService } from "./warehouse.service";
 export { default as productWarehouseService } from "./product-warehouse.service";
+export { default as resourceService } from "./resource.service";

@@ -36,3 +36,4 @@ export * from "./temporary-product.type";
 export * from "./file.type";
 export * from "./approval-log.types";
 export * from "./user.type";
+export * from "./resource.type";
