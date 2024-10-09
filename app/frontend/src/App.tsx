@@ -8,7 +8,8 @@ import { router } from '@/router'
 import './i18n'
 import { AxiosError, isAxiosError } from 'axios'
 import { IApiResponse } from './types'
-import { showErrorToast } from './utils'
+// import { showErrorToast } from './utils'
+import { showErrorToast } from '@/utils'
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
