@@ -14,6 +14,22 @@
     "giveBackRequestSuccess": "Give back request successfully",
     "giveBackRequestError": "Give back request failed",
     "cancelRequestSuccess": "Cancel request successfully",
-    "cancelRequestError": "Cancel request failed"
+    "cancelRequestError": "Cancel request failed",
+    "productAlreadyExists": "Product already exists in requisition",
+    "invalidEmail": "Invalid email",
+    "pathNotFound": "Path not found",
+    "invalidUsername": "Invalid username",
+    "userNotFound": "User not found",
+    "unableToSaveLoginSession": "Unable to save login session",
+    "userAlreadyExists": "User already exists",
+    "undefinedError": "Undefined error",
+    "invalidPassword": "Invalid password",
+    "invalidFirstName": "Invalid first name",
+    "invalidLastName": "Invalid last name",
+    "invalidFullName": "Invalid full name",
+    "invalidRefreshToken": "Invalid refresh token",
+    "sessionExpired": "Session expired",
+    "accessDenied": "Access denied",
+    "loginFailed": "Username or password is incorrect"
   }
 }
