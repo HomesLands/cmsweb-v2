@@ -92,31 +92,22 @@ class UserService {
     const user = await userRepository.findOne({
       where: { id: userId },
       relations: [
-        "userRoles",
-        "userRoles.role",
-        "userRoles.role.permissions",
-        "userRoles.role.permissions.authority",
+        "userRoles.role.rolePermissions.permission.authority",
+        "userRoles.role.rolePermissions.permission.resource",
       ],
     });
     if (!user) return [];
     if (!user.userRoles) return [];
     const scope: UserPermissionResponseDto[] = user.userRoles
+      .filter((item) => item.role && item.role.nameNormalize)
       .map((item) => {
-        if (!item.role || !item.role.nameNormalize) return undefined; // Skip items without a role or nameNormalize
-
-        const authorities: string[] = item.role.permissions
-          .map((permission) => permission.authority?.nameNormalize)
-          .filter((name): name is string => name !== undefined); // Filters out undefined values
+        const permissions: never[] = [];
 
         return {
           role: item.role.nameNormalize,
-          authorities,
+          permissions,
         };
-      })
-      .filter(
-        (item): item is { role: string; authorities: string[] } =>
-          item !== undefined
-      ); // Filters out undefined results
+      });
 
     return scope;
   }

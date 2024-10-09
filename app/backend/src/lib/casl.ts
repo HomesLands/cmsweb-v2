@@ -42,23 +42,23 @@ export type Subjects =
       | typeof ApprovalLog
       | typeof AssignedUserApproval
       | typeof Authority
-      | Company
-      | Department
-      | File
-      | Permission
-      | Product
-      | ProductRequisitionForm
-      | ProductWarehouse
-      | Project
-      | RFID
-      | RequestProduct
-      | Role
-      | Site
-      | TemporaryProduct
-      | UserApproval
-      | UserDepartment
-      | UserRole
-      | Warehouse
+      | typeof Company
+      | typeof Department
+      | typeof File
+      | typeof Permission
+      | typeof Product
+      | typeof ProductRequisitionForm
+      | typeof ProductWarehouse
+      | typeof Project
+      | typeof RFID
+      | typeof RequestProduct
+      | typeof Role
+      | typeof Site
+      | typeof TemporaryProduct
+      | typeof UserApproval
+      | typeof UserDepartment
+      | typeof UserRole
+      | typeof Warehouse
     >
   | "all";
 // Type declaration for Subjects
@@ -95,9 +95,9 @@ export async function createAbilities(
     await Promise.all(
       user.userRoles.map(async (userRole) => {
         return Promise.all(
-          userRole.role.permissions.map(async (permission) => {
-            const authority = permission?.authority;
-            const resource = permission?.resource;
+          userRole.role.rolePermissions.map(async (rolePermission) => {
+            const authority = rolePermission.permission?.authority;
+            const resource = rolePermission.permission?.resource;
 
             if (authority?.nameNormalize && resource?.name) {
               let Entity = resource.name as any;
@@ -107,7 +107,7 @@ export async function createAbilities(
               const action =
                 Action[authority.nameNormalize as keyof typeof Action]; // Convert action to enum
               // Prepare the conditions for the `can` method
-              const conditions = permission?.requiredOwner
+              const conditions = rolePermission.permission?.requiredOwner
                 ? { createdBy: user.id }
                 : {};
 

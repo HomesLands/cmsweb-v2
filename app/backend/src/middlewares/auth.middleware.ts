@@ -59,8 +59,8 @@ class AuthMiddleware {
       const user = await userRepository.findOne({
         where: { slug: sub },
         relations: [
-          "userRoles.role.permissions.authority",
-          "userRoles.role.permissions.resource",
+          "userRoles.role.rolePermissions.permission.authority",
+          "userRoles.role.rolePermissions.permission.resource",
         ],
       });
 

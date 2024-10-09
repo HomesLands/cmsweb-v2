@@ -18,18 +18,18 @@ class PermissionController {
    *     CreatePermissionRequestDto:
    *       type: object
    *       required:
-   *         - roleSlug
+   *         - resourceSlug
    *         - authoritySlug
    *       properties:
-   *         roleSlug:
+   *         resourceSlug:
    *           type: string
-   *           description: Role code. Start with ROLE_
+   *           description: Resource slug
    *         authoritySlug:
    *           type: string
    *           description: Authority code
    *       example:
-   *         roleSlug: V56Ck-iUuV
-   *         authoritySlug: G4-uaU14OY
+   *         resourceSlug: V56Ck_iUuV
+   *         authoritySlug: G4_uaU14OY
    */
 
   /**

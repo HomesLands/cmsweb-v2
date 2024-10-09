@@ -5,7 +5,7 @@ export class CreatePermissionRequestDto {
   // @IsNotEmpty({message: "INVALID_PRODUCT_NAME"})
   @Expose()
   @AutoMap()
-  roleSlug?: string;
+  resourceSlug?: string;
 
   // @IsNotEmpty({ message: "INVALID_PRODUCT_UNIT" })
   @Expose()

@@ -22,6 +22,7 @@ import { warehouseMapper } from "./warehouse.mapper";
 import { productWarehouseMapper } from "./product-warehouse.mapper";
 import { temporaryProductMapper } from "./temporary-product.mapper";
 import { resourceMapper } from "./resource.mapper";
+import { rolePermissionMapper } from "./role-permission.mapper";
 
 export const mapper = createMapper({
   strategyInitializer: classes(),
@@ -49,3 +50,4 @@ warehouseMapper(mapper);
 productWarehouseMapper(mapper);
 temporaryProductMapper(mapper);
 resourceMapper(mapper);
+rolePermissionMapper(mapper);

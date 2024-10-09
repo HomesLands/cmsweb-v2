@@ -17,7 +17,7 @@ export const resourceMapper: MappingProfile = (mapper: Mapper) => {
   createMap(
     mapper,
     CreateResourceRequestDto,
-    ResourceResponseDto,
+    Resource,
     forMember(
       (destination) => destination.name,
       mapFrom((source) => source.name?.toLocaleLowerCase().replace(" ", "-"))

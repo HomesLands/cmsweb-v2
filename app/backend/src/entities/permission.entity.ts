@@ -1,17 +1,12 @@
-import { Entity, ManyToOne, JoinColumn, Column } from "typeorm";
+import { Entity, ManyToOne, JoinColumn, Column, OneToMany } from "typeorm";
 import { Base } from "@entities/base.entity";
-import { Role } from "./role.entity";
 import { Authority } from "./authority.entity";
 import { AutoMap } from "@automapper/classes";
 import { Resource } from "./resource.entity";
+import { RolePermission } from "./role-permission.entity";
 
 @Entity("permission_tbl")
 export class Permission extends Base {
-  @ManyToOne(() => Role, (role) => role.permissions)
-  @JoinColumn({ name: "role_column" })
-  @AutoMap()
-  role: Role;
-
   @ManyToOne(() => Authority, (authority) => authority.permissions)
   @JoinColumn({ name: "authority_column" })
   @AutoMap()
@@ -25,4 +20,11 @@ export class Permission extends Base {
   @Column({ name: "required_owner_column" })
   @AutoMap()
   requiredOwner?: boolean = false;
+
+  // A role can have many permissions
+  @OneToMany(
+    () => RolePermission,
+    (rolePermission) => rolePermission.permission
+  )
+  rolePermissions: RolePermission[];
 }

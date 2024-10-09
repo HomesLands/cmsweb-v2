@@ -119,12 +119,7 @@ class TokenService {
   private async buildScope(identity: User): Promise<string> {
     const user = await userRepository.findOne({
       where: { id: identity.id },
-      relations: [
-        "userRoles",
-        "userRoles.role",
-        "userRoles.role.permissions",
-        "userRoles.role.permissions.authority",
-      ],
+      relations: ["userRoles.role.rolePermissions.permission.authority"],
     });
     if (!user) return `[]`;
     if (!user.userRoles) return `[]`;
