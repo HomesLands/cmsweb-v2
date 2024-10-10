@@ -7,6 +7,7 @@ export interface IPermission extends IBase {
 }
 
 export interface ICreatePermission {
-  roleSlug: string
+  resourceSlug: string
   authoritySlug: string
+  requiredOwner: boolean
 }

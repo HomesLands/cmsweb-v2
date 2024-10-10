@@ -10,6 +10,7 @@ import enTableData from '@/locales/en/table-data.json'
 import enToast from '@/locales/en/toast.json'
 import enAuthorities from '@/locales/en/authorities.json'
 import enPermissions from '@/locales/en/permissions.json'
+import enUsers from '@/locales/en/users.json'
 
 import viAuth from '@/locales/vi/auth.json'
 import viSidebar from '@/locales/vi/sidebar.json'
@@ -19,6 +20,7 @@ import viTableData from '@/locales/vi/table-data.json'
 import viToast from '@/locales/vi/toast.json'
 import viAuthorities from '@/locales/vi/authorities.json'
 import viPermissions from '@/locales/vi/permissions.json'
+import viUsers from '@/locales/vi/users.json'
 
 i18n
   .use(LanguageDetector) // Tự động phát hiện ngôn ngữ
@@ -33,7 +35,8 @@ i18n
         authorities: enAuthorities,
         tableData: enTableData,
         toast: enToast,
-        permissions: enPermissions
+        permissions: enPermissions,
+        users: enUsers
       },
       vi: {
         auth: viAuth,
@@ -43,7 +46,8 @@ i18n
         tableData: viTableData,
         toast: viToast,
         authorities: viAuthorities,
-        permissions: viPermissions
+        permissions: viPermissions,
+        users: viUsers
       }
     },
     lng: window.localStorage.getItem('i18nextLng') || 'vi',

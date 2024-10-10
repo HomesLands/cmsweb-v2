@@ -7,26 +7,29 @@ import {
   FormControl,
   FormMessage,
   Form,
-  Button
+  Button,
+  Input
 } from '@/components/ui'
 import { createUserRoleSchema, TCreateUserRoleSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SelectRole, SelectUser } from '../select'
 import { useTranslation } from 'react-i18next'
 import React from 'react'
+import { IUserInfo } from '@/types'
 
 interface IFormAddEmployeeRoleProps {
+  user: IUserInfo
   onSubmit: (data: TCreateUserRoleSchema) => void
 }
 
-export const AddEmployeeRoleForm: React.FC<IFormAddEmployeeRoleProps> = ({ onSubmit }) => {
+export const AddEmployeeRoleForm: React.FC<IFormAddEmployeeRoleProps> = ({ user, onSubmit }) => {
   const { t } = useTranslation('users')
   const form = useForm<TCreateUserRoleSchema>({
     resolver: zodResolver(createUserRoleSchema),
     defaultValues: {
       user: {
-        label: '',
-        value: ''
+        label: user.fullname,
+        value: user.slug
       },
       role: {
         label: '',
@@ -48,11 +51,7 @@ export const AddEmployeeRoleForm: React.FC<IFormAddEmployeeRoleProps> = ({ onSub
           <FormItem>
             <FormLabel>{t('users.selectUser')}</FormLabel>
             <FormControl>
-              <SelectUser
-                onChange={(values) => {
-                  form.setValue('user', { label: values?.label || '', value: values?.value || '' })
-                }}
-              />
+              <Input value={form.getValues('user.label')} disabled />
             </FormControl>
             <FormMessage />
           </FormItem>
