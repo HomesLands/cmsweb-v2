@@ -1,13 +1,13 @@
 import { NavLink, Outlet } from 'react-router-dom'
-
 import { PinLeftIcon, PinRightIcon } from '@radix-ui/react-icons'
-import { Button } from '@/components/ui'
 
+import { Button } from '@/components/ui'
 import { HeaderDropdown, ModeToggle } from '@/components/app/dropdown'
 import { SidebarDrawerMobile, SidebarDrawer } from '@/components/app/drawer'
 import { PopoverNotification } from '@/components/app/popover'
-import { useLayoutStore, useThemeStore } from '@/stores'
 import { TbeLogo } from '@/assets/images'
+
+import { useLayoutStore, useThemeStore } from '@/stores'
 import { cn } from '@/lib/utils'
 
 const DashboardLayout = () => {
@@ -48,7 +48,7 @@ const DashboardLayout = () => {
               <NavLink to={'/'} className="flex gap-2 items-center font-semibold whitespace-nowrap">
                 <img src={TbeLogo} height={28} width={28} />
                 <span
-                  className={`whitespace-nowrap text-lg font-extrabold ${isMinimized ? 'hidden' : 'block'}`}
+                  className={`border-l border-muted-foreground px-2 whitespace-nowrap text-lg font-extrabold ${isMinimized ? 'hidden' : 'block'}`}
                 >
                   TBE CMS
                 </span>

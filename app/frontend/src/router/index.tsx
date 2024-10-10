@@ -22,7 +22,11 @@ import {
   EmployeePage,
   PersonalAccountPage,
   AssignedApproverPage,
-  CreateAssignedApproverPage
+  CreateAssignedApproverPage,
+  CompanyPage,
+  CreateCompanyPage,
+  SitePage,
+  CreateSitePage
 } from './loadable'
 
 export const router = createBrowserRouter([
@@ -202,6 +206,34 @@ export const router = createBrowserRouter([
       {
         path: 'add',
         element: <CreateAssignedApproverPage />
+      }
+    ]
+  },
+  {
+    path: ROUTE.COMPANY,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: <CompanyPage />
+      },
+      {
+        path: 'add',
+        element: <CreateCompanyPage />
+      }
+    ]
+  },
+  {
+    path: ROUTE.SITE,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: <SitePage />
+      },
+      {
+        path: 'add',
+        element: <CreateSitePage />
       }
     ]
   }

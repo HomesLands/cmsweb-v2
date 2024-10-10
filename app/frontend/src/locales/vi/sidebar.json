@@ -20,6 +20,12 @@
     "employees": "Nhân sự",
 
     "assignedApprover": "Người duyệt",
-    "createAssignedApprover": "Tạo người duyệt"
+    "createAssignedApprover": "Tạo người duyệt",
+
+    "companies": "Công ty",
+    "createCompany": "Tạo công ty",
+
+    "sites": "Địa điểm",
+    "createSite": "Tạo địa điểm"
   }
 }

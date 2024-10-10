@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { NavLink, useLocation } from 'react-router-dom'
+import { Dot } from 'lucide-react'
 
 import {
   Accordion,
@@ -23,7 +24,7 @@ import { ISidebarRoute } from '@/types'
 export function SidebarDrawer() {
   const { isMinimized, toggleMinimized } = useLayoutStore()
   const location = useLocation()
-  const { t } = useTranslation('sidebar') // useTranslation hook with 'sidebar' namespace
+  const { t } = useTranslation('sidebar')
 
   // Translate submenu items
   const translatedSidebarRoute = (sidebarRoute: ISidebarRoute) => ({
@@ -91,12 +92,15 @@ export function SidebarDrawer() {
                           key={item.title}
                           to={item.path}
                           className={({ isActive }) =>
-                            `flex items-center gap-2 py-2 ml-8 duration-300 rounded-lg hover:text-primary ${
+                            ` text-muted-foreground flex items-center gap-2 py-2 ml-4 duration-300 rounded-lg hover:text-primary ${
                               isActive ? 'text-primary font-semibold' : ''
                             }`
                           }
                         >
-                          <span className="font-sans font-normal">{item.title}</span>
+                          <span className="flex flex-row gap-2 items-center font-sans text-xs font-normal">
+                            <Dot className="w-3 h-3" />
+                            {item.title}
+                          </span>
                         </NavLink>
                       ))}
                     </Card>

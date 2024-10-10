@@ -20,6 +20,12 @@
     "employees": "Employees",
 
     "assignedApprover": "Assigned approver",
-    "createAssignedApprover": "Create assigned approver"
+    "createAssignedApprover": "Create assigned approver",
+
+    "companies": "Companies",
+    "createCompany": "Create company",
+
+    "sites": "Sites",
+    "createSite": "Create site"
   }
 }

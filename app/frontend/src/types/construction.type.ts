@@ -1,4 +1,4 @@
-export interface ISite {
+export interface IConstruction {
   slug: string
   name: string
   address: string

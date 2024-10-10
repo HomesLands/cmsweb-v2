@@ -1,4 +1,14 @@
-import { KeyRoundIcon, ScanFaceIcon, UserCheckIcon, UserCogIcon, UsersIcon } from 'lucide-react'
+import {
+  Building2Icon,
+  BuildingIcon,
+  KeyRoundIcon,
+  MapIcon,
+  MapPinIcon,
+  ScanFaceIcon,
+  UserCheckIcon,
+  UserCogIcon,
+  UsersIcon
+} from 'lucide-react'
 import { ArchiveIcon } from '@radix-ui/react-icons'
 
 import type { ISidebarRoute } from '@/types'
@@ -110,6 +120,36 @@ export const sidebarRoutes: ISidebarRoute[] = [
         title: 'sidebar.createAssignedApprover',
         path: ROUTE.ADD_ASSIGNED_APPROVER
         // authorities: [Authority.CREATE_PERMISSION]
+      }
+    ]
+  },
+  {
+    title: 'sidebar.companies',
+    path: ROUTE.COMPANY,
+    icon: Building2Icon,
+    children: [
+      {
+        title: 'sidebar.companies',
+        path: ROUTE.COMPANY
+      },
+      {
+        title: 'sidebar.createCompany',
+        path: ROUTE.ADD_COMPANY
+      }
+    ]
+  },
+  {
+    title: 'sidebar.sites',
+    path: ROUTE.SITE,
+    icon: MapPinIcon,
+    children: [
+      {
+        title: 'sidebar.sites',
+        path: ROUTE.SITE
+      },
+      {
+        title: 'sidebar.createSite',
+        path: ROUTE.ADD_SITE
       }
     ]
   }

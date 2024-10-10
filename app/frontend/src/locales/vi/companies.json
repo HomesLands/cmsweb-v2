@@ -1,0 +1,17 @@
+{
+  "companies": {
+    "list": "Danh sách công ty",
+    "slug": "Mã công ty",
+    "name": "Tên công ty",
+    "director": "Người đại diện",
+    "directorSlug": "Mã người đại diện",
+    "address": "Địa chỉ",
+    "phone": "Số điện thoại",
+    "email": "Email",
+    "website": "Website",
+    "description": "Mô tả",
+
+    "createCompany": "Tạo công ty",
+    "createCompanyDescription": "Tạo thêm một công ty mới"
+  }
+}

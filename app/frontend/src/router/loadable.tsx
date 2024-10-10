@@ -103,3 +103,27 @@ export const CreateAssignedApproverPage = React.lazy(() =>
     default: module.CreateAssignedApprover
   }))
 )
+
+export const CompanyPage = React.lazy(() =>
+  import('@/views/companies').then((module) => ({
+    default: module.Companies
+  }))
+)
+
+export const CreateCompanyPage = React.lazy(() =>
+  import('@/views/companies').then((module) => ({
+    default: module.CreateCompany
+  }))
+)
+
+export const SitePage = React.lazy(() =>
+  import('@/views/sites').then((module) => ({
+    default: module.Sites
+  }))
+)
+
+export const CreateSitePage = React.lazy(() =>
+  import('@/views/sites').then((module) => ({
+    default: module.CreateSite
+  }))
+)
