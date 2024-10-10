@@ -1,6 +1,10 @@
 import { mapper } from "@mappers";
-import { User } from "@entities";
-import { UserPermissionResponseDto, UserResponseDto } from "@dto/response";
+import { Permission, User } from "@entities";
+import {
+  PermissionResponseDto,
+  UserPermissionResponseDto,
+  UserResponseDto,
+} from "@dto/response";
 import { userRepository } from "@repositories";
 import {
   TPaginationOptionResponse,
@@ -10,6 +14,10 @@ import {
 } from "@types";
 import { GlobalError, ErrorCodes } from "@exception";
 import fileService from "./file.service";
+import { Ability, MongoQuery } from "@casl/ability";
+import { Action } from "@enums";
+import { Subjects } from "@lib";
+import { StatusCodes } from "http-status-codes";
 
 class UserService {
   public async getAllUsers(
@@ -54,7 +62,12 @@ class UserService {
     };
   }
 
-  public async getUser(userId: string): Promise<UserResponseDto> {
+  public async getUser(
+    userId?: string,
+    ability?: Ability<[Action, Subjects], MongoQuery>
+  ): Promise<UserResponseDto> {
+    if (!ability) throw new GlobalError(StatusCodes.FORBIDDEN);
+
     const user = await userRepository.findOne({
       where: {
         id: userId,
@@ -68,6 +81,11 @@ class UserService {
     });
     if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 
+    // const hasAbility = ability.can(Action.READ, user);
+    // if (!hasAbility) {
+    //   throw new GlobalError(StatusCodes.FORBIDDEN);
+    // }
+
     const results = mapper.map(user, User, UserResponseDto);
     return results;
   }
@@ -78,31 +96,24 @@ class UserService {
     const user = await userRepository.findOne({
       where: { id: userId },
       relations: [
-        "userRoles",
-        "userRoles.role",
-        "userRoles.role.permissions",
-        "userRoles.role.permissions.authority",
+        "userRoles.role.rolePermissions.permission.authority",
+        "userRoles.role.rolePermissions.permission.resource",
       ],
     });
-    if (!user) return [];
-    if (!user.userRoles) return [];
+    if (!user?.userRoles) return [];
     const scope: UserPermissionResponseDto[] = user.userRoles
+      .filter((item) => item.role && item.role.nameNormalize)
       .map((item) => {
-        if (!item.role || !item.role.nameNormalize) return undefined; // Skip items without a role or nameNormalize
-
-        const authorities: string[] = item.role.permissions
-          .map((permission) => permission.authority?.nameNormalize)
-          .filter((name): name is string => name !== undefined); // Filters out undefined values
+        const permissions =
+          item?.role?.rolePermissions?.map((item) =>
+            mapper.map(item.permission, Permission, PermissionResponseDto)
+          ) || [];
 
         return {
           role: item.role.nameNormalize,
-          authorities,
+          permissions,
         };
-      })
-      .filter(
-        (item): item is { role: string; authorities: string[] } =>
-          item !== undefined
-      ); // Filters out undefined results
+      });
 
     return scope;
   }

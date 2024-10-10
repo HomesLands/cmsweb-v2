@@ -36,7 +36,7 @@ class AuthorityController {
    *         nameNormalize: CREATE_USER
    *         nameDisplay: Create user
    *         description: Enable create user
-   * 
+   *
    *     UpdateAuthorityRequestDto:
    *       type: object
    *       required:
@@ -57,7 +57,7 @@ class AuthorityController {
    *         nameNormalize: CREATE_USER
    *         nameDisplay: Tạo người dùng
    *         description: Cho phép tạo người dùng mới
-   * 
+   *
    */
 
   /**
@@ -150,6 +150,7 @@ class AuthorityController {
    *       1071:
    *         description: Authority could not be found
    */
+
   public async getAuthorityBySlug(
     req: Request,
     res: Response,
@@ -253,12 +254,8 @@ class AuthorityController {
     try {
       const slug = req.params.slug as string;
       const requestData = req.body as TUpdateAuthorityRequestDto;
-
-      const result: AuthorityResponseDto = 
-        await authorityService.updateAuthority(
-          slug,
-          requestData
-        );
+      const result: AuthorityResponseDto =
+        await authorityService.updateAuthority(slug, requestData, req.ability);
       const response: TApiResponse<AuthorityResponseDto> = {
         code: StatusCodes.OK,
         error: false,

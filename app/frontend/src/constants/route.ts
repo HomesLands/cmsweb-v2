@@ -5,6 +5,7 @@ export const ROUTE = {
   REGISTER: '/auth/register',
   PRODUCT_REQUISITIONS: '/product-requisitions',
   ADD_PRODUCT_REQUISITIONS: '/product-requisitions/add',
+  EDIT_PRODUCT_REQUISITIONS: '/product-requisitions/edit/:slug',
 
   // Authority
   AUTHORITY: '/authorities',

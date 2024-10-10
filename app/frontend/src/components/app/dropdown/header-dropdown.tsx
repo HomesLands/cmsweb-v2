@@ -1,5 +1,8 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { ExitIcon } from '@radix-ui/react-icons'
+import { UserIcon } from 'lucide-react'
 
 import {
   DropdownMenu,
@@ -13,18 +16,14 @@ import {
 } from '@/components/ui'
 import { DialogLogout } from '@/components/app/dialog'
 import { useAuthStore, useUserInfoPermissionsStore, useUserStore } from '@/stores'
-import { useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast'
-import { useTranslation } from 'react-i18next'
-import { Authority, ROUTE } from '@/constants'
-import { UserIcon } from 'lucide-react'
+import { Authority, Resource, ROUTE } from '@/constants'
 import { hasRequiredPermissions } from '@/utils/auth'
+import { showToast } from '@/utils'
 
 export function HeaderDropdown() {
   const { t } = useTranslation('auth')
   const { setLogout } = useAuthStore()
   const [open, setOpen] = useState(false)
-  // const mutation = useLogout()
   const { removeUserInfo, userInfo } = useUserStore()
   const { clearUserRoles } = useUserInfoPermissionsStore()
   const navigate = useNavigate()
@@ -34,7 +33,7 @@ export function HeaderDropdown() {
     removeUserInfo()
     clearUserRoles()
     navigate(ROUTE.LOGIN)
-    toast.success(t('logout.logoutSuccess'))
+    showToast(t('logout.success'))
   }
 
   return (
@@ -51,14 +50,14 @@ export function HeaderDropdown() {
             {t('userInfo.hello')} {userInfo?.fullname}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className="cursor-pointer"
-            // onClick={() => navigate(ROUTE.PERSONAL_ACCOUNT)}
-          >
-            {hasRequiredPermissions([Authority.READ_USER]) && (
-              <div className="flex gap-2 items-center">
+          <DropdownMenuItem className="cursor-pointer">
+            {hasRequiredPermissions({ authority: Authority.READ, resource: Resource.USER }) && (
+              <div
+                className="flex gap-2 items-center"
+                onClick={() => navigate(ROUTE.PERSONAL_ACCOUNT)}
+              >
                 <UserIcon className="danger-icon" />
-                Thông tin tài khoản
+                {t('userInfo.accountInfo')}
               </div>
             )}
           </DropdownMenuItem>

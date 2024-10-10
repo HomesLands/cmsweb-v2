@@ -1,13 +1,5 @@
-import { createNamespace } from "cls-hooked";
+import { AsyncLocalStorage } from "async_hooks";
 
-const session = createNamespace("App");
+type TStore = { userId?: string };
 
-export const setUserId = (userId?: string) => {
-  session.run(() => {
-    session.set("userId", userId);
-  });
-};
-
-export const getUserId = () => {
-  return session.get("userId");
-};
+export const asl = new AsyncLocalStorage<TStore>();

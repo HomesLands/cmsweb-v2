@@ -15,6 +15,7 @@ import { useLogin, useUser, useUserInfoPermission } from '@/hooks'
 import { IApiResponse, ILoginResponse, IUserInfo } from '@/types'
 import { useAuthStore, useUserInfoPermissionsStore, useUserStore } from '@/stores'
 import { ROUTE } from '@/constants'
+import { showErrorToast, showToast } from '@/utils'
 
 const Login: React.FC = () => {
   const { t } = useTranslation(['auth'])
@@ -52,11 +53,13 @@ const Login: React.FC = () => {
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.code === 'ECONNABORTED') {
-          toast.error(t('login.loginFailed'))
+          // toast.error(t('login.loginFailed'))
+          showToast(error.response?.data?.errorCode)
           return
         }
         if (error.code === 'ERR_NETWORK') {
-          toast.error(t('login.serverError'))
+          // toast.error(t('login.serverError'))
+          showErrorToast(error.response?.data?.errorCode)
           return
         }
       }
@@ -66,9 +69,9 @@ const Login: React.FC = () => {
   }
 
   return (
-    <div className="relative flex items-center justify-center min-h-screen bg-gray-100">
-      <img src={LoginBackground} className="absolute top-0 left-0 object-fill w-full h-full" />
-      <div className="relative z-10 flex items-center justify-center w-full h-full ">
+    <div className="flex relative justify-center items-center min-h-screen bg-gray-100">
+      <img src={LoginBackground} className="object-fill absolute top-0 left-0 w-full h-full" />
+      <div className="flex relative z-10 justify-center items-center w-full h-full">
         <Card className="min-w-[24rem] mx-auto border-none shadow-xl backdrop-blur-xl">
           <CardHeader>
             <CardTitle className="text-2xl"> {t('login.title')} </CardTitle>

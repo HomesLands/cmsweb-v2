@@ -20,7 +20,7 @@ export const SelectRole: FC<SelectRoleProps> = ({ onChange }) => {
   const { data: roles } = useRoles({
     order: 'DESC',
     page: pagination.pageIndex,
-    pageSize: pagination.pageSize
+    pageSize: 1000
   })
 
   const handleScrollToBottom = () => {
@@ -43,7 +43,7 @@ export const SelectRole: FC<SelectRoleProps> = ({ onChange }) => {
 
   return (
     <ReactSelect
-      onMenuScrollToBottom={handleScrollToBottom}
+      // onMenuScrollToBottom={handleScrollToBottom}
       options={allRoles}
       onChange={onChange}
     />

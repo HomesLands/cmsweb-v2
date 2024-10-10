@@ -7,9 +7,10 @@ export class FileUploadService {
     if (!requestData) throw new GlobalError(ErrorCodes.FILE_NOT_FOUND);
 
     const file = new File();
+    const filename = requestData.originalname.split(".")[0].replace(" ", "-");
     Object.assign(file, {
       data: requestData.buffer.toString("base64"),
-      name: `${requestData.originalname.split(".")[0]}-${Date.now()}`,
+      name: `${filename}-${Date.now()}`,
       extension: requestData.originalname.split(".")[1],
       mimetype: requestData.mimetype,
       size: requestData.size,

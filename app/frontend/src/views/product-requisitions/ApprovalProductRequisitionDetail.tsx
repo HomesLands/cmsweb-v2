@@ -159,8 +159,8 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-between items-center">
-        <Label className="flex gap-1 items-center font-semibold text-normal text-md font-beVietNam">
+      <div className="flex items-center justify-between">
+        <Label className="flex items-center gap-1 font-semibold text-normal text-md font-beVietNam">
           <ReaderIcon className="header-icon" />
           {t('requisitionDetail.requestDetail')}
         </Label>
@@ -219,22 +219,22 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
         </div>
       </div>
       <div className="mt-3">
-        <div className="flex flex-col gap-4 justify-center">
-          <div className="grid grid-cols-6 justify-between items-center py-3 mb-4 border-b-2">
+        <div className="flex flex-col justify-center gap-4">
+          <div className="grid items-center justify-between grid-cols-6 py-3 mb-4 border-b-2">
             {data?.result?.creator.userDepartments[0].department.site.company.name.includes(
               'Thái Bình'
             ) ? (
-              <div className="col-span-1 w-full">
+              <div className="w-full col-span-1">
                 <img src={TbeLogo} height={72} width={72} />
               </div>
             ) : data?.result?.creator.userDepartments[0].department.site.company.name.includes(
                 'Mekong'
               ) ? (
-              <div className="col-span-1 w-full">
+              <div className="w-full col-span-1">
                 <img src={MetekLogo} height={150} width={150} />
               </div>
             ) : (
-              <div className="col-span-1 w-full">
+              <div className="w-full col-span-1">
                 <img src={SongnamLogo} height={72} width={72} />
               </div>
             )}
@@ -257,7 +257,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           {data?.result && (
             <div className="grid grid-cols-3 gap-3 mb-4 text-sm font-beVietNam">
               <div>
-                <strong>Mức yêu tiên: </strong>
+                <strong>Mức ưu tiên: </strong>
                 <span className={data?.result?.type === 'urgent' ? 'text-red-600 font-bold' : ''}>
                   {data?.result?.type === 'normal' ? 'Bình thường' : 'Cần gấp'}
                 </span>

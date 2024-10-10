@@ -4,6 +4,35 @@ import { fileService } from "@services";
 import { GlobalError, ErrorCodes } from "@exception";
 
 class FileController {
+  /**
+   * @swagger
+   * tags:
+   *   - name: File
+   *     description: The file managing API
+   */
+
+  /**
+   * @swagger
+   * /files/{name}:
+   *   get:
+   *     summary: Get file by filename
+   *     tags: [File]
+   *     parameters:
+   *       - in: path
+   *         name: name
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: The name of file
+   *     responses:
+   *       200:
+   *         description: Get file by name successfully
+   *       500:
+   *         description: Server error
+   *       1098:
+   *         description: File not found
+   */
+
   public async getFileByName(
     req: Request,
     res: Response,

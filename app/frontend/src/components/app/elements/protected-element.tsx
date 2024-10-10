@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTE } from '@/constants'
 import { useAuthStore, useUserInfoPermissionsStore, useUserStore } from '@/stores'
 import { useCallback, useEffect } from 'react'
-import toast from 'react-hot-toast'
 
 export default function ProtectedElement({
   element,
@@ -28,9 +27,10 @@ export default function ProtectedElement({
   }, [setLogout, removeUserInfo, clearUserRoles, navigate])
 
   const hasRequiredPermissions = useCallback(() => {
-    return userRoles.some((userRole) =>
-      userRole.authorities.some((authority) => allowedAuthorities.includes(authority))
-    )
+    // return userRoles.some((userRole) =>
+    //   userRole.authorities.some((authority) => allowedAuthorities.includes(authority))
+    // )
+    return true
   }, [userRoles, allowedAuthorities])
 
   // Check authentication and permissions

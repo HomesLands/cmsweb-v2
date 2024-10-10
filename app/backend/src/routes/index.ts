@@ -11,7 +11,7 @@ import { companyRoute } from "@routes/company.route";
 import { productRequisitionFormRoute } from "@routes/product-requisition-form.route";
 import { requestProductRoute } from "@routes/request-product.route";
 
-import { authMiddleware } from "@middlewares";
+import { authMiddleware, storeMiddleware } from "@middlewares";
 import { ErrorCodes, GlobalError } from "@exception";
 import { StatusCodes } from "http-status-codes";
 import { errorCodeRoute } from "./error-code.route";
@@ -26,11 +26,13 @@ import { assignedUserApprovalRoute } from "./assigned-user-approval.route";
 import { warehouseRoute } from "./warehouse.route";
 import { productWarehouseRoute } from "./product-warehouse.route";
 import { fileRoute } from "./file.route";
+import { resourceRoute } from "./resource.route";
+import { rolePermissionRoute } from "./role-permission.route";
 
 const baseApi: Router = Router();
 
 export const registerRoutes = (app: Express) => {
-  baseApi.use(authMiddleware.authenticate);
+  baseApi.use(authMiddleware.authenticate, storeMiddleware.handler);
 
   baseApi.use("/auth", authRoute);
 
@@ -75,6 +77,10 @@ export const registerRoutes = (app: Express) => {
   baseApi.use("/userDepartments", userDepartmentRoute);
 
   baseApi.use("/assignedUserApprovals", assignedUserApprovalRoute);
+
+  baseApi.use("/resources", resourceRoute);
+
+  baseApi.use("/rolePermissions", rolePermissionRoute);
 
   app.use("/api/v1", baseApi);
 

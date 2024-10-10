@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useParams } from 'react-router'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -20,7 +20,18 @@ import {
   Popover,
   PopoverContent,
   Calendar,
-  DataTable
+  DataTable,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Label
 } from '@/components/ui'
 import {
   productRequisitionGeneralInfoSchema,
@@ -37,13 +48,14 @@ import {
   ProductRequisitionType
 } from '@/types'
 import { DateTimePicker } from '@/components/app/picker'
-import { useColumnsUpdateRequisition } from '@/views/product-requisitions/data-table/columns/columnsUpdateRequisition'
+import { useColumnsUpdateRequisition } from '@/views/product-requisitions/data-table/columns'
 import { useDebouncedInput, usePagination, useProducts } from '@/hooks'
 import {
   ProductRequisitionUpdateActionOptions,
-  useColumnsAddNewProductInRequisitionUpdate
+  useColumnsAddNewProductInRequisitionUpdate,
+  useColumnsApprovalLog
 } from '@/views/product-requisitions/data-table'
-import { DialogResubmitRequisition } from '../dialog'
+import { DialogResubmitRequisition } from '@/components/app/dialog'
 
 interface IUpdateRequisitionFormProps {
   requisition: IProductRequisitionFormInfo
@@ -78,8 +90,6 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
     order: 'DESC',
     searchTerm: debouncedInputValue
   })
-
-  console.log('requisition', requisition)
 
   const [date, setDate] = useState<Date | undefined>(
     requisition?.deadlineApproval ? new Date(requisition.deadlineApproval) : undefined
@@ -174,6 +184,13 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
     handleEditProduct,
     handleDeleteProduct
   )
+  const userApprovalColumns = useColumnsApprovalLog()
+
+  const sortedUserApprovals = useMemo(() => {
+    return [...(requisition?.userApprovals || [])].sort((a, b) =>
+      a.assignedUserApproval.roleApproval.localeCompare(b.assignedUserApproval.roleApproval)
+    )
+  }, [requisition?.userApprovals])
 
   const columnsAddNewProduct = useColumnsAddNewProductInRequisitionUpdate(slug as string)
 
@@ -372,57 +389,85 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
 
   return (
     <div className="">
-      <div className="flex flex-col gap-3 my-6">
-        <span className="font-semibold text-md">Cập nhật thông tin chung</span>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleUpdateGeneralInfo)} className="space-y-6">
-            <div className="grid grid-cols-1 gap-2">
-              {Object.keys(formFields).map((key) => (
-                <React.Fragment key={key}>
-                  {formFields[key as keyof typeof formFields]}
-                </React.Fragment>
-              ))}
-            </div>
-            <div className="flex justify-end">
-              <Button type="submit">{t('productRequisition.update')}</Button>
-            </div>
-          </form>
-        </Form>
-      </div>
-      <div className="mb-3">
-        <span className="font-semibold text-md">Thêm sản phẩm</span>
-        <DataTable
-          isLoading={isLoadingProduct}
-          columns={columnsAddNewProduct}
-          data={allProduct?.result?.items || []}
-          pages={allProduct?.result?.totalPages || 0}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-          actionOptions={ProductRequisitionUpdateActionOptions}
-          inputValue={inputValue}
-          onInputChange={setInputValue}
-          hidenInput={false} // default true
-        />
-      </div>
-      {requisition && (
-        <>
-          <div className="mt-3">
-            <span className="font-semibold text-md">Cập nhật sản phẩm</span>
-            <DataTable
-              isLoading={isLoading}
-              columns={columns}
-              data={requisition.requestProducts}
-              pages={1}
-              onPageChange={() => {}}
-              onPageSizeChange={() => {}}
-            />
-          </div>
-          {(requisition.isRecalled === true || requisition.status !== 'waiting') && (
-            <div className="flex justify-end mt-3">
-              <Button onClick={() => handleResubmit()}>{t('productRequisition.resubmit')}</Button>
-            </div>
-          )}
-        </>
+      <Tabs defaultValue="general-info" className="w-full">
+        <TabsList className="grid grid-cols-2 gap-4 mb-4 w-fit">
+          <TabsTrigger value="general-info">{t('productRequisition.generalInfo')}</TabsTrigger>
+          <TabsTrigger value="products">{t('productRequisition.productList')}</TabsTrigger>
+        </TabsList>
+        <TabsContent value="general-info">
+          <Card className="border-none">
+            <CardContent>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(handleUpdateGeneralInfo)} className="space-y-6">
+                  <div className="grid grid-cols-1 gap-4">
+                    {Object.keys(formFields).map((key) => (
+                      <React.Fragment key={key}>
+                        {formFields[key as keyof typeof formFields]}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                  <div className="flex justify-end">
+                    <Button type="submit">{t('productRequisition.update')}</Button>
+                  </div>
+                </form>
+              </Form>
+              <div className="mt-6">
+                <h3 className="mb-2 font-semibold">{t('productRequisition.approvalHistory')}</h3>
+                <DataTable
+                  isLoading={false}
+                  data={sortedUserApprovals}
+                  columns={userApprovalColumns}
+                  pages={sortedUserApprovals.length}
+                  onPageChange={() => {}}
+                  onPageSizeChange={() => {}}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="products">
+          <Card className="border-none">
+            <CardHeader>
+              {/* <CardTitle>{t('productRequisition.products')}</CardTitle> */}
+              {/* <CardDescription>{t('productRequisition.productsDescription')}</CardDescription> */}
+            </CardHeader>
+            <CardContent>
+              <div className="mb-6">
+                <h3 className="mb-2 font-semibold">{t('productRequisition.addProduct')}</h3>
+                <DataTable
+                  isLoading={isLoadingProduct}
+                  columns={columnsAddNewProduct}
+                  data={allProduct?.result?.items || []}
+                  pages={allProduct?.result?.totalPages || 0}
+                  onPageChange={handlePageChange}
+                  onPageSizeChange={handlePageSizeChange}
+                  actionOptions={ProductRequisitionUpdateActionOptions}
+                  inputValue={inputValue}
+                  onInputChange={setInputValue}
+                  hidenInput={false}
+                />
+              </div>
+              {requisition && (
+                <div className="mt-6">
+                  <h3 className="mb-2 font-semibold">{t('productRequisition.updateProduct')}</h3>
+                  <DataTable
+                    isLoading={isLoading}
+                    columns={columns}
+                    data={requisition.requestProducts}
+                    pages={1}
+                    onPageChange={() => {}}
+                    onPageSizeChange={() => {}}
+                  />
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+      {requisition && (requisition.isRecalled === true || requisition.status !== 'waiting') && (
+        <div className="flex justify-end mt-6">
+          <Button onClick={() => handleResubmit()}>{t('productRequisition.resubmit')}</Button>
+        </div>
       )}
       <DialogResubmitRequisition
         openDialog={openDialog}

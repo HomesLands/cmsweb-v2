@@ -73,7 +73,7 @@ class AssignedUserApprovalController {
    *         description: Invalid role approval
    *       1080:
    *         description: Invalid user slug
-   *       1109:
+   *       1112:
    *         description: Assigned user approval this level for site is existed
    *
    */

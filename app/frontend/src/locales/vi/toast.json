@@ -1,6 +1,6 @@
 {
   "toast": {
-    "notAddProductToRequisition": "Vui lòng thêm sản phẩm vào yêu cầu",
+    "notAddProductToRequisition": "Vui lòng thêm vật tư vào yêu cầu",
     "requestFailed": "Đã có lỗi xảy ra",
     "requestSuccess": "Yêu cầu được tạo thành công",
     "requestError": "Yêu cầu được tạo thất bại",
@@ -15,6 +15,22 @@
     "giveBackRequestSuccess": "Yêu cầu được hoàn lại thành công",
     "giveBackRequestError": "Yêu cầu được hoàn lại thất bại",
     "cancelRequestSuccess": "Yêu cầu được hủy thành công",
-    "cancelRequestError": "Yêu cầu được hủy thất bại"
+    "cancelRequestError": "Yêu cầu được hủy thất bại",
+    "productAlreadyExists": "Vật tư đã tồn tại trong phiếu yêu cầu",
+    "invalidEmail": "Email không hợp lệ",
+    "pathNotFound": "Không tìm thấy đường dẫn",
+    "invalidUsername": "Tên người dùng không hợp lệ",
+    "userNotFound": "Không tìm thấy người dùng",
+    "unableToSaveLoginSession": "Không thể lưu phiên khi đăng nhập",
+    "userAlreadyExists": "Người dùng đã tồn tại",
+    "undefinedError": "Lỗi không xác định",
+    "invalidPassword": "Mật khẩu không hợp lệ",
+    "invalidFirstName": "Tên không hợp lệ",
+    "invalidLastName": "Họ không hợp lệ",
+    "invalidFullName": "Họ và tên không hợp lệ",
+    "invalidRefreshToken": "Refresh token không hợp lệ",
+    "sessionExpired": "Phiên đăng nhập đã hết hạn",
+    "accessDenied": "Bạn không có quyền truy cập trang này",
+    "loginFailed": "Tên đăng nhập hoặc mật khẩu không chính xác"
   }
 }

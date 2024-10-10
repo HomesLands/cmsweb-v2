@@ -20,3 +20,5 @@ export { default as assignedUserApprovalService } from "./assigned-user-approval
 export { default as warehouseService } from "./warehouse.service";
 export { default as productWarehouseService } from "./product-warehouse.service";
 export { default as excelService } from "./excel.service";
+export { default as resourceService } from "./resource.service";
+export { default as rolePermissionService } from "./role-permission.service";

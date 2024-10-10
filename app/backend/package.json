@@ -14,7 +14,9 @@
     "lint:fix": "eslint --fix ./src",
     "test": "jest -c jest.config.json --passWithNoTests",
     "typeorm": "npx ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js",
-    "typeorm:drop": "npm run typeorm -- schema:drop -d src/configs/db.config.ts"
+    "typeorm:run": "npm run typeorm -- migration:run -d src/configs/db.config.ts",
+    "typeorm:revert": "npm run typeorm -- migration:revert -d src/configs/db.config.ts",
+    "typeorm:generate": "npm run typeorm -- -d src/configs/db.config.ts migration:generate"
   },
   "keywords": [],
   "author": "",
@@ -27,11 +29,11 @@
     "@types/html-pdf": "^3.0.3",
     "@types/jest": "^29.5.13",
     "@types/swagger-ui-express": "^4.1.6",
+    "async_hooks": "^1.0.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
-    "cls-hooked": "^4.2.2",
     "cookie-session": "^2.1.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",

@@ -50,12 +50,18 @@
     "confirmProductRequisitionsDescription": "Confirm product requisitions description",
     "confirmProductRequisitionsSuccess": "Confirm product requisitions success",
     "confirmProductRequisitionsSuccessDescription": "Confirm product requisitions success description",
+    "productRequisitionList": "Product requisition list",
     "here": "here",
     "update": "Update",
     "updateProductRequisition": "Update product requisition",
     "resubmit": "Resubmit",
     "approvalHistory": "Approval history",
     "resubmitConfirmTitle": "Resubmit requisition",
+    "updateProduct": "Update product",
+    "updateGeneralInfo": "Update general info",
+    "addProduct": "Add product",
+    "productList": "Product list",
+    "generalInfo": "General info",
     "descriptionInputLabel": "Content",
     "descriptionInputPlaceholder": "Enter content",
     "resubmitConfirmMessage": "Are you sure you want to resubmit this requisition?"
@@ -66,6 +72,19 @@
     "approvalStage1": "Approval stage 1",
     "approvalStage2": "Approval stage 2",
     "approvalStage3": "Approval stage 3"
+  },
+  "status": {
+    "accept": "Approve",
+    "reject": "Reject",
+    "giveBack": "Give back",
+    "cancel": "Cancel",
+    "waiting": "Waiting",
+    "waitingStage1": "Waiting stage 1",
+    "acceptedStage1": "Accepted stage 1",
+    "waitingStage2": "Waiting stage 2",
+    "acceptedStage2": "Accepted stage 2",
+    "waitingStage3": "Waiting stage 3",
+    "acceptedStage3": "Accepted stage 3"
   },
   "progress": {
     "createProductRequisitions": "Create requisition",
