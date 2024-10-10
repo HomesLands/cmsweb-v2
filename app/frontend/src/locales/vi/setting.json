@@ -1,0 +1,15 @@
+{
+  "setting": {
+    "settings": "Cài đặt",
+
+    "language": "Ngôn ngữ",
+    "selectLanguage": "Chọn ngôn ngữ",
+
+    "theme": "Chủ đề",
+    "selectTheme": "Chọn chủ đề",
+
+    "light": "Sáng",
+    "dark": "Tối",
+    "system": "Hệ thống"
+  }
+}

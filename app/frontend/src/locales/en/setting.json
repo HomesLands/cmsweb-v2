@@ -1,0 +1,15 @@
+{
+  "setting": {
+    "settings": "Settings",
+
+    "language": "Language",
+    "selectLanguage": "Select language",
+
+    "theme": "Theme",
+    "selectTheme": "Select theme",
+
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  }
+}

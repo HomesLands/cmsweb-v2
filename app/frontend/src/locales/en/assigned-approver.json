@@ -1,0 +1,15 @@
+{
+  "assignedApprover": {
+    "title": "Assigned Approver",
+    "description": "Assigned approver for user",
+    "list": "List approver",
+
+    "add": "Add approver",
+    "search": "Search approver",
+    "selectFormType": "Select form type",
+    "selectRoleApproval": "Select role approval",
+    "selectUser": "Select user",
+    "createAssignedApproverSuccessfully": "Create assigned approver successfully",
+    "createAssignedApproverFailed": "Create assigned approver failed"
+  }
+}

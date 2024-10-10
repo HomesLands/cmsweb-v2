@@ -5,9 +5,16 @@ export interface ILayoutStore {
   toggleMinimized: () => void
 }
 
+export interface IThemeStore {
+  theme: string
+  setTheme: (theme: string) => void
+  getTheme: () => string
+}
+
 export interface IUserStore {
-  userInfo?: IUserInfo
+  userInfo: IUserInfo | null
   setUserInfo: (userInfo: IUserInfo) => void
+  getUserInfo: () => IUserInfo | null
   removeUserInfo: () => void
 }
 

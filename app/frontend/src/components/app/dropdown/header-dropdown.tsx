@@ -22,6 +22,7 @@ import { showToast } from '@/utils'
 
 export function HeaderDropdown() {
   const { t } = useTranslation('auth')
+  const { t: tAccount } = useTranslation('account')
   const { setLogout } = useAuthStore()
   const [open, setOpen] = useState(false)
   const { removeUserInfo, userInfo } = useUserStore()
@@ -33,7 +34,7 @@ export function HeaderDropdown() {
     removeUserInfo()
     clearUserRoles()
     navigate(ROUTE.LOGIN)
-    showToast(t('logout.success'))
+    showToast(t('logout.logoutSuccess'))
   }
 
   return (
@@ -46,7 +47,7 @@ export function HeaderDropdown() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-[14rem]" align="end">
-          <DropdownMenuLabel>
+          <DropdownMenuLabel className="font-beVietNam">
             {t('userInfo.hello')} {userInfo?.fullname}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -56,20 +57,18 @@ export function HeaderDropdown() {
                 className="flex gap-2 items-center"
                 onClick={() => navigate(ROUTE.PERSONAL_ACCOUNT)}
               >
-                <UserIcon className="danger-icon" />
-                {t('userInfo.accountInfo')}
+                <UserIcon className="icon" />
+                <span className="text-normal font-beVietNam">{tAccount('account.title')}</span>
               </div>
             )}
           </DropdownMenuItem>
-          {/* <DropdownMenuItem className="cursor-pointer">Đổi mật khẩu</DropdownMenuItem> */}
-          {/* <DropdownMenuSeparator /> */}
           <DropdownMenuItem
             className="flex gap-2 justify-start items-center cursor-pointer text-danger hover:bg-red-100"
             onClick={() => setOpen(true)}
           >
             <div className="flex gap-2 items-center">
               <ExitIcon className="danger-icon" />
-              {t('logout.title')}
+              <span className="text-danger font-beVietNam">{t('logout.title')}</span>
             </div>
           </DropdownMenuItem>
         </DropdownMenuContent>

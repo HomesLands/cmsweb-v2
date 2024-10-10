@@ -196,6 +196,25 @@ export const resubmitRequisitionSchema = z.object({
   description: z.string().min(1, 'Lời nhắn không được để trống')
 })
 
+//Personal Account Info
+export const personalAccountInfoSchema = z.object({
+  fullname: z.string().min(1, 'Họ và tên không hợp lệ'),
+  username: z.string().min(1, 'Tên người dùng không hợp lệ'),
+  company: z.string().min(1, 'Tên công ty không hợp lệ'),
+  site: z.string().min(1, 'Tên công trình không hợp lệ')
+})
+
+export const passwordAndAuthenticationSchema = z
+  .object({
+    oldPassword: z.string().min(1, 'Mật khẩu cũ không hợp lệ'),
+    newPassword: z.string().min(1, 'Mật khẩu mới không hợp lệ'),
+    confirmPassword: z.string().min(1, 'Mật khẩu xác nhận không hợp lệ')
+  })
+  .refine((data) => data.newPassword !== data.oldPassword, {
+    message: 'Mật khẩu mới phải khác mật khẩu cũ',
+    path: ['newPassword']
+  })
+
 export type TProductRequisitionSchema = z.infer<typeof productRequisitionSchema>
 export type TAddNewProductRequestSchema = z.infer<typeof addNewProductRequestSchema>
 export type TAddNewNonExistingProductRequisitionSchema = z.infer<
@@ -208,3 +227,7 @@ export type TUpdateProductRequestSchema = z.infer<typeof updateProductRequestSch
 export type TUpdateProductRequisitionGeneralInfoSchema = z.infer<
   typeof updateProductRequisitionGeneralInfoSchema
 >
+
+//Personal Account Info
+export type TPersonalAccountInfoSchema = z.infer<typeof personalAccountInfoSchema>
+export type TPasswordAndAuthenticationSchema = z.infer<typeof passwordAndAuthenticationSchema>

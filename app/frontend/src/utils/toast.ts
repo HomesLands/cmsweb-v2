@@ -61,7 +61,7 @@ const errorCodes: { [key: number]: string } = {
 }
 
 export function showToast(message: string) {
-  toast.success(i18next.t(message))
+  toast.success(i18next.t(message, { ns: 'toast' }))
 }
 
 export function showErrorToast(code: number) {

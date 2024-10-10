@@ -22,10 +22,10 @@ const CreateRole: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mt-2">
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between w-full border-b">
-          <div className="flex flex-col items-start gap-2 py-2">
+        <CardHeader className="flex flex-row justify-between items-center w-full border-b font-beVietNam">
+          <div className="flex flex-col gap-1 items-start py-2">
             <CardTitle>{t('roles.createRole')}</CardTitle>
             <CardDescription>{t('roles.CreateRoleDescription')}</CardDescription>
           </div>

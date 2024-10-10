@@ -21,7 +21,7 @@ export const SelectCompany: FC<SelectCompanyProps> = ({ onChange, defaultValue }
   const { t } = useTranslation('productRequisition')
   const { data: companies } = useCompanies()
 
-  const companyList = companies?.data.result
+  const companyList = companies?.result
 
   const handleValueChange = (value: string) => {
     if (Array.isArray(companyList)) {

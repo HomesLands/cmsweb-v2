@@ -20,5 +20,17 @@ export const ROUTE = {
   ADD_ROLE: '/roles/add',
 
   // Emoloyee
-  EMPLOYEE: '/employees'
+  EMPLOYEE: '/employees',
+
+  // Assigned approver
+  ASSIGNED_APPROVER: '/assigned-approvers',
+  ADD_ASSIGNED_APPROVER: '/assigned-approvers/add',
+
+  // Company
+  COMPANY: '/companies',
+  ADD_COMPANY: '/companies/add',
+
+  // Site
+  SITE: '/sites',
+  ADD_SITE: '/sites/add'
 }
