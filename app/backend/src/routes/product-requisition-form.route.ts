@@ -6,6 +6,18 @@ import { ProductRequisitionForm } from "@entities";
 
 export const productRequisitionFormRoute: Router = Router();
 
+// [GET] /api/v1/productRequisitionForms/exportPdf/:slug
+productRequisitionFormRoute.get(
+  "/exportPdf/:slug",
+  productRequisitionFormController.exportPdfProductRequisitionFormBySlug
+);
+
+// [GET] /api/v1/productRequisitionForms/exportExcel/:slug
+productRequisitionFormRoute.get(
+  "/exportExcel/:slug",
+  productRequisitionFormController.exportExcelProductRequisitionFormBySlug
+);
+
 // [GET] /api/v1/productRequisitionForms
 productRequisitionFormRoute.get(
   "/",

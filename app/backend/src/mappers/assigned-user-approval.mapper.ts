@@ -10,9 +10,10 @@ import {
   AssignedUserApprovalResponseDto,
   UserResponseDto,
   UserApprovalResponseDto,
+  SiteResponseDto,
 } from "@dto/response";
 import { CreateAssignedUserApprovalRequestDto } from "@dto/request";
-import { User, UserApproval, AssignedUserApproval } from "@entities";
+import { User, UserApproval, AssignedUserApproval, Site } from "@entities";
 import { baseMapper } from "./base.mapper";
 
 // Define the mapping profile
@@ -35,6 +36,13 @@ export const assignedUserApprovalMapper: MappingProfile = (mapper: Mapper) => {
         UserApprovalResponseDto,
         UserApproval,
         (source) => source.userApprovals)
+    ),
+    forMember(
+      (destination) => destination.site,
+      mapWith(
+        SiteResponseDto,
+        Site,
+        (source) => source.site)
     ),
     extend(baseMapper(mapper))
   );

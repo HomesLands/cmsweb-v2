@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 
-import { TApiResponse } from "@types";
+import { TApiResponse, TGetAssignedUserApprovalRequestDto } from "@types";
 import { assignedUserApprovalService } from "@services";
 import { AssignedUserApprovalResponseDto } from "@dto/response";
 import { TCreateAssignedUserApprovalRequestDto } from "@types";
@@ -17,6 +17,7 @@ class AssignedUserApprovalController {
    *         - formType
    *         - roleApproval
    *         - user
+   *         - site
    *       properties:
    *         formType:
    *           type: string
@@ -27,10 +28,14 @@ class AssignedUserApprovalController {
    *         user:
    *           type: string
    *           description: user slug
+   *         site:
+   *           type: string
+   *           description: site slug
    *       example:
    *         formType: product_requisition_form
    *         roleApproval: approval_stage_1
    *         user: user-slug-123
+   *         site: site-slug-123
    */
 
   /**
@@ -68,6 +73,8 @@ class AssignedUserApprovalController {
    *         description: Invalid role approval
    *       1080:
    *         description: Invalid user slug
+   *       1112:
+   *         description: Assigned user approval this level for site is existed
    *
    */
 
@@ -101,28 +108,58 @@ class AssignedUserApprovalController {
    * @swagger
    * /assignedUserApprovals:
    *   get:
-   *     summary: Get all assignedUserApprovals
+   *     summary: Get assigned user approvals
    *     tags: [AssignedUserApproval]
+   *     parameters:
+   *       - in: query
+   *         name: formType
+   *         schema:
+   *           type: string
+   *         description: The form type of product requisition form.
+   *         example: product_requisition_form
+   *       - in: query
+   *         name: roleApproval
+   *         schema:
+   *           type: string
+   *         description: The level approval of product requisition form.
+   *         example: approval_stage_1
+   *       - in: query
+   *         name: site
+   *         schema:
+   *           type: string
+   *         description: The site slug where the approval user approval form.
+   *         example: site-slug-123
+   *       - in: query
+   *         name: user
+   *         schema:
+   *           type: string
+   *         description: The user slug who is assigned approval user.
+   *         example: user-slug-123
    *     responses:
    *       200:
-   *         description: Get all assignedUserApprovals successfully.
+   *         description: Get assigned user approvals successfully.
    *       500:
    *         description: Server error
+   *       1068:
+   *         description: Invalid role approval
+   *       1083:
+   *         description: Invalid form type
    */
 
-  public async getAllAssignedUserApprovals(
+  public async getAssignedUserApprovals(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
+      const requestData = req.query as TGetAssignedUserApprovalRequestDto;
       const assignedUserApprovalsData =
-        await assignedUserApprovalService.getAllAssignedUserApprovals();
+        await assignedUserApprovalService.getAssignedUserApprovals(requestData);
 
       const response: TApiResponse<AssignedUserApprovalResponseDto[]> = {
         code: StatusCodes.OK,
         error: false,
-        message: "Get list assignedUserApprovals successfully",
+        message: "Get list assigned user approvals successfully",
         method: req.method,
         path: req.originalUrl,
         result: assignedUserApprovalsData,

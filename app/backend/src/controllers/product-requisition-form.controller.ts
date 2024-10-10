@@ -570,6 +570,96 @@ class ProductRequisitionFormController {
       next(error);
     }
   }
+
+  /**
+   * @swagger
+   * /productRequisitionForms/exportExcel/{slug}:
+   *   get:
+   *     summary: Export productRequisitionForm to excel by slug
+   *     tags: [ProductRequisitionForm]
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - name: slug
+   *         in: path
+   *         required: true
+   *         type: string
+   *         description: slug of product requisition form
+   *     responses:
+   *       200:
+   *         description: Export excel product requisition form successfully.
+   *       500:
+   *         description: Server error
+   *       1046:
+   *         description: Form not found
+   *
+   */
+
+  public async exportExcelProductRequisitionFormBySlug(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const slug = req.params.slug as string;
+      const dataExport =
+        await productRequisitionFormService.exportExcelProductRequisitionForm(
+          slug
+        );
+
+        res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); 
+        res.setHeader("Content-Disposition", "attachment; filename=" +`${dataExport.code}.xlsx`);
+  
+        dataExport.workbook.xlsx.write(res).then(() => res.end());
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /productRequisitionForms/exportPdf/{slug}:
+   *   get:
+   *     summary: Export productRequisitionForm to pdf by slug
+   *     tags: [ProductRequisitionForm]
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - name: slug
+   *         in: path
+   *         required: true
+   *         type: string
+   *         description: slug of product requisition form
+   *     responses:
+   *       200:
+   *         description: Export pdf product requisition form successfully.
+   *       500:
+   *         description: Server error
+   *       1046:
+   *         description: Form not found
+   *
+   */
+
+  public async exportPdfProductRequisitionFormBySlug(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const slug = req.params.slug as string;
+      const dataExport =
+        await productRequisitionFormService.exportPdfProductRequisitionForm(
+          slug
+        );
+
+      res.setHeader('Content-Type', 'application/pdf'); 
+      res.setHeader('Content-Disposition', 'attachment; filename=' +`${dataExport.code}`);
+
+      res.send(dataExport.pdf);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new ProductRequisitionFormController();
