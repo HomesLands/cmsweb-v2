@@ -14,7 +14,8 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription
+  DialogDescription,
+  UserAvatar
 } from '@/components/ui'
 import { IUserInfo } from '@/types/user.type'
 import { MoreHorizontal } from 'lucide-react'
@@ -23,6 +24,7 @@ import { TCreateUserRoleSchema } from '@/schemas'
 import { ICreateUserRole } from '@/types'
 import { useCreateUserRole } from '@/hooks'
 import toast from 'react-hot-toast'
+import { baseURL } from '@/constants'
 
 export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
   const mutation = useCreateUserRole()
@@ -40,7 +42,12 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
   return [
     {
       accessorKey: 'avatar',
-      header: 'Ảnh'
+      header: 'Ảnh',
+      cell: ({ row }) => {
+        const { avatar } = row.original
+        const imageUrl = `${baseURL}/files/${avatar}`
+        return <UserAvatar src={imageUrl} />
+      }
     },
     {
       accessorKey: 'fullname',

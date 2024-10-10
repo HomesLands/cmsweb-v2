@@ -2,9 +2,9 @@ import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ReactSelect, { SingleValue } from 'react-select'
 
-import { usePagination, useRoles } from '@/hooks'
+import { usePagination, useResources, useRoles } from '@/hooks'
 
-interface SelectRoleProps {
+interface SelectResourceProps {
   onChange: (
     values: SingleValue<{
       value: string
@@ -13,11 +13,11 @@ interface SelectRoleProps {
   ) => void
 }
 
-export const SelectRole: FC<SelectRoleProps> = ({ onChange }) => {
+export const SelectResource: FC<SelectResourceProps> = ({ onChange }) => {
   const [allRoles, setAllRoles] = useState<{ value: string; label: string }[]>([])
   const { t } = useTranslation('productRequisition')
   const { pagination, handlePageChange } = usePagination({ isSearchParams: false })
-  const { data: roles } = useRoles({
+  const { data: roles } = useResources({
     order: 'DESC',
     page: pagination.pageIndex,
     pageSize: 1000
@@ -34,7 +34,7 @@ export const SelectRole: FC<SelectRoleProps> = ({ onChange }) => {
     if (roles?.items) {
       const newRoles = roles.items.map((item) => ({
         value: item.slug || '',
-        label: item.nameNormalize || ''
+        label: item.name || ''
       }))
       // Append new roles to the previous roles
       setAllRoles((prevRoles) => [...prevRoles, ...newRoles])

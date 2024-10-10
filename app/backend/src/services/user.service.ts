@@ -1,6 +1,10 @@
 import { mapper } from "@mappers";
-import { User } from "@entities";
-import { UserPermissionResponseDto, UserResponseDto } from "@dto/response";
+import { Permission, User } from "@entities";
+import {
+  PermissionResponseDto,
+  UserPermissionResponseDto,
+  UserResponseDto,
+} from "@dto/response";
 import { userRepository } from "@repositories";
 import {
   TPaginationOptionResponse,
@@ -96,12 +100,14 @@ class UserService {
         "userRoles.role.rolePermissions.permission.resource",
       ],
     });
-    if (!user) return [];
-    if (!user.userRoles) return [];
+    if (!user?.userRoles) return [];
     const scope: UserPermissionResponseDto[] = user.userRoles
       .filter((item) => item.role && item.role.nameNormalize)
       .map((item) => {
-        const permissions: never[] = [];
+        const permissions =
+          item?.role?.rolePermissions?.map((item) =>
+            mapper.map(item.permission, Permission, PermissionResponseDto)
+          ) || [];
 
         return {
           role: item.role.nameNormalize,

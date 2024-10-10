@@ -1,6 +1,7 @@
 import { AutoMap } from "@automapper/classes";
+import { BaseResponseDto } from "./base-response.dto";
 
-export class PermissionResponseDto {
+export class PermissionResponseDto extends BaseResponseDto {
   @AutoMap()
   role: string;
 

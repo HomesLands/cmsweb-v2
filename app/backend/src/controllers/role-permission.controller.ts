@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 
 import { rolePermissionService } from "@services";
 import { TApiResponse, TCreateRolePermissionRequestDto } from "@types";
-import { UserRoleResponseDto } from "@dto/response";
+import { RolePermissionResponseDto } from "@dto/response";
 
 class RolePermissionController {
   /**
@@ -24,7 +24,7 @@ class RolePermissionController {
    *           description: Permission slug
    *       example:
    *         roleSlug: V56Ck_iUuV
-   *         userSlug: G4_uaU14OY
+   *         permissionSlug: G4_uaU14OY
    */
 
   /**
@@ -62,9 +62,9 @@ class RolePermissionController {
     try {
       const requestData = req.body as TCreateRolePermissionRequestDto;
 
-      const result: UserRoleResponseDto =
+      const result: RolePermissionResponseDto =
         await rolePermissionService.createRolePermission(requestData);
-      const response: TApiResponse<UserRoleResponseDto> = {
+      const response: TApiResponse<RolePermissionResponseDto> = {
         code: StatusCodes.CREATED,
         error: false,
         message: "The user role created successfully",

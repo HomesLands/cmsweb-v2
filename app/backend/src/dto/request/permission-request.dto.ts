@@ -11,4 +11,8 @@ export class CreatePermissionRequestDto {
   @Expose()
   @AutoMap()
   authoritySlug?: string;
+
+  @Expose()
+  @AutoMap()
+  requiredOwner?: boolean;
 }

@@ -1,4 +1,4 @@
-import { IUserInfo, IUserRoleResponse } from './user.type'
+import { IUserInfo, IUserPermission } from './user.type'
 
 export interface ILayoutStore {
   isMinimized: boolean
@@ -34,7 +34,7 @@ export interface IRequestProductRequisitionStore {
 }
 
 export interface IUserInfoPermissionsStore {
-  userRoles: IUserRoleResponse[]
-  setUserRoles: (roles: IUserRoleResponse[]) => void
+  userRoles: IUserPermission[]
+  setUserRoles: (userRoles: IUserPermission[]) => void
   clearUserRoles: () => void
 }

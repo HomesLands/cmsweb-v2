@@ -20,6 +20,7 @@ class PermissionController {
    *       required:
    *         - resourceSlug
    *         - authoritySlug
+   *         - requiredOwner
    *       properties:
    *         resourceSlug:
    *           type: string
@@ -27,9 +28,13 @@ class PermissionController {
    *         authoritySlug:
    *           type: string
    *           description: Authority code
+   *         requiredOwner:
+   *           type: boolean
+   *           description: Required owner
    *       example:
    *         resourceSlug: V56Ck_iUuV
    *         authoritySlug: G4_uaU14OY
+   *         requiredOwner: false
    */
 
   /**
