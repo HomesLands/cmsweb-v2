@@ -130,7 +130,14 @@ class UserService {
     requestData: TUploadUserAvatarRequestDto
   ): Promise<UserResponseDto> {
     console.log({ requestData });
-    const user = await userRepository.findOneBy({ id: requestData.userId });
+    const user = await userRepository.findOne({
+      where: {
+        id: requestData.userId
+      },
+      relations: [
+        'userDepartments.department.site.company'
+      ]
+    });
     if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 
     const file = await fileService.uploadFile(requestData.file);

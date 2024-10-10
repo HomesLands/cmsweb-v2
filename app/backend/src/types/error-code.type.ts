@@ -111,6 +111,7 @@ export type TErrorCodeKey =
   | "SAVE_FILE_FAIL"
   | "FORBIDDEN_USER"
   | "ERROR_GET_FILE_FROM_REQUEST"
+  | "ASSIGNED_USER_APPROVAL_THIS_LEVEL_FOR_SITE_IS_EXISTED"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {

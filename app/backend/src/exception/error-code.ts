@@ -484,6 +484,11 @@ export const ErrorCodes: TErrorCode = {
     code: 1108,
     message: "Error get file from request",
   },
+  ASSIGNED_USER_APPROVAL_THIS_LEVEL_FOR_SITE_IS_EXISTED: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1109,
+    message: "Assigned user approval this level for site is existed",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]

@@ -1,6 +1,13 @@
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
+import { Workbook } from "exceljs";
+import * as ejs from "ejs";
+import * as pdf from "html-pdf";
+import * as fs from "fs";
+import moment from "moment";
+import path from "path";
 
+import { excelService } from "@services";
 import {
   productRequisitionFormRepository,
   userRepository,
@@ -20,6 +27,7 @@ import {
   TPaginationOptionResponse,
   TResubmitProductRequisitionFormRequestDto,
   TUpdateGeneralInformationProductRequisitionFormRequestDto,
+  TProductRequisitionFormDataExport
 } from "@types";
 import { ProductRequisitionFormResponseDto } from "@dto/response";
 import {
@@ -47,6 +55,7 @@ import {
   ApprovalLogStatus,
 } from "@enums";
 import { PermissionUtils } from "@utils";
+
 
 class ProductRequisitionFormService {
   public async getAllProductRequisitionForms(
@@ -129,15 +138,21 @@ class ProductRequisitionFormService {
       },
       relations: [
         'userDepartments',
-        'userDepartments.department',
+        'userDepartments.department.site',
       ]
     });
 
     if (!creator) throw new GlobalError(ErrorCodes.INVALID_CREATOR);
-  
+    if(!creator.userDepartments) throw new GlobalError(ErrorCodes.INVALID_CREATOR);
+    if(!creator.userDepartments[0].department?.site?.id) 
+      throw new GlobalError(ErrorCodes.INVALID_CREATOR);
+     
     const assignedUserApproval = await assignedUserApprovalRepository.find({
       where: {
         formType: FormApprovalType.PRODUCT_REQUISITION_FORM,
+        site: {
+          id: creator.userDepartments[0].department?.site?.id
+        }
       },
       relations: [
         'user',
@@ -167,7 +182,6 @@ class ProductRequisitionFormService {
       slug: requestData.project,
     });
     if (!project) throw new GlobalError(ErrorCodes.PROJECT_NOT_FOUND);
-
     
     // Create product requisition form
     const form = mapper.map(
@@ -564,6 +578,194 @@ class ProductRequisitionFormService {
       ProductRequisitionFormResponseDto
     );
     return formDto;
+  }
+
+  public async exportExcelProductRequisitionForm(
+    formSlug: string
+  ): Promise<{
+    code: string,
+    workbook: Workbook
+  }> {
+    const form = await productRequisitionFormRepository.findOne({
+      where: {
+        slug: formSlug
+      },
+      relations: [
+        "creator.userDepartments.department.site.company",
+        "requestProducts.product.unit",
+        "requestProducts.temporaryProduct.unit",
+        "project",
+      ]
+    });
+    if(!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+    if(!form.code) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+    if(!form.requestProducts) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+
+    let site: string = 'N/A';
+    let company: string = 'N/A';
+    if(form.creator)
+      if(form.creator.userDepartments)
+          if(form.creator?.userDepartments[0].department?.site?.name){
+            site = form.creator?.userDepartments[0].department?.site?.name
+            if(form.creator?.userDepartments[0].department?.site?.company?.name){
+              company = form.creator?.userDepartments[0].department?.site?.company.name
+            }
+          }
+            
+
+    const requestProductExport: TProductRequisitionFormDataExport[] = 
+      form.requestProducts.map((requestProduct, index) => ({
+        order: index + 1,
+        quantity: requestProduct.requestQuantity,
+
+        name: requestProduct.isExistProduct 
+        ? requestProduct.product?.name
+        : requestProduct.temporaryProduct?.name,
+
+        description: requestProduct.isExistProduct 
+        ? requestProduct.product?.description
+        : requestProduct.temporaryProduct?.description,
+
+        provider: requestProduct.isExistProduct 
+        ? requestProduct.product?.provider
+        : requestProduct.temporaryProduct?.provider,
+
+        unit: requestProduct.isExistProduct 
+        ? requestProduct.product?.unit?.name
+        : requestProduct.temporaryProduct?.unit?.name,
+      }));
+
+
+    const workbook = excelService.generateProductRequisitionFormExcel(
+      requestProductExport,
+      form.creator?.fullname || "N/A",
+      moment(form.createdAt).format("DD/MM/YYYY"),
+      site,
+      form.project?.name || "N/A",
+      company,
+    );
+
+    return {
+      code: form.code,
+      workbook,
+    };
+  }
+
+  public async exportPdfProductRequisitionForm(
+    formSlug: string
+  ): Promise<{
+    code: string,
+    pdf: Buffer
+  }> {
+    const form = await productRequisitionFormRepository.findOne({
+      where: {
+        slug: formSlug
+      },
+      relations: [
+        "creator.userDepartments.department.site.company",
+        "requestProducts.product.unit",
+        "requestProducts.temporaryProduct.unit",
+        "project",
+      ]
+    });
+    if(!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+    if(!form.code) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+    if(!form.requestProducts) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+
+    let site: string = 'N/A';
+    let company: string = 'N/A';
+    if(form.creator)
+      if(form.creator.userDepartments)
+          if(form.creator?.userDepartments[0].department?.site?.name){
+            site = form.creator?.userDepartments[0].department?.site?.name
+            if(form.creator?.userDepartments[0].department?.site?.company?.name){
+              company = form.creator?.userDepartments[0].department?.site?.company.name
+            }
+          }
+            
+
+    const requestProductExport: TProductRequisitionFormDataExport[] = 
+      form.requestProducts.map((requestProduct, index) => ({
+        order: index + 1,
+        quantity: requestProduct.requestQuantity,
+
+        name: requestProduct.isExistProduct 
+        ? requestProduct.product?.name
+        : requestProduct.temporaryProduct?.name,
+
+        description: requestProduct.isExistProduct 
+        ? requestProduct.product?.description
+        : requestProduct.temporaryProduct?.description,
+
+        provider: requestProduct.isExistProduct 
+        ? requestProduct.product?.provider
+        : requestProduct.temporaryProduct?.provider,
+
+        unit: requestProduct.isExistProduct 
+        ? requestProduct.product?.unit?.name
+        : requestProduct.temporaryProduct?.unit?.name,
+      }));
+
+    const data = {
+      companyName: company,
+      qrCode: "QR3-01/001",
+      creatorName: form.creator?.fullname,
+      siteName: site,
+      createDate: moment(form.createdAt).format("DD/MM/YYYY"),
+      projectName: form.project?.name,
+      data: requestProductExport
+    };
+
+    console.log({data})
+
+    const templatePath = path.join(__dirname, '..', 'templates', 'product-requisition-form-pdf.ejs');
+    console.log({templatePath})
+
+    // let pdfData: Buffer = Buffer.from("default-buffer", 'utf-8');
+    // console.log({pdfData})
+    // fs.readFile(templatePath, 'utf8', (err, html) => {
+    //   if (err) {
+    //     throw new GlobalError(ErrorCodes.FILE_NOT_FOUND);
+    //   }
+
+    //   const finalHtml = ejs.render(html, data);
+
+    //   // Tạo PDF từ HTML
+    //   pdf.create(finalHtml).toBuffer((err, buffer) => {
+    //     if (err) {
+    //       throw new GlobalError(ErrorCodes.FILE_NOT_FOUND);
+    //     }
+    //     pdfData = buffer;
+    //   });
+    // });
+    // console.log({pdfData})
+    try {
+      const html = await fs.promises.readFile(templatePath, 'utf8');
+  
+      const finalHtml = ejs.render(html, data);
+  
+      const pdfBuffer = await new Promise<Buffer>((resolve, reject) => {
+        pdf.create(finalHtml).toBuffer((err, buffer) => {
+          if (err) {
+            return reject(new GlobalError(ErrorCodes.FILE_NOT_FOUND));
+          }
+          resolve(buffer);
+        });
+      });
+  
+      return {
+        code: form.code,
+        pdf: pdfBuffer,
+      };
+    } catch (err) {
+      console.error(err);
+      throw new GlobalError(ErrorCodes.FILE_NOT_FOUND);
+    }
+    
+    // return {
+    //   code: form.code,
+    //   pdf: pdfData
+    // }
   }
 }
 

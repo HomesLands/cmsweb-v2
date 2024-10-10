@@ -1,5 +1,5 @@
 import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from "typeorm";
-import { Base, Company, Department, Project } from "@entities";
+import { AssignedUserApproval, Base, Company, Department, Project } from "@entities";
 import { AutoMap } from "@automapper/classes";
 
 @Entity("site_tbl")
@@ -19,4 +19,9 @@ export class Site extends Base {
   // a site have many project
   @OneToMany(() => Project, (project) => project.site)
   projects?: Project[];
+
+  // a site have many assignedUserApproval
+  @OneToMany(() => AssignedUserApproval,
+    (assignedUserApproval) => assignedUserApproval.site)
+  assignedUserApprovals?: AssignedUserApproval[];
 }

@@ -5,7 +5,7 @@ export const assignedUserApprovalRoute: Router = Router();
 
 // [GET] /api/v1/assignedUserApprovals
 assignedUserApprovalRoute.route("/")
-  .get(assignedUserApprovalController.getAllAssignedUserApprovals)
+  .get(assignedUserApprovalController.getAssignedUserApprovals)
 
 // [POS] /api/v1/assignedUserApprovals
 assignedUserApprovalRoute.route("/")
