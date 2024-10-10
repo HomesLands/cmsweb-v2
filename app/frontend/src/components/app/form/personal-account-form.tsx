@@ -34,6 +34,7 @@ export const PersonalAccountForm: React.FC = () => {
   const handleUploadProfilePicture = (file: File) => {
     uploadProfilePicture(file, {
       onSuccess: (data) => {
+        showToast(tToast('toast.updateUserSuccess'))
         setUserInfo(data.result)
       }
     })
