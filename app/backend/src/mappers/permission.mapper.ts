@@ -2,24 +2,28 @@ import {
   MappingProfile,
   Mapper,
   createMap,
-  extend,
   forMember,
-  mapWith,
+  mapFrom,
 } from "@automapper/core";
-import { PermissionResponseDto, RoleResponseDto } from "@dto/response";
-import { Permission, Role } from "@entities";
-import { baseMapper } from "./base.mapper";
+import { CreatePermissionRequestDto } from "@dto/request";
+import { PermissionResponseDto } from "@dto/response";
+import { Permission } from "@entities";
 
 // Define the mapping profile
 export const permissionMapper: MappingProfile = (mapper: Mapper) => {
+  createMap(mapper, CreatePermissionRequestDto, Permission);
+
   createMap(
     mapper,
     Permission,
     PermissionResponseDto,
-    extend(baseMapper(mapper)),
     forMember(
-      (destination) => destination.role,
-      mapWith(RoleResponseDto, Role, (source) => source.role)
+      (destination) => destination.authority,
+      mapFrom((source) => source.authority?.nameNormalize)
+    ),
+    forMember(
+      (destination) => destination.resource,
+      mapFrom((source) => source.resource?.name)
     )
   ); // Map entity to response object
 };

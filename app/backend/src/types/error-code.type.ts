@@ -111,6 +111,9 @@ export type TErrorCodeKey =
   | "SAVE_FILE_FAIL"
   | "FORBIDDEN_USER"
   | "ERROR_GET_FILE_FROM_REQUEST"
+  | "INVALID_RESOURCE_NAME"
+  | "RESOURCE_NOT_FOUND"
+  | "RESOURCE_EXIST"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {

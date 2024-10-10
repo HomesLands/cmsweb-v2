@@ -16,7 +16,7 @@ import {
 } from '@/components/ui'
 import { DialogLogout } from '@/components/app/dialog'
 import { useAuthStore, useUserInfoPermissionsStore, useUserStore } from '@/stores'
-import { Authority, ROUTE } from '@/constants'
+import { Authority, Resource, ROUTE } from '@/constants'
 import { hasRequiredPermissions } from '@/utils/auth'
 import { showToast } from '@/utils'
 
@@ -51,7 +51,7 @@ export function HeaderDropdown() {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="cursor-pointer">
-            {hasRequiredPermissions([Authority.READ_USER]) && (
+            {hasRequiredPermissions({ authority: Authority.READ, resource: Resource.USER }) && (
               <div
                 className="flex gap-2 items-center"
                 onClick={() => navigate(ROUTE.PERSONAL_ACCOUNT)}

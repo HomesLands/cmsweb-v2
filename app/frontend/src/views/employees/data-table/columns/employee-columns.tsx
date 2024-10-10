@@ -3,56 +3,48 @@ import { ColumnDef } from '@tanstack/react-table'
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
   DataTableColumnHeader,
   DropdownMenuSeparator,
-  Dialog,
   Button,
   DropdownMenuLabel,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription
+  UserAvatar
 } from '@/components/ui'
 import { IUserInfo } from '@/types/user.type'
 import { MoreHorizontal } from 'lucide-react'
-import { AddEmployeeRoleForm } from '@/components/app/form'
 import { TCreateUserRoleSchema } from '@/schemas'
 import { ICreateUserRole } from '@/types'
 import { useCreateUserRole } from '@/hooks'
 import toast from 'react-hot-toast'
+import { baseURL } from '@/constants'
+import { useTranslation } from 'react-i18next'
+import { DialogAddUserRole } from '@/components/app/dialog'
 
 export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
-  const mutation = useCreateUserRole()
-  const handleSubmit = (values: TCreateUserRoleSchema) => {
-    const requestData = {
-      roleSlug: values.role.value,
-      userSlug: values.user.value
-    } as ICreateUserRole
-    mutation.mutate(requestData, {
-      onSuccess: () => {
-        toast.success('Thêm quyền thành công')
-      }
-    })
-  }
+  const { t } = useTranslation('users')
+
   return [
     {
       accessorKey: 'avatar',
-      header: 'Ảnh'
+      header: t('users.avatar'),
+      cell: ({ row }) => {
+        const { avatar } = row.original
+        const imageUrl = `${baseURL}/files/${avatar}`
+        return <UserAvatar src={imageUrl} />
+      }
     },
     {
       accessorKey: 'fullname',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Tên nhân sự" />
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('users.fullname')} />
     },
     {
       accessorKey: 'dob',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày sinh" />
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('users.role')} />
     },
     {
-      id: 'actions',
-      cell: () => {
+      id: t('users.actions'),
+      cell: ({ row }) => {
+        const user = row.original
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -63,21 +55,7 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-              <Dialog>
-                <DialogTrigger>
-                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                    Thêm quyền
-                  </DropdownMenuItem>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Thêm quyền</DialogTitle>
-                    <DialogDescription>Thêm quyền cho nhân sự</DialogDescription>
-                  </DialogHeader>
-                  <AddEmployeeRoleForm onSubmit={handleSubmit} />
-                </DialogContent>
-              </Dialog>
-              <DropdownMenuSeparator />
+              <DialogAddUserRole user={user} />
             </DropdownMenuContent>
           </DropdownMenu>
         )

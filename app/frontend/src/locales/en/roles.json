@@ -5,7 +5,10 @@
     "CreateRoleDescription": "Create new role",
     "description": "Description",
     "nameNormalize": "Normalized name",
-    "createRoleSuccessfully": "Create role successfully"
+    "createRoleSuccessfully": "Create role successfully",
+    "nameDisplay": "Display name",
+    "actions": "Actions",
+    "edit": "Edit role"
   }
    
 }

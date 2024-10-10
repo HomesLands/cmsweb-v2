@@ -20,7 +20,7 @@ export const SelectAuthority: FC<SelectAuthorityProps> = ({ onChange }) => {
   const { data: authorities } = useAuthorites({
     order: 'DESC',
     page: pagination.pageIndex,
-    pageSize: pagination.pageSize
+    pageSize: 1000
   })
 
   const handleScrollToBottom = () => {
@@ -43,7 +43,7 @@ export const SelectAuthority: FC<SelectAuthorityProps> = ({ onChange }) => {
 
   return (
     <ReactSelect
-      onMenuScrollToBottom={handleScrollToBottom}
+      // onMenuScrollToBottom={handleScrollToBottom}
       options={allAuthorities}
       onChange={onChange}
     />

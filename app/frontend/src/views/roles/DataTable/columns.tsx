@@ -6,13 +6,14 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui'
 import { IRole } from '@/types'
 import { MoreHorizontal } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 export const useRoleColumns = (): ColumnDef<IRole>[] => {
+  const { t } = useTranslation('roles')
   return [
     {
       accessorKey: 'slug',
@@ -20,21 +21,27 @@ export const useRoleColumns = (): ColumnDef<IRole>[] => {
     },
     {
       accessorKey: 'nameNormalize',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Name normalize" />
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('roles.nameNormalize')} />
+      )
     },
     {
       accessorKey: 'nameDisplay',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Display name" />
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('roles.nameDisplay')} />
+      )
     },
     {
       accessorKey: 'description',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Description" />
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('roles.description')} />
+      )
     },
     {
       id: 'actions',
-      header: 'Thao tác',
+      header: t('roles.actions'),
       cell: ({ row }) => {
-        const requisition = row.original
+        const role = row.original
         return (
           <div>
             <DropdownMenu>
@@ -45,9 +52,8 @@ export const useRoleColumns = (): ColumnDef<IRole>[] => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                <DropdownMenuItem>Chỉnh sửa</DropdownMenuItem>
-                <DropdownMenuItem>Xóa</DropdownMenuItem>
+                <DropdownMenuItem>{t('roles.edit')}</DropdownMenuItem>
+                <DropdownMenuItem>{t('roles.addPermission')}</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

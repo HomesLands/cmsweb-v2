@@ -12,6 +12,7 @@ import { CreateRoleRequestDto, UpdateRoleRequestDto } from "@dto/request";
 import { validate } from "class-validator";
 import { ErrorCodes, GlobalError, ValidationError } from "@exception";
 import { logger } from "@lib/logger";
+import { parsePagination } from "@utils/pagination.util";
 
 class RoleService {
   public async getAllRoles(
@@ -21,18 +22,8 @@ class RoleService {
     const totalRoles = await roleRepository.count();
 
     // Parse and validate pagination parameters
-    let pageSize =
-      typeof options.pageSize === "string"
-        ? parseInt(options.pageSize, 10)
-        : options.pageSize;
-    let page =
-      typeof options.page === "string"
-        ? parseInt(options.page, 10)
-        : options.page;
+    const { page, pageSize } = parsePagination(options);
 
-    // Ensure page and pageSize are positive numbers
-    if (isNaN(page) || page <= 0) page = 1;
-    if (isNaN(pageSize) || pageSize <= 0) pageSize = 10; // Default pageSize if invalid
     // Calculate pagination details
     const totalPages = Math.ceil(totalRoles / pageSize);
 
@@ -81,10 +72,10 @@ class RoleService {
     const requestData = plainToClass(UpdateRoleRequestDto, plainData);
 
     const errors = await validate(requestData);
-    if(errors.length > 0) throw new ValidationError(errors);
+    if (errors.length > 0) throw new ValidationError(errors);
 
     const role = await roleRepository.findOneBy({ slug });
-    if(!role) throw new GlobalError(ErrorCodes.ROLE_NOT_FOUND);
+    if (!role) throw new GlobalError(ErrorCodes.ROLE_NOT_FOUND);
 
     Object.assign(role, requestData);
     const updatedRole = await roleRepository.save(role);

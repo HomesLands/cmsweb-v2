@@ -21,9 +21,4 @@ export class Authority extends Base {
   // An authority can have many permissions
   @OneToMany(() => Permission, (permission) => permission.authority)
   permissions: Permission[];
-
-  @ManyToOne(() => Resource, (resource) => resource.authorities)
-  @JoinColumn({ name: "resource_id_column" })
-  @AutoMap()
-  resource: Resource;
 }

@@ -1,5 +1,8 @@
 import { AutoMap } from "@automapper/classes";
-import { UserDepartmentResponseDto } from "@dto/response";
+import {
+  PermissionResponseDto,
+  UserDepartmentResponseDto,
+} from "@dto/response";
 import { BaseResponseDto } from "./base-response.dto";
 
 export class UserResponseDto extends BaseResponseDto {
@@ -24,5 +27,5 @@ export class UserPermissionResponseDto extends BaseResponseDto {
   role?: string;
 
   @AutoMap()
-  authorities?: string[];
+  permissions?: PermissionResponseDto[];
 }

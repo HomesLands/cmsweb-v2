@@ -5,7 +5,10 @@
     "CreateRoleDescription": "Tạo thêm một chức vụ mới",
     "nameNormalize": "Mã chuẩn hóa",
     "description": "Mô tả",
-    "createRoleSuccessfully": "Tạo chức vụ thành công"
+    "createRoleSuccessfully": "Tạo chức vụ thành công",
+    "nameDisplay": "Tên hiển thị",
+    "actions": "Thao tác",
+    "edit": "Chỉnh sửa chức vụ"
   }
    
 }
