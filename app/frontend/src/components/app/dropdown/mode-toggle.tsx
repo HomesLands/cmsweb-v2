@@ -1,0 +1,84 @@
+import { Moon, Sun, Settings } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
+import { useTheme } from '@/components/theme-provider'
+import { USFlag, VIFlag } from '@/assets/images'
+
+export function ModeToggle() {
+  const { t, i18n } = useTranslation('setting')
+  const { theme, setTheme } = useTheme()
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon">
+          <Settings className="h-[1.1rem] w-[1.1rem]" />
+          <span className="sr-only">Open settings</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="mt-1 mr-2 w-56">
+        <DropdownMenuLabel>{t('setting.settings')}</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <div className="flex flex-col gap-2 p-2">
+          <span className="text-sm font-medium text-muted-foreground">{t('setting.language')}</span>
+          <Select value={i18n.language} onValueChange={(value) => i18n.changeLanguage(value)}>
+            <SelectTrigger className="w-full h-8">
+              <SelectValue className="text-sm" placeholder={t('setting.selectLanguage')} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="en">
+                <img src={USFlag} className="inline-block mr-2 w-4" alt="English" />
+                <span className="text-xs">English</span>
+              </SelectItem>
+              <SelectItem value="vi">
+                <img src={VIFlag} className="inline-block mr-2 w-4" alt="Tiếng Việt" />
+                <span className="text-xs">Tiếng Việt</span>
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <DropdownMenuSeparator />
+        <div className="flex flex-col gap-2 p-2">
+          <span className="text-sm font-medium text-muted-foreground">{t('setting.theme')}</span>
+          <Select
+            value={theme}
+            onValueChange={(value: 'light' | 'dark' | 'system') => setTheme(value)}
+          >
+            <SelectTrigger className="w-full h-8">
+              <SelectValue placeholder={t('setting.selectTheme')} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="light">
+                <Sun className="inline-block mr-2 w-4 h-4" />
+                <span className="text-xs">{t('setting.light')}</span>
+              </SelectItem>
+              <SelectItem value="dark">
+                <Moon className="inline-block mr-2 w-4 h-4" />
+                <span className="text-xs">{t('setting.dark')}</span>
+              </SelectItem>
+              <SelectItem value="system">
+                <span className="inline-block mr-2">🖥️</span>
+                <span className="text-xs">{t('setting.system')}</span>
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}

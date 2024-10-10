@@ -2,7 +2,7 @@ import { NavLink, Outlet } from 'react-router-dom'
 import { PinLeftIcon, PinRightIcon } from '@radix-ui/react-icons'
 import { Button } from '@/components/ui'
 
-import { HeaderDropdown } from '@/components/app/dropdown'
+import { HeaderDropdown, ModeToggle } from '@/components/app/dropdown'
 import { SidebarDrawerMobile, SidebarDrawer } from '@/components/app/drawer'
 import { useLayoutStore } from '@/stores'
 import { TbeLogo } from '@/assets/images'
@@ -22,11 +22,11 @@ const DashboardLayout = () => {
         <div
           className={`fixed top-0 left-0 flex flex-col h-full transition-all duration-300 ${
             isMinimized ? 'w-14' : 'w-1/6'
-          } bg-white border-r z-50`}
+          }  border-r z-50`}
         >
           <Button
             variant="outline"
-            className="absolute flex items-center justify-center w-8 h-8 transition-all duration-300 rounded-full text-normal hover:bg-primary hover:text-white bottom-3 -right-4"
+            className="flex absolute bottom-3 -right-4 justify-center items-center w-8 h-8 rounded-full transition-all duration-300 text-normal hover:bg-primary hover:text-white"
             onClick={toggleMinimized}
           >
             {isMinimized ? (
@@ -44,10 +44,10 @@ const DashboardLayout = () => {
             <div
               className={`flex h-14 items-center border-b px-4 ${isMinimized ? 'justify-center text-normal' : 'lg:px-6'}`}
             >
-              <NavLink to={'/'} className="flex items-center gap-2 font-semibold whitespace-nowrap">
+              <NavLink to={'/'} className="flex gap-2 items-center font-semibold whitespace-nowrap">
                 <img src={TbeLogo} height={28} width={28} />
                 <span
-                  className={`whitespace-nowrap text-lg font-extrabold ${isMinimized ? 'hidden' : 'block text-normal'}`}
+                  className={`whitespace-nowrap text-lg font-extrabold ${isMinimized ? 'hidden' : 'block'}`}
                 >
                   TBE CMS
                 </span>
@@ -67,14 +67,15 @@ const DashboardLayout = () => {
         {/* Header */}
         <header
           className={cn(
-            'fixed top-0 left-0 w-full flex items-center justify-between gap-4 bg-white px-2 h-14 border-b z-10',
+            'flex fixed top-0 left-0 z-10 gap-4 justify-between items-center px-2 w-full h-14 border-b',
             'sm:justify-end sm:fixed sm:top-0 sm:h-14'
           )}
         >
           <SidebarDrawerMobile />
-          <div className="flex flex-row items-center justify-end gap-2 h-14">
-            <SelectLanguage />
+          <div className="flex flex-row gap-1 justify-end items-center h-14">
+            {/* <SelectLanguage /> */}
             <PopoverNotification />
+            <ModeToggle />
             <HeaderDropdown />
           </div>
         </header>

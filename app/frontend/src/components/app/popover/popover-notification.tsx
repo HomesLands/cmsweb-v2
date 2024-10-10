@@ -29,8 +29,8 @@ export function PopoverNotification() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost">
-          <BellIcon className="w-5 h-5" />
+        <Button variant="ghost" size="icon">
+          <BellIcon className="h-[1.1rem] w-[1.1rem]" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="mt-1 mr-2 md:w-[24rem]">
@@ -47,17 +47,17 @@ export function PopoverNotification() {
                       key={notification.id}
                       className={`relative grid items-center grid-cols-5 gap-2 rounded-md px-2 py-2 ${notification.read ? 'bg-gray-50' : ''}`}
                     >
-                      <div className="relative flex items-center justify-center bg-blue-50 w-9 h-9 rounded-2xl">
+                      <div className="flex relative justify-center items-center w-9 h-9 bg-blue-50 rounded-2xl">
                         <BellIcon className="w-4 h-4 text-blue-700" />
                         {!notification.read && (
-                          <DotFilledIcon className="absolute w-5 h-5 text-blue-600 -right-1 -top-1" />
+                          <DotFilledIcon className="absolute -top-1 -right-1 w-5 h-5 text-blue-600" />
                         )}
                       </div>
 
                       <div className="col-span-4">
                         <span className="text-sm font-bold text-normal">{notification.title}</span>
                         <p className="text-xs text-gray-500">{notification.content}</p>
-                        <div className="flex flex-row items-center justify-start gap-1 mt-1">
+                        <div className="flex flex-row gap-1 justify-start items-center mt-1">
                           <ClockIcon className="w-2.5 h-2.5" />
                           <p className="text-[0.7rem] text-normal">
                             {formatDate(notification.createdAt)}

@@ -1,0 +1,15 @@
+{
+  "assignedApprover": {
+    "title": "Phân quyền phê duyệt",
+    "description": "Phân quyền phê duyệt cho người dùng",
+    "list": "Danh sách người phê duyệt",
+
+    "add": "Thêm người phê duyệt",
+    "search": "Tìm kiếm người phê duyệt",
+    "selectFormType": "Chọn loại phiếu yêu cầu",
+    "selectRoleApproval": "Chọn vai trò phê duyệt",
+    "selectUser": "Chọn người phê duyệt",
+    "createAssignedApproverSuccessfully": "Tạo người phê duyệt thành công",
+    "createAssignedApproverFailed": "Tạo người phê duyệt thất bại"
+  }
+}

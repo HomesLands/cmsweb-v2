@@ -4,14 +4,19 @@
     "productRequisitionsList": "Product requisitions list",
     "createProductRequisitions": "Create product requisitions",
     "approvalProductRequisitions": "Approval product requisitions",
+
     "authorities": "Authorities",
     "createAuthority": "Create authority",
+
     "permissions": "Permissions",
     "createPermission": "Create permission",
+
     "roles": "Roles",
     "createRole": "Create role",
+
     "warehouses": "Warehouses",
     "createWarehouse": "Create warehouse",
+
     "employees": "Employees"
   }
 }

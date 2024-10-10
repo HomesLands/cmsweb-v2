@@ -11,6 +11,8 @@ import enTableData from '@/locales/en/table-data.json'
 import enToast from '@/locales/en/toast.json'
 import enAuthorities from '@/locales/en/authorities.json'
 import enPermissions from '@/locales/en/permissions.json'
+import enSetting from '@/locales/en/setting.json'
+import enAssignedApprover from '@/locales/en/assigned-approver.json'
 
 import viAuth from '@/locales/vi/auth.json'
 import viAccount from '@/locales/vi/account.json'
@@ -21,6 +23,8 @@ import viTableData from '@/locales/vi/table-data.json'
 import viToast from '@/locales/vi/toast.json'
 import viAuthorities from '@/locales/vi/authorities.json'
 import viPermissions from '@/locales/vi/permissions.json'
+import viSetting from '@/locales/vi/setting.json'
+import viAssignedApprover from '@/locales/vi/assigned-approver.json'
 
 i18n
   .use(LanguageDetector) // Tự động phát hiện ngôn ngữ
@@ -36,7 +40,9 @@ i18n
         authorities: enAuthorities,
         tableData: enTableData,
         toast: enToast,
-        permissions: enPermissions
+        permissions: enPermissions,
+        setting: enSetting,
+        assignedApprover: enAssignedApprover
       },
       vi: {
         auth: viAuth,
@@ -47,7 +53,9 @@ i18n
         tableData: viTableData,
         toast: viToast,
         authorities: viAuthorities,
-        permissions: viPermissions
+        permissions: viPermissions,
+        setting: viSetting,
+        assignedApprover: viAssignedApprover
       }
     },
     lng: window.localStorage.getItem('i18nextLng') || 'vi',
@@ -56,7 +64,7 @@ i18n
       escapeValue: false // React đã tự động bảo vệ trước XSS
     },
     //Setup type-safe translation
-    ns: ['auth', 'sidebar', 'productRequisition', 'tableData'], //Dùng để phân biệt các phần khác nhau của app
+    ns: ['auth', 'sidebar', 'productRequisition', 'tableData', 'setting'], //Dùng để phân biệt các phần khác nhau của app
     defaultNS: 'auth' //Ngôn ngữ mặc định
   })
 

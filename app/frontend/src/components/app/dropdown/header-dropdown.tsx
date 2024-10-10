@@ -54,7 +54,7 @@ export function HeaderDropdown() {
           {hasRequiredPermissions([Authority.READ_USER]) && (
             <DropdownMenuItem className="cursor-pointer font-beVietNam">
               <div
-                className="flex items-center gap-2"
+                className="flex gap-2 items-center"
                 onClick={() => navigate(ROUTE.PERSONAL_ACCOUNT)}
               >
                 <UserIcon className="icon" />
@@ -63,10 +63,10 @@ export function HeaderDropdown() {
             </DropdownMenuItem>
           )}
           <DropdownMenuItem
-            className="flex items-center justify-start gap-2 cursor-pointer text-danger hover:bg-red-100"
+            className="flex gap-2 justify-start items-center cursor-pointer text-danger hover:bg-red-100"
             onClick={() => setOpen(true)}
           >
-            <div className="flex items-center gap-2">
+            <div className="flex gap-2 items-center">
               <ExitIcon className="danger-icon" />
               <span className="text-danger font-beVietNam">{t('logout.title')}</span>
             </div>

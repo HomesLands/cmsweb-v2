@@ -1,10 +1,8 @@
 import { useTranslation } from 'react-i18next'
-import { UserRoundPen } from 'lucide-react'
 
 import {
   Card,
   CardContent,
-  Input,
   Button,
   Form,
   FormField,
@@ -14,18 +12,11 @@ import {
   FormMessage,
   PasswordInput
 } from '@/components/ui'
-import { useUserStore } from '@/stores'
 import { useForm } from 'react-hook-form'
 import { passwordAndAuthenticationSchema, TPasswordAndAuthenticationSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-interface CardUserPasswordAndAuthenticationProps {
-  setOpenDialog: (open: boolean) => void
-}
-
-export const CardUserPasswordAndAuthentication = ({
-  setOpenDialog
-}: CardUserPasswordAndAuthenticationProps) => {
+export const CardUserPasswordAndAuthentication = () => {
   const { t } = useTranslation('account')
 
   const form = useForm<TPasswordAndAuthenticationSchema>({

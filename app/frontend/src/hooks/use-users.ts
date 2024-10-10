@@ -1,6 +1,13 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { getUser, getUserInfoPermission, getUsers, updateUser, uploadProfilePicture } from '@/api'
+import {
+  getUser,
+  getUserInfoPermission,
+  getUsers,
+  updateUser,
+  uploadProfilePicture,
+  uploadSignature
+} from '@/api'
 import {
   IQuery,
   IUpdateProductRequisitionGeneralInfo,
@@ -39,11 +46,20 @@ export const useUploadProfilePicture = () => {
   return useMutation({
     mutationFn: (file: File) => uploadProfilePicture(file),
     onSuccess: () => {
-      // queryClient.invalidateQueries('user-info')
+      queryClient.invalidateQueries({ queryKey: ['user-info'] })
     }
   })
 }
 
+export const useUploadSignature = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (file: File) => uploadSignature(file),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user-info'] })
+    }
+  })
+}
 export const useUpdateUser = () => {
   const queryClient = useQueryClient()
   return useMutation({

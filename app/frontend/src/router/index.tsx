@@ -20,7 +20,9 @@ import {
   PermissionPage,
   CreatePermissionPage,
   EmployeePage,
-  PersonalAccountPage
+  PersonalAccountPage,
+  AssignedApproverPage,
+  CreateAssignedApproverPage
 } from './loadable'
 
 export const router = createBrowserRouter([
@@ -186,6 +188,20 @@ export const router = createBrowserRouter([
             allowedAuthorities={[Authority.CREATE_PERMISSION]}
           />
         )
+      }
+    ]
+  },
+  {
+    path: ROUTE.ASSIGNED_APPROVER,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: <AssignedApproverPage />
+      },
+      {
+        path: 'add',
+        element: <CreateAssignedApproverPage />
       }
     ]
   }

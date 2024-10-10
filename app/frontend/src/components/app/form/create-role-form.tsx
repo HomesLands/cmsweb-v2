@@ -93,14 +93,14 @@ export const CreateRoleForm: React.FC<IFormCreateRoleProps> = ({ onSubmit }) => 
     <div className="mt-3">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-2 font-beVietNam">
             {Object.keys(formFields).map((key) => (
               <React.Fragment key={key}>
                 {formFields[key as keyof typeof formFields]}
               </React.Fragment>
             ))}
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end font-beVietNam">
             <Button className="flex justify-end" type="submit">
               {t('roles.createRole')}
             </Button>

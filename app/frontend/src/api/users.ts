@@ -34,6 +34,13 @@ export async function uploadProfilePicture(file: File) {
   return response.data
 }
 
+export async function uploadSignature(file: File) {
+  const formData = new FormData()
+  formData.append('file', file)
+  const response = await http.patch<IApiResponse<IUserInfo>>(`/users/upload/sign`, formData)
+  return response.data
+}
+
 export async function updateUser(data: IUpdateUserGeneralInfo) {
   // const response = await http.patch<IApiResponse<IUserInfo>>(`/users/update`, data)
   // return response.data

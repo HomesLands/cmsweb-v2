@@ -12,12 +12,7 @@ import {
   Form,
   Button
 } from '@/components/ui'
-import {
-  personalAccountInfoSchema,
-  TPersonalAccountInfoSchema,
-  TUpdateProductRequestSchema,
-  updateProductRequestSchema
-} from '@/schemas'
+import { personalAccountInfoSchema, TPersonalAccountInfoSchema } from '@/schemas'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IUpdateUserGeneralInfo, IUserInfo } from '@/types'
@@ -49,6 +44,7 @@ export const FormUpdateUserGeneralInfo: React.FC<IFormUpdateUserGeneralInfoProps
 
   const handleSubmit = (values: TPersonalAccountInfoSchema) => {
     onSubmit(values)
+    onCancel()
   }
 
   return (

@@ -20,5 +20,9 @@ export const ROUTE = {
   ADD_ROLE: '/roles/add',
 
   // Emoloyee
-  EMPLOYEE: '/employees'
+  EMPLOYEE: '/employees',
+
+  // Assigned approver
+  ASSIGNED_APPROVER: '/assigned-approvers',
+  ADD_ASSIGNED_APPROVER: '/assigned-approvers/add'
 }

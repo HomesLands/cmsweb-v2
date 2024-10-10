@@ -55,14 +55,14 @@ export function SidebarDrawer() {
               <AccordionTrigger
                 minimized={isMinimized}
                 className={cn(
-                  'flex flex-1 w-full items-center py-4 font-medium text-base mt-3 transition-all duration-200 hover:text-primary hover:no-underline',
+                  'flex flex-1 w-full items-center py-3 font-medium text-base mt-3 transition-all duration-200 hover:text-primary hover:no-underline',
                   isMinimized
                     ? 'justify-center'
                     : '[&[data-state=open]>svg]:rotate-180 px-2 justify-between',
                   isSubmenuActive ? 'text-primary font-semibold' : ''
                 )}
               >
-                <div className="flex items-center justify-between gap-2 transition-all duration-300">
+                <div className="flex gap-2 justify-between items-center transition-all duration-300">
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger onClick={isMinimized ? toggleMinimized : undefined}>
@@ -75,7 +75,7 @@ export function SidebarDrawer() {
                     </Tooltip>
                   </TooltipProvider>
                   {isMinimized ? null : (
-                    <span className={`whitespace-nowrap text-sm font-normal font-sans`}>
+                    <span className={`font-sans text-sm font-normal whitespace-nowrap`}>
                       {submenu.title}
                     </span>
                   )}

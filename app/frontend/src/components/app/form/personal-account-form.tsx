@@ -7,13 +7,14 @@ import { personalAccountInfoSchema, TPersonalAccountInfoSchema } from '@/schemas
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useUpdateUser, useUploadProfilePicture } from '@/hooks'
 import { DialogUpdateUserGeneralInfo } from '@/components/app/dialog'
-import { IUpdateProductRequisitionGeneralInfo, IUpdateUserGeneralInfo, IUserInfo } from '@/types'
+import { IUpdateUserGeneralInfo, IUserInfo } from '@/types'
 import { useUserStore } from '@/stores'
 import { CardUserGeneralInfo, CardUserPasswordAndAuthentication } from '@/components/app/card'
 import { showToast } from '@/utils'
 
 export const PersonalAccountForm: React.FC = () => {
   const { userInfo, setUserInfo } = useUserStore()
+  const [openDialog, setOpenDialog] = useState(false)
   const { t } = useTranslation('account')
   const { t: tToast } = useTranslation('toast')
   const { mutate: uploadProfilePicture } = useUploadProfilePicture()
@@ -59,8 +60,6 @@ export const PersonalAccountForm: React.FC = () => {
     }
   }, [userInfo, form])
 
-  const [openDialog, setOpenDialog] = useState(false)
-
   return (
     <div>
       <Tabs defaultValue="general-info" className="w-full">
@@ -77,7 +76,7 @@ export const PersonalAccountForm: React.FC = () => {
           />
         </TabsContent>
         <TabsContent value="password-and-authentication">
-          <CardUserPasswordAndAuthentication setOpenDialog={setOpenDialog} />
+          <CardUserPasswordAndAuthentication />
         </TabsContent>
       </Tabs>
       <DialogUpdateUserGeneralInfo
