@@ -27,6 +27,7 @@ export const dataSource = new DataSource({
   logging: false,
   synchronize: false,
   migrations: [join(__dirname, "../migration", "*.{ts,js}")],
+  subscribers: [join(__dirname, "../entities/subscriber", "*.{ts,js}")],
 });
 
 export async function initializeDataSource(

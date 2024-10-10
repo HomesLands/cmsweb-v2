@@ -9,12 +9,14 @@ import {
   FormControl,
   FormMessage,
   Form,
-  Button
+  Button,
+  Switch,
+  Label
 } from '@/components/ui'
 import { createPermissionSchema, TCreatePermissionSchema } from '@/schemas'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SelectAuthority, SelectRole } from '../select'
+import { SelectAuthority, SelectResource, SelectRole } from '../select'
 
 interface IFormCreatePermissionProps {
   onSubmit: (data: TCreatePermissionSchema) => void
@@ -26,14 +28,15 @@ export const CreatePermissionForm: React.FC<IFormCreatePermissionProps> = ({ onS
   const form = useForm<TCreatePermissionSchema>({
     resolver: zodResolver(createPermissionSchema),
     defaultValues: {
-      role: {
+      resource: {
         label: '',
         value: ''
       },
       authority: {
         label: '',
         value: ''
-      }
+      },
+      requiredOwner: false
     }
   })
 
@@ -41,18 +44,26 @@ export const CreatePermissionForm: React.FC<IFormCreatePermissionProps> = ({ onS
     onSubmit(values)
   }
 
+  const handleCheckedChange = () => {
+    const value = form.getValues('requiredOwner')
+    form.setValue('requiredOwner', !value)
+  }
+
   const formFields = {
-    role: (
+    resource: (
       <FormField
         control={form.control}
-        name="role"
+        name="resource"
         render={() => (
           <FormItem>
-            <FormLabel>{t('permissions.selectRole')}</FormLabel>
+            <FormLabel>{t('permissions.selectResource')}</FormLabel>
             <FormControl>
-              <SelectRole
+              <SelectResource
                 onChange={(values) => {
-                  form.setValue('role', { label: values?.label || '', value: values?.value || '' })
+                  form.setValue('resource', {
+                    label: values?.label || '',
+                    value: values?.value || ''
+                  })
                 }}
               />
             </FormControl>
@@ -78,6 +89,25 @@ export const CreatePermissionForm: React.FC<IFormCreatePermissionProps> = ({ onS
                 }}
               />
             </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    requiredOwner: (
+      <FormField
+        control={form.control}
+        name="requiredOwner"
+        render={() => (
+          <FormItem>
+            <div className="flex items-center space-x-2">
+              <Label htmlFor="requiredOwner">Yêu cầu chủ sở hữu</Label>
+              <Switch
+                id="requiredOwner"
+                checked={form.getValues('requiredOwner')}
+                onCheckedChange={handleCheckedChange}
+              />
+            </div>
             <FormMessage />
           </FormItem>
         )}

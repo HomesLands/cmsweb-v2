@@ -17,6 +17,9 @@
     "warehouses": "Warehouses",
     "createWarehouse": "Create warehouse",
 
-    "employees": "Employees"
+    "employees": "Employees",
+
+    "assignedApprover": "Assigned approver",
+    "createAssignedApprover": "Create assigned approver"
   }
 }

@@ -1,8 +1,10 @@
 import { IQuery } from './base.type'
+import { IPermission } from './permission.type'
 
 export interface IUserInfo {
   fullname: string
   username: string
+  avatar: string
   userDepartments: {
     department: {
       nameNormalize: string
@@ -29,7 +31,6 @@ export interface IUserInfo {
     slug: string
   }[]
   signature: string
-  avatar: string
   createdAt: string
   updatedAt: string
   slug: string
@@ -37,9 +38,9 @@ export interface IUserInfo {
 
 export type IUserQuery = IQuery
 
-export interface IUserRoleResponse {
+export interface IUserPermission {
   role: string
-  authorities: string[]
+  permissions: IPermission[]
 }
 
 export interface IUpdateUserGeneralInfo {

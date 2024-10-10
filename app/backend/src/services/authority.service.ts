@@ -8,9 +8,16 @@ import {
   TQueryRequest,
 } from "@types";
 import { plainToClass } from "class-transformer";
-import { CreateAuthorityRequestDto, UpdateAuthorityRequestDto } from "@dto/request";
+import {
+  CreateAuthorityRequestDto,
+  UpdateAuthorityRequestDto,
+} from "@dto/request";
 import { validate } from "class-validator";
 import { ErrorCodes, GlobalError, ValidationError } from "@exception";
+import { Ability, MongoQuery } from "@casl/ability";
+import { Action } from "@enums";
+import { Subjects } from "@lib/casl";
+import { StatusCodes } from "http-status-codes";
 
 class AuthorityService {
   public async getAllAuthorities(
@@ -83,19 +90,29 @@ class AuthorityService {
   }
 
   public async updateAuthority(
-    slug: string, 
-    plainData: UpdateAuthorityRequestDto
+    slug: string,
+    plainData: UpdateAuthorityRequestDto,
+    ability?: Ability<[Action, Subjects], MongoQuery>
   ): Promise<AuthorityResponseDto> {
+    // if (!ability) throw new GlobalError(StatusCodes.FORBIDDEN);
+
     const requestData = plainToClass(UpdateAuthorityRequestDto, plainData);
     const errors = await validate(requestData);
-    if(errors.length > 0) throw new ValidationError(errors);
+    if (errors.length > 0) throw new ValidationError(errors);
 
     const authority = await authorityRepository.findOneBy({ slug });
-    if(!authority) throw new GlobalError(ErrorCodes.AUTHORITY_NOT_FOUND);
+    if (!authority) throw new GlobalError(ErrorCodes.AUTHORITY_NOT_FOUND);
+
+    // if (!ability.can(Action.UPDATE, authority))
+    //   throw new GlobalError(StatusCodes.FORBIDDEN);
 
     Object.assign(authority, requestData);
     const updatedAuthority = await authorityRepository.save(authority);
-    const authorityDto = mapper.map(updatedAuthority, Authority, AuthorityResponseDto);
+    const authorityDto = mapper.map(
+      updatedAuthority,
+      Authority,
+      AuthorityResponseDto
+    );
     return authorityDto;
   }
 }

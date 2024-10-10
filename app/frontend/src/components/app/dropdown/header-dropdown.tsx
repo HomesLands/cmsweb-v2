@@ -16,7 +16,7 @@ import {
 } from '@/components/ui'
 import { DialogLogout } from '@/components/app/dialog'
 import { useAuthStore, useUserInfoPermissionsStore, useUserStore } from '@/stores'
-import { Authority, ROUTE } from '@/constants'
+import { Authority, Resource, ROUTE } from '@/constants'
 import { hasRequiredPermissions } from '@/utils/auth'
 import { showToast } from '@/utils'
 
@@ -51,8 +51,8 @@ export function HeaderDropdown() {
             {t('userInfo.hello')} {userInfo?.fullname}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {hasRequiredPermissions([Authority.READ_USER]) && (
-            <DropdownMenuItem className="cursor-pointer font-beVietNam">
+          <DropdownMenuItem className="cursor-pointer">
+            {hasRequiredPermissions({ authority: Authority.READ, resource: Resource.USER }) && (
               <div
                 className="flex gap-2 items-center"
                 onClick={() => navigate(ROUTE.PERSONAL_ACCOUNT)}
@@ -60,8 +60,8 @@ export function HeaderDropdown() {
                 <UserIcon className="icon" />
                 <span className="text-normal font-beVietNam">{tAccount('account.title')}</span>
               </div>
-            </DropdownMenuItem>
-          )}
+            )}
+          </DropdownMenuItem>
           <DropdownMenuItem
             className="flex gap-2 justify-start items-center cursor-pointer text-danger hover:bg-red-100"
             onClick={() => setOpen(true)}

@@ -6,7 +6,7 @@ import { AutoMap } from "@automapper/classes";
 
 @Entity("user_role_tbl")
 export class UserRole extends Base {
-  @ManyToOne(() => Role, (role) => role.permissions)
+  @ManyToOne(() => Role, (role) => role.userRoles)
   @JoinColumn({ name: "role_column" })
   @AutoMap()
   role: Role;

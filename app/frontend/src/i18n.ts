@@ -11,6 +11,7 @@ import enTableData from '@/locales/en/table-data.json'
 import enToast from '@/locales/en/toast.json'
 import enAuthorities from '@/locales/en/authorities.json'
 import enPermissions from '@/locales/en/permissions.json'
+import enUsers from '@/locales/en/users.json'
 import enSetting from '@/locales/en/setting.json'
 import enAssignedApprover from '@/locales/en/assigned-approver.json'
 
@@ -23,6 +24,7 @@ import viTableData from '@/locales/vi/table-data.json'
 import viToast from '@/locales/vi/toast.json'
 import viAuthorities from '@/locales/vi/authorities.json'
 import viPermissions from '@/locales/vi/permissions.json'
+import viUsers from '@/locales/vi/users.json'
 import viSetting from '@/locales/vi/setting.json'
 import viAssignedApprover from '@/locales/vi/assigned-approver.json'
 
@@ -41,6 +43,7 @@ i18n
         tableData: enTableData,
         toast: enToast,
         permissions: enPermissions,
+        users: enUsers,
         setting: enSetting,
         assignedApprover: enAssignedApprover
       },
@@ -54,6 +57,7 @@ i18n
         toast: viToast,
         authorities: viAuthorities,
         permissions: viPermissions,
+        users: viUsers,
         setting: viSetting,
         assignedApprover: viAssignedApprover
       }

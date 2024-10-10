@@ -3,6 +3,7 @@
     "title": "Assigned Approver",
     "description": "Assigned approver for user",
     "list": "List approver",
+
     "add": "Add approver",
     "search": "Search approver",
     "selectFormType": "Select form type",

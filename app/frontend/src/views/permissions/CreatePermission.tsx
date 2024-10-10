@@ -14,8 +14,9 @@ const CreatePermission: React.FC = () => {
 
   const onSubmit = (values: TCreatePermissionSchema) => {
     const requestData = {
-      roleSlug: values.role.value,
-      authoritySlug: values.authority.value
+      resourceSlug: values.resource.value,
+      authoritySlug: values.authority.value,
+      requiredOwner: values.requiredOwner
     } as ICreatePermission
     mutation.mutate(requestData, {
       onSuccess: () => {

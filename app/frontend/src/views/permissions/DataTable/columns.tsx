@@ -23,30 +23,39 @@ export const usePermissionColumns = (): ColumnDef<IPermission>[] => {
       )
     },
     {
-      accessorKey: 'nameDisplay',
+      accessorKey: 'authority',
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('permissions.roleNameDisplay')} />
-      ),
-      cell: ({ row }) => {
-        const { role } = row.original
-        return <div>{role?.nameNormalize}</div>
-      }
-    },
-    {
-      accessorKey: 'nameDisplay',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('permissions.authorityNameDisplay')} />
+        <DataTableColumnHeader column={column} title={t('permissions.authority')} />
       ),
       cell: ({ row }) => {
         const { authority } = row.original
-        return <div>{authority?.nameNormalize}</div>
+        return <div>{authority}</div>
+      }
+    },
+    {
+      accessorKey: 'resource',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('permissions.resource')} />
+      ),
+      cell: ({ row }) => {
+        const { resource } = row.original
+        return <div>{resource}</div>
+      }
+    },
+    {
+      accessorKey: 'requiredOwner',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('permissions.requiredOwner')} />
+      ),
+      cell: ({ row }) => {
+        const { requiredOwner } = row.original
+        return <div>{requiredOwner ? 'Yêu cầu chủ sở hữu' : 'Không yêu cầu chủ sở hữu'}</div>
       }
     },
     {
       id: 'actions',
       header: 'Thao tác',
       cell: ({ row }) => {
-        const requisition = row.original
         return (
           <div>
             <DropdownMenu>

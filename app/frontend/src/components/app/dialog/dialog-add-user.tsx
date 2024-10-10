@@ -9,13 +9,7 @@ import {
   Button
 } from '@/components/ui'
 
-import { createUserSchema } from '@/schemas'
-import { z } from 'zod'
-// import { AddNewUserForm } from '@/components/app/form'
-
 export function DialogAddUser() {
-  const handleSubmit = (data: z.infer<typeof createUserSchema>) => {}
-
   return (
     <Dialog>
       <DialogTrigger asChild>

@@ -5,3 +5,8 @@ export type TAssignedApprover = {
   roleApproval: string
   user: string
 }
+
+export type TGetAssignedApprover = {
+  formType: FormApprovalType
+  roleApproval: string
+}

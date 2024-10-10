@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect } from 'react'
+import { useThemeStore } from '@/stores/theme.store'
 
 type Theme = 'dark' | 'light' | 'system'
 
@@ -14,21 +15,14 @@ type ThemeProviderState = {
 }
 
 const initialState: ThemeProviderState = {
-  theme: 'system',
+  theme: 'light',
   setTheme: () => null
 }
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 
-export function ThemeProvider({
-  children,
-  defaultTheme = 'system',
-  storageKey = 'vite-ui-theme',
-  ...props
-}: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
-  )
+export function ThemeProvider({ children, defaultTheme = 'light', ...props }: ThemeProviderProps) {
+  const { theme, setTheme } = useThemeStore()
 
   useEffect(() => {
     const root = window.document.documentElement
@@ -49,14 +43,13 @@ export function ThemeProvider({
 
   const value = {
     theme,
-    setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme)
-      setTheme(theme)
+    setTheme: (newTheme: Theme) => {
+      setTheme(newTheme)
     }
   }
 
   return (
-    <ThemeProviderContext.Provider {...props} value={value}>
+    <ThemeProviderContext.Provider {...props} value={value as ThemeProviderState}>
       {children}
     </ThemeProviderContext.Provider>
   )

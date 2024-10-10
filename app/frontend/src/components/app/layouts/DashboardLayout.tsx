@@ -1,17 +1,18 @@
 import { NavLink, Outlet } from 'react-router-dom'
+
 import { PinLeftIcon, PinRightIcon } from '@radix-ui/react-icons'
 import { Button } from '@/components/ui'
 
 import { HeaderDropdown, ModeToggle } from '@/components/app/dropdown'
 import { SidebarDrawerMobile, SidebarDrawer } from '@/components/app/drawer'
-import { useLayoutStore } from '@/stores'
-import { TbeLogo } from '@/assets/images'
-import { SelectLanguage } from '@/components/app/select'
 import { PopoverNotification } from '@/components/app/popover'
+import { useLayoutStore, useThemeStore } from '@/stores'
+import { TbeLogo } from '@/assets/images'
 import { cn } from '@/lib/utils'
 
 const DashboardLayout = () => {
   const { isMinimized, toggleMinimized } = useLayoutStore()
+  const { getTheme } = useThemeStore()
 
   return (
     <div className="box-border flex h-screen">
@@ -68,7 +69,8 @@ const DashboardLayout = () => {
         <header
           className={cn(
             'flex fixed top-0 left-0 z-10 gap-4 justify-between items-center px-2 w-full h-14 border-b',
-            'sm:justify-end sm:fixed sm:top-0 sm:h-14'
+            'sm:justify-end sm:fixed sm:top-0 sm:h-14',
+            getTheme() === 'light' ? 'bg-white' : ''
           )}
         >
           <SidebarDrawerMobile />
