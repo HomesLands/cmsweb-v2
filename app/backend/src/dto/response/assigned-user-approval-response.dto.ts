@@ -4,6 +4,7 @@ import {
   UserResponseDto,
 } from "@dto/response";
 import { BaseResponseDto } from "./base-response.dto";
+import { Site } from "@entities/site.entity";
 
 export class AssignedUserApprovalResponseDto extends BaseResponseDto {
   @AutoMap()
@@ -17,4 +18,7 @@ export class AssignedUserApprovalResponseDto extends BaseResponseDto {
 
   @AutoMap(() => UserResponseDto)
   user?: UserResponseDto;
+
+  @AutoMap(() => Site)
+  site?: Site;
 }

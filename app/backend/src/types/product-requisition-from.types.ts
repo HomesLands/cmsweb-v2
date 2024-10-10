@@ -35,3 +35,12 @@ export type TUpdateGeneralInformationProductRequisitionFormRequestDto = {
   deadlineApproval?: string;
   description?: string;
 }
+
+export type TProductRequisitionFormDataExport = {
+  order?: number,
+  quantity?: number,
+  name?: string,
+  description?: string,
+  provider?: string,
+  unit?: string,
+}

@@ -1,6 +1,6 @@
 {
   "coverageDirectory": "./coverage",
-  "testMatch": ["**/?(*.)+(spec).ts"],
+  "testMatch": ["<rootDir>/src/__tests__/**/*.test.ts"],  
   "resetMocks": true,
   "clearMocks": true,
   "collectCoverage": true,
