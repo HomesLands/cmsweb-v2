@@ -55,6 +55,7 @@ import {
   ApprovalLogStatus,
 } from "@enums";
 import { PermissionUtils } from "@utils";
+import { In } from "typeorm";
 
 
 class ProductRequisitionFormService {
@@ -86,6 +87,78 @@ class ProductRequisitionFormService {
 
     const forms = await productRequisitionFormRepository.find({
       where: { creator: { id: creatorId } },
+      take: pageSize,
+      skip: (page - 1) * pageSize,
+      order: { type: "DESC", createdAt: options.order },
+      relations: [
+        "project",
+        "creator.userDepartments.department.site.company",
+        "userApprovals.assignedUserApproval.user",
+        "userApprovals.approvalLogs",
+        "requestProducts.product.unit",
+        "requestProducts.temporaryProduct.unit",
+      ],
+    });
+
+    const results: ProductRequisitionFormResponseDto[] = mapper.mapArray(
+      forms,
+      ProductRequisitionForm,
+      ProductRequisitionFormResponseDto
+    );
+    return {
+      items: results,
+      page,
+      pageSize,
+      totalPages,
+    };
+  }
+
+  public async getAllProductRequisitionFormsCompletedApproval(
+    creatorId: string,
+    options: TQueryRequest
+  ): Promise<TPaginationOptionResponse<ProductRequisitionFormResponseDto[]>> {
+    // Get the total number of products
+    const totalProductRequisitionForm =
+      await productRequisitionFormRepository.count({
+        where: { 
+          creator: { 
+            id: creatorId 
+          },
+           status: In([
+            ProductRequisitionFormStatus.WAITING_EXPORT,
+            ProductRequisitionFormStatus.EXPORTING,
+            ProductRequisitionFormStatus.DONE
+           ])
+        },
+      });
+
+    // Parse and validate pagination parameters
+    let pageSize =
+      typeof options.pageSize === "string"
+        ? parseInt(options.pageSize, 10)
+        : options.pageSize;
+    let page =
+      typeof options.page === "string"
+        ? parseInt(options.page, 10)
+        : options.page;
+
+    // Ensure page and pageSize are positive numbers
+    if (isNaN(page) || page <= 0) page = 1;
+    if (isNaN(pageSize) || pageSize <= 0) pageSize = 10; // Default pageSize if invalid
+    // Calculate pagination details
+    const totalPages = Math.ceil(totalProductRequisitionForm / pageSize);
+
+    const forms = await productRequisitionFormRepository.find({
+      where: { 
+        creator: { 
+          id: creatorId 
+        },
+        status: In([
+          ProductRequisitionFormStatus.WAITING_EXPORT,
+          ProductRequisitionFormStatus.EXPORTING,
+          ProductRequisitionFormStatus.DONE
+         ]) 
+      },
       take: pageSize,
       skip: (page - 1) * pageSize,
       order: { type: "DESC", createdAt: options.order },

@@ -18,6 +18,12 @@ productRequisitionFormRoute.get(
   productRequisitionFormController.exportExcelProductRequisitionFormBySlug
 );
 
+// [GET] /api/v1/productRequisitionForms/completedApproval
+productRequisitionFormRoute.get(
+  "/completedApproval",
+  productRequisitionFormController.getAllProductRequisitionFormsCompletedApproval
+);
+
 // [GET] /api/v1/productRequisitionForms
 productRequisitionFormRoute.get(
   "/",
