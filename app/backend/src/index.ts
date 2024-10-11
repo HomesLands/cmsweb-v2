@@ -27,6 +27,10 @@ dotenv.config();
   app.use(express.static(path.join(__dirname, "../public")));
   app.use(express.urlencoded({ extended: true }));
 
+  // ejs
+  app.set('view engine', 'ejs');
+  app.set('views', path.join(__dirname, 'views'));
+
   // await producer.connect();
   // await producer.send({
   //   topic: "first_kafka_topic",
