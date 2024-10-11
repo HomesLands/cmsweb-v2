@@ -1,0 +1,18 @@
+{
+  "department": {
+    "list": "Department list",
+    "create": "Create department",
+    "createDescription": "Create new department",
+    "nameNormalize": "Normalize name",
+    "nameNormalizeDescription": "Enter normalize name",
+    "name": "Name",
+    "description": "Description",
+    "descriptionDescription": "Enter description",
+    "confirmCreate": "Confirm create department",
+    "confirmCreateDescription": "Confirm create new department",
+    "belongsToLocation": "belongs to location",
+    "cancelCreate": "Cancel",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  }
+}

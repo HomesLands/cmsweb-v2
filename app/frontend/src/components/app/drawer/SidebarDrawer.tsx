@@ -68,7 +68,7 @@ export function SidebarDrawer() {
                     <Tooltip>
                       <TooltipTrigger onClick={isMinimized ? toggleMinimized : undefined}>
                         {/* Add onClick */}
-                        {submenu.icon && <IconWrapper Icon={submenu.icon} className="w-4 h-4" />}
+                        {submenu.icon && <IconWrapper Icon={submenu.icon} className="w-3 h-3" />}
                       </TooltipTrigger>
                       <TooltipContent side="right">
                         <span className="font-sans text-xs">{submenu.title}</span>
@@ -76,7 +76,7 @@ export function SidebarDrawer() {
                     </Tooltip>
                   </TooltipProvider>
                   {isMinimized ? null : (
-                    <span className={`font-sans text-sm font-normal whitespace-nowrap`}>
+                    <span className={`font-sans text-xs font-normal whitespace-nowrap`}>
                       {submenu.title}
                     </span>
                   )}

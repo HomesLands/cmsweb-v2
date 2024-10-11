@@ -12,6 +12,7 @@
 
     "confirmCreateSite": "Confirm create site",
     "confirmCreateSiteDescription": "Confirm create site",
+    "belongsToCompany": "belongs to company",
     "cancelCreateSite": "Cancel create site",
     "confirm": "Confirm"
   }

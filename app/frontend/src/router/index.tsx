@@ -26,7 +26,11 @@ import {
   CompanyPage,
   CreateCompanyPage,
   SitePage,
-  CreateSitePage
+  CreateSitePage,
+  DepartmentPage,
+  CreateDepartmentPage,
+  ProjectPage,
+  CreateProjectPage
 } from './loadable'
 
 export const router = createBrowserRouter([
@@ -234,6 +238,34 @@ export const router = createBrowserRouter([
       {
         path: 'add',
         element: <CreateSitePage />
+      }
+    ]
+  },
+  {
+    path: ROUTE.DEPARTMENT,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: <DepartmentPage />
+      },
+      {
+        path: 'add',
+        element: <CreateDepartmentPage />
+      }
+    ]
+  },
+  {
+    path: ROUTE.PROJECT,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: <ProjectPage />
+      },
+      {
+        path: 'add',
+        element: <CreateProjectPage />
       }
     ]
   }

@@ -36,6 +36,8 @@
     "updateUserSuccess": "Người dùng được cập nhật thành công",
 
     "createCompanySuccessfully": "Công ty được tạo thành công",
-    "createSiteSuccessfully": "Địa điểm được tạo thành công"
+    "createSiteSuccessfully": "Địa điểm được tạo thành công",
+    "createDepartmentSuccessfully": "Phòng ban được tạo thành công",
+    "createProjectSuccessfully": "Dự án được tạo thành công"
   }
 }

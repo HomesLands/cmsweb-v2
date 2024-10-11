@@ -1,12 +1,15 @@
 {
   "permissions": {
     "list": "Danh sách quyền",
+    "authority": "Thẩm quyền",
+    "resource": "Tài nguyên",
+    "requiredOwner": "Yêu cầu sở hữu",
     "createPermission": "Thêm quyền",
     "createPermissionDescription": "Thêm quyền mới",
     "nameNormalize": "Mã chuẩn hóa",
     "description": "Mô tả",
     "slug": "Slug",
-    "createPermissionSuccessfully": "Tạo quyền mới thành công"    ,
+    "createPermissionSuccessfully": "Tạo quyền mới thành công",
     "selectRole": "Lựa chọn chức vụ",
     "selectAuthority": "Lựa chọn thẩm quyền"
   }

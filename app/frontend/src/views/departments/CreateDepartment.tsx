@@ -2,35 +2,38 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
-import { ICreateSite } from '@/types'
+import { ICreateDepartment, ICreateSite } from '@/types'
 import { useCreateSite } from '@/hooks'
 import { CreateSiteForm } from '@/components/app/form'
 import { showToast } from '@/utils'
 import { DialogConfirmCreateSite } from '@/components/app/dialog/dialog-confirm-create-site'
+import { DialogConfirmCreateDepartment } from '@/components/app/dialog'
+import { useCreateDepartment } from '@/hooks/use-departments'
+import { CreateDepartmentForm } from '@/components/app/form/create-department-form'
 
-const CreateSite: React.FC = () => {
+const CreateDepartment: React.FC = () => {
   const { t } = useTranslation(['sites'])
   const { t: tToast } = useTranslation(['toast'])
-  const { mutate: createSite } = useCreateSite()
+  const { mutate: createDepartment } = useCreateDepartment()
   const [openDialog, setOpenDialog] = useState(false)
-  const [site, setSite] = useState<ICreateSite | null>(null)
+  const [department, setDepartment] = useState<ICreateDepartment | null>(null)
 
-  const handleConfirmCreateSite = (values: ICreateSite) => {
-    createSite(values, {
+  const handleConfirmCreateDepartment = (values: ICreateDepartment) => {
+    createDepartment(values, {
       onSuccess: () => {
         showToast(tToast('toast.createSiteSuccessfully'))
       }
     })
   }
 
-  const onSubmit = (values: ICreateSite) => {
+  const onSubmit = (values: ICreateDepartment) => {
     console.log(values)
-    setSite(values)
+    setDepartment(values)
     setOpenDialog(true)
   }
 
   return (
-    <div className="flex flex-col gap-4 mt-2">
+    <div className="flex flex-col gap-4 mt-3">
       <Card>
         <CardHeader className="flex flex-row justify-between items-center w-full border-b">
           <div className="flex flex-col gap-2 items-start py-2">
@@ -39,17 +42,17 @@ const CreateSite: React.FC = () => {
           </div>
         </CardHeader>
         <CardContent className="flex flex-col">
-          <CreateSiteForm onSubmit={onSubmit} />
+          <CreateDepartmentForm onSubmit={onSubmit} />
         </CardContent>
       </Card>
-      <DialogConfirmCreateSite
-        handleCreateSite={handleConfirmCreateSite}
+      <DialogConfirmCreateDepartment
+        handleCreateDepartment={handleConfirmCreateDepartment}
         openDialog={openDialog}
-        site={site}
+        department={department}
         onOpenChange={() => setOpenDialog(!openDialog)}
       />
     </div>
   )
 }
 
-export default CreateSite
+export default CreateDepartment

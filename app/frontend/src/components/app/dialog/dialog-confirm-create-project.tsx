@@ -9,28 +9,25 @@ import {
   DialogTitle
 } from '@/components/ui'
 
-import { ICreateSite } from '@/types'
+import { ICreateProject } from '@/types'
 import { useTranslation } from 'react-i18next'
 
-interface DialogConfirmCreateSiteProps {
-  handleCreateSite: (site: ICreateSite) => void
+interface DialogConfirmCreateProjectProps {
+  handleCreateProject: (project: ICreateProject) => void
   openDialog: boolean
-  site: ICreateSite | null
+  project: ICreateProject | null
   onOpenChange: () => void
 }
 
-export function DialogConfirmCreateSite({
-  handleCreateSite,
+export function DialogConfirmCreateProject({
+  handleCreateProject,
   openDialog,
-  site,
+  project,
   onOpenChange
-}: DialogConfirmCreateSiteProps) {
-  const { t } = useTranslation('sites')
-  const handleSubmit = (data: ICreateSite) => {
-    const completeData: ICreateSite = {
-      ...data
-    }
-    handleCreateSite(completeData)
+}: DialogConfirmCreateProjectProps) {
+  const { t } = useTranslation('projects')
+  const handleSubmit = (data: ICreateProject) => {
+    handleCreateProject(data)
     onOpenChange()
   }
 
@@ -41,23 +38,23 @@ export function DialogConfirmCreateSite({
           <DialogTitle className="pb-4 border-b border-primary text-primary">
             <div className="flex gap-2 items-center">
               <TriangleAlert className="w-6 h-6" />
-              {t('sites.confirmCreateSite')}
+              {t('projects.confirmCreate')}
             </div>
           </DialogTitle>
 
           <div className="py-4 text-sm text-gray-500">
-            {t('sites.confirmCreateSiteDescription')}
+            {t('projects.confirmCreateDescription')}
             <br />
-            <span className="font-bold">{site?.name}</span> {t('sites.belongsToCompany')}{' '}
-            <span className="font-bold">{site?.companyName}</span>
+            <span className="font-bold">{project?.name}</span> {t('projects.belongsToLocation')}{' '}
+            <span className="font-bold">{project?.siteName}</span>
           </div>
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" onClick={onOpenChange}>
-            {t('sites.cancelCreateSite')}
+            {t('projects.cancelCreate')}
           </Button>
-          <Button variant="default" onClick={() => site && handleSubmit(site)}>
-            {t('sites.confirm')}
+          <Button variant="default" onClick={() => project && handleSubmit(project)}>
+            {t('projects.confirm')}
           </Button>
         </DialogFooter>
       </DialogContent>
