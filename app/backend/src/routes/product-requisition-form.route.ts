@@ -21,7 +21,7 @@ productRequisitionFormRoute.get(
 // [GET] /api/v1/productRequisitionForms
 productRequisitionFormRoute.get(
   "/",
-  // authMiddleware.hasPermission(Action.READ, ProductRequisitionForm),
+  authMiddleware.hasPermission(Action.READ, ProductRequisitionForm),
   productRequisitionFormController.getAllProductRequisitionForms
 );
 
@@ -48,7 +48,7 @@ productRequisitionFormRoute.patch(
 // [GET] /api/v1/productRequisitionForms/:slug
 productRequisitionFormRoute.get(
   "/:slug",
-  // authMiddleware.hasPermission(Action.READ, ProductRequisitionForm),
+  authMiddleware.hasPermission(Action.READ, ProductRequisitionForm),
   productRequisitionFormController.getProductRequisitionFormBySlug
 );
 
