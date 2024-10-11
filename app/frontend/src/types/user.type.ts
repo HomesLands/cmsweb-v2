@@ -30,6 +30,7 @@ export interface IUserInfo {
     updatedAt: string
     slug: string
   }[]
+  signature: string
   createdAt: string
   updatedAt: string
   slug: string
@@ -40,4 +41,11 @@ export type IUserQuery = IQuery
 export interface IUserPermission {
   role: string
   permissions: IPermission[]
+}
+
+export interface IUpdateUserGeneralInfo {
+  fullname: string
+  username: string
+  company: string
+  site: string
 }

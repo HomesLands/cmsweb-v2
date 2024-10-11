@@ -1,0 +1,21 @@
+{
+  "companies": {
+    "list": "Companies",
+    "slug": "Company Code",
+    "name": "Company Name",
+    "director": "Director",
+    "directorSlug": "Director Code",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "website": "Website",
+    "description": "Description",
+
+    "createCompany": "Create Company",
+    "createCompanyDescription": "Create a new company",
+    "confirmCreateCompany": "Create company",
+    "cancelCreateCompany": "Cancel",
+    "confirm": "Confirm",
+    "confirmCreateCompanyDescription": "Data about the company will be created!"
+  }
+}

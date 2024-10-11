@@ -53,7 +53,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['Roboto', 'sans-serif'],
+        sans: ['BeVietnam', 'Roboto', 'sans-serif'],
         matemasie: ['Matemasie', 'sans-serif'],
         beVietNam: ['BeVietnam', 'sans-serif'],
       },

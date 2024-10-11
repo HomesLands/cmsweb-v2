@@ -17,6 +17,15 @@
     "roles": "Chức vụ",
     "createRole": "Tạo chức vụ",
 
-    "employees": "Nhân sự"
+    "employees": "Nhân sự",
+
+    "assignedApprover": "Người duyệt",
+    "createAssignedApprover": "Tạo người duyệt",
+
+    "companies": "Công ty",
+    "createCompany": "Tạo công ty",
+
+    "sites": "Địa điểm",
+    "createSite": "Tạo địa điểm"
   }
 }

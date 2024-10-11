@@ -26,10 +26,10 @@ const CreatePermission: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mt-2">
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between w-full border-b">
-          <div className="flex flex-col items-start gap-2 py-2">
+        <CardHeader className="flex flex-row justify-between items-center w-full border-b">
+          <div className="flex flex-col gap-2 items-start py-2">
             <CardTitle>{t('permissions.createPermission')}</CardTitle>
             <CardDescription>{t('permissions.createPermissionDescription')}</CardDescription>
           </div>
