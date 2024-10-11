@@ -38,13 +38,7 @@ export const mapper = createMapper({
 addProfile(mapper, authMapper);
 
 addProfile(mapper, userMapper, extend(baseMapper(mapper)));
-addProfile(
-  mapper,
-  projectMapper,
-  typeConverter(Date, String, (startDate) => moment(startDate).toString()),
-  typeConverter(String, Date, (startDate) => moment(startDate).toDate()),
-  extend(baseMapper(mapper))
-);
+addProfile(mapper, projectMapper, extend(baseMapper(mapper)));
 addProfile(mapper, departmentMapper, extend(baseMapper(mapper)));
 addProfile(mapper, userDepartmentMapper, extend(baseMapper(mapper)));
 addProfile(mapper, siteMapper, extend(baseMapper(mapper)));
@@ -68,13 +62,13 @@ addProfile(mapper, temporaryProductMapper, extend(baseMapper(mapper)));
 addProfile(
   mapper,
   productRequisitionFormMapper,
-  extend(baseMapper(mapper)),
-  typeConverter(Date, String, (deadlineApproval) =>
-    moment(deadlineApproval).toString()
-  ),
-  typeConverter(String, Date, (deadlineApproval) =>
-    moment(deadlineApproval).toDate()
-  )
+  extend(baseMapper(mapper))
+  // typeConverter(Date, String, (deadlineApproval) =>
+  //   moment(deadlineApproval).toString()
+  // ),
+  // typeConverter(String, Date, (deadlineApproval) =>
+  //   moment(deadlineApproval).toDate()
+  // )
 );
 addProfile(mapper, userApprovalMapper, extend(baseMapper(mapper)));
 addProfile(mapper, approvalLogMapper, extend(baseMapper(mapper)));

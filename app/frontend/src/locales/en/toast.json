@@ -32,6 +32,9 @@
     "accessDenied": "Access denied",
     "loginFailed": "Username or password is incorrect",
     "logoutSuccess": "Logout successfully",
-    "updateUserSuccess": "User updated successfully"
+    "updateUserSuccess": "User updated successfully",
+
+    "createCompanySuccessfully": "Company created successfully",
+    "createSiteSuccessfully": "Site created successfully"
   }
 }

@@ -34,18 +34,18 @@ export const projectMapper: MappingProfile = (mapper: Mapper) => {
         ProductRequisitionForm,
         (source) => source.productRequisitionForms
       )
-    )
-    // typeConverter(Date, String, (startDate) => moment(startDate).toString())
+    ),
+    typeConverter(Date, String, (startDate) => moment(startDate).toString())
   );
 
   // Map request object to entity
   createMap(
     mapper,
     CreateProjectRequestDto,
-    Project
-    // forMember(
-    //   (destination) => destination.startDate,
-    //   mapFrom((source) => moment(source.startDate).toDate())
-    // )
+    Project,
+    forMember(
+      (destination) => destination.startDate,
+      mapFrom((source) => moment(source.startDate).toDate())
+    )
   );
 };

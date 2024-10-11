@@ -15,9 +15,10 @@ import {
 import { createCompanySchema, TCreateCompanySchema } from '@/schemas'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { ICreateCompany } from '@/types'
 
 interface IFormCreateCompanyProps {
-  onSubmit: (data: TCreateCompanySchema) => void
+  onSubmit: (data: ICreateCompany) => void
 }
 
 export const CreateCompanyForm: React.FC<IFormCreateCompanyProps> = ({ onSubmit }) => {
@@ -30,8 +31,9 @@ export const CreateCompanyForm: React.FC<IFormCreateCompanyProps> = ({ onSubmit 
     }
   })
 
-  const handleSubmit = (values: TCreateCompanySchema) => {
+  const handleSubmit = (values: ICreateCompany) => {
     onSubmit(values)
+    form.reset()
   }
 
   const formFields = {

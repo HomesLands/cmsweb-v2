@@ -1,0 +1,18 @@
+{
+  "sites": {
+    "list": "Danh sách địa điểm",
+    "slug": "Slug",
+    "name": "Tên địa điểm",
+    "companyName": "Tên công ty",
+    "companySlug": "Slug công ty",
+
+    "createSite": "Tạo địa điểm",
+    "createSiteDescription": "Tạo mới địa điểm",
+    "createSiteSuccessfully": "Tạo địa điểm thành công",
+
+    "confirmCreateSite": "Xác nhận tạo địa điểm",
+    "confirmCreateSiteDescription": "Xác nhận tạo địa điểm",
+    "cancelCreateSite": "Hủy tạo địa điểm",
+    "confirm": "Xác nhận"
+  }
+}

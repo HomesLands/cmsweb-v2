@@ -43,10 +43,6 @@ export interface IProductRequisitionFormCreate {
   }
   type: ProductRequisitionType
   requestProducts: IProductRequisitionInfo[]
-  userApprovals: {
-    userSlug: string
-    roleApproval: string
-  }[]
   note?: string
 }
 

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Requisition Form</title>
+
+     <% var dir = process.cwd() %>
+     <%- include(dir + "/src/views/partials/head.ejs") %>
+</head>
+<body>
+    <div class="container mx-auto px-5">
+        <!-- Form title-->
+        <table class="table-auto border-collapse border border-gray-300 w-full mt-5">
+            <tr class="">
+                <td class="border border-black px-4 py-2" rowspan="2">
+                    <img src="http://localhost:3000/api/v1/files/file-test-1728635021360.png" alt="logo" class="w-20">
+                </td>
+                <td rowspan="2" class="border border-black px-4 py-2 uppercase text-center font-bold text-2xl">
+                    <h2>PHIẾU YÊU CẦU VẬT TƯ</h2>
+                </td>
+                <td class="border border-black px-4 py-2">
+                    <div class="column">KMH</div>
+                </td>
+                <td class="border border-black px-4 py-2"><%= qrCode %>
+                </td>
+            </tr>
+            <tr class="">
+                <td class="border border-black px-4 py-2">
+                    Lần Ban Hành
+                </td>
+                <td class="border border-black px-4 py-2">
+                    1
+                </td>
+            </tr>
+        </table>
+       
+        <!-- Form info -->
+        <div class="flex items-center justify-between mt-5">
+            <div class="flex flex-col gap-2">
+                <div class=""><span class="font-bold">Người yêu cầu:</span> <%= creatorName %></div>
+                <div><span class="font-bold">Công trình sử dụng:</span> <%= siteName %></div>
+            </div>
+            <div class="flex flex-col gap-2">
+                <div><span class="font-bold">Ngày:</span> <%= createDate %></div>
+                <div><span class="font-bold">Dự án:</span> <%= projectName %></div>
+            </div>
+        </div>
+
+        <!-- Request product -->
+        <table class="table-auto border-collapse border border-gray-300 w-full mt-5">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border border-gray-300 px-4 py-2">STT</th>
+                    <th class="border border-gray-300 px-4 py-2">TÊN VẬT TƯ</th>
+                    <th class="border border-gray-300 px-4 py-2">HÃNG SẢN XUẤT</th>
+                    <th class="border border-gray-300 px-4 py-2">SỐ LƯỢNG</th>
+                    <th class="border border-gray-300 px-4 py-2">ĐƠN VỊ</th>
+                    <th class="border border-gray-300 px-4 py-2">GHI CHÚ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.forEach(function(item) { %>
+                <tr>
+                    <td class="border border-gray-300 px-4 py-2"><%= item.order %></td>
+                    <td class="border border-gray-300 px-4 py-2"><%= item.name %></td>
+                    <td class="border border-gray-300 px-4 py-2"><%= item.provider %></td>
+                    <td class="border border-gray-300 px-4 py-2"><%= item.quantity %></td>
+                    <td class="border border-gray-300 px-4 py-2"><%= item.unit %></td>
+                    <td class="border border-gray-300 px-4 py-2"><%= item.description %></td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

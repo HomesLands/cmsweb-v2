@@ -12,6 +12,10 @@
     "description": "Mô tả",
 
     "createCompany": "Tạo công ty",
-    "createCompanyDescription": "Tạo thêm một công ty mới"
+    "createCompanyDescription": "Tạo thêm một công ty mới",
+    "confirmCreateCompany": "Tạo công ty",
+    "cancelCreateCompany": "Hủy",
+    "confirm": "Xác nhận",
+    "confirmCreateCompanyDescription": "Dữ liệu về công ty sẽ được tạo!"
   }
 }

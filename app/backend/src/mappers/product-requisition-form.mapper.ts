@@ -5,6 +5,7 @@ import {
   forMember,
   mapFrom,
   mapWith,
+  typeConverter,
 } from "@automapper/core";
 import moment from "moment";
 import {
@@ -54,6 +55,9 @@ export const productRequisitionFormMapper: MappingProfile = (
         RequestProduct,
         (source) => source.requestProducts
       )
+    ),
+    typeConverter(Date, String, (deadlineApproval) =>
+      moment(deadlineApproval).toString()
     )
   );
 

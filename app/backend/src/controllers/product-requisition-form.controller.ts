@@ -116,7 +116,7 @@ class ProductRequisitionFormController {
    *         status: accept
    *         content: yêu cầu ổn
    *
-   * 
+   *
    *     ApprovalProductRequisitionFormRequestDto:
    *       type: object
    *       required:
@@ -152,7 +152,7 @@ class ProductRequisitionFormController {
    *       example:
    *         slug: XUWyA6fr7i
    *         description: Đã chỉnh sửa
-   * 
+   *
    *     UpdateGeneralInformationProductRequisitionFormRequestDto:
    *       type: object
    *       required:
@@ -317,6 +317,9 @@ class ProductRequisitionFormController {
     try {
       const requestData = req.body as TCreateProductRequisitionFormRequestDto;
       const creatorId = req.userId as string;
+      if (req.ability) {
+        console.log(req.ability);
+      }
       const form =
         await productRequisitionFormService.createProductRequisitionForm(
           creatorId,
@@ -499,7 +502,6 @@ class ProductRequisitionFormController {
     }
   }
 
-
   /**
    * @swagger
    * /productRequisitionForms/{slug}:
@@ -547,7 +549,8 @@ class ProductRequisitionFormController {
   ): Promise<void> {
     try {
       const creatorId = req.userId as string;
-      const data = req.body as TUpdateGeneralInformationProductRequisitionFormRequestDto;
+      const data =
+        req.body as TUpdateGeneralInformationProductRequisitionFormRequestDto;
       const slug = req.params.slug;
 
       const result =
@@ -607,10 +610,16 @@ class ProductRequisitionFormController {
           slug
         );
 
-        res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); 
-        res.setHeader("Content-Disposition", "attachment; filename=" +`${dataExport.code}.xlsx`);
-  
-        dataExport.workbook.xlsx.write(res).then(() => res.end());
+      res.setHeader(
+        "Content-Type",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      );
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=" + `${dataExport.code}.xlsx`
+      );
+
+      dataExport.workbook.xlsx.write(res).then(() => res.end());
     } catch (error) {
       next(error);
     }
@@ -652,8 +661,11 @@ class ProductRequisitionFormController {
           slug
         );
 
-      res.setHeader('Content-Type', 'application/pdf'); 
-      res.setHeader('Content-Disposition', 'attachment; filename=' +`${dataExport.code}`);
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=" + `${dataExport.code}`
+      );
 
       res.send(dataExport.pdf);
     } catch (error) {

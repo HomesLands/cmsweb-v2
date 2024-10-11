@@ -15,6 +15,7 @@ import enUsers from '@/locales/en/users.json'
 import enSetting from '@/locales/en/setting.json'
 import enAssignedApprover from '@/locales/en/assigned-approver.json'
 import enCompanies from '@/locales/en/companies.json'
+import enSites from '@/locales/en/sites.json'
 
 import viAuth from '@/locales/vi/auth.json'
 import viAccount from '@/locales/vi/account.json'
@@ -29,6 +30,7 @@ import viUsers from '@/locales/vi/users.json'
 import viSetting from '@/locales/vi/setting.json'
 import viAssignedApprover from '@/locales/vi/assigned-approver.json'
 import viCompanies from '@/locales/vi/companies.json'
+import viSites from '@/locales/vi/sites.json'
 i18n
   .use(LanguageDetector) // Tự động phát hiện ngôn ngữ
   .use(initReactI18next) // Passes i18n down to react-i18next
@@ -47,7 +49,8 @@ i18n
         users: enUsers,
         setting: enSetting,
         assignedApprover: enAssignedApprover,
-        companies: enCompanies
+        companies: enCompanies,
+        sites: enSites
       },
       vi: {
         auth: viAuth,
@@ -62,7 +65,8 @@ i18n
         users: viUsers,
         setting: viSetting,
         assignedApprover: viAssignedApprover,
-        companies: viCompanies
+        companies: viCompanies,
+        sites: viSites
       }
     },
     lng: window.localStorage.getItem('i18nextLng') || 'vi',

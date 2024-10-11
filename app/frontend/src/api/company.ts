@@ -1,4 +1,4 @@
-import { IApiResponse, ICompany } from '@/types'
+import { IApiResponse, ICompany, ICreateCompany } from '@/types'
 import { http } from '@/utils'
 
 export async function getCompanies() {
@@ -6,7 +6,7 @@ export async function getCompanies() {
   return response.data
 }
 
-export async function createCompany(data: ICompany) {
+export async function createCompany(data: ICreateCompany) {
   const response = await http.post<IApiResponse<ICompany>>('/companies', data)
-  return response
+  return response.data
 }

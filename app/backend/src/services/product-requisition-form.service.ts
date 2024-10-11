@@ -2,12 +2,12 @@ import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
 import { Workbook } from "exceljs";
 import * as ejs from "ejs";
-import * as pdf from "html-pdf";
 import * as fs from "fs";
+import puppeteer from "puppeteer";
 import moment from "moment";
 import path from "path";
 
-import { excelService } from "@services";
+import { excelService, fileService } from "@services";
 import {
   productRequisitionFormRepository,
   userRepository,
@@ -674,6 +674,7 @@ class ProductRequisitionFormService {
 
     let site: string = 'N/A';
     let company: string = 'N/A';
+    let companyLogo: string | null= 'N/A';
     if(form.creator)
       if(form.creator.userDepartments)
           if(form.creator?.userDepartments[0].department?.site?.name){
@@ -681,8 +682,13 @@ class ProductRequisitionFormService {
             if(form.creator?.userDepartments[0].department?.site?.company?.name){
               company = form.creator?.userDepartments[0].department?.site?.company.name
             }
+            if(form.creator?.userDepartments[0].department?.site?.company?.logo){
+              companyLogo = form.creator?.userDepartments[0].department?.site?.company?.logo
+            }
           }
-            
+
+    const imgLogo = await fileService.getFileByName(companyLogo);
+    // console.log({imgLogo: imgLogo.data})
 
     const requestProductExport: TProductRequisitionFormDataExport[] = 
       form.requestProducts.map((requestProduct, index) => ({
@@ -708,6 +714,7 @@ class ProductRequisitionFormService {
 
     const data = {
       companyName: company,
+      logoBase64: `data:${imgLogo.mimetype};base64,${imgLogo.data}`,
       qrCode: "QR3-01/001",
       creatorName: form.creator?.fullname,
       siteName: site,
@@ -716,56 +723,55 @@ class ProductRequisitionFormService {
       data: requestProductExport
     };
 
-    console.log({data})
+    console.log({data: data.logoBase64})
 
-    const templatePath = path.join(__dirname, '..', 'templates', 'product-requisition-form-pdf.ejs');
+    const templatePath = path.join(__dirname, '..', 'views', 'product-requisition-form-pdf.ejs');
     console.log({templatePath})
 
-    // let pdfData: Buffer = Buffer.from("default-buffer", 'utf-8');
-    // console.log({pdfData})
-    // fs.readFile(templatePath, 'utf8', (err, html) => {
-    //   if (err) {
-    //     throw new GlobalError(ErrorCodes.FILE_NOT_FOUND);
-    //   }
-
+    // try {
+    //   const html = await fs.promises.readFile(templatePath, 'utf8');
+  
     //   const finalHtml = ejs.render(html, data);
 
-    //   // Tạo PDF từ HTML
-    //   pdf.create(finalHtml).toBuffer((err, buffer) => {
-    //     if (err) {
-    //       throw new GlobalError(ErrorCodes.FILE_NOT_FOUND);
-    //     }
-    //     pdfData = buffer;
-    //   });
-    // });
-    // console.log({pdfData})
+    //   const file = { content: finalHtml }; // Set the content of the PDF
+    //   const options = { format: 'A4', printBackground: true }
+    //   const pdfBuffer = await pdf.generatePdf(file, options);
+    //   console.log({pdfBuffer})
+  
+    //   return {
+    //     code: form.code,
+    //     // pdf: Buffer.from('a'),
+    //     pdf: pdfBuffer,
+    //   };
+    // } catch (err) {
+    //   console.error(err);
+    //   throw new GlobalError(ErrorCodes.FILE_NOT_FOUND);
+    // }    
+
+    const html = await fs.promises.readFile(templatePath, 'utf8');
+    const finalHtml = ejs.render(html, data);
     try {
-      const html = await fs.promises.readFile(templatePath, 'utf8');
+      const browser = await puppeteer.launch();
+      const page = await browser.newPage();
   
-      const finalHtml = ejs.render(html, data);
-  
-      const pdfBuffer = await new Promise<Buffer>((resolve, reject) => {
-        pdf.create(finalHtml).toBuffer((err, buffer) => {
-          if (err) {
-            return reject(new GlobalError(ErrorCodes.FILE_NOT_FOUND));
-          }
-          resolve(buffer);
-        });
+      await page.setContent(finalHtml, {
+        waitUntil: 'networkidle0',
       });
   
+      const buffer = await page.pdf({
+        format: 'A4',
+        printBackground: true,
+      });
+  
+      await browser.close();
       return {
         code: form.code,
-        pdf: pdfBuffer,
+        pdf: Buffer.from(buffer)
       };
     } catch (err) {
-      console.error(err);
+      console.log({err})
       throw new GlobalError(ErrorCodes.FILE_NOT_FOUND);
     }
-    
-    // return {
-    //   code: form.code,
-    //   pdf: pdfData
-    // }
   }
 }
 
