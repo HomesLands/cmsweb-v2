@@ -10,65 +10,76 @@ import {
   Button,
   Input
 } from '@/components/ui'
-import { createUserRoleSchema, TCreateUserRoleSchema } from '@/schemas'
+import {
+  createRolePermissionSchema,
+  createUserRoleSchema,
+  TCreateRolePermissionSchema
+} from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SelectRole } from '../select'
+import { SelectPermission, SelectRole } from '../select'
 import { useTranslation } from 'react-i18next'
 import React from 'react'
-import { IUserInfo } from '@/types'
+import { IRole } from '@/types'
+import { createRolePermission } from '@/api'
 
-interface IFormAddEmployeeRoleProps {
-  user: IUserInfo
-  onSubmit: (data: TCreateUserRoleSchema) => void
+interface IFormAddRolePermissionProps {
+  role: IRole
+  onSubmit: (data: TCreateRolePermissionSchema) => void
 }
 
-export const AddEmployeeRoleForm: React.FC<IFormAddEmployeeRoleProps> = ({ user, onSubmit }) => {
+export const AddRolePermissionForm: React.FC<IFormAddRolePermissionProps> = ({
+  role,
+  onSubmit
+}) => {
   const { t } = useTranslation('users')
-  const form = useForm<TCreateUserRoleSchema>({
-    resolver: zodResolver(createUserRoleSchema),
+  const form = useForm<TCreateRolePermissionSchema>({
+    resolver: zodResolver(createRolePermissionSchema),
     defaultValues: {
-      user: {
-        label: user.fullname,
-        value: user.slug
-      },
-      role: {
+      permission: {
         label: '',
         value: ''
+      },
+      role: {
+        label: role.nameDisplay,
+        value: role.slug
       }
     }
   })
 
-  const handleSubmit = (values: TCreateUserRoleSchema) => {
+  const handleSubmit = (values: TCreateRolePermissionSchema) => {
     onSubmit(values)
   }
 
   const formFields = {
-    user: (
-      <FormField
-        control={form.control}
-        name="user"
-        render={() => (
-          <FormItem>
-            <FormLabel>{t('users.selectUser')}</FormLabel>
-            <FormControl>
-              <Input value={form.getValues('user.label')} disabled />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    ),
     role: (
       <FormField
         control={form.control}
         name="role"
         render={() => (
           <FormItem>
-            <FormLabel>{t('users.selectRole')}</FormLabel>
+            <FormLabel>{t('users.selectUser')}</FormLabel>
             <FormControl>
-              <SelectRole
+              <Input value={form.getValues('role.label')} disabled />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    permission: (
+      <FormField
+        control={form.control}
+        name="permission"
+        render={() => (
+          <FormItem>
+            <FormLabel>{t('users.selectPermission')}</FormLabel>
+            <FormControl>
+              <SelectPermission
                 onChange={(values) => {
-                  form.setValue('role', { label: values?.label || '', value: values?.value || '' })
+                  form.setValue('permission', {
+                    label: values?.label || '',
+                    value: values?.value || ''
+                  })
                 }}
               />
             </FormControl>

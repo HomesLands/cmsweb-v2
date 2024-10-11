@@ -11,7 +11,6 @@ import { plainToClass } from "class-transformer";
 import { CreateRoleRequestDto, UpdateRoleRequestDto } from "@dto/request";
 import { validate } from "class-validator";
 import { ErrorCodes, GlobalError, ValidationError } from "@exception";
-import { logger } from "@lib/logger";
 import { parsePagination } from "@utils/pagination.util";
 
 class RoleService {
@@ -31,7 +30,13 @@ class RoleService {
       take: pageSize,
       skip: (page - 1) * pageSize,
       order: { createdAt: options.order },
+      relations: [
+        "rolePermissions.permission.authority",
+        "rolePermissions.permission.resource",
+      ],
     });
+
+    console.log({ roles });
 
     const results = mapper.mapArray(roles, Role, RoleResponseDto);
     return {

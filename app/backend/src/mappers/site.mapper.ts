@@ -3,19 +3,16 @@ import {
   Mapper,
   createMap,
   forMember,
-  mapFrom,
-  extend,
   mapWith,
 } from "@automapper/core";
-import { 
-  SiteResponseDto, 
-  ProjectResponseDto, 
+import {
+  SiteResponseDto,
+  ProjectResponseDto,
   DepartmentResponseDto,
-  CompanyResponseDto 
+  CompanyResponseDto,
 } from "@dto/response";
 import { CreateSiteRequestDto } from "@dto/request";
 import { Project, Site, Department, Company } from "@entities";
-import { baseMapper } from "./base.mapper";
 
 // Define the mapping profile
 export const siteMapper: MappingProfile = (mapper: Mapper) => {
@@ -26,26 +23,16 @@ export const siteMapper: MappingProfile = (mapper: Mapper) => {
     SiteResponseDto,
     forMember(
       (destination) => destination.company,
-      mapWith(
-        CompanyResponseDto,
-        Company,
-        (source) => source.company)
+      mapWith(CompanyResponseDto, Company, (source) => source.company)
     ),
     forMember(
       (destination) => destination.projects,
-      mapWith(
-        ProjectResponseDto,
-        Project,
-        (source) => source.projects)
+      mapWith(ProjectResponseDto, Project, (source) => source.projects)
     ),
     forMember(
       (destination) => destination.departments,
-      mapWith(
-        DepartmentResponseDto,
-        Department,
-        (source) => source.departments)
-    ),
-    extend(baseMapper(mapper))
+      mapWith(DepartmentResponseDto, Department, (source) => source.departments)
+    )
   );
 
   // Map request object to entity

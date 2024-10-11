@@ -2,18 +2,29 @@ import {
   MappingProfile,
   Mapper,
   createMap,
-  extend,
   forMember,
   mapFrom,
+  mapWith,
 } from "@automapper/core";
-import { RoleResponseDto } from "@dto/response";
-import { Role } from "@entities";
-import { baseMapper } from "./base.mapper";
+import { RolePermissionResponseDto, RoleResponseDto } from "@dto/response";
+import { Role, RolePermission } from "@entities";
 import { CreateRoleRequestDto } from "@dto/request";
 
 // Define the mapping profile
 export const roleMapper: MappingProfile = (mapper: Mapper) => {
-  createMap(mapper, Role, RoleResponseDto, extend(baseMapper(mapper))); // Map entity to response object
+  createMap(
+    mapper,
+    Role,
+    RoleResponseDto,
+    forMember(
+      (d) => d.rolePermissions,
+      mapWith(
+        RolePermissionResponseDto,
+        RolePermission,
+        (s) => s.rolePermissions
+      )
+    )
+  ); // Map entity to response object
   createMap(
     mapper,
     CreateRoleRequestDto,
@@ -21,7 +32,6 @@ export const roleMapper: MappingProfile = (mapper: Mapper) => {
     forMember(
       (destination) => destination.nameNormalize,
       mapFrom((source) => source.nameNormalize?.toUpperCase())
-    ),
-    extend(baseMapper(mapper))
+    )
   ); // Map entity to response object
 };
