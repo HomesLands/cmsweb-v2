@@ -10,7 +10,7 @@ export const userRoute: Router = Router();
 // [GET] /api/v1/users
 userRoute.get(
   "/",
-  authMiddleware.hasPermission(Action.READ, User),
+  // authMiddleware.hasPermission(Action.READ, User),
   userController.getAllUsers
 );
 
