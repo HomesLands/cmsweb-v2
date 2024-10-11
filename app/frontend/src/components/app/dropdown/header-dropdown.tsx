@@ -42,7 +42,14 @@ export function HeaderDropdown() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="secondary" size="icon" className="rounded-full">
-            <UserAvatar />
+            <UserAvatar
+              src={
+                userInfo?.avatar
+                  ? `${import.meta.env.VITE_BASE_API_URL}/files/${userInfo.avatar}`
+                  : undefined
+              }
+              fallback={userInfo?.fullname?.charAt(0)}
+            />
             <span className="sr-only">Toggle user menu</span>
           </Button>
         </DropdownMenuTrigger>

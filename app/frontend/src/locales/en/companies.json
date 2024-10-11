@@ -12,6 +12,10 @@
     "description": "Description",
 
     "createCompany": "Create Company",
-    "createCompanyDescription": "Create a new company"
+    "createCompanyDescription": "Create a new company",
+    "confirmCreateCompany": "Create company",
+    "cancelCreateCompany": "Cancel",
+    "confirm": "Confirm",
+    "confirmCreateCompanyDescription": "Data about the company will be created!"
   }
 }

@@ -1,39 +1,53 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
-import { CreateAuthorityForm } from '@/components/app/form'
-import { TCreateAuthoritySchema } from '@/schemas'
-import { ICreateAuthority } from '@/types'
-import { useCreateAuthority } from '@/hooks'
-import toast from 'react-hot-toast'
+import { ICreateSite } from '@/types'
+import { useCreateSite } from '@/hooks'
+import { CreateSiteForm } from '@/components/app/form'
+import { showToast } from '@/utils'
+import { DialogConfirmCreateSite } from '@/components/app/dialog/dialog-confirm-create-site'
 
 const CreateSite: React.FC = () => {
-  const { t } = useTranslation(['companies'])
-  const mutation = useCreateAuthority()
+  const { t } = useTranslation(['sites'])
+  const { t: tToast } = useTranslation(['toast'])
+  const { mutate: createSite } = useCreateSite()
+  const [openDialog, setOpenDialog] = useState(false)
+  const [site, setSite] = useState<ICreateSite | null>(null)
 
-  const onSubmit = (values: TCreateAuthoritySchema) => {
-    const requestData = { ...values } as ICreateAuthority
-    mutation.mutate(requestData, {
+  const handleConfirmCreateSite = (values: ICreateSite) => {
+    createSite(values, {
       onSuccess: () => {
-        toast.success(t('authorities.createAuthoritySuccessfully'))
+        showToast(tToast('toast.createSiteSuccessfully'))
       }
     })
   }
 
+  const onSubmit = (values: ICreateSite) => {
+    console.log(values)
+    setSite(values)
+    setOpenDialog(true)
+  }
+
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mt-3">
       <Card>
         <CardHeader className="flex flex-row justify-between items-center w-full border-b">
           <div className="flex flex-col gap-2 items-start py-2">
-            <CardTitle>{t('authorities.createAuthority')}</CardTitle>
-            <CardDescription>{t('authorities.CreateAuthorityDescription')}</CardDescription>
+            <CardTitle>{t('sites.createSite')}</CardTitle>
+            <CardDescription>{t('sites.createSiteDescription')}</CardDescription>
           </div>
         </CardHeader>
         <CardContent className="flex flex-col">
-          <CreateAuthorityForm onSubmit={onSubmit} />
+          <CreateSiteForm onSubmit={onSubmit} />
         </CardContent>
       </Card>
+      <DialogConfirmCreateSite
+        handleCreateSite={handleConfirmCreateSite}
+        openDialog={openDialog}
+        site={site}
+        onOpenChange={() => setOpenDialog(!openDialog)}
+      />
     </div>
   )
 }

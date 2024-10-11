@@ -1,6 +1,7 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
 
-import { getSites } from '@/api'
+import { createSite, getSites } from '@/api'
+import { ICreateSite } from '@/types'
 
 export const useSites = () => {
   return useQuery({
@@ -8,4 +9,8 @@ export const useSites = () => {
     queryFn: () => getSites(),
     placeholderData: keepPreviousData
   })
+}
+
+export const useCreateSite = () => {
+  return useMutation({ mutationFn: (data: ICreateSite) => createSite(data) })
 }

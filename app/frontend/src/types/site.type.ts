@@ -6,3 +6,9 @@ export interface ISite {
   companyName: string
   companySlug: string
 }
+
+export interface ICreateSite {
+  name: string
+  company: string //company slug
+  companyName: string
+}
