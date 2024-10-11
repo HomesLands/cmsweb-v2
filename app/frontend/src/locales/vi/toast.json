@@ -33,6 +33,9 @@
     "accessDenied": "Bạn không có quyền truy cập trang này",
     "loginFailed": "Tên đăng nhập hoặc mật khẩu không chính xác",
     "logoutSuccess": "Đăng xuất thành công",
-    "updateUserSuccess": "Người dùng được cập nhật thành công"
+    "updateUserSuccess": "Người dùng được cập nhật thành công",
+
+    "createCompanySuccessfully": "Công ty được tạo thành công",
+    "createSiteSuccessfully": "Địa điểm được tạo thành công"
   }
 }

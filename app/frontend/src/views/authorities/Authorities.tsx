@@ -18,7 +18,7 @@ const Authorities: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Label className="flex items-center gap-1 font-semibold text-normal text-md font-beVietNam">
+      <Label className="flex gap-1 items-center font-semibold text-normal text-md font-beVietNam">
         <ReaderIcon className="header-icon" />
         {t('authorities.list')}
       </Label>

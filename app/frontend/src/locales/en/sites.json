@@ -1,0 +1,18 @@
+{
+  "sites": {
+    "list": "List sites",
+    "slug": "Slug",
+    "name": "Site name",
+    "companyName": "Company name",
+    "companySlug": "Company slug",
+
+    "createSite": "Create site",
+    "createSiteDescription": "Create new site",
+    "createSiteSuccessfully": "Site created successfully",
+
+    "confirmCreateSite": "Confirm create site",
+    "confirmCreateSiteDescription": "Confirm create site",
+    "cancelCreateSite": "Cancel create site",
+    "confirm": "Confirm"
+  }
+}
