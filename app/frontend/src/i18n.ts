@@ -16,7 +16,8 @@ import enSetting from '@/locales/en/setting.json'
 import enAssignedApprover from '@/locales/en/assigned-approver.json'
 import enCompanies from '@/locales/en/companies.json'
 import enSites from '@/locales/en/sites.json'
-
+import enDepartment from '@/locales/en/departments.json'
+import enProject from '@/locales/en/projects.json'
 import viAuth from '@/locales/vi/auth.json'
 import viAccount from '@/locales/vi/account.json'
 import viSidebar from '@/locales/vi/sidebar.json'
@@ -31,6 +32,8 @@ import viSetting from '@/locales/vi/setting.json'
 import viAssignedApprover from '@/locales/vi/assigned-approver.json'
 import viCompanies from '@/locales/vi/companies.json'
 import viSites from '@/locales/vi/sites.json'
+import viDepartment from '@/locales/vi/departments.json'
+import viProject from '@/locales/vi/projects.json'
 i18n
   .use(LanguageDetector) // Tự động phát hiện ngôn ngữ
   .use(initReactI18next) // Passes i18n down to react-i18next
@@ -50,7 +53,9 @@ i18n
         setting: enSetting,
         assignedApprover: enAssignedApprover,
         companies: enCompanies,
-        sites: enSites
+        sites: enSites,
+        department: enDepartment,
+        projects: enProject
       },
       vi: {
         auth: viAuth,
@@ -66,7 +71,9 @@ i18n
         setting: viSetting,
         assignedApprover: viAssignedApprover,
         companies: viCompanies,
-        sites: viSites
+        sites: viSites,
+        department: viDepartment,
+        projects: viProject
       }
     },
     lng: window.localStorage.getItem('i18nextLng') || 'vi',
@@ -75,7 +82,7 @@ i18n
       escapeValue: false // React đã tự động bảo vệ trước XSS
     },
     //Setup type-safe translation
-    ns: ['auth', 'sidebar', 'productRequisition', 'tableData', 'setting'], //Dùng để phân biệt các phần khác nhau của app
+    ns: ['auth', 'sidebar', 'productRequisition', 'tableData', 'setting', 'department', 'projects'], //Dùng để phân biệt các phần khác nhau của app
     defaultNS: 'auth' //Ngôn ngữ mặc định
   })
 

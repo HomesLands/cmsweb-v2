@@ -9,28 +9,28 @@ import {
   DialogTitle
 } from '@/components/ui'
 
-import { ICreateSite } from '@/types'
+import { ICreateDepartment } from '@/types'
 import { useTranslation } from 'react-i18next'
 
-interface DialogConfirmCreateSiteProps {
-  handleCreateSite: (site: ICreateSite) => void
+interface DialogConfirmCreateDepartmentProps {
+  handleCreateDepartment: (department: ICreateDepartment) => void
   openDialog: boolean
-  site: ICreateSite | null
+  department: ICreateDepartment | null
   onOpenChange: () => void
 }
 
-export function DialogConfirmCreateSite({
-  handleCreateSite,
+export function DialogConfirmCreateDepartment({
+  handleCreateDepartment,
   openDialog,
-  site,
+  department,
   onOpenChange
-}: DialogConfirmCreateSiteProps) {
-  const { t } = useTranslation('sites')
-  const handleSubmit = (data: ICreateSite) => {
-    const completeData: ICreateSite = {
+}: DialogConfirmCreateDepartmentProps) {
+  const { t } = useTranslation('department')
+  const handleSubmit = (data: ICreateDepartment) => {
+    const completeData: ICreateDepartment = {
       ...data
     }
-    handleCreateSite(completeData)
+    handleCreateDepartment(completeData)
     onOpenChange()
   }
 
@@ -41,23 +41,24 @@ export function DialogConfirmCreateSite({
           <DialogTitle className="pb-4 border-b border-primary text-primary">
             <div className="flex gap-2 items-center">
               <TriangleAlert className="w-6 h-6" />
-              {t('sites.confirmCreateSite')}
+              {t('department.confirmCreate')}
             </div>
           </DialogTitle>
 
           <div className="py-4 text-sm text-gray-500">
-            {t('sites.confirmCreateSiteDescription')}
+            {t('department.confirmCreateDescription')}
             <br />
-            <span className="font-bold">{site?.name}</span> {t('sites.belongsToCompany')}{' '}
-            <span className="font-bold">{site?.companyName}</span>
+            <span className="font-bold">{department?.nameNormalize}</span>{' '}
+            {t('department.belongsToLocation')}{' '}
+            <span className="font-bold">{department?.siteName}</span>
           </div>
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" onClick={onOpenChange}>
-            {t('sites.cancelCreateSite')}
+            {t('department.cancelCreate')}
           </Button>
-          <Button variant="default" onClick={() => site && handleSubmit(site)}>
-            {t('sites.confirm')}
+          <Button variant="default" onClick={() => department && handleSubmit(department)}>
+            {t('department.confirm')}
           </Button>
         </DialogFooter>
       </DialogContent>

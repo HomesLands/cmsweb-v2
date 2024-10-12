@@ -1,27 +1,37 @@
-import { Label, DataTable } from '@/components/ui'
-import { usePagination, useProjects } from '@/hooks'
-import { ReaderIcon } from '@radix-ui/react-icons'
 import React from 'react'
-import { columns } from './DataTable/columns'
+import { useTranslation } from 'react-i18next'
+import { ReaderIcon } from '@radix-ui/react-icons'
+
+import { DataTable, Label } from '@/components/ui'
+import { useProjectColumns } from './DataTable/columns'
+import { useProjects } from '@/hooks/use-projects'
 
 const Projects: React.FC = () => {
-  const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
+  const { t } = useTranslation(['projects'])
 
-  const { data, isLoading } = useProjects()
+  const { data: projects, isLoading } = useProjects()
 
   return (
-    <div className="flex flex-col gap-4">
-      <Label className="flex items-center gap-1 font-semibold text-normal text-md font-beVietNam">
+    <div className="flex flex-col gap-4 mt-2">
+      <Label className="flex gap-1 items-center font-semibold text-normal text-md font-beVietNam">
         <ReaderIcon className="header-icon" />
-        Danh sách nhân viên
+        {t('projects.list')}
       </Label>
       <DataTable
+        columns={useProjectColumns()}
+        data={
+          Array.isArray(projects?.result)
+            ? projects.result
+            : projects?.result
+              ? projects.result
+              : projects?.result
+                ? [projects.result]
+                : []
+        }
         isLoading={isLoading}
-        columns={columns}
-        data={data?.result || []}
-        pages={0}
-        onPageChange={handlePageChange}
-        onPageSizeChange={handlePageSizeChange}
+        pages={1}
+        onPageChange={() => {}}
+        onPageSizeChange={() => {}}
       />
     </div>
   )

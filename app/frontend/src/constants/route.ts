@@ -7,6 +7,22 @@ export const ROUTE = {
   ADD_PRODUCT_REQUISITIONS: '/product-requisitions/add',
   EDIT_PRODUCT_REQUISITIONS: '/product-requisitions/edit/:slug',
 
+  // Company
+  COMPANY: '/companies',
+  ADD_COMPANY: '/companies/add',
+
+  // Site
+  SITE: '/sites',
+  ADD_SITE: '/sites/add',
+
+  // Department
+  DEPARTMENT: '/departments',
+  ADD_DEPARTMENT: '/departments/add',
+
+  // Project
+  PROJECT: '/projects',
+  ADD_PROJECT: '/projects/add',
+
   // Authority
   AUTHORITY: '/authorities',
   ADD_AUTHORITY: '/authorities/add',
@@ -24,13 +40,5 @@ export const ROUTE = {
 
   // Assigned approver
   ASSIGNED_APPROVER: '/assigned-approvers',
-  ADD_ASSIGNED_APPROVER: '/assigned-approvers/add',
-
-  // Company
-  COMPANY: '/companies',
-  ADD_COMPANY: '/companies/add',
-
-  // Site
-  SITE: '/sites',
-  ADD_SITE: '/sites/add'
+  ADD_ASSIGNED_APPROVER: '/assigned-approvers/add'
 }

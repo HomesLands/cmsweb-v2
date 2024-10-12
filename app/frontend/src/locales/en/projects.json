@@ -1,0 +1,23 @@
+{
+  "project": {
+    "list": "List project",
+    "create": "Create project",
+    "createProject": "Create project",
+
+    "createProjectDescription": "Type all information into the fields to create a project",
+    "site": "Site",
+    "startDate": "Start date",
+    "chooseDateAndTime": "Choose date and time",
+    "name": "Name",
+    "description": "Description",
+    "nameDescription": "Enter the project name",
+    "descriptionDescription": "Enter the project description",
+    "fileDescription": "File description",
+    "fileDescriptionDescription": "Enter the file description",
+    "createDescription": "Create new project",
+    "confirmCreate": "Confirm create project",
+    "belongsToLocation": "belongs to location",
+    "cancelCreate": "Cancel",
+    "confirm": "Confirm"
+  }
+}
