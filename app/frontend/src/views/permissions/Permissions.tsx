@@ -4,7 +4,7 @@ import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
 import { usePagination, usePermissions } from '@/hooks'
-import { usePermissionColumns } from './DataTable/columns'
+import { usePermissionColumns } from './data-table/columns'
 
 const Permissions: React.FC = () => {
   const { t } = useTranslation(['permissions'])

@@ -4,7 +4,7 @@ import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
 import { usePagination, useRoles } from '@/hooks'
-import { useRoleColumns } from './DataTable'
+import { useRoleColumns } from './data-table'
 
 const Roles: React.FC = () => {
   const { t } = useTranslation(['roles'])

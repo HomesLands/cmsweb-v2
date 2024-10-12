@@ -8,7 +8,8 @@
     "createRoleSuccessfully": "Create role successfully",
     "nameDisplay": "Display name",
     "actions": "Actions",
-    "edit": "Edit role"
+    "edit": "Edit role",
+    "permissions": "Permissions"
   }
    
 }

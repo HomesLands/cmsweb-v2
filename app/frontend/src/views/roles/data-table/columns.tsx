@@ -11,6 +11,7 @@ import {
 import { IRole } from '@/types'
 import { MoreHorizontal } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { DialogAddRolePermission } from '@/components/app/dialog'
 
 export const useRoleColumns = (): ColumnDef<IRole>[] => {
   const { t } = useTranslation('roles')
@@ -20,23 +21,29 @@ export const useRoleColumns = (): ColumnDef<IRole>[] => {
       header: ({ column }) => <DataTableColumnHeader column={column} title="Mã chức vụ" />
     },
     {
-      accessorKey: 'nameNormalize',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('roles.nameNormalize')} />
-      )
-    },
-    {
       accessorKey: 'nameDisplay',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t('roles.nameDisplay')} />
-      )
+      ),
+      cell: ({ row }) => {
+        const { nameDisplay, nameNormalize } = row.original
+        return <div className="">{`${nameDisplay} (${nameNormalize})`}</div>
+      }
     },
     {
-      accessorKey: 'description',
+      accessorKey: 'permissions',
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('roles.description')} />
-      )
+        <DataTableColumnHeader column={column} title={t('roles.permissions')} />
+      ),
+      cell: ({ row }) => {
+        const { rolePermissions } = row.original
+        const permissions: JSX.Element[] = rolePermissions.map((item) => {
+          return <div>{`(${item?.permission.authority}, ${item?.permission.resource})`}</div>
+        })
+        return <div className="font-bold flex flex-col gap-1">{permissions}</div>
+      }
     },
+
     {
       id: 'actions',
       header: t('roles.actions'),
@@ -53,7 +60,7 @@ export const useRoleColumns = (): ColumnDef<IRole>[] => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem>{t('roles.edit')}</DropdownMenuItem>
-                <DropdownMenuItem>{t('roles.addPermission')}</DropdownMenuItem>
+                <DialogAddRolePermission role={role} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

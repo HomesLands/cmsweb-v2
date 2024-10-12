@@ -116,7 +116,7 @@ class ProductRequisitionFormController {
    *         status: accept
    *         content: yêu cầu ổn
    *
-   * 
+   *
    *     ApprovalProductRequisitionFormRequestDto:
    *       type: object
    *       required:
@@ -152,7 +152,7 @@ class ProductRequisitionFormController {
    *       example:
    *         slug: XUWyA6fr7i
    *         description: Đã chỉnh sửa
-   * 
+   *
    *     UpdateGeneralInformationProductRequisitionFormRequestDto:
    *       type: object
    *       required:
@@ -257,6 +257,74 @@ class ProductRequisitionFormController {
 
   /**
    * @swagger
+   * /productRequisitionForms/completedApproval:
+   *   get:
+   *     summary: Get completed approval product requisition forms
+   *     tags: [ProductRequisitionForm]
+   *     parameters:
+   *       - in: query
+   *         name: order
+   *         schema:
+   *           type: string
+   *           enum: [ASC, DESC]
+   *         required: true
+   *         description: The order in which the product requisition forms are sorted (ASC, DESC)
+   *         example: ASC
+   *       - in: query
+   *         name: page
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of product requisition forms to skip
+   *         example: 1
+   *       - in: query
+   *         name: pageSize
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: The number of product requisition forms to retrieve
+   *         example: 10
+   *     responses:
+   *       200:
+   *         description: Get completed approval product requisition forms successfully.
+   *       500:
+   *         description: Server error
+   */
+
+  public async getAllProductRequisitionFormsCompletedApproval(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const query = req.query as unknown as TQueryRequest;
+      const creatorId = req.userId as string;
+      logger.info(`[${ProductRequisitionFormController.name}]`, query);
+      const results =
+        await productRequisitionFormService.getAllProductRequisitionFormsCompletedApproval(
+          creatorId,
+          query
+        );
+
+      const response: TApiResponse<
+        TPaginationOptionResponse<ProductRequisitionFormResponseDto[]>
+      > = {
+        code: StatusCodes.OK,
+        error: false,
+        message:
+          "Get list completed approval product requisition forms successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result: results,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
    * /productRequisitionForms:
    *   post:
    *     summary: Create new product requisition form
@@ -317,6 +385,9 @@ class ProductRequisitionFormController {
     try {
       const requestData = req.body as TCreateProductRequisitionFormRequestDto;
       const creatorId = req.userId as string;
+      if (req.ability) {
+        console.log(req.ability);
+      }
       const form =
         await productRequisitionFormService.createProductRequisitionForm(
           creatorId,
@@ -499,7 +570,6 @@ class ProductRequisitionFormController {
     }
   }
 
-
   /**
    * @swagger
    * /productRequisitionForms/{slug}:
@@ -547,7 +617,8 @@ class ProductRequisitionFormController {
   ): Promise<void> {
     try {
       const creatorId = req.userId as string;
-      const data = req.body as TUpdateGeneralInformationProductRequisitionFormRequestDto;
+      const data =
+        req.body as TUpdateGeneralInformationProductRequisitionFormRequestDto;
       const slug = req.params.slug;
 
       const result =
@@ -573,7 +644,7 @@ class ProductRequisitionFormController {
 
   /**
    * @swagger
-   * /productRequisitionForms/exportExcel/{slug}:
+   * /productRequisitionForms/{slug}/exportExcel:
    *   get:
    *     summary: Export productRequisitionForm to excel by slug
    *     tags: [ProductRequisitionForm]
@@ -607,10 +678,16 @@ class ProductRequisitionFormController {
           slug
         );
 
-        res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); 
-        res.setHeader("Content-Disposition", "attachment; filename=" +`${dataExport.code}.xlsx`);
-  
-        dataExport.workbook.xlsx.write(res).then(() => res.end());
+      res.setHeader(
+        "Content-Type",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      );
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=" + `${dataExport.code}.xlsx`
+      );
+
+      dataExport.workbook.xlsx.write(res).then(() => res.end());
     } catch (error) {
       next(error);
     }
@@ -618,7 +695,7 @@ class ProductRequisitionFormController {
 
   /**
    * @swagger
-   * /productRequisitionForms/exportPdf/{slug}:
+   * /productRequisitionForms/{slug}/exportPdf:
    *   get:
    *     summary: Export productRequisitionForm to pdf by slug
    *     tags: [ProductRequisitionForm]
@@ -646,16 +723,21 @@ class ProductRequisitionFormController {
     next: NextFunction
   ): Promise<void> {
     try {
+      const requestUrl = `${req.protocol}://${req.get("host")}`;
       const slug = req.params.slug as string;
-      const dataExport =
-        await productRequisitionFormService.exportPdfProductRequisitionForm(
-          slug
-        );
+      const results =
+        await productRequisitionFormService.exportPdfProductRequisitionForm({
+          slug,
+          requestUrl,
+        });
 
-      res.setHeader('Content-Type', 'application/pdf'); 
-      res.setHeader('Content-Disposition', 'attachment; filename=' +`${dataExport.code}`);
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=" + `${results.code}`
+      );
 
-      res.send(dataExport.pdf);
+      res.send(results.pdf);
     } catch (error) {
       next(error);
     }

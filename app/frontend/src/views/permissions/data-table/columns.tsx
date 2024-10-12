@@ -49,7 +49,9 @@ export const usePermissionColumns = (): ColumnDef<IPermission>[] => {
       ),
       cell: ({ row }) => {
         const { requiredOwner } = row.original
-        return <div>{requiredOwner ? 'Yêu cầu chủ sở hữu' : 'Không yêu cầu chủ sở hữu'}</div>
+        return (
+          <div className="text-red-400 font-bold">{requiredOwner ? 'Yêu cầu chủ sở hữu' : ''}</div>
+        )
       }
     },
     {

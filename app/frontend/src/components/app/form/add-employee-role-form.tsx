@@ -12,7 +12,7 @@ import {
 } from '@/components/ui'
 import { createUserRoleSchema, TCreateUserRoleSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SelectRole, SelectUser } from '../select'
+import { SelectRole } from '../select'
 import { useTranslation } from 'react-i18next'
 import React from 'react'
 import { IUserInfo } from '@/types'

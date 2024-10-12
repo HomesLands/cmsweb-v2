@@ -1,4 +1,11 @@
-import { MappingProfile, Mapper, createMap, extend } from "@automapper/core";
+import {
+  MappingProfile,
+  Mapper,
+  createMap,
+  extend,
+  forMember,
+  mapFrom,
+} from "@automapper/core";
 import { RolePermissionResponseDto } from "@dto/response";
 import { RolePermission } from "@entities";
 import { baseMapper } from "./base.mapper";
@@ -12,5 +19,6 @@ export const rolePermissionMapper: MappingProfile = (mapper: Mapper) => {
     RolePermissionResponseDto,
     extend(baseMapper(mapper))
   ); // Map entity to response object
+
   createMap(mapper, CreateRolePermissionRequestDto, RolePermission);
 };

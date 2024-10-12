@@ -9,7 +9,6 @@ import {
 import { FilterRequisitionStatus, RequisitionStatus, UserApprovalStage } from '@/constants'
 import {
   IRequisitionFormResponseForApprover,
-  IRole,
   ProductRequisitionRoleApproval,
   ProductRequisitionStatus
 } from '@/types'
@@ -20,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 export default function DataTableFilterOptions({
   data,
   setFilterOption
-}: DataTableFilterOptionsProps<IRole>) {
+}: DataTableFilterOptionsProps<IRequisitionFormResponseForApprover>) {
   const { t } = useTranslation('tableData')
   const [availableRoleApprovals, setAvailableRoleApprovals] = useState<string[]>([])
   const [filterValue, setFilterValue] = useState<string>('all')

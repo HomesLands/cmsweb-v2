@@ -8,18 +8,16 @@ export type TAddNewRequestProductRequestDto = {
   provider?: string;
   unit?: string; // slug
   description?: string;
-}
+};
 
 export type TCreateRequestProductRequestDto = {
   product?: string; // slug
   requestQuantity?: number;
-
-  // product not exist
   name?: string;
   provider?: string;
   unit?: string; // slug
   description?: string;
-}
+};
 
 export type TUpdateRequestProductRequestDto = {
   requestQuantity?: number;
@@ -27,4 +25,4 @@ export type TUpdateRequestProductRequestDto = {
   provider?: string;
   unit?: string; // slug
   description?: string;
-}
+};
