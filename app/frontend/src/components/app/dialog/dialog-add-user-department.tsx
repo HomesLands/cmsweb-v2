@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PlusCircledIcon } from '@radix-ui/react-icons'
+
 import {
   Dialog,
   DialogContent,
@@ -10,13 +11,11 @@ import {
   DialogTrigger,
   Button
 } from '@/components/ui'
-import { TCreateUserDepartmentSchema, TCreateUserRoleSchema } from '@/schemas'
+import { TCreateUserDepartmentSchema } from '@/schemas'
 import { AddEmployeeDepartmentForm } from '@/components/app/form'
-import { ICreateUserRole, IUserInfo } from '@/types'
-import { useCreateUserRole } from '@/hooks'
+import { ICreateUserDepartment, IUserInfo } from '@/types'
 import { showToast } from '@/utils'
-import { ICreateUserDepartment } from '@/types/user-department.type'
-import { useCreateUserDepartment } from '@/hooks/use-user-departments'
+import { useCreateUserDepartment } from '@/hooks'
 
 export function DialogAddUserDepartment({ user }: { user: IUserInfo }) {
   const { t } = useTranslation('employees')
@@ -26,12 +25,12 @@ export function DialogAddUserDepartment({ user }: { user: IUserInfo }) {
   const { mutate: createUserDepartment } = useCreateUserDepartment()
   const handleSubmit = (values: TCreateUserDepartmentSchema) => {
     const requestData = {
-      departmentSlug: values.department.value,
-      userSlug: values.user.value
+      department: values.department.value,
+      user: values.user.value
     } as ICreateUserDepartment
     createUserDepartment(requestData, {
       onSuccess: () => {
-        showToast(tToast('addDepartmentSuccess'))
+        showToast(tToast('toast.addDepartmentSuccess'))
       }
     })
   }

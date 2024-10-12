@@ -2,8 +2,8 @@ import { IDepartment } from './department.type'
 import { IUserInfo } from './user.type'
 
 export interface ICreateUserDepartment {
-  departmentSlug: string
-  userSlug: string
+  department: string
+  user: string
 }
 
 export interface IUserDepartment {

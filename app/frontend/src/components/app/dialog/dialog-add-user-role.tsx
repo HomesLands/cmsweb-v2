@@ -23,8 +23,8 @@ export function DialogAddUserRole({ user }: { user: IUserInfo }) {
   const mutation = useCreateUserRole()
   const handleSubmit = (values: TCreateUserRoleSchema) => {
     const requestData = {
-      roleSlug: values.role.value,
-      userSlug: values.user.value
+      role: values.role.value,
+      user: values.user.value
     } as ICreateUserRole
     mutation.mutate(requestData, {
       onSuccess: () => {
