@@ -1,0 +1,20 @@
+{
+  "employees": {
+    "list": "Danh sách nhân viên",
+    "avatar": "Ảnh đại diện",
+    "slug": "Slug",
+    "role": "Chức vụ",
+    "fullname": "Họ và tên",
+    "actions": "Thao tác",
+
+    "selectUser": "Chọn nhân viên",
+    "selectRole": "Chọn chức vụ",
+    "createUserRole": "Thêm chức vụ",
+    "createUserRoleDescription": "Nhập đầy đủ thông tin bên dưới để hêm chức vụ cho nhân viên",
+    "submit": "Hoàn thành",
+
+    "addDepartment": "Thêm phòng ban",
+    "addDepartmentDescription": "Nhập đầy đủ thông tin bên dưới để thêm phòng ban cho nhân viên",
+    "selectDepartment": "Chọn phòng ban"
+  }
+}

@@ -1,4 +1,6 @@
+import { useTranslation } from 'react-i18next'
 import { PlusCircledIcon } from '@radix-ui/react-icons'
+
 import {
   Dialog,
   DialogContent,
@@ -10,12 +12,14 @@ import {
 } from '@/components/ui'
 
 import { TCreateUserRoleSchema } from '@/schemas'
-import { AddEmployeeRoleForm } from '../form'
+import { AddEmployeeRoleForm } from '@/components/app/form'
 import { ICreateUserRole, IUserInfo } from '@/types'
-import toast from 'react-hot-toast'
 import { useCreateUserRole } from '@/hooks'
+import { showToast } from '@/utils'
 
 export function DialogAddUserRole({ user }: { user: IUserInfo }) {
+  const { t } = useTranslation('employees')
+  const { t: tToast } = useTranslation('toast')
   const mutation = useCreateUserRole()
   const handleSubmit = (values: TCreateUserRoleSchema) => {
     const requestData = {
@@ -24,25 +28,23 @@ export function DialogAddUserRole({ user }: { user: IUserInfo }) {
     } as ICreateUserRole
     mutation.mutate(requestData, {
       onSuccess: () => {
-        toast.success('Thêm quyền thành công')
+        showToast(tToast('toast.addRoleSuccess'))
       }
     })
   }
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
+      <DialogTrigger className="justify-start" asChild>
         <Button variant="ghost" className="gap-1 text-sm">
           <PlusCircledIcon className="icon" />
-          Thêm chức vụ
+          {t('employees.createUserRole')}
         </Button>
       </DialogTrigger>
       <DialogContent className="">
         <DialogHeader>
-          <DialogTitle>Thêm chức vụ cho nhân viên</DialogTitle>
-          <DialogDescription>
-            Nhập đầy đủ thông tin bên dưới để hêm chức vụ cho nhân viên
-          </DialogDescription>
+          <DialogTitle>{t('employees.createUserRole')}</DialogTitle>
+          <DialogDescription>{t('employees.createUserRoleDescription')}</DialogDescription>
         </DialogHeader>
         <AddEmployeeRoleForm user={user} onSubmit={handleSubmit} />
       </DialogContent>

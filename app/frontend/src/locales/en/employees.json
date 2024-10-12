@@ -1,0 +1,20 @@
+{
+  "employees": {
+    "list": "List employees",
+    "avatar": "Avatar",
+    "slug": "Slug",
+    "role": "Role",
+    "fullname": "Full name",
+    "actions": "Actions",
+
+    "selectUser": "Select user",
+    "selectRole": "Select role",
+    "createUserRole": "Add role",
+    "createUserRoleDescription": "Enter the information below to add a role to the employee",
+    "submit": "Complete",
+
+    "addDepartment": "Add department",
+    "addDepartmentDescription": "Enter the information below to add a department to the employee",
+    "selectDepartment": "Select department"
+  }
+}

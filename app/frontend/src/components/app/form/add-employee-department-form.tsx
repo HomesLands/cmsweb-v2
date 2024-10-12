@@ -1,3 +1,5 @@
+import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
 
 import {
@@ -10,36 +12,40 @@ import {
   Button,
   Input
 } from '@/components/ui'
-import { createUserRoleSchema, TCreateUserRoleSchema } from '@/schemas'
+import { createUserDepartmentSchema, TCreateUserDepartmentSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SelectRole } from '@/components/app/select'
-import { useTranslation } from 'react-i18next'
-import React from 'react'
+import { SelectDepartment } from '@/components/app/select'
 import { IUserInfo } from '@/types'
 
-interface IFormAddEmployeeRoleProps {
+interface IFormAddEmployeeDepartmentProps {
   user: IUserInfo
-  onSubmit: (data: TCreateUserRoleSchema) => void
+  onSubmit: (data: TCreateUserDepartmentSchema) => void
+  onClose: () => void
 }
 
-export const AddEmployeeRoleForm: React.FC<IFormAddEmployeeRoleProps> = ({ user, onSubmit }) => {
+export const AddEmployeeDepartmentForm: React.FC<IFormAddEmployeeDepartmentProps> = ({
+  user,
+  onSubmit,
+  onClose
+}) => {
   const { t } = useTranslation('employees')
-  const form = useForm<TCreateUserRoleSchema>({
-    resolver: zodResolver(createUserRoleSchema),
+  const form = useForm<TCreateUserDepartmentSchema>({
+    resolver: zodResolver(createUserDepartmentSchema),
     defaultValues: {
       user: {
         label: user.fullname,
         value: user.slug
       },
-      role: {
+      department: {
         label: '',
         value: ''
       }
     }
   })
 
-  const handleSubmit = (values: TCreateUserRoleSchema) => {
+  const handleSubmit = (values: TCreateUserDepartmentSchema) => {
     onSubmit(values)
+    onClose()
   }
 
   const formFields = {
@@ -58,17 +64,20 @@ export const AddEmployeeRoleForm: React.FC<IFormAddEmployeeRoleProps> = ({ user,
         )}
       />
     ),
-    role: (
+    department: (
       <FormField
         control={form.control}
-        name="role"
+        name="department"
         render={() => (
           <FormItem>
-            <FormLabel>{t('employees.selectRole')}</FormLabel>
+            <FormLabel>{t('employees.selectDepartment')}</FormLabel>
             <FormControl>
-              <SelectRole
+              <SelectDepartment
                 onChange={(values) => {
-                  form.setValue('role', { label: values?.label || '', value: values?.value || '' })
+                  form.setValue('department', {
+                    label: values?.label || '',
+                    value: values?.value || ''
+                  })
                 }}
               />
             </FormControl>
