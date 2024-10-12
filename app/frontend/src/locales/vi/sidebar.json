@@ -26,6 +26,12 @@
     "createCompany": "Tạo công ty",
 
     "sites": "Địa điểm",
-    "createSite": "Tạo địa điểm"
+    "createSite": "Tạo địa điểm",
+
+    "departments": "Phòng ban",
+    "createDepartment": "Tạo phòng ban",
+
+    "projects": "Dự án",
+    "createProject": "Tạo dự án"
   }
 }

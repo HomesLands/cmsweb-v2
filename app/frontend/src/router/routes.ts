@@ -1,8 +1,8 @@
 import {
   Building2Icon,
-  BuildingIcon,
+  Component,
+  FolderOpenIcon,
   KeyRoundIcon,
-  MapIcon,
   MapPinIcon,
   ScanFaceIcon,
   UserCheckIcon,
@@ -48,6 +48,66 @@ export const sidebarRoutes: ISidebarRoute[] = [
         title: 'sidebar.employees',
         path: ROUTE.EMPLOYEE
         // authorities: [Authority.READ_USER]
+      }
+    ]
+  },
+  {
+    title: 'sidebar.companies',
+    path: ROUTE.COMPANY,
+    icon: Building2Icon,
+    children: [
+      {
+        title: 'sidebar.companies',
+        path: ROUTE.COMPANY
+      },
+      {
+        title: 'sidebar.createCompany',
+        path: ROUTE.ADD_COMPANY
+      }
+    ]
+  },
+  {
+    title: 'sidebar.sites',
+    path: ROUTE.SITE,
+    icon: MapPinIcon,
+    children: [
+      {
+        title: 'sidebar.sites',
+        path: ROUTE.SITE
+      },
+      {
+        title: 'sidebar.createSite',
+        path: ROUTE.ADD_SITE
+      }
+    ]
+  },
+  {
+    title: 'sidebar.departments',
+    path: ROUTE.DEPARTMENT,
+    icon: Component,
+    children: [
+      {
+        title: 'sidebar.departments',
+        path: ROUTE.DEPARTMENT
+      },
+      {
+        title: 'sidebar.createDepartment',
+        path: ROUTE.ADD_DEPARTMENT
+      }
+    ]
+  },
+  {
+    title: 'sidebar.projects',
+    path: ROUTE.PROJECT,
+    icon: FolderOpenIcon,
+    children: [
+      {
+        title: 'sidebar.projects',
+        path: ROUTE.PROJECT
+      },
+      {
+        title: 'sidebar.createProject',
+        path: ROUTE.ADD_PROJECT
       }
     ]
   },
@@ -120,36 +180,6 @@ export const sidebarRoutes: ISidebarRoute[] = [
         title: 'sidebar.createAssignedApprover',
         path: ROUTE.ADD_ASSIGNED_APPROVER
         // authorities: [Authority.CREATE_PERMISSION]
-      }
-    ]
-  },
-  {
-    title: 'sidebar.companies',
-    path: ROUTE.COMPANY,
-    icon: Building2Icon,
-    children: [
-      {
-        title: 'sidebar.companies',
-        path: ROUTE.COMPANY
-      },
-      {
-        title: 'sidebar.createCompany',
-        path: ROUTE.ADD_COMPANY
-      }
-    ]
-  },
-  {
-    title: 'sidebar.sites',
-    path: ROUTE.SITE,
-    icon: MapPinIcon,
-    children: [
-      {
-        title: 'sidebar.sites',
-        path: ROUTE.SITE
-      },
-      {
-        title: 'sidebar.createSite',
-        path: ROUTE.ADD_SITE
       }
     ]
   }

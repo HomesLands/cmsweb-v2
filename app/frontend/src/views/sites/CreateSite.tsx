@@ -30,7 +30,7 @@ const CreateSite: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4 mt-3">
+    <div className="flex flex-col gap-4 mt-2">
       <Card>
         <CardHeader className="flex flex-row justify-between items-center w-full border-b">
           <div className="flex flex-col gap-2 items-start py-2">

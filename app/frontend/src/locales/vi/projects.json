@@ -1,0 +1,25 @@
+{
+  "projects": {
+    "list": "Danh sách dự án",
+    "create": "Tạo dự án",
+    "createProject": "Tạo dự án",
+    "createProjectDescription": "Nhập đầy đủ thông tin vào các trường để tạo dự án",
+    "site": "Địa điểm",
+    "startDate": "Ngày bắt đầu",
+    "chooseDateAndTime": "Chọn ngày và thời gian",
+    "name": "Tên dự án",
+    "description": "Mô tả",
+    "nameDescription": "Nhập tên dự án",
+    "descriptionDescription": "Nhập mô tả dự án",
+    "fileDescription": "Mô tả file",
+    "fileDescriptionDescription": "Nhập mô tả file",
+    "confirmCreate": "Xác nhận tạo dự án",
+    "belongsToLocation": "thuộc địa điểm",
+    "confirmCreateDescription": "Bạn có chắc chắn muốn tạo dự án này không?",
+    "cancelCreate": "Hủy",
+    "confirm": "Xác nhận",
+
+    "slug": "Mã dự án",
+    "nameNormalize": "Tên dự án"
+  }
+}

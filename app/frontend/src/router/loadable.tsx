@@ -31,6 +31,13 @@ export const ProjectPage = React.lazy(() =>
     default: module.Projects
   }))
 )
+
+export const CreateProjectPage = React.lazy(() =>
+  import('@/views/projects').then((module) => ({
+    default: module.CreateProject
+  }))
+)
+
 export const ProductRequisitionPage = React.lazy(() =>
   import('@/views/product-requisitions').then((module) => ({
     default: module.ProductRequisitions
@@ -125,5 +132,17 @@ export const SitePage = React.lazy(() =>
 export const CreateSitePage = React.lazy(() =>
   import('@/views/sites').then((module) => ({
     default: module.CreateSite
+  }))
+)
+
+export const DepartmentPage = React.lazy(() =>
+  import('@/views/departments').then((module) => ({
+    default: module.Departments
+  }))
+)
+
+export const CreateDepartmentPage = React.lazy(() =>
+  import('@/views/departments').then((module) => ({
+    default: module.CreateDepartment
   }))
 )

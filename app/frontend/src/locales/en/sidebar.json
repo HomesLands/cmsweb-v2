@@ -26,6 +26,12 @@
     "createCompany": "Create company",
 
     "sites": "Sites",
-    "createSite": "Create site"
+    "createSite": "Create site",
+
+    "departments": "Departments",
+    "createDepartment": "Create department",
+
+    "projects": "Projects",
+    "createProject": "Create project"
   }
 }

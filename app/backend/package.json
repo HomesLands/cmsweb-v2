@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc && tsc-alias",
     "postbuild": "echo build successfully!",
-    "start": "node build/index.js",
+    "start": "pm2-runtime start build/index.js --name backend-app",
     "dev": "nodemon src/index.ts",
     "format:check": "prettier --check ./src",
     "format:write": "prettier --write ./src",

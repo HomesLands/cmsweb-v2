@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Yêu cầu vật tư - <%= qrCode %></title>
+     <% var dir = process.cwd() %>
+     <%- include(dir + "/src/views/partials/head.ejs") %>
+</head>
+<body>
+    <div class="container mx-auto px-5">
+        <!-- Form title-->
+        <table class="table-auto border-collapse border border-gray-300 w-full mt-5">
+            <tr class="">
+                <td class="border border-black px-4 py-2 w-1/4" rowspan="2">
+                    <div class="flex items-center flex-col justify-center">
+                        <img src="http://localhost:3000/api/v1/files/<%= companyLogo  %>" alt="logo" class="w-20">
+                    </div>
+                </td>
+                <td rowspan="2" class="border border-black px-4 py-2 uppercase text-center font-bold text-xl">
+                    <h2>PHIẾU YÊU CẦU VẬT TƯ</h2>
+                </td>
+                <td class="border border-black px-4 py-2 text-center">
+                    KMH            
+                </td>
+                <td class="border border-black px-4 py-2 text-center"><%= qrCode %>
+                </td>
+            </tr>
+            <tr class="">
+                <td class="border border-black px-4 py-2 uppercase text-center">
+                    Lần Ban Hành
+                </td>
+                <td class="border border-black px-4 py-2 text-center">
+                    1
+                </td>
+            </tr>
+        </table>
+       
+        <!-- Form info -->
+        <div class="flex items-center justify-between mt-5">
+            <div class="flex flex-col gap-2">
+                <div class=""><span class="font-bold">Người yêu cầu:</span> <%= creatorName %></div>
+                <div><span class="font-bold">Công trình sử dụng:</span> <%= siteName %></div>
+            </div>
+            <div class="flex flex-col gap-2">
+                <div><span class="font-bold">Ngày:</span> <%= createDate %></div>
+                <div><span class="font-bold">Dự án:</span> <%= projectName %></div>
+            </div>
+        </div>
+
+        <!-- Request product -->
+        <table class="table-auto border-collapse border border-black w-full mt-5">
+            <thead>
+                <tr class="border-black">
+                    <th class="border border-black px-4 py-2">STT</th>
+                    <th class="border border-black px-4 py-2">TÊN VẬT TƯ</th>
+                    <th class="border border-black px-4 py-2">HÃNG SẢN XUẤT</th>
+                    <th class="border border-black px-4 py-2">SỐ LƯỢNG</th>
+                    <th class="border border-black px-4 py-2">ĐƠN VỊ</th>
+                    <th class="border border-black px-4 py-2">GHI CHÚ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% requestProducts.forEach(function(item, index) { %>
+                    <tr>
+                        <td class="border border-black px-4 py-2"><%= index + 1 %></td>
+                        <td class="border border-black px-4 py-2"><%= item.name %></td>
+                        <td class="border border-black px-4 py-2"><%= item.provider %></td>
+                        <td class="border border-black px-4 py-2"><%= item.requestQuantity %></td>
+                        <td class="border border-black px-4 py-2"><%= item.unit %></td>
+                        <td class="border border-black px-4 py-2"><%= item.description %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+        <!-- Sign -->
+         <div class="flex items-center gap-32 justify-center mt-8">
+            <% userSignatures.forEach(function(item) { %>
+                <div class="flex flex-col items-center gap-3">
+                    <span class="font-bold italic capitalize text-sm"><%= item.title  %></span>
+                    <div class="flex items-center flex-col justify-center">
+                        <img 
+                            src="<%= requestUrl %>/api/v1/files/<%= item.signature %>" 
+                            alt="<%= companyLogo %>" `
+                            class="w-20" />
+                    </div>
+                </div>
+                <% }); 
+            %>
+         </div>
+    </div>
+</body>
+</html>
