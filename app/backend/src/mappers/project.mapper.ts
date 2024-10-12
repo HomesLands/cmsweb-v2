@@ -4,23 +4,17 @@ import {
   createMap,
   mapFrom,
   forMember,
-  extend,
-  typeConverter,
   mapWith,
+  typeConverter,
 } from "@automapper/core";
-import { 
-  ProjectResponseDto, 
+import {
+  ProjectResponseDto,
   ProductRequisitionFormResponseDto,
-  SiteResponseDto
+  SiteResponseDto,
 } from "@dto/response";
 import { CreateProjectRequestDto } from "@dto/request";
-import { 
-  Project,
-  ProductRequisitionForm,
-  Site
- } from "@entities";
+import { Project, ProductRequisitionForm, Site } from "@entities";
 import moment from "moment";
-import { baseMapper } from "./base.mapper";
 
 // Define the mapping profile
 export const projectMapper: MappingProfile = (mapper: Mapper) => {
@@ -31,11 +25,7 @@ export const projectMapper: MappingProfile = (mapper: Mapper) => {
     ProjectResponseDto,
     forMember(
       (destination) => destination.site,
-      mapWith(
-        SiteResponseDto,
-        Site,
-        (source) => source.site
-      )
+      mapWith(SiteResponseDto, Site, (source) => source.site)
     ),
     forMember(
       (destination) => destination.productRequisitionFormResponseDto,
@@ -45,8 +35,7 @@ export const projectMapper: MappingProfile = (mapper: Mapper) => {
         (source) => source.productRequisitionForms
       )
     ),
-    typeConverter(Date, String, (startDate) => moment(startDate).toString()),
-    extend(baseMapper(mapper))
+    typeConverter(Date, String, (startDate) => moment(startDate).toString())
   );
 
   // Map request object to entity

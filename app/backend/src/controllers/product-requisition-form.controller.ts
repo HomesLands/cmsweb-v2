@@ -116,7 +116,7 @@ class ProductRequisitionFormController {
    *         status: accept
    *         content: yêu cầu ổn
    *
-   * 
+   *
    *     ApprovalProductRequisitionFormRequestDto:
    *       type: object
    *       required:
@@ -152,7 +152,7 @@ class ProductRequisitionFormController {
    *       example:
    *         slug: XUWyA6fr7i
    *         description: Đã chỉnh sửa
-   * 
+   *
    *     UpdateGeneralInformationProductRequisitionFormRequestDto:
    *       type: object
    *       required:
@@ -311,7 +311,8 @@ class ProductRequisitionFormController {
       > = {
         code: StatusCodes.OK,
         error: false,
-        message: "Get list completed approval product requisition forms successfully",
+        message:
+          "Get list completed approval product requisition forms successfully",
         method: req.method,
         path: req.originalUrl,
         result: results,
@@ -384,6 +385,9 @@ class ProductRequisitionFormController {
     try {
       const requestData = req.body as TCreateProductRequisitionFormRequestDto;
       const creatorId = req.userId as string;
+      if (req.ability) {
+        console.log(req.ability);
+      }
       const form =
         await productRequisitionFormService.createProductRequisitionForm(
           creatorId,
@@ -566,7 +570,6 @@ class ProductRequisitionFormController {
     }
   }
 
-
   /**
    * @swagger
    * /productRequisitionForms/{slug}:
@@ -614,7 +617,8 @@ class ProductRequisitionFormController {
   ): Promise<void> {
     try {
       const creatorId = req.userId as string;
-      const data = req.body as TUpdateGeneralInformationProductRequisitionFormRequestDto;
+      const data =
+        req.body as TUpdateGeneralInformationProductRequisitionFormRequestDto;
       const slug = req.params.slug;
 
       const result =
@@ -640,7 +644,7 @@ class ProductRequisitionFormController {
 
   /**
    * @swagger
-   * /productRequisitionForms/exportExcel/{slug}:
+   * /productRequisitionForms/{slug}/exportExcel:
    *   get:
    *     summary: Export productRequisitionForm to excel by slug
    *     tags: [ProductRequisitionForm]
@@ -674,10 +678,16 @@ class ProductRequisitionFormController {
           slug
         );
 
-        res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); 
-        res.setHeader("Content-Disposition", "attachment; filename=" +`${dataExport.code}.xlsx`);
-  
-        dataExport.workbook.xlsx.write(res).then(() => res.end());
+      res.setHeader(
+        "Content-Type",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      );
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=" + `${dataExport.code}.xlsx`
+      );
+
+      dataExport.workbook.xlsx.write(res).then(() => res.end());
     } catch (error) {
       next(error);
     }
@@ -685,7 +695,7 @@ class ProductRequisitionFormController {
 
   /**
    * @swagger
-   * /productRequisitionForms/exportPdf/{slug}:
+   * /productRequisitionForms/{slug}/exportPdf:
    *   get:
    *     summary: Export productRequisitionForm to pdf by slug
    *     tags: [ProductRequisitionForm]
@@ -713,16 +723,21 @@ class ProductRequisitionFormController {
     next: NextFunction
   ): Promise<void> {
     try {
+      const requestUrl = `${req.protocol}://${req.get("host")}`;
       const slug = req.params.slug as string;
-      const dataExport =
-        await productRequisitionFormService.exportPdfProductRequisitionForm(
-          slug
-        );
+      const results =
+        await productRequisitionFormService.exportPdfProductRequisitionForm({
+          slug,
+          requestUrl,
+        });
 
-      res.setHeader('Content-Type', 'application/pdf'); 
-      res.setHeader('Content-Disposition', 'attachment; filename=' +`${dataExport.code}`);
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=" + `${results.code}`
+      );
 
-      res.send(dataExport.pdf);
+      res.send(results.pdf);
     } catch (error) {
       next(error);
     }

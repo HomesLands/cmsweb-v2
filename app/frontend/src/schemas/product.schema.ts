@@ -43,12 +43,12 @@ export const productRequisitionSchema = z.object({
       })
     })
   ),
-  userApprovals: z.array(
-    z.object({
-      userSlug: z.string().min(1, 'Mã người duyệt không hợp lệ'),
-      roleApproval: z.string().min(1, 'Vai trò duyệt không hợp lệ')
-    })
-  ),
+  // userApprovals: z.array(
+  //   z.object({
+  //     userSlug: z.string().min(1, 'Mã người duyệt không hợp lệ'),
+  //     roleApproval: z.string().min(1, 'Vai trò duyệt không hợp lệ')
+  //   })
+  // ),
   note: z.string().optional()
 })
 

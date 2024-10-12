@@ -4,9 +4,8 @@ import {
   createMap,
   forMember,
   mapFrom,
-  mapWith, 
-  extend,
-  typeConverter
+  mapWith,
+  typeConverter,
 } from "@automapper/core";
 import moment from "moment";
 import {
@@ -14,7 +13,7 @@ import {
   UserApprovalResponseDto,
   RequestProductResponseDto,
   UserResponseDto,
-  ProjectResponseDto
+  ProjectResponseDto,
 } from "@dto/response";
 import {
   ProductRequisitionForm,
@@ -24,7 +23,6 @@ import {
   Project,
 } from "@entities";
 import { CreateProductRequisitionFormRequestDto } from "@dto/request";
-import { baseMapper } from "./base.mapper";
 
 export const productRequisitionFormMapper: MappingProfile = (
   mapper: Mapper
@@ -36,19 +34,11 @@ export const productRequisitionFormMapper: MappingProfile = (
     ProductRequisitionFormResponseDto,
     forMember(
       (destination) => destination.project,
-      mapWith(
-        ProjectResponseDto,
-        Project,
-        (source) => source.project
-      )
+      mapWith(ProjectResponseDto, Project, (source) => source.project)
     ),
     forMember(
       (destination) => destination.creator,
-      mapWith(
-        UserResponseDto,
-        User,
-        (source) => source.creator
-      )
+      mapWith(UserResponseDto, User, (source) => source.creator)
     ),
     forMember(
       (destination) => destination.userApprovals,
@@ -66,10 +56,9 @@ export const productRequisitionFormMapper: MappingProfile = (
         (source) => source.requestProducts
       )
     ),
-    typeConverter(
-      Date, String, (deadlineApproval) => moment(deadlineApproval).toString()
-    ),
-    extend(baseMapper(mapper)),
+    typeConverter(Date, String, (deadlineApproval) =>
+      moment(deadlineApproval).toString()
+    )
   );
 
   // Map request object to entity
@@ -81,5 +70,5 @@ export const productRequisitionFormMapper: MappingProfile = (
       (destination) => destination.deadlineApproval,
       mapFrom((source) => moment(source.deadlineApproval).toDate())
     )
-  )
-}
+  );
+};

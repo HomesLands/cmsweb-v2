@@ -34,6 +34,10 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
       }
     },
     {
+      accessorKey: 'slug',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('users.slug')} />
+    },
+    {
       accessorKey: 'fullname',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('users.fullname')} />
     },

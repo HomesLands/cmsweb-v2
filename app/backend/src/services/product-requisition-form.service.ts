@@ -1,13 +1,9 @@
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
 import { Workbook } from "exceljs";
-import * as ejs from "ejs";
-import * as fs from "fs";
-import puppeteer from "puppeteer";
 import moment from "moment";
-import path from "path";
 
-import { excelService, fileService } from "@services";
+import { excelService, PDFService } from "@services";
 import {
   productRequisitionFormRepository,
   userRepository,
@@ -27,9 +23,11 @@ import {
   TPaginationOptionResponse,
   TResubmitProductRequisitionFormRequestDto,
   TUpdateGeneralInformationProductRequisitionFormRequestDto,
-  TProductRequisitionFormDataExport
 } from "@types";
-import { ProductRequisitionFormResponseDto } from "@dto/response";
+import {
+  ExportRequestProductResponseDto,
+  ProductRequisitionFormResponseDto,
+} from "@dto/response";
 import {
   CreateProductRequisitionFormRequestDto,
   CreateRequestProductRequestDto,
@@ -54,9 +52,9 @@ import {
   RoleApproval,
   ApprovalLogStatus,
 } from "@enums";
-import { PermissionUtils } from "@utils";
+import { parsePagination, PermissionUtils } from "@utils";
 import { In } from "typeorm";
-
+import { forMember } from "@automapper/core";
 
 class ProductRequisitionFormService {
   public async getAllProductRequisitionForms(
@@ -70,18 +68,7 @@ class ProductRequisitionFormService {
       });
 
     // Parse and validate pagination parameters
-    let pageSize =
-      typeof options.pageSize === "string"
-        ? parseInt(options.pageSize, 10)
-        : options.pageSize;
-    let page =
-      typeof options.page === "string"
-        ? parseInt(options.page, 10)
-        : options.page;
-
-    // Ensure page and pageSize are positive numbers
-    if (isNaN(page) || page <= 0) page = 1;
-    if (isNaN(pageSize) || pageSize <= 0) pageSize = 10; // Default pageSize if invalid
+    const { page, pageSize } = parsePagination(options);
     // Calculate pagination details
     const totalPages = Math.ceil(totalProductRequisitionForm / pageSize);
 
@@ -120,44 +107,34 @@ class ProductRequisitionFormService {
     // Get the total number of products
     const totalProductRequisitionForm =
       await productRequisitionFormRepository.count({
-        where: { 
-          creator: { 
-            id: creatorId 
+        where: {
+          creator: {
+            id: creatorId,
           },
-           status: In([
+          status: In([
             ProductRequisitionFormStatus.WAITING_EXPORT,
             ProductRequisitionFormStatus.EXPORTING,
-            ProductRequisitionFormStatus.DONE
-           ])
+            ProductRequisitionFormStatus.DONE,
+          ]),
         },
       });
 
     // Parse and validate pagination parameters
-    let pageSize =
-      typeof options.pageSize === "string"
-        ? parseInt(options.pageSize, 10)
-        : options.pageSize;
-    let page =
-      typeof options.page === "string"
-        ? parseInt(options.page, 10)
-        : options.page;
+    const { page, pageSize } = parsePagination(options);
 
-    // Ensure page and pageSize are positive numbers
-    if (isNaN(page) || page <= 0) page = 1;
-    if (isNaN(pageSize) || pageSize <= 0) pageSize = 10; // Default pageSize if invalid
     // Calculate pagination details
     const totalPages = Math.ceil(totalProductRequisitionForm / pageSize);
 
     const forms = await productRequisitionFormRepository.find({
-      where: { 
-        creator: { 
-          id: creatorId 
+      where: {
+        creator: {
+          id: creatorId,
         },
         status: In([
           ProductRequisitionFormStatus.WAITING_EXPORT,
           ProductRequisitionFormStatus.EXPORTING,
-          ProductRequisitionFormStatus.DONE
-         ]) 
+          ProductRequisitionFormStatus.DONE,
+        ]),
       },
       take: pageSize,
       skip: (page - 1) * pageSize,
@@ -209,30 +186,26 @@ class ProductRequisitionFormService {
       where: {
         id: creatorId,
       },
-      relations: [
-        'userDepartments',
-        'userDepartments.department.site',
-      ]
+      relations: ["userDepartments", "userDepartments.department.site"],
     });
 
     if (!creator) throw new GlobalError(ErrorCodes.INVALID_CREATOR);
-    if(!creator.userDepartments) throw new GlobalError(ErrorCodes.INVALID_CREATOR);
-    if(!creator.userDepartments[0].department?.site?.id) 
+    if (!creator.userDepartments)
       throw new GlobalError(ErrorCodes.INVALID_CREATOR);
-     
+    if (!creator.userDepartments[0].department?.site?.id)
+      throw new GlobalError(ErrorCodes.INVALID_CREATOR);
+
     const assignedUserApproval = await assignedUserApprovalRepository.find({
       where: {
         formType: FormApprovalType.PRODUCT_REQUISITION_FORM,
         site: {
-          id: creator.userDepartments[0].department?.site?.id
-        }
+          id: creator.userDepartments[0].department?.site?.id,
+        },
       },
-      relations: [
-        'user',
-      ]
+      relations: ["user"],
     });
 
-    if(assignedUserApproval.length !== 3)
+    if (assignedUserApproval.length !== 3)
       throw new GlobalError(ErrorCodes.INVALID_QUANTITY_USER_APPROVAL);
 
     const userApprovalStageOne = assignedUserApproval.find(
@@ -245,17 +218,16 @@ class ProductRequisitionFormService {
       (item) => item.roleApproval === RoleApproval.APPROVAL_STAGE_3
     );
 
-    if(!(
-      userApprovalStageOne
-      && userApprovalStageTwo
-      && userApprovalStageThree
-    )) throw new GlobalError(ErrorCodes.MISSING_USER_APPROVAL);
+    if (
+      !(userApprovalStageOne && userApprovalStageTwo && userApprovalStageThree)
+    )
+      throw new GlobalError(ErrorCodes.MISSING_USER_APPROVAL);
 
     const project = await projectRepository.findOneBy({
       slug: requestData.project,
     });
     if (!project) throw new GlobalError(ErrorCodes.PROJECT_NOT_FOUND);
-    
+
     // Create product requisition form
     const form = mapper.map(
       requestData,
@@ -290,10 +262,10 @@ class ProductRequisitionFormService {
         // product not exist
         const requestProductData = requestData.requestProducts[i];
         const unit = await unitRepository.findOneBy({
-          slug: requestProductData.unit
+          slug: requestProductData.unit,
         });
         // note: có nên check trước khi tạo???
-        if(!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
+        if (!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
 
         const temporaryRequestProductData = mapper.map(
           requestProductData,
@@ -301,8 +273,9 @@ class ProductRequisitionFormService {
           TemporaryProduct
         );
         temporaryRequestProductData.unit = unit;
-        const temporaryProduct = 
-        await temporaryProductRepository.createAndSave(temporaryRequestProductData);
+        const temporaryProduct = await temporaryProductRepository.createAndSave(
+          temporaryRequestProductData
+        );
         const requestProductMapped = mapper.map(
           requestData.requestProducts[0],
           CreateRequestProductRequestDto,
@@ -322,7 +295,6 @@ class ProductRequisitionFormService {
       const userApproval = new UserApproval();
       userApproval.assignedUserApproval = assignedUserApproval[i];
       userApproval.productRequisitionForm = form;
-
 
       const createdUserApproval =
         await userApprovalRepository.createAndSave(userApproval);
@@ -390,24 +362,25 @@ class ProductRequisitionFormService {
       where: {
         assignedUserApproval: {
           user: {
-            id: userId
-          }
+            id: userId,
+          },
         },
         productRequisitionForm: {
-          slug: requestData.formSlug
-        }
+          slug: requestData.formSlug,
+        },
       },
       relations: [
-        'assignedUserApproval',
-        'assignedUserApproval.user',
-        'productRequisitionForm',
-        'productRequisitionForm.requestProducts',
-        'productRequisitionForm.requestProducts.product',
-        'approvalLogs'
-      ]
+        "assignedUserApproval",
+        "assignedUserApproval.user",
+        "productRequisitionForm",
+        "productRequisitionForm.requestProducts",
+        "productRequisitionForm.requestProducts.product",
+        "approvalLogs",
+      ],
     });
 
-    if(!userApproval) throw new GlobalError(ErrorCodes.FORBIDDEN_APPROVAL_FORM);
+    if (!userApproval)
+      throw new GlobalError(ErrorCodes.FORBIDDEN_APPROVAL_FORM);
 
     let form = await productRequisitionFormRepository.findOne({
       where: {
@@ -429,10 +402,11 @@ class ProductRequisitionFormService {
     if (form.status === ProductRequisitionFormStatus.WAITING) {
       // form : waiting => approvalUser: approval_stage_1 > wait approval_stage_1 approve
       //checking
-      if (userApproval.assignedUserApproval?.roleApproval !== RoleApproval.APPROVAL_STAGE_1) {
-        throw new GlobalError(
-          ErrorCodes.FORBIDDEN_APPROVAL_FORM
-        );
+      if (
+        userApproval.assignedUserApproval?.roleApproval !==
+        RoleApproval.APPROVAL_STAGE_1
+      ) {
+        throw new GlobalError(ErrorCodes.FORBIDDEN_APPROVAL_FORM);
       }
 
       // change status form
@@ -466,10 +440,11 @@ class ProductRequisitionFormService {
 
     if (form.status === ProductRequisitionFormStatus.ACCEPTED_STAGE_1) {
       // form : accepted_stage_1 => approvalUser: approval_stage_2 > wait approval_stage_2 approve
-      if (userApproval.assignedUserApproval?.roleApproval !== RoleApproval.APPROVAL_STAGE_2) {
-        throw new GlobalError(
-          ErrorCodes.FORBIDDEN_APPROVAL_FORM
-        );
+      if (
+        userApproval.assignedUserApproval?.roleApproval !==
+        RoleApproval.APPROVAL_STAGE_2
+      ) {
+        throw new GlobalError(ErrorCodes.FORBIDDEN_APPROVAL_FORM);
       }
 
       // if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
@@ -509,10 +484,11 @@ class ProductRequisitionFormService {
 
     if (form.status === ProductRequisitionFormStatus.ACCEPTED_STAGE_2) {
       // form : accepted_stage_2 => approvalUser: approval_stage_3 > wait approval_stage_1 approve
-      if (userApproval.assignedUserApproval?.roleApproval !== RoleApproval.APPROVAL_STAGE_3) {
-        throw new GlobalError(
-          ErrorCodes.FORBIDDEN_APPROVAL_FORM
-        );
+      if (
+        userApproval.assignedUserApproval?.roleApproval !==
+        RoleApproval.APPROVAL_STAGE_3
+      ) {
+        throw new GlobalError(ErrorCodes.FORBIDDEN_APPROVAL_FORM);
       }
 
       // if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
@@ -612,37 +588,39 @@ class ProductRequisitionFormService {
       plainData
     );
     const errors = await validate(requestData);
-    if(errors.length > 0) throw new ValidationError(errors);
+    if (errors.length > 0) throw new ValidationError(errors);
 
     const form = await productRequisitionFormRepository.findOne({
       where: {
-        slug
-      }, 
-      relations: ['creator']
+        slug,
+      },
+      relations: ["creator"],
     });
-    if(!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+    if (!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
-    if(form.creator) {
-      if(form.creator?.id !== creatorId) 
+    if (form.creator) {
+      if (form.creator?.id !== creatorId)
         throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
     } else {
       // creator not found
       throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
     }
 
-    const isPermitEdit: boolean = 
+    const isPermitEdit: boolean =
       PermissionUtils.isPermitEditProductRequisitionForm(
         form.status,
         form.isRecalled
       );
-    if(!isPermitEdit) throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    if (!isPermitEdit) throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
 
-    const project = await projectRepository.findOneBy({ slug: requestData.project });
-    if(!project) throw new GlobalError(ErrorCodes.PROJECT_NOT_FOUND);
+    const project = await projectRepository.findOneBy({
+      slug: requestData.project,
+    });
+    if (!project) throw new GlobalError(ErrorCodes.PROJECT_NOT_FOUND);
 
     Object.assign(form, {
       ...requestData,
-      project
+      project,
     });
     const updatedForm = await productRequisitionFormRepository.save(form);
     const formDto = mapper.map(
@@ -653,61 +631,61 @@ class ProductRequisitionFormService {
     return formDto;
   }
 
-  public async exportExcelProductRequisitionForm(
-    formSlug: string
-  ): Promise<{
-    code: string,
-    workbook: Workbook
+  public async exportExcelProductRequisitionForm(formSlug: string): Promise<{
+    code: string;
+    workbook: Workbook;
   }> {
     const form = await productRequisitionFormRepository.findOne({
       where: {
-        slug: formSlug
+        slug: formSlug,
       },
       relations: [
         "creator.userDepartments.department.site.company",
         "requestProducts.product.unit",
         "requestProducts.temporaryProduct.unit",
         "project",
-      ]
+      ],
     });
-    if(!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
-    if(!form.code) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
-    if(!form.requestProducts) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+    if (!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+    if (!form.code) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+    if (!form.requestProducts) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
-    let site: string = 'N/A';
-    let company: string = 'N/A';
-    if(form.creator)
-      if(form.creator.userDepartments)
-          if(form.creator?.userDepartments[0].department?.site?.name){
-            site = form.creator?.userDepartments[0].department?.site?.name
-            if(form.creator?.userDepartments[0].department?.site?.company?.name){
-              company = form.creator?.userDepartments[0].department?.site?.company.name
-            }
+    let site: string = "N/A";
+    let company: string = "N/A";
+    if (form.creator)
+      if (form.creator.userDepartments)
+        if (form.creator?.userDepartments[0].department?.site?.name) {
+          site = form.creator?.userDepartments[0].department?.site?.name;
+          if (
+            form.creator?.userDepartments[0].department?.site?.company?.name
+          ) {
+            company =
+              form.creator?.userDepartments[0].department?.site?.company.name;
           }
-            
+        }
 
-    const requestProductExport: TProductRequisitionFormDataExport[] = 
-      form.requestProducts.map((requestProduct, index) => ({
+    const requestProductExport = form.requestProducts.map(
+      (requestProduct, index) => ({
         order: index + 1,
         quantity: requestProduct.requestQuantity,
 
-        name: requestProduct.isExistProduct 
-        ? requestProduct.product?.name
-        : requestProduct.temporaryProduct?.name,
+        name: requestProduct.isExistProduct
+          ? requestProduct.product?.name
+          : requestProduct.temporaryProduct?.name,
 
-        description: requestProduct.isExistProduct 
-        ? requestProduct.product?.description
-        : requestProduct.temporaryProduct?.description,
+        description: requestProduct.isExistProduct
+          ? requestProduct.product?.description
+          : requestProduct.temporaryProduct?.description,
 
-        provider: requestProduct.isExistProduct 
-        ? requestProduct.product?.provider
-        : requestProduct.temporaryProduct?.provider,
+        provider: requestProduct.isExistProduct
+          ? requestProduct.product?.provider
+          : requestProduct.temporaryProduct?.provider,
 
-        unit: requestProduct.isExistProduct 
-        ? requestProduct.product?.unit?.name
-        : requestProduct.temporaryProduct?.unit?.name,
-      }));
-
+        unit: requestProduct.isExistProduct
+          ? requestProduct.product?.unit?.name
+          : requestProduct.temporaryProduct?.unit?.name,
+      })
+    );
 
     const workbook = excelService.generateProductRequisitionFormExcel(
       requestProductExport,
@@ -715,7 +693,7 @@ class ProductRequisitionFormService {
       moment(form.createdAt).format("DD/MM/YYYY"),
       site,
       form.project?.name || "N/A",
-      company,
+      company
     );
 
     return {
@@ -724,127 +702,93 @@ class ProductRequisitionFormService {
     };
   }
 
-  public async exportPdfProductRequisitionForm(
-    formSlug: string
-  ): Promise<{
-    code: string,
-    pdf: Buffer
+  public async exportPdfProductRequisitionForm({
+    slug,
+    requestUrl,
+  }: {
+    slug: string;
+    requestUrl: string;
+  }): Promise<{
+    code: string;
+    pdf: Buffer;
   }> {
     const form = await productRequisitionFormRepository.findOne({
       where: {
-        slug: formSlug
+        slug,
       },
       relations: [
         "creator.userDepartments.department.site.company",
         "requestProducts.product.unit",
         "requestProducts.temporaryProduct.unit",
         "project",
-      ]
+      ],
     });
-    if(!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
-    if(!form.code) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
-    if(!form.requestProducts) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+    if (!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+    if (!form.code) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+    if (!form.requestProducts) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
-    let site: string = 'N/A';
-    let company: string = 'N/A';
-    let companyLogo: string | null= 'N/A';
-    if(form.creator)
-      if(form.creator.userDepartments)
-          if(form.creator?.userDepartments[0].department?.site?.name){
-            site = form.creator?.userDepartments[0].department?.site?.name
-            if(form.creator?.userDepartments[0].department?.site?.company?.name){
-              company = form.creator?.userDepartments[0].department?.site?.company.name
-            }
-            if(form.creator?.userDepartments[0].department?.site?.company?.logo){
-              companyLogo = form.creator?.userDepartments[0].department?.site?.company?.logo
-            }
-          }
+    // Get form info
+    let siteName: string = "N/A";
+    let companyLogo: string | null = "N/A";
+    if (
+      form?.creator?.userDepartments &&
+      form.creator.userDepartments.length > 0
+    ) {
+      if (form.creator.userDepartments[0].department?.site?.name) {
+        siteName = form.creator?.userDepartments[0].department?.site?.name;
+      }
+      if (form.creator.userDepartments[0].department?.site?.company?.logo) {
+        companyLogo =
+          form.creator.userDepartments[0].department.site.company.logo;
+      }
+    }
 
-    const imgLogo = await fileService.getFileByName(companyLogo);
-    // console.log({imgLogo: imgLogo.data})
+    // Get request products
+    const requestProducts = mapper.mapArray(
+      form.requestProducts,
+      RequestProduct,
+      ExportRequestProductResponseDto
+    );
 
-    const requestProductExport: TProductRequisitionFormDataExport[] = 
-      form.requestProducts.map((requestProduct, index) => ({
-        order: index + 1,
-        quantity: requestProduct.requestQuantity,
-
-        name: requestProduct.isExistProduct 
-        ? requestProduct.product?.name
-        : requestProduct.temporaryProduct?.name,
-
-        description: requestProduct.isExistProduct 
-        ? requestProduct.product?.description
-        : requestProduct.temporaryProduct?.description,
-
-        provider: requestProduct.isExistProduct 
-        ? requestProduct.product?.provider
-        : requestProduct.temporaryProduct?.provider,
-
-        unit: requestProduct.isExistProduct 
-        ? requestProduct.product?.unit?.name
-        : requestProduct.temporaryProduct?.unit?.name,
-      }));
+    // Get user signature
+    const userSignatures = [
+      {
+        title: "Người lập phiếu",
+        signature: form.creator?.signature,
+      },
+    ];
+    const userApprovals = await userApprovalRepository.find({
+      where: { productRequisitionForm: { id: form.id } },
+    });
+    userApprovals.forEach((item) => {
+      if (item) {
+        userSignatures.push({
+          title: item.assignedUserApproval?.roleApproval || "",
+          signature: item.assignedUserApproval?.user?.signature,
+        });
+      }
+    });
 
     const data = {
-      companyName: company,
-      logoBase64: `data:${imgLogo.mimetype};base64,${imgLogo.data}`,
-      qrCode: "QR3-01/001",
+      companyLogo,
+      qrCode: form.code,
       creatorName: form.creator?.fullname,
-      siteName: site,
+      siteName,
       createDate: moment(form.createdAt).format("DD/MM/YYYY"),
       projectName: form.project?.name,
-      data: requestProductExport
+      requestProducts,
+      requestUrl,
+      userSignatures,
     };
 
-    console.log({data: data.logoBase64})
-
-    const templatePath = path.join(__dirname, '..', 'views', 'product-requisition-form-pdf.ejs');
-    console.log({templatePath})
-
-    // try {
-    //   const html = await fs.promises.readFile(templatePath, 'utf8');
-  
-    //   const finalHtml = ejs.render(html, data);
-
-    //   const file = { content: finalHtml }; // Set the content of the PDF
-    //   const options = { format: 'A4', printBackground: true }
-    //   const pdfBuffer = await pdf.generatePdf(file, options);
-    //   console.log({pdfBuffer})
-  
-    //   return {
-    //     code: form.code,
-    //     // pdf: Buffer.from('a'),
-    //     pdf: pdfBuffer,
-    //   };
-    // } catch (err) {
-    //   console.error(err);
-    //   throw new GlobalError(ErrorCodes.FILE_NOT_FOUND);
-    // }    
-
-    const html = await fs.promises.readFile(templatePath, 'utf8');
-    const finalHtml = ejs.render(html, data);
-    try {
-      const browser = await puppeteer.launch();
-      const page = await browser.newPage();
-  
-      await page.setContent(finalHtml, {
-        waitUntil: 'networkidle0',
-      });
-  
-      const buffer = await page.pdf({
-        format: 'A4',
-        printBackground: true,
-      });
-  
-      await browser.close();
-      return {
-        code: form.code,
-        pdf: Buffer.from(buffer)
-      };
-    } catch (err) {
-      console.log({err})
-      throw new GlobalError(ErrorCodes.FILE_NOT_FOUND);
-    }
+    const pdf = await PDFService.generatePDF({
+      templateName: "product-requisition-form-pdf.ejs",
+      data,
+    });
+    return {
+      code: form.code,
+      pdf,
+    };
   }
 }
 

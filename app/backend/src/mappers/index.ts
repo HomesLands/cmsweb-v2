@@ -1,4 +1,9 @@
-import { createMapper } from "@automapper/core";
+import {
+  addProfile,
+  createMapper,
+  extend,
+  typeConverter,
+} from "@automapper/core";
 import { classes } from "@automapper/classes";
 import { authMapper } from "./auth.mapper";
 import { siteMapper } from "./site.mapper";
@@ -23,31 +28,47 @@ import { productWarehouseMapper } from "./product-warehouse.mapper";
 import { temporaryProductMapper } from "./temporary-product.mapper";
 import { resourceMapper } from "./resource.mapper";
 import { rolePermissionMapper } from "./role-permission.mapper";
+import { baseMapper } from "./base.mapper";
+import moment from "moment";
 
 export const mapper = createMapper({
   strategyInitializer: classes(),
 });
 
-authMapper(mapper);
-siteMapper(mapper);
-userMapper(mapper);
-projectMapper(mapper);
-unitMapper(mapper);
-productMapper(mapper);
-companyMapper(mapper);
-productRequisitionFormMapper(mapper);
-approvalLogMapper(mapper);
-userApprovalMapper(mapper);
-requestProductMapper(mapper);
-roleMapper(mapper);
-authorityMapper(mapper);
-permissionMapper(mapper);
-userRoleMapper(mapper);
-departmentMapper(mapper);
-userDepartmentMapper(mapper);
-assignedUserApprovalMapper(mapper);
-warehouseMapper(mapper);
-productWarehouseMapper(mapper);
-temporaryProductMapper(mapper);
-resourceMapper(mapper);
-rolePermissionMapper(mapper);
+addProfile(mapper, authMapper);
+
+addProfile(mapper, userMapper, extend(baseMapper(mapper)));
+addProfile(mapper, projectMapper, extend(baseMapper(mapper)));
+addProfile(mapper, departmentMapper, extend(baseMapper(mapper)));
+addProfile(mapper, userDepartmentMapper, extend(baseMapper(mapper)));
+addProfile(mapper, siteMapper, extend(baseMapper(mapper)));
+addProfile(mapper, companyMapper, extend(baseMapper(mapper)));
+
+addProfile(mapper, resourceMapper, extend(baseMapper(mapper)));
+addProfile(mapper, authorityMapper, extend(baseMapper(mapper)));
+addProfile(mapper, permissionMapper, extend(baseMapper(mapper)));
+addProfile(mapper, rolePermissionMapper, extend(baseMapper(mapper)));
+addProfile(mapper, roleMapper, extend(baseMapper(mapper)));
+addProfile(mapper, userRoleMapper, extend(baseMapper(mapper)));
+
+addProfile(mapper, unitMapper, extend(baseMapper(mapper)));
+addProfile(mapper, warehouseMapper, extend(baseMapper(mapper)));
+addProfile(mapper, productMapper, extend(baseMapper(mapper)));
+addProfile(mapper, productWarehouseMapper, extend(baseMapper(mapper)));
+
+addProfile(mapper, assignedUserApprovalMapper, extend(baseMapper(mapper)));
+addProfile(mapper, requestProductMapper, extend(baseMapper(mapper)));
+addProfile(mapper, temporaryProductMapper, extend(baseMapper(mapper)));
+addProfile(
+  mapper,
+  productRequisitionFormMapper,
+  extend(baseMapper(mapper))
+  // typeConverter(Date, String, (deadlineApproval) =>
+  //   moment(deadlineApproval).toString()
+  // ),
+  // typeConverter(String, Date, (deadlineApproval) =>
+  //   moment(deadlineApproval).toDate()
+  // )
+);
+addProfile(mapper, userApprovalMapper, extend(baseMapper(mapper)));
+addProfile(mapper, approvalLogMapper, extend(baseMapper(mapper)));

@@ -19,6 +19,7 @@ export class Role extends Base {
   description?: string;
 
   // A role can have many permissions
+  @AutoMap()
   @OneToMany(() => RolePermission, (rolePermission) => rolePermission.role)
   rolePermissions: RolePermission[];
 

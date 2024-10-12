@@ -28,25 +28,8 @@ dotenv.config();
   app.use(express.urlencoded({ extended: true }));
 
   // ejs
-  app.set('view engine', 'ejs');
-  app.set('views', path.join(__dirname, 'views'));
-
-  // await producer.connect();
-  // await producer.send({
-  //   topic: "first_kafka_topic",
-  //   //convert value to a JSON string and send it
-  //   messages: [{ value: "Hello" }],
-  // });
-  // console.log("producer connected successfully");
-
-  // await consumer.connect();
-  // await consumer.subscribe({ topic: "first_kafka_topic", fromBeginning: true });
-  // await consumer.run({
-  //   eachMessage: async ({ message }) => {
-  //     console.log("****************** Arrived in Consumer ******************");
-  //     console.log({ message: message.value?.toString() });
-  //   },
-  // });
+  app.set("view engine", "ejs");
+  app.set("views", path.join(__dirname, "views"));
 
   // Config database
   // Default auto retries 5
