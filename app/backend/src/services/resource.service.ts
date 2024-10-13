@@ -16,6 +16,8 @@ import { validate } from "class-validator";
 import { ErrorCodes, GlobalError, ValidationError } from "@exception";
 import { Resource } from "@entities";
 import { parsePagination } from "@utils";
+import path from "path";
+import fs from "fs/promises";
 
 class ResourceService {
   public async getAllResources(
@@ -53,6 +55,59 @@ class ResourceService {
 
     const results = mapper.map(resource, Resource, ResourceResponseDto);
     return results;
+  }
+
+  public async loadResources(): Promise<ResourceResponseDto[]> {
+    const resources = await resourceRepository.find({});
+    const folderPath = path.join(__dirname, "../entities");
+    const excludedFiles = ["base", "index"];
+
+    // Check if the folder exists
+    const folderExists = await fs.stat(folderPath);
+    if (!folderExists.isDirectory()) {
+      console.error(`Path ${folderPath} is not a directory.`);
+      throw new GlobalError(ErrorCodes.FOLDER_NOT_FOUND);
+    }
+
+    // Read the folder contents asynchronously
+    const files = await fs.readdir(folderPath);
+
+    const filteredFiles = await Promise.all(
+      files.map(async (item) => {
+        // Check if it's a file (ignores directories)
+        const itemPath = path.join(folderPath, item);
+        const stats = await fs.stat(itemPath);
+
+        if (!stats.isFile()) return null; // Return null for directories
+        if (excludedFiles.includes(item.split(".")[0])) return null; // Return null if the file is excluded
+
+        const isExistedResource = resources.some(
+          (resource) => resource.name === item.split(".")[0]
+        );
+
+        if (isExistedResource) return null; // Return null if the resource exists
+
+        return item; // Return the file name if it passes all checks
+      })
+    );
+
+    const resourcesRequest: CreateResourceRequestDto[] = filteredFiles
+      .filter((item) => item !== null)
+      .map((item) => item.split(".")[0])
+      .map((item) => {
+        const resource: CreateResourceRequestDto = { name: item };
+        return resource;
+      });
+
+    const newResources = mapper.mapArray(
+      resourcesRequest,
+      CreateResourceRequestDto,
+      Resource
+    );
+
+    const createdResources =
+      await resourceRepository.bulkCreateAndSave(newResources);
+    return mapper.mapArray(createdResources, Resource, ResourceResponseDto);
   }
 
   public async createResource(

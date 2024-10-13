@@ -9,10 +9,10 @@ import {
 } from "@repositories";
 import { GlobalError, ErrorCodes, ValidationError } from "@exception";
 import { mapper } from "@mappers";
-import { 
+import {
   TAddNewRequestProductRequestDto,
   TCreateRequestProductRequestDto,
-  TUpdateRequestProductRequestDto, 
+  TUpdateRequestProductRequestDto,
 } from "@types";
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
@@ -20,155 +20,174 @@ import {
   AddNewRequestProductRequestDto,
   CreateRequestProductRequestDto,
   CreateTemporaryProductRequestDto,
-  UpdateRequestProduct, 
+  UpdateRequestProduct,
 } from "@dto/request";
 import { PermissionUtils } from "@utils";
-import { Like } from "typeorm";
+import { StatusCodes } from "http-status-codes";
 
 class RequestProductService {
-  public async deleteRequestProductInProductRequisitionForm (
+  public async deleteRequestProductInProductRequisitionForm(
     slug: string,
-    creatorId: string,
+    creatorId: string
   ): Promise<RequestProductResponseDto> {
     // CHECKING
     const requestProduct = await requestProductRepository.findOne({
       where: {
-        slug: slug
+        slug: slug,
       },
       relations: [
-        'productRequisitionForm',
-        'productRequisitionForm.creator',
-        'product',
-      ]
+        "productRequisitionForm",
+        "productRequisitionForm.creator",
+        "product",
+      ],
     });
-    if(!requestProduct) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_NOT_FOUND);
+    if (!requestProduct)
+      throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_NOT_FOUND);
 
-    if(!requestProduct.productRequisitionForm) 
+    if (!requestProduct.productRequisitionForm)
       throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
-    if(requestProduct.productRequisitionForm.creator) {
-      if(requestProduct.productRequisitionForm.creator?.id !== creatorId) 
-        throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    if (requestProduct.productRequisitionForm.creator) {
+      if (requestProduct.productRequisitionForm.creator?.id !== creatorId)
+        throw new GlobalError(StatusCodes.FORBIDDEN);
     } else {
       // creator not found
-      throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+      throw new GlobalError(StatusCodes.FORBIDDEN);
     }
 
-    const isPermitEdit: boolean = PermissionUtils.isPermitEditProductRequisitionForm(
-      requestProduct.productRequisitionForm.status,
-      requestProduct.productRequisitionForm.isRecalled
-    );
-    if(!isPermitEdit) throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    const isPermitEdit: boolean =
+      PermissionUtils.isPermitEditProductRequisitionForm(
+        requestProduct.productRequisitionForm.status,
+        requestProduct.productRequisitionForm.isRecalled
+      );
+    if (!isPermitEdit) throw new GlobalError(StatusCodes.FORBIDDEN);
 
     await requestProductRepository.softRemove(requestProduct);
-    const deletedRequestProductDto = mapper.map(requestProduct, RequestProduct, RequestProductResponseDto);
+    const deletedRequestProductDto = mapper.map(
+      requestProduct,
+      RequestProduct,
+      RequestProductResponseDto
+    );
     return deletedRequestProductDto;
   }
 
-  public async updateRequestProductInProductRequisitionForm (
+  public async updateRequestProductInProductRequisitionForm(
     slug: string,
     plainData: TUpdateRequestProductRequestDto,
-    creatorId: string,
+    creatorId: string
   ): Promise<RequestProductResponseDto> {
     // CHECKING
     const requestData = plainToClass(UpdateRequestProduct, plainData);
-    console.log({slug})
-    console.log({requestData})
+    console.log({ slug });
+    console.log({ requestData });
     const errors = await validate(requestData);
-    if(errors.length > 0) throw new ValidationError(errors);
-    
+    if (errors.length > 0) throw new ValidationError(errors);
+
     const requestProduct = await requestProductRepository.findOne({
       where: {
-        slug
+        slug,
       },
       relations: [
-        'productRequisitionForm',
-        'productRequisitionForm.creator',
-        'product',
-        'temporaryProduct',
-      ]
+        "productRequisitionForm",
+        "productRequisitionForm.creator",
+        "product",
+        "temporaryProduct",
+      ],
     });
-    if(!requestProduct) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_NOT_FOUND);
+    if (!requestProduct)
+      throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_NOT_FOUND);
 
-    if(!requestProduct.productRequisitionForm) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+    if (!requestProduct.productRequisitionForm)
+      throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
-    if(requestProduct.productRequisitionForm.creator) {
-      if(requestProduct.productRequisitionForm.creator?.id !== creatorId)
-        throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    if (requestProduct.productRequisitionForm.creator) {
+      if (requestProduct.productRequisitionForm.creator?.id !== creatorId)
+        throw new GlobalError(StatusCodes.FORBIDDEN);
     } else {
       // creator not found
-      throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+      throw new GlobalError(StatusCodes.FORBIDDEN);
     }
-    const isPermitEdit: boolean = PermissionUtils.isPermitEditProductRequisitionForm(
-      requestProduct.productRequisitionForm.status,
-      requestProduct.productRequisitionForm.isRecalled
-    );
-    if(!isPermitEdit) throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    const isPermitEdit: boolean =
+      PermissionUtils.isPermitEditProductRequisitionForm(
+        requestProduct.productRequisitionForm.status,
+        requestProduct.productRequisitionForm.isRecalled
+      );
+    if (!isPermitEdit) throw new GlobalError(StatusCodes.FORBIDDEN);
 
-    if(requestProduct.isExistProduct) {
+    if (requestProduct.isExistProduct) {
       requestProduct.requestQuantity = requestData.requestQuantity;
       const updatedData = await requestProductRepository.save(requestProduct);
-      const updatedDataDto = mapper.map(updatedData, RequestProduct, RequestProductResponseDto);
+      const updatedDataDto = mapper.map(
+        updatedData,
+        RequestProduct,
+        RequestProductResponseDto
+      );
       return updatedDataDto;
     }
-    
+
     // update temporary product
-    if(!requestProduct.temporaryProduct) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_NOT_FOUND);
+    if (!requestProduct.temporaryProduct)
+      throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_NOT_FOUND);
     const unit = await unitRepository.findOneBy({ slug: requestData.unit });
-    if(!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
-    
+    if (!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
+
     Object.assign(requestProduct.temporaryProduct, {
       name: requestData.name,
       provider: requestData.provider,
       unit: unit,
       description: requestData.description,
     });
-    
+
     Object.assign(requestProduct, {
       requestQuantity: requestData.requestQuantity,
       description: requestData.description,
-    })
+    });
 
     const updatedData = await requestProductRepository.save(requestProduct);
-    const updatedDataDto = mapper.map(updatedData, RequestProduct, RequestProductResponseDto);
+    const updatedDataDto = mapper.map(
+      updatedData,
+      RequestProduct,
+      RequestProductResponseDto
+    );
     return updatedDataDto;
   }
 
-  public async addNewRequestProductInProductRequisitionForm (
+  public async addNewRequestProductInProductRequisitionForm(
     plainData: TAddNewRequestProductRequestDto,
     creatorId: string
   ): Promise<RequestProductResponseDto> {
     // CHECKING
     const requestData = plainToClass(AddNewRequestProductRequestDto, plainData);
     const errors = await validate(requestData);
-    if(errors.length > 0) throw new ValidationError(errors);
+    if (errors.length > 0) throw new ValidationError(errors);
 
     const form = await productRequisitionFormRepository.findOne({
       where: {
-        slug: requestData.form
+        slug: requestData.form,
       },
       relations: [
-        'requestProducts',
-        'requestProducts.product.unit',
-        'requestProducts.temporaryProduct.unit',
-        'creator'
-      ]
+        "requestProducts",
+        "requestProducts.product.unit",
+        "requestProducts.temporaryProduct.unit",
+        "creator",
+      ],
     });
-    if(!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+    if (!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
-    if(form.creator) {
-      if(form.creator?.id !== creatorId) 
-        throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    if (form.creator) {
+      if (form.creator?.id !== creatorId)
+        throw new GlobalError(StatusCodes.FORBIDDEN);
     } else {
       // creator not found
-      throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+      throw new GlobalError(StatusCodes.FORBIDDEN);
     }
 
-    const isPermitEdit: boolean = PermissionUtils.isPermitEditProductRequisitionForm(
-      form.status,
-      form.isRecalled
-    );
-    if(!isPermitEdit) throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    const isPermitEdit: boolean =
+      PermissionUtils.isPermitEditProductRequisitionForm(
+        form.status,
+        form.isRecalled
+      );
+    if (!isPermitEdit) throw new GlobalError(StatusCodes.FORBIDDEN);
 
     const dataCreateRequestProduct: TCreateRequestProductRequestDto = {
       product: requestData.product,
@@ -185,24 +204,24 @@ class RequestProductService {
     let product = await productRepository.findOneBy({
       slug: requestData.product,
     });
-    // khi product là null hoặc undefined, 
+    // khi product là null hoặc undefined,
     // typeORM sẽ bỏ qua và lấy phần tử đầu tiên chứ không trả thẳng về null
-    if(requestData.product === null || requestData.product === undefined) {
+    if (requestData.product === null || requestData.product === undefined) {
       product = null;
     }
-    
+
     if (product) {
       const formCheck = await productRequisitionFormRepository.findOne({
         where: {
           slug: requestData.form,
           requestProducts: {
             product: {
-              id: product.id
-            }
-          }
+              id: product.id,
+            },
+          },
         },
       });
-      if(formCheck) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_EXIST);
+      if (formCheck) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_EXIST);
       requestProductMapper.product = product;
     } else {
       // note: if the name of new product like and shorter than existed temporary product => error
@@ -213,15 +232,15 @@ class RequestProductService {
       //       temporaryProduct: {
       //         name: Like(`%${requestData.name}%`)
       //       }
-      //     }  
+      //     }
       //   },
       // });
       // if(formCheck) throw new GlobalError(ErrorCodes.REQUEST_PRODUCT_EXIST);
 
       const unit = await unitRepository.findOneBy({
-        slug: requestData.unit
+        slug: requestData.unit,
       });
-      if(!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
+      if (!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
 
       const temporaryRequestProductData = mapper.map(
         requestData,
@@ -229,20 +248,22 @@ class RequestProductService {
         TemporaryProduct
       );
       temporaryRequestProductData.unit = unit;
-      const temporaryProduct = 
-        await temporaryProductRepository.createAndSave(temporaryRequestProductData);
+      const temporaryProduct = await temporaryProductRepository.createAndSave(
+        temporaryRequestProductData
+      );
 
       requestProductMapper.temporaryProduct = temporaryProduct;
       requestProductMapper.isExistProduct = false;
     }
 
-    const createdRequestProduct = await requestProductRepository.createAndSave(requestProductMapper);
+    const createdRequestProduct =
+      await requestProductRepository.createAndSave(requestProductMapper);
     const requestProductDto = mapper.map(
       createdRequestProduct,
       RequestProduct,
-      RequestProductResponseDto,
+      RequestProductResponseDto
     );
-    
+
     return requestProductDto;
   }
 }

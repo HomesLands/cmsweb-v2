@@ -122,7 +122,7 @@ class UserService {
     requestData: TUploadUserSignRequestDto
   ): Promise<UserResponseDto> {
     const user = await userRepository.findOneBy({ id: requestData.userId });
-    if (!user) throw new GlobalError(ErrorCodes.FORBIDDEN_USER);
+    if (!user) throw new GlobalError(StatusCodes.FORBIDDEN);
 
     const file = await fileService.uploadFile(requestData.file);
 
@@ -143,11 +143,9 @@ class UserService {
     console.log({ requestData });
     const user = await userRepository.findOne({
       where: {
-        id: requestData.userId
+        id: requestData.userId,
       },
-      relations: [
-        'userDepartments.department.site.company'
-      ]
+      relations: ["userDepartments.department.site.company"],
     });
     if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 
