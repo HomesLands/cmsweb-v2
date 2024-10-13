@@ -91,6 +91,8 @@ class ResourceService {
       })
     );
 
+    console.log({ filteredFiles });
+
     const resourcesRequest: CreateResourceRequestDto[] = filteredFiles
       .filter((item) => item !== null)
       .map((item) => item.split(".")[0])
@@ -104,6 +106,8 @@ class ResourceService {
       CreateResourceRequestDto,
       Resource
     );
+
+    console.log({ newResources });
 
     const createdResources =
       await resourceRepository.bulkCreateAndSave(newResources);
