@@ -20,13 +20,11 @@ import { IUserInfo } from '@/types'
 interface IFormAddEmployeeDepartmentProps {
   user: IUserInfo
   onSubmit: (data: TCreateUserDepartmentSchema) => void
-  onClose: () => void
 }
 
 export const AddEmployeeDepartmentForm: React.FC<IFormAddEmployeeDepartmentProps> = ({
   user,
-  onSubmit,
-  onClose
+  onSubmit
 }) => {
   const { t } = useTranslation('employees')
   const form = useForm<TCreateUserDepartmentSchema>({
@@ -45,7 +43,6 @@ export const AddEmployeeDepartmentForm: React.FC<IFormAddEmployeeDepartmentProps
 
   const handleSubmit = (values: TCreateUserDepartmentSchema) => {
     onSubmit(values)
-    onClose()
   }
 
   const formFields = {

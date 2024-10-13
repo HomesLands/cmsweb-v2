@@ -7,6 +7,7 @@
     "fullname": "Full name",
     "actions": "Actions",
 
+    "addRole": "Add role",
     "selectUser": "Select user",
     "selectRole": "Select role",
     "createUserRole": "Add role",

@@ -9,15 +9,39 @@ import {
   DataTableColumnHeader,
   Button,
   DropdownMenuLabel,
-  UserAvatar
+  UserAvatar,
+  DropdownMenuSeparator,
+  DropdownMenuItem
 } from '@/components/ui'
 import { IUserInfo } from '@/types'
 
 import { baseURL } from '@/constants'
 import { DialogAddUserRole, DialogAddUserDepartment } from '@/components/app/dialog'
+import { useState } from 'react'
 
 export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
   const { t } = useTranslation('employees')
+  const [selectedUser, setSelectedUser] = useState<IUserInfo | null>(null)
+  const [openDialogAddUserRole, setOpenDialogAddUserRole] = useState(false)
+  const [openDialogAddUserDepartment, setOpenDialogAddUserDepartment] = useState(false)
+
+  const handleOpenDialogAddUserRole = (user: IUserInfo) => {
+    setSelectedUser(user)
+    setOpenDialogAddUserRole(true)
+  }
+
+  const handleCloseDialogAddUserRole = () => {
+    setOpenDialogAddUserRole(false)
+  }
+
+  const handleOpenDialogAddUserDepartment = (user: IUserInfo) => {
+    setSelectedUser(user)
+    setOpenDialogAddUserDepartment(true)
+  }
+
+  const handleCloseDialogAddUserDepartment = () => {
+    setOpenDialogAddUserDepartment(false)
+  }
 
   return [
     {
@@ -40,7 +64,7 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
       )
     },
     {
-      accessorKey: 'dob',
+      accessorKey: 'role',
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('employees.role')} />
     },
     {
@@ -48,19 +72,38 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
       cell: ({ row }) => {
         const user = row.original
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="p-0 w-8 h-8">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="w-4 h-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="flex flex-col justify-start" align="end">
-              <DropdownMenuLabel>{t('employees.actions')}</DropdownMenuLabel>
-              <DialogAddUserRole user={user} />
-              <DialogAddUserDepartment user={user} />
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="p-0 w-8 h-8">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="flex flex-col justify-start" align="end">
+                <DropdownMenuLabel>{t('employees.actions')}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => handleOpenDialogAddUserRole(user)}>
+                  {t('employees.addRole')}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleOpenDialogAddUserDepartment(user)}>
+                  {t('employees.addDepartment')}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DialogAddUserRole
+              user={selectedUser}
+              open={openDialogAddUserRole}
+              onOpenChange={handleCloseDialogAddUserRole}
+              component={null}
+            />
+            <DialogAddUserDepartment
+              user={selectedUser}
+              open={openDialogAddUserDepartment}
+              onOpenChange={handleCloseDialogAddUserDepartment}
+              component={null}
+            />
+          </div>
         )
       }
     }

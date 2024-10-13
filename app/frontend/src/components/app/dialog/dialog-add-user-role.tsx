@@ -17,16 +17,25 @@ import { ICreateUserRole, IUserInfo } from '@/types'
 import { useCreateUserRole } from '@/hooks'
 import { showToast } from '@/utils'
 
-export function DialogAddUserRole({ user }: { user: IUserInfo }) {
+interface DialogAddUserRoleProps {
+  user: IUserInfo | null
+  open: boolean
+  component: React.ReactNode
+  onOpenChange: () => void
+}
+
+export function DialogAddUserRole({ user, open, component, onOpenChange }: DialogAddUserRoleProps) {
   const { t } = useTranslation('employees')
   const { t: tToast } = useTranslation('toast')
-  const mutation = useCreateUserRole()
+  const { mutate: createUserRole } = useCreateUserRole()
+
   const handleSubmit = (values: TCreateUserRoleSchema) => {
     const requestData = {
       role: values.role.value,
       user: values.user.value
     } as ICreateUserRole
-    mutation.mutate(requestData, {
+    onOpenChange()
+    createUserRole(requestData, {
       onSuccess: () => {
         showToast(tToast('toast.addRoleSuccess'))
       }
@@ -34,19 +43,14 @@ export function DialogAddUserRole({ user }: { user: IUserInfo }) {
   }
 
   return (
-    <Dialog>
-      <DialogTrigger className="justify-start" asChild>
-        <Button variant="ghost" className="gap-1 text-sm">
-          <PlusCircledIcon className="icon" />
-          {t('employees.createUserRole')}
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>{component}</DialogTrigger>
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>{t('employees.createUserRole')}</DialogTitle>
           <DialogDescription>{t('employees.createUserRoleDescription')}</DialogDescription>
         </DialogHeader>
-        <AddEmployeeRoleForm user={user} onSubmit={handleSubmit} />
+        {user && <AddEmployeeRoleForm user={user} onSubmit={handleSubmit} />}
       </DialogContent>
     </Dialog>
   )
