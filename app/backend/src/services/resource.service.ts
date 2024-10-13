@@ -91,9 +91,11 @@ class ResourceService {
       })
     );
 
-    console.log({ filteredFiles });
+    console.log({ filteredFiles, uniqueFiles: [...new Set(filteredFiles)] });
 
-    const resourcesRequest: CreateResourceRequestDto[] = filteredFiles
+    const resourcesRequest: CreateResourceRequestDto[] = [
+      ...new Set(filteredFiles),
+    ]
       .filter((item) => item !== null)
       .map((item) => item.split(".")[0])
       .map((item) => {
