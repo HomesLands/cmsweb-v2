@@ -54,7 +54,7 @@ import {
 } from "@enums";
 import { parsePagination, PermissionUtils } from "@utils";
 import { In } from "typeorm";
-import { forMember } from "@automapper/core";
+import { StatusCodes } from "http-status-codes";
 
 class ProductRequisitionFormService {
   public async getAllProductRequisitionForms(
@@ -379,8 +379,7 @@ class ProductRequisitionFormService {
       ],
     });
 
-    if (!userApproval)
-      throw new GlobalError(ErrorCodes.FORBIDDEN_APPROVAL_FORM);
+    if (!userApproval) throw new GlobalError(StatusCodes.FORBIDDEN);
 
     let form = await productRequisitionFormRepository.findOne({
       where: {
@@ -406,7 +405,7 @@ class ProductRequisitionFormService {
         userApproval.assignedUserApproval?.roleApproval !==
         RoleApproval.APPROVAL_STAGE_1
       ) {
-        throw new GlobalError(ErrorCodes.FORBIDDEN_APPROVAL_FORM);
+        throw new GlobalError(StatusCodes.FORBIDDEN);
       }
 
       // change status form
@@ -444,7 +443,7 @@ class ProductRequisitionFormService {
         userApproval.assignedUserApproval?.roleApproval !==
         RoleApproval.APPROVAL_STAGE_2
       ) {
-        throw new GlobalError(ErrorCodes.FORBIDDEN_APPROVAL_FORM);
+        throw new GlobalError(StatusCodes.FORBIDDEN);
       }
 
       // if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
@@ -488,7 +487,7 @@ class ProductRequisitionFormService {
         userApproval.assignedUserApproval?.roleApproval !==
         RoleApproval.APPROVAL_STAGE_3
       ) {
-        throw new GlobalError(ErrorCodes.FORBIDDEN_APPROVAL_FORM);
+        throw new GlobalError(StatusCodes.FORBIDDEN);
       }
 
       // if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
@@ -560,9 +559,9 @@ class ProductRequisitionFormService {
 
     if (form.creator) {
       if (form.creator.id !== creatorId)
-        throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+        throw new GlobalError(StatusCodes.FORBIDDEN);
     } else {
-      throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+      throw new GlobalError(StatusCodes.FORBIDDEN);
     }
 
     form.status = ProductRequisitionFormStatus.WAITING;
@@ -600,10 +599,10 @@ class ProductRequisitionFormService {
 
     if (form.creator) {
       if (form.creator?.id !== creatorId)
-        throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+        throw new GlobalError(StatusCodes.FORBIDDEN);
     } else {
       // creator not found
-      throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+      throw new GlobalError(StatusCodes.FORBIDDEN);
     }
 
     const isPermitEdit: boolean =
@@ -611,7 +610,7 @@ class ProductRequisitionFormService {
         form.status,
         form.isRecalled
       );
-    if (!isPermitEdit) throw new GlobalError(ErrorCodes.FORBIDDEN_EDIT_FORM);
+    if (!isPermitEdit) throw new GlobalError(StatusCodes.FORBIDDEN);
 
     const project = await projectRepository.findOneBy({
       slug: requestData.project,
