@@ -2,8 +2,8 @@ import { IRole } from './role.type'
 import { IUserInfo } from './user.type'
 
 export interface ICreateUserRole {
-  roleSlug: string
-  userSlug: string
+  role: string
+  user: string
 }
 
 export interface IUserRole {

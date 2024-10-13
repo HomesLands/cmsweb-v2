@@ -37,6 +37,9 @@
     "createCompanySuccessfully": "Company created successfully",
     "createSiteSuccessfully": "Site created successfully",
     "createDepartmentSuccessfully": "Department created successfully",
-    "createProjectSuccessfully": "Project created successfully"
+    "createProjectSuccessfully": "Project created successfully",
+
+    "addRoleSuccess": "Role added successfully",
+    "addDepartmentSuccess": "Department added successfully"
   }
 }
