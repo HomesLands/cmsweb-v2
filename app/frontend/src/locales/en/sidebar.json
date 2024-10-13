@@ -32,6 +32,9 @@
     "createDepartment": "Create department",
 
     "projects": "Projects",
-    "createProject": "Create project"
+    "createProject": "Create project",
+
+    "resources": "Resources",
+    "createResource": "Create resource"
   }
 }

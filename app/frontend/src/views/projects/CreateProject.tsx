@@ -24,7 +24,6 @@ const CreateProject: React.FC = () => {
   }
 
   const onSubmit = (values: ICreateProject) => {
-    console.log(values)
     setProject(values)
     setOpenDialog(true)
   }

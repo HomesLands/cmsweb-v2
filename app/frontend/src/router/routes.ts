@@ -9,7 +9,7 @@ import {
   UserCogIcon,
   UsersIcon
 } from 'lucide-react'
-import { ArchiveIcon } from '@radix-ui/react-icons'
+import { ArchiveIcon, ReaderIcon } from '@radix-ui/react-icons'
 
 import type { ISidebarRoute } from '@/types'
 import { Authority, Resource, ROUTE } from '@/constants'
@@ -108,6 +108,21 @@ export const sidebarRoutes: ISidebarRoute[] = [
       {
         title: 'sidebar.createProject',
         path: ROUTE.ADD_PROJECT
+      }
+    ]
+  },
+  {
+    title: 'sidebar.resources',
+    path: ROUTE.RESOURCE,
+    icon: ReaderIcon,
+    children: [
+      {
+        title: 'sidebar.resources',
+        path: ROUTE.RESOURCE
+      },
+      {
+        title: 'sidebar.createResource',
+        path: ROUTE.ADD_RESOURCE
       }
     ]
   },

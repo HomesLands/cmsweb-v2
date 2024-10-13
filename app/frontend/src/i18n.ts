@@ -19,6 +19,7 @@ import enSites from '@/locales/en/sites.json'
 import enDepartment from '@/locales/en/departments.json'
 import enProject from '@/locales/en/projects.json'
 import enEmployees from '@/locales/en/employees.json'
+import enResources from '@/locales/en/resources.json'
 
 import viAuth from '@/locales/vi/auth.json'
 import viAccount from '@/locales/vi/account.json'
@@ -37,7 +38,7 @@ import viSites from '@/locales/vi/sites.json'
 import viDepartment from '@/locales/vi/departments.json'
 import viProject from '@/locales/vi/projects.json'
 import viEmployees from '@/locales/vi/employees.json'
-
+import viResources from '@/locales/vi/resources.json'
 i18n
   .use(LanguageDetector) // Tự động phát hiện ngôn ngữ
   .use(initReactI18next) // Passes i18n down to react-i18next
@@ -60,7 +61,8 @@ i18n
         sites: enSites,
         department: enDepartment,
         projects: enProject,
-        employees: enEmployees
+        employees: enEmployees,
+        resources: enResources
       },
       vi: {
         auth: viAuth,
@@ -79,7 +81,8 @@ i18n
         sites: viSites,
         department: viDepartment,
         projects: viProject,
-        employees: viEmployees
+        employees: viEmployees,
+        resources: viResources
       }
     },
     lng: window.localStorage.getItem('i18nextLng') || 'vi',
