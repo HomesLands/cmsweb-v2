@@ -91,6 +91,8 @@ class ResourceService {
       })
     );
 
+    console.log({ filteredFiles });
+
     const resourcesRequest: CreateResourceRequestDto[] = filteredFiles
       .filter((item) => item !== null)
       .map((item) => item.split(".")[0])
