@@ -72,36 +72,35 @@ class ResourceService {
     // Read the folder contents asynchronously
     const files = await fs.readdir(folderPath);
 
-    const filteredFiles = await Promise.all(
-      files.map(async (item) => {
-        // Check if it's a file (ignores directories)
-        const itemPath = path.join(folderPath, item);
-        const stats = await fs.stat(itemPath);
+    const filteredFiles = (
+      await Promise.all(
+        files.map(async (item) => {
+          // Check if it's a file (ignores directories)
+          const itemPath = path.join(folderPath, item);
+          const stats = await fs.stat(itemPath);
 
-        if (!stats.isFile()) return null; // Return null for directories
-        if (excludedFiles.includes(item.split(".")[0])) return null; // Return null if the file is excluded
+          if (!stats.isFile()) return null; // Return null for directories
+          if (excludedFiles.includes(item.split(".")[0])) return null; // Return null if the file is excluded
 
-        const isExistedResource = resources.some(
-          (resource) => resource.name === item.split(".")[0]
-        );
+          const isExistedResource = resources.some(
+            (resource) => resource.name === item.split(".")[0]
+          );
 
-        if (isExistedResource) return null; // Return null if the resource exists
+          if (isExistedResource) return null; // Return null if the resource exists
 
-        return item; // Return the file name if it passes all checks
-      })
-    );
-
-    console.log({ filteredFiles, uniqueFiles: [...new Set(filteredFiles)] });
+          return item; // Return the file name if it passes all checks
+        })
+      )
+    )
+      .filter((item) => item !== null)
+      .map((item) => item.split(".")[0]);
 
     const resourcesRequest: CreateResourceRequestDto[] = [
       ...new Set(filteredFiles),
-    ]
-      .filter((item) => item !== null)
-      .map((item) => item.split(".")[0])
-      .map((item) => {
-        const resource: CreateResourceRequestDto = { name: item };
-        return resource;
-      });
+    ].map((item) => {
+      const resource: CreateResourceRequestDto = { name: item };
+      return resource;
+    });
 
     const newResources = mapper.mapArray(
       resourcesRequest,
