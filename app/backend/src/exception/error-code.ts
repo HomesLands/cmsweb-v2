@@ -299,11 +299,6 @@ export const ErrorCodes: TErrorCode = {
     code: 1075,
     message: "Company director not found",
   },
-  FORBIDDEN_EDIT_FORM: {
-    httpStatusCode: StatusCodes.FORBIDDEN,
-    code: 1072,
-    message: "Forbidden edit form",
-  },
   INVALID_REQUEST_PRODUCT_SLUG: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1073,
@@ -363,11 +358,6 @@ export const ErrorCodes: TErrorCode = {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1084,
     message: "Invalid deadline date approval form",
-  },
-  FORBIDDEN_APPROVAL_FORM: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1085,
-    message: "Forbidden approval form",
   },
   INVALID_DESCRIPTION_DEPARTMENT: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -473,11 +463,6 @@ export const ErrorCodes: TErrorCode = {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1106,
     message: `Save file fail`,
-  },
-  FORBIDDEN_USER: {
-    httpStatusCode: StatusCodes.FORBIDDEN,
-    code: 1107,
-    message: "Forbidden user",
   },
   ERROR_GET_FILE_FROM_REQUEST: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
@@ -594,5 +579,13 @@ export const ErrorCodes: TErrorCode = {
     httpStatusCode: StatusCodes.CONFLICT,
     code: 4100,
     message: `Duplicate entry`,
+  },
+
+  // System error
+  // Code range: [4300 - 4499]
+  FOLDER_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 4100,
+    message: `Folder is not existed`,
   },
 } as const;

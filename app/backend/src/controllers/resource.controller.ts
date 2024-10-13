@@ -261,6 +261,39 @@ class ResourceController {
       next(error);
     }
   }
+
+  /**
+   * @swagger
+   * /resources/loadResources:
+   *   post:
+   *     summary: Load all resource from entities folder
+   *     tags: [Resource]
+   *     responses:
+   *       200:
+   *         description: Get resource successfully
+   *       500:
+   *         description: Server error
+   */
+  public async loadResources(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const results = await resourceService.loadResources();
+      const response: TApiResponse<ResourceResponseDto[]> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: `All resource from entities has loaded successfully`,
+        method: req.method,
+        path: req.originalUrl,
+        result: results,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new ResourceController();
