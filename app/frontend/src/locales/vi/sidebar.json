@@ -32,6 +32,9 @@
     "createDepartment": "Tạo phòng ban",
 
     "projects": "Dự án",
-    "createProject": "Tạo dự án"
+    "createProject": "Tạo dự án",
+
+    "resources": "Tài nguyên",
+    "createResource": "Tạo tài nguyên"
   }
 }

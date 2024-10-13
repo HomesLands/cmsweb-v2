@@ -146,3 +146,15 @@ export const CreateDepartmentPage = React.lazy(() =>
     default: module.CreateDepartment
   }))
 )
+
+export const ResourcePage = React.lazy(() =>
+  import('@/views/resource').then((module) => ({
+    default: module.Resources
+  }))
+)
+
+export const CreateResourcePage = React.lazy(() =>
+  import('@/views/resource').then((module) => ({
+    default: module.CreateResource
+  }))
+)
