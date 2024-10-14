@@ -15,7 +15,7 @@ const PersonalAccount: React.FC = () => {
         {t('account.title')}
       </Label>
       <Card className="border-none shadow-none">
-        <CardContent className="flex flex-col">
+        <CardContent className="flex flex-col p-0">
           <PersonalAccountForm />
         </CardContent>
       </Card>

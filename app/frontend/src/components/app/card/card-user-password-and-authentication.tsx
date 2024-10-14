@@ -34,7 +34,7 @@ export const CardUserPasswordAndAuthentication = () => {
 
   return (
     <Card className="border-none">
-      <CardContent className="flex flex-col gap-6">
+      <CardContent className="flex flex-col gap-">
         <div className="grid grid-cols-1 gap-3 mt-3 rounded-md border">
           <div className="grid grid-cols-1 px-6 py-2">
             <Form {...form}>

@@ -7,6 +7,7 @@ import { PopoverNotification } from '@/components/app/popover'
 import { useThemeStore } from '@/stores'
 import { cn } from '@/lib/utils'
 import { DashboardSidebar } from '../sidebar'
+import { BreadCrumbs } from '../breadcrumbs'
 
 const DashboardLayout = () => {
   const { getTheme } = useThemeStore()
@@ -37,6 +38,9 @@ const DashboardLayout = () => {
 
         {/* Main Content (Outlet) */}
         <main className="p-4 mt-12 transition-all duration-300">
+          <div className="py-3">
+            <BreadCrumbs />
+          </div>
           <Outlet />
         </main>
       </div>

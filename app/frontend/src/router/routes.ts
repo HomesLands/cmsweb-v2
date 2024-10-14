@@ -15,29 +15,29 @@ import type { ISidebarRoute } from '@/types'
 import { Authority, Resource, ROUTE } from '@/constants'
 
 export const sidebarRoutes: ISidebarRoute[] = [
-  {
-    title: 'sidebar.productRequisitions',
-    path: ROUTE.PRODUCT_REQUISITIONS,
-    icon: ArchiveIcon,
-    permission: { authority: Authority.READ, resource: Resource.PRODUCT_REQUISITION_FORM },
-    children: [
-      {
-        title: 'sidebar.productRequisitionsList',
-        path: ROUTE.PRODUCT_REQUISITIONS,
-        permission: { authority: Authority.READ, resource: Resource.PRODUCT_REQUISITION_FORM }
-      },
-      {
-        title: 'sidebar.createProductRequisitions',
-        path: ROUTE.ADD_PRODUCT_REQUISITIONS,
-        permission: { authority: Authority.CREATE, resource: Resource.PRODUCT_REQUISITION_FORM }
-      },
-      {
-        title: 'sidebar.approvalProductRequisitions',
-        path: '/product-requisitions/approval',
-        permission: { authority: Authority.UPDATE, resource: Resource.PRODUCT_REQUISITION_FORM }
-      }
-    ]
-  },
+  // {
+  //   title: 'sidebar.productRequisitions',
+  //   path: ROUTE.PRODUCT_REQUISITIONS,
+  //   icon: ArchiveIcon,
+  //   permission: { authority: Authority.READ, resource: Resource.PRODUCT_REQUISITION_FORM },
+  //   children: [
+  //     {
+  //       title: 'sidebar.productRequisitionsList',
+  //       path: ROUTE.PRODUCT_REQUISITIONS,
+  //       permission: { authority: Authority.READ, resource: Resource.PRODUCT_REQUISITION_FORM }
+  //     },
+  //     {
+  //       title: 'sidebar.createProductRequisitions',
+  //       path: ROUTE.ADD_PRODUCT_REQUISITIONS,
+  //       permission: { authority: Authority.CREATE, resource: Resource.PRODUCT_REQUISITION_FORM }
+  //     },
+  //     {
+  //       title: 'sidebar.approvalProductRequisitions',
+  //       path: '/product-requisitions/approval',
+  //       permission: { authority: Authority.UPDATE, resource: Resource.PRODUCT_REQUISITION_FORM }
+  //     }
+  //   ]
+  // },
   {
     title: 'sidebar.employees',
     path: ROUTE.EMPLOYEE,

@@ -1,8 +1,9 @@
+import { NavLink } from 'react-router-dom'
+import { PinLeftIcon, PinRightIcon } from '@radix-ui/react-icons'
+
 import { TbeLogo } from '@/assets/images'
 import { Button } from '@/components/ui'
 import { useLayoutStore } from '@/stores'
-import { PinLeftIcon, PinRightIcon } from '@radix-ui/react-icons'
-import { NavLink } from 'react-router-dom'
 import { SidebarDrawer } from '../drawer'
 
 export default function DashboardSidebar() {

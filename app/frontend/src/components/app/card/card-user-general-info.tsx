@@ -72,7 +72,7 @@ export const CardUserGeneralInfo = ({
                 <span className="text-normal">{t('account.edit')}</span>
               </Button>
             </div>
-            <div className="grid grid-cols-2 gap-6 p-6">
+            <div className="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2">
               <div className="flex flex-col gap-1">
                 <span className="text-sm font-beVietNam text-normal">{t('account.fullname')}</span>
                 <Input className="font-beVietNam" value={userInfo?.fullname} />
