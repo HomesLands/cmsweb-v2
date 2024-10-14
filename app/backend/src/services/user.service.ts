@@ -7,6 +7,7 @@ import {
 } from "@dto/response";
 import { userRepository } from "@repositories";
 import {
+  TChangePasswordRequestDto,
   TPaginationOptionResponse,
   TQueryRequest,
   TUploadUserAvatarRequestDto,
@@ -18,24 +19,20 @@ import { Ability, MongoQuery } from "@casl/ability";
 import { Action } from "@enums";
 import { Subjects } from "@lib";
 import { StatusCodes } from "http-status-codes";
+import { parsePagination } from "@utils/pagination.util";
+import { plainToClass } from "class-transformer";
+import { ChangePasswordRequestDto } from "@dto/request";
+import { validate } from "class-validator";
+import { ValidationError } from "exception";
+import bcrypt from "bcryptjs";
+import { env } from "@constants";
 
 class UserService {
   public async getAllUsers(
     options: TQueryRequest
   ): Promise<TPaginationOptionResponse<UserResponseDto[]>> {
     // Parse and validate pagination parameters
-    let pageSize =
-      typeof options.pageSize === "string"
-        ? parseInt(options.pageSize, 10)
-        : options.pageSize;
-    let page =
-      typeof options.page === "string"
-        ? parseInt(options.page, 10)
-        : options.page;
-
-    // Ensure page and pageSize are positive numbers
-    if (isNaN(page) || page <= 0) page = 1;
-    if (isNaN(pageSize) || pageSize <= 0) pageSize = 10; // Default pageSize if invalid
+    const { page, pageSize } = parsePagination(options);
 
     // Get the total number of roles
     const totalUsers = await userRepository.count();
@@ -80,11 +77,6 @@ class UserService {
       ],
     });
     if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
-
-    // const hasAbility = ability.can(Action.READ, user);
-    // if (!hasAbility) {
-    //   throw new GlobalError(StatusCodes.FORBIDDEN);
-    // }
 
     const results = mapper.map(user, User, UserResponseDto);
     return results;
@@ -155,6 +147,48 @@ class UserService {
     if (oldFile) await fileService.removeFileByName(oldFile);
 
     Object.assign(user, { avatar: `${file.name}.${file.extension}` });
+    const updatedUser = await userRepository.save(user);
+
+    const userDto = mapper.map(updatedUser, User, UserResponseDto);
+    return userDto;
+  }
+
+  public async changePassword(
+    userId: string,
+    plainData: TChangePasswordRequestDto
+  ): Promise<UserResponseDto> {
+    const user = await userRepository.findOne({
+      where: {
+        id: userId,
+      },
+    });
+    if (!user?.password) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
+
+    // Check current password
+    const requestData = plainToClass(ChangePasswordRequestDto, plainData);
+
+    const errors = await validate(requestData);
+    if (errors.length > 0) throw new ValidationError(errors);
+
+    // Validate current passs
+    const isValid = await bcrypt.compare(
+      requestData.currentPassword,
+      user.password
+    );
+
+    if (!isValid) throw new GlobalError(ErrorCodes.PASSWORD_NOT_MATCH);
+
+    // Validate new pass
+    if (requestData.newPassword !== requestData.confirmPassword)
+      throw new GlobalError(ErrorCodes.CONFIRM_PASSWORD_NOT_MATCH);
+
+    // Change pass
+    const newHashedPassword = await bcrypt.hash(
+      requestData.newPassword,
+      env.hashSalt
+    );
+
+    Object.assign(user, { password: newHashedPassword });
     const updatedUser = await userRepository.save(user);
 
     const userDto = mapper.map(updatedUser, User, UserResponseDto);
