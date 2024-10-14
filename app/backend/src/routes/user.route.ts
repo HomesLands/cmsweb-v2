@@ -33,3 +33,6 @@ userRoute.patch(
   upload.single("file"),
   userController.uploadUserAvatar
 );
+
+// [PATCH] /api/v1/users/signature
+userRoute.patch("/changePassword", userController.changePassword);

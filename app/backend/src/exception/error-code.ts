@@ -489,6 +489,26 @@ export const ErrorCodes: TErrorCode = {
     code: 1112,
     message: "Assigned user approval this level for site is existed",
   },
+  INVALID_NEW_PASSWORD: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1113,
+    message: "New password invalid",
+  },
+  INVALID_CONFIRM_PASSWORD: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1114,
+    message: "Confirm password invalid",
+  },
+  PASSWORD_NOT_MATCH: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1115,
+    message: "Password does not match",
+  },
+  CONFIRM_PASSWORD_NOT_MATCH: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1116,
+    message: "Confirm password does not match",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]
