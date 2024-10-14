@@ -4,8 +4,9 @@
   "description": "",
   "type": "commonjs",
   "scripts": {
+    "copy-files": "copyfiles -u 1 src/views/** build",
     "build": "tsc && tsc-alias",
-    "postbuild": "echo build successfully!",
+    "postbuild": "npm run copy-files",
     "start": "pm2-runtime start build/index.js --name backend-app",
     "dev": "nodemon src/index.ts",
     "format:check": "prettier --check ./src",
@@ -84,6 +85,7 @@
     "@types/shortid": "^0.0.32",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/uuid": "^10.0.0",
+    "copyfiles": "^2.4.1",
     "eslint": "^9.9.1",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.9.0",
