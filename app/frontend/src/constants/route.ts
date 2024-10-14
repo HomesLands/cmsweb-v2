@@ -9,6 +9,14 @@ export const ROUTE = {
   APPROVAL_PRODUCT_REQUISITIONS: '/product-requisitions/approval',
   EDIT_PRODUCT_REQUISITIONS: '/product-requisitions/edit/:slug',
 
+  // Product
+  PRODUCT: '/products',
+  ADD_PRODUCT: '/products/add',
+
+  // Warehouse
+  WAREHOUSE: '/warehouses',
+  ADD_WAREHOUSE: '/warehouses/add',
+
   // Company
   COMPANY: '/companies',
   ADD_COMPANY: '/companies/add',
