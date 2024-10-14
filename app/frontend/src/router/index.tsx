@@ -31,7 +31,9 @@ import {
   CreateDepartmentPage,
   ProjectPage,
   CreateProjectPage,
-  AdministrationPage
+  AdministrationPage,
+  ResourcePage,
+  CreateResourcePage
 } from './loadable'
 
 export const router = createBrowserRouter([
@@ -149,6 +151,20 @@ export const router = createBrowserRouter([
             allowedAuthorities={[Authority.CREATE_ROLE]}
           />
         )
+      }
+    ]
+  },
+  {
+    path: ROUTE.RESOURCE,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: <SuspenseElement component={ResourcePage} />
+      },
+      {
+        path: 'add',
+        element: <SuspenseElement component={CreateResourcePage} />
       }
     ]
   },

@@ -1,0 +1,11 @@
+{
+  "resources": {
+    "list": "Danh sách tài nguyên",
+    "name": "Tên tài nguyên",
+    "slug": "Slug",
+
+    "createResource": "Tạo tài nguyên",
+    "namePlaceholder": "Tên tài nguyên",
+    "createResourceDescription": "Nhập đầy đủ thông tin vào các trường để tạo tài nguyên"
+  }
+}

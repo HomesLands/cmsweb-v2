@@ -2,6 +2,7 @@ import { KeyRoundIcon, ScanFaceIcon, UserCheckIcon, UserCogIcon } from 'lucide-r
 
 import type { ISidebarRoute } from '@/types'
 import { ROUTE } from '@/constants'
+import { ReaderIcon } from '@radix-ui/react-icons'
 
 export const adminRoutes: ISidebarRoute[] = [
   {
@@ -54,6 +55,21 @@ export const adminRoutes: ISidebarRoute[] = [
         title: 'sidebar.createAssignedApprover',
         path: ROUTE.ADD_ASSIGNED_APPROVER
         // authorities: [Authority.CREATE_PERMISSION]
+      }
+    ]
+  },
+  {
+    title: 'sidebar.resources',
+    path: ROUTE.RESOURCE,
+    icon: ReaderIcon,
+    children: [
+      {
+        title: 'sidebar.resources',
+        path: ROUTE.RESOURCE
+      },
+      {
+        title: 'sidebar.createResource',
+        path: ROUTE.ADD_RESOURCE
       }
     ]
   }

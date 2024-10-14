@@ -24,6 +24,10 @@ export const ROUTE = {
   PROJECT: '/projects',
   ADD_PROJECT: '/projects/add',
 
+  // Resource
+  RESOURCE: '/resources',
+  ADD_RESOURCE: '/resources/add',
+
   // Authority
   AUTHORITY: '/authorities',
   ADD_AUTHORITY: '/authorities/add',
