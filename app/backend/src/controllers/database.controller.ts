@@ -66,26 +66,26 @@ class DatabaseController {
       const dumpFilePath = path.join(__dirname, "../../", "backup", fileName);
       const wstream = fs.createWriteStream(dumpFilePath);
 
-      const mysqldump = spawn(
-        "mysqldump",
-        [
-          "-u",
-          env.dataSource.userMySql,
-          `-p${env.dataSource.passwordMySql}`,
-          env.dataSource.databaseMySql,
-        ],
-        { stdio: [null, process.stdout, process.stderr] }
-      );
+      // const mysqldump = spawn(
+      //   "mysqldump",
+      //   [
+      //     "-u",
+      //     env.dataSource.userMySql,
+      //     `-p${env.dataSource.passwordMySql}`,
+      //     env.dataSource.databaseMySql,
+      //   ],
+      //   { stdio: [null, process.stdout, process.stderr] }
+      // );
 
-      if (mysqldump.stdout)
-        mysqldump.stdout
-          .pipe(wstream)
-          .on("finish", () => {
-            console.log("DB Backup Completed!");
-          })
-          .on("error", (err) => {
-            console.log(err);
-          });
+      // if (mysqldump.stdout)
+      //   mysqldump.stdout
+      //     .pipe(wstream)
+      //     .on("finish", () => {
+      //       console.log("DB Backup Completed!");
+      //     })
+      //     .on("error", (err) => {
+      //       console.log(err);
+      //     });
       const response: TApiResponse<void> = {
         code: StatusCodes.OK,
         error: false,
