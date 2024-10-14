@@ -146,3 +146,9 @@ export const CreateDepartmentPage = React.lazy(() =>
     default: module.CreateDepartment
   }))
 )
+
+export const AdministrationPage = React.lazy(() =>
+  import('@/views/admin').then((module) => ({
+    default: module.Administration
+  }))
+)

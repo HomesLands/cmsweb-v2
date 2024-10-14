@@ -30,7 +30,8 @@ import {
   DepartmentPage,
   CreateDepartmentPage,
   ProjectPage,
-  CreateProjectPage
+  CreateProjectPage,
+  AdministrationPage
 } from './loadable'
 
 export const router = createBrowserRouter([
@@ -266,6 +267,21 @@ export const router = createBrowserRouter([
       {
         path: 'add',
         element: <CreateProjectPage />
+      }
+    ]
+  },
+  {
+    path: ROUTE.ADMIN,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: (
+          <ProtectedElement
+            allowedAuthorities={[]}
+            element={<SuspenseElement component={AdministrationPage} />}
+          />
+        )
       }
     ]
   }

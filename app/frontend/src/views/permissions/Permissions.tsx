@@ -4,7 +4,8 @@ import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
 import { usePagination, usePermissions } from '@/hooks'
-import { usePermissionColumns } from './data-table/columns'
+import { usePermissionColumns } from './data-table/columns/columns'
+import { PermissionActionOptions } from './data-table'
 
 const Permissions: React.FC = () => {
   const { t } = useTranslation(['permissions'])
@@ -29,6 +30,7 @@ const Permissions: React.FC = () => {
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         isLoading={isLoading}
+        actionOptions={PermissionActionOptions}
       />
     </div>
   )
