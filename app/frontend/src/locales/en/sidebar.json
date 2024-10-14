@@ -1,5 +1,6 @@
 {
   "sidebar": {
+    "home": "Home",
     "productRequisitions": "Product requisitions",
     "productRequisitionsList": "Product requisitions list",
     "createProductRequisitions": "Create product requisitions",
@@ -7,34 +8,44 @@
 
     "authorities": "Authorities",
     "createAuthority": "Create authority",
+    "createAuthorities": "Create authority",
 
     "permissions": "Permissions",
     "createPermission": "Create permission",
+    "createPermissions": "Create permission",
 
     "roles": "Roles",
     "createRole": "Create role",
+    "createRoles": "Create role",
 
     "warehouses": "Warehouses",
     "createWarehouse": "Create warehouse",
+    "createWarehouses": "Create warehouse",
 
     "employees": "Employees",
 
     "assignedApprover": "Assigned approver",
     "createAssignedApprover": "Create assigned approver",
+    "createAssignedApprovers": "Create assigned approver",
 
     "companies": "Companies",
     "createCompany": "Create company",
+    "createCompanies": "Create company",
 
     "sites": "Sites",
     "createSite": "Create site",
+    "createSites": "Create site",
 
     "departments": "Departments",
     "createDepartment": "Create department",
+    "createDepartments": "Create department",
 
     "projects": "Projects",
     "createProject": "Create project",
+    "createProjects": "Create project",
 
     "resources": "Resources",
-    "createResource": "Create resource"
+    "createResource": "Create resource",
+    "createResources": "Create resource"
   }
 }

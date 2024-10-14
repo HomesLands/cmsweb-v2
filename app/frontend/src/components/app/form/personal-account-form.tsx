@@ -70,7 +70,7 @@ export const PersonalAccountForm: React.FC = () => {
             {t('account.passwordAndAuthentication')}
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="general-info">
+        <TabsContent value="general-info" className="p-0 w-full">
           <CardUserGeneralInfo
             handleUploadProfilePicture={handleUploadProfilePicture}
             setOpenDialog={setOpenDialog}
