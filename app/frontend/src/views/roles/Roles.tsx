@@ -4,7 +4,7 @@ import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
 import { usePagination, useRoles } from '@/hooks'
-import { useRoleColumns } from './data-table'
+import { RoleActionOptions, useRoleColumns } from './data-table'
 
 const Roles: React.FC = () => {
   const { t } = useTranslation(['roles'])
@@ -29,6 +29,7 @@ const Roles: React.FC = () => {
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         isLoading={isLoading}
+        actionOptions={RoleActionOptions}
       />
     </div>
   )

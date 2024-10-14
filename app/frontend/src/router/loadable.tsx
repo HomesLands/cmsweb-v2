@@ -147,6 +147,12 @@ export const CreateDepartmentPage = React.lazy(() =>
   }))
 )
 
+export const AdministrationPage = React.lazy(() =>
+  import('@/views/admin').then((module) => ({
+    default: module.Administration
+  }))
+)
+
 export const ResourcePage = React.lazy(() =>
   import('@/views/resource').then((module) => ({
     default: module.Resources

@@ -108,8 +108,6 @@ class ResourceService {
       Resource
     );
 
-    console.log({ newResources });
-
     const createdResources =
       await resourceRepository.bulkCreateAndSave(newResources);
     return mapper.mapArray(createdResources, Resource, ResourceResponseDto);
