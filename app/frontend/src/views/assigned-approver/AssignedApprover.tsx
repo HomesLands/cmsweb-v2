@@ -4,7 +4,7 @@ import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
 import { useAuthorites, usePagination } from '@/hooks'
-import { useAuthorityColumns } from '@/views/authorities/DataTable/columns'
+import { useAuthorityColumns } from '@/views/authorities/data-table/columns/columns'
 
 const CreateAssignedApprover: React.FC = () => {
   const { t } = useTranslation(['assignedApprover'])

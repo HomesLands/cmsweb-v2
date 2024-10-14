@@ -3,8 +3,9 @@ import { useTranslation } from 'react-i18next'
 import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
-import { useAuthorites, usePagination, useResources } from '@/hooks'
-import { useResourceColumns } from './Datatable/columns'
+import { usePagination, useResources } from '@/hooks'
+import { useResourceColumns } from './data-table/columns/columns'
+import { ResourceActionOptions } from './data-table'
 
 const Resources: React.FC = () => {
   const { t } = useTranslation(['resources'])
@@ -29,6 +30,7 @@ const Resources: React.FC = () => {
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         isLoading={isLoading}
+        actionOptions={ResourceActionOptions}
       />
     </div>
   )

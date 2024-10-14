@@ -5,4 +5,10 @@ export type TUploadUserSignRequestDto = {
   file?: Express.Multer.File;
 };
 
+export type TChangePasswordRequestDto = {
+  currentPassword?: string;
+  newPassword?: string;
+  confirmPassword?: string;
+};
+
 export type TUploadUserAvatarRequestDto = TUploadUserSignRequestDto;
