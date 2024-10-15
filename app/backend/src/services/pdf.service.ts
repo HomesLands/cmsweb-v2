@@ -4,6 +4,7 @@ import puppeteer from "puppeteer";
 import path from "path";
 import { GlobalError } from "@exception/global-error";
 import { ErrorCodes } from "@exception/error-code";
+import { isWinPlatform } from "heppers";
 
 class PDFService {
   public async generatePDF({
@@ -20,7 +21,15 @@ class PDFService {
     const template = await fs.promises.readFile(templatePath, "utf8");
     const html = ejs.render(template, data);
     try {
-      const browser = await puppeteer.launch();
+      const browserOptions = isWinPlatform()
+        ? {}
+        : { executablePath: "/usr/bin/chromium-browser" };
+      console.log({ browserOptions });
+
+      const browser = await puppeteer.launch({
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        headless: true,
+      });
       const page = await browser.newPage();
 
       await page.setContent(html, {
