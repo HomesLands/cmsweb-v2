@@ -3,16 +3,11 @@ import {
   Mapper,
   createMap,
   forMember,
-  extend,
   mapWith,
 } from "@automapper/core";
-import { 
-  TemporaryProductResponseDto,
-  UnitResponseDto
-} from "@dto/response";
+import { TemporaryProductResponseDto, UnitResponseDto } from "@dto/response";
 import { CreateTemporaryProductRequestDto } from "@dto/request";
 import { TemporaryProduct, Unit } from "@entities";
-import { baseMapper } from "./base.mapper";
 
 // Define the mapping profile
 export const temporaryProductMapper: MappingProfile = (mapper: Mapper) => {
@@ -23,19 +18,10 @@ export const temporaryProductMapper: MappingProfile = (mapper: Mapper) => {
     TemporaryProductResponseDto,
     forMember(
       (destination) => destination.unit,
-      mapWith(
-        UnitResponseDto,
-        Unit,
-        (source) => source.unit
-      )
-    ),
-    extend(baseMapper(mapper))
+      mapWith(UnitResponseDto, Unit, (source) => source.unit)
+    )
   );
 
   // Map request object to entity
-  createMap(
-    mapper, 
-    CreateTemporaryProductRequestDto, 
-    TemporaryProduct
-  );
+  createMap(mapper, CreateTemporaryProductRequestDto, TemporaryProduct);
 };

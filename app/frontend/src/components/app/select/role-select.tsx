@@ -34,7 +34,7 @@ export const SelectRole: FC<SelectRoleProps> = ({ onChange }) => {
     if (roles?.items) {
       const newRoles = roles.items.map((item) => ({
         value: item.slug || '',
-        label: item.nameNormalize || ''
+        label: `${item.nameDisplay}(${item.nameNormalize})`
       }))
       // Append new roles to the previous roles
       setAllRoles((prevRoles) => [...prevRoles, ...newRoles])

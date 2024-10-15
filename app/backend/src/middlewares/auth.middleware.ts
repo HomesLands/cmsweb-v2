@@ -65,6 +65,7 @@ class AuthMiddleware {
       });
 
       if (!user?.id) return next(new GlobalError(StatusCodes.UNAUTHORIZED));
+
       const ability = await createAbilities(user);
 
       // Attached decoded user id to request
@@ -89,7 +90,7 @@ class AuthMiddleware {
   ): (req: Request, res: Response, next: NextFunction) => void {
     return (req: Request, res: Response, next: NextFunction) => {
       if (!req.ability) throw new GlobalError(StatusCodes.FORBIDDEN);
-      console.log({ ability: req.ability });
+      console.log(`[${AuthMiddleware.name}]`, { ability: req.ability });
 
       // Check permission
       const canPerformAction = req.ability.can(action, entity);

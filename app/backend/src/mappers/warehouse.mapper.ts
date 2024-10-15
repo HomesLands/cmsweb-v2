@@ -2,19 +2,15 @@ import {
   MappingProfile,
   Mapper,
   createMap,
-  extend,
   forMember,
   mapWith,
 } from "@automapper/core";
-import { 
-  WarehouseResponseDto, 
-  ProductWarehouseResponseDto
+import {
+  WarehouseResponseDto,
+  ProductWarehouseResponseDto,
 } from "@dto/response";
-import { 
-  CreateWarehouseRequestDto, 
-} from "@dto/request";
+import { CreateWarehouseRequestDto } from "@dto/request";
 import { Warehouse, ProductWarehouse } from "@entities";
-import { baseMapper } from "./base.mapper";
 
 // Define the mapping profile
 export const warehouseMapper: MappingProfile = (mapper: Mapper) => {
@@ -28,9 +24,9 @@ export const warehouseMapper: MappingProfile = (mapper: Mapper) => {
       mapWith(
         ProductWarehouseResponseDto,
         ProductWarehouse,
-        (source) => source.productWarehouses)
-    ),
-    extend(baseMapper(mapper))
+        (source) => source.productWarehouses
+      )
+    )
   );
 
   // Map request object to entity

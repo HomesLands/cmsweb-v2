@@ -24,9 +24,13 @@ export const SelectSite: FC<SelectSiteProps> = ({ onChange, defaultValue }) => {
   const siteList = sites?.result
 
   const handleValueChange = (value: string) => {
-    const selectedSite = siteList?.find((site) => site.slug === value)
-    if (selectedSite) {
-      onChange(selectedSite.slug, selectedSite.name)
+    if (Array.isArray(siteList)) {
+      const selectedSite = siteList.find(
+        (site: { slug: string; name: string }) => site.slug === value
+      )
+      if (selectedSite) {
+        onChange(selectedSite.slug, selectedSite.name)
+      }
     }
   }
 

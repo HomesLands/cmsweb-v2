@@ -6,6 +6,6 @@
     "nameNormalize": "Mã chuẩn hóa",
     "description": "Mô tả",
     "slug": "Mã thẩm quyền",
-    "createAuthoritySuccessfully": "Create authority successfully"    
+    "createAuthoritySuccessfully": "Tạo thẩm quyền thành công"
   }
 }

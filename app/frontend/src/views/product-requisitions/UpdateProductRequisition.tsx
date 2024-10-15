@@ -7,7 +7,6 @@ import { Card, CardContent, Label } from '@/components/ui'
 import { UpdateRequisitionForm } from '@/components/app/form'
 import { showToast } from '@/utils'
 import {
-  IAddNewProductInRequisitionUpdate,
   IProductRequisitionFormInfo,
   IResubmitProductRequisition,
   IUpdateProductRequisitionGeneralInfo,

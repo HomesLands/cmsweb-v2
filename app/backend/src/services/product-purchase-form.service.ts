@@ -28,6 +28,7 @@ import {
 } from "@repositories";
 import { ProductPurchaseFormStatus, ProductRequisitionFormStatus } from "@enums";
 import { mapper } from "@mappers/index";
+import { StatusCodes } from "http-status-codes";
 
 class ProductPurchaseFormService {
   public async createProductPurchaseForm(
@@ -188,7 +189,7 @@ class ProductPurchaseFormService {
       );
       return formDto;
     }
-    throw new GlobalError(ErrorCodes.FORBIDDEN_USER);
+    throw new GlobalError(StatusCodes.FORBIDDEN);
   }
 
   public async getAllProductPurchaseForms(

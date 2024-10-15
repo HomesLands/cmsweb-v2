@@ -3,19 +3,15 @@ import {
   Mapper,
   createMap,
   forMember,
-  extend,
   mapWith,
 } from "@automapper/core";
-import { 
+import {
   DepartmentResponseDto,
   UserDepartmentResponseDto,
   UserResponseDto,
 } from "@dto/response";
-import { 
-  CreateUserDepartmentRequestDto,
-} from "@dto/request";
+import { CreateUserDepartmentRequestDto } from "@dto/request";
 import { Department, UserDepartment, User } from "@entities";
-import { baseMapper } from "./base.mapper";
 
 // Define the mapping profile
 export const userDepartmentMapper: MappingProfile = (mapper: Mapper) => {
@@ -26,19 +22,12 @@ export const userDepartmentMapper: MappingProfile = (mapper: Mapper) => {
     UserDepartmentResponseDto,
     forMember(
       (destination) => destination.user,
-      mapWith(
-        UserResponseDto,
-        User,
-        (source) => source.user)
+      mapWith(UserResponseDto, User, (source) => source.user)
     ),
     forMember(
       (destination) => destination.department,
-      mapWith(
-        DepartmentResponseDto,
-        Department,
-        (source) => source.department)
-    ),
-    extend(baseMapper(mapper))
+      mapWith(DepartmentResponseDto, Department, (source) => source.department)
+    )
   );
 
   // Map request object to entity

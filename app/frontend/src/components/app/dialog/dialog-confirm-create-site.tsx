@@ -48,7 +48,7 @@ export function DialogConfirmCreateSite({
           <div className="py-4 text-sm text-gray-500">
             {t('sites.confirmCreateSiteDescription')}
             <br />
-            <span className="font-bold">{site?.name}</span> thuộc công ty{' '}
+            <span className="font-bold">{site?.name}</span> {t('sites.belongsToCompany')}{' '}
             <span className="font-bold">{site?.companyName}</span>
           </div>
         </DialogHeader>

@@ -67,7 +67,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
       },
       type: 'normal',
       requestProducts: [],
-      userApprovals: [],
+      // userApprovals: [],
       project: {
         slug: requisition?.project.slug || '',
         name: requisition?.project.name || ''

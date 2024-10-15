@@ -12,7 +12,7 @@ import {
 } from '@/components/ui'
 import { createUserRoleSchema, TCreateUserRoleSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SelectRole, SelectUser } from '../select'
+import { SelectRole } from '@/components/app/select'
 import { useTranslation } from 'react-i18next'
 import React from 'react'
 import { IUserInfo } from '@/types'
@@ -23,7 +23,7 @@ interface IFormAddEmployeeRoleProps {
 }
 
 export const AddEmployeeRoleForm: React.FC<IFormAddEmployeeRoleProps> = ({ user, onSubmit }) => {
-  const { t } = useTranslation('users')
+  const { t } = useTranslation('employees')
   const form = useForm<TCreateUserRoleSchema>({
     resolver: zodResolver(createUserRoleSchema),
     defaultValues: {
@@ -49,7 +49,7 @@ export const AddEmployeeRoleForm: React.FC<IFormAddEmployeeRoleProps> = ({ user,
         name="user"
         render={() => (
           <FormItem>
-            <FormLabel>{t('users.selectUser')}</FormLabel>
+            <FormLabel>{t('employees.selectUser')}</FormLabel>
             <FormControl>
               <Input value={form.getValues('user.label')} disabled />
             </FormControl>
@@ -64,7 +64,7 @@ export const AddEmployeeRoleForm: React.FC<IFormAddEmployeeRoleProps> = ({ user,
         name="role"
         render={() => (
           <FormItem>
-            <FormLabel>{t('users.selectRole')}</FormLabel>
+            <FormLabel>{t('employees.selectRole')}</FormLabel>
             <FormControl>
               <SelectRole
                 onChange={(values) => {
@@ -92,7 +92,7 @@ export const AddEmployeeRoleForm: React.FC<IFormAddEmployeeRoleProps> = ({ user,
           </div>
           <div className="flex justify-end">
             <Button className="flex justify-end" type="submit">
-              {t('users.createUserRole')}
+              {t('employees.submit')}
             </Button>
           </div>
         </form>

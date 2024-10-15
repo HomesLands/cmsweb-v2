@@ -29,6 +29,7 @@ import { fileRoute } from "./file.route";
 import { resourceRoute } from "./resource.route";
 import { rolePermissionRoute } from "./role-permission.route";
 import { productPurchaseFormRoute } from "./product-purchase-form.route";
+import { databaseRoute } from "./database.route";
 
 const baseApi: Router = Router();
 
@@ -84,6 +85,8 @@ export const registerRoutes = (app: Express) => {
   baseApi.use("/resources", resourceRoute);
 
   baseApi.use("/rolePermissions", rolePermissionRoute);
+
+  baseApi.use("/database", databaseRoute);
 
   app.use("/api/v1", baseApi);
 

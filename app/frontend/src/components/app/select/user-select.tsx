@@ -5,12 +5,7 @@ import ReactSelect, { SingleValue } from 'react-select'
 import { usePagination, useUsers } from '@/hooks'
 
 interface SelectUserProps {
-  onChange: (
-    values: SingleValue<{
-      value: string
-      label: string
-    }>
-  ) => void
+  onChange: (value: string) => void
 }
 
 export const SelectUser: FC<SelectUserProps> = ({ onChange }) => {
@@ -41,11 +36,17 @@ export const SelectUser: FC<SelectUserProps> = ({ onChange }) => {
     }
   }, [data])
 
+  const handleChange = (selectedOption: SingleValue<{ value: string; label: string }>) => {
+    if (selectedOption) {
+      onChange(selectedOption.value) // Only pass the value (slug)
+    }
+  }
+
   return (
     <ReactSelect
       onMenuScrollToBottom={handleScrollToBottom}
       options={allUsers}
-      onChange={onChange}
+      onChange={handleChange}
     />
   )
 }

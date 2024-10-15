@@ -13,7 +13,7 @@ export function DialogAddUser() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="gap-1 text-normal font-beVietNam">
+        <Button variant="outline" className="gap-1 text-sm">
           <PlusCircledIcon className="icon" />
           Thêm nhân viên mới
         </Button>

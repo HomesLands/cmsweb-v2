@@ -4,7 +4,8 @@ import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
 import { usePagination, usePermissions } from '@/hooks'
-import { usePermissionColumns } from './DataTable/columns'
+import { usePermissionColumns } from './data-table/columns/columns'
+import { PermissionActionOptions } from './data-table'
 
 const Permissions: React.FC = () => {
   const { t } = useTranslation(['permissions'])
@@ -17,8 +18,8 @@ const Permissions: React.FC = () => {
   })
 
   return (
-    <div className="flex flex-col gap-4">
-      <Label className="flex items-center gap-1 font-semibold text-normal text-md font-beVietNam">
+    <div className="flex flex-col gap-4 mt-2">
+      <Label className="flex gap-1 items-center font-semibold text-normal text-md font-beVietNam">
         <ReaderIcon className="header-icon" />
         {t('permissions.list')}
       </Label>
@@ -29,6 +30,7 @@ const Permissions: React.FC = () => {
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         isLoading={isLoading}
+        actionOptions={PermissionActionOptions}
       />
     </div>
   )

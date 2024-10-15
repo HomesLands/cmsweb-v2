@@ -1,6 +1,6 @@
-import { 
+import {
   TCreateRequestProductRequestDto,
-  TCreateApprovalLogRequestDto, 
+  TCreateApprovalLogRequestDto,
 } from "@types";
 
 export type TCreateProductRequisitionFormRequestDto = {
@@ -14,7 +14,7 @@ export type TCreateProductRequisitionFormRequestDto = {
   //   requestQuantity?: number;
   // }[];
   requestProducts: TCreateRequestProductRequestDto[];
-}
+};
 
 export type TApprovalProductRequisitionFormRequestDto = {
   formSlug?: string;
@@ -34,13 +34,4 @@ export type TUpdateGeneralInformationProductRequisitionFormRequestDto = {
   type?: string;
   deadlineApproval?: string;
   description?: string;
-}
-
-export type TProductRequisitionFormDataExport = {
-  order?: number,
-  quantity?: number,
-  name?: string,
-  description?: string,
-  provider?: string,
-  unit?: string,
-}
+};

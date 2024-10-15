@@ -2,6 +2,8 @@
   "users": {
     "avatar": "Ảnh đại diện",
     "fullname": "Họ và tên",
+    "slug": "Slug",
+    "role": "Chức vụ",
     "actions": "Thao tác"
   }
 }

@@ -3,9 +3,11 @@ import { KeyRound, UserRoundPen } from 'lucide-react'
 
 import { Card, CardContent, Input, Button } from '@/components/ui'
 import { ProfilePicture } from '@/components/app/avatar'
-import { useUserStore } from '@/stores'
+import { useThemeStore, useUserStore } from '@/stores'
 import { useUploadSignature } from '@/hooks/use-users'
 import { useRef } from 'react'
+import { useTheme } from '@/components/theme-provider'
+import { cn } from '@/lib/utils'
 
 interface CardUserGeneralInfoProps {
   handleUploadProfilePicture: (file: File) => void
@@ -18,6 +20,7 @@ export const CardUserGeneralInfo = ({
 }: CardUserGeneralInfoProps) => {
   const { t } = useTranslation('account')
   const { userInfo } = useUserStore()
+  const { getTheme } = useThemeStore()
   const uploadSignatureMutation = useUploadSignature()
 
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -53,7 +56,12 @@ export const CardUserGeneralInfo = ({
             </div>
           </div>
           <div className="grid grid-cols-1 gap-3 rounded-md border">
-            <div className="flex justify-between items-center px-6 py-4 w-full bg-gray-50 border-b">
+            <div
+              className={cn(
+                'flex justify-between items-center px-6 py-4 w-full',
+                getTheme() === 'light' ? 'bg-gray-50' : ''
+              )}
+            >
               <span className="font-semibold font-beVietNam text-md">{t('account.profile')}</span>
               <Button
                 variant="outline"
@@ -64,7 +72,7 @@ export const CardUserGeneralInfo = ({
                 <span className="text-normal">{t('account.edit')}</span>
               </Button>
             </div>
-            <div className="grid grid-cols-2 gap-6 p-6">
+            <div className="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2">
               <div className="flex flex-col gap-1">
                 <span className="text-sm font-beVietNam text-normal">{t('account.fullname')}</span>
                 <Input className="font-beVietNam" value={userInfo?.fullname} />
@@ -94,7 +102,12 @@ export const CardUserGeneralInfo = ({
       <Card className="mt-6 border-none">
         <CardContent className="flex flex-col gap-6">
           <div className="grid grid-cols-1 gap-3 rounded-md border">
-            <div className="flex justify-between items-center px-6 py-4 w-full bg-gray-50 border-b">
+            <div
+              className={cn(
+                'flex justify-between items-center px-6 py-4 w-full',
+                getTheme() === 'light' ? 'bg-gray-50' : ''
+              )}
+            >
               <span className="font-semibold font-beVietNam text-md">{t('account.signature')}</span>
               {userInfo?.signature && (
                 <Button

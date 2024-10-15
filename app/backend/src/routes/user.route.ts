@@ -18,11 +18,7 @@ userRoute.get(
 userRoute.get("/info/permissions", userController.getUserPermissions);
 
 // [GET] /api/v1/users/info
-userRoute.get(
-  "/info",
-  authMiddleware.hasPermission(Action.READ, User),
-  userController.getUser
-);
+userRoute.get("/info", userController.getUser);
 
 // [PATCH] /api/v1/users/signature
 userRoute.patch(
@@ -37,3 +33,6 @@ userRoute.patch(
   upload.single("file"),
   userController.uploadUserAvatar
 );
+
+// [PATCH] /api/v1/users/signature
+userRoute.patch("/changePassword", userController.changePassword);

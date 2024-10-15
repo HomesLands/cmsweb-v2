@@ -4,8 +4,6 @@ export interface IResource extends IBase {
   name?: string
 }
 
-// export interface ICreateRole {
-//   nameNormalize: string
-//   description: string
-//   nameDisplay?: string
-// }
+export interface ICreateResource {
+  name: string
+}

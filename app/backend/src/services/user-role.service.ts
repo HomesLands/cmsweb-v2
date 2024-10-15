@@ -27,10 +27,14 @@ class UserRoleService {
     if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 
     // Check existed
-    const isExisted = await userRoleRepository.existsBy({
-      role: { id: role.id },
-      user: { id: user.id },
+    const isExisted = await userRoleRepository.findOne({
+      where: {
+        user: { id: user.id },
+        role: { id: role.id },
+      },
     });
+    console.log({ isExisted });
+
     if (isExisted) throw new GlobalError(ErrorCodes.USER_ROLE_EXIST);
 
     const userRole = new UserRole();

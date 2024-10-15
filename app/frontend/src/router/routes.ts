@@ -1,13 +1,12 @@
 import {
   Building2Icon,
-  BuildingIcon,
-  KeyRoundIcon,
-  MapIcon,
+  Component,
+  FolderOpenIcon,
   MapPinIcon,
-  ScanFaceIcon,
+  ShoppingBasketIcon,
   UserCheckIcon,
-  UserCogIcon,
-  UsersIcon
+  UsersIcon,
+  WarehouseIcon
 } from 'lucide-react'
 import { ArchiveIcon } from '@radix-ui/react-icons'
 
@@ -16,10 +15,46 @@ import { Authority, Resource, ROUTE } from '@/constants'
 
 export const sidebarRoutes: ISidebarRoute[] = [
   {
+    title: 'sidebar.products',
+    path: ROUTE.PRODUCT,
+    icon: ShoppingBasketIcon,
+    permission: { authority: Authority.VIEW, resource: Resource.PRODUCT },
+    children: [
+      {
+        title: 'sidebar.products',
+        path: ROUTE.PRODUCT,
+        permission: { authority: Authority.READ, resource: Resource.PRODUCT }
+      },
+      {
+        title: 'sidebar.createProduct',
+        path: ROUTE.ADD_PRODUCT,
+        permission: { authority: Authority.CREATE, resource: Resource.PRODUCT }
+      }
+    ]
+  },
+  {
+    title: 'sidebar.warehouses',
+    path: ROUTE.WAREHOUSE,
+    icon: WarehouseIcon,
+    permission: { authority: Authority.VIEW, resource: Resource.WAREHOUSE },
+    children: [
+      {
+        title: 'sidebar.warehouses',
+        path: ROUTE.WAREHOUSE,
+        permission: { authority: Authority.READ, resource: Resource.WAREHOUSE }
+      },
+      {
+        title: 'sidebar.createWarehouse',
+        path: ROUTE.ADD_WAREHOUSE,
+        permission: { authority: Authority.CREATE, resource: Resource.WAREHOUSE }
+      }
+    ]
+  },
+  {
     title: 'sidebar.productRequisitions',
     path: ROUTE.PRODUCT_REQUISITIONS,
     icon: ArchiveIcon,
-    permission: { authority: Authority.READ, resource: Resource.PRODUCT_REQUISITION_FORM },
+    permission: { authority: Authority.VIEW, resource: Resource.PRODUCT_REQUISITION_FORM },
     children: [
       {
         title: 'sidebar.productRequisitionsList',
@@ -33,8 +68,8 @@ export const sidebarRoutes: ISidebarRoute[] = [
       },
       {
         title: 'sidebar.approvalProductRequisitions',
-        path: '/product-requisitions/approval',
-        permission: { authority: Authority.UPDATE, resource: Resource.PRODUCT_REQUISITION_FORM }
+        path: ROUTE.APPROVAL_PRODUCT_REQUISITIONS,
+        permission: { authority: Authority.APPROVE, resource: Resource.PRODUCT_REQUISITION_FORM }
       }
     ]
   },
@@ -42,84 +77,12 @@ export const sidebarRoutes: ISidebarRoute[] = [
     title: 'sidebar.employees',
     path: ROUTE.EMPLOYEE,
     icon: UsersIcon,
-    // authorities: [Authority.READ_USER],
+    permission: { authority: Authority.READ, resource: Resource.USER },
     children: [
       {
         title: 'sidebar.employees',
-        path: ROUTE.EMPLOYEE
-        // authorities: [Authority.READ_USER]
-      }
-    ]
-  },
-  {
-    title: 'sidebar.roles',
-    path: ROUTE.ROLE,
-    icon: UserCogIcon,
-    // authorities: [Authority.READ_ROLE],
-    children: [
-      {
-        title: 'sidebar.roles',
-        path: ROUTE.ROLE
-        // authorities: [Authority.READ_ROLE]
-      },
-      {
-        title: 'sidebar.createRole',
-        path: ROUTE.ADD_ROLE
-        // authorities: [Authority.CREATE_ROLE]
-      }
-    ]
-  },
-  {
-    title: 'sidebar.permissions',
-    path: ROUTE.PERMISSION,
-    icon: KeyRoundIcon,
-    // authorities: [Authority.READ_PERMISSION],
-    children: [
-      {
-        title: 'sidebar.permissions',
-        path: ROUTE.PERMISSION
-        // authorities: [Authority.READ_PERMISSION]
-      },
-      {
-        title: 'sidebar.createPermission',
-        path: ROUTE.ADD_PERMISSION
-        // authorities: [Authority.CREATE_PERMISSION]
-      }
-    ]
-  },
-  {
-    title: 'sidebar.authorities',
-    path: ROUTE.AUTHORITY,
-    icon: ScanFaceIcon,
-    // authorities: [Authority.READ_AUTHORITY],
-    children: [
-      {
-        title: 'sidebar.authorities',
-        path: ROUTE.AUTHORITY
-        // authorities: [Authority.READ_AUTHORITY]
-      },
-      {
-        title: 'sidebar.createAuthority',
-        path: ROUTE.ADD_AUTHORITY
-        // authorities: [Authority.CREATE_AUTHORITY]
-      }
-    ]
-  },
-  {
-    title: 'sidebar.assignedApprover',
-    path: ROUTE.ASSIGNED_APPROVER,
-    icon: UserCheckIcon,
-    // authorities: [Authority.READ_PERMISSION],
-    children: [
-      {
-        title: 'sidebar.assignedApprover',
-        path: ROUTE.ASSIGNED_APPROVER
-        // authorities: [Authority.READ_PERMISSION]
-      },
-      {
-        title: 'sidebar.createAssignedApprover',
-        path: ROUTE.ADD_ASSIGNED_APPROVER
-        // authorities: [Authority.CREATE_PERMISSION]
+        path: ROUTE.EMPLOYEE,
+        permission: { authority: Authority.READ, resource: Resource.USER }
       }
     ]
   },
@@ -127,14 +90,17 @@ export const sidebarRoutes: ISidebarRoute[] = [
     title: 'sidebar.companies',
     path: ROUTE.COMPANY,
     icon: Building2Icon,
+    permission: { authority: Authority.READ, resource: Resource.COMPANY },
     children: [
       {
         title: 'sidebar.companies',
-        path: ROUTE.COMPANY
+        path: ROUTE.COMPANY,
+        permission: { authority: Authority.READ, resource: Resource.COMPANY }
       },
       {
         title: 'sidebar.createCompany',
-        path: ROUTE.ADD_COMPANY
+        path: ROUTE.ADD_COMPANY,
+        permission: { authority: Authority.CREATE, resource: Resource.COMPANY }
       }
     ]
   },
@@ -142,14 +108,71 @@ export const sidebarRoutes: ISidebarRoute[] = [
     title: 'sidebar.sites',
     path: ROUTE.SITE,
     icon: MapPinIcon,
+    permission: { authority: Authority.READ, resource: Resource.SITE },
     children: [
       {
         title: 'sidebar.sites',
-        path: ROUTE.SITE
+        path: ROUTE.SITE,
+        permission: { authority: Authority.READ, resource: Resource.SITE }
       },
       {
         title: 'sidebar.createSite',
-        path: ROUTE.ADD_SITE
+        path: ROUTE.ADD_SITE,
+        permission: { authority: Authority.CREATE, resource: Resource.SITE }
+      }
+    ]
+  },
+  {
+    title: 'sidebar.departments',
+    path: ROUTE.DEPARTMENT,
+    icon: Component,
+    permission: { authority: Authority.READ, resource: Resource.DEPARTMENT },
+    children: [
+      {
+        title: 'sidebar.departments',
+        path: ROUTE.DEPARTMENT,
+        permission: { authority: Authority.READ, resource: Resource.DEPARTMENT }
+      },
+      {
+        title: 'sidebar.createDepartment',
+        path: ROUTE.ADD_DEPARTMENT,
+        permission: { authority: Authority.CREATE, resource: Resource.DEPARTMENT }
+      }
+    ]
+  },
+  {
+    title: 'sidebar.projects',
+    path: ROUTE.PROJECT,
+    icon: FolderOpenIcon,
+    permission: { authority: Authority.READ, resource: Resource.PROJECT },
+    children: [
+      {
+        title: 'sidebar.projects',
+        path: ROUTE.PROJECT,
+        permission: { authority: Authority.READ, resource: Resource.PROJECT }
+      },
+      {
+        title: 'sidebar.createProject',
+        path: ROUTE.ADD_PROJECT,
+        permission: { authority: Authority.CREATE, resource: Resource.PROJECT }
+      }
+    ]
+  },
+  {
+    title: 'sidebar.assignedApprover',
+    path: ROUTE.ASSIGNED_APPROVER,
+    icon: UserCheckIcon,
+    permission: { authority: Authority.READ, resource: Resource.ASSIGNED_APPROVAL },
+    children: [
+      {
+        title: 'sidebar.assignedApprover',
+        path: ROUTE.ASSIGNED_APPROVER,
+        permission: { authority: Authority.READ, resource: Resource.ASSIGNED_APPROVAL }
+      },
+      {
+        title: 'sidebar.createAssignedApprover',
+        path: ROUTE.ADD_ASSIGNED_APPROVER,
+        permission: { authority: Authority.CREATE, resource: Resource.ASSIGNED_APPROVAL }
       }
     ]
   }

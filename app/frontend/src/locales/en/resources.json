@@ -1,0 +1,10 @@
+{
+  "resources": {
+    "list": "Resource list",
+    "name": "Name",
+    "slug": "Slug",
+    "createResource": "Create resource",
+    "namePlaceholder": "Name",
+    "createResourceDescription": "Enter all fields to create a resource"
+  }
+}

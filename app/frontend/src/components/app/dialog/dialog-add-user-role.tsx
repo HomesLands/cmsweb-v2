@@ -1,4 +1,6 @@
+import { useTranslation } from 'react-i18next'
 import { PlusCircledIcon } from '@radix-ui/react-icons'
+
 import {
   Dialog,
   DialogContent,
@@ -10,41 +12,45 @@ import {
 } from '@/components/ui'
 
 import { TCreateUserRoleSchema } from '@/schemas'
-import { AddEmployeeRoleForm } from '../form'
+import { AddEmployeeRoleForm } from '@/components/app/form'
 import { ICreateUserRole, IUserInfo } from '@/types'
-import toast from 'react-hot-toast'
 import { useCreateUserRole } from '@/hooks'
+import { showToast } from '@/utils'
 
-export function DialogAddUserRole({ user }: { user: IUserInfo }) {
-  const mutation = useCreateUserRole()
+interface DialogAddUserRoleProps {
+  user: IUserInfo | null
+  open: boolean
+  component: React.ReactNode
+  onOpenChange: () => void
+}
+
+export function DialogAddUserRole({ user, open, component, onOpenChange }: DialogAddUserRoleProps) {
+  const { t } = useTranslation('employees')
+  const { t: tToast } = useTranslation('toast')
+  const { mutate: createUserRole } = useCreateUserRole()
+
   const handleSubmit = (values: TCreateUserRoleSchema) => {
     const requestData = {
-      roleSlug: values.role.value,
-      userSlug: values.user.value
+      role: values.role.value,
+      user: values.user.value
     } as ICreateUserRole
-    mutation.mutate(requestData, {
+    onOpenChange()
+    createUserRole(requestData, {
       onSuccess: () => {
-        toast.success('Thêm quyền thành công')
+        showToast(tToast('toast.addRoleSuccess'))
       }
     })
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="ghost" className="gap-1 text-sm">
-          <PlusCircledIcon className="icon" />
-          Thêm chức vụ
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>{component}</DialogTrigger>
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>Thêm chức vụ cho nhân viên</DialogTitle>
-          <DialogDescription>
-            Nhập đầy đủ thông tin bên dưới để hêm chức vụ cho nhân viên
-          </DialogDescription>
+          <DialogTitle>{t('employees.createUserRole')}</DialogTitle>
+          <DialogDescription>{t('employees.createUserRoleDescription')}</DialogDescription>
         </DialogHeader>
-        <AddEmployeeRoleForm user={user} onSubmit={handleSubmit} />
+        {user && <AddEmployeeRoleForm user={user} onSubmit={handleSubmit} />}
       </DialogContent>
     </Dialog>
   )

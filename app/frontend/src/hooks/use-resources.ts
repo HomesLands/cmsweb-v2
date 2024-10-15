@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
-import { getResources } from '@/api'
-import { IQuery } from '@/types'
+import { createResource, getResources } from '@/api'
+import { ICreateResource, IQuery } from '@/types'
 
 export const useResources = (q: IQuery) => {
   return useQuery({
@@ -11,10 +11,10 @@ export const useResources = (q: IQuery) => {
   })
 }
 
-// export const useCreateRole = () => {
-//   return useMutation({
-//     mutationFn: async (data: ICreateRole) => {
-//       return createRole(data)
-//     }
-//   })
-// }
+export const useCreateResource = () => {
+  return useMutation({
+    mutationFn: async (data: ICreateResource) => {
+      return createResource(data)
+    }
+  })
+}

@@ -1,4 +1,4 @@
-import { projectRepository, siteRepository, userRepository } from "@repositories";
+import { projectRepository, siteRepository } from "@repositories";
 import { mapper } from "@mappers";
 import { Project } from "@entities";
 import { ProjectResponseDto } from "@dto/response";
@@ -11,10 +11,7 @@ import { validate } from "class-validator";
 class ProjectService {
   public async getAllProjects(): Promise<ProjectResponseDto[]> {
     const projectsData = await projectRepository.find({
-      relations: [
-        'productRequisitionForms',
-        'site'
-      ]
+      relations: ["productRequisitionForms", "site"],
     });
 
     const projectsDto: ProjectResponseDto[] = mapper.mapArray(
@@ -25,7 +22,9 @@ class ProjectService {
     return projectsDto;
   }
 
-  public async createProject(plainData: TCreateProjectRequestDto): Promise<ProjectResponseDto> {
+  public async createProject(
+    plainData: TCreateProjectRequestDto
+  ): Promise<ProjectResponseDto> {
     // Map plain object to request dto
     const requestData = plainToClass(CreateProjectRequestDto, plainData);
 
@@ -37,10 +36,15 @@ class ProjectService {
       throw new GlobalError(ErrorCodes.SITE_NOT_FOUND);
     }
 
-    const projectData = mapper.map(requestData, CreateProjectRequestDto, Project);    
+    const projectData = mapper.map(
+      requestData,
+      CreateProjectRequestDto,
+      Project
+    );
     projectData.site = site;
 
-    const projectDataCreated = await projectRepository.createAndSave(projectData);
+    const projectDataCreated =
+      await projectRepository.createAndSave(projectData);
 
     return mapper.map(projectDataCreated, Project, ProjectResponseDto);
   }

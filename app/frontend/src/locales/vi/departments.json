@@ -1,0 +1,21 @@
+{
+  "department": {
+    "list": "Danh sách phòng ban",
+    "create": "Tạo phòng ban",
+    "createDescription": "Tạo mới phòng ban",
+    "nameNormalize": "Mã chuẩn hóa",
+    "nameNormalizeDescription": "Nhập mã chuẩn hóa",
+    "name": "Tên phòng ban",
+    "slug": "Mã phòng ban",
+    "company": "Công ty",
+    "description": "Mô tả",
+    "descriptionDescription": "Nhập mô tả",
+
+    "confirmCreate": "Xác nhận tạo phòng ban",
+    "confirmCreateDescription": "Xác nhận tạo mới phòng ban",
+    "belongsToLocation": "thuộc địa điểm",
+    "cancelCreate": "Hủy",
+    "confirm": "Xác nhận",
+    "cancel": "Hủy"
+  }
+}

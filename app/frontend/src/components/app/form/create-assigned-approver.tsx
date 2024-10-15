@@ -16,7 +16,8 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createAssignedApproverSchema, TCreateAssignedApproverSchema } from '@/schemas'
 import { TAssignedApprover } from '@/types'
-import { FormApprovalType } from '@/constants'
+import { FormApprovalType, AuthorityType } from '@/constants'
+import { SelectFormType, SelectRoleApproval, SelectSite, SelectUser } from '../select'
 
 interface IFormCreateAssignedApproverProps {
   onSubmit: (data: TAssignedApprover) => void
@@ -32,7 +33,8 @@ export const CreateAssignedApproverForm: React.FC<IFormCreateAssignedApproverPro
     defaultValues: {
       formType: FormApprovalType.PRODUCT_REQUISITION_FORM,
       roleApproval: '',
-      user: ''
+      user: '',
+      site: ''
     }
   })
 
@@ -45,15 +47,18 @@ export const CreateAssignedApproverForm: React.FC<IFormCreateAssignedApproverPro
       <FormField
         control={form.control}
         name="formType"
-        render={() => (
+        render={({ field }) => (
           <FormItem>
             <FormLabel className="text-muted-foreground">
               {t('assignedApprover.selectFormType')}
             </FormLabel>
             <FormControl>
-              <Input
-                className="text-muted-foreground"
-                placeholder={t('assignedApprover.selectFormType')}
+              <SelectFormType
+                onChange={(selectedOption) => {
+                  if (selectedOption) {
+                    field.onChange(selectedOption.value)
+                  }
+                }}
               />
             </FormControl>
             <FormMessage />
@@ -65,15 +70,41 @@ export const CreateAssignedApproverForm: React.FC<IFormCreateAssignedApproverPro
       <FormField
         control={form.control}
         name="roleApproval"
-        render={() => (
+        render={({ field }) => (
           <FormItem>
             <FormLabel className="text-muted-foreground">
               {t('assignedApprover.selectRoleApproval')}
             </FormLabel>
             <FormControl>
-              <Input
-                className="text-muted-foreground"
-                placeholder={t('assignedApprover.selectRoleApproval')}
+              <SelectRoleApproval
+                onChange={(selectedOption) => {
+                  if (selectedOption) {
+                    field.onChange(selectedOption.value)
+                  }
+                }}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    site: (
+      <FormField
+        control={form.control}
+        name="site"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel className="text-muted-foreground">
+              {t('assignedApprover.selectSite')}
+            </FormLabel>
+            <FormControl>
+              <SelectSite
+                onChange={(selectedOption) => {
+                  if (selectedOption) {
+                    field.onChange(selectedOption)
+                  }
+                }}
               />
             </FormControl>
             <FormMessage />
@@ -85,15 +116,18 @@ export const CreateAssignedApproverForm: React.FC<IFormCreateAssignedApproverPro
       <FormField
         control={form.control}
         name="user"
-        render={() => (
+        render={({ field }) => (
           <FormItem>
             <FormLabel className="text-muted-foreground">
               {t('assignedApprover.selectUser')}
             </FormLabel>
             <FormControl>
-              <Input
-                className="text-muted-foreground"
-                placeholder={t('assignedApprover.selectUser')}
+              <SelectUser
+                onChange={(selectedOption) => {
+                  if (selectedOption) {
+                    field.onChange(selectedOption)
+                  }
+                }}
               />
             </FormControl>
             <FormMessage />

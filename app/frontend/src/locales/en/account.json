@@ -16,6 +16,7 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "deleteAccountSuccess": "Your account has been deleted.",
-    "deleteAccountError": "An error occurred while deleting your account."
+    "deleteAccountError": "An error occurred while deleting your account.",
+    "administration": "Administration"
   }
 }

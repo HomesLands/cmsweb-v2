@@ -4,15 +4,13 @@ import { StatusCodes } from "http-status-codes";
 import { userService } from "@services";
 import {
   TApiResponse,
+  TChangePasswordRequestDto,
   TPaginationOptionResponse,
   TQueryRequest,
   TUploadUserAvatarRequestDto,
   TUploadUserSignRequestDto,
 } from "@types";
 import { UserPermissionResponseDto, UserResponseDto } from "@dto/response";
-import { Action } from "@enums";
-import { User } from "@entities/user.entity";
-import { asl } from "@configs";
 
 class UserController {
   /**
@@ -25,6 +23,27 @@ class UserController {
    *       items:
    *         type: string
    *         example: ""
+   *
+   *     ChangePasswordRequestDto:
+   *       type: object
+   *       required:
+   *         - currentPassword
+   *         - newPassword
+   *         - confirmPassword
+   *       properties:
+   *         currentPassword:
+   *           type: string
+   *           description: Current password
+   *         newPassword:
+   *           type: string
+   *           description: New password
+   *         confirmPassword:
+   *           type: string
+   *           description: Confirm password
+   *       example:
+   *         currentPassword: Pass@1234
+   *         newPassword: NewPass@1234
+   *         confirmPassword: NewPass@1234
    */
 
   /**
@@ -270,6 +289,57 @@ class UserController {
         method: req.method,
         path: req.originalUrl,
         result: result,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /users/changePassword:
+   *   patch:
+   *     summary: Change password
+   *     tags: [User]
+   *     requestBody:
+   *       require: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/ChangePasswordRequestDto'
+   *     responses:
+   *       200:
+   *         description: User password has updated successfully
+   *       500:
+   *         description: Server error
+   *       1008:
+   *         description: Password is not valid
+   *       1113:
+   *         description: New password invalid
+   *       1114:
+   *         description: Confirm password invalid
+   *       1115:
+   *         description: Password does not match
+   *       1116:
+   *         description: Confirm password does not match
+   */
+  public async changePassword(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { userId = "" } = req;
+      const requestData = req.body as TChangePasswordRequestDto;
+      const result = await userService.changePassword(userId, requestData);
+      const response: TApiResponse<UserResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: `User password has updated successfully`,
+        method: req.method,
+        path: req.originalUrl,
+        result,
       };
       res.status(StatusCodes.OK).json(response);
     } catch (error) {

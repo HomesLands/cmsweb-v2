@@ -7,8 +7,11 @@ export interface IProject {
   managerSlug: string
 }
 
-export interface IProjectListResponse<T> {
-  code: string
-  message: string
-  result: T
+export interface ICreateProject {
+  name: string
+  startDate: string
+  description: string
+  fileDescription: string
+  site: string
+  siteName: string
 }

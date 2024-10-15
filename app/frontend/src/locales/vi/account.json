@@ -37,6 +37,7 @@
     "update": "Cập nhật",
     "delete": "Xóa",
     "deleteAccount": "Xóa tài khoản",
-    "deleteAccountMessage": "Bạn có chắc chắn muốn xóa tài khoản của mình? Hành động này không thể hoàn tác."
+    "deleteAccountMessage": "Bạn có chắc chắn muốn xóa tài khoản của mình? Hành động này không thể hoàn tác.",
+    "administration": "Administration"
   }
 }

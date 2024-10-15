@@ -13,7 +13,7 @@ const Companies: React.FC = () => {
   const { data: companies, isLoading } = useCompanies()
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mt-2">
       <Label className="flex gap-1 items-center font-semibold text-normal text-md font-beVietNam">
         <ReaderIcon className="header-icon" />
         {t('companies.list')}

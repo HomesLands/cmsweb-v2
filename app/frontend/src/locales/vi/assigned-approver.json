@@ -1,13 +1,19 @@
 {
   "assignedApprover": {
     "title": "Phân quyền phê duyệt",
-    "description": "Phân quyền phê duyệt cho người dùng",
     "list": "Danh sách người phê duyệt",
 
+    "slug": "Slug",
+    "nameNormalize": "Tên chuẩn",
+    "nameDisplay": "Tên hiển thị",
+    "description": "Mô tả",
+
     "add": "Thêm người phê duyệt",
-    "search": "Tìm kiếm người phê duyệt",
+    "createAssignedApprover": "Tạo người phê duyệt",
+    "createAssignedApproverDescription": "Hoàn thành các bước sau để tạo người phê duyệt",
     "selectFormType": "Chọn loại phiếu yêu cầu",
     "selectRoleApproval": "Chọn vai trò phê duyệt",
+    "selectSite": "Chọn địa điểm",
     "selectUser": "Chọn người phê duyệt",
     "createAssignedApproverSuccessfully": "Tạo người phê duyệt thành công",
     "createAssignedApproverFailed": "Tạo người phê duyệt thất bại"
