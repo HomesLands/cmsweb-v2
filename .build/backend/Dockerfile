@@ -18,6 +18,9 @@ COPY . .
 # Step 6: Build the application
 RUN npm run build
 
+# Explicitly run the postbuild step.
+RUN npm run postbuild
+
 # Step 7: Expose the port the app runs on
 EXPOSE 3000
 
