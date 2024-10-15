@@ -16,19 +16,14 @@ class PDFService {
     data: any;
   }): Promise<Buffer> {
     const templatePath = path.join(process.cwd(), "/views/pages", templateName);
-    console.log({ dir: process.cwd(), templatePath });
+    console.log({ templatePath });
 
     const template = await fs.promises.readFile(templatePath, "utf8");
     const html = ejs.render(template, data);
     try {
-      const browserOptions = isWinPlatform()
-        ? {}
-        : { executablePath: "/usr/bin/chromium-browser" };
-      console.log({ browserOptions });
-
       const browser = await puppeteer.launch({
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
         headless: true,
+        args: ["--no-sandbox"],
       });
       const page = await browser.newPage();
 

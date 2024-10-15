@@ -6,7 +6,18 @@ WORKDIR /usr/src/app
 
 RUN npm install pm2 -g
 
-# RUN apt-get install chromium-browser
+RUN apt-get update && apt-get install -y \
+    libnss3 \
+    libdbus-1-3 \
+    libatk-bridge2.0-0 \
+    libxcomposite1 \
+    libxrandr2 \
+    libxdamage1 \
+    libgbm1 \
+    libasound2 \
+    libatspi2.0-0 \
+    libgtk-3-0 \
+    libxshmfence1
 
 # Step 3: Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
