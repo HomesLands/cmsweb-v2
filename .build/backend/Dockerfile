@@ -6,6 +6,8 @@ WORKDIR /usr/src/app
 
 RUN npm install pm2 -g
 
+# RUN apt-get install chromium-browser
+
 # Step 3: Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 

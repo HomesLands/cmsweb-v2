@@ -28,5 +28,6 @@ export enum Authority {
   READ = 'READ',
   UPDATE = 'UPDATE',
   DELETE = 'DELETE',
-  VIEW = 'VIEW'
+  VIEW = 'VIEW',
+  APPROVE = 'APPROVE'
 }

@@ -6,6 +6,7 @@ export enum Resource {
   ASSIGNED_APPROVAL = 'assigned-approval',
   SITE = 'site',
   PRODUCT_REQUISITION_FORM = 'product-requisition-form',
-  ALL = 'all',
-  WAREHOUSE = 'warehouse'
+  PRODUCT = 'product',
+  WAREHOUSE = 'warehouse',
+  ALL = 'all'
 }

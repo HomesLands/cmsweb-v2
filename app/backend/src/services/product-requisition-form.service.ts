@@ -758,11 +758,17 @@ class ProductRequisitionFormService {
     ];
     const userApprovals = await userApprovalRepository.find({
       where: { productRequisitionForm: { id: form.id } },
+      order: {
+        assignedUserApproval: {
+          roleApproval: "ASC",
+        },
+      },
+      relations: ["assignedUserApproval.user"],
     });
-    userApprovals.forEach((item) => {
+    userApprovals.forEach((item, index) => {
       if (item) {
         userSignatures.push({
-          title: item.assignedUserApproval?.roleApproval || "",
+          title: `Duyệt bước ${index + 1}`,
           signature: item.assignedUserApproval?.user?.signature,
         });
       }
