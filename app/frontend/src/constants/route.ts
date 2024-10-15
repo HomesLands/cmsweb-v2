@@ -54,9 +54,5 @@ export const ROUTE = {
 
   // Assigned approver
   ASSIGNED_APPROVER: '/assigned-approvers',
-  ADD_ASSIGNED_APPROVER: '/assigned-approvers/add',
-
-  // Warehouse
-  WAREHOUSE: '/warehouses',
-  ADD_WAREHOUSE: '/warehouses/add'
+  ADD_ASSIGNED_APPROVER: '/assigned-approvers/add'
 }
