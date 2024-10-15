@@ -6,6 +6,8 @@ WORKDIR /usr/src/app
 
 RUN npm install pm2 -g
 
+RUN sudo apt-get install chromium-browser
+
 # Step 3: Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
@@ -17,9 +19,6 @@ COPY . .
 
 # Step 6: Build the application
 RUN npm run build
-
-# Explicitly run the postbuild step.
-RUN npm run postbuild
 
 # Step 7: Expose the port the app runs on
 EXPOSE 3000
