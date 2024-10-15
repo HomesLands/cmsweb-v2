@@ -33,7 +33,8 @@ import {
   CreateProjectPage,
   AdministrationPage,
   ResourcePage,
-  CreateResourcePage
+  CreateResourcePage,
+  WarehousePage
 } from './loadable'
 
 export const router = createBrowserRouter([
@@ -298,6 +299,16 @@ export const router = createBrowserRouter([
             element={<SuspenseElement component={AdministrationPage} />}
           />
         )
+      }
+    ]
+  },
+  {
+    path: ROUTE.WAREHOUSE,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: <WarehousePage />
       }
     ]
   }

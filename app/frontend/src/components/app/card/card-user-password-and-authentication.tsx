@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
 
 import {
   Card,
@@ -15,21 +16,33 @@ import {
 import { useForm } from 'react-hook-form'
 import { passwordAndAuthenticationSchema, TPasswordAndAuthenticationSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { IConfirmChangePassword } from '@/types'
 
-export const CardUserPasswordAndAuthentication = () => {
+interface CardUserPasswordAndAuthenticationProps {
+  handleChangePassword: (data: IConfirmChangePassword) => void
+}
+
+export const CardUserPasswordAndAuthentication = ({
+  handleChangePassword
+}: CardUserPasswordAndAuthenticationProps) => {
   const { t } = useTranslation('account')
 
   const form = useForm<TPasswordAndAuthenticationSchema>({
     resolver: zodResolver(passwordAndAuthenticationSchema),
     defaultValues: {
-      oldPassword: '',
+      currentPassword: '',
       newPassword: '',
       confirmPassword: ''
     }
   })
 
   const handleSubmit = (values: TPasswordAndAuthenticationSchema) => {
-    console.log(values)
+    handleChangePassword(values)
+    form.reset({
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: ''
+    })
   }
 
   return (
@@ -42,7 +55,7 @@ export const CardUserPasswordAndAuthentication = () => {
                 <div className="grid grid-cols-1 gap-2">
                   <FormField
                     control={form.control}
-                    name="oldPassword"
+                    name="currentPassword"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>{t('account.oldPassword')}</FormLabel>

@@ -4,7 +4,8 @@ import {
   FolderOpenIcon,
   MapPinIcon,
   UserCheckIcon,
-  UsersIcon
+  UsersIcon,
+  WarehouseIcon
 } from 'lucide-react'
 import { ArchiveIcon } from '@radix-ui/react-icons'
 
@@ -135,6 +136,19 @@ export const sidebarRoutes: ISidebarRoute[] = [
         title: 'sidebar.createAssignedApprover',
         path: ROUTE.ADD_ASSIGNED_APPROVER,
         permission: { authority: Authority.CREATE, resource: Resource.ASSIGNED_APPROVAL }
+      }
+    ]
+  },
+  {
+    title: 'sidebar.warehouses',
+    path: ROUTE.WAREHOUSE,
+    icon: WarehouseIcon,
+    permission: { authority: Authority.READ, resource: Resource.WAREHOUSE },
+    children: [
+      {
+        title: 'sidebar.warehouses',
+        path: ROUTE.WAREHOUSE,
+        permission: { authority: Authority.READ, resource: Resource.WAREHOUSE }
       }
     ]
   }

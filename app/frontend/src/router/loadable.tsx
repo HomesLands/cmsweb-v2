@@ -164,3 +164,9 @@ export const CreateResourcePage = React.lazy(() =>
     default: module.CreateResource
   }))
 )
+
+export const WarehousePage = React.lazy(() =>
+  import('@/views/warehouse').then((module) => ({
+    default: module.Warehouse
+  }))
+)
