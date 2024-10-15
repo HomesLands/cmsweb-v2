@@ -9,6 +9,7 @@
     "company": "Company",
     "site": "Site",
     "confirmPassword": "Confirm Password",
+    "passwordsDontMatch": "Passwords don't match",
     "update": "Update",
     "delete": "Delete",
     "deleteAccount": "Delete Account",

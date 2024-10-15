@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { KeyRound, UserRoundPen } from 'lucide-react'
 
@@ -5,8 +6,6 @@ import { Card, CardContent, Input, Button } from '@/components/ui'
 import { ProfilePicture } from '@/components/app/avatar'
 import { useThemeStore, useUserStore } from '@/stores'
 import { useUploadSignature } from '@/hooks/use-users'
-import { useRef } from 'react'
-import { useTheme } from '@/components/theme-provider'
 import { cn } from '@/lib/utils'
 
 interface CardUserGeneralInfoProps {

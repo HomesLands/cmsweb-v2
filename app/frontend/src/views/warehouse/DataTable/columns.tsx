@@ -1,100 +1,64 @@
 import { ColumnDef } from '@tanstack/react-table'
-import { MoreHorizontal } from 'lucide-react'
 
 import {
+  Button,
+  DataTableColumnHeader,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  Button,
-  Checkbox,
-  DataTableColumnHeader
+  DropdownMenuTrigger
 } from '@/components/ui'
-import { IUserInfo } from '@/types/user.type'
+import { ISite } from '@/types'
+import { MoreHorizontal } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
-export const columns: ColumnDef<IUserInfo>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false
-  },
-  {
-    accessorKey: 'fullName',
-    header: 'Tên nhân sự'
-  },
-  {
-    accessorKey: 'fullName',
-    header: 'Tên nhân sự'
-  },
-  {
-    accessorKey: 'fullName',
-    header: 'Tên nhân sự'
-  },
-  {
-    accessorKey: 'avatar',
-    header: 'Ảnh'
-  },
-  {
-    accessorKey: 'dob',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày sinh" />
-  },
-  {
-    accessorKey: 'address',
-    header: 'Địa chỉ'
-  },
-  {
-    accessorKey: 'phoneNumber',
-    header: 'Số điện thoại'
-  },
-  {
-    accessorKey: 'email',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />
-  },
-  {
-    accessorKey: 'role',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Chức vụ" />
-  },
-  {
-    accessorKey: 'department',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Bộ phận" />
-  },
-  {
-    id: 'actions',
-    cell: () => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="w-8 h-8 p-0">
-              <span className="sr-only">Actions</span>
-              <MoreHorizontal className="w-4 h-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Xem chi tiết</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+export const useWarehouseColumns = (): ColumnDef<ISite>[] => {
+  const { t } = useTranslation(['warehouse'])
+  return [
+    {
+      accessorKey: 'slug',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('warehouse.slug')} />
+    },
+    {
+      accessorKey: 'name',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('warehouse.name')} />
+    },
+    {
+      accessorKey: 'company.name',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('warehouse.companyName')} />
       )
+    },
+    {
+      accessorKey: 'company.slug',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('warehouse.companySlug')} />
+      )
+    },
+    {
+      id: 'actions',
+      header: 'Thao tác',
+      cell: ({ row }) => {
+        const requisition = row.original
+        return (
+          <div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="p-0 w-8 h-8">
+                  <span className="sr-only">Thao tác</span>
+                  <MoreHorizontal className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
+                <DropdownMenuItem>Chỉnh sửa</DropdownMenuItem>
+                <DropdownMenuItem>Xóa</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )
+      }
     }
-  }
-]
+  ]
+}
