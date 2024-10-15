@@ -4,7 +4,6 @@ import puppeteer from "puppeteer";
 import path from "path";
 import { GlobalError } from "@exception/global-error";
 import { ErrorCodes } from "@exception/error-code";
-import { isWinPlatform } from "heppers";
 
 class PDFService {
   public async generatePDF({

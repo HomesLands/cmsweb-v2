@@ -298,11 +298,9 @@ class ProductRequisitionFormController {
   ): Promise<void> {
     try {
       const query = req.query as unknown as TQueryRequest;
-      const creatorId = req.userId as string;
       logger.info(`[${ProductRequisitionFormController.name}]`, query);
       const results =
         await productRequisitionFormService.getAllProductRequisitionFormsCompletedApproval(
-          creatorId,
           query
         );
 

@@ -17,6 +17,7 @@ class UserRoleService {
     plainData: TCreateUserRoleRequestDto
   ): Promise<UserRoleResponseDto> {
     const requestData = plainToClass(CreateUserRoleRequestDto, plainData);
+    console.log({ requestData });
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
 
@@ -27,13 +28,12 @@ class UserRoleService {
     if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 
     // Check existed
-    const isExisted = await userRoleRepository.findOne({
+    const isExisted = await userRoleRepository.exists({
       where: {
         user: { id: user.id },
         role: { id: role.id },
       },
     });
-    console.log({ isExisted });
 
     if (isExisted) throw new GlobalError(ErrorCodes.USER_ROLE_EXIST);
 
