@@ -504,6 +504,26 @@ export const ErrorCodes: TErrorCode = {
     code: 1112,
     message: "Assigned user approval this level for site is existed",
   },
+  INVALID_PURCHASE_PRODUCT_QUANTITY: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1113,
+    message: "Invalid purchase product quantity",
+  },
+  INVALID_PURCHASE_PRODUCT_ARRAY: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1114,
+    message: "Invalid purchase product array",
+  },
+  INVALID_STATUS_FORM: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1115,
+    message: "Invalid status form",
+  },
+  PRODUCT_PURCHASE_FORM_CODE_EXISTED: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1116,
+    message: "Product purchase form code existed",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]
