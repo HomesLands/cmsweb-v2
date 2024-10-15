@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Yêu cầu vật tư - <%= qrCode %></title>
      <% var dir = process.cwd() %>
-     <%- include(dir + "/src/views/partials/head.ejs") %>
+     <%- include(dir + "/views/partials/head.ejs") %>
 </head>
 <body>
     <div class="container mx-auto px-5">
@@ -74,7 +74,7 @@
         </table>
 
         <!-- Sign -->
-         <div class="flex items-center gap-32 justify-center mt-8">
+         <div class="flex items-start gap-32 justify-center mt-8">
             <% userSignatures.forEach(function(item) { %>
                 <div class="flex flex-col items-center gap-3">
                     <span class="font-bold italic capitalize text-sm"><%= item.title  %></span>
@@ -82,7 +82,7 @@
                         <img 
                             src="<%= requestUrl %>/api/v1/files/<%= item.signature %>" 
                             alt="<%= companyLogo %>" `
-                            class="w-20" />
+                            class="w-32" />
                     </div>
                 </div>
                 <% }); 
