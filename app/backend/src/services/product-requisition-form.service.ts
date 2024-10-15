@@ -101,16 +101,12 @@ class ProductRequisitionFormService {
   }
 
   public async getAllProductRequisitionFormsCompletedApproval(
-    creatorId: string,
     options: TQueryRequest
   ): Promise<TPaginationOptionResponse<ProductRequisitionFormResponseDto[]>> {
     // Get the total number of products
     const totalProductRequisitionForm =
       await productRequisitionFormRepository.count({
         where: {
-          creator: {
-            id: creatorId,
-          },
           status: In([
             ProductRequisitionFormStatus.WAITING_EXPORT,
             ProductRequisitionFormStatus.EXPORTING,
@@ -127,9 +123,6 @@ class ProductRequisitionFormService {
 
     const forms = await productRequisitionFormRepository.find({
       where: {
-        creator: {
-          id: creatorId,
-        },
         status: In([
           ProductRequisitionFormStatus.WAITING_EXPORT,
           ProductRequisitionFormStatus.EXPORTING,
