@@ -44,12 +44,10 @@ class UserService {
       take: pageSize,
       skip: (page - 1) * pageSize,
       order: { createdAt: options.order },
-      relations: [
-        "userDepartments",
-        "userDepartments.department",
-        "userRoles.role",
-      ],
+      relations: ["userDepartments.department", "userRoles.role"],
     });
+
+    console.log({ users });
     const results = mapper.mapArray(users, User, UserResponseDto);
     return {
       items: results,
@@ -69,13 +67,10 @@ class UserService {
       where: {
         id: userId,
       },
-      relations: [
-        "userDepartments",
-        "userDepartments.department",
-        "userDepartments.department.site",
-        "userDepartments.department.site.company",
-      ],
+      relations: ["userDepartments.department.site.company"],
     });
+
+    console.log({ user });
     if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 
     const results = mapper.map(user, User, UserResponseDto);

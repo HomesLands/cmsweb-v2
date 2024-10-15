@@ -12,7 +12,6 @@ import {
   Button
 } from '@/components/ui'
 import {
-  addNewProductRequestSchema,
   TAddNewProductRequestSchema,
   TUpdateProductRequestSchema,
   updateProductRequestSchema

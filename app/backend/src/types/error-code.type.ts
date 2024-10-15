@@ -117,6 +117,7 @@ export type TErrorCodeKey =
   | "FOLDER_NOT_FOUND"
   | "PASSWORD_NOT_MATCH"
   | "CONFIRM_PASSWORD_NOT_MATCH"
+  | "USER_DEPARTMENT_EXIST"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {
