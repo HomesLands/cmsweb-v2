@@ -41,6 +41,7 @@
     "createProjectSuccessfully": "Dự án được tạo thành công",
 
     "addRoleSuccess": "Chức vụ được thêm thành công",
-    "addDepartmentSuccess": "Phòng ban được thêm thành công"
+    "addDepartmentSuccess": "Phòng ban được thêm thành công",
+    "changePasswordSuccess": "Mật khẩu được thay đổi thành công"
   }
 }

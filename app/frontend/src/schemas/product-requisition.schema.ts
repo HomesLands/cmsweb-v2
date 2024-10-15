@@ -170,11 +170,11 @@ export const personalAccountInfoSchema = z.object({
 
 export const passwordAndAuthenticationSchema = z
   .object({
-    oldPassword: z.string().min(1, 'Mật khẩu cũ không hợp lệ'),
+    currentPassword: z.string().min(1, 'Mật khẩu cũ không hợp lệ'),
     newPassword: z.string().min(1, 'Mật khẩu mới không hợp lệ'),
     confirmPassword: z.string().min(1, 'Mật khẩu xác nhận không hợp lệ')
   })
-  .refine((data) => data.newPassword !== data.oldPassword, {
+  .refine((data) => data.newPassword !== data.currentPassword, {
     message: 'Mật khẩu mới phải khác mật khẩu cũ',
     path: ['newPassword']
   })

@@ -1,10 +1,10 @@
+import { IApiResponse, IConfirmChangePassword, IPaginationResponse, IQuery } from '@/types'
 import {
-  IApiResponse,
-  IPaginationResponse,
-  IQuery,
-  IUpdateProductRequisitionGeneralInfo
+  IChangePasswordResponse,
+  IUpdateUserGeneralInfo,
+  IUserInfo,
+  IUserPermission
 } from '@/types'
-import { IUpdateUserGeneralInfo, IUserInfo, IUserPermission } from '@/types/user.type'
 import { http } from '@/utils'
 
 export async function getUsers(
@@ -44,4 +44,12 @@ export async function uploadSignature(file: File) {
 export async function updateUser(data: IUpdateUserGeneralInfo) {
   // const response = await http.patch<IApiResponse<IUserInfo>>(`/users/update`, data)
   // return response.data
+}
+
+export async function changePasswordApi(data: IConfirmChangePassword) {
+  const response = await http.patch<IApiResponse<IChangePasswordResponse>>(
+    '/users/changePassword',
+    data
+  )
+  return response
 }

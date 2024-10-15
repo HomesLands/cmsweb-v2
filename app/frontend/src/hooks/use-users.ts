@@ -1,6 +1,7 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import {
+  changePasswordApi,
   getUser,
   getUserInfoPermission,
   getUsers,
@@ -9,6 +10,7 @@ import {
   uploadSignature
 } from '@/api'
 import {
+  IConfirmChangePassword,
   IQuery,
   IUpdateProductRequisitionGeneralInfo,
   IUpdateUserGeneralInfo,
@@ -64,6 +66,16 @@ export const useUpdateUser = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (data: IUpdateUserGeneralInfo) => updateUser(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user-info'] })
+    }
+  })
+}
+
+export const useChangePassword = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: IConfirmChangePassword) => changePasswordApi(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user-info'] })
     }

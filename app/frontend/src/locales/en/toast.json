@@ -40,6 +40,7 @@
     "createProjectSuccessfully": "Project created successfully",
 
     "addRoleSuccess": "Role added successfully",
-    "addDepartmentSuccess": "Department added successfully"
+    "addDepartmentSuccess": "Department added successfully",
+    "changePasswordSuccess": "Password changed successfully"
   }
 }

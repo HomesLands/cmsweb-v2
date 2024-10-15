@@ -51,3 +51,17 @@ export interface IUpdateUserGeneralInfo {
   company: string
   site: string
 }
+
+export interface IConfirmChangePassword {
+  currentPassword?: string
+  newPassword?: string
+  confirmPassword?: string
+}
+
+export interface IChangePasswordResponse {
+  fullname: string
+  username: string
+  avatar: string
+  signature: string
+  slug: string
+}
