@@ -1,5 +1,6 @@
 import { IQuery } from './base.type'
 import { IPermission } from './permission.type'
+import { IUserRole } from './user-role.type'
 
 export interface IUserInfo {
   fullname: string
@@ -30,6 +31,7 @@ export interface IUserInfo {
     updatedAt: string
     slug: string
   }[]
+  userRoles: IUserRole[]
   signature: string
   createdAt: string
   updatedAt: string
@@ -51,9 +53,9 @@ export interface IUpdateUserGeneralInfo {
 }
 
 export interface IConfirmChangePassword {
-  currentPassword: string
-  newPassword: string
-  confirmPassword: string
+  currentPassword?: string
+  newPassword?: string
+  confirmPassword?: string
 }
 
 export interface IChangePasswordResponse {

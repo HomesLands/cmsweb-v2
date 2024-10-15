@@ -32,7 +32,7 @@ export const SelectDepartment: FC<SelectDepartmentProps> = ({ onChange }) => {
     if (departments?.result) {
       const newDepartments = departments.result.map((item) => ({
         value: item.slug || '',
-        label: item.nameNormalize || ''
+        label: `${item.description} (${item.nameNormalize})`
       }))
       // Append new roles to the previous roles
       setAllDepartments((prevDepartments) => [...prevDepartments, ...newDepartments])

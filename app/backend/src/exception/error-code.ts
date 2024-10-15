@@ -509,6 +509,11 @@ export const ErrorCodes: TErrorCode = {
     code: 1116,
     message: "Confirm password does not match",
   },
+  USER_DEPARTMENT_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1117,
+    message: "User department exists",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]

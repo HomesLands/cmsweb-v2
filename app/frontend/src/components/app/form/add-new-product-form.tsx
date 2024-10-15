@@ -23,11 +23,9 @@ export const AddNewProductForm: React.FC<IFormAddNewProductProps> = ({ onSubmit 
     resolver: zodResolver(addNewProductSchema),
     defaultValues: {
       code: '',
-      slug: '',
       name: '',
       provider: '',
       unit: '',
-      requestQuantity: '',
       description: ''
     }
   })

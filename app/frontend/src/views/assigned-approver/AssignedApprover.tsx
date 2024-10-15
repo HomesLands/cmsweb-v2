@@ -6,7 +6,7 @@ import { DataTable, Label } from '@/components/ui'
 import { useAuthorites, usePagination } from '@/hooks'
 import { useAuthorityColumns } from '@/views/authorities/data-table/columns/columns'
 
-const CreateAssignedApprover: React.FC = () => {
+export default function AssignedApprover() {
   const { t } = useTranslation(['assignedApprover'])
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
 
@@ -33,5 +33,3 @@ const CreateAssignedApprover: React.FC = () => {
     </div>
   )
 }
-
-export default CreateAssignedApprover

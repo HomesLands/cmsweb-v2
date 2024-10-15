@@ -3,7 +3,7 @@ import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
 
 import { UserDepartment } from "@entities";
-import { 
+import {
   userDepartmentRepository,
   userRepository,
   departmentRepository,
@@ -14,12 +14,11 @@ import { TCreateUserDepartmentRequestDto } from "@types";
 import { GlobalError, ErrorCodes, ValidationError } from "@exception";
 
 class UserDepartmentService {
-  public async getAllUserDepartments(): Promise<UserDepartmentResponseDto[] | []> {
+  public async getAllUserDepartments(): Promise<
+    UserDepartmentResponseDto[] | []
+  > {
     const userDepartmentsData = await userDepartmentRepository.find({
-      relations: [
-        'department',
-        'user',
-      ]
+      relations: ["department", "user"],
     });
 
     const userDepartmentsDto: UserDepartmentResponseDto[] = mapper.mapArray(
@@ -40,18 +39,37 @@ class UserDepartmentService {
     if (errors.length > 0) throw new ValidationError(errors);
 
     const user = await userRepository.findOneBy({ slug: requestData.user });
-    if(!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
+    const department = await departmentRepository.findOneBy({
+      slug: requestData.department,
+    });
 
-    const department = await departmentRepository.findOneBy({ slug: requestData.department });
-    if(!department) throw new GlobalError(ErrorCodes.DEPARTMENT_NOT_FOUND);
+    if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
+    if (!department) throw new GlobalError(ErrorCodes.DEPARTMENT_NOT_FOUND);
 
-    const userDepartmentData = mapper.map(requestData, CreateUserDepartmentRequestDto, UserDepartment);
+    const isExisted = await userDepartmentRepository.exists({
+      where: {
+        user: { id: user.id },
+        department: { id: department.id },
+      },
+    });
+    if (isExisted) throw new GlobalError(ErrorCodes.USER_DEPARTMENT_EXIST);
+
+    const userDepartmentData = mapper.map(
+      requestData,
+      CreateUserDepartmentRequestDto,
+      UserDepartment
+    );
     userDepartmentData.user = user;
     userDepartmentData.department = department;
 
-    const dataUserDepartmentCreated = await userDepartmentRepository.createAndSave(userDepartmentData);
-    
-    return mapper.map(dataUserDepartmentCreated, UserDepartment, UserDepartmentResponseDto);
+    const dataUserDepartmentCreated =
+      await userDepartmentRepository.createAndSave(userDepartmentData);
+
+    return mapper.map(
+      dataUserDepartmentCreated,
+      UserDepartment,
+      UserDepartmentResponseDto
+    );
   }
 }
 

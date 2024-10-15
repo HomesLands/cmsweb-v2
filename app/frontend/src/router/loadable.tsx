@@ -165,6 +165,18 @@ export const CreateResourcePage = React.lazy(() =>
   }))
 )
 
+export const ProductPage = React.lazy(() =>
+  import('@/views/products').then((module) => ({
+    default: module.Products
+  }))
+)
+
+export const CreateProductPage = React.lazy(() =>
+  import('@/views/products').then((module) => ({
+    default: module.AddProduct
+  }))
+)
+
 export const WarehousePage = React.lazy(() =>
   import('@/views/warehouse').then((module) => ({
     default: module.Warehouse
