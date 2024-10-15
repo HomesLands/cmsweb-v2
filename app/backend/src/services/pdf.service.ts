@@ -14,7 +14,8 @@ class PDFService {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any;
   }): Promise<Buffer> {
-    const templatePath = path.join(process.cwd(), "views/pages", templateName);
+    const templatePath = path.join(process.cwd(), "/views/pages", templateName);
+    console.log({ dir: process.cwd(), templatePath });
 
     const template = await fs.promises.readFile(templatePath, "utf8");
     const html = ejs.render(template, data);
