@@ -3,7 +3,6 @@ import React from 'react'
 import { DataTable } from '@/components/ui'
 import { useGetApprovedProductRequisition, usePagination } from '@/hooks'
 import { useWarehouseColumns } from './DataTable/columns'
-import { useDownloadStore } from '@/api/products'
 
 const Warehouse: React.FC = () => {
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
