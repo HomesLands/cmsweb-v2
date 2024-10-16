@@ -6,7 +6,7 @@ import { IProductInfoCreate, IApiProductInfoCreate } from '@/types'
 import { AddNewProductForm } from '@/components/app/form'
 import { useCreateProduct } from '@/hooks'
 import { showToast } from '@/utils'
-import { DialogConfirmProduct } from '@/components/app/dialog'
+import { DialogConfirmAddProduct } from '@/components/app/dialog'
 
 const AddProduct: React.FC = () => {
   const { t: tToast } = useTranslation('toast')
@@ -68,7 +68,7 @@ const AddProduct: React.FC = () => {
           </Card>
         </div>
       </div>
-      <DialogConfirmProduct
+      <DialogConfirmAddProduct
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
         onConfirm={handleConfirm}

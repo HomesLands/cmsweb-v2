@@ -7,11 +7,12 @@ import {
   DataTableColumnHeader,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui'
 import { ICompany } from '@/types'
+import { publicFileURL } from '@/constants'
+import { DialogUpdateCompany } from '@/components/app/dialog'
 
 export const useCompanyColumns = (): ColumnDef<ICompany>[] => {
   const { t } = useTranslation(['companies'])
@@ -25,22 +26,23 @@ export const useCompanyColumns = (): ColumnDef<ICompany>[] => {
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('companies.name')} />
     },
     {
-      accessorKey: 'director',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('companies.director')} />
-      )
-    },
-    {
-      accessorKey: 'directorSlug',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('companies.directorSlug')} />
-      )
+      accessorKey: 'logo',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('companies.logo')} />,
+      cell: ({ row }) => {
+        const { logo } = row.original
+        return (
+          <div>
+            <img src={`${publicFileURL}/${logo}`} className="w-20" />
+          </div>
+        )
+      }
     },
     {
       id: 'actions',
       header: 'Thao tác',
       cell: ({ row }) => {
         const company = row.original
+        console.log({ company })
         return (
           <div>
             <DropdownMenu>
@@ -52,8 +54,7 @@ export const useCompanyColumns = (): ColumnDef<ICompany>[] => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                <DropdownMenuItem>Chỉnh sửa</DropdownMenuItem>
-                <DropdownMenuItem>Xóa</DropdownMenuItem>
+                <DialogUpdateCompany company={company} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

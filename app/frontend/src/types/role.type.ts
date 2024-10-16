@@ -13,3 +13,7 @@ export interface ICreateRole {
   description: string
   nameDisplay?: string
 }
+
+export interface IUpdateRole extends ICreateRole {
+  slug: string
+}

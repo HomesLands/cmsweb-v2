@@ -9,13 +9,7 @@ import {
   uploadProfilePicture,
   uploadSignature
 } from '@/api'
-import {
-  IConfirmChangePassword,
-  IQuery,
-  IUpdateProductRequisitionGeneralInfo,
-  IUpdateUserGeneralInfo,
-  IUserInfo
-} from '@/types'
+import { IConfirmChangePassword, IQuery, IUpdateUserGeneralInfo } from '@/types'
 
 export const useUsers = (q: IQuery) => {
   return useQuery({

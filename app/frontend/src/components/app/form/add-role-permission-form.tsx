@@ -10,17 +10,12 @@ import {
   Button,
   Input
 } from '@/components/ui'
-import {
-  createRolePermissionSchema,
-  createUserRoleSchema,
-  TCreateRolePermissionSchema
-} from '@/schemas'
+import { createRolePermissionSchema, TCreateRolePermissionSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SelectPermission, SelectRole } from '../select'
+import { SelectPermission } from '../select'
 import { useTranslation } from 'react-i18next'
 import React from 'react'
 import { IRole } from '@/types'
-import { createRolePermission } from '@/api'
 
 interface IFormAddRolePermissionProps {
   role: IRole

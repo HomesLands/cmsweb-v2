@@ -18,7 +18,7 @@ interface DialogConfirmProductProps {
   productData: IProductInfoCreate | null
 }
 
-export const DialogConfirmProduct: React.FC<DialogConfirmProductProps> = ({
+export const DialogConfirmAddProduct: React.FC<DialogConfirmProductProps> = ({
   isOpen,
   onClose,
   onConfirm,

@@ -3,6 +3,7 @@ import {
   IAddNewProductInRequisitionUpdate,
   IApiProductInfoCreate,
   IApiResponse,
+  IExportProductRequisitionFormRequest,
   IFinalProductRequisition,
   IPaginationResponse,
   IProductInfo,
@@ -19,7 +20,7 @@ import {
 import { http } from '@/utils'
 import { saveAs } from 'file-saver'
 import { create } from 'zustand'
-import axios, { AxiosRequestConfig } from 'axios'
+import { AxiosRequestConfig } from 'axios'
 
 interface DownloadState {
   progress: number
@@ -209,9 +210,12 @@ interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   doNotShowLoading?: boolean
 }
 
-export async function exportPDFProductRequisition(slug: string) {
+export async function exportPDFProductRequisition({
+  slug,
+  code
+}: IExportProductRequisitionFormRequest) {
   const { setProgress, setFileName, setIsDownloading, reset } = useDownloadStore.getState()
-  setFileName(`product_requisition_${slug}.pdf`)
+  setFileName(`${code}.pdf`)
   setIsDownloading(true)
 
   try {
@@ -230,7 +234,7 @@ export async function exportPDFProductRequisition(slug: string) {
     } as CustomAxiosRequestConfig)
 
     const blob = new Blob([response.data], { type: 'application/pdf' })
-    saveAs(blob, `product_requisition_${slug}.pdf`)
+    saveAs(blob, `${code}.pdf`)
     return response.data
   } finally {
     setIsDownloading(false)
@@ -238,9 +242,12 @@ export async function exportPDFProductRequisition(slug: string) {
   }
 }
 
-export async function exportExcelProductRequisition(slug: string) {
+export async function exportExcelProductRequisition({
+  slug,
+  code
+}: IExportProductRequisitionFormRequest) {
   const { setProgress, setFileName, setIsDownloading, reset } = useDownloadStore.getState()
-  setFileName(`product_requisition_${slug}.xlsx`)
+  setFileName(`${code}.xlsx`)
   setIsDownloading(true)
 
   try {
@@ -261,7 +268,7 @@ export async function exportExcelProductRequisition(slug: string) {
     const blob = new Blob([response.data], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     })
-    saveAs(blob, `product_requisition_${slug}.xlsx`)
+    saveAs(blob, `${code}.xlsx`)
   } finally {
     setIsDownloading(false)
     reset()

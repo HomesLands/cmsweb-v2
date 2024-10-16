@@ -13,7 +13,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui'
-import { IProductRequisitionFormInfo } from '@/types'
+import { IExportProductRequisitionFormRequest, IProductRequisitionFormInfo } from '@/types'
 
 import { RequisitionTypeBadge } from '@/components/app/badge'
 import { useExportExcelProductRequisition, useExportPDFProductRequisition } from '@/hooks'
@@ -23,8 +23,7 @@ import { DialogRequisitionDetail } from '@/components/app/dialog'
 export const useWarehouseColumns = (): ColumnDef<IProductRequisitionFormInfo>[] => {
   const { t } = useTranslation(['warehouse'])
   const [openViewDialog, setOpenViewDialog] = useState(false)
-  const [selectedRequisition, setSelectedRequisition] =
-    useState<IProductRequisitionFormInfo | null>(null)
+  const [, setSelectedRequisition] = useState<IProductRequisitionFormInfo | null>(null)
   const { mutate: exportPDFProductRequisition } = useExportPDFProductRequisition()
   const { mutate: exportExcelProductRequisition } = useExportExcelProductRequisition()
 
@@ -37,15 +36,17 @@ export const useWarehouseColumns = (): ColumnDef<IProductRequisitionFormInfo>[] 
     setOpenViewDialog(false)
   }
 
-  const handleExportPDFProductRequisition = (slug: string) => {
-    exportPDFProductRequisition(slug, {
+  const handleExportPDFProductRequisition = (requestData: IExportProductRequisitionFormRequest) => {
+    exportPDFProductRequisition(requestData, {
       onSuccess: () => {
         showToast(t('toast.exportPDFSuccess'))
       }
     })
   }
-  const handleExportExcelProductRequisition = (slug: string) => {
-    exportExcelProductRequisition(slug, {
+  const handleExportExcelProductRequisition = (
+    requestData: IExportProductRequisitionFormRequest
+  ) => {
+    exportExcelProductRequisition(requestData, {
       onSuccess: () => {
         showToast(t('toast.exportExcelSuccess'))
       }
@@ -91,34 +92,6 @@ export const useWarehouseColumns = (): ColumnDef<IProductRequisitionFormInfo>[] 
         return <div className="min-w-[12rem] text-[0.8rem]">{companyName || 'N/A'}</div>
       }
     },
-    // {
-    //   accessorKey: 'isRecalled',
-    //   header: ({ column }) => <DataTableColumnHeader column={column} title="Trạng thái hoàn" />,
-    //   cell: ({ row }) => {
-    //     const { status, isRecalled } = row.original
-    //     return (
-    //       <div className="min-w-[8rem]">
-    //         <RecalledStatusBadge status={status} isRecalled={isRecalled} />
-    //       </div>
-    //     )
-    //   }
-    // },
-    // {
-    //   accessorFn: (row) => row.status,
-    //   id: 'status',
-    //   header: ({ column }) => <DataTableColumnHeader column={column} title="Trạng thái" />,
-    //   cell: ({ row }) => {
-    //     return (
-    //       <ProductRequisitionByCreatorStatusBadge
-    //         isRecalled={row.original.isRecalled}
-    //         status={row.original.status as ProductRequisitionStatus}
-    //       />
-    //     )
-    //   },
-    //   filterFn: (row, id, value) => {
-    //     return row.original.status === value
-    //   }
-    // },
     {
       id: 'actions',
       header: 'Thao tác',
@@ -139,12 +112,22 @@ export const useWarehouseColumns = (): ColumnDef<IProductRequisitionFormInfo>[] 
                   {t('warehouse.detail')}
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => handleExportPDFProductRequisition(requisition.slug)}
+                  onClick={() =>
+                    handleExportPDFProductRequisition({
+                      slug: requisition.slug,
+                      code: requisition.code || ''
+                    })
+                  }
                 >
                   {t('warehouse.pdfExport')}
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => handleExportExcelProductRequisition(requisition.slug)}
+                  onClick={() =>
+                    handleExportExcelProductRequisition({
+                      slug: requisition.slug,
+                      code: requisition.code || ''
+                    })
+                  }
                 >
                   {t('warehouse.excelExport')}
                 </DropdownMenuItem>

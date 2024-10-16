@@ -24,6 +24,7 @@ import {
   IAddNewProductInRequisitionUpdate,
   IApiProductInfoCreate,
   IApproveProductRequisition,
+  IExportProductRequisitionFormRequest,
   IFinalProductRequisition,
   IProductInfoCreate,
   IProductInfoUpdate,
@@ -165,12 +166,14 @@ export const useGetApprovedProductRequisition = (q: IProductQuery) => {
 
 export const useExportPDFProductRequisition = () => {
   return useMutation({
-    mutationFn: (slug: string) => exportPDFProductRequisition(slug)
+    mutationFn: (requestData: IExportProductRequisitionFormRequest) =>
+      exportPDFProductRequisition(requestData)
   })
 }
 
 export const useExportExcelProductRequisition = () => {
   return useMutation({
-    mutationFn: (slug: string) => exportExcelProductRequisition(slug)
+    mutationFn: (requestData: IExportProductRequisitionFormRequest) =>
+      exportExcelProductRequisition(requestData)
   })
 }

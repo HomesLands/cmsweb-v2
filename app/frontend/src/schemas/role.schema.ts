@@ -6,4 +6,9 @@ export const createRoleSchema = z.object({
   nameDisplay: z.string().min(1, 'Tên hiển thị không hợp lệ')
 })
 
+export const updateRoleSchema = createRoleSchema.extend({
+  slug: z.string().min(1)
+})
+
 export type TCreateRoleSchema = z.infer<typeof createRoleSchema>
+export type TUpdateRoleSchema = z.infer<typeof updateRoleSchema>
