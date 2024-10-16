@@ -22,4 +22,5 @@ export { default as productWarehouseController } from "./product-warehouse.contr
 export { default as fileController } from "./file.controller";
 export { default as resourceController } from "./resource.controller";
 export { default as rolePermissionController } from "./role-permission.controller";
+export { default as productPurchaseFormController } from "./product-purchase-from.controller";
 export { default as databaseController } from "./database.controller";

@@ -20,4 +20,6 @@ export * from "./temporary-product-request.dto";
 export * from "./temporary-product-request.dto";
 export * from "./resource-request.dto";
 export * from "./role-permission-request.dto";
+export * from "./purchase-product-request.dto";
+export * from "./product-purchase-form-request.dto";
 export * from "./user-request.dto";

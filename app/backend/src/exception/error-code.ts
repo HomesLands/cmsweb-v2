@@ -489,30 +489,80 @@ export const ErrorCodes: TErrorCode = {
     code: 1112,
     message: "Assigned user approval this level for site is existed",
   },
-  INVALID_NEW_PASSWORD: {
+  INVALID_PURCHASE_PRODUCT_QUANTITY: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1113,
+    message: "Invalid purchase product quantity",
+  },
+  INVALID_PURCHASE_PRODUCT_ARRAY: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1114,
+    message: "Invalid purchase product array",
+  },
+  INVALID_STATUS_FORM: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1115,
+    message: "Invalid status form",
+  },
+  PRODUCT_PURCHASE_FORM_CODE_EXISTED: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1116,
+    message: "Product purchase form code existed",
+  },
+  INVALID_NEW_PASSWORD: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1117,
     message: "New password invalid",
   },
   INVALID_CONFIRM_PASSWORD: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1114,
+    code: 1118,
     message: "Confirm password invalid",
   },
   PASSWORD_NOT_MATCH: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1115,
+    code: 1119,
     message: "Password does not match",
   },
   CONFIRM_PASSWORD_NOT_MATCH: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1116,
+    code: 1120,
     message: "Confirm password does not match",
+  },
+  PURCHASE_PRODUCT_IS_NOT_INCLUDE_IN_REQUEST_PRODUCTS: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1121,
+    message: "Purchase product is not include in request products",
+  },
+  PURCHASE_PRODUCT_QUANTITY_EXCEED_REQUEST_PRODUCT_QUANTITY: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1122,
+    message: "Purchase product quantity exceed request product quantity",
   },
   USER_DEPARTMENT_EXIST: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1117,
+    code: 1123,
     message: "User department exists",
+  },
+  INVALID_PRODUCT_REQUISITION_FORM_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1124,
+    message: "Invalid product requisition form slug",
+  },
+  INVALID_TEMPORARY_PRODUCT_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1125,
+    message: "Invalid temporary product slug",
+  },
+  PRODUCT_REQUISITION_FORM_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1126,
+    message: "Product requisition form not found",
+  },
+  CAN_NOT_CREATE_PURCHASE_FORM_FROM_REQUISITION_FORM: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1127,
+    message: "Can't create purchase form from this requisition form",
   },
 
   // AuthenticationErrors

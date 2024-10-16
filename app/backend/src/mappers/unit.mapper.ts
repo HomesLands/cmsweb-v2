@@ -1,4 +1,4 @@
-import { MappingProfile, Mapper, createMap } from "@automapper/core";
+import { MappingProfile, Mapper, createMap, forMember, mapFrom } from "@automapper/core";
 import { UnitResponseDto } from "@dto/response";
 import { CreateUnitRequestDto } from "@dto/request";
 import { Unit } from "@entities";
@@ -9,5 +9,15 @@ export const unitMapper: MappingProfile = (mapper: Mapper) => {
   createMap(mapper, Unit, UnitResponseDto);
 
   // Map request object to entity
-  createMap(mapper, CreateUnitRequestDto, Unit);
+  createMap(
+    mapper, 
+    CreateUnitRequestDto, 
+    Unit,
+    forMember(
+      (destination) => destination.name,
+      mapFrom(
+        (source) => source.name?.toLocaleLowerCase()
+      )
+    )
+  );
 };
