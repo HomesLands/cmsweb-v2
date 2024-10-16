@@ -2,7 +2,7 @@ import { KeyRoundIcon, ScanFaceIcon, UserCheckIcon, UserCogIcon } from 'lucide-r
 
 import type { ISidebarRoute } from '@/types'
 import { ROUTE } from '@/constants'
-import { ReaderIcon } from '@radix-ui/react-icons'
+import { FileIcon, ReaderIcon } from '@radix-ui/react-icons'
 
 export const adminRoutes: ISidebarRoute[] = [
   {
@@ -28,49 +28,21 @@ export const adminRoutes: ISidebarRoute[] = [
   {
     title: 'sidebar.authorities',
     path: ROUTE.AUTHORITY,
-    icon: ScanFaceIcon,
-    children: [
-      {
-        title: 'sidebar.authorities',
-        path: ROUTE.AUTHORITY
-      },
-      {
-        title: 'sidebar.createAuthority',
-        path: ROUTE.ADD_AUTHORITY
-      }
-    ]
+    icon: ScanFaceIcon
   },
   {
     title: 'sidebar.assignedApprover',
     path: ROUTE.ASSIGNED_APPROVER,
-    icon: UserCheckIcon,
-    // authorities: [Authority.READ_PERMISSION],
-    children: [
-      {
-        title: 'sidebar.assignedApprover',
-        path: ROUTE.ASSIGNED_APPROVER
-        // authorities: [Authority.READ_PERMISSION]
-      },
-      {
-        title: 'sidebar.createAssignedApprover',
-        path: ROUTE.ADD_ASSIGNED_APPROVER
-        // authorities: [Authority.CREATE_PERMISSION]
-      }
-    ]
+    icon: UserCheckIcon
   },
   {
     title: 'sidebar.resources',
     path: ROUTE.RESOURCE,
-    icon: ReaderIcon,
-    children: [
-      {
-        title: 'sidebar.resources',
-        path: ROUTE.RESOURCE
-      },
-      {
-        title: 'sidebar.createResource',
-        path: ROUTE.ADD_RESOURCE
-      }
-    ]
+    icon: ReaderIcon
+  },
+  {
+    title: 'sidebar.backup',
+    path: ROUTE.BACKUP,
+    icon: FileIcon
   }
 ]

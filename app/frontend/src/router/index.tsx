@@ -37,7 +37,8 @@ import {
   ProductPage,
   CreateProductPage,
   WarehousePage,
-  CreateEmployeePage
+  CreateEmployeePage,
+  BackupPage
 } from './loadable'
 
 export const router = createBrowserRouter([
@@ -335,6 +336,16 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <WarehousePage />
+      }
+    ]
+  },
+  {
+    path: ROUTE.BACKUP,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: <BackupPage />
       }
     ]
   }

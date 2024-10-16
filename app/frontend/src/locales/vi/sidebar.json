@@ -48,6 +48,7 @@
 
     "resources": "Tài nguyên",
     "createResource": "Tạo tài nguyên",
-    "createResources": "Tạo tài nguyên"
+    "createResources": "Tạo tài nguyên",
+    "backup": "Sao lưu"
   }
 }

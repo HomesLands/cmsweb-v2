@@ -55,5 +55,7 @@ export const ROUTE = {
 
   // Assigned approver
   ASSIGNED_APPROVER: '/assigned-approvers',
-  ADD_ASSIGNED_APPROVER: '/assigned-approvers/add'
+  ADD_ASSIGNED_APPROVER: '/assigned-approvers/add',
+
+  BACKUP: '/backups'
 }
