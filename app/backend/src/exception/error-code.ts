@@ -529,6 +529,16 @@ export const ErrorCodes: TErrorCode = {
     code: 1120,
     message: "Confirm password does not match",
   },
+  PURCHASE_PRODUCT_IS_NOT_INCLUDE_IN_REQUEST_PRODUCTS: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1121,
+    message: "Purchase product is not include in request products",
+  },
+  PURCHASE_PRODUCT_QUANTITY_EXCEED_REQUEST_PRODUCT_QUANTITY: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1122,
+    message: "Purchase product quantity exceed request product quantity",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]
