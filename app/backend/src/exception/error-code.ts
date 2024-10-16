@@ -605,6 +605,11 @@ export const ErrorCodes: TErrorCode = {
     code: 4100,
     message: `Duplicate entry`,
   },
+  EXPORT_DB_ERROR: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 4101,
+    message: `Error when export database`,
+  },
 
   // System error
   // Code range: [4300 - 4499]

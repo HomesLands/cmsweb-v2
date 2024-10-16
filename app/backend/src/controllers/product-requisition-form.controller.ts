@@ -734,7 +734,6 @@ class ProductRequisitionFormController {
         "Content-Disposition",
         "attachment; filename=" + `${results.code}`
       );
-
       res.send(results.pdf);
     } catch (error) {
       next(error);
