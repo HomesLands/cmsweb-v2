@@ -14,6 +14,29 @@ import {
   IUpdateProductRequisitionQuantity
 } from '@/types'
 import { http } from '@/utils'
+import { saveAs } from 'file-saver'
+import { create } from 'zustand'
+import axios, { AxiosRequestConfig } from 'axios'
+
+interface DownloadState {
+  progress: number
+  fileName: string
+  isDownloading: boolean
+  setProgress: (progress: number) => void
+  setFileName: (fileName: string) => void
+  setIsDownloading: (isDownloading: boolean) => void
+  reset: () => void
+}
+
+export const useDownloadStore = create<DownloadState>((set) => ({
+  progress: 0,
+  fileName: '',
+  isDownloading: false,
+  setProgress: (progress) => set({ progress }),
+  setFileName: (fileName) => set({ fileName }),
+  setIsDownloading: (isDownloading) => set({ isDownloading }),
+  reset: () => set({ progress: 0, fileName: '', isDownloading: false })
+}))
 
 export async function getProducts(
   params: IProductQuery
@@ -154,4 +177,77 @@ export async function resubmitProductRequisition(data: IResubmitProductRequisiti
     data
   )
   return response.data
+}
+
+export async function getApprovedProductRequisition(params: IProductQuery) {
+  const response = await http.get<IApiResponse<IPaginationResponse<IProductRequisitionFormInfo>>>(
+    '/productRequisitionForms/completedApproval',
+    {
+      params
+    }
+  )
+  return response.data
+}
+
+interface CustomAxiosRequestConfig extends AxiosRequestConfig {
+  doNotShowLoading?: boolean
+}
+
+export async function exportPDFProductRequisition(slug: string) {
+  const { setProgress, setFileName, setIsDownloading, reset } = useDownloadStore.getState()
+  setFileName(`product_requisition_${slug}.pdf`)
+  setIsDownloading(true)
+
+  try {
+    const response = await http.get(`/productRequisitionForms/${slug}/exportPdf`, {
+      responseType: 'blob',
+      headers: {
+        Accept: 'application/pdf'
+      },
+      onDownloadProgress: (progressEvent) => {
+        const percentCompleted = Math.round(
+          (progressEvent.loaded * 100) / (progressEvent.total ?? 1)
+        )
+        setProgress(percentCompleted)
+      },
+      doNotShowLoading: true
+    } as CustomAxiosRequestConfig)
+
+    const blob = new Blob([response.data], { type: 'application/pdf' })
+    saveAs(blob, `product_requisition_${slug}.pdf`)
+    return response.data
+  } finally {
+    setIsDownloading(false)
+    reset()
+  }
+}
+
+export async function exportExcelProductRequisition(slug: string) {
+  const { setProgress, setFileName, setIsDownloading, reset } = useDownloadStore.getState()
+  setFileName(`product_requisition_${slug}.xlsx`)
+  setIsDownloading(true)
+
+  try {
+    const response = await http.get(`/productRequisitionForms/${slug}/exportExcel`, {
+      responseType: 'blob',
+      headers: {
+        Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      },
+      onDownloadProgress: (progressEvent) => {
+        const percentCompleted = Math.round(
+          (progressEvent.loaded * 100) / (progressEvent.total ?? 1)
+        )
+        setProgress(percentCompleted)
+      },
+      doNotShowLoading: true
+    } as CustomAxiosRequestConfig)
+
+    const blob = new Blob([response.data], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    })
+    saveAs(blob, `product_requisition_${slug}.xlsx`)
+  } finally {
+    setIsDownloading(false)
+    reset()
+  }
 }

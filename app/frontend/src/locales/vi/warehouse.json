@@ -1,6 +1,14 @@
 {
   "warehouse": {
     "list": "Kho hàng",
-    "add": "Thêm kho hàng"
+    "add": "Thêm kho hàng",
+    "slug": "Mã phiếu",
+    "creator": "Người tạo",
+    "createdAt": "Ngày tạo",
+    "company": "Công ty",
+    "detail": "Chi tiết",
+    "downloading": "Đang tải file của bạn...",
+    "pdfExport": "Xuất PDF",
+    "excelExport": "Xuất Excel"
   }
 }

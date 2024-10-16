@@ -42,6 +42,9 @@
 
     "addRoleSuccess": "Chức vụ được thêm thành công",
     "addDepartmentSuccess": "Phòng ban được thêm thành công",
-    "changePasswordSuccess": "Mật khẩu được thay đổi thành công"
+    "changePasswordSuccess": "Mật khẩu được thay đổi thành công",
+
+    "exportPDFSuccess": "Xuất PDF thành công",
+    "exportExcelSuccess": "Xuất Excel thành công"
   }
 }

@@ -180,12 +180,12 @@ export const sidebarRoutes: ISidebarRoute[] = [
     title: 'sidebar.warehouses',
     path: ROUTE.WAREHOUSE,
     icon: WarehouseIcon,
-    permission: { authority: Authority.READ, resource: Resource.WAREHOUSE },
+    // permission: { authority: Authority.READ, resource: Resource.WAREHOUSE },
     children: [
       {
         title: 'sidebar.warehouses',
-        path: ROUTE.WAREHOUSE,
-        permission: { authority: Authority.READ, resource: Resource.WAREHOUSE }
+        path: ROUTE.WAREHOUSE
+        // permission: { authority: Authority.READ, resource: Resource.WAREHOUSE }
       }
     ]
   }
