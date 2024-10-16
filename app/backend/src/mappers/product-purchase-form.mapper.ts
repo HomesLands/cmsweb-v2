@@ -11,14 +11,16 @@ import {
   PurchaseProduct,
   ProductRequisitionForm
 } from "@entities";
-import { CreateProductPurchaseFormRequestDto } from "@dto/request";
+import { 
+  CreateProductPurchaseFormFromProductRequisitionFormRequestDto,
+  CreateProductPurchaseFormWithoutProductRequisitionFormRequestDto,
+ } from "@dto/request";
 import {
   PurchaseProductResponseDto,
   ProductRequisitionFormResponseDto,
   ProductPurchaseFormResponseDto,
 } from "@dto/response";
 import { baseMapper } from "./base.mapper";
-import { mapper } from ".";
 
 export const productPurchaseFormMapper: MappingProfile = (
   mapper: Mapper
@@ -26,7 +28,12 @@ export const productPurchaseFormMapper: MappingProfile = (
   // Map request object to entity
   createMap(
     mapper,
-    CreateProductPurchaseFormRequestDto,
+    CreateProductPurchaseFormFromProductRequisitionFormRequestDto,
+    ProductPurchaseForm,
+  );
+  createMap(
+    mapper,
+    CreateProductPurchaseFormWithoutProductRequisitionFormRequestDto,
     ProductPurchaseForm,
   );
 

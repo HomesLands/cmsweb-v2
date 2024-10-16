@@ -22,8 +22,11 @@ export class ProductPurchaseForm extends Base {
 
   // a product  purchase form can have many purchase product
   @OneToMany(() => PurchaseProduct,
-    (purchaseProduct) => purchaseProduct.productPurchaseForm)
-  purchaseProducts?: PurchaseProduct[];  
+    (purchaseProduct) => purchaseProduct.productPurchaseForm,
+    {
+      cascade: ['insert', 'update']
+    })
+  purchaseProducts?: PurchaseProduct[];
 
   @ManyToOne(() => ProductRequisitionForm,
     (productRequisitionForm) => productRequisitionForm.productPurchaseForms,

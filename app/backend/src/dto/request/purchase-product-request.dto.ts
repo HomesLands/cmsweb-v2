@@ -1,8 +1,8 @@
 import { AutoMap } from "@automapper/classes";
 import { Expose } from "class-transformer";
-import { IsNotEmpty, IsOptional, Min } from "class-validator";
+import { IsNotEmpty, IsOptional, Min, ValidateIf } from "class-validator";
 
-export class CreatePurchaseProductRequestDto {
+export class CreatePurchaseProductWithoutRequisitionFormRequestDto {
   // @IsNotEmpty({ message: "INVALID_PRODUCT_SLUG" })
   @IsOptional()
   @Expose()
@@ -40,4 +40,23 @@ export class CreatePurchaseProductRequestDto {
   @Expose()
   @AutoMap()
   description?: string;
+}
+export class CreatePurchaseProductFromRequisitionFormRequestDto {
+  @ValidateIf(o => !o.temporaryProduct)
+  @IsNotEmpty({ message: "INVALID_PRODUCT_SLUG" })
+  @Expose()
+  @AutoMap()
+  product?: string;
+
+  @ValidateIf(o => !o.product)
+  @IsNotEmpty({ message: "INVALID_TEMPORARY_PRODUCT_SLUG" })
+  @Expose()
+  @AutoMap()
+  temporaryProduct?: string;
+
+  @IsNotEmpty({ message: "INVALID_PURCHASE_PRODUCT_QUANTITY" })
+  @Min(1, { message: "INVALID_PURCHASE_PRODUCT_QUANTITY"})
+  @Expose()
+  @AutoMap()
+  purchaseQuantity?: number;
 }

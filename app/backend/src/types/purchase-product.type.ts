@@ -1,4 +1,4 @@
-export type TCreatePurchaseProductRequestDto = {
+export type TCreatePurchaseProductFromWithoutRequisitionFormRequestDto = {
   purchaseQuantity?: number;
   product?: string;
   temporaryProduct?: string;
@@ -8,4 +8,10 @@ export type TCreatePurchaseProductRequestDto = {
   provider?: string;
   unit?: string; // slug
   description?: string;
+}
+
+export type TCreatePurchaseProductFromRequisitionFormRequestDto = {
+  purchaseQuantity?: number;
+  product?: string;
+  temporaryProduct?: string;
 }

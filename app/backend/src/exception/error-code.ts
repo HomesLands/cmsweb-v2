@@ -544,6 +544,26 @@ export const ErrorCodes: TErrorCode = {
     code: 1123,
     message: "User department exists",
   },
+  INVALID_PRODUCT_REQUISITION_FORM_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1124,
+    message: "Invalid product requisition form slug",
+  },
+  INVALID_TEMPORARY_PRODUCT_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1125,
+    message: "Invalid temporary product slug",
+  },
+  PRODUCT_REQUISITION_FORM_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1126,
+    message: "Product requisition form not found",
+  },
+  CAN_NOT_CREATE_PURCHASE_FORM_FROM_REQUISITION_FORM: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1127,
+    message: "Can't create purchase form from this requisition form",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]

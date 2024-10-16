@@ -25,7 +25,11 @@ export class PurchaseProduct extends Base {
   product?: Product;
 
   @ManyToOne(() => TemporaryProduct, 
-    (temporaryProduct) => temporaryProduct.purchaseProducts, { nullable: true })
+    (temporaryProduct) => temporaryProduct.purchaseProducts, 
+    { 
+      nullable: true,
+      cascade: ['insert', 'update']
+    })
   @JoinColumn({ name: "temporary_product_column" })
   temporaryProduct?: TemporaryProduct;
 

@@ -6,7 +6,10 @@ import {
   mapWith,
   extend,
 } from "@automapper/core";
-import { CreatePurchaseProductRequestDto } from "@dto/request";
+import { 
+  CreatePurchaseProductWithoutRequisitionFormRequestDto,
+  CreatePurchaseProductFromRequisitionFormRequestDto,
+ } from "@dto/request";
 import {
   PurchaseProductResponseDto,
   ProductResponseDto,
@@ -23,7 +26,12 @@ export const purchaseProductMapper: MappingProfile = (mapper: Mapper) =>{
   // Map request object to entity
   createMap(
     mapper,
-    CreatePurchaseProductRequestDto,
+    CreatePurchaseProductWithoutRequisitionFormRequestDto,
+    PurchaseProduct,
+  );
+  createMap(
+    mapper,
+    CreatePurchaseProductFromRequisitionFormRequestDto,
     PurchaseProduct,
   );
 
