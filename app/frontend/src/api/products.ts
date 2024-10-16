@@ -19,28 +19,8 @@ import {
 } from '@/types'
 import { http } from '@/utils'
 import { saveAs } from 'file-saver'
-import { create } from 'zustand'
 import { AxiosRequestConfig } from 'axios'
-
-interface DownloadState {
-  progress: number
-  fileName: string
-  isDownloading: boolean
-  setProgress: (progress: number) => void
-  setFileName: (fileName: string) => void
-  setIsDownloading: (isDownloading: boolean) => void
-  reset: () => void
-}
-
-export const useDownloadStore = create<DownloadState>((set) => ({
-  progress: 0,
-  fileName: '',
-  isDownloading: false,
-  setProgress: (progress) => set({ progress }),
-  setFileName: (fileName) => set({ fileName }),
-  setIsDownloading: (isDownloading) => set({ isDownloading }),
-  reset: () => set({ progress: 0, fileName: '', isDownloading: false })
-}))
+import { useDownloadStore } from '@/stores'
 
 //Product
 export async function getProducts(
@@ -206,10 +186,6 @@ export async function getApprovedProductRequisition(params: IProductQuery) {
   return response.data
 }
 
-interface CustomAxiosRequestConfig extends AxiosRequestConfig {
-  doNotShowLoading?: boolean
-}
-
 export async function exportPDFProductRequisition({
   slug,
   code
@@ -231,7 +207,7 @@ export async function exportPDFProductRequisition({
         setProgress(percentCompleted)
       },
       doNotShowLoading: true
-    } as CustomAxiosRequestConfig)
+    } as AxiosRequestConfig)
 
     const blob = new Blob([response.data], { type: 'application/pdf' })
     saveAs(blob, `${code}.pdf`)
@@ -263,7 +239,7 @@ export async function exportExcelProductRequisition({
         setProgress(percentCompleted)
       },
       doNotShowLoading: true
-    } as CustomAxiosRequestConfig)
+    } as AxiosRequestConfig)
 
     const blob = new Blob([response.data], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

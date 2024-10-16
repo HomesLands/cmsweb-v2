@@ -4,12 +4,11 @@ import { HeaderDropdown, ModeToggle } from '@/components/app/dropdown'
 import { SidebarDrawerMobile } from '@/components/app/drawer'
 import { PopoverNotification } from '@/components/app/popover'
 
-import { useThemeStore } from '@/stores'
+import { useDownloadStore, useThemeStore } from '@/stores'
 import { cn } from '@/lib/utils'
 import { DashboardSidebar } from '../sidebar'
 import { BreadCrumbs } from '../breadcrumbs'
 import { DownloadProgress } from '../progress/download-progress'
-import { useDownloadStore } from '@/api'
 
 const DashboardLayout = () => {
   const { getTheme } = useThemeStore()

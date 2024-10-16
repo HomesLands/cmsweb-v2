@@ -187,3 +187,9 @@ export const WarehousePage = React.lazy(() =>
     default: module.Warehouse
   }))
 )
+
+export const BackupPage = React.lazy(() =>
+  import('@/views/backups').then((module) => ({
+    default: module.Backups
+  }))
+)
