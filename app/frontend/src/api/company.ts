@@ -2,7 +2,7 @@ import { IApiResponse, ICompany, ICreateCompany } from '@/types'
 import { http } from '@/utils'
 
 export async function getCompanies() {
-  const response = await http.get<IApiResponse<ICompany>>('/companies')
+  const response = await http.get<IApiResponse<ICompany[]>>('/companies')
   return response.data
 }
 

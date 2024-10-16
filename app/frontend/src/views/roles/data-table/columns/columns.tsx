@@ -5,13 +5,13 @@ import {
   DataTableColumnHeader,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui'
 import { IRole } from '@/types'
 import { MoreHorizontal } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { DialogAddRolePermission } from '@/components/app/dialog'
+import { DialogAddRolePermission, DialogUpdateRole } from '@/components/app/dialog'
 
 export const useRoleColumns = (): ColumnDef<IRole>[] => {
   const { t } = useTranslation('roles')
@@ -59,8 +59,9 @@ export const useRoleColumns = (): ColumnDef<IRole>[] => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>{t('roles.edit')}</DropdownMenuItem>
                 <DialogAddRolePermission role={role} />
+                <DropdownMenuSeparator />
+                <DialogUpdateRole role={role} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

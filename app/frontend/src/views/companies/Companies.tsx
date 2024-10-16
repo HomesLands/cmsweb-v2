@@ -3,13 +3,11 @@ import { useTranslation } from 'react-i18next'
 import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
-import { useCompanies, usePagination } from '@/hooks'
-import { useCompanyColumns } from './DataTable/columns'
+import { useCompanies } from '@/hooks'
+import { useCompanyColumns } from './data-table'
 
 const Companies: React.FC = () => {
   const { t } = useTranslation(['companies'])
-  //   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
-
   const { data: companies, isLoading } = useCompanies()
 
   return (
@@ -20,13 +18,7 @@ const Companies: React.FC = () => {
       </Label>
       <DataTable
         columns={useCompanyColumns()}
-        data={
-          Array.isArray(companies?.result)
-            ? companies.result
-            : companies?.result
-              ? [companies.result]
-              : []
-        }
+        data={companies?.result || []}
         isLoading={isLoading}
         pages={1}
         onPageChange={() => {}}

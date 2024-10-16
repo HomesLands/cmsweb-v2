@@ -3,6 +3,7 @@ export interface ICompany {
   name: string
   director: string
   directorSlug: string
+  logo: string
 }
 
 export interface ICreateCompany {

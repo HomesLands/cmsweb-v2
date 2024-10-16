@@ -1,6 +1,6 @@
 import { Button, DataTableActionOptionsProps } from '@/components/ui'
 import { useTranslation } from 'react-i18next'
-import { IAuthority, IRole } from '@/types'
+import { IRole } from '@/types'
 import { useNavigate } from 'react-router'
 import { ROUTE } from '@/constants'
 

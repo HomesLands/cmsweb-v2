@@ -40,8 +40,8 @@ export function SidebarDrawerMobile() {
           <span className="sr-only">Toggle navigation menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="flex flex-col min-w-72">
-        <Accordion type="single" collapsible className="w-full">
+      <SheetContent side="left" className="flex flex-col w-3/5 overflow-y-auto h-screen">
+        <Accordion type="single" collapsible className="w-full ">
           {translatedSubmenus.map((submenu) => (
             <AccordionItem key={submenu.title} value={submenu.title}>
               <AccordionTrigger
@@ -55,10 +55,8 @@ export function SidebarDrawerMobile() {
                 minimized={false}
               >
                 <div className="flex items-center gap-2">
-                  {submenu.icon && (
-                    <IconWrapper Icon={submenu.icon} className="w-5 h-5 text-normal" />
-                  )}
-                  <span className="text-base font-beVietnamPro">{submenu.title}</span>
+                  {submenu.icon && <IconWrapper Icon={submenu.icon} className="w-5 h-5" />}
+                  <span className="text-[13px]">{submenu.title}</span>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
@@ -74,7 +72,7 @@ export function SidebarDrawerMobile() {
                           }`
                         }
                       >
-                        <span>{item.title}</span>
+                        <span className="text-[13px]">{item.title}</span>
                       </NavLink>
                     ))}
                   </div>
