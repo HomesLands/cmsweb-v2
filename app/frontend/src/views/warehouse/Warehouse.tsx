@@ -3,15 +3,22 @@ import { useTranslation } from 'react-i18next'
 import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
-import { useSites } from '@/hooks'
-// import { useAuthorityColumns } from '../authorities/DataTable/columns'
+import { useGetApprovedProductRequisition, usePagination } from '@/hooks'
 import { useWarehouseColumns } from './DataTable/columns'
+import { DownloadProgress } from '@/components/app/progress/download-progress'
+import { useDownloadStore } from '@/api/products'
 
 const Warehouse: React.FC = () => {
   const { t } = useTranslation(['warehouse'])
-  // const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
+  const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
+  const { data: approvedProductRequisition, isLoading: isLoadingApprovedProductRequisition } =
+    useGetApprovedProductRequisition({
+      page: pagination.pageIndex,
+      pageSize: pagination.pageSize,
+      order: 'DESC'
+    })
 
-  const { data: sites, isLoading } = useSites()
+  const { progress, fileName, isDownloading } = useDownloadStore()
 
   return (
     <div className="flex flex-col gap-4 mt-2">
@@ -21,12 +28,14 @@ const Warehouse: React.FC = () => {
       </Label>
       <DataTable
         columns={useWarehouseColumns()}
-        data={sites?.result || []}
-        pages={1}
-        onPageChange={() => {}}
-        onPageSizeChange={() => {}}
-        isLoading={isLoading}
+        data={approvedProductRequisition?.result.items || []}
+        pages={approvedProductRequisition?.result?.totalPages || 0}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
+        isLoading={isLoadingApprovedProductRequisition}
       />
+      {/* {isDownloading && <DownloadProgress progress={progress} fileName={fileName} />} */}
+      {/* <DownloadProgress progress={progress} fileName={fileName} /> */}
     </div>
   )
 }

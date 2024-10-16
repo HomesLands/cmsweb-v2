@@ -8,9 +8,12 @@ import { useThemeStore } from '@/stores'
 import { cn } from '@/lib/utils'
 import { DashboardSidebar } from '../sidebar'
 import { BreadCrumbs } from '../breadcrumbs'
+import { DownloadProgress } from '../progress/download-progress'
+import { useDownloadStore } from '@/api'
 
 const DashboardLayout = () => {
   const { getTheme } = useThemeStore()
+  const { progress, fileName, isDownloading } = useDownloadStore()
 
   return (
     <div className="box-border flex h-screen">
@@ -42,6 +45,7 @@ const DashboardLayout = () => {
             <BreadCrumbs />
           </div>
           <Outlet />
+          {isDownloading && <DownloadProgress progress={progress} fileName={fileName} />}
         </main>
       </div>
     </div>

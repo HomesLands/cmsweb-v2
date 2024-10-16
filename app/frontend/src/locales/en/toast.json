@@ -41,6 +41,9 @@
 
     "addRoleSuccess": "Role added successfully",
     "addDepartmentSuccess": "Department added successfully",
-    "changePasswordSuccess": "Password changed successfully"
+    "changePasswordSuccess": "Password changed successfully",
+
+    "exportPDFSuccess": "Export PDF successfully",
+    "exportExcelSuccess": "Export Excel successfully"
   }
 }

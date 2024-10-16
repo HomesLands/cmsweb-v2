@@ -5,8 +5,11 @@ import {
   approveProductRequisition,
   createProductRequisition,
   deleteProductRequisition,
+  exportExcelProductRequisition,
+  exportPDFProductRequisition,
   getAllProductRequisition,
   getAllUnit,
+  getApprovedProductRequisition,
   getProductRequisitionByApprover,
   getProductRequisitionByCreator,
   getProductRequisitionBySlug,
@@ -129,5 +132,24 @@ export const useApproveProductRequisition = () => {
 export const useCreateProductRequisition = () => {
   return useMutation({
     mutationFn: (data: IFinalProductRequisition) => createProductRequisition(data)
+  })
+}
+
+export const useGetApprovedProductRequisition = (q: IProductQuery) => {
+  return useQuery({
+    queryKey: ['approvedProductRequisition', JSON.stringify(q)],
+    queryFn: () => getApprovedProductRequisition(q)
+  })
+}
+
+export const useExportPDFProductRequisition = () => {
+  return useMutation({
+    mutationFn: (slug: string) => exportPDFProductRequisition(slug)
+  })
+}
+
+export const useExportExcelProductRequisition = () => {
+  return useMutation({
+    mutationFn: (slug: string) => exportExcelProductRequisition(slug)
   })
 }
