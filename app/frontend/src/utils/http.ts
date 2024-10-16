@@ -1,4 +1,9 @@
-import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig
+} from 'axios'
 import NProgress from 'nprogress'
 import moment from 'moment'
 
@@ -7,6 +12,7 @@ import { useAuthStore } from '@/stores'
 import { IApiResponse, IRefreshTokenResponse } from '@/types'
 import { showErrorToast } from './toast'
 import { baseURL, ROUTE } from '@/constants'
+import { useLoadingStore } from '@/stores'
 
 NProgress.configure({ showSpinner: false, trickleSpeed: 200 })
 
@@ -153,5 +159,33 @@ async function setProgressBarDone() {
     NProgress.done()
   }
 }
+
+interface CustomAxiosRequestConfig extends AxiosRequestConfig {
+  doNotShowLoading?: boolean
+}
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    if (!(config as CustomAxiosRequestConfig).doNotShowLoading) {
+      useLoadingStore.getState().setIsLoading(true)
+    }
+    return config
+  },
+  (error) => {
+    useLoadingStore.getState().setIsLoading(false)
+    return Promise.reject(error)
+  }
+)
+
+axiosInstance.interceptors.response.use(
+  (response) => {
+    useLoadingStore.getState().setIsLoading(false)
+    return response
+  },
+  (error) => {
+    useLoadingStore.getState().setIsLoading(false)
+    return Promise.reject(error)
+  }
+)
 
 export default axiosInstance
