@@ -9,12 +9,48 @@ import {
   DataTableColumnHeader,
   Button,
   DropdownMenuLabel,
-  DropdownMenuSeparator
+  DropdownMenuSeparator,
+  DropdownMenuItem
 } from '@/components/ui'
-import { IProductInfo } from '@/types'
+import { IProductInfo, IProductInfoCreate, IProductInfoUpdate } from '@/types'
+import { useUpdateProduct } from '@/hooks'
+import { useState } from 'react'
+import { DialogUpdateProduct } from '@/components/app/dialog/dialog-update-product'
+import { showToast } from '@/utils'
 
 export const useProductColumns = (): ColumnDef<IProductInfo>[] => {
   const { t } = useTranslation('products')
+  const { t: tToast } = useTranslation('toast')
+  const [selectedProduct, setSelectedProduct] = useState<IProductInfo | null>(null)
+  const [openEditDialog, setOpenEditDialog] = useState(false)
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
+  const { mutate: updateProduct } = useUpdateProduct()
+
+  const handleEditProduct = (product: IProductInfo) => {
+    setOpenEditDialog(true)
+    setSelectedProduct(product)
+  }
+
+  const handleConfirmUpdateProduct = (product: IProductInfoUpdate) => {
+    updateProduct(product, {
+      onSuccess: () => {
+        showToast(tToast('toast.updateProductSuccess'))
+      }
+    })
+  }
+
+  const onEditDialogOpenChange = () => {
+    setOpenEditDialog(false)
+  }
+
+  const handleDeleteProduct = (product: IProductInfo) => {
+    setOpenDeleteDialog(true)
+    setSelectedProduct(product)
+  }
+
+  const onDeleteDialogOpenChange = () => {
+    setOpenDeleteDialog(false)
+  }
 
   return [
     {
@@ -43,7 +79,8 @@ export const useProductColumns = (): ColumnDef<IProductInfo>[] => {
     },
     {
       id: t('employees.actions'),
-      cell: () => {
+      cell: ({ row }) => {
+        const product = row.original
         return (
           <div>
             <DropdownMenu>
@@ -54,10 +91,23 @@ export const useProductColumns = (): ColumnDef<IProductInfo>[] => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="flex flex-col justify-start" align="end">
-                <DropdownMenuLabel>{t('employees.actions')}</DropdownMenuLabel>
+                <DropdownMenuLabel>{t('products.actions')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => handleEditProduct(product)}>
+                  {t('products.edit')}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleDeleteProduct(product)}>
+                  {t('products.delete')}
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            <DialogUpdateProduct
+              handleEditProduct={handleConfirmUpdateProduct}
+              openDialog={openEditDialog}
+              product={selectedProduct}
+              component={null}
+              onOpenChange={onEditDialogOpenChange}
+            />
           </div>
         )
       }

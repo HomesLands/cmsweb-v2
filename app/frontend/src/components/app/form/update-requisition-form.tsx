@@ -279,7 +279,7 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
                       }
                     }
                   }}
-                  initialFocus
+                  // initialFocus
                   disabled={(date) => date < new Date()}
                 />
                 <DateTimePicker

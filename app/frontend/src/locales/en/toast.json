@@ -44,6 +44,8 @@
     "changePasswordSuccess": "Password changed successfully",
 
     "exportPDFSuccess": "Export PDF successfully",
-    "exportExcelSuccess": "Export Excel successfully"
+    "exportExcelSuccess": "Export Excel successfully",
+
+    "updateProductSuccess": "Product updated successfully"
   }
 }

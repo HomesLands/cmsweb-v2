@@ -3,6 +3,7 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 import {
   addNewProductInRequisitionUpdate,
   approveProductRequisition,
+  createProduct,
   createProductRequisition,
   deleteProductRequisition,
   exportExcelProductRequisition,
@@ -15,14 +16,18 @@ import {
   getProductRequisitionBySlug,
   getProducts,
   resubmitProductRequisition,
+  updateProduct,
   updateProductRequisitionGeneralInfo,
   updateProductRequisitionQuantity
 } from '@/api/products'
 import {
   IAddNewProductInRequisitionUpdate,
+  IApiProductInfoCreate,
   IApproveProductRequisition,
   IExportProductRequisitionFormRequest,
   IFinalProductRequisition,
+  IProductInfoCreate,
+  IProductInfoUpdate,
   IProductQuery,
   IResubmitProductRequisition,
   IUpdateProductRequisitionGeneralInfo,
@@ -34,6 +39,22 @@ export const useProducts = (q: IProductQuery) => {
     queryKey: ['products', JSON.stringify(q)],
     queryFn: () => getProducts(q),
     placeholderData: keepPreviousData
+  })
+}
+
+export const useCreateProduct = () => {
+  return useMutation({
+    mutationFn: (data: IApiProductInfoCreate) => createProduct(data)
+  })
+}
+
+export const useUpdateProduct = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: IProductInfoUpdate) => updateProduct(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['approvedProductRequisition'] })
+    }
   })
 }
 

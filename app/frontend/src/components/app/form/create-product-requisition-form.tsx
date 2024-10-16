@@ -136,12 +136,12 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                       !field.value && 'text-muted-foreground'
                     )}
                   >
-                    <CalendarIcon className="w-4 h-4 mr-2" />
+                    <CalendarIcon className="mr-2 w-4 h-4" />
                     {field.value ? field.value : <span>Chọn ngày và thời gian</span>}
                   </Button>
                 </FormControl>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
+              <PopoverContent className="p-0 w-auto">
                 <Calendar
                   mode="single"
                   selected={date}
@@ -162,7 +162,6 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                       }
                     }
                   }}
-                  initialFocus
                   disabled={(date) => date < new Date()}
                 />
                 <DateTimePicker

@@ -137,8 +137,6 @@ export const CreateProjectForm: React.FC<IFormCreateProjectProps> = ({ onSubmit 
                       field.onChange(format(newDateTime, 'yyyy-MM-dd HH:mm:ss'))
                     }
                   }}
-                  initialFocus
-                  // Remove the disabled prop
                 />
                 <DateTimePicker
                   date={date}

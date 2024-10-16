@@ -32,6 +32,8 @@
     "sessionExpired": "Phiên đăng nhập đã hết hạn",
     "accessDenied": "Bạn không có quyền truy cập trang này",
     "loginFailed": "Tên đăng nhập hoặc mật khẩu không chính xác",
+    "createProductSuccess": "Vật tư được tạo thành công",
+    "codeProductExisted": "Mã vật tư đã tồn tại",
     "logoutSuccess": "Đăng xuất thành công",
     "updateUserSuccess": "Người dùng được cập nhật thành công",
 
@@ -45,6 +47,8 @@
     "changePasswordSuccess": "Mật khẩu được thay đổi thành công",
 
     "exportPDFSuccess": "Xuất PDF thành công",
-    "exportExcelSuccess": "Xuất Excel thành công"
+    "exportExcelSuccess": "Xuất Excel thành công",
+
+    "updateProductSuccess": "Vật tư được cập nhật thành công"
   }
 }
