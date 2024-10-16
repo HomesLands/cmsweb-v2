@@ -21,6 +21,7 @@ import enProject from '@/locales/en/projects.json'
 import enEmployees from '@/locales/en/employees.json'
 import enResources from '@/locales/en/resources.json'
 import enWarehouse from '@/locales/en/warehouse.json'
+import enProducts from '@/locales/en/products.json'
 
 import viAuth from '@/locales/vi/auth.json'
 import viAccount from '@/locales/vi/account.json'
@@ -41,6 +42,7 @@ import viProject from '@/locales/vi/projects.json'
 import viEmployees from '@/locales/vi/employees.json'
 import viResources from '@/locales/vi/resources.json'
 import viWarehouse from '@/locales/vi/warehouse.json'
+import viProducts from '@/locales/vi/products.json'
 i18n
   .use(LanguageDetector) // Tự động phát hiện ngôn ngữ
   .use(initReactI18next) // Passes i18n down to react-i18next
@@ -65,7 +67,8 @@ i18n
         projects: enProject,
         employees: enEmployees,
         resources: enResources,
-        warehouse: enWarehouse
+        warehouse: enWarehouse,
+        products: enProducts
       },
       vi: {
         auth: viAuth,
@@ -86,7 +89,8 @@ i18n
         projects: viProject,
         employees: viEmployees,
         resources: viResources,
-        warehouse: viWarehouse
+        warehouse: viWarehouse,
+        products: viProducts
       }
     },
     lng: window.localStorage.getItem('i18nextLng') || 'vi',
@@ -103,7 +107,8 @@ i18n
       'setting',
       'department',
       'projects',
-      'employees'
+      'employees',
+      'products'
     ], //Dùng để phân biệt các phần khác nhau của app
     defaultNS: 'auth' //Ngôn ngữ mặc định
   })

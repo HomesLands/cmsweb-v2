@@ -79,6 +79,34 @@ export interface IProductInfo {
   quantity: number
 }
 
+export interface IProductInfoUpdate {
+  slug: string
+  code?: string
+  name: string
+  provider: string
+  unit: string
+  description: string
+}
+
+export interface IProductInfoCreate {
+  code: string
+  name: string
+  provider: string
+  unit: {
+    slug: string
+    name: string
+  }
+  description: string
+}
+
+export interface IApiProductInfoCreate {
+  code: string
+  name: string
+  provider: string
+  unit: string
+  description: string
+}
+
 export interface INonExistingProductInfo {
   name: string
   provider: string

@@ -5,7 +5,6 @@ import { ReaderIcon } from '@radix-ui/react-icons'
 import { DataTable, Label } from '@/components/ui'
 import { useGetApprovedProductRequisition, usePagination } from '@/hooks'
 import { useWarehouseColumns } from './DataTable/columns'
-import { DownloadProgress } from '@/components/app/progress/download-progress'
 import { useDownloadStore } from '@/api/products'
 
 const Warehouse: React.FC = () => {
@@ -17,8 +16,6 @@ const Warehouse: React.FC = () => {
       pageSize: pagination.pageSize,
       order: 'DESC'
     })
-
-  const { progress, fileName, isDownloading } = useDownloadStore()
 
   return (
     <div className="flex flex-col gap-4 mt-2">
@@ -34,8 +31,6 @@ const Warehouse: React.FC = () => {
         onPageSizeChange={handlePageSizeChange}
         isLoading={isLoadingApprovedProductRequisition}
       />
-      {/* {isDownloading && <DownloadProgress progress={progress} fileName={fileName} />} */}
-      {/* <DownloadProgress progress={progress} fileName={fileName} /> */}
     </div>
   )
 }

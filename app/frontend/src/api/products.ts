@@ -1,10 +1,13 @@
 import {
   ApprovalLogStatus,
   IAddNewProductInRequisitionUpdate,
+  IApiProductInfoCreate,
   IApiResponse,
   IFinalProductRequisition,
   IPaginationResponse,
   IProductInfo,
+  IProductInfoCreate,
+  IProductInfoUpdate,
   IProductQuery,
   IProductRequisitionFormInfo,
   IRequisitionFormResponseForApprover,
@@ -38,6 +41,7 @@ export const useDownloadStore = create<DownloadState>((set) => ({
   reset: () => set({ progress: 0, fileName: '', isDownloading: false })
 }))
 
+//Product
 export async function getProducts(
   params: IProductQuery
 ): Promise<IApiResponse<IPaginationResponse<IProductInfo>>> {
@@ -63,6 +67,18 @@ export async function getAllProduct(params: {
     throw new Error('Failed to fetch products')
   }
 }
+
+export async function createProduct(data: IApiProductInfoCreate) {
+  const response = await http.post<IApiResponse<IProductInfoCreate>>('/products', data)
+  return response.data
+}
+
+export async function updateProduct(data: IProductInfoUpdate) {
+  const response = await http.patch<IApiResponse<IProductInfoCreate>>('/products', data)
+  return response.data
+}
+
+//Product requisition
 
 export async function getAllProductRequisition(params: IProductQuery) {
   const response = await http.get<IApiResponse<IPaginationResponse<IProductRequisitionFormInfo>>>(

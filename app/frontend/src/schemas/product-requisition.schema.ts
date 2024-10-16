@@ -89,14 +89,14 @@ export const updateProductRequisitionGeneralInfoSchema = z.object({
 })
 
 export const addNewProductSchema = z.object({
-  code: z.optional(z.string()),
-  slug: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
+  code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
   name: z.string().min(1, 'Tên sản phẩm không hợp lệ'),
   provider: z.string().min(1, 'Nhà cung cấp không hợp lệ'),
-  unit: z.string().min(1, 'Đơn vị không hợp lệ'),
-  requestQuantity: z.string().min(1, 'Số lượng không hợp lệ'),
-  description: z.string().min(1, 'Mô tả không hợp lệ'),
-  status: z.string().min(1, 'Trạng thái không hợp lệ')
+  unit: z.object({
+    slug: z.string().min(1, 'Mã đơn vị không hợp lệ'),
+    name: z.string().min(1, 'Tên đơn vị không hợp lệ')
+  }),
+  description: z.string().min(1, 'Mô tả không hợp lệ')
 })
 
 export const addNewProductRequestSchema = z.object({
@@ -195,3 +195,6 @@ export type TUpdateProductRequisitionGeneralInfoSchema = z.infer<
 //Personal Account Info
 export type TPersonalAccountInfoSchema = z.infer<typeof personalAccountInfoSchema>
 export type TPasswordAndAuthenticationSchema = z.infer<typeof passwordAndAuthenticationSchema>
+
+//Add New Product
+export type TAddNewProductSchema = z.infer<typeof addNewProductSchema>

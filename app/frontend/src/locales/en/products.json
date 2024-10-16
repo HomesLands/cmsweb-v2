@@ -1,0 +1,25 @@
+{
+  "products": {
+    "list": "List products",
+    "create": "Create product",
+
+    "code": "Product code",
+    "name": "Product name",
+    "quantity": "Quantity",
+    "provider": "Provider",
+    "description": "Description",
+    "unit": "Unit",
+    "status": "Status",
+    "actions": "Action",
+    "edit": "Edit product",
+    "delete": "Delete product",
+    "update": "Update product",
+    "addProductTitle": "Add product",
+    "addProductDescription": "Enter all information into the fields to create a new product",
+    "add": "Add",
+    "confirmProductTitle": "Confirm product creation",
+    "confirmProductDescription": "Are you sure you want to create this product?",
+    "confirmProductCreate": "I understand, create product",
+    "confirmProductCancel": "Cancel"
+  }
+}

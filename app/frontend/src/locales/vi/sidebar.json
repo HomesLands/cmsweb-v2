@@ -9,6 +9,9 @@
     "warehouses": "Kho",
     "createWarehouse": "Tạo kho",
 
+    "products": "Vật tư",
+    "createProduct": "Tạo vật tư",
+
     "authorities": "Thẩm quyền",
     "createAuthority": "Tạo thẩm quyền",
     "createAuthorities": "Tạo thẩm quyền",

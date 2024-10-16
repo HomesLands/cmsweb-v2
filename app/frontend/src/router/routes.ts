@@ -1,14 +1,14 @@
 import {
   Building2Icon,
   Component,
+  FileTextIcon,
   FolderOpenIcon,
   MapPinIcon,
-  ShoppingBasketIcon,
   UserCheckIcon,
   UsersIcon,
-  WarehouseIcon
+  WarehouseIcon,
+  ArchiveIcon
 } from 'lucide-react'
-import { ArchiveIcon } from '@radix-ui/react-icons'
 
 import type { ISidebarRoute } from '@/types'
 import { Authority, Resource, ROUTE } from '@/constants'
@@ -17,7 +17,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
   {
     title: 'sidebar.products',
     path: ROUTE.PRODUCT,
-    icon: ShoppingBasketIcon,
+    icon: ArchiveIcon,
     permission: { authority: Authority.VIEW, resource: Resource.PRODUCT },
     children: [
       {
@@ -53,7 +53,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
   {
     title: 'sidebar.productRequisitions',
     path: ROUTE.PRODUCT_REQUISITIONS,
-    icon: ArchiveIcon,
+    icon: FileTextIcon,
     permission: { authority: Authority.VIEW, resource: Resource.PRODUCT_REQUISITION_FORM },
     children: [
       {
@@ -173,19 +173,6 @@ export const sidebarRoutes: ISidebarRoute[] = [
         title: 'sidebar.createAssignedApprover',
         path: ROUTE.ADD_ASSIGNED_APPROVER,
         permission: { authority: Authority.CREATE, resource: Resource.ASSIGNED_APPROVAL }
-      }
-    ]
-  },
-  {
-    title: 'sidebar.warehouses',
-    path: ROUTE.WAREHOUSE,
-    icon: WarehouseIcon,
-    // permission: { authority: Authority.READ, resource: Resource.WAREHOUSE },
-    children: [
-      {
-        title: 'sidebar.warehouses',
-        path: ROUTE.WAREHOUSE
-        // permission: { authority: Authority.READ, resource: Resource.WAREHOUSE }
       }
     ]
   }

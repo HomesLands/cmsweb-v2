@@ -1,7 +1,8 @@
+import { useTranslation } from 'react-i18next'
+import { ReaderIcon } from '@radix-ui/react-icons'
+
 import { DataTable, Label } from '@/components/ui'
 import { usePagination, useProducts } from '@/hooks'
-import { ReaderIcon } from '@radix-ui/react-icons'
-import { useTranslation } from 'react-i18next'
 import { useProductColumns } from './data-table'
 
 export default function Products() {
