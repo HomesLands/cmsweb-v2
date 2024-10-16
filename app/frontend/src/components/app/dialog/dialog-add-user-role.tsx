@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next'
-import { PlusCircledIcon } from '@radix-ui/react-icons'
 
 import {
   Dialog,
@@ -7,8 +6,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-  Button
+  DialogTrigger
 } from '@/components/ui'
 
 import { TCreateUserRoleSchema } from '@/schemas'
@@ -31,10 +29,10 @@ export function DialogAddUserRole({ user, open, component, onOpenChange }: Dialo
 
   const handleSubmit = (values: TCreateUserRoleSchema) => {
     const requestData = {
-      role: values.role.value,
-      user: values.user.value
+      roleSlug: values.role.value,
+      userSlug: values.user.value
     } as ICreateUserRole
-    onOpenChange()
+
     createUserRole(requestData, {
       onSuccess: () => {
         showToast(tToast('toast.addRoleSuccess'))

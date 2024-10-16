@@ -33,7 +33,10 @@ import {
   CreateProjectPage,
   AdministrationPage,
   ResourcePage,
-  CreateResourcePage
+  CreateResourcePage,
+  ProductPage,
+  CreateProductPage,
+  WarehousePage
 } from './loadable'
 
 export const router = createBrowserRouter([
@@ -287,6 +290,20 @@ export const router = createBrowserRouter([
     ]
   },
   {
+    path: ROUTE.PRODUCT,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: <ProductPage />
+      },
+      {
+        path: 'add',
+        element: <CreateProductPage />
+      }
+    ]
+  },
+  {
     path: ROUTE.ADMIN,
     element: <SuspenseElement component={DashboardLayout} />,
     children: [
@@ -298,6 +315,16 @@ export const router = createBrowserRouter([
             element={<SuspenseElement component={AdministrationPage} />}
           />
         )
+      }
+    ]
+  },
+  {
+    path: ROUTE.WAREHOUSE,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: <WarehousePage />
       }
     ]
   }

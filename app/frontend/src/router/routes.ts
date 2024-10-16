@@ -175,5 +175,18 @@ export const sidebarRoutes: ISidebarRoute[] = [
         permission: { authority: Authority.CREATE, resource: Resource.ASSIGNED_APPROVAL }
       }
     ]
+  },
+  {
+    title: 'sidebar.warehouses',
+    path: ROUTE.WAREHOUSE,
+    icon: WarehouseIcon,
+    permission: { authority: Authority.READ, resource: Resource.WAREHOUSE },
+    children: [
+      {
+        title: 'sidebar.warehouses',
+        path: ROUTE.WAREHOUSE,
+        permission: { authority: Authority.READ, resource: Resource.WAREHOUSE }
+      }
+    ]
   }
 ]

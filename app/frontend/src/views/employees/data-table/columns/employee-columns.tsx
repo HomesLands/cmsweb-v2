@@ -11,7 +11,8 @@ import {
   DropdownMenuLabel,
   UserAvatar,
   DropdownMenuSeparator,
-  DropdownMenuItem
+  DropdownMenuItem,
+  Badge
 } from '@/components/ui'
 import { IUserInfo } from '@/types'
 
@@ -64,8 +65,46 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
       )
     },
     {
-      accessorKey: 'role',
-      header: ({ column }) => <DataTableColumnHeader column={column} title={t('employees.role')} />
+      accessorKey: 'userRoles',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('employees.userRoles')} />
+      ),
+      cell: ({ row }) => {
+        const { userRoles } = row.original
+        return (
+          <div className="flex flex-col gap-3">
+            {userRoles &&
+              userRoles.map((item) => {
+                return (
+                  <div className="w-fit font-normal">
+                    {item?.role?.nameDisplay} ({item?.role?.nameNormalize})
+                  </div>
+                )
+              })}
+          </div>
+        )
+      }
+    },
+    {
+      accessorKey: 'userDepartments',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('employees.userDepartments')} />
+      ),
+      cell: ({ row }) => {
+        const { userDepartments } = row.original
+        return (
+          <div className="flex flex-col gap-3">
+            {userDepartments &&
+              userDepartments.map((item) => {
+                return (
+                  <Badge className="w-fit font-normal bg-green-500 hover:bg-green-500">
+                    {item?.department.description}
+                  </Badge>
+                )
+              })}
+          </div>
+        )
+      }
     },
     {
       id: t('employees.actions'),

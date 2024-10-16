@@ -101,16 +101,12 @@ class ProductRequisitionFormService {
   }
 
   public async getAllProductRequisitionFormsCompletedApproval(
-    creatorId: string,
     options: TQueryRequest
   ): Promise<TPaginationOptionResponse<ProductRequisitionFormResponseDto[]>> {
     // Get the total number of products
     const totalProductRequisitionForm =
       await productRequisitionFormRepository.count({
         where: {
-          creator: {
-            id: creatorId,
-          },
           status: In([
             ProductRequisitionFormStatus.WAITING_EXPORT,
             ProductRequisitionFormStatus.EXPORTING,
@@ -127,9 +123,6 @@ class ProductRequisitionFormService {
 
     const forms = await productRequisitionFormRepository.find({
       where: {
-        creator: {
-          id: creatorId,
-        },
         status: In([
           ProductRequisitionFormStatus.WAITING_EXPORT,
           ProductRequisitionFormStatus.EXPORTING,
@@ -758,11 +751,17 @@ class ProductRequisitionFormService {
     ];
     const userApprovals = await userApprovalRepository.find({
       where: { productRequisitionForm: { id: form.id } },
+      order: {
+        assignedUserApproval: {
+          roleApproval: "ASC",
+        },
+      },
+      relations: ["assignedUserApproval.user"],
     });
-    userApprovals.forEach((item) => {
+    userApprovals.forEach((item, index) => {
       if (item) {
         userSignatures.push({
-          title: item.assignedUserApproval?.roleApproval || "",
+          title: `Duyệt bước ${index + 1}`,
           signature: item.assignedUserApproval?.user?.signature,
         });
       }

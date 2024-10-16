@@ -65,9 +65,7 @@ export function showToast(message: string) {
 }
 
 export function showErrorToast(code: number) {
-  console.log(code)
   const messageKey = errorCodes[code] || 'toast.requestFailed'
-  console.log(messageKey)
   toast.error(i18next.t(messageKey, { ns: 'toast' }))
 }
 

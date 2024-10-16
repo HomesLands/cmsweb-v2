@@ -1,9 +1,4 @@
-import {
-  addProfile,
-  createMapper,
-  extend,
-  typeConverter,
-} from "@automapper/core";
+import { addProfile, createMapper, extend } from "@automapper/core";
 import { classes } from "@automapper/classes";
 import { authMapper } from "./auth.mapper";
 import { siteMapper } from "./site.mapper";
@@ -31,7 +26,6 @@ import { rolePermissionMapper } from "./role-permission.mapper";
 import { productPurchaseFormMapper } from "./product-purchase-form.mapper";
 import { purchaseProductMapper } from "./purchase-product.mapper";
 import { baseMapper } from "./base.mapper";
-import moment from "moment";
 
 export const mapper = createMapper({
   strategyInitializer: classes(),

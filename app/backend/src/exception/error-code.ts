@@ -539,6 +539,11 @@ export const ErrorCodes: TErrorCode = {
     code: 1122,
     message: "Purchase product quantity exceed request product quantity",
   },
+  USER_DEPARTMENT_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1123,
+    message: "User department exists",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]
