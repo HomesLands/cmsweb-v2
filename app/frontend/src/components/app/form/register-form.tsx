@@ -29,13 +29,12 @@ export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
     defaultValues: {
       fullname: '',
       username: '',
-      password: '',
-      confirmPassword: ''
+      password: ''
     }
   })
 
   const handleSubmit = (values: z.infer<typeof registerSchema>) => {
-    const { confirmPassword, ...apiValues } = values
+    const { ...apiValues } = values
     onSubmit(apiValues)
   }
 
@@ -78,23 +77,6 @@ export const RegisterForm: React.FC<IFormRegisterProps> = ({ onSubmit }) => {
                   <FormLabel>{t('register.password')}</FormLabel>
                   <FormControl>
                     <Input placeholder={t('register.enterPassword')} {...field} type="password" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('register.confirmPassword')}</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder={t('register.enterConfirmPassword')}
-                      {...field}
-                      type="password"
-                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

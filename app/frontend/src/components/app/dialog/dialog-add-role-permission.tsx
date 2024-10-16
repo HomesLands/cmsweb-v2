@@ -31,7 +31,7 @@ export function DialogAddRolePermission({ role }: { role: IRole }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" className="gap-1 text-sm">
+        <Button variant="ghost" className="gap-1 text-sm w-full justify-start">
           <PlusCircledIcon className="icon" />
           Thêm quyền hạn
         </Button>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 import {
   FormField,
@@ -11,75 +12,70 @@ import {
   Input,
   Form,
   Button,
-  Textarea
+  PasswordInput
 } from '@/components/ui'
-import { createRoleSchema, TCreateRoleSchema } from '@/schemas'
+import { registerSchema, TCreateUserSchema, TRegisterSchema } from '@/schemas'
 
-import { zodResolver } from '@hookform/resolvers/zod'
-
-interface IFormCreateRoleProps {
-  onSubmit: (data: TCreateRoleSchema) => void
+interface IFormCreateUserProps {
+  onSubmit: (data: TCreateUserSchema) => void
 }
 
-export const CreateRoleForm: React.FC<IFormCreateRoleProps> = ({ onSubmit }) => {
-  const { t } = useTranslation('roles')
+const CreateEmployeeForm: React.FC<IFormCreateUserProps> = ({ onSubmit }) => {
+  const { t } = useTranslation('users')
 
-  const form = useForm<TCreateRoleSchema>({
-    resolver: zodResolver(createRoleSchema),
+  const form = useForm<TRegisterSchema>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
-      nameNormalize: '',
-      description: '',
-      nameDisplay: ''
+      fullname: '',
+      password: 'Pass@1234',
+      username: ''
     }
   })
 
-  const handleSubmit = (values: TCreateRoleSchema) => {
+  const handleSubmit = (values: TRegisterSchema) => {
     onSubmit(values)
   }
 
   const formFields = {
-    nameNormalize: (
+    username: (
       <FormField
         control={form.control}
-        name="nameNormalize"
+        name="username"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('roles.nameNormalize')}</FormLabel>
+            <FormLabel>{t('users.username')}</FormLabel>
             <FormControl>
-              <Input {...field} placeholder="ROLE_DIRECTOR" />
+              <Input {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
     ),
-    nameDisplay: (
+    password: (
       <FormField
         control={form.control}
-        name="nameDisplay"
+        name="password"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('roles.nameDisplay')}</FormLabel>
+            <FormLabel>{t('users.password')}</FormLabel>
             <FormControl>
-              <Input {...field} placeholder="Giám đốc" />
+              <PasswordInput {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
     ),
-    description: (
+    fullname: (
       <FormField
         control={form.control}
-        name="description"
-        render={() => (
+        name="fullname"
+        render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('roles.description')}</FormLabel>
+            <FormLabel>{t('users.fullname')}</FormLabel>
             <FormControl>
-              <Textarea
-                placeholder={t('roles.CreateRoleDescription')}
-                onChange={(e) => form.setValue('description', e.target.value)}
-              />
+              <Input {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -100,8 +96,12 @@ export const CreateRoleForm: React.FC<IFormCreateRoleProps> = ({ onSubmit }) => 
             ))}
           </div>
           <div className="flex justify-end font-beVietNam">
-            <Button className="flex justify-end" type="submit">
-              {t('roles.createRole')}
+            <Button
+              className="flex justify-end"
+              type="submit"
+              onClick={() => console.log({ form: form.getValues() })}
+            >
+              {t('users.createUser')}
             </Button>
           </div>
         </form>
@@ -109,3 +109,5 @@ export const CreateRoleForm: React.FC<IFormCreateRoleProps> = ({ onSubmit }) => 
     </div>
   )
 }
+
+export default CreateEmployeeForm

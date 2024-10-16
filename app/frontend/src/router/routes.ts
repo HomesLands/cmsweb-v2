@@ -83,6 +83,11 @@ export const sidebarRoutes: ISidebarRoute[] = [
         title: 'sidebar.employees',
         path: ROUTE.EMPLOYEE,
         permission: { authority: Authority.READ, resource: Resource.USER }
+      },
+      {
+        title: 'sidebar.createEmployee',
+        path: ROUTE.ADD_EMPLOYEE,
+        permission: { authority: Authority.CREATE, resource: Resource.USER }
       }
     ]
   },

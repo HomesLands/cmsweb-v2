@@ -21,6 +21,7 @@ import {
 import {
   IAddNewProductInRequisitionUpdate,
   IApproveProductRequisition,
+  IExportProductRequisitionFormRequest,
   IFinalProductRequisition,
   IProductQuery,
   IResubmitProductRequisition,
@@ -144,12 +145,14 @@ export const useGetApprovedProductRequisition = (q: IProductQuery) => {
 
 export const useExportPDFProductRequisition = () => {
   return useMutation({
-    mutationFn: (slug: string) => exportPDFProductRequisition(slug)
+    mutationFn: (requestData: IExportProductRequisitionFormRequest) =>
+      exportPDFProductRequisition(requestData)
   })
 }
 
 export const useExportExcelProductRequisition = () => {
   return useMutation({
-    mutationFn: (slug: string) => exportExcelProductRequisition(slug)
+    mutationFn: (requestData: IExportProductRequisitionFormRequest) =>
+      exportExcelProductRequisition(requestData)
   })
 }

@@ -1,6 +1,4 @@
-import React from 'react'
 import { useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
 import {
   FormField,
@@ -8,36 +6,53 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-  Input,
   Form,
   Button,
-  Textarea
+  Input
 } from '@/components/ui'
-import { createRoleSchema, TCreateRoleSchema } from '@/schemas'
-
+import { TUpdateRoleSchema, updateRoleSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslation } from 'react-i18next'
+import React from 'react'
+import { IRole } from '@/types'
 
-interface IFormCreateRoleProps {
-  onSubmit: (data: TCreateRoleSchema) => void
+interface IFormUpdateRoleProps {
+  role: IRole
+  onSubmit: (data: TUpdateRoleSchema) => void
 }
 
-export const CreateRoleForm: React.FC<IFormCreateRoleProps> = ({ onSubmit }) => {
-  const { t } = useTranslation('roles')
-
-  const form = useForm<TCreateRoleSchema>({
-    resolver: zodResolver(createRoleSchema),
+export default function UpdateRoleForm({ role, onSubmit }: IFormUpdateRoleProps) {
+  const { t } = useTranslation('users')
+  const form = useForm<TUpdateRoleSchema>({
+    resolver: zodResolver(updateRoleSchema),
     defaultValues: {
-      nameNormalize: '',
-      description: '',
-      nameDisplay: ''
+      slug: role?.slug || '',
+      description: role?.description || '',
+      nameDisplay: role?.nameDisplay || '',
+      nameNormalize: role?.nameNormalize || ''
     }
   })
 
-  const handleSubmit = (values: TCreateRoleSchema) => {
+  const handleSubmit = (values: TUpdateRoleSchema) => {
     onSubmit(values)
   }
 
   const formFields = {
+    slug: (
+      <FormField
+        control={form.control}
+        name="slug"
+        render={() => (
+          <FormItem>
+            <FormLabel>{t('roles.slug')}</FormLabel>
+            <FormControl>
+              <Input value={form.getValues('slug')} disabled />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
     nameNormalize: (
       <FormField
         control={form.control}
@@ -46,7 +61,7 @@ export const CreateRoleForm: React.FC<IFormCreateRoleProps> = ({ onSubmit }) => 
           <FormItem>
             <FormLabel>{t('roles.nameNormalize')}</FormLabel>
             <FormControl>
-              <Input {...field} placeholder="ROLE_DIRECTOR" />
+              <Input {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -61,7 +76,7 @@ export const CreateRoleForm: React.FC<IFormCreateRoleProps> = ({ onSubmit }) => 
           <FormItem>
             <FormLabel>{t('roles.nameDisplay')}</FormLabel>
             <FormControl>
-              <Input {...field} placeholder="Giám đốc" />
+              <Input {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -72,14 +87,11 @@ export const CreateRoleForm: React.FC<IFormCreateRoleProps> = ({ onSubmit }) => 
       <FormField
         control={form.control}
         name="description"
-        render={() => (
+        render={({ field }) => (
           <FormItem>
             <FormLabel>{t('roles.description')}</FormLabel>
             <FormControl>
-              <Textarea
-                placeholder={t('roles.CreateRoleDescription')}
-                onChange={(e) => form.setValue('description', e.target.value)}
-              />
+              <Input {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -92,16 +104,16 @@ export const CreateRoleForm: React.FC<IFormCreateRoleProps> = ({ onSubmit }) => 
     <div className="mt-3">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 gap-2 font-beVietNam">
+          <div className="grid grid-cols-1 gap-2">
             {Object.keys(formFields).map((key) => (
               <React.Fragment key={key}>
                 {formFields[key as keyof typeof formFields]}
               </React.Fragment>
             ))}
           </div>
-          <div className="flex justify-end font-beVietNam">
+          <div className="flex justify-end">
             <Button className="flex justify-end" type="submit">
-              {t('roles.createRole')}
+              {t('roles.updaterRole')}
             </Button>
           </div>
         </form>

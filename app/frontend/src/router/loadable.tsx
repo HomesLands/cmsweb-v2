@@ -26,6 +26,11 @@ export const EmployeePage = React.lazy(() =>
     default: module.Employees
   }))
 )
+export const CreateEmployeePage = React.lazy(() =>
+  import('@/views/employees').then((module) => ({
+    default: module.CreateEmployee
+  }))
+)
 export const ProjectPage = React.lazy(() =>
   import('@/views/projects').then((module) => ({
     default: module.Projects
