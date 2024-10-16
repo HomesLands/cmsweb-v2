@@ -51,6 +51,7 @@ export const ROUTE = {
 
   // Emoloyee
   EMPLOYEE: '/employees',
+  ADD_EMPLOYEE: '/employees/add',
 
   // Assigned approver
   ASSIGNED_APPROVER: '/assigned-approvers',

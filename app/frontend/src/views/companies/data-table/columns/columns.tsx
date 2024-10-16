@@ -7,13 +7,12 @@ import {
   DataTableColumnHeader,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui'
 import { ICompany } from '@/types'
 import { publicFileURL } from '@/constants'
-import { DialogUpdateCompany, DialogUpdateRole } from '@/components/app/dialog'
+import { DialogUpdateCompany } from '@/components/app/dialog'
 
 export const useCompanyColumns = (): ColumnDef<ICompany>[] => {
   const { t } = useTranslation(['companies'])
@@ -55,7 +54,7 @@ export const useCompanyColumns = (): ColumnDef<ICompany>[] => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                {/* <DialogUpdateCompany role={null} /> */}
+                <DialogUpdateCompany company={company} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

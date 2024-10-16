@@ -7,6 +7,7 @@ import { ProfilePicture } from '@/components/app/avatar'
 import { useThemeStore, useUserStore } from '@/stores'
 import { useUploadSignature } from '@/hooks/use-users'
 import { cn } from '@/lib/utils'
+import { publicFileURL } from '@/constants'
 
 interface CardUserGeneralInfoProps {
   handleUploadProfilePicture: (file: File) => void
@@ -42,7 +43,7 @@ export const CardUserGeneralInfo = ({
               width={80}
               src={
                 userInfo?.avatar
-                  ? `${import.meta.env.VITE_BASE_API_URL}/files/${userInfo.avatar}`
+                  ? `${publicFileURL}/${userInfo.avatar}`
                   : 'https://github.com/shadcn.png'
               }
               onUpload={handleUploadProfilePicture}
@@ -124,7 +125,7 @@ export const CardUserGeneralInfo = ({
               {userInfo?.signature ? (
                 <div className="overflow-hidden w-full h-40 rounded-md border">
                   <img
-                    src={`${import.meta.env.VITE_BASE_API_URL}/files/${userInfo.signature}`}
+                    src={`${publicFileURL}/${userInfo.signature}`}
                     alt="User Signature"
                     className="object-contain w-full h-full"
                   />

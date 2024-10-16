@@ -178,3 +178,8 @@ export interface IResubmitProductRequisition {
 export type ProductRequisitionForm =
   | IProductRequisitionFormInfo
   | IProductRequisitionFormWithNewProductInfo
+
+export type IExportProductRequisitionFormRequest = {
+  slug: string
+  code: string
+}
