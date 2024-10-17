@@ -34,8 +34,12 @@ jobs:
           script: |
             cd workspace/cmsweb-v2/  # Change to your application directory on the remote host
 
-            # Update the .env file with the current tag
-            echo "TAG=${{ env.TAG }}" >> .deploy/.env
+            # Update or add the TAG variable in the .env file with the current tag
+            if grep -q '^TAG=' .deploy/.env; then
+              sed -i "s/^TAG=.*/TAG=${{ env.TAG }}/" .deploy/.env
+            else
+              echo "TAG=${{ env.TAG }}" >> .deploy/.env
+            fiV
 
             cat .deploy/.env
 
