@@ -22,12 +22,15 @@ jobs:
 
       - name: Set up SSH
         run: |
-          # Add SSH private key to the SSH agent
-          echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          # Create the .ssh directory
+           mkdir -p ~/.ssh
 
-          # Add the host to known_hosts to prevent SSH authenticity errors
-          ssh-keyscan -H ${{ secrets.REMOTE_HOST_PROD }} >> ~/.ssh/known_hosts
+           # Add SSH private key to the SSH agent
+           echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_rsa
+           chmod 600 ~/.ssh/id_rsa
+
+           # Add the host to known_hosts to prevent SSH authenticity errors
+           ssh-keyscan -H ${{ secrets.REMOTE_HOST_PROD }} >> ~/.ssh/known_hosts
 
       - name: Set tag as environment variable
         id: set_tag
