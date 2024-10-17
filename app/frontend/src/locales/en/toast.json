@@ -46,6 +46,7 @@
     "exportPDFSuccess": "Export PDF successfully",
     "exportExcelSuccess": "Export Excel successfully",
 
-    "updateProductSuccess": "Product updated successfully"
+    "updateProductSuccess": "Product updated successfully",
+    "backupDatabaseSuccess": "Backup database successfully"
   }
 }

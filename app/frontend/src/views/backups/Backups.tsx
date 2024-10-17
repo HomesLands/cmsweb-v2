@@ -1,39 +1,63 @@
+import { useState } from 'react'
+import { FileWarningIcon, Loader2, LogOutIcon } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+
 import { IconWrapper } from '@/components/app/drawer'
 import { Button } from '@/components/ui'
 import { useExportDatabase } from '@/hooks'
-import { FileWarningIcon, LogOutIcon } from 'lucide-react'
-import toast from 'react-hot-toast'
+import { showToast } from '@/utils'
+import { DialogConfirmBackupDb } from '@/components/app/dialog'
 
 export default function Backups() {
-  const mutation = useExportDatabase()
+  const { t } = useTranslation('backups')
+  const { t: tToast } = useTranslation('toast')
+  const [openDialog, setOpenDialog] = useState(false)
+  const { mutate: exportDatabase, isPending: isExporting } = useExportDatabase()
+
   function handleSubmit() {
-    mutation.mutate(undefined, {
+    setOpenDialog(true)
+  }
+
+  const handleConfirmBackupDb = () => {
+    setOpenDialog(false)
+    exportDatabase(undefined, {
       onSuccess: () => {
-        toast.success('Export database successully')
+        showToast(tToast('toast.exportDatabaseSuccess'))
       }
     })
   }
+
   return (
-    <div className="border border-red-600 rounded-sm mt-5">
-      <div className="p-3 bg-red-600 text-white uppercase">Backup CMS</div>
-      <div className="mt-4 p-3 text-sm">
-        <p>
-          You can trigger a backup here. The process can take some time depending on the amount of
-          data (especially attachments) you have.
-        </p>
-        <p className="text-red-600 flex items-center gap-1 mt-2 text-sm">
-          <IconWrapper Icon={FileWarningIcon} className="w-5 text-red-600" />A new backup will
-          override any previous one
+    <div className="mt-5 rounded-sm border border-destructive">
+      <div className="p-3 text-white uppercase bg-destructive">
+        <span className="flex gap-1 items-center">{t('backups.title')}</span>
+      </div>
+      <div className="p-3 mt-4 text-sm">
+        <p>{t('backups.description')}</p>
+        <p className="flex gap-1 items-center mt-2 text-sm text-destructive">
+          <IconWrapper Icon={FileWarningIcon} className="w-4 text-destructive" />
+          {t('backups.warning')}
         </p>
         <Button
+          disabled={isExporting}
           variant="destructive"
-          className="mt-5 flex items-center gap-1"
+          className="flex gap-1 items-center mt-5"
           onClick={handleSubmit}
         >
-          <IconWrapper Icon={LogOutIcon} className="w-5" />
-          Request backup
+          {isExporting ? (
+            <IconWrapper Icon={Loader2} className="w-4" />
+          ) : (
+            <IconWrapper Icon={LogOutIcon} className="w-4" />
+          )}
+          {isExporting ? t('backups.button.loading') : t('backups.button.default')}
         </Button>
       </div>
+      <DialogConfirmBackupDb
+        handleBackupDb={handleConfirmBackupDb}
+        openDialog={openDialog}
+        component={null}
+        onOpenChange={() => setOpenDialog(false)}
+      />
     </div>
   )
 }

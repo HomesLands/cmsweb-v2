@@ -16,11 +16,11 @@ export default function Administration() {
         {adminRoutes.map((item) => {
           return (
             <Card
-              className="flex flex-col justify-center items-center w-52 h-52 bg-gray-100 transition-all duration-200 cursor-pointer hover:scale-105"
+              className="flex flex-col justify-center items-center w-52 h-52 transition-all duration-200 cursor-pointer bg-muted hover:scale-105 hover:border-primary"
               onClick={() => navigate(item.path)}
             >
               <CardContent>
-                <div className="flex flex-col gap-5 items-center text-violet-800">
+                <div className="flex flex-col gap-5 items-center text-primary">
                   {item.icon && <IconWrapper Icon={item.icon} className="w-8 h-8" />}
                   <p className="text-sm font-extralight">{t(item.title)}</p>
                 </div>

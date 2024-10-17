@@ -6,6 +6,11 @@ import { FileIcon, ReaderIcon } from '@radix-ui/react-icons'
 
 export const adminRoutes: ISidebarRoute[] = [
   {
+    title: 'sidebar.backup',
+    path: ROUTE.BACKUP,
+    icon: FileIcon
+  },
+  {
     title: 'sidebar.roles',
     path: ROUTE.ROLE,
     icon: UserCogIcon
@@ -39,10 +44,5 @@ export const adminRoutes: ISidebarRoute[] = [
     title: 'sidebar.resources',
     path: ROUTE.RESOURCE,
     icon: ReaderIcon
-  },
-  {
-    title: 'sidebar.backup',
-    path: ROUTE.BACKUP,
-    icon: FileIcon
   }
 ]
