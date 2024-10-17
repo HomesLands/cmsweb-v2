@@ -37,6 +37,8 @@ jobs:
             # Update the .env file with the current tag
             echo "TAG=${{ env.TAG }}" >> .deploy/.env
 
+            cat .deploy/.env
+
             git pull origin main  # Pull latest changes
 
             docker compose -f .deploy/docker-compose.prod.yaml down
