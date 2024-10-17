@@ -49,6 +49,7 @@
     "exportPDFSuccess": "Xuất PDF thành công",
     "exportExcelSuccess": "Xuất Excel thành công",
 
-    "updateProductSuccess": "Vật tư được cập nhật thành công"
+    "updateProductSuccess": "Vật tư được cập nhật thành công",
+    "backupDatabaseSuccess": "Sao lưu cơ sở dữ liệu thành công"
   }
 }

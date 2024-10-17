@@ -1,0 +1,18 @@
+{
+  "backups": {
+    "title": "Backup database",
+    "description": "You can trigger a backup here. The process can take some time depending on the amount of data (especially attachments) you have.",
+    "warning": "A new backup will override any previous one",
+    "button": {
+      "default": "Trigger backup",
+      "loading": "Triggering backup..."
+    },
+    "confirmDialog": {
+      "title": "Confirm backup database",
+      "warning": "Note: This action cannot be undone!",
+      "description": "You are about to trigger a database backup. This process can take some time depending on the amount of data.",
+      "cancel": "Cancel",
+      "confirm": "I understand, trigger backup"
+    }
+  }
+}
