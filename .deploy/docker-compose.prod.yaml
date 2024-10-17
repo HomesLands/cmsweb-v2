@@ -1,0 +1,74 @@
+volumes:
+  mysql:
+
+services:
+  backend:
+    build:
+      context: ../app/backend
+      dockerfile: ../../.build/backend/Dockerfile # Adjusted to be relative to the context
+    healthcheck:
+      test:
+        ["CMD", "curl", "-f", "http://localhost:3000/api/v1/healthCheck/status"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s # Give more time for MySQL to become ready
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      HOST_MYSQL: ${HOST_MYSQL}
+      PORT_MYSQL: ${PORT_MYSQL}
+      USER_MYSQL: ${USER_MYSQL}
+      PASSWORD_MYSQL: ${PASSWORD_MYSQL}
+      DATABASE_MYSQL: ${DATABASE_MYSQL}
+      HASH_SALT: ${HASH_SALT}
+      JWT_SECRET: ${JWT_SECRET}
+      PASSPORT_SECRET: ${PASSPORT_SECRET}
+      DURATION: ${DURATION}
+      REFRESHABLE_DURATION: ${REFRESHABLE_DURATION}
+      TZ: Asia/Ho_Chi_Minh
+    depends_on:
+      mysql_db:
+        condition: service_healthy
+
+  mysql_db:
+    build:
+      context: ../.build/mysql
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${PASSWORD_MYSQL}
+      MYSQL_DATABASE: ${DATABASE_MYSQL}
+      TZ: Asia/Ho_Chi_Minh
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 60s # Increase timeout to give MySQL more time
+      retries: 5
+
+  frontend:
+    build:
+      context: ../app/frontend
+      dockerfile: ../../.build/frontend/Dockerfile # Adjusted to be relative to the context
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "5137"] # TCP check on port 5137
+      interval: 10s # Increase interval between health checks
+      timeout: 10s # Increase timeout for slower responses
+      retries: 5
+      start_period: 60s # Give the frontend app more time to become ready
+    restart: always
+
+  docs:
+    build:
+      context: ../docsify
+      dockerfile: ../.build/docsify/Dockerfile # Adjusted to be relative to the context
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "3001"] # TCP check on port 3001
+      interval: 10s # Increase interval between health checks
+      timeout: 10s # Increase timeout for slower responses
+      retries: 5
+      start_period: 60s # Give the frontend app more time to become ready
+
+networks:
+  default:
+    external: true
+    name: scoobydoo
