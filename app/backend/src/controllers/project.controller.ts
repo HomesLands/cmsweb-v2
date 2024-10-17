@@ -89,6 +89,49 @@ class ProjectController {
 
   /**
    * @swagger
+   * /projects/{siteSlug}:
+   *   get:
+   *     summary: Get all projects by site
+   *     tags: [Project]
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - name: siteSlug
+   *         in: path
+   *         required: true
+   *         type: string
+   *         description: The slug of site
+   *     responses:
+   *       200:
+   *         description: Get all projects by site successfully.
+   *       500:
+   *         description: Server error
+   */  
+  public async getProjectsBySite(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const siteSlug = req.params.siteSlug as string;
+      const projectsData = await projectService.getProjectBySite(siteSlug);
+
+      const response: TApiResponse<ProjectResponseDto[]> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "Get list projects by site successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result: projectsData,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
    * /projects:
    *   post:
    *     summary: Create new project

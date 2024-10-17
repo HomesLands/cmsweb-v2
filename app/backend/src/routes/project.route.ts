@@ -11,4 +11,8 @@ projectRoute.route("/")
 projectRoute.route("/")
   .post(projectController.createProject);
 
+// [GET] /api/v1/projects/:siteSlug
+projectRoute.route("/:siteSlug")
+  .get(projectController.getProjectsBySite)
+
 
