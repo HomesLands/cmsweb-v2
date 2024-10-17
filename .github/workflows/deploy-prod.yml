@@ -39,7 +39,7 @@ jobs:
               sed -i "s/^TAG=.*/TAG=${{ env.TAG }}/" .deploy/.env
             else
               echo "TAG=${{ env.TAG }}" >> .deploy/.env
-            fiV
+            fi
 
             cat .deploy/.env
 
