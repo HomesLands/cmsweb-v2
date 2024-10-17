@@ -11,6 +11,7 @@ export type TEnv = {
   passportSecret: string;
   duration: number;
   refreshableDuration: number;
+  tag: string;
 };
 
 export * from "./base.type";

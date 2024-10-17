@@ -20,11 +20,6 @@ jobs:
             echo "SSH_PRIVATE_KEY_PROD is set"
           fi
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_PROD }} # Use your private SSH key from GitHub Secrets
-
       - name: Set tag as environment variable
         id: set_tag
         run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
@@ -35,11 +30,18 @@ jobs:
           host: ${{ secrets.REMOTE_HOST_PROD }}
           username: ${{ secrets.REMOTE_USER_PROD }}
           port: ${{ secrets.SSH_PORT_PROD }} # Specify your SSH port here
+          key: ${{ secrets.SSH_PRIVATE_KEY_PROD }} # Add your private key here
           script: |
-            cd cmsweb-v2/  # Change to your application directory on the remote host
+            cd workspace/cmsweb-v2/  # Change to your application directory on the remote host
 
-            # Update the .env file with the current tag
-            echo "TAG=${{ env.TAG }}" >> .deploy/.env
+            # Update or add the TAG variable in the .env file with the current tag
+            if grep -q '^TAG=' .deploy/.env; then
+              sed -i "s/^TAG=.*/TAG=${{ env.TAG }}/" .deploy/.env
+            else
+              echo "TAG=${{ env.TAG }}" >> .deploy/.env
+            fi
+
+            cat .deploy/.env
 
             git pull origin main  # Pull latest changes
 

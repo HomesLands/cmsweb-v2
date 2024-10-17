@@ -29,6 +29,7 @@ import { fileRoute } from "./file.route";
 import { resourceRoute } from "./resource.route";
 import { rolePermissionRoute } from "./role-permission.route";
 import { databaseRoute } from "./database.route";
+import { env } from "@constants";
 
 const baseApi: Router = Router();
 
@@ -85,7 +86,7 @@ export const registerRoutes = (app: Express) => {
 
   baseApi.use("/database", databaseRoute);
 
-  app.use("/api/v1", baseApi);
+  app.use(`/api/${env.tag}`, baseApi);
 
   app.options("*", (req: Request, res: Response) => res.status(StatusCodes.OK));
 
