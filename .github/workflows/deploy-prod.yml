@@ -20,21 +20,6 @@ jobs:
             echo "SSH_PRIVATE_KEY_PROD is set"
           fi
 
-      - name: Set up SSH
-        run: |
-          # Create the .ssh directory
-           mkdir -p ~/.ssh
-
-           # Add SSH private key to the SSH agent
-           cat << 'EOF' > ~/.ssh/id_rsa
-            ${{ secrets.SSH_PRIVATE_KEY_PROD }}
-           EOF
-
-           chmod 600 ~/.ssh/id_rsa
-
-           # Add the host to known_hosts to prevent SSH authenticity errors
-           ssh-keyscan -H ${{ secrets.REMOTE_HOST_PROD }} >> ~/.ssh/known_hosts
-
       - name: Set tag as environment variable
         id: set_tag
         run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
@@ -47,7 +32,7 @@ jobs:
           port: ${{ secrets.SSH_PORT_PROD }} # Specify your SSH port here
           key: ${{ secrets.SSH_PRIVATE_KEY_PROD }} # Add your private key here
           script: |
-            cd cmsweb-v2/  # Change to your application directory on the remote host
+            cd workspace/cmsweb-v2/  # Change to your application directory on the remote host
 
             # Update the .env file with the current tag
             echo "TAG=${{ env.TAG }}" >> .deploy/.env
