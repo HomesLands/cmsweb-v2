@@ -26,7 +26,10 @@ jobs:
            mkdir -p ~/.ssh
 
            # Add SSH private key to the SSH agent
-           echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_rsa
+           cat << 'EOF' > ~/.ssh/id_rsa
+            ${{ secrets.SSH_PRIVATE_KEY_PROD }}
+           EOF
+
            chmod 600 ~/.ssh/id_rsa
 
            # Add the host to known_hosts to prevent SSH authenticity errors
