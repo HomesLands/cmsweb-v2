@@ -21,9 +21,13 @@ jobs:
           fi
 
       - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_PROD }} # Use your private SSH key from GitHub Secrets
+        run: |
+          # Add SSH private key to the SSH agent
+          echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # Add the host to known_hosts to prevent SSH authenticity errors
+          ssh-keyscan -H ${{ secrets.REMOTE_HOST_PROD }} >> ~/.ssh/known_hosts
 
       - name: Set tag as environment variable
         id: set_tag
