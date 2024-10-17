@@ -45,6 +45,7 @@ jobs:
           host: ${{ secrets.REMOTE_HOST_PROD }}
           username: ${{ secrets.REMOTE_USER_PROD }}
           port: ${{ secrets.SSH_PORT_PROD }} # Specify your SSH port here
+          key: ${{ secrets.SSH_PRIVATE_KEY_PROD }} # Add your private key here
           script: |
             cd cmsweb-v2/  # Change to your application directory on the remote host
 
