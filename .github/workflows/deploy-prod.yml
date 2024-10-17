@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     tags:
-      - "*" # This triggers the workflow on any tag
+      - "v*" # This triggers the workflow on any tag
 
 jobs:
   deploy:
@@ -11,6 +11,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Verify SSH Key Exists
+        run: |
+          if [ -z "${{ secrets.SSH_PRIVATE_KEY_PROD }}" ]; then
+            echo "SSH_PRIVATE_KEY_PROD is not set"
+          else
+            echo "SSH_PRIVATE_KEY_PROD is set"
+          fi
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
