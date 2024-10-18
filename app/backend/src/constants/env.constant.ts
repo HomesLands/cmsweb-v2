@@ -18,4 +18,5 @@ export const env: TEnv = {
   refreshableDuration: process.env.REFRESHABLE_DURATION
     ? parseInt(process.env.REFRESHABLE_DURATION, 10)
     : 36000,
+  tag: process.env.TAG || "v1",
 };

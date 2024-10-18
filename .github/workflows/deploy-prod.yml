@@ -1,0 +1,52 @@
+name: Deploy
+
+on:
+  push:
+    tags:
+      - "v*" # This triggers the workflow on any tag
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Verify SSH Key Exists
+        run: |
+          if [ -z "${{ secrets.SSH_PRIVATE_KEY_PROD }}" ]; then
+            echo "SSH_PRIVATE_KEY_PROD is not set"
+          else
+            echo "SSH_PRIVATE_KEY_PROD is set"
+          fi
+
+      - name: Set tag as environment variable
+        id: set_tag
+        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Deploy production
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: ${{ secrets.REMOTE_HOST_PROD }}
+          username: ${{ secrets.REMOTE_USER_PROD }}
+          port: ${{ secrets.SSH_PORT_PROD }} # Specify your SSH port here
+          key: ${{ secrets.SSH_PRIVATE_KEY_PROD }} # Add your private key here
+          script: |
+            cd workspace/cmsweb-v2/  # Change to your application directory on the remote host
+
+            # Update or add the TAG variable in the .env file with the current tag
+            if grep -q '^TAG=' .deploy/.env; then
+              sed -i "s/^TAG=.*/TAG=${{ env.TAG }}/" .deploy/.env
+            else
+              echo "TAG=${{ env.TAG }}" >> .deploy/.env
+            fi
+
+            cat .deploy/.env
+
+            git pull origin main  # Pull latest changes
+
+            docker compose -f .deploy/docker-compose.prod.yaml down
+
+            docker compose -f .deploy/docker-compose.prod.yaml up -d --build
+
+            docker image prune -f  # clean up none image after built
