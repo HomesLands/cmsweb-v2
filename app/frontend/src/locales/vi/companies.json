@@ -17,6 +17,12 @@
     "confirmCreateCompany": "Tạo công ty",
     "cancelCreateCompany": "Hủy",
     "confirm": "Xác nhận",
-    "confirmCreateCompanyDescription": "Dữ liệu về công ty sẽ được tạo!"
+    "confirmCreateCompanyDescription": "Dữ liệu về công ty sẽ được tạo!",
+
+    "updateLogo": "Cập nhật logo",
+    "updateLogoDescription": "Cập nhật logo cho công ty",
+    "currentLogo": "Logo hiện tại",
+    "changeLogo": "Thay đổi logo",
+    "addLogo": "Thêm logo"
   }
 }

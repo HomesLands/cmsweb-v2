@@ -47,7 +47,7 @@ export const useCompanyColumns = (): ColumnDef<ICompany>[] => {
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="p-0 w-8 h-8">
+                <Button variant="ghost" className="w-8 h-8 p-0">
                   <span className="sr-only">Thao tác</span>
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
