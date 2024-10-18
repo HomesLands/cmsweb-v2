@@ -4,6 +4,7 @@
     "slug": "Mã công ty",
     "name": "Tên công ty",
     "director": "Người đại diện",
+    "logo": "Logo",
     "directorSlug": "Mã người đại diện",
     "address": "Địa chỉ",
     "phone": "Số điện thoại",

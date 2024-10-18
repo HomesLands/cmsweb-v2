@@ -1,17 +1,17 @@
 import { ColumnDef } from '@tanstack/react-table'
+import { MoreHorizontal } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import {
   Button,
   DataTableColumnHeader,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui'
 import { IResource } from '@/types'
-import { MoreHorizontal } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
+import { DialogUpdateResource } from '@/components/app/dialog'
 
 export const useResourceColumns = (): ColumnDef<IResource>[] => {
   const { t } = useTranslation(['resources'])
@@ -28,20 +28,19 @@ export const useResourceColumns = (): ColumnDef<IResource>[] => {
       id: 'actions',
       header: 'Thao tác',
       cell: ({ row }) => {
-        const requisition = row.original
+        const resource = row.original
         return (
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="p-0 w-8 h-8">
+                <Button variant="ghost" className="w-8 h-8 p-0">
                   <span className="sr-only">Thao tác</span>
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                <DropdownMenuItem>Chỉnh sửa</DropdownMenuItem>
-                <DropdownMenuItem>Xóa</DropdownMenuItem>
+                <DialogUpdateResource resource={resource} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

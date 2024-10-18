@@ -7,13 +7,12 @@ import {
   DataTableColumnHeader,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui'
 import { IAuthority } from '@/types'
-import DialogUpdateAuthority from '@/components/app/dialog/dialog-update-authority'
+import { DialogUpdateAuthority } from '@/components/app/dialog'
 
 export const useAuthorityColumns = (): ColumnDef<IAuthority>[] => {
   const { t } = useTranslation(['authorities'])
