@@ -80,7 +80,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
     permission: { authority: Authority.READ, resource: Resource.USER },
     children: [
       {
-        title: 'sidebar.employees',
+        title: 'sidebar.employeeList',
         path: ROUTE.EMPLOYEE,
         permission: { authority: Authority.READ, resource: Resource.USER }
       },
@@ -98,7 +98,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
     permission: { authority: Authority.READ, resource: Resource.COMPANY },
     children: [
       {
-        title: 'sidebar.companies',
+        title: 'sidebar.companyList',
         path: ROUTE.COMPANY,
         permission: { authority: Authority.READ, resource: Resource.COMPANY }
       },
@@ -116,7 +116,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
     permission: { authority: Authority.READ, resource: Resource.SITE },
     children: [
       {
-        title: 'sidebar.sites',
+        title: 'sidebar.siteList',
         path: ROUTE.SITE,
         permission: { authority: Authority.READ, resource: Resource.SITE }
       },
@@ -134,7 +134,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
     permission: { authority: Authority.READ, resource: Resource.DEPARTMENT },
     children: [
       {
-        title: 'sidebar.departments',
+        title: 'sidebar.departmentList',
         path: ROUTE.DEPARTMENT,
         permission: { authority: Authority.READ, resource: Resource.DEPARTMENT }
       },
@@ -152,7 +152,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
     permission: { authority: Authority.READ, resource: Resource.PROJECT },
     children: [
       {
-        title: 'sidebar.projects',
+        title: 'sidebar.projectList',
         path: ROUTE.PROJECT,
         permission: { authority: Authority.READ, resource: Resource.PROJECT }
       },
