@@ -2,23 +2,17 @@ import { Application } from "express";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 import { env } from "@constants";
-import { isDevEnvironment } from "heppers";
 
 const getServers = (): {
   description: string;
   url: string;
 }[] => {
-  const servers = [];
-  if (isDevEnvironment())
-    servers.push({
-      description: "development",
-      url: `http://localhost:${env.port}/api/v1`,
-    });
-  else
-    servers.push({
-      description: "production",
-      url: "https://tbecms.cmsiot.net/api/v1",
-    });
+  const servers = [
+    {
+      description: "Base URL",
+      url: `${env.swaggerEnpoint}/${env.tag}`,
+    },
+  ];
   return servers;
 };
 
