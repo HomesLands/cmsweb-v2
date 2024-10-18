@@ -25,6 +25,8 @@ services:
       PASSPORT_SECRET: ${PASSPORT_SECRET}
       DURATION: ${DURATION}
       REFRESHABLE_DURATION: ${REFRESHABLE_DURATION}
+      SWAGGER_ENDPOINT: ${SWAGGER_ENDPOINT}
+      TAG: ${TAG}
       TZ: Asia/Ho_Chi_Minh
     depends_on:
       mysql_db:
@@ -56,8 +58,6 @@ services:
       retries: 5
       start_period: 60s # Give the frontend app more time to become ready
     restart: always
-    ports:
-      - "5137:5137"
 
   docs:
     build:
