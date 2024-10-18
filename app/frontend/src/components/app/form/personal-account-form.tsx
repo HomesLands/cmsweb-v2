@@ -46,12 +46,6 @@ export const PersonalAccountForm: React.FC = () => {
   const handleChangePassword = (data: IConfirmChangePassword) => {
     setOpenDialogChangePassword(true)
     setPassword(data)
-
-    // changePassword(data, {
-    //   onSuccess: () => {
-    //     showToast(tToast('toast.changePasswordSuccess'))
-    //   }
-    // })
   }
 
   const handleConfirmChangePassword = (data: IConfirmChangePassword) => {
@@ -93,7 +87,7 @@ export const PersonalAccountForm: React.FC = () => {
             {t('account.passwordAndAuthentication')}
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="general-info" className="p-0 w-full">
+        <TabsContent value="general-info" className="w-full p-0">
           <CardUserGeneralInfo
             handleUploadProfilePicture={handleUploadProfilePicture}
             setOpenDialog={setOpenDialog}

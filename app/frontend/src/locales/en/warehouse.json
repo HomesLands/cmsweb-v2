@@ -9,6 +9,7 @@
     "detail": "Detail",
     "downloading": "Downloading your file...",
     "pdfExport": "Export PDF",
-    "excelExport": "Export Excel"
+    "excelExport": "Export Excel",
+    "approvedRequisitionList": "Approved Requisition List"
   }
 }

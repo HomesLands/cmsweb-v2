@@ -47,6 +47,8 @@
     "exportExcelSuccess": "Export Excel successfully",
 
     "updateProductSuccess": "Product updated successfully",
-    "backupDatabaseSuccess": "Backup database successfully"
+    "backupDatabaseSuccess": "Backup database successfully",
+
+    "addRolePermissionSuccess": "Role permission added successfully"
   }
 }

@@ -9,6 +9,8 @@
     "detail": "Chi tiết",
     "downloading": "Đang tải file của bạn...",
     "pdfExport": "Xuất PDF",
-    "excelExport": "Xuất Excel"
+    "excelExport": "Xuất Excel",
+
+    "approvedRequisitionList": "Danh sách phiếu yêu cầu đã duyệt"
   }
 }

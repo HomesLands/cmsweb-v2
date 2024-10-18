@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useAuthorites, usePagination } from '@/hooks'
+import { useAuthorities, usePagination } from '@/hooks'
 import ReactSelect, { SingleValue } from 'react-select'
 
 interface SelectAuthorityProps {
@@ -17,7 +17,7 @@ export const SelectAuthority: FC<SelectAuthorityProps> = ({ onChange }) => {
   const [allAuthorities, setAllAuthorities] = useState<{ value: string; label: string }[]>([])
   const { t } = useTranslation('productRequisition')
   const { pagination, handlePageChange } = usePagination({ isSearchParams: false })
-  const { data: authorities } = useAuthorites({
+  const { data: authorities } = useAuthorities({
     order: 'DESC',
     page: pagination.pageIndex,
     pageSize: 1000

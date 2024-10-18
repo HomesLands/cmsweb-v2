@@ -29,7 +29,7 @@ export function DialogUpdateUserGeneralInfo({
 
   return (
     <Dialog open={openDialog} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[64rem] p-0">
+      <DialogContent className="max-w-[22rem] rounded-md sm:max-w-[64rem] p-0">
         <ScrollArea className="max-h-[80vh]">
           <div className="p-6">
             <DialogHeader>

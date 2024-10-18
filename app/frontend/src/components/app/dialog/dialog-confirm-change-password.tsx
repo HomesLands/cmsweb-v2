@@ -39,10 +39,10 @@ export function DialogConfirmChangePassword({
   return (
     <Dialog open={openDialog} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{component}</DialogTrigger>
-      <DialogContent className="max-w-[36rem] font-beVietNam">
+      <DialogContent className="max-w-[22rem] rounded-md sm:max-w-[36rem] font-beVietNam">
         <DialogHeader>
           <DialogTitle className="pb-6 text-destructive">
-            <div className="flex gap-2 items-center">
+            <div className="flex items-center gap-2">
               <TriangleAlert className="w-6 h-6" />
               {t('account.changePassword')}
             </div>
@@ -55,7 +55,7 @@ export function DialogConfirmChangePassword({
             {t('account.changePasswordConfirmation')}
           </div>
         </DialogHeader>
-        <DialogFooter>
+        <DialogFooter className="flex flex-row justify-end gap-2">
           <Button variant="outline" onClick={onOpenChange}>
             {t('account.cancel')}
           </Button>

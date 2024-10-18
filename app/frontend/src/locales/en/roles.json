@@ -9,7 +9,9 @@
     "nameDisplay": "Display name",
     "actions": "Actions",
     "edit": "Edit role",
-    "permissions": "Permissions"
+    "permissions": "Permissions",
+    "editRole": "Edit role",
+    "addPermission": "Add permission",
+    "addPermissionDescription": "Enter full information below to add permission"
   }
-   
 }

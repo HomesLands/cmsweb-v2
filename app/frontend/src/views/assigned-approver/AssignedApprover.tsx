@@ -3,14 +3,14 @@ import { useTranslation } from 'react-i18next'
 import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
-import { useAuthorites, usePagination } from '@/hooks'
+import { useAuthorities, usePagination } from '@/hooks'
 import { useAuthorityColumns } from '@/views/authorities/data-table/columns/columns'
 
 export default function AssignedApprover() {
   const { t } = useTranslation(['assignedApprover'])
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
 
-  const { data: authorities, isLoading } = useAuthorites({
+  const { data: authorities, isLoading } = useAuthorities({
     order: 'DESC',
     page: pagination.pageIndex,
     pageSize: pagination.pageSize

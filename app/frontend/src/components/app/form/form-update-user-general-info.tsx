@@ -51,7 +51,7 @@ export const FormUpdateUserGeneralInfo: React.FC<IFormUpdateUserGeneralInfoProps
     <div className="mt-3">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
             <FormField
               control={form.control}
               name="fullname"

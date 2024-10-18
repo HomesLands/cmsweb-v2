@@ -64,7 +64,7 @@ export const DialogApprovalRequisition: React.FC<DialogApprovalRequisitionProps>
 
   return (
     <Dialog open={openDialog !== null} onOpenChange={() => setOpenDialog(null)}>
-      <DialogContent>
+      <DialogContent className="rounded-lg max-w-[22rem] sm:max-w-[28rem] sm:max-h-[32rem]">
         <DialogHeader>
           <DialogTitle className="font-beVietNam">
             {openDialog === ApprovalAction.ACCEPT && t('productRequisition.acceptConfirmTitle')}
