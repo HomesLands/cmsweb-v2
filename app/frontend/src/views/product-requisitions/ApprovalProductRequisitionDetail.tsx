@@ -1,27 +1,26 @@
 import React, { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { ReaderIcon } from '@radix-ui/react-icons'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { Label, Button, DataTable } from '@/components/ui'
 import { useProductRequisitionBySlug } from '@/hooks'
 
-import { TbeLogo } from '@/assets/images'
-import { MetekLogo } from '@/assets/images'
-import { SongnamLogo } from '@/assets/images'
 import { useColumnsDetail, useColumnsApprovalLog } from './data-table'
 import {
   ApprovalLogStatus,
   IApproveProductRequisition,
   IProductInfo,
+  IProductRequisitionFormCreate,
   IRequisitionFormResponseForApprover,
   ProductRequisitionRoleApproval
 } from '@/types'
 import { DialogApprovalRequisition } from '@/components/app/dialog'
 import { showToast } from '@/utils'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { approveProductRequisition } from '@/api'
 import { ApprovalAction, baseURL, RequisitionStatus, UserApprovalStage } from '@/constants'
+import { useRequisitionStore } from '@/stores'
 
 const ApprovalProductRequisitionDetail: React.FC = () => {
   const navigate = useNavigate()
@@ -30,6 +29,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
   const { data } = useProductRequisitionBySlug(slug!)
   const location = useLocation()
+  const { getRequisition } = useRequisitionStore()
   const selectedRequisition = location.state?.selectedRequisition as
     | IRequisitionFormResponseForApprover
     | undefined
@@ -157,15 +157,20 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
     setOpenDialog(null)
   }
 
+  const getLogoUrl = () => {
+    if (data?.result?.creator.userDepartments[0].department.site.company.logo)
+      return `${baseURL}/files/${data?.result?.creator.userDepartments[0].department.site.company.logo}`
+  }
+
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-between items-center">
-        <Label className="flex gap-1 items-center font-semibold text-normal text-md font-beVietNam">
+      <div className="flex flex-col gap-4 justify-between items-start sm:flex-row sm:items-center sm:gap-0">
+        <Label className="flex gap-1 items-center mb-2 font-semibold text-normal text-md font-beVietNam sm:mb-0">
           <ReaderIcon className="header-icon" />
           {t('requisitionDetail.requestDetail')}
         </Label>
-        <div className="flex gap-4">
-          <Button variant="outline" onClick={() => navigate(-1)}>
+        <div className="flex flex-row gap-2 justify-end sm:gap-4">
+          <Button variant="outline" onClick={() => navigate(-1)} className="w-full sm:w-auto">
             {t('productRequisition.back')}
           </Button>
           {buttonStates.showButtons && (
@@ -176,6 +181,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
                     variant="outline"
                     onClick={handleGiveBack}
                     disabled={!buttonStates.giveBackEnabled}
+                    className="w-full sm:w-auto"
                   >
                     {t('productRequisition.giveBack')}
                   </Button>
@@ -183,6 +189,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
                     variant="default"
                     onClick={handleAccept}
                     disabled={!buttonStates.acceptEnabled}
+                    className="w-full sm:w-auto"
                   >
                     {t('productRequisition.accept')}
                   </Button>
@@ -195,6 +202,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
                     variant="destructive"
                     onClick={handleCancel}
                     disabled={!buttonStates.cancelEnabled}
+                    className="w-full sm:w-auto"
                   >
                     {t('productRequisition.cancel')}
                   </Button>
@@ -202,6 +210,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
                     variant="outline"
                     onClick={handleGiveBack}
                     disabled={!buttonStates.giveBackEnabled}
+                    className="w-full sm:w-auto"
                   >
                     {t('productRequisition.giveBack')}
                   </Button>
@@ -209,6 +218,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
                     variant="default"
                     onClick={handleAccept}
                     disabled={!buttonStates.acceptEnabled}
+                    className="w-full sm:w-auto"
                   >
                     {t('productRequisition.accept')}
                   </Button>
@@ -220,38 +230,21 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
       </div>
       <div className="mt-3">
         <div className="flex flex-col gap-4 justify-center">
-          <div className="grid grid-cols-6 justify-between items-center py-3 mb-4 border-b-2">
-            {data?.result?.creator.userDepartments[0].department.site.company.name.includes(
-              'Thái Bình'
-            ) ? (
-              <div className="col-span-1 w-full">
-                <img
-                  src={`${baseURL}${data?.result?.creator.userDepartments[0].department.site.company.logo}`}
-                  height={72}
-                  width={72}
-                />
-              </div>
-            ) : data?.result?.creator.userDepartments[0].department.site.company.name.includes(
-                'Mekong'
-              ) ? (
-              <div className="col-span-1 w-full">
-                <img src={MetekLogo} height={150} width={150} />
-              </div>
-            ) : (
-              <div className="col-span-1 w-full">
-                <img src={SongnamLogo} height={72} width={72} />
-              </div>
-            )}
-            <span className="col-span-4 text-2xl font-extrabold text-center uppercase text-normal font-beVietNam">
+          <div className="grid grid-cols-8 justify-between items-center py-2 mb-4 border-b-2">
+            <div className="col-span-1 w-full">
+              <img src={getLogoUrl()} className="w-10 sm:w-[4rem]" />
+            </div>
+
+            <span className="col-span-4 flex justify-end sm:justify-center sm:col-span-4 text-[0.5rem] font-extrabold text-center uppercase sm:text-2xl text-normal font-beVietNam">
               {t('productRequisition.confirmProductRequisitions')}
             </span>
-            <div className="col-span-1">
-              <div className="flex flex-col text-xs font-beVietNam">
-                <div className="flex flex-row gap-1 p-1">
+            <div className="flex col-span-3 justify-end sm:col-span-1">
+              <div className="flex flex-col justify-end text-[0.25rem] sm:text-sm font-beVietNam">
+                <div className="flex flex-row gap-1 sm:p-1">
                   <span>KMH:</span>
                   <span>QR3-01/001</span>
                 </div>
-                <div className="flex flex-row gap-1 p-1">
+                <div className="flex flex-row gap-1 sm:p-1">
                   <span>Lần ban hành:</span>
                   <span>1</span>
                 </div>
@@ -259,7 +252,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
             </div>
           </div>
           {data?.result && (
-            <div className="grid grid-cols-3 gap-3 mb-4 text-sm font-beVietNam">
+            <div className="grid grid-cols-1 gap-3 mb-4 text-sm sm:grid-cols-3 font-beVietNam">
               <div>
                 <strong>Mức ưu tiên: </strong>
                 <span className={data?.result?.type === 'urgent' ? 'text-red-600 font-bold' : ''}>

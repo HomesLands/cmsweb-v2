@@ -10,30 +10,35 @@ import {
   Button,
   Input
 } from '@/components/ui'
-import { TUpdateRoleSchema, updateRoleSchema } from '@/schemas'
+import {
+  TUpdateAuthoritySchema,
+  TUpdateRoleSchema,
+  updateAuthoritySchema,
+  updateRoleSchema
+} from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslation } from 'react-i18next'
 import React from 'react'
-import { IRole } from '@/types'
+import { IAuthority } from '@/types'
 
-interface IFormUpdateRoleProps {
-  role: IRole
-  onSubmit: (data: TUpdateRoleSchema) => void
+interface IFormUpdateAuthorityProps {
+  authority: IAuthority
+  onSubmit: (data: TUpdateAuthoritySchema) => void
 }
 
-export default function UpdateRoleForm({ role, onSubmit }: IFormUpdateRoleProps) {
-  const { t } = useTranslation('roles')
-  const form = useForm<TUpdateRoleSchema>({
-    resolver: zodResolver(updateRoleSchema),
+export default function UpdateAuthorityForm({ authority, onSubmit }: IFormUpdateAuthorityProps) {
+  const { t } = useTranslation('authorities')
+  const form = useForm<TUpdateAuthoritySchema>({
+    resolver: zodResolver(updateAuthoritySchema),
     defaultValues: {
-      slug: role?.slug || '',
-      description: role?.description || '',
-      nameDisplay: role?.nameDisplay || '',
-      nameNormalize: role?.nameNormalize || ''
+      slug: authority?.slug || '',
+      description: authority?.description || '',
+      nameDisplay: authority?.nameDisplay || '',
+      nameNormalize: authority?.nameNormalize || ''
     }
   })
 
-  const handleSubmit = (values: TUpdateRoleSchema) => {
+  const handleSubmit = (values: TUpdateAuthoritySchema) => {
     onSubmit(values)
   }
 
@@ -44,7 +49,7 @@ export default function UpdateRoleForm({ role, onSubmit }: IFormUpdateRoleProps)
         name="slug"
         render={() => (
           <FormItem>
-            <FormLabel>{t('roles.slug')}</FormLabel>
+            <FormLabel>{t('authorities.slug')}</FormLabel>
             <FormControl>
               <Input value={form.getValues('slug')} disabled />
             </FormControl>
@@ -59,7 +64,7 @@ export default function UpdateRoleForm({ role, onSubmit }: IFormUpdateRoleProps)
         name="nameNormalize"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('roles.nameNormalize')}</FormLabel>
+            <FormLabel>{t('authorities.nameNormalize')}</FormLabel>
             <FormControl>
               <Input {...field} />
             </FormControl>
@@ -74,7 +79,7 @@ export default function UpdateRoleForm({ role, onSubmit }: IFormUpdateRoleProps)
         name="nameDisplay"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('roles.nameDisplay')}</FormLabel>
+            <FormLabel>{t('authorities.nameDisplay')}</FormLabel>
             <FormControl>
               <Input {...field} />
             </FormControl>
@@ -89,7 +94,7 @@ export default function UpdateRoleForm({ role, onSubmit }: IFormUpdateRoleProps)
         name="description"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('roles.description')}</FormLabel>
+            <FormLabel>{t('authorities.description')}</FormLabel>
             <FormControl>
               <Input {...field} />
             </FormControl>
@@ -113,7 +118,7 @@ export default function UpdateRoleForm({ role, onSubmit }: IFormUpdateRoleProps)
           </div>
           <div className="flex justify-end">
             <Button className="flex justify-end" type="submit">
-              {t('roles.updateRole')}
+              {t('authorities.updateAuthority')}
             </Button>
           </div>
         </form>

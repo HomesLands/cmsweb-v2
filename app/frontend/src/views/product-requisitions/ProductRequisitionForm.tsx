@@ -15,6 +15,7 @@ import { useMultiStep } from '@/hooks'
 import { createProductRequisition } from '@/api/products'
 import { showToast } from '@/utils'
 import { useRequisitionStore } from '@/stores'
+import { ROUTE } from '@/constants'
 
 const ProductRequisitionForm: React.FC = () => {
   const { t } = useTranslation('productRequisition')
@@ -68,7 +69,7 @@ const ProductRequisitionForm: React.FC = () => {
 
   return (
     <div>
-      <div className="flex justify-center w-full my-2">
+      <div className="flex justify-center my-2 w-full">
         <div className="w-full md:w-4/5">
           <ProgressBar step={currentStep} />
         </div>
@@ -76,8 +77,8 @@ const ProductRequisitionForm: React.FC = () => {
       <div className="flex flex-col gap-4">
         {currentStep === 1 && (
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between w-full border-b">
-              <div className="flex flex-col items-start gap-2 py-2">
+            <CardHeader className="flex flex-row justify-between items-center w-full border-b">
+              <div className="flex flex-col gap-2 items-start py-2">
                 <CardTitle>{t('productRequisition.createProductRequisitions')}</CardTitle>
                 <CardDescription>
                   {t('productRequisition.createProductRequisitionsDescription')}
@@ -91,8 +92,8 @@ const ProductRequisitionForm: React.FC = () => {
         )}
         {currentStep === 2 && (
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between w-full border-b">
-              <div className="flex flex-col items-start gap-2 py-2">
+            <CardHeader className="flex flex-row justify-between items-center w-full border-b">
+              <div className="flex flex-col gap-2 items-start py-2">
                 <CardTitle>{t('productRequisition.addProductToRequest')}</CardTitle>
                 <CardDescription>
                   {t('productRequisition.addProductToRequestDescription')}
@@ -106,8 +107,8 @@ const ProductRequisitionForm: React.FC = () => {
         )}
         {currentStep === 3 && (
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between w-full border-b">
-              <div className="flex flex-col items-start gap-2 py-2">
+            <CardHeader className="flex flex-row justify-between items-center w-full border-b">
+              <div className="flex flex-col gap-2 items-start py-2">
                 <CardTitle>{t('productRequisition.confirmProductRequisitions')}</CardTitle>
                 <CardDescription>
                   {t('productRequisition.confirmProductRequisitionsDescription')}
@@ -121,24 +122,21 @@ const ProductRequisitionForm: React.FC = () => {
         )}
         {currentStep === 4 && (
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between w-full border-b">
-              <div className="flex flex-col items-start gap-2 py-2">
+            <CardHeader className="flex flex-row justify-between items-center w-full border-b">
+              <div className="flex flex-col gap-2 items-start py-2">
                 <CardTitle>{t('productRequisition.confirmProductRequisitionsSuccess')}</CardTitle>
-                <CardDescription>
-                  {t('productRequisition.confirmProductRequisitionsSuccessDescription')}
-                </CardDescription>
               </div>
             </CardHeader>
             <CardContent className="flex flex-col mt-3 text-normal">
-              <div className="flex flex-row gap-1">
-                <p>{t('productRequisition.confirmProductRequisitionsSuccessDescription')}</p>
+              <p>
+                {t('productRequisition.confirmProductRequisitionsSuccessDescription')}{' '}
                 <NavLink
-                  to="/product-requisitions"
+                  to={ROUTE.PRODUCT_REQUISITIONS}
                   className="text-blue-500 transition-all duration-300 hover:underline"
                 >
                   {t('productRequisition.here')}
                 </NavLink>
-              </div>
+              </p>
             </CardContent>
           </Card>
         )}

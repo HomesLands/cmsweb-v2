@@ -4,8 +4,14 @@
     "createAuthority": "Tạo thẩm quyền",
     "CreateAuthorityDescription": "Tạo thêm một thẩm quyền mới",
     "nameNormalize": "Mã chuẩn hóa",
+    "nameDisplay": "Tên hiển thị",
     "description": "Mô tả",
     "slug": "Mã thẩm quyền",
-    "createAuthoritySuccessfully": "Tạo thẩm quyền thành công"
+    "createAuthoritySuccessfully": "Tạo thẩm quyền thành công",
+
+    "actions": "Thao tác",
+    "editAuthority": "Chỉnh sửa",
+    "editAuthorityDescription": "Thay đổi thông tin bên dưới để chỉnh sửa thẩm quyền",
+    "updateAuthority": "Cập nhật"
   }
 }

@@ -19,7 +19,8 @@ import {
   ArrowUpIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  Loader2Icon
+  Loader2Icon,
+  SearchIcon
 } from 'lucide-react'
 
 import {
@@ -84,7 +85,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
   pages: number
   inputValue?: string
-  hidenInput?: boolean
+  hiddenInput?: boolean
   onPageChange: (pageIndex: number) => void
   onPageSizeChange: (pageSize: number) => void
   onRowClick?: (row: TData) => void
@@ -99,7 +100,7 @@ export function DataTable<TData, TValue>({
   data,
   pages,
   inputValue,
-  hidenInput = true,
+  hiddenInput = true,
   onPageChange,
   onPageSizeChange,
   onRowClick,
@@ -140,15 +141,18 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex gap-2 justify-end">
         {/* Input search */}
-        {!hidenInput && (
-          <Input
-            placeholder={`Nhập để tìm kiếm...`}
-            value={inputValue}
-            onChange={(e) => {
-              onInputChange?.(e.target.value)
-            }}
-            className="max-w-sm border-2"
-          />
+        {!hiddenInput && (
+          <div className="relative max-w-sm">
+            <SearchIcon className="absolute left-2 top-1/2 w-4 h-4 text-gray-400 transform -translate-y-1/2" />
+            <Input
+              placeholder={t('tableData.search')}
+              value={inputValue}
+              onChange={(e) => {
+                onInputChange?.(e.target.value)
+              }}
+              className="border sm:pr-2 sm:pl-8 sm:w-full sm:h-auto md:w-auto placeholder:sm:inline placeholder:hidden"
+            />
+          </div>
         )}
         <div className="flex gap-2 items-center">
           {/* Actions */}
@@ -368,7 +372,7 @@ export function DataTablePagination<TData>({
     <div className="flex flex-wrap justify-between items-center px-2">
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">Rows per page</p>
+          <p className="text-sm font-medium sr-only">Rows per page</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
@@ -388,7 +392,7 @@ export function DataTablePagination<TData>({
             </SelectContent>
           </Select>
         </div>
-        <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+        <div className="flex w-[100px] items-center sr-only justify-center text-sm font-medium">
           Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
         </div>
         <div className="flex items-center space-x-2">

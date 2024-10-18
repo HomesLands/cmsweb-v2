@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react'
 import { Clock } from 'lucide-react'
 import { Label } from '@/components/ui/label'
@@ -14,7 +16,7 @@ export function DateTimePicker({ date, setDate }: DateTimePickerProps) {
   const secondRef = React.useRef<HTMLInputElement>(null)
 
   return (
-    <div className="flex items-end gap-2">
+    <div className="flex gap-2 items-end">
       <div className="grid gap-1 text-center">
         <Label htmlFor="hours" className="text-xs">
           Hours
@@ -53,7 +55,7 @@ export function DateTimePicker({ date, setDate }: DateTimePickerProps) {
         />
       </div>
       <div className="flex items-center h-10">
-        <Clock className="w-4 h-4 ml-2" />
+        <Clock className="ml-2 w-4 h-4" />
       </div>
     </div>
   )

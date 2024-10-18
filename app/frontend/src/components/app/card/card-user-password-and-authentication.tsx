@@ -46,8 +46,8 @@ export const CardUserPasswordAndAuthentication = ({
 
   return (
     <Card className="border-none">
-      <CardContent className="flex flex-col gap-">
-        <div className="grid grid-cols-1 gap-3 mt-3 rounded-md border">
+      <CardContent className="flex flex-col gap-6 p-0">
+        <div className="grid grid-cols-1 gap-3 py-5 mt-3 border rounded-md">
           <div className="grid grid-cols-1 px-6 py-2">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">

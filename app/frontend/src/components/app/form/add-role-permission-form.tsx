@@ -1,3 +1,5 @@
+import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
 
 import {
@@ -12,9 +14,7 @@ import {
 } from '@/components/ui'
 import { createRolePermissionSchema, TCreateRolePermissionSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SelectPermission } from '../select'
-import { useTranslation } from 'react-i18next'
-import React from 'react'
+import { SelectPermission } from '@/components/app/select'
 import { IRole } from '@/types'
 
 interface IFormAddRolePermissionProps {
@@ -27,6 +27,7 @@ export const AddRolePermissionForm: React.FC<IFormAddRolePermissionProps> = ({
   onSubmit
 }) => {
   const { t } = useTranslation('users')
+  const { t: tRole } = useTranslation('roles')
   const form = useForm<TCreateRolePermissionSchema>({
     resolver: zodResolver(createRolePermissionSchema),
     defaultValues: {
@@ -98,7 +99,7 @@ export const AddRolePermissionForm: React.FC<IFormAddRolePermissionProps> = ({
           </div>
           <div className="flex justify-end">
             <Button className="flex justify-end" type="submit">
-              {t('users.createUserRole')}
+              {tRole('roles.addPermission')}
             </Button>
           </div>
         </form>

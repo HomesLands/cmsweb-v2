@@ -42,7 +42,7 @@ export function DialogAddProductRequest({
   return (
     <Dialog open={openDialog} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{component}</DialogTrigger>
-      <DialogContent className="max-w-[60rem]">
+      <DialogContent className="rounded-md max-w-[20rem] sm:max-w-[60rem]">
         <DialogHeader>
           <DialogTitle>{t('tableData.addNewProduct')}</DialogTitle>
           <DialogDescription>{t('tableData.addNewProductDescription')}</DialogDescription>

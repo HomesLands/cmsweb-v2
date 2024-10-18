@@ -1,3 +1,8 @@
+import { useTranslation } from 'react-i18next'
+import { useRef } from 'react'
+import toast from 'react-hot-toast'
+import { KeyRoundIcon, PenIcon, SquarePen, UserRoundPenIcon } from 'lucide-react'
+
 import {
   Dialog,
   DialogContent,
@@ -11,18 +16,17 @@ import {
 } from '@/components/ui'
 import { ICompany, IUploadCompanyLogo } from '@/types'
 import { useUploadCompanyLogo } from '@/hooks'
-import toast from 'react-hot-toast'
-import { KeyRoundIcon, PenIcon, UserRoundPenIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useThemeStore } from '@/stores'
-import { useTranslation } from 'react-i18next'
-import { useRef } from 'react'
+
 import { publicFileURL } from '@/constants'
+import { showToast } from '@/utils'
 
 export default function DialogUpdateCompany({ company }: { company: ICompany }) {
-  const { t } = useTranslation('account')
+  const { t } = useTranslation('companies')
+  const { t: tToast } = useTranslation('toast')
   const { getTheme } = useThemeStore()
-  const mutation = useUploadCompanyLogo()
+  const { mutate: uploadCompanyLogoMutation } = useUploadCompanyLogo()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const triggerFileInput = () => fileInputRef.current?.click()
@@ -32,9 +36,9 @@ export default function DialogUpdateCompany({ company }: { company: ICompany }) 
       file: values,
       slug: company.slug
     } as IUploadCompanyLogo
-    mutation.mutate(requestData, {
+    uploadCompanyLogoMutation(requestData, {
       onSuccess: () => {
-        toast.success('Thay đổi logo thành công')
+        showToast(tToast('toast.updateCompanyLogoSuccess'))
       }
     })
   }
@@ -43,18 +47,20 @@ export default function DialogUpdateCompany({ company }: { company: ICompany }) 
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="ghost" className="gap-1 text-sm">
-          <PenIcon className="icon" />
-          Upload logo
+          <SquarePen className="icon" />
+          {t('companies.updateLogo')}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-[48rem] max-h-[32rem] overflow-hidden hover:overflow-y-auto transition-all duration-300">
         <DialogHeader>
-          <DialogTitle>Thay đổi logo</DialogTitle>
-          <DialogDescription>Thay đổi logo {company.name}</DialogDescription>
+          <DialogTitle>{t('companies.updateLogo')}</DialogTitle>
+          <DialogDescription>
+            {t('companies.updateLogoDescription')} {company.name}
+          </DialogDescription>
         </DialogHeader>
         <Card className="mt-6 border-none">
           <CardContent className="flex flex-col gap-6">
-            <div className="grid grid-cols-1 gap-3 rounded-md border">
+            <div className="grid grid-cols-1 gap-3 border rounded-md">
               <div
                 className={cn(
                   'flex justify-between items-center px-6 py-4 w-full',
@@ -62,23 +68,23 @@ export default function DialogUpdateCompany({ company }: { company: ICompany }) 
                 )}
               >
                 <span className="font-semibold font-beVietNam text-md">
-                  {t('account.signature')}
+                  {t('companies.currentLogo')}
                 </span>
                 {company.logo && (
                   <Button
                     variant="outline"
                     size="sm"
-                    className="flex gap-1 items-center"
+                    className="flex items-center gap-1"
                     onClick={triggerFileInput}
                   >
                     <KeyRoundIcon className="icon" />
-                    <span className="text-sm text-normal">{t('account.changeSignature')}</span>
+                    <span className="text-xs text-normal">{t('companies.changeLogo')}</span>
                   </Button>
                 )}
               </div>
               <div className="p-6">
                 {company.logo ? (
-                  <div className="overflow-hidden w-full h-40 rounded-md border">
+                  <div className="w-full h-40 overflow-hidden border rounded-md">
                     <img
                       src={`${publicFileURL}/${company.logo}`}
                       alt="User Signature"
@@ -87,11 +93,11 @@ export default function DialogUpdateCompany({ company }: { company: ICompany }) 
                   </div>
                 ) : (
                   <div
-                    className="flex flex-col justify-center items-center w-full h-40 text-gray-400 rounded-md border transition-colors cursor-pointer hover:bg-gray-50"
+                    className="flex flex-col items-center justify-center w-full h-40 text-gray-400 transition-colors border rounded-md cursor-pointer hover:bg-gray-50"
                     onClick={triggerFileInput}
                   >
-                    <UserRoundPenIcon className="mb-2 w-12 h-12" />
-                    <span>{t('account.addSignature')}</span>
+                    <UserRoundPenIcon className="w-12 h-12 mb-2" />
+                    <span className="text-xs">{t('companies.addLogo')}</span>
                   </div>
                 )}
                 <input

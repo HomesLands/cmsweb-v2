@@ -444,7 +444,7 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
                   actionOptions={ProductRequisitionUpdateActionOptions}
                   inputValue={inputValue}
                   onInputChange={setInputValue}
-                  hidenInput={false}
+                  hiddenInput={false}
                 />
               </div>
               {requisition && (

@@ -69,10 +69,10 @@
     @apply bg-background text-foreground;
   }
   .auth-layout{
-    @apply flex justify-center items-center w-full min-h-screen bg-muted text-foreground;
+    @apply flex items-center justify-center w-full min-h-screen bg-muted text-foreground;
   }
   .login-background{
-    @apply object-cover absolute inset-0 z-10 w-full h-full;
+    @apply absolute inset-0 z-10 object-cover w-full h-full;
   }
   .header{
     @apply border-b border-b-gray-200 flex h-14 items-center justify-between gap-4 px-4 lg:h-[60px] lg:px-4;
@@ -88,6 +88,10 @@
   }
   .icon{
     @apply w-3.5 h-3.5;
+  }
+
+  .icon-sm{
+    @apply w-2.5 h-2.5;
   }
   .header-icon{
     @apply w-4 h-4;

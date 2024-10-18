@@ -1,5 +1,9 @@
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { HamburgerMenuIcon } from '@radix-ui/react-icons'
+import { useTranslation } from 'react-i18next'
+import { Dot } from 'lucide-react'
+
 import {
   Sheet,
   SheetTrigger,
@@ -8,16 +12,16 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Button
+  Button,
+  Card
 } from '@/components/ui'
 
 import { sidebarRoutes } from '@/router/routes'
 import { IconWrapper } from './IconWrapper'
-import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 
 export function SidebarDrawerMobile() {
-  const isMinimized = false
+  const [open, setOpen] = useState(false)
   const isSubmenuActive = false
 
   const { t } = useTranslation('sidebar')
@@ -32,50 +36,57 @@ export function SidebarDrawerMobile() {
     }))
   }))
 
+  const closeSheet = () => setOpen(false)
+
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant="outline" size="icon" className="shrink-0 md:hidden">
           <HamburgerMenuIcon className="icon" />
           <span className="sr-only">Toggle navigation menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="flex flex-col w-3/5 overflow-y-auto h-screen">
-        <Accordion type="single" collapsible className="w-full ">
+      <SheetContent side="left" className="flex overflow-y-auto flex-col w-3/5 h-screen">
+        <Accordion type="single" collapsible className="w-full">
           {translatedSubmenus.map((submenu) => (
             <AccordionItem key={submenu.title} value={submenu.title}>
               <AccordionTrigger
                 className={cn(
-                  'flex flex-1 w-full items-center py-4 font-medium text-base mt-3 transition-all duration-200 hover:text-primary hover:no-underline',
-                  isMinimized
-                    ? 'justify-center'
-                    : '[&[data-state=open]>svg]:rotate-180 px-2 justify-between',
+                  'flex flex-1 w-full items-center py-3 font-medium text-sm mt-3 transition-all duration-200 hover:text-primary hover:no-underline',
+                  '[&[data-state=open]>svg]:rotate-180 px-2 justify-between',
                   isSubmenuActive ? 'text-primary font-semibold' : ''
                 )}
                 minimized={false}
               >
-                <div className="flex items-center gap-2">
-                  {submenu.icon && <IconWrapper Icon={submenu.icon} className="w-5 h-5" />}
-                  <span className="text-[13px]">{submenu.title}</span>
+                <div className="flex gap-2 justify-between items-center transition-all duration-300">
+                  {submenu.icon && <IconWrapper Icon={submenu.icon} className="w-3 h-3" />}
+                  <span className="font-sans text-xs font-normal whitespace-nowrap">
+                    {submenu.title}
+                  </span>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
                 {submenu.children && submenu.children.length > 0 && (
-                  <div className="flex flex-col gap-2 ml-4">
+                  <Card className="border-none">
                     {submenu.children.map((item) => (
                       <NavLink
+                        end
                         key={item.title}
                         to={item.path}
+                        onClick={closeSheet}
                         className={({ isActive }) =>
-                          `flex items-center gap-3 px-3 py-2 transition-all rounded-lg ${
-                            isActive ? 'text-primary' : 'text-muted-foreground hover:text-primary'
+                          `text-muted-foreground flex items-center gap-2 py-2 ml-4 duration-300 rounded-lg hover:text-primary ${
+                            isActive ? 'text-primary font-semibold' : ''
                           }`
                         }
                       >
-                        <span className="text-[13px]">{item.title}</span>
+                        <span className="flex flex-row gap-2 items-center text-xs font-normal">
+                          <Dot className="w-3 h-3" />
+                          {item.title}
+                        </span>
                       </NavLink>
                     ))}
-                  </div>
+                  </Card>
                 )}
               </AccordionContent>
             </AccordionItem>

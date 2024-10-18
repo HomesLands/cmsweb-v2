@@ -1,3 +1,6 @@
+import toast from 'react-hot-toast'
+import { PenIcon, SquarePen } from 'lucide-react'
+
 import {
   Dialog,
   DialogContent,
@@ -7,22 +10,24 @@ import {
   DialogTrigger,
   Button
 } from '@/components/ui'
-import { UpdateRoleForm } from '../form'
+import { UpdateRoleForm } from '@/components/app/form'
 import { IRole, IUpdateRole } from '@/types'
 import { useUpdateRole } from '@/hooks'
 import { TUpdateRoleSchema } from '@/schemas'
-import toast from 'react-hot-toast'
-import { PenIcon } from 'lucide-react'
+import { showToast } from '@/utils'
+import { useTranslation } from 'react-i18next'
 
 export default function DialogUpdateRole({ role }: { role: IRole }) {
-  const mutation = useUpdateRole()
+  const { mutate: updateRoleMutation } = useUpdateRole()
+  const { t } = useTranslation('roles')
+  const { t: tToast } = useTranslation('toast')
   const handleSubmit = (values: TUpdateRoleSchema) => {
     const requestData = {
       ...values
     } as IUpdateRole
-    mutation.mutate(requestData, {
+    updateRoleMutation(requestData, {
       onSuccess: () => {
-        toast.success('Chỉnh sửa quyền thành công')
+        showToast(tToast('toast.updateRoleSuccess'))
       }
     })
   }
@@ -31,14 +36,14 @@ export default function DialogUpdateRole({ role }: { role: IRole }) {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="ghost" className="gap-1 text-sm">
-          <PenIcon className="icon" />
-          Chỉnh sửa quyền hạn
+          <SquarePen className="icon" />
+          {t('roles.editRole')}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-[48rem] max-h-[32rem] overflow-hidden hover:overflow-y-auto transition-all duration-300">
         <DialogHeader>
-          <DialogTitle>Chỉnh sửa quyền hạn</DialogTitle>
-          <DialogDescription>Thay đổi thông tin bên dưới để chỉnh sửa quyền hạn</DialogDescription>
+          <DialogTitle>{t('roles.editRole')}</DialogTitle>
+          <DialogDescription>{t('roles.editRoleDescription')}</DialogDescription>
         </DialogHeader>
         <UpdateRoleForm role={role} onSubmit={handleSubmit} />
       </DialogContent>

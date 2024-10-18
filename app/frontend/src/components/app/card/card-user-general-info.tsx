@@ -36,7 +36,7 @@ export const CardUserGeneralInfo = ({
   return (
     <div>
       <Card className="border-none">
-        <CardContent className="flex flex-col gap-6">
+        <CardContent className="flex flex-col gap-6 p-0">
           <div className="flex flex-row p-2">
             <ProfilePicture
               height={80}
@@ -55,7 +55,7 @@ export const CardUserGeneralInfo = ({
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 gap-3 rounded-md border">
+          <div className="grid grid-cols-1 gap-3 border rounded-md">
             <div
               className={cn(
                 'flex justify-between items-center px-6 py-4 w-full',
@@ -65,7 +65,7 @@ export const CardUserGeneralInfo = ({
               <span className="font-semibold font-beVietNam text-md">{t('account.profile')}</span>
               <Button
                 variant="outline"
-                className="flex gap-1 justify-center items-center"
+                className="flex items-center justify-center gap-1"
                 onClick={() => setOpenDialog(true)}
               >
                 <UserRoundPen className="icon" />
@@ -100,8 +100,8 @@ export const CardUserGeneralInfo = ({
         </CardContent>
       </Card>
       <Card className="mt-6 border-none">
-        <CardContent className="flex flex-col gap-6">
-          <div className="grid grid-cols-1 gap-3 rounded-md border">
+        <CardContent className="flex flex-col gap-6 p-0">
+          <div className="grid grid-cols-1 gap-3 border rounded-md">
             <div
               className={cn(
                 'flex justify-between items-center px-6 py-4 w-full',
@@ -113,7 +113,7 @@ export const CardUserGeneralInfo = ({
                 <Button
                   variant="outline"
                   size="sm"
-                  className="flex gap-1 items-center"
+                  className="flex items-center gap-1"
                   onClick={triggerFileInput}
                 >
                   <KeyRound className="icon" />
@@ -123,7 +123,7 @@ export const CardUserGeneralInfo = ({
             </div>
             <div className="p-6">
               {userInfo?.signature ? (
-                <div className="overflow-hidden w-full h-40 rounded-md border">
+                <div className="w-full h-40 overflow-hidden border rounded-md">
                   <img
                     src={`${publicFileURL}/${userInfo.signature}`}
                     alt="User Signature"
@@ -132,10 +132,10 @@ export const CardUserGeneralInfo = ({
                 </div>
               ) : (
                 <div
-                  className="flex flex-col justify-center items-center w-full h-40 text-gray-400 rounded-md border transition-colors cursor-pointer hover:bg-gray-50"
+                  className="flex flex-col items-center justify-center w-full h-40 text-gray-400 transition-colors border rounded-md cursor-pointer hover:bg-gray-50"
                   onClick={triggerFileInput}
                 >
-                  <UserRoundPen className="mb-2 w-12 h-12" />
+                  <UserRoundPen className="w-12 h-12 mb-2" />
                   <span>{t('account.addSignature')}</span>
                 </div>
               )}

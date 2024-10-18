@@ -7,3 +7,8 @@ export interface IResource extends IBase {
 export interface ICreateResource {
   name: string
 }
+
+export interface IUpdateResource {
+  slug: string
+  name: string
+}

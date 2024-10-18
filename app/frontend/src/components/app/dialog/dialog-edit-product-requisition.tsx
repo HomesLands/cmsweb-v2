@@ -11,7 +11,7 @@ import {
 } from '@/components/ui'
 
 import { IProductRequisitionInfo } from '@/types'
-import { EditProductRequisitionForm } from '../form/edit-product-requisition-form'
+import { AddNewProductRequestForm, EditProductRequisitionForm } from '@/components/app/form'
 
 interface DialogRequisitionDetailProps {
   handleEditProduct: (product: IProductRequisitionInfo) => void
@@ -28,7 +28,7 @@ export function DialogEditProductRequisition({
   component,
   onOpenChange
 }: DialogRequisitionDetailProps) {
-  const { t } = useTranslation('productRequisition')
+  const { t } = useTranslation('tableData')
 
   const handleConfirm = (data: IProductRequisitionInfo) => {
     handleEditProduct(data)
@@ -38,20 +38,15 @@ export function DialogEditProductRequisition({
   return (
     <Dialog open={openDialog} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{component}</DialogTrigger>
-      <DialogContent className="max-w-[64rem] p-0">
-        <ScrollArea className="max-h-[80vh]">
-          <div className="p-6">
-            <DialogHeader>
-              <DialogTitle>{t('productRequisition.productInformation')}</DialogTitle>
-              <DialogDescription>
-                {requisition?.isExistProduct
-                  ? t('productRequisition.existingProductDescription')
-                  : t('productRequisition.newProductDescription')}
-              </DialogDescription>
-            </DialogHeader>
-            <EditProductRequisitionForm onSubmit={handleConfirm} data={requisition || undefined} />
-          </div>
-        </ScrollArea>
+      <DialogContent className="rounded-md max-w-[20rem] sm:max-w-[60rem]">
+        <DialogHeader>
+          <DialogTitle>{t('tableData.editProduct')}</DialogTitle>
+          <DialogDescription>{t('tableData.editProductDescription')}</DialogDescription>
+        </DialogHeader>
+        <EditProductRequisitionForm
+          data={requisition || undefined}
+          onSubmit={(data: IProductRequisitionInfo) => handleConfirm(data)}
+        />
       </DialogContent>
     </Dialog>
   )

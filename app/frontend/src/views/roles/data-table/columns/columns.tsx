@@ -1,4 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table'
+import { MoreHorizontal } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import {
   Button,
@@ -9,8 +11,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui'
 import { IRole } from '@/types'
-import { MoreHorizontal } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
+
 import { DialogAddRolePermission, DialogUpdateRole } from '@/components/app/dialog'
 
 export const useRoleColumns = (): ColumnDef<IRole>[] => {
@@ -40,7 +41,7 @@ export const useRoleColumns = (): ColumnDef<IRole>[] => {
         const permissions: JSX.Element[] = rolePermissions.map((item) => {
           return <div>{`(${item?.permission.authority}, ${item?.permission.resource})`}</div>
         })
-        return <div className="font-bold flex flex-col gap-1">{permissions}</div>
+        return <div className="flex flex-col gap-1 font-bold">{permissions}</div>
       }
     },
 

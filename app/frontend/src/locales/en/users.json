@@ -2,6 +2,11 @@
   "users": {
     "avatar": "Avatar",
     "fullname": "Full name",
-    "actions": "Actions"
+    "actions": "Actions",
+    "role": "Role",
+    "slug": "Slug",
+
+    "selectUser": "Select user",
+    "selectPermission": "Select permission"
   }
 }

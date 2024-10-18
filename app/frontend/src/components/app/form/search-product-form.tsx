@@ -48,7 +48,7 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
   const columns = useColumnsResult(handleEditProduct, handleDeleteProduct)
 
   return (
-    <div className="flex flex-col w-full gap-4 mt-3">
+    <div className="flex flex-col gap-4 mt-3 w-full">
       <DataTable
         isLoading={isLoading}
         columns={useColumnsSearchProduct()}
@@ -59,11 +59,11 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
         actionOptions={ProductActionOptions}
         inputValue={inputValue}
         onInputChange={setInputValue}
-        hidenInput={false} // default true
+        hiddenInput={false} // default true
       />
 
       <div className="flex flex-col gap-2">
-        <Label className="text-lg font-semibold leading-none tracking-tight font-beVietNam">
+        <Label className="text-lg font-semibold tracking-tight leading-none font-beVietNam">
           {t('productRequisition.addedProductToRequest')}
         </Label>
         <span className="text-sm text-muted-foreground">
@@ -80,7 +80,7 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
           />
         </div>
       </div>
-      <div className="flex items-center justify-end w-full gap-2 mt-4">
+      <div className="flex gap-2 justify-end items-center mt-4 w-full">
         <Button variant="outline" onClick={onBack}>
           {t('productRequisition.back')}
         </Button>

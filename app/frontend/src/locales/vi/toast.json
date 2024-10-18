@@ -50,6 +50,13 @@
     "exportExcelSuccess": "Xuất Excel thành công",
 
     "updateProductSuccess": "Vật tư được cập nhật thành công",
-    "backupDatabaseSuccess": "Sao lưu cơ sở dữ liệu thành công"
+    "backupDatabaseSuccess": "Sao lưu cơ sở dữ liệu thành công",
+
+    "addRolePermissionSuccess": "Quyền được thêm thành công",
+    "updateRoleSuccess": "Chức vụ được cập nhật thành công",
+    "updateAuthoritySuccess": "Thẩm quyền được cập nhật thành công",
+    "updateResourceSuccess": "Tài nguyên được cập nhật thành công",
+
+    "updateCompanyLogoSuccess": "Logo công ty được cập nhật thành công"
   }
 }
