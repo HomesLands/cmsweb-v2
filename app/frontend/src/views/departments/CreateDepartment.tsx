@@ -2,17 +2,14 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
-import { ICreateDepartment, ICreateSite } from '@/types'
-import { useCreateSite } from '@/hooks'
-import { CreateSiteForm } from '@/components/app/form'
-import { showToast } from '@/utils'
-import { DialogConfirmCreateSite } from '@/components/app/dialog/dialog-confirm-create-site'
+import { ICreateDepartment } from '@/types'
 import { DialogConfirmCreateDepartment } from '@/components/app/dialog'
 import { useCreateDepartment } from '@/hooks/use-departments'
 import { CreateDepartmentForm } from '@/components/app/form/create-department-form'
+import { showToast } from '@/utils'
 
 const CreateDepartment: React.FC = () => {
-  const { t } = useTranslation(['sites'])
+  const { t } = useTranslation(['department'])
   const { t: tToast } = useTranslation(['toast'])
   const { mutate: createDepartment } = useCreateDepartment()
   const [openDialog, setOpenDialog] = useState(false)
@@ -21,13 +18,12 @@ const CreateDepartment: React.FC = () => {
   const handleConfirmCreateDepartment = (values: ICreateDepartment) => {
     createDepartment(values, {
       onSuccess: () => {
-        showToast(tToast('toast.createSiteSuccessfully'))
+        showToast(tToast('toast.createDepartmentSuccessfully'))
       }
     })
   }
 
   const onSubmit = (values: ICreateDepartment) => {
-    console.log(values)
     setDepartment(values)
     setOpenDialog(true)
   }
@@ -35,10 +31,10 @@ const CreateDepartment: React.FC = () => {
   return (
     <div className="flex flex-col gap-4 mt-3">
       <Card>
-        <CardHeader className="flex flex-row justify-between items-center w-full border-b">
-          <div className="flex flex-col gap-2 items-start py-2">
-            <CardTitle>{t('sites.createSite')}</CardTitle>
-            <CardDescription>{t('sites.createSiteDescription')}</CardDescription>
+        <CardHeader className="flex flex-row items-center justify-between w-full border-b">
+          <div className="flex flex-col items-start gap-2 py-2">
+            <CardTitle>{t('department.create')}</CardTitle>
+            <CardDescription>{t('department.createDescription')}</CardDescription>
           </div>
         </CardHeader>
         <CardContent className="flex flex-col">
