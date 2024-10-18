@@ -1,7 +1,10 @@
 import dotenv from "dotenv";
+import dotenvExpand from "dotenv-expand";
 import { TEnv } from "types";
 
-dotenv.config();
+dotenvExpand.expand(dotenv.config());
+
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
 export const env: TEnv = {
   dataSource: {
@@ -13,10 +16,12 @@ export const env: TEnv = {
   hashSalt: process.env.HASH_SALT || "",
   jwtSecret: process.env.JWT_SECRET || "",
   passportSecret: process.env.PASSPORT_SECRET || "",
-  port: process.env.PORT ? parseInt(process.env.PORT, 10) : 3000,
+  port: port,
   duration: process.env.DURATION ? parseInt(process.env.DURATION, 10) : 3600,
   refreshableDuration: process.env.REFRESHABLE_DURATION
     ? parseInt(process.env.REFRESHABLE_DURATION, 10)
     : 36000,
   tag: process.env.TAG || "v1",
+  swaggerEnpoint:
+    process.env.SWAGGER_ENDPOINT || `http://localhost:${port}/api`,
 };
