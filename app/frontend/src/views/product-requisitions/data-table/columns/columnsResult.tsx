@@ -83,7 +83,7 @@ export const useColumnsResult = (
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="w-8 h-8 p-0">
+                <Button variant="ghost" className="p-0 w-8 h-8">
                   <span className="sr-only">Actions</span>
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
@@ -106,15 +106,13 @@ export const useColumnsResult = (
               component={null}
               onOpenChange={onOpenChange}
             />
-            {selectedProduct === product && openDelete && (
-              <DialogDeleteProductRequisition
-                handleDeleteProduct={handleDeleteProduct}
-                openDialog={openDelete}
-                product={product}
-                component={null}
-                onOpenChange={onOpenDeleteChange}
-              />
-            )}
+            <DialogDeleteProductRequisition
+              handleDeleteProduct={handleDeleteProduct}
+              openDialog={openDelete}
+              product={product}
+              component={null}
+              onOpenChange={onOpenDeleteChange}
+            />
           </div>
         )
       }

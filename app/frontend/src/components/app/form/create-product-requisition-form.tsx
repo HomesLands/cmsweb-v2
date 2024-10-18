@@ -77,7 +77,6 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
   })
 
   const handleSubmit = (values: TProductRequisitionSchema) => {
-    console.log('values', values)
     onSubmit(values)
   }
 

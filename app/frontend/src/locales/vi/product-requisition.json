@@ -2,7 +2,7 @@
   "productRequisition": {
     "list": "Danh sách duyệt yêu cầu vật tư",
     "listDescription": "Danh sách duyệt yêu cầu vật tư",
-    "listEmployee": "Danh sách duyệt yêu cầu vật tư",
+    "listEmployee": "Danh sách yêu cầu vật tư đã tạo",
     "listEmployeeDescription": "Danh sách yêu cầu vật tư đã tạo",
     "create": "Tạo yêu cầu vật tư",
     "createProductRequisitions": "Tạo yêu cầu vật tư",
@@ -26,6 +26,9 @@
 
     "productInformation": "Thông tin vật tư",
     "productInformationDescription": "Xác nhận thông tin vật tư",
+
+    "confirmProductRequisitionsSuccess": "Xác nhận thành công",
+    "confirmProductRequisitionsSuccessDescription": "Phiếu yêu cầu đã được gửi đi. Bạn có thể xem danh sách",
 
     "back": "Trở lại",
     "next": "Tiếp theo",
@@ -63,7 +66,6 @@
     "confirmProductRequisitionsDescription": "Thông tin chi tiết của yêu cầu vật tư",
 
     "productRequisitionList": "Danh sách vật trước yêu cầu",
-    "confirmProductRequisitionsSuccessDescription": "Phiếu yêu cầu đã được gửi đi. Bạn có thể xem danh sách",
     "here": "tại đây",
     "updateProductRequisition": "Cập nhật yêu cầu vật tư",
     "update": "Cập nhật",

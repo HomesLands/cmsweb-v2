@@ -55,6 +55,14 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitio
       }
     },
     {
+      accessorKey: 'deadlineApproval',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Thời hạn duyệt" />,
+      cell: ({ row }) => {
+        const date = row.original.deadlineApproval ? new Date(row.original.deadlineApproval) : null
+        return date ? format(date, 'HH:mm dd/MM/yyyy') : 'Không có'
+      }
+    },
+    {
       accessorKey: 'productRequisitionForm',
       header: ({ column }) => <DataTableColumnHeader column={column} title="Loại yêu cầu" />,
       cell: ({ row }) => {

@@ -1,20 +1,12 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ChevronDown } from 'lucide-react'
 import { PlusCircledIcon } from '@radix-ui/react-icons'
 
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-  Button,
-  DataTableActionOptionsProps
-} from '@/components/ui'
+import { Button } from '@/components/ui'
 import { DialogAddProductRequest } from '@/components/app/dialog'
 import { IProductInfo } from '@/types'
 
-export default function ProductActionOptions({ table }: DataTableActionOptionsProps<IProductInfo>) {
+export default function ProductActionOptions() {
   const { t } = useTranslation('tableData')
   const [openDialog, setOpenDialog] = useState(false)
   const [product, setProduct] = useState<IProductInfo | null>(null)

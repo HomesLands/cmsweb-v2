@@ -44,7 +44,6 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
   })
 
   const handleSubmit = (values: TAddNewProductRequestSchema) => {
-    console.log('values in form', values)
     const completeData: TAddNewProductRequestSchema = {
       ...values,
       requestQuantity: Number(values.requestQuantity),
@@ -65,7 +64,7 @@ export const AddNewProductRequestForm: React.FC<IFormAddNewProductProps> = ({ da
     <div className="mt-3">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
             {productCode && (
               <FormField
                 control={form.control}

@@ -11,7 +11,7 @@ import {
   DialogTrigger
 } from '@/components/ui'
 
-import { IProductRequisitionInfo, IRequestProductInfo } from '@/types'
+import { IProductRequisitionInfo } from '@/types'
 
 interface DialogDeleteProductRequisitionProps {
   handleDeleteProduct: (product: IProductRequisitionInfo) => void
@@ -40,7 +40,7 @@ export function DialogDeleteProductRequisition({
     <Dialog open={openDialog} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{component}</DialogTrigger>
 
-      <DialogContent className="max-w-[32rem] font-beVietNam">
+      <DialogContent className="max-w-[22rem] rounded-md sm:max-w-[32rem] font-beVietNam">
         <DialogHeader>
           <DialogTitle className="pb-4 border-b border-destructive text-destructive">
             <div className="flex gap-2 items-center">
@@ -59,7 +59,7 @@ export function DialogDeleteProductRequisition({
             Hành động này không thể hoàn tác. Dữ liệu về vật tư sẽ bị xóa khỏi yêu cầu vật tư!
           </div>
         </DialogHeader>
-        <DialogFooter>
+        <DialogFooter className="flex flex-row gap-2 justify-center">
           <Button variant="outline" onClick={onOpenChange}>
             Hủy
           </Button>

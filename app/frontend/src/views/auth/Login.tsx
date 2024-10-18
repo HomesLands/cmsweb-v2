@@ -70,9 +70,9 @@ const Login: React.FC = () => {
 
   return (
     <div className="flex relative justify-center items-center min-h-screen bg-gray-100">
-      <img src={LoginBackground} className="object-fill absolute top-0 left-0 w-full h-full" />
+      <img src={LoginBackground} className="absolute top-0 left-0 w-full h-full sm:object-fill" />
       <div className="flex relative z-10 justify-center items-center w-full h-full">
-        <Card className="min-w-[24rem] mx-auto border-none shadow-xl backdrop-blur-xl">
+        <Card className="sm:min-w-[24rem] mx-auto border-none shadow-xl backdrop-blur-xl">
           <CardHeader>
             <CardTitle className="text-2xl"> {t('login.title')} </CardTitle>
             <CardDescription> {t('login.description')} </CardDescription>
