@@ -12,6 +12,7 @@ export type TEnv = {
   duration: number;
   refreshableDuration: number;
   tag: string;
+  swaggerEnpoint: string;
 };
 
 export * from "./base.type";
