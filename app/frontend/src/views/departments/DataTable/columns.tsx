@@ -27,6 +27,10 @@ export const useDepartmentColumns = (): ColumnDef<IDepartment>[] => {
       )
     },
     {
+      accessorKey: 'site.name',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('department.site')} />
+    },
+    {
       accessorKey: 'description',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t('department.description')} />
@@ -41,7 +45,7 @@ export const useDepartmentColumns = (): ColumnDef<IDepartment>[] => {
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="p-0 w-8 h-8">
+                <Button variant="ghost" className="w-8 h-8 p-0">
                   <span className="sr-only">Thao tác</span>
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>

@@ -25,28 +25,35 @@
     "createRoles": "Tạo chức vụ",
 
     "employees": "Nhân sự",
+    "employeeList": "Danh sách nhân sự",
+    "createEmployee": "Thêm nhân sự",
 
     "assignedApprover": "Người duyệt",
     "createAssignedApprover": "Tạo người duyệt",
     "createAssignedApprovers": "Tạo người duyệt",
 
     "companies": "Công ty",
+    "companyList": "Danh sách công ty",
     "createCompany": "Tạo công ty",
     "createCompanies": "Tạo công ty",
 
     "sites": "Địa điểm",
+    "siteList": "Danh sách địa điểm",
     "createSite": "Tạo địa điểm",
     "createSites": "Tạo địa điểm",
 
     "departments": "Phòng ban",
+    "departmentList": "Danh sách phòng ban",
     "createDepartment": "Tạo phòng ban",
     "createDepartments": "Tạo phòng ban",
 
     "projects": "Dự án",
+    "projectList": "Danh sách dự án",
     "createProject": "Tạo dự án",
     "createProjects": "Tạo dự án",
 
     "resources": "Tài nguyên",
+    "resourceList": "Danh sách tài nguyên",
     "createResource": "Tạo tài nguyên",
     "createResources": "Tạo tài nguyên",
     "backup": "Sao lưu"

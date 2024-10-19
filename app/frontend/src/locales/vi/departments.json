@@ -2,7 +2,7 @@
   "department": {
     "list": "Danh sách phòng ban",
     "create": "Tạo phòng ban",
-    "createDescription": "Tạo mới phòng ban",
+    "createDescription": "Điền đầy đủ thông tin bên dưới để tạo phòng ban mới",
     "nameNormalize": "Mã chuẩn hóa",
     "nameNormalizeDescription": "Nhập mã chuẩn hóa",
     "name": "Tên phòng ban",
@@ -10,6 +10,7 @@
     "company": "Công ty",
     "description": "Mô tả",
     "descriptionDescription": "Nhập mô tả",
+    "site": "Địa điểm",
 
     "confirmCreate": "Xác nhận tạo phòng ban",
     "confirmCreateDescription": "Xác nhận tạo mới phòng ban",
