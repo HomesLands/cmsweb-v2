@@ -8,16 +8,14 @@ import { useThemeStore, useUserStore } from '@/stores'
 import { useUploadSignature } from '@/hooks/use-users'
 import { cn } from '@/lib/utils'
 import { publicFileURL } from '@/constants'
+import { IUserInfo } from '@/types'
+import { DialogUpdateUserGeneralInfo } from '../dialog'
 
 interface CardUserGeneralInfoProps {
   handleUploadProfilePicture: (file: File) => void
-  setOpenDialog: (open: boolean) => void
 }
 
-export const CardUserGeneralInfo = ({
-  handleUploadProfilePicture,
-  setOpenDialog
-}: CardUserGeneralInfoProps) => {
+export const CardUserGeneralInfo = ({ handleUploadProfilePicture }: CardUserGeneralInfoProps) => {
   const { t } = useTranslation('account')
   const { userInfo } = useUserStore()
   const { getTheme } = useThemeStore()
@@ -63,14 +61,15 @@ export const CardUserGeneralInfo = ({
               )}
             >
               <span className="font-semibold font-beVietNam text-md">{t('account.profile')}</span>
-              <Button
+              <DialogUpdateUserGeneralInfo userInfo={userInfo as IUserInfo} />
+              {/* <Button
                 variant="outline"
                 className="flex items-center justify-center gap-1"
                 onClick={() => setOpenDialog(true)}
               >
                 <UserRoundPen className="icon" />
                 <span className="text-normal">{t('account.edit')}</span>
-              </Button>
+              </Button> */}
             </div>
             <div className="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2">
               <div className="flex flex-col gap-1">

@@ -1,34 +1,60 @@
 import { useTranslation } from 'react-i18next'
 
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
   ScrollArea
 } from '@/components/ui'
 
 import { FormUpdateUserGeneralInfo } from '@/components/app/form'
 import { IUpdateUserGeneralInfo, IUserInfo } from '@/types'
+import { useState } from 'react'
+import { useUpdateUser } from '@/hooks'
+import { showToast } from '@/utils'
+import { SquarePen } from 'lucide-react'
 
-interface DialogUpdateRequisitionProps {
-  handleUpdateUserGeneralInfo: (userInfo: IUpdateUserGeneralInfo) => void
-  openDialog: boolean
-  userInfo: IUserInfo
-  onOpenChange: () => void
-}
+// interface DialogUpdateRequisitionProps {
+//   handleUpdateUserGeneralInfo: (userInfo: IUpdateUserGeneralInfo) => void
+//   openDialog: boolean
+//   userInfo: IUserInfo
+//   onOpenChange: () => void
+// }
 
 export function DialogUpdateUserGeneralInfo({
-  handleUpdateUserGeneralInfo,
-  openDialog,
-  userInfo,
-  onOpenChange
-}: DialogUpdateRequisitionProps) {
+  // handleUpdateUserGeneralInfo,
+  // openDialog,
+  userInfo
+  // onOpenChange
+}: {
+  userInfo: IUserInfo
+}) {
   const { t } = useTranslation('account')
+  const { t: tToast } = useTranslation('toast')
+  const [isOpen, setIsOpen] = useState(false)
+  const { mutate: updateUserInfo } = useUpdateUser()
+
+  const handleSubmit = (values: IUpdateUserGeneralInfo) => {
+    setIsOpen(false)
+    updateUserInfo(values, {
+      onSuccess: () => {
+        showToast(tToast('toast.updateUserSuccess'))
+      }
+    })
+  }
 
   return (
-    <Dialog open={openDialog} onOpenChange={onOpenChange}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
+          <SquarePen className="icon" />
+          {t('account.edit')}
+        </Button>
+      </DialogTrigger>
       <DialogContent className="max-w-[22rem] rounded-md sm:max-w-[64rem] p-0">
         <ScrollArea className="max-h-[80vh]">
           <div className="p-6">
@@ -36,11 +62,7 @@ export function DialogUpdateUserGeneralInfo({
               <DialogTitle>{t('account.updateUserGeneralInfo')}</DialogTitle>
               <DialogDescription>{t('account.updateUserGeneralInfoDescription')}</DialogDescription>
             </DialogHeader>
-            <FormUpdateUserGeneralInfo
-              onSubmit={handleUpdateUserGeneralInfo}
-              data={userInfo}
-              onCancel={onOpenChange}
-            />
+            <FormUpdateUserGeneralInfo onSubmit={handleSubmit} data={userInfo} />
           </div>
         </ScrollArea>
       </DialogContent>

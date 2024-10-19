@@ -1,2 +1,1 @@
-/* eslint-disable react-refresh/only-export-components */
-export * from './progress-bar'
+export { default as DownloadProgress } from './download-progress'

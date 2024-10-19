@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import i18next from 'i18next'
 import { MoreHorizontal } from 'lucide-react'
@@ -8,41 +7,13 @@ import {
   DataTableColumnHeader,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui'
 import { IProductRequisitionInfo } from '@/types'
 import { DialogEditProductRequisition } from '@/components/app/dialog'
 import { DialogDeleteProductRequisition } from '@/components/app/dialog'
 
-export const useColumnsConfirm = (
-  handleEditProduct: (product: IProductRequisitionInfo) => void,
-  handleDeleteProduct: (product: IProductRequisitionInfo) => void
-): ColumnDef<IProductRequisitionInfo>[] => {
-  const [selectedProduct, setSelectedProduct] = useState<IProductRequisitionInfo | null>(null)
-  const [openEdit, setOpenEdit] = useState(false)
-  const [openDelete, setOpenDelete] = useState(false)
-
-  const handleEdit = (product: IProductRequisitionInfo) => {
-    setOpenEdit(true)
-    setSelectedProduct(product)
-  }
-
-  const handleDelete = (product: IProductRequisitionInfo) => {
-    setOpenDelete(true)
-    setSelectedProduct(product)
-  }
-
-  const onOpenChange = () => {
-    setOpenEdit(false)
-  }
-
-  const onOpenDeleteChange = () => {
-    setOpenDelete(false)
-  }
-
+export const useColumnsConfirm = (): ColumnDef<IProductRequisitionInfo>[] => {
   return [
     {
       accessorKey: 'product.code',
@@ -93,34 +64,10 @@ export const useColumnsConfirm = (
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => handleEdit(product)}>
-                  Chỉnh sửa thông tin
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleDelete(product)}>
-                  Xóa vật tư
-                </DropdownMenuItem>
+                <DialogEditProductRequisition product={product} />
+                <DialogDeleteProductRequisition product={product} />
               </DropdownMenuContent>
             </DropdownMenu>
-            {selectedProduct === product && openEdit && (
-              <DialogEditProductRequisition
-                handleEditProduct={handleEditProduct}
-                openDialog={openEdit}
-                requisition={product}
-                component={null}
-                onOpenChange={onOpenChange}
-              />
-            )}
-            {selectedProduct === product && openDelete && (
-              <DialogDeleteProductRequisition
-                handleDeleteProduct={handleDeleteProduct}
-                openDialog={openDelete}
-                product={product}
-                component={null}
-                onOpenChange={onOpenDeleteChange}
-              />
-            )}
           </div>
         )
       }
