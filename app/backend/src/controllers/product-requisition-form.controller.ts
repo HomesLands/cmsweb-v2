@@ -671,21 +671,22 @@ class ProductRequisitionFormController {
   ): Promise<void> {
     try {
       const slug = req.params.slug as string;
-      const dataExport =
-        await productRequisitionFormService.exportExcelProductRequisitionForm(
-          slug
-        );
+      const dataExport = await productRequisitionFormService.exportExcel({
+        formSlug: slug,
+      });
 
-      res.setHeader(
-        "Content-Type",
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      );
-      res.setHeader(
-        "Content-Disposition",
-        "attachment; filename=" + `${dataExport.code}.xlsx`
-      );
+      res.send({ message: "ok" });
 
-      dataExport.workbook.xlsx.write(res).then(() => res.end());
+      // res.setHeader(
+      //   "Content-Type",
+      //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      // );
+      // res.setHeader(
+      //   "Content-Disposition",
+      //   "attachment; filename=" + `${dataExport.code}.xlsx`
+      // );
+
+      // dataExport.workbook.xlsx.write(res).then(() => res.end());
     } catch (error) {
       next(error);
     }
@@ -723,11 +724,10 @@ class ProductRequisitionFormController {
     try {
       const requestUrl = `${req.protocol}://${req.get("host")}`;
       const slug = req.params.slug as string;
-      const results =
-        await productRequisitionFormService.exportPdfProductRequisitionForm({
-          slug,
-          requestUrl,
-        });
+      const results = await productRequisitionFormService.exportPdf({
+        slug,
+        requestUrl,
+      });
 
       res.setHeader("Content-Type", "application/pdf");
       res.setHeader(
