@@ -21,18 +21,11 @@ export default function ProductActionOptions() {
 
   return (
     <>
-      <Button variant="outline" onClick={() => handleOpenDialog(product as IProductInfo)}>
-        <PlusCircledIcon className="mr-2 w-4 h-4" />
+      {/* <Button variant="outline" onClick={() => handleOpenDialog(product as IProductInfo)}>
+        <PlusCircledIcon className="w-4 h-4 mr-2" />
         {t('tableData.addNewProduct')}
-      </Button>
-      {openDialog && (
-        <DialogAddProductRequest
-          openDialog={openDialog}
-          product={product}
-          component={null}
-          onOpenChange={onOpenChange}
-        />
-      )}
+      </Button> */}
+      <DialogAddProductRequest product={product} />
     </>
   )
 }

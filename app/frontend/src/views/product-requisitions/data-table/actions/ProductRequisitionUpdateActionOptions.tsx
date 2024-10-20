@@ -49,20 +49,11 @@ export default function ProductRequisitionUpdateActionOptions({
 
   return (
     <>
-      <Button variant="outline" onClick={() => handleOpenDialog(product as IProductInfo)}>
-        <PlusCircledIcon className="mr-2 w-4 h-4" />
+      {/* <Button variant="outline" onClick={() => handleOpenDialog(product as IProductInfo)}>
+        <PlusCircledIcon className="w-4 h-4 mr-2" />
         {t('tableData.addNewProduct')}
-      </Button>
-      {openDialog && (
-        <DialogAddProductInRequisitionUpdate
-          formSlug={slug as string}
-          openDialog={openDialog}
-          product={product}
-          component={null}
-          onOpenChange={onOpenChange}
-          handleAddNewProduct={handleAddNewProduct}
-        />
-      )}
+      </Button> */}
+      <DialogAddProductInRequisitionUpdate product={product} />
     </>
   )
 }

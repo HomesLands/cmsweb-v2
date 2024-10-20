@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { SquarePen } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -13,26 +15,10 @@ import {
 
 import { FormUpdateUserGeneralInfo } from '@/components/app/form'
 import { IUpdateUserGeneralInfo, IUserInfo } from '@/types'
-import { useState } from 'react'
 import { useUpdateUser } from '@/hooks'
 import { showToast } from '@/utils'
-import { SquarePen } from 'lucide-react'
 
-// interface DialogUpdateRequisitionProps {
-//   handleUpdateUserGeneralInfo: (userInfo: IUpdateUserGeneralInfo) => void
-//   openDialog: boolean
-//   userInfo: IUserInfo
-//   onOpenChange: () => void
-// }
-
-export function DialogUpdateUserGeneralInfo({
-  // handleUpdateUserGeneralInfo,
-  // openDialog,
-  userInfo
-  // onOpenChange
-}: {
-  userInfo: IUserInfo
-}) {
+export function DialogUpdateUserGeneralInfo({ userInfo }: { userInfo: IUserInfo }) {
   const { t } = useTranslation('account')
   const { t: tToast } = useTranslation('toast')
   const [isOpen, setIsOpen] = useState(false)
