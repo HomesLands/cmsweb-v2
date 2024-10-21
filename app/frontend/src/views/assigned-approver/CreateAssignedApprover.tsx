@@ -4,20 +4,20 @@ import toast from 'react-hot-toast'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
 import { CreateAssignedApproverForm } from '@/components/app/form/create-assigned-approver'
-import { useAssignedApprover } from '@/hooks/use-assigned-approver'
-import { TAssignedApprover } from '@/types'
+import { useCreateAssignedApprover } from '@/hooks/use-assigned-approver'
+import { TCreateAssignedApprover } from '@/types'
 
 const AssignedApprover: React.FC = () => {
   const { t } = useTranslation(['assignedApprover'])
-  const { mutate: createAssignedApprover } = useAssignedApprover()
+  const { mutate: createAssignedApprover } = useCreateAssignedApprover()
 
-  const onSubmit = (values: TAssignedApprover) => {
+  const onSubmit = (values: TCreateAssignedApprover) => {
     const requestData = {
       formType: values.formType,
       roleApproval: values.roleApproval,
       user: values.user,
       site: values.site
-    } as TAssignedApprover
+    } as TCreateAssignedApprover
     createAssignedApprover(requestData, {
       onSuccess: () => {
         toast.success(t('assignedApprover.createAssignedApproverSuccessfully'))
