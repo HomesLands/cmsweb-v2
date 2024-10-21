@@ -6,6 +6,7 @@ import {
   TUpdateProductRequestDto,
   TPaginationOptionResponse,
   TProductQueryRequest,
+  TUploadProductRequestDto,
 } from "@types";
 import { ProductResponseDto } from "@dto/response";
 import { StatusCodes } from "http-status-codes";
@@ -48,7 +49,7 @@ class ProductController {
    *         provider: BOSCH
    *         unit: slug-1234
    *         description: Dùng điện, Có chổi than
-   * 
+   *
    *     UpdateProductRequestDto:
    *       type: object
    *       required:
@@ -76,7 +77,7 @@ class ProductController {
    *         - required: ["code"]
    *         - required: ["description"]
    *       example:
-   *         slug: slug-123 
+   *         slug: slug-123
    *         name: Máy khoan động lực điện Bosch GSB 10 RE 500W
    *         code: 8886008101053
    *         provider: BOSCH
@@ -281,7 +282,57 @@ class ProductController {
       next(error);
     }
   }
-  
+
+  /**
+   * @swagger
+   * /products/upload:
+   *   post:
+   *     summary: Import products
+   *     tags: [Product]
+   *     requestBody:
+   *       require: true
+   *       content:
+   *         multipart/form-data:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               file:
+   *                 type: string
+   *                 format: binary
+   *                 description: Excel file
+   *     responses:
+   *       200:
+   *         description: Upload avatar user successfully.
+   *       500:
+   *         description: Server error
+   *       1098:
+   *         description: File not found
+   *       1106:
+   *         description: Save file fail
+   *       1107:
+   *         description: Forbidden user
+   *       1108:
+   *         description: Error get file from request
+   */
+  public async uploadProduct(req: Request, res: Response, next: NextFunction) {
+    try {
+      const requestData = {
+        file: req.file,
+      } as TUploadProductRequestDto;
+      const result = await productService.uploadProduct(requestData);
+      const response: TApiResponse<ProductResponseDto[]> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "Import product successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result: result,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new ProductController();

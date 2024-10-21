@@ -127,7 +127,6 @@ class UserService {
   public async uploadUserAvatar(
     requestData: TUploadUserAvatarRequestDto
   ): Promise<UserResponseDto> {
-    console.log({ requestData });
     const user = await userRepository.findOne({
       where: {
         id: requestData.userId,

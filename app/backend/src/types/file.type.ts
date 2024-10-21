@@ -4,4 +4,9 @@ export type TFileData = {
   mimetype?: string;
   extension?: string;
   length?: number;
-}
+};
+
+export type TFileResponseDto = {
+  filename: string;
+  buffer: unknown;
+};

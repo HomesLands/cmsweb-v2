@@ -270,6 +270,7 @@ class UserController {
    *       1108:
    *         description: Error get file from request
    */
+
   public async uploadUserAvatar(
     req: Request,
     res: Response,

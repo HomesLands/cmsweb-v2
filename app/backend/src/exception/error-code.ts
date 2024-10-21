@@ -514,6 +514,11 @@ export const ErrorCodes: TErrorCode = {
     code: 1117,
     message: "User department exists",
   },
+  WORKSHEET_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1118,
+    message: "Worksheet not found",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]

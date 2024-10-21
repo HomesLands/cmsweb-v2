@@ -15,7 +15,6 @@ class PDFService {
     data: any;
   }): Promise<Buffer> {
     const templatePath = path.join(process.cwd(), "/views/pages", templateName);
-    console.log({ templatePath });
 
     const template = await fs.promises.readFile(templatePath, "utf8");
     const html = ejs.render(template, data);
