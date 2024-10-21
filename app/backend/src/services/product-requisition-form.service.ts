@@ -1,6 +1,5 @@
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
-import { Workbook } from "exceljs";
 import moment from "moment";
 
 import { excelService, PDFService } from "@services";
@@ -23,6 +22,7 @@ import {
   TPaginationOptionResponse,
   TResubmitProductRequisitionFormRequestDto,
   TUpdateGeneralInformationProductRequisitionFormRequestDto,
+  TFileResponseDto,
 } from "@types";
 import {
   ExportRequestProductResponseDto,
@@ -55,6 +55,7 @@ import {
 import { parsePagination, PermissionUtils } from "@utils";
 import { In } from "typeorm";
 import { StatusCodes } from "http-status-codes";
+import { env } from "@constants";
 
 class ProductRequisitionFormService {
   public async getAllProductRequisitionForms(
@@ -623,10 +624,13 @@ class ProductRequisitionFormService {
     return formDto;
   }
 
-  public async exportExcelProductRequisitionForm(formSlug: string): Promise<{
-    code: string;
-    workbook: Workbook;
-  }> {
+  public async exportExcel({
+    formSlug,
+    requestUrl,
+  }: {
+    formSlug: string;
+    requestUrl: string;
+  }) {
     const form = await productRequisitionFormRepository.findOne({
       where: {
         slug: formSlug,
@@ -642,68 +646,145 @@ class ProductRequisitionFormService {
     if (!form.code) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
     if (!form.requestProducts) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
-    let site: string = "N/A";
-    let company: string = "N/A";
-    if (form.creator)
-      if (form.creator.userDepartments)
-        if (form.creator?.userDepartments[0].department?.site?.name) {
-          site = form.creator?.userDepartments[0].department?.site?.name;
-          if (
-            form.creator?.userDepartments[0].department?.site?.company?.name
-          ) {
-            company =
-              form.creator?.userDepartments[0].department?.site?.company.name;
-          }
+    // Get form info
+    let siteName: string = "N/A";
+    let companyLogo: string | null = "N/A";
+    if (
+      form?.creator?.userDepartments &&
+      form.creator.userDepartments.length > 0
+    ) {
+      if (form.creator.userDepartments[0].department?.site?.name) {
+        siteName = form.creator?.userDepartments[0].department?.site?.name;
+      }
+      if (form.creator.userDepartments[0].department?.site?.company?.logo) {
+        companyLogo =
+          form.creator.userDepartments[0].department.site.company.logo;
+      }
+    }
+
+    // Get request products
+    const requestProducts = mapper.mapArray(
+      form.requestProducts,
+      RequestProduct,
+      ExportRequestProductResponseDto
+    );
+
+    // Get user signature
+    const userSignatures = [
+      {
+        title: "Người lập phiếu",
+        signature: form.creator?.signature,
+      },
+    ];
+    const userApprovals = await userApprovalRepository.find({
+      where: { productRequisitionForm: { id: form.id } },
+      order: {
+        assignedUserApproval: {
+          roleApproval: "ASC",
+        },
+      },
+      relations: ["assignedUserApproval.user"],
+    });
+    userApprovals.forEach((item, index) => {
+      if (item) {
+        userSignatures.push({
+          title: `Duyệt bước ${index + 1}`,
+          signature: item.assignedUserApproval?.user?.signature,
+        });
+      }
+    });
+
+    const cellData: {
+      cellPosition: string;
+      value: string;
+      type: string;
+    }[] = [
+      {
+        cellPosition: "A1",
+        value: `${requestUrl}/api/${env.tag}/files/${companyLogo}`, // This is an image URL
+        type: "image", // Specifying that this is an image
+      },
+      {
+        cellPosition: "B5",
+        value: form.creator?.fullname || "N/A",
+        type: "data",
+      },
+      {
+        cellPosition: "B6",
+        value: moment(form.createdAt).format("DD/MM/YYYY"),
+        type: "data",
+      },
+      {
+        cellPosition: "E5",
+        value: siteName,
+        type: "data",
+      },
+      {
+        cellPosition: "E6",
+        value: form.project?.name || "N/A",
+        type: "data",
+      },
+      {
+        cellPosition: "E6",
+        value: form.project?.name || "N/A",
+        type: "data",
+      },
+    ];
+
+    // Request products cell is already declared as an array
+    let rowIndex = 10; // Starting row for products
+    requestProducts.forEach((item, index) => {
+      // Generate cells for each item in the requestProducts array
+      cellData.push(
+        {
+          cellPosition: `A${rowIndex}`, // First column for index (1-based index)
+          value: (index + 1).toString(),
+          type: "data",
+        },
+        {
+          cellPosition: `B${rowIndex}`, // Second column for product name
+          value: item.name || "N/A",
+          type: "data",
+        },
+        {
+          cellPosition: `C${rowIndex}`, // Fourth column for provider
+          value: item.provider || "N/A",
+          type: "data",
+        },
+        {
+          cellPosition: `D${rowIndex}`, // Fifth column for request quantity
+          value: item.requestQuantity?.toString() || "N/A",
+          type: "data",
+        },
+        {
+          cellPosition: `E${rowIndex}`, // Sixth column for unit
+          value: item.unit || "N/A",
+          type: "data",
+        },
+        {
+          cellPosition: `F${rowIndex}`, // Seventh column for description
+          value: item.description || "N/A",
+          type: "data",
         }
+      );
 
-    const requestProductExport = form.requestProducts.map(
-      (requestProduct, index) => ({
-        order: index + 1,
-        quantity: requestProduct.requestQuantity,
+      // Move to the next row for the next item
+      rowIndex++;
+    });
 
-        name: requestProduct.isExistProduct
-          ? requestProduct.product?.name
-          : requestProduct.temporaryProduct?.name,
-
-        description: requestProduct.isExistProduct
-          ? requestProduct.product?.description
-          : requestProduct.temporaryProduct?.description,
-
-        provider: requestProduct.isExistProduct
-          ? requestProduct.product?.provider
-          : requestProduct.temporaryProduct?.provider,
-
-        unit: requestProduct.isExistProduct
-          ? requestProduct.product?.unit?.name
-          : requestProduct.temporaryProduct?.unit?.name,
-      })
-    );
-
-    const workbook = excelService.generateProductRequisitionFormExcel(
-      requestProductExport,
-      form.creator?.fullname || "N/A",
-      moment(form.createdAt).format("DD/MM/YYYY"),
-      site,
-      form.project?.name || "N/A",
-      company
-    );
-
-    return {
-      code: form.code,
-      workbook,
-    };
+    return await excelService.generate({
+      filename: "product-requisition-form.xlsx",
+      cellData,
+    });
   }
 
-  public async exportPdfProductRequisitionForm({
+  public async exportPdf({
     slug,
     requestUrl,
   }: {
     slug: string;
     requestUrl: string;
-  }): Promise<{
-    code: string;
-    pdf: Buffer;
-  }> {
+  }): Promise<TFileResponseDto> {
     const form = await productRequisitionFormRepository.findOne({
       where: {
         slug,
@@ -777,6 +858,7 @@ class ProductRequisitionFormService {
       requestProducts,
       requestUrl,
       userSignatures,
+      tag: env.tag,
     };
 
     const pdf = await PDFService.generatePDF({
@@ -784,8 +866,8 @@ class ProductRequisitionFormService {
       data,
     });
     return {
-      code: form.code,
-      pdf,
+      filename: form.code,
+      buffer: pdf,
     };
   }
 }
