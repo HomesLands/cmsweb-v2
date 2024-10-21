@@ -1,6 +1,5 @@
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
-import { Workbook } from "exceljs";
 import moment from "moment";
 
 import { excelService, PDFService } from "@services";
@@ -23,6 +22,7 @@ import {
   TPaginationOptionResponse,
   TResubmitProductRequisitionFormRequestDto,
   TUpdateGeneralInformationProductRequisitionFormRequestDto,
+  TFileResponseDto,
 } from "@types";
 import {
   ExportRequestProductResponseDto,
@@ -624,7 +624,13 @@ class ProductRequisitionFormService {
     return formDto;
   }
 
-  public async exportExcel({ formSlug }: { formSlug: string }) {
+  public async exportExcel({
+    formSlug,
+    requestUrl,
+  }: {
+    formSlug: string;
+    requestUrl: string;
+  }) {
     const form = await productRequisitionFormRepository.findOne({
       where: {
         slug: formSlug,
@@ -694,8 +700,8 @@ class ProductRequisitionFormService {
       type: string;
     }[] = [
       {
-        cellPosition: "1A",
-        value: `${companyLogo}`, // This is an image URL
+        cellPosition: "A1",
+        value: `${requestUrl}/api/${env.tag}/files/${companyLogo}`, // This is an image URL
         type: "image", // Specifying that this is an image
       },
       {
@@ -766,7 +772,7 @@ class ProductRequisitionFormService {
       rowIndex++;
     });
 
-    await excelService.generate({
+    return await excelService.generate({
       filename: "product-requisition-form.xlsx",
       cellData,
     });
@@ -778,10 +784,7 @@ class ProductRequisitionFormService {
   }: {
     slug: string;
     requestUrl: string;
-  }): Promise<{
-    code: string;
-    pdf: Buffer;
-  }> {
+  }): Promise<TFileResponseDto> {
     const form = await productRequisitionFormRepository.findOne({
       where: {
         slug,
@@ -863,8 +866,8 @@ class ProductRequisitionFormService {
       data,
     });
     return {
-      code: form.code,
-      pdf,
+      filename: form.code,
+      buffer: pdf,
     };
   }
 }
