@@ -45,3 +45,9 @@ export enum Action {
   DELETE = "delete",
   VIEW = "view",
 }
+
+export enum Extension {
+  EXCEL = "xlsx",
+  PDF = "pdf",
+  WORD = "docx",
+}

@@ -664,28 +664,28 @@ class ProductRequisitionFormController {
    *
    */
 
-  public async exportExcelProductRequisitionFormBySlug(
+  public async exportExcel(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
       const slug = req.params.slug as string;
-      const dataExport =
-        await productRequisitionFormService.exportExcelProductRequisitionForm(
-          slug
-        );
+      const requestUrl = `${req.protocol}://${req.get("host")}`;
+      const { filename, buffer } =
+        await productRequisitionFormService.exportExcel({
+          formSlug: slug,
+          requestUrl,
+        });
 
-      res.setHeader(
-        "Content-Type",
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      );
-      res.setHeader(
-        "Content-Disposition",
-        "attachment; filename=" + `${dataExport.code}.xlsx`
-      );
+      res.writeHead(200, {
+        "Content-Type":
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "Content-Disposition": `attachment; filename=${filename}`,
+      });
 
-      dataExport.workbook.xlsx.write(res).then(() => res.end());
+      // End the response after the file is sent
+      res.end(buffer);
     } catch (error) {
       next(error);
     }
@@ -715,7 +715,7 @@ class ProductRequisitionFormController {
    *
    */
 
-  public async exportPdfProductRequisitionFormBySlug(
+  public async exportPdf(
     req: Request,
     res: Response,
     next: NextFunction
@@ -723,18 +723,19 @@ class ProductRequisitionFormController {
     try {
       const requestUrl = `${req.protocol}://${req.get("host")}`;
       const slug = req.params.slug as string;
-      const results =
-        await productRequisitionFormService.exportPdfProductRequisitionForm({
+      const { filename, buffer } =
+        await productRequisitionFormService.exportPdf({
           slug,
           requestUrl,
         });
 
-      res.setHeader("Content-Type", "application/pdf");
-      res.setHeader(
-        "Content-Disposition",
-        "attachment; filename=" + `${results.code}`
-      );
-      res.send(results.pdf);
+      res.writeHead(200, {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename=${filename}`,
+      });
+
+      // End the response after the file is sent
+      res.end(buffer);
     } catch (error) {
       next(error);
     }

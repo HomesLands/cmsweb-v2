@@ -119,6 +119,7 @@ export type TErrorCodeKey =
   | "CONFIRM_PASSWORD_NOT_MATCH"
   | "USER_DEPARTMENT_EXIST"
   | "EXPORT_DB_ERROR"
+  | "WORKSHEET_NOT_FOUND"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {
