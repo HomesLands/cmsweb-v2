@@ -320,13 +320,13 @@ class ProductController {
         file: req.file,
       } as TUploadProductRequestDto;
       const result = await productService.uploadProduct(requestData);
-      const response: TApiResponse<ProductResponseDto[]> = {
+      const response: TApiResponse<string> = {
         code: StatusCodes.OK,
         error: false,
         message: "Import product successfully",
         method: req.method,
         path: req.originalUrl,
-        result: result,
+        result: `${result} rows effected`,
       };
       res.status(StatusCodes.OK).json(response);
     } catch (error) {
