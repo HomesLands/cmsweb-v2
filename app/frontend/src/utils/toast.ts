@@ -1,6 +1,5 @@
 import toast from 'react-hot-toast'
 import i18next from 'i18next'
-import { useTranslation } from 'react-i18next'
 
 const errorCodes: { [key: number]: string } = {
   1000: 'toast.productAlreadyExists',

@@ -1,51 +1,18 @@
-import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
-import { PlusCircledIcon } from '@radix-ui/react-icons'
 import { useTranslation } from 'react-i18next'
 
 import {
-  Button,
   DataTableColumnHeader,
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui'
-import { IAddNewProductInRequisitionUpdate, IProductInfo } from '@/types'
+import { IProductInfo } from '@/types'
 import { DialogAddProductInRequisitionUpdate } from '@/components/app/dialog'
-import { useAddNewProductInRequisitionUpdate } from '@/hooks'
-import { useParams } from 'react-router'
-import { showToast } from '@/utils'
-// import { useAddNewProductInRequisitionUpdate } from '@/hooks'
 
-export const useColumnsAddNewProductInRequisitionUpdate = (
-  formSlug: string
-  // handleAddNewProduct: (data: IAddNewProductInRequisitionUpdate) => void
-): ColumnDef<IProductInfo>[] => {
+export const useColumnsAddNewProductInRequisitionUpdate = (): ColumnDef<IProductInfo>[] => {
   const { t } = useTranslation('tableData')
-  const [selectedProduct, setSelectedProduct] = useState<IProductInfo | null>(null)
-  const [openDialog, setOpenDialog] = useState(false)
-  const { t: tToast } = useTranslation('toast')
-  const { slug } = useParams()
-  const { mutate: addNewProduct } = useAddNewProductInRequisitionUpdate(slug as string)
-
-  const handleButtonClick = (product: IProductInfo) => {
-    setOpenDialog(true)
-    setSelectedProduct(product)
-  }
-
-  const onOpenChange = () => {
-    setOpenDialog(false)
-  }
-
-  const handleAddNewProduct = (data: IAddNewProductInRequisitionUpdate) => {
-    addNewProduct(data, {
-      onSuccess: () => {
-        console.log('success')
-        showToast(tToast('toast.addNewProductSuccess'))
-      }
-    })
-  }
 
   return [
     {
@@ -60,19 +27,7 @@ export const useColumnsAddNewProductInRequisitionUpdate = (
             <Tooltip>
               <TooltipTrigger asChild>
                 <div className="flex justify-center w-full">
-                  <Button variant="ghost" onClick={() => handleButtonClick(product)}>
-                    <PlusCircledIcon className="w-4 h-4" />
-                  </Button>
-                  {selectedProduct && selectedProduct.slug === product.slug && (
-                    <DialogAddProductInRequisitionUpdate
-                      formSlug={formSlug}
-                      openDialog={openDialog}
-                      product={product}
-                      component={null}
-                      handleAddNewProduct={handleAddNewProduct}
-                      onOpenChange={onOpenChange}
-                    />
-                  )}
+                  <DialogAddProductInRequisitionUpdate product={product} />
                 </div>
               </TooltipTrigger>
               <TooltipContent>

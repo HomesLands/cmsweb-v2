@@ -20,16 +20,13 @@ import { IUpdateUserGeneralInfo, IUserInfo } from '@/types'
 interface IFormUpdateUserGeneralInfoProps {
   data?: IUserInfo
   onSubmit: (data: IUpdateUserGeneralInfo) => void
-  onCancel: () => void // Add this line
 }
 
 export const FormUpdateUserGeneralInfo: React.FC<IFormUpdateUserGeneralInfoProps> = ({
   data,
-  onSubmit,
-  onCancel
+  onSubmit
 }) => {
   const { t } = useTranslation('account')
-  // const isEditMode = !!data
 
   const form = useForm<TPersonalAccountInfoSchema>({
     resolver: zodResolver(personalAccountInfoSchema),
@@ -38,13 +35,75 @@ export const FormUpdateUserGeneralInfo: React.FC<IFormUpdateUserGeneralInfoProps
       username: data?.username || '',
       company: data?.userDepartments[0]?.department?.site?.company?.name || '',
       site: data?.userDepartments[0]?.department?.site?.name || ''
-      //   signature: data?.signature || '',
     }
   })
 
   const handleSubmit = (values: TPersonalAccountInfoSchema) => {
     onSubmit(values)
-    onCancel()
+  }
+
+  // Define formFields similar to the first code
+  const formFields = {
+    fullname: (
+      <FormField
+        control={form.control}
+        name="fullname"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('account.fullname')}</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    username: (
+      <FormField
+        control={form.control}
+        name="username"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('account.username')}</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    company: (
+      <FormField
+        control={form.control}
+        name="company"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('account.company')}</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    site: (
+      <FormField
+        control={form.control}
+        name="site"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('account.site')}</FormLabel>
+            <FormControl>
+              <Input {...field} value={field.value || ''} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    )
   }
 
   return (
@@ -52,67 +111,13 @@ export const FormUpdateUserGeneralInfo: React.FC<IFormUpdateUserGeneralInfoProps
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-            <FormField
-              control={form.control}
-              name="fullname"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('account.fullname')}</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('account.username')}</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="company"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('account.company')}</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="site"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('account.site')}</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      value={field.value || ''}
-                      //   onChange={(e) => field.onChange(e.target.value)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {Object.keys(formFields).map((key) => (
+              <React.Fragment key={key}>
+                {formFields[key as keyof typeof formFields]}
+              </React.Fragment>
+            ))}
           </div>
           <div className="flex justify-end w-full">
-            <Button variant="outline" className="mr-2" type="button" onClick={onCancel}>
-              {t('account.cancel')}
-            </Button>
             <Button type="submit">{t('account.update')}</Button>
           </div>
         </form>

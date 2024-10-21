@@ -23,16 +23,16 @@ export const PersonalAccountForm: React.FC = () => {
   const { mutate: updateUser } = useUpdateUser()
   const { mutate: changePassword } = useChangePassword()
 
-  const handleUpdateGeneralInfo = (data: IUpdateUserGeneralInfo) => {
-    if (data) {
-      console.log(data)
-      updateUser(data, {
-        onSuccess: () => {
-          showToast(tToast('toast.updateUserSuccess'))
-        }
-      })
-    }
-  }
+  // const handleUpdateGeneralInfo = (data: IUpdateUserGeneralInfo) => {
+  //   if (data) {
+  //     console.log(data)
+  //     updateUser(data, {
+  //       onSuccess: () => {
+  //         showToast(tToast('toast.updateUserSuccess'))
+  //       }
+  //     })
+  //   }
+  // }
 
   const handleUploadProfilePicture = (file: File) => {
     uploadProfilePicture(file, {
@@ -43,19 +43,19 @@ export const PersonalAccountForm: React.FC = () => {
     })
   }
 
-  const handleChangePassword = (data: IConfirmChangePassword) => {
-    setOpenDialogChangePassword(true)
-    setPassword(data)
-  }
+  // const handleChangePassword = (data: IConfirmChangePassword) => {
+  //   setOpenDialogChangePassword(true)
+  //   setPassword(data)
+  // }
 
-  const handleConfirmChangePassword = (data: IConfirmChangePassword) => {
-    setOpenDialogChangePassword(false)
-    changePassword(data, {
-      onSuccess: () => {
-        showToast(tToast('toast.changePasswordSuccess'))
-      }
-    })
-  }
+  // const handleConfirmChangePassword = (data: IConfirmChangePassword) => {
+  //   setOpenDialogChangePassword(false)
+  //   changePassword(data, {
+  //     onSuccess: () => {
+  //       showToast(tToast('toast.changePasswordSuccess'))
+  //     }
+  //   })
+  // }
 
   const form = useForm<TPersonalAccountInfoSchema>({
     resolver: zodResolver(personalAccountInfoSchema),
@@ -88,28 +88,12 @@ export const PersonalAccountForm: React.FC = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="general-info" className="w-full p-0">
-          <CardUserGeneralInfo
-            handleUploadProfilePicture={handleUploadProfilePicture}
-            setOpenDialog={setOpenDialog}
-          />
+          <CardUserGeneralInfo handleUploadProfilePicture={handleUploadProfilePicture} />
         </TabsContent>
         <TabsContent value="password-and-authentication">
-          <CardUserPasswordAndAuthentication handleChangePassword={handleChangePassword} />
+          <CardUserPasswordAndAuthentication />
         </TabsContent>
       </Tabs>
-      <DialogUpdateUserGeneralInfo
-        handleUpdateUserGeneralInfo={handleUpdateGeneralInfo}
-        openDialog={openDialog}
-        userInfo={userInfo as IUserInfo}
-        onOpenChange={() => setOpenDialog(!openDialog)}
-      />
-      <DialogConfirmChangePassword
-        handleConfirmChangePassword={handleConfirmChangePassword}
-        component={null}
-        password={password}
-        openDialog={openDialogChangePassword}
-        onOpenChange={() => setOpenDialogChangePassword(!openDialogChangePassword)}
-      />
     </div>
   )
 }

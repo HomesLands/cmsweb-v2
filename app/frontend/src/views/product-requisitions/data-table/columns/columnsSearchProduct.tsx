@@ -16,17 +16,6 @@ import { DialogAddProductRequest } from '@/components/app/dialog'
 
 export const useColumnsSearchProduct = (): ColumnDef<IProductInfo>[] => {
   const { t } = useTranslation('tableData')
-  const [selectedProduct, setSelectedProduct] = useState<IProductInfo | null>(null)
-  const [openDialog, setOpenDialog] = useState(false)
-
-  const handleButtonClick = (product: IProductInfo) => {
-    setOpenDialog(true)
-    setSelectedProduct(product)
-  }
-
-  const onOpenChange = () => {
-    setOpenDialog(false)
-  }
 
   return [
     {
@@ -41,17 +30,7 @@ export const useColumnsSearchProduct = (): ColumnDef<IProductInfo>[] => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <div className="flex justify-center w-full">
-                  <Button variant="ghost" onClick={() => handleButtonClick(product)}>
-                    <PlusCircledIcon className="w-4 h-4" />
-                  </Button>
-                  {selectedProduct && selectedProduct.slug === product.slug && (
-                    <DialogAddProductRequest
-                      openDialog={openDialog}
-                      product={product}
-                      component={null}
-                      onOpenChange={onOpenChange}
-                    />
-                  )}
+                  <DialogAddProductRequest product={product} />
                 </div>
               </TooltipTrigger>
               <TooltipContent>

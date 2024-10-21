@@ -1,6 +1,8 @@
-import { z } from 'zod'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -11,37 +13,26 @@ import {
 
 import { TAddNewProductRequestSchema } from '@/schemas'
 import { AddNewProductRequestForm } from '@/components/app/form'
-import { IProductInfo, IProductRequisitionInfo } from '@/types'
+import { IProductInfo } from '@/types'
 import { useRequisitionStore } from '@/stores'
-import { useTranslation } from 'react-i18next'
+import { PlusCircledIcon } from '@radix-ui/react-icons'
 
-interface DialogAddProductRequestProps {
-  openDialog: boolean
-  product?: IProductInfo | null
-  component: React.ReactNode
-  onOpenChange: () => void
-}
-
-export function DialogAddProductRequest({
-  openDialog,
-  product,
-  component,
-  onOpenChange
-}: DialogAddProductRequestProps) {
+export function DialogAddProductRequest({ product }: { product: IProductInfo | null }) {
   const { t } = useTranslation('tableData')
+  const [isOpen, setIsOpen] = useState(false)
   const { addProductToRequisition } = useRequisitionStore()
-  const handleAddRequest = (product: IProductRequisitionInfo) => {
-    addProductToRequisition(product)
-    onOpenChange()
-  }
   const handleSubmit = (data: TAddNewProductRequestSchema) => {
-    handleAddRequest(data)
-    onOpenChange()
+    addProductToRequisition(data)
+    setIsOpen(false)
   }
 
   return (
-    <Dialog open={openDialog} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>{component}</DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
+          <PlusCircledIcon className="icon" />
+        </Button>
+      </DialogTrigger>
       <DialogContent className="rounded-md max-w-[20rem] sm:max-w-[60rem]">
         <DialogHeader>
           <DialogTitle>{t('tableData.addNewProduct')}</DialogTitle>

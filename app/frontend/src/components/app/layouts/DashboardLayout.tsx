@@ -5,7 +5,7 @@ import { SidebarDrawerMobile } from '@/components/app/drawer'
 import { PopoverNotification } from '@/components/app/popover'
 import { DashboardSidebar } from '@/components/app/sidebar'
 import { BreadCrumbs } from '@/components/app/breadcrumbs'
-import { DownloadProgress } from '@/components/app/progress/download-progress'
+import { DownloadProgress } from '@/components/app/progress'
 import { cn } from '@/lib/utils'
 import { useDownloadStore, useThemeStore } from '@/stores'
 
@@ -29,7 +29,7 @@ const DashboardLayout = () => {
           )}
         >
           <SidebarDrawerMobile />
-          <div className="flex flex-row gap-1 justify-end items-center h-14">
+          <div className="flex flex-row items-center justify-end gap-1 h-14">
             <PopoverNotification />
             <ModeToggle />
             <HeaderDropdown />

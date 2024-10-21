@@ -192,7 +192,7 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
     )
   }, [requisition?.userApprovals])
 
-  const columnsAddNewProduct = useColumnsAddNewProductInRequisitionUpdate(slug as string)
+  const columnsAddNewProduct = useColumnsAddNewProductInRequisitionUpdate()
 
   const handleChoosePriority = (value: ProductRequisitionType) => {
     form.setValue('type', value)
@@ -253,12 +253,12 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
                       !field.value && 'text-muted-foreground'
                     )}
                   >
-                    <CalendarIcon className="mr-2 w-4 h-4" />
+                    <CalendarIcon className="w-4 h-4 mr-2" />
                     {field.value ? field.value : <span>Chọn ngày và thời gian</span>}
                   </Button>
                 </FormControl>
               </PopoverTrigger>
-              <PopoverContent className="p-0 w-auto">
+              <PopoverContent className="w-auto p-0">
                 <Calendar
                   mode="single"
                   selected={date}

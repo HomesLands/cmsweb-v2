@@ -63,7 +63,7 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
     <div className="mt-3">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-1">
             {productCode && (
               <FormField
                 control={form.control}
