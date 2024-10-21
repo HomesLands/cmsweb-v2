@@ -15,8 +15,8 @@ export class UpdateCompanyRequestDto {
   @AutoMap()
   name?: string;
 
-  @IsNotEmpty({ message: "INVALID_COMPANY_DIRECTOR" })
+  @IsNotEmpty({ message: "INVALID_COMPANY_SLUG" })
   @Expose()
   @AutoMap()
-  director?: string;
+  slug?: string;
 }

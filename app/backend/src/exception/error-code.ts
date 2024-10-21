@@ -516,8 +516,18 @@ export const ErrorCodes: TErrorCode = {
   },
   WORKSHEET_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1118,
+    code: 1119,
     message: "Worksheet not found",
+  },
+  USER_DEPARTMENT_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1120,
+    message: "User department not found",
+  },
+  INVALID_USER_DEPARTMENT_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1121,
+    message: "User department slug invalid",
   },
 
   // AuthenticationErrors

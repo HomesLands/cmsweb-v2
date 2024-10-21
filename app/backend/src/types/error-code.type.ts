@@ -120,6 +120,8 @@ export type TErrorCodeKey =
   | "USER_DEPARTMENT_EXIST"
   | "EXPORT_DB_ERROR"
   | "WORKSHEET_NOT_FOUND"
+  | "USER_DEPARTMENT_NOT_FOUND"
+  | "INVALID_USER_DEPARTMENT_SLUG"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {

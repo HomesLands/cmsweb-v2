@@ -3,8 +3,8 @@ import { companyController } from "@controllers";
 import { upload } from "@configs/multer.config";
 export const companyRoute: Router = Router();
 
-// [POST] /api/v1/companies
-// companyRoute.patch("/:slug", companyController.updateCompany);
+// [PATCH] /api/v1/companies
+companyRoute.patch("/:slug", companyController.updateCompany);
 
 // [GET] /api/v1/companies
 companyRoute.get("/", companyController.getAllCompanies);
