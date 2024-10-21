@@ -4,11 +4,16 @@ import { userDepartmentController } from "@controllers";
 export const userDepartmentRoute: Router = Router();
 
 // [GET] /api/v1/userDepartments
-userDepartmentRoute.route("/")
-  .get(userDepartmentController.getAllUserDepartments)
+userDepartmentRoute.get("/", userDepartmentController.getAllUserDepartments);
 
-// [POS] /api/v1/userDepartments
-userDepartmentRoute.route("/")
-  .post(userDepartmentController.createUserDepartment);
+// [POST] /api/v1/userDepartments
+userDepartmentRoute.post("/", userDepartmentController.createUserDepartment);
 
+// [PATCH] /api/v1/userDepartments
+userDepartmentRoute.patch("/:slug", userDepartmentController.changeDepartment);
 
+// [DELETE] /api/v1/userDepartments
+userDepartmentRoute.delete(
+  "/:slug",
+  userDepartmentController.deleteUserDepartment
+);

@@ -4,11 +4,7 @@ import { siteController } from "@controllers";
 export const siteRoute: Router = Router();
 
 // [GET] /api/v1/sites
-siteRoute.route("/")
-  .get(siteController.getAllSites)
+siteRoute.get("/", siteController.getAllSites);
 
 // [POS] /api/v1/sites
-siteRoute.route("/")
-  .post(siteController.createSite);
-
-
+siteRoute.post("/", siteController.createSite);

@@ -9,18 +9,17 @@ import {
   FormControl,
   FormMessage,
   Form,
-  Button,
-  Input
+  Button
 } from '@/components/ui'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createAssignedApproverSchema, TCreateAssignedApproverSchema } from '@/schemas'
-import { TAssignedApprover } from '@/types'
-import { FormApprovalType, AuthorityType } from '@/constants'
+import { TCreateAssignedApprover } from '@/types'
+import { FormApprovalType } from '@/constants'
 import { SelectFormType, SelectRoleApproval, SelectSite, SelectUser } from '../select'
 
 interface IFormCreateAssignedApproverProps {
-  onSubmit: (data: TAssignedApprover) => void
+  onSubmit: (data: TCreateAssignedApprover) => void
 }
 
 export const CreateAssignedApproverForm: React.FC<IFormCreateAssignedApproverProps> = ({

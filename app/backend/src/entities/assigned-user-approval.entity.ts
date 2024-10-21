@@ -1,12 +1,14 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, Unique } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  Unique,
+} from "typeorm";
 import { AutoMap } from "@automapper/classes";
 
-import { 
-  Base,
-  Site,
-  User,
-  UserApproval,
-} from "@entities";
+import { Base, Site, User, UserApproval } from "@entities";
 
 @Entity("assigned_user_approval")
 export class AssignedUserApproval extends Base {
@@ -21,14 +23,16 @@ export class AssignedUserApproval extends Base {
   // formType + roleApproval + site is unique
   @Column({ name: "role_approval_column" })
   @AutoMap()
-  @Unique(['formType', 'roleApproval', 'site']) 
+  // @Unique(["formType", "roleApproval", "site", "user"])
   roleApproval?: string; //RoleApproval in enums
 
   @ManyToOne(() => User, (user) => user.assignedUserApprovals)
   @JoinColumn({ name: "user_column" })
   user?: User;
 
-  @OneToMany(() => UserApproval, 
-    (userApproval) => userApproval.assignedUserApproval)
+  @OneToMany(
+    () => UserApproval,
+    (userApproval) => userApproval.assignedUserApproval
+  )
   userApprovals?: UserApproval[];
 }

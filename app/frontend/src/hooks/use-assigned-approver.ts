@@ -1,10 +1,20 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
-import { createAssignedApprover } from '@/api/assigned-approver'
-import { IApiResponse, TAssignedApprover } from '@/types'
+import { createAssignedApprover, getAssignedApprovers } from '@/api'
+import { IQuery, TCreateAssignedApprover } from '@/types'
 
-export const useAssignedApprover = () => {
-  return useMutation<IApiResponse<TAssignedApprover>, Error, TAssignedApprover>({
-    mutationFn: createAssignedApprover
+export const useCreateAssignedApprover = () => {
+  return useMutation({
+    mutationFn: async (data: TCreateAssignedApprover) => {
+      return createAssignedApprover(data)
+    }
+  })
+}
+
+export const useAssignedApprovers = (q: IQuery) => {
+  return useQuery({
+    queryKey: ['assigned-approver', JSON.stringify(q)],
+    queryFn: () => getAssignedApprovers(q),
+    select: (data) => data.result
   })
 }
