@@ -114,7 +114,7 @@ class ProductService {
 
   public async uploadProduct(
     plainData: TUploadProductRequestDto
-  ): Promise<ProductResponseDto[]> {
+  ): Promise<number> {
     const workbook = new Workbook();
     if (!plainData.file?.buffer)
       throw new GlobalError(ErrorCodes.FILE_NOT_FOUND);
@@ -125,6 +125,8 @@ class ProductService {
       throw new GlobalError(ErrorCodes.WORKSHEET_NOT_FOUND);
 
     const products: TCreateProductRequestDto[] = [];
+    const uniqueNames = new Set<string>();
+
     const worksheet = workbook.worksheets[0];
     worksheet?.eachRow((row, rowNumber) => {
       if (rowNumber > 1) {
@@ -133,11 +135,7 @@ class ProductService {
         const nameCell = row.findCell(6);
         const unitCell = row.findCell(9);
         const descriptionCell = row.findCell(12);
-        console.log({
-          rowNumber,
-          name: nameCell?.value,
-          unitCell: unitCell?.value,
-        });
+
         if (!codeCell?.value)
           throw new GlobalError(ErrorCodes.INVALID_PRODUCT_CODE);
         if (!nameCell?.value)
@@ -147,13 +145,16 @@ class ProductService {
         if (!providerCell?.value)
           throw new GlobalError(ErrorCodes.INVALID_PRODUCT_PROVIDER);
 
-        products.push({
-          name: nameCell.value.toString(),
-          code: codeCell.value.toString(),
-          description: descriptionCell?.value?.toString() || "",
-          unit: unitCell?.value?.toString().toLowerCase(),
-          provider: providerCell.value.toString(),
-        });
+        if (!uniqueNames.has(nameCell.value.toString())) {
+          products.push({
+            name: nameCell.value.toString(),
+            code: codeCell.value.toString(),
+            description: descriptionCell?.value?.toString() || "",
+            unit: unitCell?.value?.toString().toLowerCase(),
+            provider: providerCell.value.toString(),
+          });
+          uniqueNames.add(nameCell.value.toString());
+        }
       }
     });
 
@@ -173,20 +174,10 @@ class ProductService {
       })
     );
 
-    // Create a Set to track unique ids
-    const uniqueNames = new Set();
-    const uniqueItems = requestProducts.filter((item) => {
-      if (!uniqueNames.has(item.name)) {
-        uniqueNames.add(item.name);
-        return true; // Keep this item
-      }
-      return false; // Filter out duplicate
-    });
-
     const createdProducts =
-      await productRepository.bulkCreateAndSave(uniqueItems);
+      await productRepository.bulkCreateAndSave(requestProducts);
 
-    return mapper.mapArray(createdProducts, Product, ProductResponseDto);
+    return createdProducts.length;
   }
 }
 
