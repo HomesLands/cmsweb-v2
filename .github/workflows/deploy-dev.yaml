@@ -2,17 +2,18 @@ name: Deploy
 
 on:
   pull_request_target:
-    branches: [ main ]
+    branches: [main]
     types: [opened, closed]
   workflow_run:
-    workflows: ["Build and Test"]  # Trigger after 'Build and Test' workflow succeeds
+    workflows: ["Build and Test"] # Trigger after 'Build and Test' workflow succeeds
     types:
       - completed
 
 jobs:
   deploy:
     if: github.event.pull_request.merged
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    # runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -23,7 +24,7 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
-          port: ${{ secrets.SSH_PORT }}  # Specify your SSH port here
+          port: ${{ secrets.SSH_PORT }} # Specify your SSH port here
           script: |
             cd cmsweb-v2/  # Change to your application directory on the remote host
             git pull origin main  # Pull latest changes

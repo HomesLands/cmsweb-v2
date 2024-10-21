@@ -126,13 +126,18 @@ class ProductService {
 
     const products: TCreateProductRequestDto[] = [];
     const worksheet = workbook.worksheets[0];
-    worksheet?.eachRow(async (row, rowNumber) => {
+    worksheet?.eachRow((row, rowNumber) => {
       if (rowNumber > 1) {
         const codeCell = row.findCell(2);
         const providerCell = row.findCell(3);
         const nameCell = row.findCell(6);
         const unitCell = row.findCell(9);
         const descriptionCell = row.findCell(12);
+        console.log({
+          rowNumber,
+          name: nameCell?.value,
+          unitCell: unitCell?.value,
+        });
         if (!codeCell?.value)
           throw new GlobalError(ErrorCodes.INVALID_PRODUCT_CODE);
         if (!nameCell?.value)
@@ -156,7 +161,7 @@ class ProductService {
       products.map(async (item) => {
         const existUnit = await unitRepository.findOne({
           where: {
-            name: Like(`%${item.unit}%`),
+            name: item.unit,
           },
         });
         const unit =
@@ -168,8 +173,18 @@ class ProductService {
       })
     );
 
+    // Create a Set to track unique ids
+    const uniqueNames = new Set();
+    const uniqueItems = requestProducts.filter((item) => {
+      if (!uniqueNames.has(item.name)) {
+        uniqueNames.add(item.name);
+        return true; // Keep this item
+      }
+      return false; // Filter out duplicate
+    });
+
     const createdProducts =
-      await productRepository.bulkCreateAndSave(requestProducts);
+      await productRepository.bulkCreateAndSave(uniqueItems);
 
     return mapper.mapArray(createdProducts, Product, ProductResponseDto);
   }
