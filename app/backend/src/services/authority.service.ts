@@ -116,10 +116,10 @@ class AuthorityService {
   }
 
   public async deleteAuthority(slug: string): Promise<number> {
-    const company = await authorityRepository.findOneBy({
+    const authority = await authorityRepository.findOneBy({
       slug,
     });
-    if (!company) throw new GlobalError(ErrorCodes.AUTHORITY_NOT_FOUND);
+    if (!authority) throw new GlobalError(ErrorCodes.AUTHORITY_NOT_FOUND);
 
     const deleted = await authorityRepository.softDelete({ slug });
     return deleted.affected || 0;

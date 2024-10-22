@@ -88,6 +88,16 @@ class RoleService {
     const roleDto = mapper.map(updatedRole, Role, RoleResponseDto);
     return roleDto;
   }
+
+  public async deleteRole(slug: string): Promise<number> {
+    const role = await roleRepository.findOneBy({
+      slug,
+    });
+    if (!role) throw new GlobalError(ErrorCodes.ROLE_NOT_FOUND);
+
+    const deleted = await roleRepository.softDelete({ slug });
+    return deleted.affected || 0;
+  }
 }
 
 export default new RoleService();

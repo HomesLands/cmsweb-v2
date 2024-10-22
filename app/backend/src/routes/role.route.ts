@@ -14,3 +14,6 @@ roleRoute.route("/:slug").get(roleController.getRoleBySlug);
 
 // [PATCH] /api/v1/roles/{slug}
 roleRoute.route("/:slug").patch(roleController.updateRole);
+
+// [PATCH] /api/v1/roles/{slug}
+roleRoute.route("/:slug").delete(roleController.deleteRole);
