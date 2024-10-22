@@ -17,7 +17,6 @@ import { ErrorCodes, GlobalError, ValidationError } from "@exception";
 import { Ability, MongoQuery } from "@casl/ability";
 import { Action } from "@enums";
 import { Subjects } from "@lib/casl";
-import { StatusCodes } from "http-status-codes";
 
 class AuthorityService {
   public async getAllAuthorities(
@@ -114,6 +113,16 @@ class AuthorityService {
       AuthorityResponseDto
     );
     return authorityDto;
+  }
+
+  public async deleteAuthority(slug: string): Promise<number> {
+    const company = await authorityRepository.findOneBy({
+      slug,
+    });
+    if (!company) throw new GlobalError(ErrorCodes.AUTHORITY_NOT_FOUND);
+
+    const deleted = await authorityRepository.softDelete({ slug });
+    return deleted.affected || 0;
   }
 }
 

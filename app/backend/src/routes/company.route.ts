@@ -18,3 +18,6 @@ companyRoute.patch(
   upload.single("file"),
   companyController.uploadCompanyLogo
 );
+
+// [DELETE] /api/v1/companies/:company
+companyRoute.delete("/:slug", companyController.deleteCompany);

@@ -102,6 +102,16 @@ class CompanyService {
     const companyDto = mapper.map(updatedCompany, Company, CompanyResponseDto);
     return companyDto;
   }
+
+  public async deleteCompany(slug: string): Promise<number> {
+    const company = await companyRepository.findOneBy({
+      slug,
+    });
+    if (!company) throw new GlobalError(ErrorCodes.COMPANY_NOT_FOUND);
+
+    const deleted = await companyRepository.softDelete({ slug });
+    return deleted.affected || 0;
+  }
 }
 
 export default new CompanyService();
