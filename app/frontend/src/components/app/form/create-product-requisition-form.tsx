@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { format } from 'date-fns'
@@ -21,7 +21,11 @@ import {
   Calendar
 } from '@/components/ui'
 import { productRequisitionSchema, TProductRequisitionSchema } from '@/schemas'
-import { SelectProject, RequestPrioritySelect } from '@/components/app/select'
+import {
+  SelectProject,
+  RequestPrioritySelect,
+  SelectDepartmentRequisition
+} from '@/components/app/select'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { generateProductRequisitionCode } from '@/utils'
@@ -41,6 +45,10 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
   const [date, setDate] = useState<Date | undefined>(
     requisition?.deadlineApproval ? new Date(requisition.deadlineApproval) : undefined
   )
+  const [company, setCompany] = useState<string>(
+    userInfo?.userDepartments[0]?.department.site.company.name || ''
+  )
+  const [site, setSite] = useState<string>(userInfo?.userDepartments[0]?.department.site.name || '')
 
   const validateDate = (selectedDate: Date | undefined) => {
     if (!selectedDate) return false
@@ -57,17 +65,20 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
         ? format(new Date(requisition.deadlineApproval), 'yyyy-MM-dd HH:mm:ss')
         : undefined,
       company: {
-        slug: userInfo?.userDepartments[0]?.department?.site?.company?.slug || '',
-        name: userInfo?.userDepartments[0]?.department?.site?.company?.name || '',
-        logo: userInfo?.userDepartments[0]?.department?.site?.company?.logo || ''
+        slug: userInfo?.userDepartments[0].department.site.company.slug || '',
+        name: userInfo?.userDepartments[0].department.site.company.name || '',
+        logo: userInfo?.userDepartments[0].department.site.company.logo || ''
+      },
+      department: {
+        slug: userInfo?.userDepartments[0].department.slug || '',
+        name: userInfo?.userDepartments[0].department.description || ''
       },
       site: {
-        slug: userInfo?.userDepartments[0]?.department?.site?.slug || '',
-        name: userInfo?.userDepartments[0]?.department?.site?.name || ''
+        slug: userInfo?.userDepartments[0].department.site.slug || '',
+        name: userInfo?.userDepartments[0].department.site.name || ''
       },
       type: 'normal',
       requestProducts: [],
-      // userApprovals: [],
       project: {
         slug: requisition?.project.slug || '',
         name: requisition?.project.name || ''
@@ -75,6 +86,31 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
       note: requisition?.note || ''
     }
   })
+
+  useEffect(() => {
+    if (userInfo && userInfo.userDepartments.length > 0) {
+      const department = userInfo.userDepartments[0].department
+      setCompany(department.site.company.name)
+      setSite(department.site.name)
+    }
+  }, [userInfo])
+  const handleDepartmentChange = (slug: string, name: string) => {
+    const selectedDepartment = userInfo?.userDepartments.find(
+      (item) => item.department.slug === slug
+    )
+    if (selectedDepartment) {
+      const { site } = selectedDepartment.department
+      setCompany(site.company.name)
+      setSite(site.name)
+      form.setValue('department', { slug, name }) // Cập nhật department trong form
+      form.setValue('company', {
+        slug: site.company.slug,
+        name: site.company.name,
+        logo: site.company.logo
+      }) // Cập nhật company
+      form.setValue('site', { slug: site.slug, name: site.name }) // Cập nhật site
+    }
+  }
 
   const handleSubmit = (values: TProductRequisitionSchema) => {
     onSubmit(values)
@@ -135,12 +171,12 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                       !field.value && 'text-muted-foreground'
                     )}
                   >
-                    <CalendarIcon className="mr-2 w-4 h-4" />
+                    <CalendarIcon className="w-4 h-4 mr-2" />
                     {field.value ? field.value : <span>Chọn ngày và thời gian</span>}
                   </Button>
                 </FormControl>
               </PopoverTrigger>
-              <PopoverContent className="p-0 w-auto">
+              <PopoverContent className="w-auto p-0">
                 <Calendar
                   mode="single"
                   selected={date}
@@ -213,6 +249,26 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
         )}
       />
     ),
+    department: (
+      <FormField
+        control={form.control}
+        name="department"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('productRequisition.departmentName')}</FormLabel>
+            <FormControl>
+              <SelectDepartmentRequisition
+                defaultValue={userInfo?.userDepartments[0]?.department.slug}
+                department={{ userDepartments: userInfo?.userDepartments || [] }}
+                onChange={handleDepartmentChange} // Use the new handler
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+
     site: (
       <FormField
         control={form.control}

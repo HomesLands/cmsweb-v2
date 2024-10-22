@@ -12,6 +12,8 @@
     "requesterDescription": "Nhập tên người yêu cầu",
     "companyName": "Tên công ty",
     "companyNameDescription": "Chọn công ty",
+    "departmentName": "Tên phòng ban",
+    "departmentNameDescription": "Chọn phòng ban",
     "projectName": "Tên dự án",
     "projectNameDescription": "Chọn dự án",
     "constructionSite": "Tên công trình",
@@ -72,6 +74,8 @@
     "resubmit": "Gửi lại",
     "approvalHistory": "Lịch sử duyệt",
     "updateProduct": "Cập nhật vật tư",
+
+    "deleteProduct": "Xóa vật tư",
 
     "updateGeneralInfo": "Cập nhật thông tin chung",
     "generalInfo": "Thông tin chung",

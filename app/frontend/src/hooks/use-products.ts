@@ -33,6 +33,8 @@ import {
   IUpdateProductRequisitionGeneralInfo,
   IUpdateProductRequisitionQuantity
 } from '@/types'
+import { showToast } from '@/utils'
+import { useTranslation } from 'react-i18next'
 
 export const useProducts = (q: IProductQuery) => {
   return useQuery({
@@ -95,11 +97,12 @@ export const useProductRequisitionByCreator = (q: IProductQuery) => {
 
 export const useUpdateProductRequisitionQuantity = (slug: string) => {
   const queryClient = useQueryClient()
+  const { t: tToast } = useTranslation('toast')
 
   return useMutation({
     mutationFn: (data: IUpdateProductRequisitionQuantity) => updateProductRequisitionQuantity(data),
     onSuccess: () => {
-      console.log('success')
+      showToast(tToast('toast.updateProductSuccess'))
       queryClient.invalidateQueries({ queryKey: ['productRequisitionBySlug', slug] })
     }
   })

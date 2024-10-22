@@ -37,6 +37,7 @@
     "codeProductExisted": "Mã vật tư đã tồn tại",
     "logoutSuccess": "Đăng xuất thành công",
     "updateUserSuccess": "Người dùng được cập nhật thành công",
+    "invalidUserDepartmentExisted": "Người dùng đã tồn tại trong phòng ban",
 
     "createCompanySuccessfully": "Công ty được tạo thành công",
     "createSiteSuccessfully": "Địa điểm được tạo thành công",
@@ -58,6 +59,8 @@
     "updateAuthoritySuccess": "Thẩm quyền được cập nhật thành công",
     "updateResourceSuccess": "Tài nguyên được cập nhật thành công",
 
-    "updateCompanyLogoSuccess": "Logo công ty được cập nhật thành công"
+    "updateCompanyLogoSuccess": "Logo công ty được cập nhật thành công",
+
+    "assignedUserApprovalExisted": "Người dùng đã được phân công duyệt"
   }
 }
