@@ -1,4 +1,4 @@
-import { TApiResponse } from "@types";
+import { TApiResponse, TUpdateSiteRequestDto } from "@types";
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import { siteService } from "@services";
@@ -11,6 +11,22 @@ class SiteController {
    * components:
    *   schemas:
    *     CreateSiteRequestDto:
+   *       type: object
+   *       required:
+   *         - name
+   *         - company
+   *       properties:
+   *         name:
+   *           type: string
+   *           description: sitename
+   *         company:
+   *           type: string
+   *           description: companySlug
+   *       example:
+   *         name: FirstSite
+   *         company: company-slug-123
+   *
+   *     UpdateSiteRequestDto:
    *       type: object
    *       required:
    *         - name
@@ -114,6 +130,113 @@ class SiteController {
         method: req.method,
         path: req.originalUrl,
         result: sitesData,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /sites/{slug}:
+   *   patch:
+   *     summary: Update site
+   *     tags: [Site]
+   *     parameters:
+   *       - in: path
+   *         name: slug
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: The slug of user department
+   *         example: slug-123
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/UpdateSiteRequestDto'
+   *     responses:
+   *       200:
+   *         description: Site updated successfully.
+   *       500:
+   *         description: Server error
+   *       1030:
+   *         description: Invalid site name
+   *       1043:
+   *         description: Company not found
+   *       1058:
+   *         description: Invalid company slug
+   *       1059:
+   *         description: Invalid site slug
+   *
+   */
+  public async updateSite(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { slug } = req.params;
+      const requestData = req.body as TUpdateSiteRequestDto;
+      Object.assign(requestData, { slug });
+
+      const result = await siteService.updateSite(requestData);
+
+      const response: TApiResponse<SiteResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "Site has been updated successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /sites/{slug}:
+   *   delete:
+   *     summary: Delete site
+   *     tags: [Site]
+   *     parameters:
+   *       - in: path
+   *         name: slug
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: The slug of user department
+   *         example: slug-123
+   *     responses:
+   *       200:
+   *         description: Site updated successfully.
+   *       500:
+   *         description: Server error
+   *       1051:
+   *         description: Site not found
+   *
+   */
+  public async deleteSite(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { slug } = req.params;
+      const result = await siteService.deleteSite(slug);
+
+      const response: TApiResponse<string> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "Site has been deleted successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result: `${result} rows effected`,
       };
       res.status(StatusCodes.OK).json(response);
     } catch (error) {

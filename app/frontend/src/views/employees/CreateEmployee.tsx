@@ -9,7 +9,7 @@ import toast from 'react-hot-toast'
 import { IRegisterRequest } from '@/types'
 
 const CreateEmployee: React.FC = () => {
-  const { t } = useTranslation(['users'])
+  const { t } = useTranslation(['employees'])
   const mutation = useRegister()
 
   const onSubmit = (values: TRegisterSchema) => {
@@ -27,8 +27,8 @@ const CreateEmployee: React.FC = () => {
       <Card>
         <CardHeader className="flex flex-row justify-between items-center w-full border-b font-beVietNam">
           <div className="flex flex-col gap-1 items-start py-2">
-            <CardTitle>{t('users.createUser')}</CardTitle>
-            <CardDescription>{t('users.CreateUserDescription')}</CardDescription>
+            <CardTitle>{t('employees.createUser')}</CardTitle>
+            <CardDescription>{t('employees.CreateUserDescription')}</CardDescription>
           </div>
         </CardHeader>
         <CardContent className="flex flex-col">

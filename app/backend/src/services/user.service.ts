@@ -10,6 +10,7 @@ import {
   TChangePasswordRequestDto,
   TPaginationOptionResponse,
   TQueryRequest,
+  TUpdateUserInfoRequestDto,
   TUploadUserAvatarRequestDto,
   TUploadUserSignRequestDto,
 } from "@types";
@@ -21,7 +22,10 @@ import { Subjects } from "@lib";
 import { StatusCodes } from "http-status-codes";
 import { parsePagination } from "@utils/pagination.util";
 import { plainToClass } from "class-transformer";
-import { ChangePasswordRequestDto } from "@dto/request";
+import {
+  ChangePasswordRequestDto,
+  UpdateUserInfoRequestDto,
+} from "@dto/request";
 import { validate } from "class-validator";
 import { ValidationError } from "exception";
 import bcrypt from "bcryptjs";
@@ -70,7 +74,6 @@ class UserService {
       relations: ["userDepartments.department.site.company"],
     });
 
-    console.log({ user });
     if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 
     const results = mapper.map(user, User, UserResponseDto);
@@ -183,6 +186,28 @@ class UserService {
     );
 
     Object.assign(user, { password: newHashedPassword });
+    const updatedUser = await userRepository.save(user);
+
+    const userDto = mapper.map(updatedUser, User, UserResponseDto);
+    return userDto;
+  }
+
+  public async updateUserInfo(
+    plainData: TUpdateUserInfoRequestDto
+  ): Promise<UserResponseDto> {
+    // Check current password
+    const requestData = plainToClass(UpdateUserInfoRequestDto, plainData);
+
+    const errors = await validate(requestData);
+    if (errors.length > 0) throw new ValidationError(errors);
+    const user = await userRepository.findOne({
+      where: {
+        id: requestData.userId,
+      },
+    });
+    if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
+
+    Object.assign(user, requestData);
     const updatedUser = await userRepository.save(user);
 
     const userDto = mapper.map(updatedUser, User, UserResponseDto);

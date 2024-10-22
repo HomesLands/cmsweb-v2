@@ -16,6 +16,11 @@
     "selectSite": "Chọn địa điểm",
     "selectUser": "Chọn người phê duyệt",
     "createAssignedApproverSuccessfully": "Tạo người phê duyệt thành công",
-    "createAssignedApproverFailed": "Tạo người phê duyệt thất bại"
+    "createAssignedApproverFailed": "Tạo người phê duyệt thất bại",
+    "formType": "Loại yêu cầu",
+    "roleApproval": "Cấp duyệt",
+    "fullname": "Người duyệt",
+    "site": "Địa điểm",
+    "company": "Công ty"
   }
 }

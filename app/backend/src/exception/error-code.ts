@@ -529,6 +529,31 @@ export const ErrorCodes: TErrorCode = {
     code: 1121,
     message: "User department slug invalid",
   },
+  USER_ROLE_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1122,
+    message: "User role not found",
+  },
+  INVALID_DOB: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1123,
+    message: "Date of birth invalid",
+  },
+  INVALID_GENDER: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1124,
+    message: "Gender invalid",
+  },
+  INVALID_ADDRESS: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1125,
+    message: "Address invalid",
+  },
+  INVALID_PHONENUMBER: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1126,
+    message: "Phone number invalid",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]

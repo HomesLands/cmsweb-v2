@@ -11,4 +11,13 @@ export type TChangePasswordRequestDto = {
   confirmPassword?: string;
 };
 
+export type TUpdateUserInfoRequestDto = {
+  userId?: string;
+  dob?: string;
+  gender?: string;
+  address?: string;
+  phoneNumber?: string;
+  fullname?: string;
+};
+
 export type TUploadUserAvatarRequestDto = TUploadUserSignRequestDto;

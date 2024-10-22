@@ -24,6 +24,18 @@ export class UserResponseDto extends BaseResponseDto {
 
   @AutoMap(() => [UserRoleResponseDto])
   userRoles?: UserRoleResponseDto[];
+
+  @AutoMap()
+  dob?: string;
+
+  @AutoMap()
+  gender?: string;
+
+  @AutoMap()
+  address?: string;
+
+  @AutoMap()
+  phoneNumber?: string;
 }
 
 export class UserPermissionResponseDto extends BaseResponseDto {
