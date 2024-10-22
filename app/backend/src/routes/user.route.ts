@@ -20,6 +20,9 @@ userRoute.get("/info/permissions", userController.getUserPermissions);
 // [GET] /api/v1/users/info
 userRoute.get("/info", userController.getUser);
 
+// [PATCH] /api/v1/users/info
+userRoute.patch("/info", userController.updateUserInfo);
+
 // [PATCH] /api/v1/users/signature
 userRoute.patch(
   "/upload/sign",

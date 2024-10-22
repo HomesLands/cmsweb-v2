@@ -4,4 +4,5 @@ import { userRoleController } from "@controllers";
 export const userRoleRoute: Router = Router();
 
 // [POST] /api/v1/userRoles
-userRoleRoute.route("/").post(userRoleController.createUserRole);
+userRoleRoute.post("/", userRoleController.createUserRole);
+userRoleRoute.delete("/:slug", userRoleController.deleteUserRole);

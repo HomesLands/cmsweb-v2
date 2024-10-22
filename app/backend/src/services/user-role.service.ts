@@ -17,7 +17,6 @@ class UserRoleService {
     plainData: TCreateUserRoleRequestDto
   ): Promise<UserRoleResponseDto> {
     const requestData = plainToClass(CreateUserRoleRequestDto, plainData);
-    console.log({ requestData });
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
 
@@ -44,6 +43,16 @@ class UserRoleService {
     const createdUserRole = await userRoleRepository.createAndSave(userRole);
 
     return mapper.map(createdUserRole, UserRole, UserRoleResponseDto);
+  }
+
+  public async deleteUserRole(slug: string) {
+    const userRole = await userRoleRepository.findOne({
+      where: { slug },
+    });
+    if (!userRole) throw new GlobalError(ErrorCodes.USER_ROLE_NOT_FOUND);
+
+    const deleted = await userRoleRepository.softDelete({ slug });
+    return deleted.affected || 0;
   }
 }
 

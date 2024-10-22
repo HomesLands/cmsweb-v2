@@ -6,5 +6,11 @@ export const siteRoute: Router = Router();
 // [GET] /api/v1/sites
 siteRoute.get("/", siteController.getAllSites);
 
-// [POS] /api/v1/sites
+// [POST] /api/v1/sites
 siteRoute.post("/", siteController.createSite);
+
+// [PATCH] /api/v1/sites/{slug}
+siteRoute.patch("/:slug", siteController.updateSite);
+
+// [DELETE] /api/v1/sites/{slug}
+siteRoute.delete("/:slug", siteController.deleteSite);

@@ -7,6 +7,7 @@ import {
   TChangePasswordRequestDto,
   TPaginationOptionResponse,
   TQueryRequest,
+  TUpdateUserInfoRequestDto,
   TUploadUserAvatarRequestDto,
   TUploadUserSignRequestDto,
 } from "@types";
@@ -44,6 +45,34 @@ class UserController {
    *         currentPassword: Pass@1234
    *         newPassword: NewPass@1234
    *         confirmPassword: NewPass@1234
+   *
+   *     UpdateUserInfoRequestDto:
+   *       type: object
+   *       required:
+   *         - dob
+   *         - gender
+   *         - address
+   *         - phoneNumber
+   *         - fullname
+   *       properties:
+   *         dob:
+   *           type: string
+   *           description: dob
+   *         gender:
+   *           type: string
+   *           description: gender
+   *         phoneNumber:
+   *           type: string
+   *           description: Phone number
+   *         fullname:
+   *           type: string
+   *           description: fullname
+   *       example:
+   *         dob: 01/01/1999
+   *         gender: male
+   *         address: 01 Linh Trung, TP Thủ Đức
+   *         phoneNumber: "0987654321"
+   *         fullname: John Doe
    */
 
   /**
@@ -338,6 +367,59 @@ class UserController {
         code: StatusCodes.OK,
         error: false,
         message: `User password has updated successfully`,
+        method: req.method,
+        path: req.originalUrl,
+        result,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /users/info:
+   *   patch:
+   *     summary: Update user info
+   *     tags: [User]
+   *     requestBody:
+   *       require: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/UpdateUserInfoRequestDto'
+   *     responses:
+   *       200:
+   *         description: User info has updated successfully
+   *       500:
+   *         description: Server error
+   *       1008:
+   *         description: Password is not valid
+   *       1113:
+   *         description: New password invalid
+   *       1114:
+   *         description: Confirm password invalid
+   *       1115:
+   *         description: Password does not match
+   *       1116:
+   *         description: Confirm password does not match
+   */
+  public async updateUserInfo(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { userId = "" } = req;
+      const requestData = req.body as TUpdateUserInfoRequestDto;
+      Object.assign(requestData, { userId });
+
+      const result = await userService.updateUserInfo(requestData);
+      const response: TApiResponse<UserResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: `User info has updated successfully`,
         method: req.method,
         path: req.originalUrl,
         result,

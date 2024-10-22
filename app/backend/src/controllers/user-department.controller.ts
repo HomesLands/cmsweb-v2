@@ -42,14 +42,14 @@ class UserDepartmentController {
    * @swagger
    * tags:
    *   - name: UserDepartment
-   *     description: The userDepartment managing API
+   *     description: The user department managing API
    */
 
   /**
    * @swagger
    * /userDepartments:
    *   post:
-   *     summary: Create new userDepartment
+   *     summary: Create new user department
    *     tags: [UserDepartment]
    *     requestBody:
    *       required: true
@@ -59,7 +59,7 @@ class UserDepartmentController {
    *              $ref: '#/components/schemas/CreateUserDepartmentRequestDto'
    *     responses:
    *       201:
-   *         description: New userDepartment created successfully.
+   *         description: New user department created successfully.
    *         content:
    *           application/json:
    *             schema:
@@ -104,11 +104,11 @@ class UserDepartmentController {
    * @swagger
    * /userDepartments:
    *   get:
-   *     summary: Get all userDepartments
+   *     summary: Get all user department
    *     tags: [UserDepartment]
    *     responses:
    *       200:
-   *         description: Get all userDepartments successfully.
+   *         description: Get all user department successfully.
    *       500:
    *         description: Server error
    */
