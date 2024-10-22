@@ -179,11 +179,11 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
     setOpenDialog(false)
   }
 
-  const columns = useColumnsUpdateRequisition(
-    isExistProduct,
-    handleEditProduct,
-    handleDeleteProduct
-  )
+  const columns =
+    useColumnsUpdateRequisition()
+    // isExistProduct,
+    // handleEditProduct,
+    // handleDeleteProduct
   const userApprovalColumns = useColumnsApprovalLog()
 
   const sortedUserApprovals = useMemo(() => {
@@ -427,10 +427,6 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
         </TabsContent>
         <TabsContent value="products">
           <Card className="border-none">
-            <CardHeader>
-              {/* <CardTitle>{t('productRequisition.products')}</CardTitle> */}
-              {/* <CardDescription>{t('productRequisition.productsDescription')}</CardDescription> */}
-            </CardHeader>
             <CardContent>
               <div className="mb-6">
                 <h3 className="mb-2 font-semibold">{t('productRequisition.addProduct')}</h3>

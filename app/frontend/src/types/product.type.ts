@@ -33,6 +33,10 @@ export interface IProductRequisitionFormCreate {
     name: string
     logo: string
   }
+  department: {
+    slug: string
+    name: string
+  }
   site: {
     slug: string
     name: string

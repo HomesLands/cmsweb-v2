@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -14,17 +15,13 @@ import { AddEmployeeRoleForm } from '@/components/app/form'
 import { ICreateUserRole, IUserInfo } from '@/types'
 import { useCreateUserRole } from '@/hooks'
 import { showToast } from '@/utils'
+import { useState } from 'react'
+import { SquarePen } from 'lucide-react'
 
-interface DialogAddUserRoleProps {
-  user: IUserInfo | null
-  open: boolean
-  component: React.ReactNode
-  onOpenChange: () => void
-}
-
-export function DialogAddUserRole({ user, open, component, onOpenChange }: DialogAddUserRoleProps) {
+export function DialogAddUserRole({ user }: { user: IUserInfo | null }) {
   const { t } = useTranslation('employees')
   const { t: tToast } = useTranslation('toast')
+  const [isOpen, setIsOpen] = useState(false)
   const { mutate: createUserRole } = useCreateUserRole()
 
   const handleSubmit = (values: TCreateUserRoleSchema) => {
@@ -32,7 +29,7 @@ export function DialogAddUserRole({ user, open, component, onOpenChange }: Dialo
       roleSlug: values.role.value,
       userSlug: values.user.value
     } as ICreateUserRole
-
+    setIsOpen(false)
     createUserRole(requestData, {
       onSuccess: () => {
         showToast(tToast('toast.addRoleSuccess'))
@@ -41,8 +38,13 @@ export function DialogAddUserRole({ user, open, component, onOpenChange }: Dialo
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>{component}</DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild className="flex justify-start w-full">
+        <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
+          <SquarePen className="icon" />
+          {t('employees.createUserRole')}
+        </Button>
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t('employees.createUserRole')}</DialogTitle>

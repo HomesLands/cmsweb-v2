@@ -66,9 +66,7 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
     },
     {
       accessorKey: 'userRoles',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('employees.userRoles')} />
-      ),
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('employees.role')} />,
       cell: ({ row }) => {
         const { userRoles } = row.original
         return (
@@ -76,7 +74,7 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
             {userRoles &&
               userRoles.map((item) => {
                 return (
-                  <div className="w-fit font-normal">
+                  <div className="font-normal w-fit">
                     {item?.role?.nameDisplay} ({item?.role?.nameNormalize})
                   </div>
                 )
@@ -88,7 +86,7 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
     {
       accessorKey: 'userDepartments',
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('employees.userDepartments')} />
+        <DataTableColumnHeader column={column} title={t('employees.department')} />
       ),
       cell: ({ row }) => {
         const { userDepartments } = row.original
@@ -97,7 +95,7 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
             {userDepartments &&
               userDepartments.map((item) => {
                 return (
-                  <Badge className="w-fit font-normal bg-green-500 hover:bg-green-500">
+                  <Badge className="font-normal bg-green-500 w-fit hover:bg-green-500">
                     {item?.department.description}
                   </Badge>
                 )
@@ -114,7 +112,7 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="p-0 w-8 h-8">
+                <Button variant="ghost" className="w-8 h-8 p-0">
                   <span className="sr-only">Open menu</span>
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
@@ -122,26 +120,10 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
               <DropdownMenuContent className="flex flex-col justify-start" align="end">
                 <DropdownMenuLabel>{t('employees.actions')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => handleOpenDialogAddUserRole(user)}>
-                  {t('employees.addRole')}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleOpenDialogAddUserDepartment(user)}>
-                  {t('employees.addDepartment')}
-                </DropdownMenuItem>
+                <DialogAddUserRole user={user} />
+                <DialogAddUserDepartment user={user} />
               </DropdownMenuContent>
             </DropdownMenu>
-            <DialogAddUserRole
-              user={selectedUser}
-              open={openDialogAddUserRole}
-              onOpenChange={handleCloseDialogAddUserRole}
-              component={null}
-            />
-            <DialogAddUserDepartment
-              user={selectedUser}
-              open={openDialogAddUserDepartment}
-              onOpenChange={handleCloseDialogAddUserDepartment}
-              component={null}
-            />
           </div>
         )
       }

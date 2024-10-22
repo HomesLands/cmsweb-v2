@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PlusCircledIcon } from '@radix-ui/react-icons'
 
 import {
   Dialog,
@@ -14,42 +13,33 @@ import {
 import { TCreateUserDepartmentSchema } from '@/schemas'
 import { AddEmployeeDepartmentForm } from '@/components/app/form'
 import { ICreateUserDepartment, IUserInfo } from '@/types'
-import { showToast } from '@/utils'
+import { showErrorToast, showToast } from '@/utils'
 import { useCreateUserDepartment } from '@/hooks'
+import { SquarePen } from 'lucide-react'
 
-interface DialogAddUserDepartmentProps {
-  user: IUserInfo | null
-  open: boolean
-  component: React.ReactNode
-  onOpenChange: () => void
-}
-
-export function DialogAddUserDepartment({
-  user,
-  open,
-  component,
-  onOpenChange
-}: DialogAddUserDepartmentProps) {
+export function DialogAddUserDepartment({ user }: { user: IUserInfo | null }) {
   const { t } = useTranslation('employees')
   const { t: tToast } = useTranslation('toast')
+  const [isOpen, setIsOpen] = useState(false)
 
   const { mutate: createUserDepartment } = useCreateUserDepartment()
   const handleSubmit = (values: TCreateUserDepartmentSchema) => {
+    setIsOpen(false)
     const requestData = {
       department: values.department.value,
       user: values.user.value
     } as ICreateUserDepartment
-    onOpenChange()
-    createUserDepartment(requestData, {
-      onSuccess: () => {
-        showToast(tToast('toast.addDepartmentSuccess'))
-      }
-    })
+    createUserDepartment(requestData)
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>{component}</DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
+          <SquarePen className="icon" />
+          {t('employees.addDepartment')}
+        </Button>
+      </DialogTrigger>
       <DialogContent className="">
         <DialogHeader>
           <DialogTitle>{t('employees.addDepartment')}</DialogTitle>

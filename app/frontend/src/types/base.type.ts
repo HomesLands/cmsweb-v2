@@ -25,3 +25,11 @@ export interface IBase {
   updatedAt?: string
   slug?: string
 }
+
+export interface IApiErrorResponse {
+  code: number
+  error: boolean
+  message: string
+  method: string
+  path: string
+}

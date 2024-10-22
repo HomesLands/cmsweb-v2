@@ -36,18 +36,13 @@ export default function DashboardSidebar() {
 
         <div className="flex-1">
           <div
-            className={`flex h-14 items-center border-b px-4 ${isMinimized ? 'justify-center text-normal' : 'lg:px-6'}`}
+            className={`flex h-14 items-center border-b px-4 ${isMinimized ? 'justify-center text-normal' : ''}`}
           >
             <NavLink
               to={'/'}
-              className="flex items-center gap-2 px-2 font-semibold h-1/2 whitespace-nowrap"
+              className={`${isMinimized ? 'flex items-center gap-2 font-semibold h-1/2 whitespace-nowrap' : ''}`}
             >
-              <img src={CMSLogo} height={64} width={64} />
-              {/* <span
-                className={`px-2 whitespace-nowrap text-lg font-extrabold ${isMinimized ? 'hidden' : 'block'}`}
-              >
-                CMS
-              </span> */}
+              <img src={CMSLogo} className={`${isMinimized ? 'w-full' : 'w-16'}`} />
             </NavLink>
           </div>
           <nav

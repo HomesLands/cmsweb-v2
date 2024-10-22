@@ -14,6 +14,10 @@ export const productRequisitionSchema = z.object({
     name: z.string().min(1, 'Tên công ty không hợp lệ'),
     logo: z.string().min(1, 'Logo công ty không hợp lệ')
   }),
+  department: z.object({
+    slug: z.string().min(1, 'Mã bộ phận không hợp lệ'),
+    name: z.string().min(1, 'Tên bộ phận không hợp lệ')
+  }),
   site: z.object({
     slug: z.string().min(1, 'Mã công trình không hợp lệ'),
     name: z.string().min(1, 'Tên công trình không hợp lệ')

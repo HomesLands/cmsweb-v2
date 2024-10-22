@@ -5,6 +5,7 @@
     "slug": "Slug",
     "role": "Chức vụ",
     "fullname": "Họ và tên",
+    "department": "Phòng ban",
     "actions": "Thao tác",
 
     "addRole": "Thêm chức vụ",
