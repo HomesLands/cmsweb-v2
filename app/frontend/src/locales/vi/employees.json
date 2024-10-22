@@ -16,6 +16,12 @@
 
     "addDepartment": "Thêm phòng ban",
     "addDepartmentDescription": "Nhập đầy đủ thông tin bên dưới để thêm phòng ban cho nhân viên",
-    "selectDepartment": "Chọn phòng ban"
+    "selectDepartment": "Chọn phòng ban",
+    "userRoles": "Chức vụ",
+    "userDepartments": "Phòng ban",
+    "createUser": "Tạo nhân sự",
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "CreateUserDescription": "Thêm nhân sự"
   }
 }

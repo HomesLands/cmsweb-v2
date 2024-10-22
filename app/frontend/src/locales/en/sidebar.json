@@ -47,6 +47,12 @@
     "resources": "Resources",
     "createResource": "Create resource",
     "createResources": "Create resource",
-    "backup": "Backup"
+    "backup": "Backup",
+    "personal-account": "Personal account",
+    "admin": "Admin",
+    "add": "Add new",
+    "product-requisitions": "Product requisitions",
+    "backups": "Backups",
+    "assigned-approvers": "Assigned approvers"
   }
 }

@@ -56,6 +56,12 @@
     "resourceList": "Danh sách tài nguyên",
     "createResource": "Tạo tài nguyên",
     "createResources": "Tạo tài nguyên",
-    "backup": "Sao lưu"
+    "backup": "Sao lưu",
+    "personalAccount": "Tài khoản cá nhân",
+    "admin": "Admin",
+    "add": "Tạo mới",
+    "product-requisitions": "Yêu cầu vật tư",
+    "backups": "Sao lưu",
+    "assigned-approvers": "Người phê duyệt"
   }
 }

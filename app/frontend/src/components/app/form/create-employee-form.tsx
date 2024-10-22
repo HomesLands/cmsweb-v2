@@ -21,7 +21,7 @@ interface IFormCreateUserProps {
 }
 
 const CreateEmployeeForm: React.FC<IFormCreateUserProps> = ({ onSubmit }) => {
-  const { t } = useTranslation('users')
+  const { t } = useTranslation('employees')
 
   const form = useForm<TRegisterSchema>({
     resolver: zodResolver(registerSchema),
@@ -43,7 +43,7 @@ const CreateEmployeeForm: React.FC<IFormCreateUserProps> = ({ onSubmit }) => {
         name="username"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('users.username')}</FormLabel>
+            <FormLabel>{t('employees.username')}</FormLabel>
             <FormControl>
               <Input {...field} />
             </FormControl>
@@ -58,7 +58,7 @@ const CreateEmployeeForm: React.FC<IFormCreateUserProps> = ({ onSubmit }) => {
         name="password"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('users.password')}</FormLabel>
+            <FormLabel>{t('employees.password')}</FormLabel>
             <FormControl>
               <PasswordInput {...field} />
             </FormControl>
@@ -73,7 +73,7 @@ const CreateEmployeeForm: React.FC<IFormCreateUserProps> = ({ onSubmit }) => {
         name="fullname"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('users.fullname')}</FormLabel>
+            <FormLabel>{t('employees.fullname')}</FormLabel>
             <FormControl>
               <Input {...field} />
             </FormControl>
@@ -96,12 +96,8 @@ const CreateEmployeeForm: React.FC<IFormCreateUserProps> = ({ onSubmit }) => {
             ))}
           </div>
           <div className="flex justify-end font-beVietNam">
-            <Button
-              className="flex justify-end"
-              type="submit"
-              onClick={() => console.log({ form: form.getValues() })}
-            >
-              {t('users.createUser')}
+            <Button className="flex justify-end" type="submit">
+              {t('employees.createUser')}
             </Button>
           </div>
         </form>
