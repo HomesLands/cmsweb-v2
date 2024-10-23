@@ -9,17 +9,20 @@ export class RequestProduct extends Base {
   @AutoMap()
   requestQuantity?: number;
 
-  @Column({ name: "description_column" , nullable: true })
+  @Column({ name: "description_column", nullable: true })
   @AutoMap()
   description?: string;
 
-  @ManyToOne(() => ProductRequisitionForm,
-    (productRequisitionForm) => productRequisitionForm.requestProducts)
-    @JoinColumn({ name: "product_requisition_form_column" }) 
+  @ManyToOne(
+    () => ProductRequisitionForm,
+    (productRequisitionForm) => productRequisitionForm.requestProducts
+  )
+  @JoinColumn({ name: "product_requisition_form_column" })
   productRequisitionForm?: ProductRequisitionForm;
 
-  @ManyToOne(() => Product, 
-    (product) => product.requestProducts, { nullable: true })
+  @ManyToOne(() => Product, (product) => product.requestProducts, {
+    nullable: true,
+  })
   @JoinColumn({ name: "product_column" })
   product?: Product;
 
@@ -27,12 +30,14 @@ export class RequestProduct extends Base {
   @AutoMap()
   isExistProduct?: boolean;
 
-  @ManyToOne(() => TemporaryProduct, 
+  @ManyToOne(
+    () => TemporaryProduct,
     (temporaryProduct) => temporaryProduct.requestProducts,
-    { 
-      cascade: ['update'],
-      nullable: true 
-    })
+    {
+      cascade: ["insert", "update"],
+      nullable: true,
+    }
+  )
   @JoinColumn({ name: "temporary_product_column" })
   temporaryProduct?: TemporaryProduct;
 }

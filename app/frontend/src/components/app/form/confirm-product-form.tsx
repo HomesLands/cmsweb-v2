@@ -32,6 +32,7 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
       type: requisition.type,
       deadlineApproval: requisition.deadlineApproval,
       description: requisition.note || '',
+      departmentSlug: requisition.department.slug,
       requestProducts: requisition.requestProducts.map((product) => ({
         product: product.product.slug,
         requestQuantity: product.requestQuantity,

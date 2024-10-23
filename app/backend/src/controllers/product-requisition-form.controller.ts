@@ -65,6 +65,7 @@ class ProductRequisitionFormController {
    *         - deadlineApproval
    *         - description
    *         - requestProducts
+   *         - departmentSlug
    *       properties:
    *         code:
    *           type: string
@@ -81,6 +82,9 @@ class ProductRequisitionFormController {
    *         description:
    *           type: string
    *           description: The opinion of creator.
+   *         departmentSlug:
+   *           type: string
+   *           description: The slug of department
    *         requestProducts:
    *           type: array
    *           description: List of products being requested.
@@ -92,6 +96,7 @@ class ProductRequisitionFormController {
    *         deadlineApproval: 2024-09-12 20:45:15
    *         type: urgent
    *         description: Ý kiến người tạo
+   *         departmentSlug: bcOJsOG72
    *         requestProducts:
    *           - product: KeYdkmeNg
    *             requestQuantity: 10
@@ -244,7 +249,7 @@ class ProductRequisitionFormController {
       > = {
         code: StatusCodes.OK,
         error: false,
-        message: "Get list productRequisitionForms successfully",
+        message: "Product requisition forms have been retrieved successfully",
         method: req.method,
         path: req.originalUrl,
         result: results,
@@ -383,12 +388,10 @@ class ProductRequisitionFormController {
     try {
       const requestData = req.body as TCreateProductRequisitionFormRequestDto;
       const creatorId = req.userId as string;
-      if (req.ability) {
-        console.log(req.ability);
-      }
+      Object.assign(requestData, { creatorId });
+
       const form =
         await productRequisitionFormService.createProductRequisitionForm(
-          creatorId,
           requestData
         );
 
@@ -400,7 +403,7 @@ class ProductRequisitionFormController {
         path: req.originalUrl,
         result: form,
       };
-      res.status(StatusCodes.OK).json(response);
+      res.status(StatusCodes.CREATED).json(response);
     } catch (error) {
       next(error);
     }
@@ -614,16 +617,16 @@ class ProductRequisitionFormController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const creatorId = req.userId as string;
       const data =
         req.body as TUpdateGeneralInformationProductRequisitionFormRequestDto;
       const slug = req.params.slug;
+      const ability = req.ability;
 
       const result =
         await productRequisitionFormService.updateGeneralInformationForm(
-          creatorId,
           slug,
-          data
+          data,
+          ability
         );
 
       const response: TApiResponse<ProductRequisitionFormResponseDto> = {
