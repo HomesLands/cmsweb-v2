@@ -7,13 +7,12 @@ import {
   productRequisitionFormRepository,
   userRepository,
   productRepository,
-  requestProductRepository,
   userApprovalRepository,
   approvalLogRepository,
   projectRepository,
   assignedUserApprovalRepository,
-  temporaryProductRepository,
   unitRepository,
+  departmentRepository,
 } from "@repositories";
 import {
   TCreateProductRequisitionFormRequestDto,
@@ -51,11 +50,14 @@ import {
   FormApprovalType,
   RoleApproval,
   ApprovalLogStatus,
+  Action,
 } from "@enums";
 import { parsePagination, PermissionUtils } from "@utils";
 import { In } from "typeorm";
 import { StatusCodes } from "http-status-codes";
 import { env } from "@constants";
+import { Ability, MongoQuery } from "@casl/ability";
+import { Subjects } from "@lib/casl";
 
 class ProductRequisitionFormService {
   public async getAllProductRequisitionForms(
@@ -157,7 +159,6 @@ class ProductRequisitionFormService {
   }
 
   public async createProductRequisitionForm(
-    creatorId: string,
     plainData: TCreateProductRequisitionFormRequestDto
   ): Promise<ProductRequisitionFormResponseDto> {
     // Map plain object to request dto
@@ -170,51 +171,51 @@ class ProductRequisitionFormService {
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
 
-    const codeExisted = await productRequisitionFormRepository.existsBy({
+    const existedCode = await productRequisitionFormRepository.existsBy({
       code: requestData.code,
     });
-    if (codeExisted)
+    if (existedCode)
       throw new GlobalError(ErrorCodes.PRODUCT_REQUISITION_FORM_CODE_EXIST);
 
     const creator = await userRepository.findOne({
       where: {
-        id: creatorId,
+        id: requestData.creatorId,
       },
       relations: ["userDepartments", "userDepartments.department.site"],
     });
 
     if (!creator) throw new GlobalError(ErrorCodes.INVALID_CREATOR);
-    if (!creator.userDepartments)
-      throw new GlobalError(ErrorCodes.INVALID_CREATOR);
-    if (!creator.userDepartments[0].department?.site?.id)
-      throw new GlobalError(ErrorCodes.INVALID_CREATOR);
 
-    const assignedUserApproval = await assignedUserApprovalRepository.find({
+    const department = await departmentRepository.findOne({
+      where: { slug: requestData.departmentSlug },
+      relations: ["site"],
+    });
+    if (!department) throw new GlobalError(ErrorCodes.DEPARTMENT_NOT_FOUND);
+
+    const assignedUserApprovals = await assignedUserApprovalRepository.find({
       where: {
         formType: FormApprovalType.PRODUCT_REQUISITION_FORM,
         site: {
-          id: creator.userDepartments[0].department?.site?.id,
+          id: department.site?.id,
         },
       },
       relations: ["user"],
     });
 
-    if (assignedUserApproval.length !== 3)
+    if (assignedUserApprovals.length !== 3)
       throw new GlobalError(ErrorCodes.INVALID_QUANTITY_USER_APPROVAL);
 
-    const userApprovalStageOne = assignedUserApproval.find(
+    const firstStageApprover = assignedUserApprovals.find(
       (item) => item.roleApproval === RoleApproval.APPROVAL_STAGE_1
     );
-    const userApprovalStageTwo = assignedUserApproval.find(
+    const secondStageApprover = assignedUserApprovals.find(
       (item) => item.roleApproval === RoleApproval.APPROVAL_STAGE_2
     );
-    const userApprovalStageThree = assignedUserApproval.find(
+    const thirdStageApprover = assignedUserApprovals.find(
       (item) => item.roleApproval === RoleApproval.APPROVAL_STAGE_3
     );
 
-    if (
-      !(userApprovalStageOne && userApprovalStageTwo && userApprovalStageThree)
-    )
+    if (!(firstStageApprover && secondStageApprover && thirdStageApprover))
       throw new GlobalError(ErrorCodes.MISSING_USER_APPROVAL);
 
     const project = await projectRepository.findOneBy({
@@ -228,80 +229,63 @@ class ProductRequisitionFormService {
       CreateProductRequisitionFormRequestDto,
       ProductRequisitionForm
     );
-    form.status = ProductRequisitionFormStatus.WAITING;
-    form.project = project;
-    form.creator = creator;
-    const createdForm =
-      await productRequisitionFormRepository.createAndSave(form);
+    Object.assign(form, {
+      status: ProductRequisitionFormStatus.WAITING,
+      project,
+      creator,
+    });
 
-    const requestProductList: RequestProduct[] = [];
-    for (let i: number = 0; i < requestData.requestProducts.length; i++) {
-      const product = await productRepository.findOneBy({
-        slug: requestData.requestProducts[i].product,
-      });
-
-      if (product) {
-        const requestProductMapped = mapper.map(
-          requestData.requestProducts[i],
-          CreateRequestProductRequestDto,
-          RequestProduct
-        );
-        requestProductMapped.product = product;
-        requestProductMapped.productRequisitionForm = createdForm;
-
-        const createdRequestProduct =
-          await requestProductRepository.createAndSave(requestProductMapped);
-        requestProductList.push(createdRequestProduct);
-      } else {
-        // product not exist
-        const requestProductData = requestData.requestProducts[i];
-        const unit = await unitRepository.findOneBy({
-          slug: requestProductData.unit,
-        });
-        // note: có nên check trước khi tạo???
+    // Map request products
+    const requestProducts = await Promise.all(
+      requestData.requestProducts.map(async (item) => {
+        const unit = await unitRepository.findOneBy({ slug: item.unit });
         if (!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
 
-        const temporaryRequestProductData = mapper.map(
-          requestProductData,
-          CreateTemporaryProductRequestDto,
-          TemporaryProduct
-        );
-        temporaryRequestProductData.unit = unit;
-        const temporaryProduct = await temporaryProductRepository.createAndSave(
-          temporaryRequestProductData
-        );
-        const requestProductMapped = mapper.map(
-          requestData.requestProducts[0],
+        const product = await productRepository.findOneBy({
+          slug: item.product,
+        });
+
+        if (!product) {
+          const temporaryProduct = mapper.map(
+            item,
+            CreateTemporaryProductRequestDto,
+            TemporaryProduct
+          );
+          Object.assign(temporaryProduct, { unit });
+          const requestProduct = mapper.map(
+            item,
+            CreateRequestProductRequestDto,
+            RequestProduct
+          );
+          Object.assign(requestProduct, {
+            temporaryProduct,
+            isExistProduct: false,
+          });
+          return requestProduct;
+        }
+        const requestProduct = mapper.map(
+          item,
           CreateRequestProductRequestDto,
           RequestProduct
         );
-        requestProductMapped.temporaryProduct = temporaryProduct;
-        requestProductMapped.productRequisitionForm = createdForm;
-        requestProductMapped.isExistProduct = false;
-        const createdRequestProduct =
-          await requestProductRepository.createAndSave(requestProductMapped);
-        requestProductList.push(createdRequestProduct);
-      }
-    }
+        Object.assign(requestProduct, { product });
+        return requestProduct;
+      })
+    );
 
-    const userApprovalList: UserApproval[] = [];
-    for (let i: number = 0; i < assignedUserApproval.length; i++) {
-      const userApproval = new UserApproval();
-      userApproval.assignedUserApproval = assignedUserApproval[i];
-      userApproval.productRequisitionForm = form;
+    // Map user approvals
+    const userApprovals = assignedUserApprovals.map((item) => {
+      return {
+        assignedUserApproval: item,
+      } as UserApproval;
+    });
 
-      const createdUserApproval =
-        await userApprovalRepository.createAndSave(userApproval);
-      userApprovalList.push(createdUserApproval);
-    }
+    Object.assign(form, { requestProducts, userApprovals });
 
-    createdForm.userApprovals = userApprovalList;
-    createdForm.requestProducts = requestProductList;
-    const updatedForm =
-      await productRequisitionFormRepository.save(createdForm);
+    const created = await productRequisitionFormRepository.createAndSave(form);
 
     const formDto = mapper.map(
-      updatedForm,
+      created,
       ProductRequisitionForm,
       ProductRequisitionFormResponseDto
     );
@@ -574,7 +558,8 @@ class ProductRequisitionFormService {
   public async updateGeneralInformationForm(
     creatorId: string,
     slug: string,
-    plainData: TUpdateGeneralInformationProductRequisitionFormRequestDto
+    plainData: TUpdateGeneralInformationProductRequisitionFormRequestDto,
+    ability?: Ability<[Action, Subjects], MongoQuery>
   ): Promise<ProductRequisitionFormResponseDto> {
     const requestData = plainToClass(
       UpdateGeneralInformationProductRequisitionFormRequestDto,
@@ -591,13 +576,8 @@ class ProductRequisitionFormService {
     });
     if (!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
-    if (form.creator) {
-      if (form.creator?.id !== creatorId)
-        throw new GlobalError(StatusCodes.FORBIDDEN);
-    } else {
-      // creator not found
+    if (!ability?.can(Action.UPDATE, form))
       throw new GlobalError(StatusCodes.FORBIDDEN);
-    }
 
     const isPermitEdit: boolean =
       PermissionUtils.isPermitEditProductRequisitionForm(
