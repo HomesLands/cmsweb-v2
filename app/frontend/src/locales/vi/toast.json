@@ -40,9 +40,20 @@
     "invalidUserDepartmentExisted": "Người dùng đã tồn tại trong phòng ban",
 
     "createCompanySuccessfully": "Công ty được tạo thành công",
+    "updateCompanySuccess": "Thông tin công ty được cập nhật thành công",
+    "deleteCompanySuccess": "Công ty được xóa thành công",
+
     "createSiteSuccessfully": "Địa điểm được tạo thành công",
+    "updateSiteSuccess": "Địa điểm được cập nhật thành công",
+    "deleteSiteSuccess": "Địa điểm được xóa thành công",
+
     "createDepartmentSuccessfully": "Phòng ban được tạo thành công",
+    "updateDepartmentSuccess": "Phòng ban được cập nhật thành công",
+    "deleteDepartmentSuccess": "Phòng ban được xóa thành công",
+
     "createProjectSuccessfully": "Dự án được tạo thành công",
+    "updateProjectSuccess": "Dự án được cập nhật thành công",
+    "deleteProjectSuccess": "Dự án được xóa thành công",
 
     "addRoleSuccess": "Chức vụ được thêm thành công",
     "addDepartmentSuccess": "Phòng ban được thêm thành công",
@@ -61,6 +72,9 @@
 
     "updateCompanyLogoSuccess": "Logo công ty được cập nhật thành công",
 
-    "assignedUserApprovalExisted": "Người dùng đã được phân công duyệt"
+    "assignedUserApprovalExisted": "Người dùng đã được phân công duyệt",
+
+    "updateUserDepartmentSuccess": "Phòng ban của người dùng được cập nhật thành công",
+    "deleteUserDepartmentSuccess": "Phòng ban của người dùng được xóa thành công"
   }
 }

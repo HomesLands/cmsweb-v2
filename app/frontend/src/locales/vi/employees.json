@@ -20,6 +20,19 @@
     "selectDepartment": "Chọn phòng ban",
     "userRoles": "Chức vụ",
     "userDepartments": "Phòng ban",
+
+    "updateDepartment": "Cập nhật phòng ban",
+    "updateDepartmentDescription": "Nhập đầy đủ thông tin bên dưới để cập nhật phòng ban cho nhân viên",
+    "update": "Cập nhật",
+
+    "deleteUserDepartment": "Xóa phòng ban",
+    "deleteUserDepartmentDescription": "Lưu ý: Hành động này không thể hoàn tác!",
+    "deleteUserDepartmentWarning1": "Bạn sắp sửa xóa phòng ban ",
+    "deleteUserDepartmentWarning2": " của nhân viên",
+    "deleteUserDepartmentConfirmation": "Bạn chắc chắn muốn xóa?",
+    "cancel": "Hủy",
+    "confirmDelete": "Tôi đã hiểu, xác nhận xóa",
+
     "createUser": "Tạo nhân sự",
     "username": "Tên đăng nhập",
     "password": "Mật khẩu",

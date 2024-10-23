@@ -18,3 +18,8 @@ export interface ICreateDepartment {
   site: string //site slug
   siteName: string
 }
+
+export interface IUpdateDepartment {
+  slug: string //the slug of user department
+  department: string //department slug
+}

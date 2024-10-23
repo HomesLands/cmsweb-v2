@@ -1,4 +1,4 @@
-import { IApiResponse, ICompany, ICreateCompany } from '@/types'
+import { IApiResponse, ICompany, ICreateCompany, IUpdateCompany } from '@/types'
 import { http } from '@/utils'
 
 export async function getCompanies() {
@@ -18,5 +18,10 @@ export async function uploadCompanyLogo(requestData: { slug: string; file: File 
     `/companies/upload/${requestData.slug}`,
     formData
   )
+  return response.data
+}
+
+export async function updateCompany(data: IUpdateCompany) {
+  const response = await http.patch<IApiResponse<ICompany>>(`/companies/${data.slug}`, data)
   return response.data
 }

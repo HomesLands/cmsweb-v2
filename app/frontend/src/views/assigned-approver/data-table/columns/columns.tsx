@@ -64,7 +64,7 @@ export const useAssignedApproverColumns = (): ColumnDef<IAuthority>[] => {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DialogUpdateAuthority authority={authority} />
+                {/* <DialogUpdateAuthority authority={authority} /> */}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

@@ -23,6 +23,15 @@
     "updateLogoDescription": "Cập nhật logo cho công ty",
     "currentLogo": "Logo hiện tại",
     "changeLogo": "Thay đổi logo",
-    "addLogo": "Thêm logo"
+    "addLogo": "Thêm logo",
+
+    "updateCompany": "Cập nhật công ty",
+    "updateCompanyDescription": "Thay đổi các thông tin bên dưới để cập nhật tên công ty",
+    "update": "Cập nhật",
+
+    "deleteCompany": "Xóa công ty",
+    "deleteCompanyDescription": "Bạn có chắc muốn xóa công ty này?",
+    "confirmDeleteCompany": "Tôi đã hiểu, xóa công ty",
+    "cancelDeleteCompany": "Hủy"
   }
 }

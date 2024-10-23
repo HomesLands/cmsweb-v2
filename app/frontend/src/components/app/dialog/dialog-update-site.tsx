@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { SquarePen } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -11,24 +13,22 @@ import {
   ScrollArea
 } from '@/components/ui'
 
-import { ICompany, IUpdateCompany } from '@/types'
-import { useUpdateCompany } from '@/hooks'
-import { useState } from 'react'
-import { SquarePen } from 'lucide-react'
-import { UpdateCompanyForm } from '@/components/app/form'
+import { UpdateSiteForm } from '@/components/app/form'
+import { ISite, IUpdateSite } from '@/types'
+import { useUpdateSite } from '@/hooks'
 import { showToast } from '@/utils'
 
-export default function DialogUpdateCompany({ company }: { company: ICompany }) {
-  const { t } = useTranslation('companies')
+export default function DialogUpdateSite({ site }: { site: ISite }) {
+  const { t } = useTranslation('sites')
   const { t: tToast } = useTranslation('toast')
-  const { mutate: updateCompany } = useUpdateCompany()
   const [isOpen, setIsOpen] = useState(false)
+  const { mutate: updateSite } = useUpdateSite()
 
-  const handleSubmit = (data: IUpdateCompany) => {
+  const handleSubmit = (values: IUpdateSite) => {
     setIsOpen(false)
-    updateCompany(data, {
+    updateSite(values, {
       onSuccess: () => {
-        showToast(tToast('toast.updateCompanySuccess'))
+        showToast(tToast('toast.updateSiteSuccess'))
       }
     })
   }
@@ -38,17 +38,17 @@ export default function DialogUpdateCompany({ company }: { company: ICompany }) 
       <DialogTrigger asChild className="flex justify-start w-full">
         <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
           <SquarePen className="icon" />
-          {t('companies.updateCompany')}
+          {t('sites.updateSite')}
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-[64rem] p-0">
+      <DialogContent className="max-w-[22rem] rounded-md sm:max-w-[64rem] p-0">
         <ScrollArea className="max-h-[80vh]">
           <div className="p-6">
             <DialogHeader>
-              <DialogTitle>{t('companies.updateCompany')}</DialogTitle>
-              <DialogDescription>{t('companies.updateCompanyDescription')}</DialogDescription>
+              <DialogTitle>{t('sites.updateSite')}</DialogTitle>
+              <DialogDescription>{t('sites.updateSiteDescription')}</DialogDescription>
             </DialogHeader>
-            <UpdateCompanyForm onSubmit={handleSubmit} company={company} />
+            <UpdateSiteForm onSubmit={handleSubmit} data={site} />
           </div>
         </ScrollArea>
       </DialogContent>
