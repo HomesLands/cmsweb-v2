@@ -45,10 +45,6 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
   const [date, setDate] = useState<Date | undefined>(
     requisition?.deadlineApproval ? new Date(requisition.deadlineApproval) : undefined
   )
-  const [company, setCompany] = useState<string>(
-    userInfo?.userDepartments[0]?.department.site.company.name || ''
-  )
-  const [site, setSite] = useState<string>(userInfo?.userDepartments[0]?.department.site.name || '')
 
   const validateDate = (selectedDate: Date | undefined) => {
     if (!selectedDate) return false
@@ -65,17 +61,17 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
         ? format(new Date(requisition.deadlineApproval), 'yyyy-MM-dd HH:mm:ss')
         : undefined,
       company: {
-        slug: userInfo?.userDepartments[0].department.site.company.slug || '',
-        name: userInfo?.userDepartments[0].department.site.company.name || '',
-        logo: userInfo?.userDepartments[0].department.site.company.logo || ''
+        slug: userInfo?.userDepartments[0]?.department?.site?.company?.slug || '',
+        name: userInfo?.userDepartments[0]?.department?.site?.company?.name || '',
+        logo: userInfo?.userDepartments[0]?.department?.site?.company?.logo || ''
       },
       department: {
-        slug: userInfo?.userDepartments[0].department.slug || '',
-        name: userInfo?.userDepartments[0].department.description || ''
+        slug: userInfo?.userDepartments[0]?.department?.slug || '',
+        name: userInfo?.userDepartments[0]?.department?.description || ''
       },
       site: {
-        slug: userInfo?.userDepartments[0].department.site.slug || '',
-        name: userInfo?.userDepartments[0].department.site.name || ''
+        slug: userInfo?.userDepartments[0]?.department?.site?.slug || '',
+        name: userInfo?.userDepartments[0]?.department?.site?.name || ''
       },
       type: 'normal',
       requestProducts: [],
@@ -87,21 +83,12 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
     }
   })
 
-  useEffect(() => {
-    if (userInfo && userInfo.userDepartments.length > 0) {
-      const department = userInfo.userDepartments[0].department
-      setCompany(department.site.company.name)
-      setSite(department.site.name)
-    }
-  }, [userInfo])
   const handleDepartmentChange = (slug: string, name: string) => {
     const selectedDepartment = userInfo?.userDepartments.find(
-      (item) => item.department.slug === slug
+      (item) => item.department?.slug === slug
     )
-    if (selectedDepartment) {
+    if (selectedDepartment?.department) {
       const { site } = selectedDepartment.department
-      setCompany(site.company.name)
-      setSite(site.name)
       form.setValue('department', { slug, name }) // Cập nhật department trong form
       form.setValue('company', {
         slug: site.company.slug,
@@ -249,26 +236,6 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
         )}
       />
     ),
-    department: (
-      <FormField
-        control={form.control}
-        name="department"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{t('productRequisition.departmentName')}</FormLabel>
-            <FormControl>
-              <SelectDepartmentRequisition
-                defaultValue={userInfo?.userDepartments[0]?.department.slug}
-                department={{ userDepartments: userInfo?.userDepartments || [] }}
-                onChange={handleDepartmentChange} // Use the new handler
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    ),
-
     site: (
       <FormField
         control={form.control}
@@ -278,6 +245,25 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
             <FormLabel>{t('productRequisition.constructionSite')}</FormLabel>
             <FormControl>
               <Input readOnly {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    department: (
+      <FormField
+        control={form.control}
+        name="department"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('productRequisition.departmentName')}</FormLabel>
+            <FormControl>
+              <SelectDepartmentRequisition
+                defaultValue={userInfo?.userDepartments[0]?.department?.slug}
+                department={{ userDepartments: userInfo?.userDepartments || [] }}
+                onChange={handleDepartmentChange} // Use the new handler
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

@@ -9,18 +9,13 @@ export type TCreateProductRequisitionFormRequestDto = {
   type?: string; //normal, urgent
   deadlineApproval?: string;
   description?: string;
-  // requestProducts: {
-  //   product?: string;
-  //   requestQuantity?: number;
-  // }[];
   requestProducts: TCreateRequestProductRequestDto[];
+  creatorId?: string;
+  departmentSlug?: string;
 };
 
 export type TApprovalProductRequisitionFormRequestDto = {
   formSlug?: string;
-  // approvalUserSlug?: string;
-  // approvalLogStatus?: string;
-  // approvalLogContent?: string;
   approvalLog?: TCreateApprovalLogRequestDto;
 };
 

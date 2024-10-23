@@ -12,34 +12,31 @@ import {
 } from '@/components/ui'
 import { TCreateUserDepartmentSchema } from '@/schemas'
 import { AddEmployeeDepartmentForm } from '@/components/app/form'
-import { IApiResponse, ICreateUserDepartment, IUserInfo } from '@/types'
-import { showErrorToast, showToast } from '@/utils'
+import { ICreateUserDepartment, IUserInfo } from '@/types'
+import { showToast } from '@/utils'
 import { useCreateUserDepartment } from '@/hooks'
-import { CirclePlus, SquarePen } from 'lucide-react'
-import { isAxiosError } from 'axios'
-import { AxiosError } from 'axios'
+import { CirclePlus } from 'lucide-react'
+import { useQueryClient } from '@tanstack/react-query'
 
 export function DialogAddUserDepartment({ user }: { user: IUserInfo | null }) {
   const { t } = useTranslation('employees')
   const { t: tToast } = useTranslation('toast')
   const [isOpen, setIsOpen] = useState(false)
+  const queryClient = useQueryClient()
 
   const { mutate: createUserDepartment } = useCreateUserDepartment()
   const handleSubmit = (values: TCreateUserDepartmentSchema) => {
-    setIsOpen(false)
     const requestData = {
       department: values.department.value,
       user: values.user.value
     } as ICreateUserDepartment
     createUserDepartment(requestData, {
       onSuccess: () => {
+        setIsOpen(false)
         showToast(tToast('toast.addDepartmentSuccess'))
-      },
-      onError: (error) => {
-        if (isAxiosError(error)) {
-          const axiosError = error as AxiosError<IApiResponse<void>>
-          if (axiosError.response?.data.code) showErrorToast(axiosError.response.data.code)
-        }
+        queryClient.invalidateQueries({
+          queryKey: ['users']
+        })
       }
     })
   }

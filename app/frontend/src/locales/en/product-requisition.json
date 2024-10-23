@@ -1,5 +1,6 @@
 {
   "productRequisition": {
+    "selectDepartment": "Select department",
     "list": "List of product requisition approvals",
     "listDescription": "List of product requisition approvals",
     "listEmployee": "List of created product requisitions",

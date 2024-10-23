@@ -5,15 +5,13 @@ import {
   ArrayNotEmpty,
   IsEnum,
   IsOptional,
-} from 'class-validator';
-import { Expose, Type } from 'class-transformer';
-import { AutoMap } from '@automapper/classes';
-import {
-  ProductRequisitionFormType,
-} from "@enums";
+} from "class-validator";
+import { Expose, Type } from "class-transformer";
+import { AutoMap } from "@automapper/classes";
+import { ProductRequisitionFormType } from "@enums";
 import {
   CreateRequestProductRequestDto,
-  CreateApprovalLogRequestDto
+  CreateApprovalLogRequestDto,
 } from "@dto/request";
 import { IsDateStringWithMessage } from "decorator";
 
@@ -52,6 +50,13 @@ export class CreateProductRequisitionFormRequestDto {
   @Type(() => CreateRequestProductRequestDto)
   @Expose()
   requestProducts: CreateRequestProductRequestDto[];
+
+  @Expose()
+  creatorId?: string;
+
+  @IsNotEmpty({ message: "INVALID_DEPARTMENT_SLUG" })
+  @Expose()
+  departmentSlug?: string;
 }
 
 export class ApprovalProductRequisitionFormRequestDto {
@@ -62,20 +67,9 @@ export class ApprovalProductRequisitionFormRequestDto {
 
   @AutoMap()
   @Expose()
-  @ValidateNested() 
-  @Type(() => CreateApprovalLogRequestDto) 
+  @ValidateNested()
+  @Type(() => CreateApprovalLogRequestDto)
   approvalLog?: CreateApprovalLogRequestDto;
-
-  // @IsNotEmpty({ message: "INVALID_APPROVAL_STATUS" })
-  // @IsEnum(ApprovalLogStatus, { message: "INVALID_APPROVAL_STATUS" })
-  // @Expose()
-  // @AutoMap()
-  // approvalLogStatus?: string;
-
-  // @IsNotEmpty({ message: "INVALID_CONTENT_APPROVAL_LOG" })
-  // @Expose()
-  // @AutoMap()
-  // approvalLogContent?: string;
 }
 
 export class ResubmitProductRequisitionFormRequestDto {
