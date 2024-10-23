@@ -7,8 +7,10 @@ import {
   TCreatePermissionRequestDto,
   TPaginationOptionResponse,
   TQueryRequest,
+  TUpdatePermissionRequestDto,
 } from "@types";
 import { PermissionResponseDto } from "@dto/response";
+import { UpdatePermissionRequestDto } from "@dto/request";
 
 class PermissionController {
   /**
@@ -16,6 +18,27 @@ class PermissionController {
    * components:
    *   schemas:
    *     CreatePermissionRequestDto:
+   *       type: object
+   *       required:
+   *         - resourceSlug
+   *         - authoritySlug
+   *         - requiredOwner
+   *       properties:
+   *         resourceSlug:
+   *           type: string
+   *           description: Resource slug
+   *         authoritySlug:
+   *           type: string
+   *           description: Authority code
+   *         requiredOwner:
+   *           type: boolean
+   *           description: Required owner
+   *       example:
+   *         resourceSlug: V56Ck_iUuV
+   *         authoritySlug: G4_uaU14OY
+   *         requiredOwner: false
+   *
+   *     UpdatePermissionRequestDto:
    *       type: object
    *       required:
    *         - resourceSlug
@@ -186,6 +209,104 @@ class PermissionController {
       };
 
       res.status(StatusCodes.CREATED).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /permissions/{slug}:
+   *   patch:
+   *     summary: Update permission
+   *     tags: [Permission]
+   *     parameters:
+   *       - name: slug
+   *         in: path
+   *         required: true
+   *         type: string
+   *         description: Permission slug
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/UpdatePermissionRequestDto'
+   *     responses:
+   *       200:
+   *         description: Permission update successfully.
+   *       500:
+   *         description: Server error
+   *       1070:
+   *         description: Permission could not be found
+   *
+   */
+  public async updatePermission(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const slug = req.params.slug as string;
+      const requestData = req.body as TUpdatePermissionRequestDto;
+      Object.assign(requestData, { slug });
+
+      const result = await permissionService.updatePermission(requestData);
+      const response: TApiResponse<UpdatePermissionRequestDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "The permission updated successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result,
+      };
+
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /permissions/{slug}:
+   *   delete:
+   *     summary: Delete permission
+   *     tags: [Permission]
+   *     parameters:
+   *       - in: path
+   *         name: slug
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: The slug of permission
+   *         example: slug-123
+   *     responses:
+   *       200:
+   *         description: Permission deleted successfully.
+   *       500:
+   *         description: Server error
+   *       1070:
+   *         description: Permission not found
+   *
+   */
+  public async deletePermission(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { slug } = req.params;
+      const result = await permissionService.deletePermission(slug);
+      const response: TApiResponse<string> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: `Permission has been deleted successfully`,
+        method: req.method,
+        path: req.originalUrl,
+        result: `${result} rows effected`,
+      };
+      res.status(StatusCodes.OK).json(response);
     } catch (error) {
       next(error);
     }

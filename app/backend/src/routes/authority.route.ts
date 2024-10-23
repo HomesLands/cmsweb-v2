@@ -4,13 +4,16 @@ import { Router } from "express";
 export const authorityRoute: Router = Router();
 
 // [GET] /api/v1/authorities
-authorityRoute.route("/").get(authorityController.getAllAuthorities);
+authorityRoute.get("/", authorityController.getAllAuthorities);
 
 // [POST] /api/v1/authorities
-authorityRoute.route("/").post(authorityController.createAuthority);
+authorityRoute.post("/", authorityController.createAuthority);
 
 // [GET] /api/v1/authorities/{slug}
-authorityRoute.route("/:slug").get(authorityController.getAuthorityBySlug);
+authorityRoute.get("/:slug", authorityController.getAuthorityBySlug);
 
 // [PATCH] /api/v1/authorities/{slug}
-authorityRoute.route("/:slug").patch(authorityController.updateAuthority);
+authorityRoute.patch("/:slug", authorityController.updateAuthority);
+
+// [DELETE] /api/v1/authorities/{slug}
+authorityRoute.delete("/:slug", authorityController.deleteAuthority);

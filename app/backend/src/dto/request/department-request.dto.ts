@@ -11,13 +11,17 @@ export class CreateDepartmentRequestDto {
   @AutoMap()
   nameNormalize?: string;
 
-  @IsNotEmpty({ message: "INVALID_DESCRIPTION_DEPARTMENT"})
+  @IsNotEmpty({ message: "INVALID_DESCRIPTION_DEPARTMENT" })
   @Expose()
   @AutoMap()
   description?: string;
 
-  @IsNotEmpty({ message: "INVALID_SITE_SLUG"})
+  @IsNotEmpty({ message: "INVALID_SITE_SLUG" })
   @Expose()
   @AutoMap()
   site?: string;
+}
+
+export class UpdateDepartmentRequestDto extends CreateDepartmentRequestDto {
+  slug?: string;
 }

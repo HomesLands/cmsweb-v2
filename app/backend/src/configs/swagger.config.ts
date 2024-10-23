@@ -22,7 +22,7 @@ export const registerSwagger = (app: Application) => {
       openapi: "3.0.0",
       info: {
         title: "CMS API Documentation",
-        version: "1.0.0",
+        version: env.tag,
         description:
           "CMSWeb for Warehouse Management System is a comprehensive, web-based content management solution designed specifically to optimize warehouse operations. It streamlines the management of inventory, order processing, and real-time data tracking, providing users with an intuitive interface for efficient workflow control.",
       },
