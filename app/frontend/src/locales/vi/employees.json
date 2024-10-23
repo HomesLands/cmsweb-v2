@@ -33,6 +33,11 @@
     "cancel": "Hủy",
     "confirmDelete": "Tôi đã hiểu, xác nhận xóa",
 
+    "deleteUserRole": "Xóa chức vụ",
+    "deleteUserRoleDescription": "Lưu ý: Hành động này không thể hoàn tác!",
+    "deleteUserRoleWarning1": "Bạn sắp sửa xóa chức vụ của nhân viên",
+    "deleteUserRoleConfirmation": "Vui lòng chọn chức vụ muốn xóa (chỉ chọn một chức vụ)",
+
     "createUser": "Tạo nhân sự",
     "username": "Tên đăng nhập",
     "password": "Mật khẩu",

@@ -20,6 +20,10 @@
     "confirm": "Xác nhận",
 
     "slug": "Mã dự án",
-    "nameNormalize": "Tên dự án"
+    "nameNormalize": "Tên dự án",
+
+    "updateProject": "Cập nhật dự án",
+    "updateProjectDescription": "Nhập đầy đủ thông tin vào các trường để cập nhật dự án",
+    "update": "Cập nhật"
   }
 }

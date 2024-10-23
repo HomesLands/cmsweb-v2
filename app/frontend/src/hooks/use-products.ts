@@ -5,6 +5,7 @@ import {
   approveProductRequisition,
   createProduct,
   createProductRequisition,
+  deleteProduct,
   deleteProductRequisition,
   exportExcelProductRequisition,
   exportPDFProductRequisition,
@@ -26,7 +27,6 @@ import {
   IApproveProductRequisition,
   IExportProductRequisitionFormRequest,
   IFinalProductRequisition,
-  IProductInfoCreate,
   IProductInfoUpdate,
   IProductQuery,
   IResubmitProductRequisition,
@@ -47,6 +47,16 @@ export const useProducts = (q: IProductQuery) => {
 export const useCreateProduct = () => {
   return useMutation({
     mutationFn: (data: IApiProductInfoCreate) => createProduct(data)
+  })
+}
+
+export const useDeleteProduct = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (slug: string) => deleteProduct(slug),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] })
+    }
   })
 }
 

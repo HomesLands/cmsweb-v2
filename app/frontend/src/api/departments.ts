@@ -12,7 +12,7 @@ export async function createDepartment(data: ICreateDepartment) {
 }
 
 export async function updateDepartment(data: IUpdateDepartment) {
-  const response = await http.put<IApiResponse<IDepartment>>(`/departments/${data.slug}`, data)
+  const response = await http.patch<IApiResponse<IDepartment>>(`/departments/${data.slug}`, data)
   return response.data
 }
 

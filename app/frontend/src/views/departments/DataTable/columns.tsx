@@ -7,11 +7,12 @@ import {
   DataTableColumnHeader,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui'
 import { IDepartment } from '@/types'
+import { DialogDeleteDepartment, DialogUpdateDepartment } from '@/components/app/dialog'
 
 export const useDepartmentColumns = (): ColumnDef<IDepartment>[] => {
   const { t } = useTranslation(['department'])
@@ -40,7 +41,7 @@ export const useDepartmentColumns = (): ColumnDef<IDepartment>[] => {
       id: 'actions',
       header: 'Thao tác',
       cell: ({ row }) => {
-        const company = row.original
+        const department = row.original
         return (
           <div>
             <DropdownMenu>
@@ -52,8 +53,9 @@ export const useDepartmentColumns = (): ColumnDef<IDepartment>[] => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                <DropdownMenuItem>Chỉnh sửa</DropdownMenuItem>
-                <DropdownMenuItem>Xóa</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DialogUpdateDepartment department={department} />
+                <DialogDeleteDepartment department={department} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

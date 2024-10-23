@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { createDepartment, deleteDepartment, getDepartments } from '@/api'
-import { ICreateDepartment } from '@/types'
+import { createDepartment, deleteDepartment, getDepartments, updateDepartment } from '@/api'
+import { ICreateDepartment, IUpdateDepartment } from '@/types'
 
 export const useDepartments = () => {
   return useQuery({
@@ -17,7 +17,7 @@ export const useCreateDepartment = () => {
 export const useUpdateDepartment = () => {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (data: ICreateDepartment) => createDepartment(data),
+    mutationFn: (data: IUpdateDepartment) => updateDepartment(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['departments'] })
     }

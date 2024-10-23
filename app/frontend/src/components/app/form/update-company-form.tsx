@@ -22,7 +22,7 @@ interface IFormEditProductProps {
   onSubmit: (data: IUpdateCompany) => void
 }
 
-export const UpdateCompanyForm: React.FC<IFormEditProductProps> = ({ company, onSubmit }) => {
+const UpdateCompanyForm: React.FC<IFormEditProductProps> = ({ company, onSubmit }) => {
   const { t } = useTranslation('companies')
 
   const form = useForm<TUpdateCompanySchema>({
@@ -87,3 +87,5 @@ export const UpdateCompanyForm: React.FC<IFormEditProductProps> = ({ company, on
     </div>
   )
 }
+
+export default UpdateCompanyForm

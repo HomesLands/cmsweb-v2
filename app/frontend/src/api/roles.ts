@@ -17,3 +17,8 @@ export async function updateRole(values: IUpdateRole): Promise<IApiResponse<IRol
   const response = await http.patch<IApiResponse<IRole>>(`/roles/${values.slug}`, values)
   return response.data
 }
+
+export async function deleteRole(slug: string): Promise<IApiResponse<IRole>> {
+  const response = await http.delete<IApiResponse<IRole>>(`/roles/${slug}`)
+  return response.data
+}

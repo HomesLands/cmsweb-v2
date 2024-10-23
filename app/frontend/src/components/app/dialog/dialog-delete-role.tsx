@@ -11,27 +11,23 @@ import {
   DialogTrigger
 } from '@/components/ui'
 
-import { IUserInfo } from '@/types'
+import { IProductInfo, IRole } from '@/types'
 import { useTranslation } from 'react-i18next'
-import React, { useState } from 'react'
-import { useDeleteUserDepartment } from '@/hooks'
+import { useState } from 'react'
+import { useDeleteProduct, useDeleteRole } from '@/hooks'
 import { showToast } from '@/utils'
 
-interface IFormDeleteUserDepartmentProps {
-  user: IUserInfo | null
-}
-
-const DialogDeleteUserDepartment: React.FC<IFormDeleteUserDepartmentProps> = ({ user }) => {
-  const { t } = useTranslation('employees')
+export default function DialogDeleteRole({ role }: { role: IRole }) {
+  const { t } = useTranslation('roles')
   const { t: tToast } = useTranslation('toast')
-  const { mutate: deleteUserDepartment } = useDeleteUserDepartment()
+  const { mutate: deleteRole } = useDeleteRole()
   const [isOpen, setIsOpen] = useState(false)
 
-  const handleSubmit = (userDepartmentSlug: string) => {
+  const handleSubmit = (roleSlug: string) => {
     setIsOpen(false)
-    deleteUserDepartment(userDepartmentSlug, {
+    deleteRole(roleSlug, {
       onSuccess: () => {
-        showToast(tToast('toast.deleteUserDepartmentSuccess'))
+        showToast(tToast('toast.deleteRoleSuccess'))
       }
     })
   }
@@ -42,7 +38,7 @@ const DialogDeleteUserDepartment: React.FC<IFormDeleteUserDepartmentProps> = ({ 
         <DialogTrigger asChild>
           <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
             <Trash2 className="icon" />
-            {t('employees.deleteUserDepartment')}
+            {t('roles.delete')}
           </Button>
         </DialogTrigger>
       </DialogTrigger>
@@ -52,36 +48,28 @@ const DialogDeleteUserDepartment: React.FC<IFormDeleteUserDepartmentProps> = ({ 
           <DialogTitle className="pb-4 border-b border-destructive text-destructive">
             <div className="flex items-center gap-2">
               <TriangleAlert className="w-6 h-6" />
-              {t('employees.deleteUserDepartment')}
+              {t('roles.delete')}
             </div>
           </DialogTitle>
           <DialogDescription className="p-2 bg-red-100 rounded-md text-destructive">
-            {t('employees.deleteUserDepartmentDescription')}
+            {t('roles.deleteRoleDescription')}
           </DialogDescription>
 
           <div className="py-4 text-sm text-gray-500">
-            {t('employees.deleteUserDepartmentWarning1')}{' '}
-            <span className="font-bold">{user?.userDepartments[0].department.description}</span>
-            {t('employees.deleteUserDepartmentWarning2')}{' '}
-            <span className="font-bold">{user?.fullname}</span>.
+            {t('roles.deleteRoleWarning')} <span className="font-bold">{role.description}</span> .
             <br />
-            {t('employees.deleteUserDepartmentConfirmation')}
+            {t('roles.deleteRoleConfirmation')}
           </div>
         </DialogHeader>
         <DialogFooter className="flex flex-row justify-center gap-2">
           <Button variant="outline" onClick={() => setIsOpen(false)}>
-            {t('employees.cancel')}
+            {t('roles.cancel')}
           </Button>
-          <Button
-            variant="destructive"
-            onClick={() => user && handleSubmit(user.userDepartments[0].slug || '')}
-          >
-            {t('employees.confirmDelete')}
+          <Button variant="destructive" onClick={() => role && handleSubmit(role.slug || '')}>
+            {t('roles.confirmDelete')}
           </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   )
 }
-
-export default DialogDeleteUserDepartment

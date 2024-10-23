@@ -11,3 +11,10 @@ export interface ICreatePermission {
   authoritySlug: string
   requiredOwner: boolean
 }
+
+export interface IUpdatePermission {
+  slug: string
+  resourceSlug: string
+  authoritySlug: string
+  requiredOwner: boolean
+}

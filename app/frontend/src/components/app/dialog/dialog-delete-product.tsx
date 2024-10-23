@@ -11,27 +11,24 @@ import {
   DialogTrigger
 } from '@/components/ui'
 
-import { IUserInfo } from '@/types'
+import { IProductInfo } from '@/types'
 import { useTranslation } from 'react-i18next'
-import React, { useState } from 'react'
-import { useDeleteUserDepartment } from '@/hooks'
+import { useState } from 'react'
+import { useDeleteProduct } from '@/hooks'
 import { showToast } from '@/utils'
 
-interface IFormDeleteUserDepartmentProps {
-  user: IUserInfo | null
-}
-
-const DialogDeleteUserDepartment: React.FC<IFormDeleteUserDepartmentProps> = ({ user }) => {
-  const { t } = useTranslation('employees')
+export default function DialogDeleteProduct({ product }: { product: IProductInfo }) {
+  const { t } = useTranslation('products')
   const { t: tToast } = useTranslation('toast')
-  const { mutate: deleteUserDepartment } = useDeleteUserDepartment()
+  const { mutate: deleteProduct } = useDeleteProduct()
   const [isOpen, setIsOpen] = useState(false)
 
-  const handleSubmit = (userDepartmentSlug: string) => {
+  const handleSubmit = (productSlug: string) => {
     setIsOpen(false)
-    deleteUserDepartment(userDepartmentSlug, {
+    // showToast(tToast('toast.deleteProductSuccess'))
+    deleteProduct(productSlug, {
       onSuccess: () => {
-        showToast(tToast('toast.deleteUserDepartmentSuccess'))
+        showToast(tToast('toast.deleteProductSuccess'))
       }
     })
   }
@@ -42,7 +39,7 @@ const DialogDeleteUserDepartment: React.FC<IFormDeleteUserDepartmentProps> = ({ 
         <DialogTrigger asChild>
           <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
             <Trash2 className="icon" />
-            {t('employees.deleteUserDepartment')}
+            {t('products.delete')}
           </Button>
         </DialogTrigger>
       </DialogTrigger>
@@ -52,36 +49,28 @@ const DialogDeleteUserDepartment: React.FC<IFormDeleteUserDepartmentProps> = ({ 
           <DialogTitle className="pb-4 border-b border-destructive text-destructive">
             <div className="flex items-center gap-2">
               <TriangleAlert className="w-6 h-6" />
-              {t('employees.deleteUserDepartment')}
+              {t('products.delete')}
             </div>
           </DialogTitle>
           <DialogDescription className="p-2 bg-red-100 rounded-md text-destructive">
-            {t('employees.deleteUserDepartmentDescription')}
+            {t('products.deleteProductDescription')}
           </DialogDescription>
 
           <div className="py-4 text-sm text-gray-500">
-            {t('employees.deleteUserDepartmentWarning1')}{' '}
-            <span className="font-bold">{user?.userDepartments[0].department.description}</span>
-            {t('employees.deleteUserDepartmentWarning2')}{' '}
-            <span className="font-bold">{user?.fullname}</span>.
+            {t('products.deleteProductWarning')} <span className="font-bold">{product.name}</span> .
             <br />
-            {t('employees.deleteUserDepartmentConfirmation')}
+            {t('products.deleteProductConfirmation')}
           </div>
         </DialogHeader>
         <DialogFooter className="flex flex-row justify-center gap-2">
           <Button variant="outline" onClick={() => setIsOpen(false)}>
-            {t('employees.cancel')}
+            {t('products.cancel')}
           </Button>
-          <Button
-            variant="destructive"
-            onClick={() => user && handleSubmit(user.userDepartments[0].slug || '')}
-          >
-            {t('employees.confirmDelete')}
+          <Button variant="destructive" onClick={() => product && handleSubmit(product.slug || '')}>
+            {t('products.confirmDelete')}
           </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   )
 }
-
-export default DialogDeleteUserDepartment

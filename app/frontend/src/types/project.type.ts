@@ -2,9 +2,27 @@ export interface IProject {
   slug: string
   name: string
   startDate: string
+  site: {
+    slug: string
+    name: string
+  }
+  productRequisitionFormResponseDto: {
+    code: string
+    type: 'normal' | 'urgent'
+    status:
+      | 'accepted_stage_1'
+      | 'accepted_stage_2'
+      | 'accepted_stage_3'
+      | 'cancel'
+      | 'recalled'
+      | 'waiting'
+      | 'waiting_export'
+    isRecalled: boolean
+    deadlineApproval: string
+    description: string
+    slug: string
+  }[]
   description: string
-  managerFullname: string
-  managerSlug: string
 }
 
 export interface ICreateProject {
@@ -12,6 +30,16 @@ export interface ICreateProject {
   startDate: string
   description: string
   fileDescription: string
+  site: string
+  siteName: string
+}
+
+export interface IUpdateProject {
+  slug: string
+  name: string
+  startDate: string
+  description: string
+  // fileDescription: string
   site: string
   siteName: string
 }

@@ -12,7 +12,11 @@ import {
 } from '@/components/ui'
 import { IRole } from '@/types'
 
-import { DialogAddRolePermission, DialogUpdateRole } from '@/components/app/dialog'
+import {
+  DialogAddRolePermission,
+  DialogDeleteRole,
+  DialogUpdateRole
+} from '@/components/app/dialog'
 
 export const useRoleColumns = (): ColumnDef<IRole>[] => {
   const { t } = useTranslation('roles')
@@ -63,6 +67,7 @@ export const useRoleColumns = (): ColumnDef<IRole>[] => {
                 <DialogAddRolePermission role={role} />
                 <DropdownMenuSeparator />
                 <DialogUpdateRole role={role} />
+                <DialogDeleteRole role={role} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

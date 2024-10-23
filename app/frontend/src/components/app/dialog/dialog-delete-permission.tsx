@@ -1,4 +1,4 @@
-import { Trash2, TriangleAlert } from 'lucide-react'
+import { Trash, Trash2, TriangleAlert } from 'lucide-react'
 
 import {
   Button,
@@ -11,27 +11,24 @@ import {
   DialogTrigger
 } from '@/components/ui'
 
-import { IUserInfo } from '@/types'
+import { IDeleteSite, IPermission, IProductRequisitionInfo, ISite } from '@/types'
+import { useRequisitionStore } from '@/stores'
 import { useTranslation } from 'react-i18next'
-import React, { useState } from 'react'
-import { useDeleteUserDepartment } from '@/hooks'
+import { useState } from 'react'
+import { useDeletePermission, useDeleteSite } from '@/hooks'
 import { showToast } from '@/utils'
 
-interface IFormDeleteUserDepartmentProps {
-  user: IUserInfo | null
-}
-
-const DialogDeleteUserDepartment: React.FC<IFormDeleteUserDepartmentProps> = ({ user }) => {
-  const { t } = useTranslation('employees')
+export default function DialogDeletePermission({ permission }: { permission: IPermission }) {
+  const { t } = useTranslation('permissions')
   const { t: tToast } = useTranslation('toast')
-  const { mutate: deleteUserDepartment } = useDeleteUserDepartment()
+  const { mutate: deletePermission } = useDeletePermission()
   const [isOpen, setIsOpen] = useState(false)
 
-  const handleSubmit = (userDepartmentSlug: string) => {
+  const handleSubmit = (permissionSlug: string) => {
     setIsOpen(false)
-    deleteUserDepartment(userDepartmentSlug, {
+    deletePermission(permissionSlug, {
       onSuccess: () => {
-        showToast(tToast('toast.deleteUserDepartmentSuccess'))
+        showToast(tToast('toast.deletePermissionSuccess'))
       }
     })
   }
@@ -42,7 +39,7 @@ const DialogDeleteUserDepartment: React.FC<IFormDeleteUserDepartmentProps> = ({ 
         <DialogTrigger asChild>
           <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
             <Trash2 className="icon" />
-            {t('employees.deleteUserDepartment')}
+            {t('permissions.deletePermission')}
           </Button>
         </DialogTrigger>
       </DialogTrigger>
@@ -52,36 +49,34 @@ const DialogDeleteUserDepartment: React.FC<IFormDeleteUserDepartmentProps> = ({ 
           <DialogTitle className="pb-4 border-b border-destructive text-destructive">
             <div className="flex items-center gap-2">
               <TriangleAlert className="w-6 h-6" />
-              {t('employees.deleteUserDepartment')}
+              {t('permissions.deletePermission')}
             </div>
           </DialogTitle>
           <DialogDescription className="p-2 bg-red-100 rounded-md text-destructive">
-            {t('employees.deleteUserDepartmentDescription')}
+            {t('permissions.deletePermissionDescription')}
           </DialogDescription>
 
           <div className="py-4 text-sm text-gray-500">
-            {t('employees.deleteUserDepartmentWarning1')}{' '}
-            <span className="font-bold">{user?.userDepartments[0].department.description}</span>
-            {t('employees.deleteUserDepartmentWarning2')}{' '}
-            <span className="font-bold">{user?.fullname}</span>.
+            {t('permissions.deletePermissionWarning1')}{' '}
+            <span className="font-bold">{permission.authority}</span>{' '}
+            {t('permissions.deletePermissionWarning2')}{' '}
+            <span className="font-bold">{permission.resource}</span>.
             <br />
-            {t('employees.deleteUserDepartmentConfirmation')}
+            {t('permissions.deletePermissionConfirmation')}
           </div>
         </DialogHeader>
         <DialogFooter className="flex flex-row justify-center gap-2">
           <Button variant="outline" onClick={() => setIsOpen(false)}>
-            {t('employees.cancel')}
+            {t('permissions.cancel')}
           </Button>
           <Button
             variant="destructive"
-            onClick={() => user && handleSubmit(user.userDepartments[0].slug || '')}
+            onClick={() => permission && handleSubmit(permission.slug || '')}
           >
-            {t('employees.confirmDelete')}
+            {t('permissions.confirmDelete')}
           </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   )
 }
-
-export default DialogDeleteUserDepartment

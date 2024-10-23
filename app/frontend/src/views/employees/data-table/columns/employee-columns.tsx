@@ -22,6 +22,7 @@ import {
   DialogUpdateUserDepartment,
   DialogDeleteUserDepartment
 } from '@/components/app/dialog'
+import DialogDeleteUserRole from '@/components/app/dialog/dialog-delete-user-role'
 
 export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
   const { t } = useTranslation('employees')
@@ -75,10 +76,11 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
         return (
           <div className="flex flex-col gap-3">
             {userDepartments &&
-              userDepartments.map((item) => {
+              userDepartments.length > 0 &&
+              userDepartments.map((item, index) => {
                 return (
-                  <Badge className="font-normal bg-green-500 w-fit hover:bg-green-500">
-                    {item?.department.description}
+                  <Badge key={index} className="font-normal bg-green-500 w-fit hover:bg-green-500">
+                    {item?.department?.description || 'N/A'}
                   </Badge>
                 )
               })}
@@ -91,6 +93,7 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
       cell: ({ row }) => {
         const user = row.original
         const hasDepartment = user?.userDepartments?.[0]?.department
+        const hasRole = user?.userRoles
 
         return (
           <div>
@@ -108,6 +111,7 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
                 <DialogAddUserDepartment user={user} />
                 {hasDepartment && <DialogUpdateUserDepartment user={user} />}
                 {hasDepartment && <DialogDeleteUserDepartment user={user} />}
+                {hasRole && <DialogDeleteUserRole user={user} />}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
