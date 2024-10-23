@@ -11,11 +11,12 @@ import { AssignedUserApproval } from "@entities";
 import { AssignedUserApprovalResponseDto } from "@dto/response";
 import {
   CreateAssignedUserApprovalRequestDto,
-  GetAssignedUserApprovalRequestDto,
+  UpdateAssignedUserApprovalRequestDto,
 } from "@dto/request";
 import {
   TCreateAssignedUserApprovalRequestDto,
   TGetAssignedUserApprovalRequestDto,
+  TUpdateAssignedUserApprovalRequestDto,
 } from "@types";
 import { GlobalError, ErrorCodes, ValidationError } from "@exception";
 
@@ -68,7 +69,7 @@ class AssignedUserApprovalService {
     const site = await siteRepository.findOneBy({ slug: requestData.site });
     if (!site) throw new GlobalError(ErrorCodes.SITE_NOT_FOUND);
 
-    const dataCheck = await assignedUserApprovalRepository.findOne({
+    const isExisted = await assignedUserApprovalRepository.exists({
       where: {
         formType: requestData.formType,
         roleApproval: requestData.roleApproval,
@@ -78,7 +79,7 @@ class AssignedUserApprovalService {
       },
     });
     // check unique
-    if (dataCheck)
+    if (isExisted)
       throw new GlobalError(
         ErrorCodes.ASSIGNED_USER_APPROVAL_THIS_LEVEL_FOR_SITE_IS_EXISTED
       );
@@ -100,6 +101,79 @@ class AssignedUserApprovalService {
 
     return mapper.map(
       dataAssignedUserApprovalCreated,
+      AssignedUserApproval,
+      AssignedUserApprovalResponseDto
+    );
+  }
+
+  public async deleteAssignedUserApproval(slug: string): Promise<number> {
+    const assignedUserApproval = await assignedUserApprovalRepository.findOneBy(
+      {
+        slug,
+      }
+    );
+    if (!assignedUserApproval)
+      throw new GlobalError(ErrorCodes.ASSIGNED_USER_APPROVAL_NOT_FOUND);
+
+    const deleted = await assignedUserApprovalRepository.softDelete({ slug });
+    return deleted.affected || 0;
+  }
+
+  public async updateAssignedUserApproval(
+    plainData: TUpdateAssignedUserApprovalRequestDto
+  ): Promise<AssignedUserApprovalResponseDto> {
+    const requestData = plainToClass(
+      UpdateAssignedUserApprovalRequestDto,
+      plainData
+    );
+
+    const errors = await validate(requestData);
+    if (errors.length > 0) throw new ValidationError(errors);
+
+    const assignedUserApproval = await assignedUserApprovalRepository.findOneBy(
+      {
+        slug: requestData.slug,
+      }
+    );
+
+    const site = siteRepository.findOne({
+      where: { slug: requestData.site },
+    });
+
+    const approver = await userRepository.findOne({
+      where: { slug: requestData.user },
+    });
+
+    if (!assignedUserApproval)
+      throw new GlobalError(ErrorCodes.ASSIGNED_USER_APPROVAL_NOT_FOUND);
+    if (!site) throw new GlobalError(ErrorCodes.SITE_NOT_FOUND);
+    if (!approver) throw new GlobalError(ErrorCodes.USER_APPROVAL_NOT_FOUND);
+
+    // Ensure that each site has only one user approval per level
+    const isExisted = await assignedUserApprovalRepository.exists({
+      where: {
+        formType: requestData.formType,
+        roleApproval: requestData.roleApproval,
+        site: {
+          slug: requestData.site,
+        },
+      },
+    });
+    if (isExisted)
+      throw new GlobalError(
+        ErrorCodes.ASSIGNED_USER_APPROVAL_THIS_LEVEL_FOR_SITE_IS_EXISTED
+      );
+
+    Object.assign(assignedUserApproval, {
+      ...requestData,
+      site,
+      user: approver,
+    });
+    const updated =
+      await assignedUserApprovalRepository.save(assignedUserApproval);
+
+    return mapper.map(
+      updated,
       AssignedUserApproval,
       AssignedUserApprovalResponseDto
     );

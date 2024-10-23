@@ -81,7 +81,7 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitio
       cell: ({ row }) => {
         const { creator } = row.original
         const companyName = creator?.userDepartments?.[0]?.department?.site?.company?.name
-        return <div className="min-w-[12rem] text-[0.8rem]">{companyName || 'Không có'}</div>
+        return <div className="min-w-[12rem] text-[0.8rem]">{companyName || ''}</div>
       }
     },
     {

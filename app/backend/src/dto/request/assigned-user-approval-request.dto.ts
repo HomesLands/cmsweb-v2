@@ -1,14 +1,7 @@
-import {
-  IsNotEmpty,
-  IsEnum,
-  IsOptional,
-} from 'class-validator';
-import { Expose } from 'class-transformer';
-import { AutoMap } from '@automapper/classes';
-import {
-  RoleApproval,
-  FormApprovalType
-} from "@enums";
+import { IsNotEmpty, IsEnum, IsOptional } from "class-validator";
+import { Expose } from "class-transformer";
+import { AutoMap } from "@automapper/classes";
+import { RoleApproval, FormApprovalType } from "@enums";
 
 export class GetAssignedUserApprovalRequestDto {
   @IsOptional()
@@ -57,3 +50,6 @@ export class CreateAssignedUserApprovalRequestDto {
   site?: string;
 }
 
+export class UpdateAssignedUserApprovalRequestDto extends CreateAssignedUserApprovalRequestDto {
+  slug?: string;
+}

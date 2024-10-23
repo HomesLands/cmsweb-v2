@@ -554,6 +554,11 @@ export const ErrorCodes: TErrorCode = {
     code: 1126,
     message: "Phone number invalid",
   },
+  ASSIGNED_USER_APPROVAL_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1127,
+    message: "Assigned user approval not found",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]
