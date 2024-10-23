@@ -28,3 +28,7 @@ export class CreateProjectRequestDto {
   @Expose()
   site?: string;
 }
+
+export class UpdateProjectRequestDto extends CreateProjectRequestDto {
+  slug?: string;
+}
