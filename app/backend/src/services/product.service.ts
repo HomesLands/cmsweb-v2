@@ -179,6 +179,16 @@ class ProductService {
 
     return createdProducts.length;
   }
+
+  public async deleteProduct(slug: string): Promise<number> {
+    const product = await productRepository.findOneBy({
+      slug,
+    });
+    if (!product) throw new GlobalError(ErrorCodes.PRODUCT_NOT_FOUND);
+
+    const deleted = await productRepository.softDelete({ slug });
+    return deleted.affected || 0;
+  }
 }
 
 export default new ProductService();

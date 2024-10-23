@@ -18,3 +18,6 @@ productRoute.post(
   upload.single("file"),
   productController.uploadProduct
 );
+
+// [DELETE] /api/v1/products/{slug}
+productRoute.route("/:slug").delete(productController.deleteProduct);
