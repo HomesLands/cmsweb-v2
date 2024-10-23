@@ -4,11 +4,13 @@ import { projectController } from "@controllers";
 export const projectRoute: Router = Router();
 
 // [GET] /api/v1/projects
-projectRoute.route("/")
-  .get(projectController.getAllProjects)
+projectRoute.get("/", projectController.getAllProjects);
 
 // [POST] /api/v1/projects
-projectRoute.route("/")
-  .post(projectController.createProject);
+projectRoute.post("/", projectController.createProject);
 
+// [PATCH] /api/v1/sites/{slug}
+projectRoute.patch("/:slug", projectController.updateProject);
 
+// [DELETE] /api/v1/sites/{slug}
+projectRoute.delete("/:slug", projectController.deleteProject);
