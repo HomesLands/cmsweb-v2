@@ -9,9 +9,13 @@ import {
   TCreatePermissionRequestDto,
   TPaginationOptionResponse,
   TQueryRequest,
+  TUpdatePermissionRequestDto,
 } from "@types";
 import { plainToClass } from "class-transformer";
-import { CreatePermissionRequestDto } from "@dto/request";
+import {
+  CreatePermissionRequestDto,
+  UpdatePermissionRequestDto,
+} from "@dto/request";
 import { validate } from "class-validator";
 import { ErrorCodes, GlobalError, ValidationError } from "@exception";
 import { Permission } from "@entities";
@@ -99,6 +103,46 @@ class PermissionService {
       await permissionRepository.createAndSave(permission);
 
     return mapper.map(createdPermission, Permission, PermissionResponseDto);
+  }
+
+  public async updatePermission(
+    plainData: TUpdatePermissionRequestDto
+  ): Promise<PermissionResponseDto> {
+    const requestData = plainToClass(UpdatePermissionRequestDto, plainData);
+
+    const errors = await validate(requestData);
+    if (errors.length > 0) throw new ValidationError(errors);
+
+    const permission = await permissionRepository.findOne({
+      where: { slug: requestData.slug },
+    });
+    if (!permission) throw new GlobalError(ErrorCodes.PERMISSION_NOT_FOUND);
+
+    const resource = await resourceRepository.findOneBy({
+      slug: requestData.resourceSlug,
+    });
+    const authority = await authorityRepository.findOneBy({
+      slug: requestData.authoritySlug,
+    });
+
+    if (!resource) throw new GlobalError(ErrorCodes.RESOURCE_NOT_FOUND);
+    if (!authority) throw new GlobalError(ErrorCodes.AUTHORITY_NOT_FOUND);
+
+    Object.assign(permission, { ...requestData, resource, authority });
+
+    const updated = await permissionRepository.save(permission);
+
+    return mapper.map(updated, Permission, PermissionResponseDto);
+  }
+
+  public async deletePermission(slug: string): Promise<number> {
+    const permission = await permissionRepository.findOneBy({
+      slug,
+    });
+    if (!permission) throw new GlobalError(ErrorCodes.PERMISSION_NOT_FOUND);
+
+    const deleted = await permissionRepository.softDelete({ slug });
+    return deleted.affected || 0;
   }
 }
 

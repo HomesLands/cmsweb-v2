@@ -333,6 +333,52 @@ class ProductController {
       next(error);
     }
   }
+
+  /**
+   * @swagger
+   * /products/{slug}:
+   *   delete:
+   *     summary: Delete product
+   *     tags: [Product]
+   *     parameters:
+   *       - in: path
+   *         name: slug
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: The slug of product
+   *         example: slug-123
+   *     responses:
+   *       200:
+   *         description: Product updated successfully.
+   *       500:
+   *         description: Server error
+   *       1051:
+   *         description: Product not found
+   *
+   */
+  public async deleteProduct(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { slug } = req.params;
+      const result = await productService.deleteProduct(slug);
+
+      const response: TApiResponse<string> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "product has been deleted successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result: `${result} rows effected`,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new ProductController();

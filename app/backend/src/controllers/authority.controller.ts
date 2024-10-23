@@ -270,6 +270,51 @@ class AuthorityController {
       next(error);
     }
   }
+
+  /**
+   * @swagger
+   * /authorities/{slug}:
+   *   delete:
+   *     summary: Delete authority
+   *     tags: [Authority]
+   *     parameters:
+   *       - in: path
+   *         name: slug
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: The slug of authority
+   *         example: slug-123
+   *     responses:
+   *       200:
+   *         description: Authority deleted successfully.
+   *       500:
+   *         description: Server error
+   *       1071:
+   *         description: Authority not found
+   *
+   */
+  public async deleteAuthority(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { slug } = req.params;
+      const result = await authorityService.deleteAuthority(slug);
+      const response: TApiResponse<string> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: `Authority has been deleted successfully`,
+        method: req.method,
+        path: req.originalUrl,
+        result: `${result} rows effected`,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new AuthorityController();
