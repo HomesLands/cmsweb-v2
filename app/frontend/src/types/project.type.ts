@@ -2,6 +2,7 @@ export interface IProject {
   slug: string
   name: string
   startDate: string
+  fileDescription: string
   site: {
     slug: string
     name: string
@@ -39,7 +40,7 @@ export interface IUpdateProject {
   name: string
   startDate: string
   description: string
-  // fileDescription: string
+  fileDescription: string
   site: string
   siteName: string
 }

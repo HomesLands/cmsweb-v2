@@ -42,6 +42,7 @@ const UpdateProjectForm: React.FC<IFormUpdateProjectProps> = ({ project, onSubmi
       slug: project.slug || '',
       name: project.name || '',
       startDate: project.startDate || '',
+      fileDescription: project.fileDescription || '',
       description: project.description || '',
       site: project.site.slug || '',
       siteName: project.site.name || ''
@@ -178,6 +179,21 @@ const UpdateProjectForm: React.FC<IFormUpdateProjectProps> = ({ project, onSubmi
             <FormLabel>{t('projects.description')}</FormLabel>
             <FormControl>
               <Input {...field} placeholder={t('projects.descriptionDescription')} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    fileDescription: (
+      <FormField
+        control={form.control}
+        name="fileDescription"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('projects.fileDescription')}</FormLabel>
+            <FormControl>
+              <Input {...field} placeholder={t('projects.fileDescriptionDescription')} />
             </FormControl>
             <FormMessage />
           </FormItem>
