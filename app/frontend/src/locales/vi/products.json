@@ -14,6 +14,7 @@
     "edit": "Chỉnh sửa",
     "editTitle": "Chỉnh sửa vật tư",
     "editDescription": "Nhập đầy đủ thông tin vào các trường để cập nhật vật tư",
+
     "delete": "Xóa vật tư",
     "update": "Cập nhật",
     "add": "Thêm",
@@ -22,6 +23,13 @@
     "confirmProductTitle": "Xác nhận tạo vật tư",
     "confirmProductDescription": "Bạn có chắc chắn muốn tạo vật tư này không?",
     "confirmProductCreate": "Tôi đã hiểu, tạo vật tư",
-    "confirmProductCancel": "Hủy"
+    "confirmProductCancel": "Hủy",
+
+    "deleteProductTitle": "Xác nhận xóa vật tư",
+    "deleteProductDescription": "Lưu ý: Thao tác này không thể hoàn tác",
+    "deleteProductWarning": "Bạn sắp sửa xóa vật tư",
+    "deleteProductConfirmation": "Bạn có chắc chắn muốn xóa không?",
+    "cancel": "Hủy",
+    "confirmDelete": "Tôi đã hiểu, xóa vật tư"
   }
 }

@@ -15,7 +15,7 @@ import { AddEmployeeDepartmentForm } from '@/components/app/form'
 import { ICreateUserDepartment, IUserInfo } from '@/types'
 import { showToast } from '@/utils'
 import { useCreateUserDepartment } from '@/hooks'
-import { SquarePen } from 'lucide-react'
+import { CirclePlus } from 'lucide-react'
 import { useQueryClient } from '@tanstack/react-query'
 
 export function DialogAddUserDepartment({ user }: { user: IUserInfo | null }) {
@@ -43,9 +43,9 @@ export function DialogAddUserDepartment({ user }: { user: IUserInfo | null }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild className="flex justify-start w-full">
         <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
-          <SquarePen className="icon" />
+          <CirclePlus className="icon" />
           {t('employees.addDepartment')}
         </Button>
       </DialogTrigger>

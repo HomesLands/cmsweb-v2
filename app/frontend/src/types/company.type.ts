@@ -14,3 +14,8 @@ export interface IUploadCompanyLogo {
   slug: string
   file: File
 }
+
+export interface IUpdateCompany {
+  slug: string
+  name: string
+}

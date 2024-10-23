@@ -9,8 +9,22 @@
     "nameNormalize": "Mã chuẩn hóa",
     "description": "Mô tả",
     "slug": "Slug",
+
     "createPermissionSuccessfully": "Tạo quyền mới thành công",
     "selectRole": "Lựa chọn chức vụ",
-    "selectAuthority": "Lựa chọn thẩm quyền"
+    "selectResource": "Lựa chọn tài nguyên",
+    "selectAuthority": "Lựa chọn thẩm quyền",
+
+    "updatePermission": "Cập nhật quyền",
+    "updatePermissionDescription": "Thay đổi các thông tin bên dưới để cập nhật quyền",
+    "update": "Cập nhật",
+
+    "deletePermission": "Xóa quyền",
+    "deletePermissionDescription": "Lưu ý: Thao tác này không thể hoàn tác",
+    "deletePermissionWarning1": "Bạn sắp sửa xóa quyền",
+    "deletePermissionWarning2": "thuộc tài nguyên",
+    "deletePermissionConfirmation": "Bạn có chắc chắn muốn xóa không?",
+    "cancel": "Hủy",
+    "confirmDelete": "Tôi đã hiểu, xác nhận xóa"
   }
 }

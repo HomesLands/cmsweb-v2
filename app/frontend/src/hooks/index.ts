@@ -1,4 +1,5 @@
 export * from './use-companies'
+export * from './use-departments'
 export * from './use-users'
 export * from './use-products'
 export * from './use-pagination'

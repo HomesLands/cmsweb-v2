@@ -8,11 +8,11 @@ import {
   DataTableColumnHeader,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui'
 import { IProject } from '@/types'
+import { DialogUpdateProject } from '@/components/app/dialog'
 
 export const useProjectColumns = (): ColumnDef<IProject>[] => {
   const { t } = useTranslation(['projects'])
@@ -51,20 +51,19 @@ export const useProjectColumns = (): ColumnDef<IProject>[] => {
       id: 'actions',
       header: 'Thao tác',
       cell: ({ row }) => {
-        const company = row.original
+        const project = row.original
         return (
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="p-0 w-8 h-8">
+                <Button variant="ghost" className="w-8 h-8 p-0">
                   <span className="sr-only">Thao tác</span>
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                <DropdownMenuItem>Chỉnh sửa</DropdownMenuItem>
-                <DropdownMenuItem>Xóa</DropdownMenuItem>
+                <DialogUpdateProject project={project} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

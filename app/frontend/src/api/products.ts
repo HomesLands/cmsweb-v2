@@ -59,8 +59,12 @@ export async function updateProduct(data: IProductInfoUpdate) {
   return response.data
 }
 
-//Product requisition
+export async function deleteProduct(slug: string) {
+  const response = await http.delete<IApiResponse<IProductInfo>>(`/products/${slug}`)
+  return response.data
+}
 
+//Product requisition
 export async function getAllProductRequisition(params: IProductQuery) {
   const response = await http.get<IApiResponse<IPaginationResponse<IProductRequisitionFormInfo>>>(
     '/productRequisitionForms',

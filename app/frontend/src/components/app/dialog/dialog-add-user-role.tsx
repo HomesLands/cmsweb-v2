@@ -16,7 +16,7 @@ import { ICreateUserRole, IUserInfo } from '@/types'
 import { useCreateUserRole } from '@/hooks'
 import { showToast } from '@/utils'
 import { useState } from 'react'
-import { SquarePen } from 'lucide-react'
+import { CirclePlus, SquarePen } from 'lucide-react'
 
 export function DialogAddUserRole({ user }: { user: IUserInfo | null }) {
   const { t } = useTranslation('employees')
@@ -41,7 +41,7 @@ export function DialogAddUserRole({ user }: { user: IUserInfo | null }) {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild className="flex justify-start w-full">
         <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
-          <SquarePen className="icon" />
+          <CirclePlus className="icon" />
           {t('employees.createUserRole')}
         </Button>
       </DialogTrigger>

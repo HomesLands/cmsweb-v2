@@ -11,38 +11,21 @@ import {
   DropdownMenuLabel,
   UserAvatar,
   DropdownMenuSeparator,
-  DropdownMenuItem,
   Badge
 } from '@/components/ui'
 import { IUserInfo } from '@/types'
 
 import { baseURL } from '@/constants'
-import { DialogAddUserRole, DialogAddUserDepartment } from '@/components/app/dialog'
-import { useState } from 'react'
+import {
+  DialogAddUserRole,
+  DialogAddUserDepartment,
+  DialogUpdateUserDepartment,
+  DialogDeleteUserDepartment
+} from '@/components/app/dialog'
+import DialogDeleteUserRole from '@/components/app/dialog/dialog-delete-user-role'
 
 export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
   const { t } = useTranslation('employees')
-  const [selectedUser, setSelectedUser] = useState<IUserInfo | null>(null)
-  const [openDialogAddUserRole, setOpenDialogAddUserRole] = useState(false)
-  const [openDialogAddUserDepartment, setOpenDialogAddUserDepartment] = useState(false)
-
-  const handleOpenDialogAddUserRole = (user: IUserInfo) => {
-    setSelectedUser(user)
-    setOpenDialogAddUserRole(true)
-  }
-
-  const handleCloseDialogAddUserRole = () => {
-    setOpenDialogAddUserRole(false)
-  }
-
-  const handleOpenDialogAddUserDepartment = (user: IUserInfo) => {
-    setSelectedUser(user)
-    setOpenDialogAddUserDepartment(true)
-  }
-
-  const handleCloseDialogAddUserDepartment = () => {
-    setOpenDialogAddUserDepartment(false)
-  }
 
   return [
     {
@@ -110,6 +93,9 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
       id: t('employees.actions'),
       cell: ({ row }) => {
         const user = row.original
+        const hasDepartment = user?.userDepartments?.[0]?.department
+        const hasRole = user?.userRoles
+
         return (
           <div>
             <DropdownMenu>
@@ -124,6 +110,9 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
                 <DropdownMenuSeparator />
                 <DialogAddUserRole user={user} />
                 <DialogAddUserDepartment user={user} />
+                {hasDepartment && <DialogUpdateUserDepartment user={user} />}
+                {hasDepartment && <DialogDeleteUserDepartment user={user} />}
+                {hasRole && <DialogDeleteUserRole user={user} />}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

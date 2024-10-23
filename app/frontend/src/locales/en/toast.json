@@ -35,9 +35,16 @@
     "updateUserSuccess": "User updated successfully",
 
     "createCompanySuccessfully": "Company created successfully",
+    "updateCompanySuccess": "Company updated successfully",
+
     "createSiteSuccessfully": "Site created successfully",
+    "updateSiteSuccess": "Site updated successfully",
+
     "createDepartmentSuccessfully": "Department created successfully",
+    "updateDepartmentSuccess": "Department updated successfully",
+
     "createProjectSuccessfully": "Project created successfully",
+    "updateProjectSuccess": "Project updated successfully",
 
     "addRoleSuccess": "Role added successfully",
     "addDepartmentSuccess": "Department added successfully",
@@ -49,6 +56,8 @@
     "updateProductSuccess": "Product updated successfully",
     "backupDatabaseSuccess": "Backup database successfully",
 
-    "addRolePermissionSuccess": "Role permission added successfully"
+    "addRolePermissionSuccess": "Role permission added successfully",
+
+    "updateUserDepartmentSuccess": "User department updated successfully"
   }
 }

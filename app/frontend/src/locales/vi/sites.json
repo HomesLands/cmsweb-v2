@@ -5,6 +5,7 @@
     "name": "Tên địa điểm",
     "companyName": "Tên công ty",
     "companySlug": "Slug công ty",
+    "company": "Công ty",
 
     "createSite": "Tạo địa điểm",
     "createSiteDescription": "Tạo mới địa điểm",
@@ -14,6 +15,17 @@
     "confirmCreateSiteDescription": "Xác nhận tạo địa điểm",
     "belongsToCompany": "thuộc công ty",
     "cancelCreateSite": "Hủy tạo địa điểm",
-    "confirm": "Xác nhận"
+    "confirm": "Xác nhận",
+
+    "updateSite": "Cập nhật địa điểm",
+    "updateSiteDescription": "Thay đổi thông tin bên dưới để chỉnh sửa địa điểm",
+    "update": "Cập nhật",
+
+    "deleteSite": "Xóa địa điểm",
+    "deleteSiteDescription": "Lưu ý: Hành động này không thể hoàn tác!",
+    "deleteSiteWarning1": "Bạn sắp sửa xóa địa điểm",
+    "deleteSiteConfirmation": "Bạn chắc chắn muốn xóa địa điểm này?",
+    "cancel": "Hủy",
+    "confirmDelete": "Tôi đã hiểu, xóa địa điểm này"
   }
 }

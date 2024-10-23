@@ -5,3 +5,8 @@ export async function createUserRole(values: ICreateUserRole): Promise<IApiRespo
   const response = await http.post<IApiResponse<IUserRole>>('/userRoles', values)
   return response.data
 }
+
+export async function deleteUserRole(slug: string): Promise<IApiResponse<IUserRole>> {
+  const response = await http.delete<IApiResponse<IUserRole>>(`/userRoles/${slug}`)
+  return response.data
+}

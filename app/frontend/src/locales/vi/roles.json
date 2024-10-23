@@ -21,6 +21,13 @@
 
     "editRoleDescription": "Thay đổi thông tin bên dưới để chỉnh sửa quyền hạn",
 
-    "updateRole": "Cập nhật chức vụ"
+    "updateRole": "Cập nhật chức vụ",
+
+    "delete": "Xóa chức vụ",
+    "deleteRoleDescription": "Lưu ý: Thao tác này không thể hoàn tác",
+    "deleteRoleWarning": "Bạn sắp sửa xóa chức vụ",
+    "deleteRoleConfirmation": "Bạn có chắc chắn muốn xóa không?",
+    "cancel": "Hủy",
+    "confirmDelete": "Tôi đã hiểu, xác nhận xóa"
   }
 }
