@@ -12,7 +12,7 @@ import {
 } from '@/components/ui'
 import { ICompany } from '@/types'
 import { publicFileURL } from '@/constants'
-import { DialogUpdateCompany } from '@/components/app/dialog'
+import { DialogUpdateCompany, DialogUpdateCompanyLogo } from '@/components/app/dialog'
 
 export const useCompanyColumns = (): ColumnDef<ICompany>[] => {
   const { t } = useTranslation(['companies'])
@@ -54,6 +54,7 @@ export const useCompanyColumns = (): ColumnDef<ICompany>[] => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
+                <DialogUpdateCompanyLogo company={company} />
                 <DialogUpdateCompany company={company} />
               </DropdownMenuContent>
             </DropdownMenu>

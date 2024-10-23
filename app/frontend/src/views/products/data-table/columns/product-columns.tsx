@@ -9,11 +9,10 @@ import {
   DataTableColumnHeader,
   Button,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuItem
+  DropdownMenuSeparator
 } from '@/components/ui'
 import { IProductInfo } from '@/types'
-import { DialogUpdateProduct } from '@/components/app/dialog/dialog-update-product'
+import { DialogUpdateProduct, DialogDeleteProduct } from '@/components/app/dialog'
 
 export const useProductColumns = (): ColumnDef<IProductInfo>[] => {
   const { t } = useTranslation('products')
@@ -60,6 +59,7 @@ export const useProductColumns = (): ColumnDef<IProductInfo>[] => {
                 <DropdownMenuLabel>{t('products.actions')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DialogUpdateProduct product={product} />
+                <DialogDeleteProduct product={product} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

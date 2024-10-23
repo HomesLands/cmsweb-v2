@@ -12,10 +12,12 @@ import {
 } from '@/components/ui'
 import { TCreateUserDepartmentSchema } from '@/schemas'
 import { AddEmployeeDepartmentForm } from '@/components/app/form'
-import { ICreateUserDepartment, IUserInfo } from '@/types'
+import { IApiResponse, ICreateUserDepartment, IUserInfo } from '@/types'
 import { showErrorToast, showToast } from '@/utils'
 import { useCreateUserDepartment } from '@/hooks'
-import { SquarePen } from 'lucide-react'
+import { CirclePlus, SquarePen } from 'lucide-react'
+import { isAxiosError } from 'axios'
+import { AxiosError } from 'axios'
 
 export function DialogAddUserDepartment({ user }: { user: IUserInfo | null }) {
   const { t } = useTranslation('employees')
@@ -29,14 +31,24 @@ export function DialogAddUserDepartment({ user }: { user: IUserInfo | null }) {
       department: values.department.value,
       user: values.user.value
     } as ICreateUserDepartment
-    createUserDepartment(requestData)
+    createUserDepartment(requestData, {
+      onSuccess: () => {
+        showToast(tToast('toast.addDepartmentSuccess'))
+      },
+      onError: (error) => {
+        if (isAxiosError(error)) {
+          const axiosError = error as AxiosError<IApiResponse<void>>
+          if (axiosError.response?.data.code) showErrorToast(axiosError.response.data.code)
+        }
+      }
+    })
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild className="flex justify-start w-full">
         <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
-          <SquarePen className="icon" />
+          <CirclePlus className="icon" />
           {t('employees.addDepartment')}
         </Button>
       </DialogTrigger>

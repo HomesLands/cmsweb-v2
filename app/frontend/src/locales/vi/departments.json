@@ -17,6 +17,17 @@
     "belongsToLocation": "thuộc địa điểm",
     "cancelCreate": "Hủy",
     "confirm": "Xác nhận",
-    "cancel": "Hủy"
+    "cancel": "Hủy",
+
+    "updateDepartment": "Cập nhật phòng ban",
+    "updateDepartmentDescription": "Thay đổi các thông tin bên dưới để cập nhật phòng ban",
+    "update": "Cập nhật",
+
+    "deleteDepartment": "Xóa phòng ban",
+    "deleteDepartmentDescription": "Lưu ý: Thao tác này không thể hoàn tác",
+    "deleteDepartmentWarning1": "Bạn sắp sửa xóa",
+    "deleteDepartmentWarning2": "thuộc địa điểm",
+    "deleteDepartmentConfirmation": "Bạn có chắc chắn muốn xóa không?",
+    "confirmDelete": "Tôi đã hiểu, xác nhận xóa"
   }
 }

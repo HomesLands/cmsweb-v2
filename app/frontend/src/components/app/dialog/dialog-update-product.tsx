@@ -18,7 +18,7 @@ import { useUpdateProduct } from '@/hooks'
 import { showToast } from '@/utils'
 import { useState } from 'react'
 
-export function DialogUpdateProduct({ product }: { product: IProductInfo | null }) {
+export default function DialogUpdateProduct({ product }: { product: IProductInfo | null }) {
   const { t } = useTranslation('products')
   const { t: tToast } = useTranslation('toast')
   const { mutate: updateProductMutation } = useUpdateProduct()
