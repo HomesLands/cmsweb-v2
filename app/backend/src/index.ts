@@ -29,7 +29,6 @@ dotenv.config();
 
   // ejs
   app.set("view engine", "ejs");
-  app.set("views", path.join(__dirname, "views"));
 
   // Config database
   // Default auto retries 5

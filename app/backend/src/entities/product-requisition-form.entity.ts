@@ -32,7 +32,10 @@ export class ProductRequisitionForm extends Base {
   // a ProductRequisition have many request product
   @OneToMany(
     () => RequestProduct,
-    (requestProduct) => requestProduct.productRequisitionForm
+    (requestProduct) => requestProduct.productRequisitionForm,
+    {
+      cascade: ["insert"],
+    }
   )
   requestProducts?: RequestProduct[];
 

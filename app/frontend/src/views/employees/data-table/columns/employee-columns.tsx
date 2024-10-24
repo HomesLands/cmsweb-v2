@@ -76,12 +76,13 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
         return (
           <div className="flex flex-col gap-3">
             {userDepartments &&
-              userDepartments.length > 0 &&
-              userDepartments.map((item, index) => {
-                return (
-                  <Badge key={index} className="font-normal bg-green-500 w-fit hover:bg-green-500">
-                    {item?.department?.description || 'N/A'}
+              userDepartments.map((item) => {
+                return item?.department?.description ? (
+                  <Badge className="w-fit font-normal bg-green-500 hover:bg-green-500">
+                    {item?.department?.description}
                   </Badge>
+                ) : (
+                  <div></div>
                 )
               })}
           </div>

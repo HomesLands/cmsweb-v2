@@ -46,11 +46,9 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
     requisition?.deadlineApproval ? new Date(requisition.deadlineApproval) : undefined
   )
   const [company, setCompany] = useState<string>(
-    userInfo?.userDepartments?.[0]?.department?.site?.company?.name || ''
+    userInfo?.userDepartments[0]?.department.site.company.name || ''
   )
-  const [site, setSite] = useState<string>(
-    userInfo?.userDepartments?.[0]?.department?.site?.name || ''
-  )
+  const [site, setSite] = useState<string>(userInfo?.userDepartments[0]?.department.site.name || '')
 
   const validateDate = (selectedDate: Date | undefined) => {
     if (!selectedDate) return false
@@ -92,21 +90,12 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
     }
   })
 
-  useEffect(() => {
-    if (userInfo && userInfo.userDepartments.length > 0) {
-      const department = userInfo.userDepartments[0].department
-      setCompany(department.site.company.name)
-      setSite(department.site.name)
-    }
-  }, [userInfo])
   const handleDepartmentChange = (slug: string, name: string) => {
     const selectedDepartment = userInfo?.userDepartments.find(
-      (item) => item.department.slug === slug
+      (item) => item.department?.slug === slug
     )
-    if (selectedDepartment) {
+    if (selectedDepartment?.department) {
       const { site } = selectedDepartment.department
-      setCompany(site.company.name)
-      setSite(site.name)
       form.setValue('department', { slug, name }) // Cập nhật department trong form
       form.setValue('company', {
         slug: site.company.slug,
@@ -254,6 +243,21 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
         )}
       />
     ),
+    site: (
+      <FormField
+        control={form.control}
+        name="site.name"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('productRequisition.constructionSite')}</FormLabel>
+            <FormControl>
+              <Input readOnly {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
     department: (
       <FormField
         control={form.control}
@@ -267,22 +271,6 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                 department={{ userDepartments: userInfo?.userDepartments || [] }}
                 onChange={handleDepartmentChange} // Use the new handler
               />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    ),
-
-    site: (
-      <FormField
-        control={form.control}
-        name="site.name"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{t('productRequisition.constructionSite')}</FormLabel>
-            <FormControl>
-              <Input readOnly {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>

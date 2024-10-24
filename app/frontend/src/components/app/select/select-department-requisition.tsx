@@ -1,14 +1,6 @@
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui'
 
 interface Department {
   nameNormalize: string
@@ -37,10 +29,10 @@ export const SelectDepartmentRequisition: FC<SelectDepartmentProps> = ({
 
   const handleValueChange = (value: string) => {
     const selectedDepartment = department?.userDepartments.find(
-      (item) => item.department.slug === value
+      (item) => item.department?.slug === value
     )
     if (selectedDepartment) {
-      onChange(selectedDepartment.department.slug, selectedDepartment.department.description)
+      onChange(selectedDepartment.department?.slug, selectedDepartment.department?.description)
     }
   }
 
@@ -50,15 +42,13 @@ export const SelectDepartmentRequisition: FC<SelectDepartmentProps> = ({
         <SelectValue placeholder={t('productRequisition.selectDepartment')} />
       </SelectTrigger>
       <SelectContent>
-        {department?.userDepartments?.map(
-          (item) =>
-            item?.department &&
-            item.department.slug && (
-              <SelectItem key={item.department.slug} value={item.department.slug}>
-                {item.department.description || 'No Description'}
-              </SelectItem>
-            )
-        )}
+        {department.userDepartments
+          .filter((item) => item.department)
+          .map((item) => (
+            <SelectItem key={item.department?.slug} value={item.department?.slug}>
+              {item.department?.description}
+            </SelectItem>
+          ))}
       </SelectContent>
     </Select>
   )

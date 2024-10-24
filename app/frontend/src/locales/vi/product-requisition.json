@@ -1,5 +1,6 @@
 {
   "productRequisition": {
+    "selectDepartment": "Lựa chọn phòng ban",
     "list": "Danh sách duyệt yêu cầu vật tư",
     "listDescription": "Danh sách duyệt yêu cầu vật tư",
     "listEmployee": "Danh sách yêu cầu vật tư đã tạo",
@@ -67,7 +68,7 @@
     "confirmProductRequisitions": "Xác nhận yêu cầu vật tư",
     "confirmProductRequisitionsDescription": "Thông tin chi tiết của yêu cầu vật tư",
 
-    "productRequisitionList": "Danh sách vật trước yêu cầu",
+    "productRequisitionList": "Danh sách vật tư yêu cầu",
     "here": "tại đây",
     "updateProductRequisition": "Cập nhật yêu cầu vật tư",
     "update": "Cập nhật",
