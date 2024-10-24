@@ -41,6 +41,12 @@
     "createUser": "Tạo nhân sự",
     "username": "Tên đăng nhập",
     "password": "Mật khẩu",
-    "CreateUserDescription": "Thêm nhân sự"
+    "CreateUserDescription": "Thêm nhân sự",
+
+    "gender": "Giới tính",
+    "genderDescription": "Chọn giới tính",
+    "male": "Nam",
+    "female": "Nữ",
+    "other": "Khác"
   }
 }

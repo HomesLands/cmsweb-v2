@@ -6,7 +6,7 @@
     "role": "Role",
     "fullname": "Full name",
     "actions": "Actions",
-    
+
     "addRole": "Add role",
     "selectUser": "Select user",
     "selectRole": "Select role",
@@ -22,6 +22,29 @@
     "createUser": "Create employee",
     "username": "Username",
     "password": "Password",
-    "CreateUserDescription": "Create user description"
+    "CreateUserDescription": "Create user description",
+
+    "updateDepartment": "Update department",
+    "updateDepartmentDescription": "Enter the information below to update the department for the employee",
+    "update": "Update",
+
+    "deleteUserDepartment": "Delete department",
+    "deleteUserDepartmentDescription": "Note: This action cannot be undone!",
+    "deleteUserDepartmentWarning1": "You are about to delete the department ",
+    "deleteUserDepartmentWarning2": " of the employee",
+    "deleteUserDepartmentConfirmation": "Are you sure you want to delete?",
+    "cancel": "Cancel",
+    "confirmDelete": "I understand, confirm delete",
+
+    "deleteUserRole": "Delete role",
+    "deleteUserRoleDescription": "Note: This action cannot be undone!",
+    "deleteUserRoleWarning1": "You are about to delete the role of the employee",
+    "deleteUserRoleConfirmation": "Please select the role you want to delete (only select one role)",
+
+    "gender": "Gender",
+    "genderDescription": "Select gender",
+    "male": "Male",
+    "female": "Female",
+    "other": "Other"
   }
 }

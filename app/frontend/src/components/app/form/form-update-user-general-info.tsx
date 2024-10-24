@@ -1,5 +1,5 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useState } from 'react'
+import { useForm, Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -12,10 +12,18 @@ import {
   Form,
   Button
 } from '@/components/ui'
-import { personalAccountInfoSchema, TPersonalAccountInfoSchema } from '@/schemas'
+import {
+  personalAccountInfoSchema,
+  TPersonalAccountInfoSchema,
+  TUpdateAccountInfoSchema,
+  updateAccountInfoSchema
+} from '@/schemas'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IUpdateUserGeneralInfo, IUserInfo } from '@/types'
+import { DatePicker } from '../picker' // Your updated CustomDatePicker
+import { SelectGender, SelectSite } from '../select'
+import { format } from 'date-fns'
 
 interface IFormUpdateUserGeneralInfoProps {
   data?: IUserInfo
@@ -28,21 +36,23 @@ export const FormUpdateUserGeneralInfo: React.FC<IFormUpdateUserGeneralInfoProps
 }) => {
   const { t } = useTranslation('account')
 
-  const form = useForm<TPersonalAccountInfoSchema>({
-    resolver: zodResolver(personalAccountInfoSchema),
+  const form = useForm<TUpdateAccountInfoSchema>({
+    resolver: zodResolver(updateAccountInfoSchema),
     defaultValues: {
       fullname: data?.fullname || '',
-      username: data?.username || '',
-      company: data?.userDepartments[0]?.department?.site?.company?.name || '',
-      site: data?.userDepartments[0]?.department?.site?.name || ''
+      phoneNumber: data?.phoneNumber || '',
+      address: data?.address || '',
+      dob: data?.dob || '',
+      gender: data?.gender || ''
     }
   })
 
-  const handleSubmit = (values: TPersonalAccountInfoSchema) => {
+  const handleSubmit = (values: TUpdateAccountInfoSchema) => {
+    // Log form values
+    console.log('Form Values:', values)
     onSubmit(values)
   }
 
-  // Define formFields similar to the first code
   const formFields = {
     fullname: (
       <FormField
@@ -59,13 +69,13 @@ export const FormUpdateUserGeneralInfo: React.FC<IFormUpdateUserGeneralInfoProps
         )}
       />
     ),
-    username: (
+    phoneNumber: (
       <FormField
         control={form.control}
-        name="username"
+        name="phoneNumber"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('account.username')}</FormLabel>
+            <FormLabel>{t('account.phoneNumber')}</FormLabel>
             <FormControl>
               <Input {...field} />
             </FormControl>
@@ -74,13 +84,13 @@ export const FormUpdateUserGeneralInfo: React.FC<IFormUpdateUserGeneralInfoProps
         )}
       />
     ),
-    company: (
+    address: (
       <FormField
         control={form.control}
-        name="company"
+        name="address"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('account.company')}</FormLabel>
+            <FormLabel>{t('account.address')}</FormLabel>
             <FormControl>
               <Input {...field} />
             </FormControl>
@@ -89,15 +99,47 @@ export const FormUpdateUserGeneralInfo: React.FC<IFormUpdateUserGeneralInfoProps
         )}
       />
     ),
-    site: (
+    dob: (
       <FormField
         control={form.control}
-        name="site"
+        name="dob"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('account.site')}</FormLabel>
+            <FormLabel>{t('account.dob')}</FormLabel>
             <FormControl>
-              <Input {...field} value={field.value || ''} />
+              <DatePicker
+                date={field.value ? new Date(field.value) : null} // Convert string to Date
+                onSelect={(selectedDate) => {
+                  // Format the date to "DD/MM/YYYY" before updating the form
+                  field.onChange(selectedDate ? format(selectedDate, 'dd/MM/yyyy') : '')
+                }}
+                validateDate={(date) => {
+                  // Add logic to validate the date if necessary
+                  return true // Replace with your actual validation logic
+                }}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+
+    gender: (
+      <FormField
+        control={form.control}
+        name="gender"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('account.gender')}</FormLabel>
+            <FormControl>
+              <SelectGender
+                value={field.value} // Truyền giá trị hiện tại từ form
+                onChange={(selectedValue) => {
+                  // Cập nhật giá trị trong form
+                  form.setValue('gender', selectedValue)
+                }}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -110,7 +152,7 @@ export const FormUpdateUserGeneralInfo: React.FC<IFormUpdateUserGeneralInfoProps
     <div className="mt-3">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-2">
             {Object.keys(formFields).map((key) => (
               <React.Fragment key={key}>
                 {formFields[key as keyof typeof formFields]}

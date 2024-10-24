@@ -9,7 +9,8 @@ import {
   uploadProfilePicture,
   uploadSignature
 } from '@/api'
-import { IConfirmChangePassword, IQuery, IUpdateUserGeneralInfo } from '@/types'
+import { IConfirmChangePassword, IQuery, IUpdateUserGeneralInfo, IUserInfo } from '@/types'
+import { useUserStore } from '@/stores'
 
 export const useUsers = (q: IQuery) => {
   return useQuery({
@@ -58,10 +59,18 @@ export const useUploadSignature = () => {
 }
 export const useUpdateUser = () => {
   const queryClient = useQueryClient()
+  const { refetch: refetchUserInfo } = useUser() // Get the refetch function from useUser
+  const setUserInfo = useUserStore((state) => state.setUserInfo) // Get the setUserInfo function from the store
+
   return useMutation({
     mutationFn: (data: IUpdateUserGeneralInfo) => updateUser(data),
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ['user-info'] })
+      const userInfoResponse = await refetchUserInfo()
+
+      if (userInfoResponse.data) {
+        setUserInfo(userInfoResponse.data)
+      }
     }
   })
 }
