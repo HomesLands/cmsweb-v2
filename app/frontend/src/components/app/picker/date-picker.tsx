@@ -25,11 +25,12 @@ const generateYears = (start: number, end: number) => {
 }
 
 interface DatePickerProps {
-  date?: Date
-  onSelect: (date: Date | undefined) => void
+  date?: Date | null
+  onSelect: (date: Date | null) => void
+  validateDate: (date: Date) => boolean // Thêm validateDate
 }
 
-export function DatePicker({ date, onSelect }: DatePickerProps) {
+export function DatePicker({ date, onSelect, validateDate }: DatePickerProps) {
   const [month, setMonth] = React.useState<number>(date ? date.getMonth() : new Date().getMonth())
   const [year, setYear] = React.useState<number>(
     date ? date.getFullYear() : new Date().getFullYear()
@@ -37,7 +38,9 @@ export function DatePicker({ date, onSelect }: DatePickerProps) {
   const years = generateYears(1920, new Date().getFullYear()) // 100 years range
 
   const handleSelectDate = (selectedDate: Date | undefined) => {
-    onSelect(selectedDate)
+    if (selectedDate && validateDate(selectedDate)) {
+      onSelect(selectedDate)
+    }
   }
 
   return (
@@ -51,7 +54,7 @@ export function DatePicker({ date, onSelect }: DatePickerProps) {
           )}
         >
           <CalendarIcon className="w-4 h-4 mr-2" />
-          {date ? format(date, 'PPP') : <span>Pick a date</span>}
+          {date ? format(date, 'PPP') : <span>Chọn ngày</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-4" align="start">
@@ -59,7 +62,7 @@ export function DatePicker({ date, onSelect }: DatePickerProps) {
         <div className="flex items-center justify-between mb-4 space-x-2">
           <Select value={String(month)} onValueChange={(value) => setMonth(Number(value))}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Month" />
+              <SelectValue placeholder="Tháng" />
             </SelectTrigger>
             <SelectContent>
               {Array.from({ length: 12 }, (_, i) => (
@@ -72,7 +75,7 @@ export function DatePicker({ date, onSelect }: DatePickerProps) {
 
           <Select value={String(year)} onValueChange={(value) => setYear(Number(value))}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Year" />
+              <SelectValue placeholder="Năm" />
             </SelectTrigger>
             <SelectContent>
               {years.map((year) => (
@@ -87,7 +90,7 @@ export function DatePicker({ date, onSelect }: DatePickerProps) {
         {/* Calendar */}
         <Calendar
           mode="single"
-          selected={date}
+          selected={date ? date : undefined}
           onSelect={handleSelectDate}
           month={new Date(year, month)}
           initialFocus

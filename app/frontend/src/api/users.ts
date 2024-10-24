@@ -18,7 +18,6 @@ export async function getUsers(
 
 export async function getUser() {
   const response = await http.get<IApiResponse<IUserInfo>>(`/users/info`)
-  console.log(response.data)
   return response.data
 }
 
@@ -42,7 +41,7 @@ export async function uploadSignature(file: File) {
 }
 
 export async function updateUser(data: IUpdateUserGeneralInfo) {
-  const response = await http.patch<IApiResponse<IUserInfo>>(`/users/update`, data)
+  const response = await http.patch<IApiResponse<IUserInfo>>(`/users/info`, data)
   return response.data
 }
 

@@ -5,12 +5,11 @@ import { KeyRound, UserRoundPen } from 'lucide-react'
 import { Card, CardContent, Input, Button } from '@/components/ui'
 import { ProfilePicture } from '@/components/app/avatar'
 import { useThemeStore, useUserStore } from '@/stores'
-import { useUploadSignature } from '@/hooks/use-users'
+import { useUploadSignature, useUser } from '@/hooks/use-users'
 import { cn } from '@/lib/utils'
 import { publicFileURL } from '@/constants'
 import { IUserInfo } from '@/types'
 import { DialogUpdateUserGeneralInfo } from '../dialog'
-import { DatePicker } from '../picker'
 
 interface CardUserGeneralInfoProps {
   handleUploadProfilePicture: (file: File) => void

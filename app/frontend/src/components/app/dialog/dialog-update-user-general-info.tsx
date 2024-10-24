@@ -25,9 +25,9 @@ export function DialogUpdateUserGeneralInfo({ userInfo }: { userInfo: IUserInfo 
   const { mutate: updateUserInfo } = useUpdateUser()
 
   const handleSubmit = (values: IUpdateUserGeneralInfo) => {
-    setIsOpen(false)
     updateUserInfo(values, {
       onSuccess: () => {
+        setIsOpen(false)
         showToast(tToast('toast.updateUserSuccess'))
       }
     })

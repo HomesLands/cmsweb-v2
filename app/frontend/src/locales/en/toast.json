@@ -33,6 +33,7 @@
     "loginFailed": "Username or password is incorrect",
     "logoutSuccess": "Logout successfully",
     "updateUserSuccess": "User updated successfully",
+    "productRequisitionExisted": "Product already exists in requisition",
 
     "createCompanySuccessfully": "Company created successfully",
     "updateCompanySuccess": "Company updated successfully",

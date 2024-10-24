@@ -16,8 +16,8 @@ import { TAddNewProductRequestSchema } from '@/schemas'
 import { AddNewProductRequestForm } from '@/components/app/form'
 import { IProductInfo, IAddNewProductInRequisitionUpdate } from '@/types'
 import { useAddNewProductInRequisitionUpdate } from '@/hooks'
-import { showToast } from '@/utils'
 import { PlusCircledIcon } from '@radix-ui/react-icons'
+import { showToast } from '@/utils'
 
 export function DialogAddProductInRequisitionUpdate({ product }: { product: IProductInfo | null }) {
   const { slug } = useParams()
@@ -37,10 +37,13 @@ export function DialogAddProductInRequisitionUpdate({ product }: { product: IPro
       requestQuantity: data.requestQuantity
     }
     if (newProduct) {
-      addNewProduct(newProduct)
+      addNewProduct(newProduct, {
+        onSuccess: () => {
+          setIsOpen(false)
+          showToast(tToast('toast.addNewProductSuccess'))
+        }
+      })
     }
-    showToast(tToast('toast.addNewProductSuccess'))
-    setIsOpen(false)
   }
 
   return (

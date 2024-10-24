@@ -54,6 +54,7 @@ const errorCodes: { [key: number]: string } = {
   1048: 'toast.invalidProductRequisitionFormDescription',
   1049: 'toast.invalidProductRequisitionFormFile',
   1050: 'toast.invalidProductRequisitionFormManager',
+  1076: 'toast.productRequisitionExisted',
 
   1112: 'toast.assignedUserApprovalExisted',
   1117: 'toast.invalidUserDepartmentExisted',

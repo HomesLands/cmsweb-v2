@@ -5,8 +5,9 @@ import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { Card, CardContent, Label } from '@/components/ui'
 import { UpdateRequisitionForm } from '@/components/app/form'
-import { showToast } from '@/utils'
+import { showErrorToast, showToast } from '@/utils'
 import {
+  IApiResponse,
   IProductRequisitionFormInfo,
   IResubmitProductRequisition,
   IUpdateProductRequisitionGeneralInfo,
@@ -19,6 +20,8 @@ import {
   useUpdateProductRequisitionGeneralInfo,
   useUpdateProductRequisitionQuantity
 } from '@/hooks'
+import { isAxiosError } from 'axios'
+import { AxiosError } from 'axios'
 
 const UpdateProductRequisition: React.FC = () => {
   const { t } = useTranslation(['productRequisition'])
@@ -47,6 +50,13 @@ const UpdateProductRequisition: React.FC = () => {
       updateProduct(data, {
         onSuccess: () => {
           showToast(tToast('toast.updateRequestSuccess'))
+        },
+        onError: (error) => {
+          if (isAxiosError(error)) {
+            const axiosError = error as AxiosError<IApiResponse<void>>
+            console.log('axiosError', axiosError.response?.data.code)
+            if (axiosError.response?.data.code) showErrorToast(axiosError.response.data.code)
+          }
         }
       })
     }

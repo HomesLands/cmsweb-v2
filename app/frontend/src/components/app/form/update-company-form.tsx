@@ -17,12 +17,12 @@ import { TUpdateCompanySchema, updateCompanySchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ICompany, IUpdateCompany } from '@/types'
 
-interface IFormEditProductProps {
+interface IFormUpdateCompanyProps {
   company?: ICompany
   onSubmit: (data: IUpdateCompany) => void
 }
 
-const UpdateCompanyForm: React.FC<IFormEditProductProps> = ({ company, onSubmit }) => {
+const UpdateCompanyForm: React.FC<IFormUpdateCompanyProps> = ({ company, onSubmit }) => {
   const { t } = useTranslation('companies')
 
   const form = useForm<TUpdateCompanySchema>({

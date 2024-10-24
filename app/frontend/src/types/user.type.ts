@@ -51,9 +51,6 @@ export interface IUserPermission {
 
 export interface IUpdateUserGeneralInfo {
   fullname: string
-  username: string
-  company: string
-  site: string
   address: string
   phoneNumber: string
   dob: string
