@@ -24,6 +24,14 @@
 
     "updateProject": "Cập nhật dự án",
     "updateProjectDescription": "Nhập đầy đủ thông tin vào các trường để cập nhật dự án",
-    "update": "Cập nhật"
+    "update": "Cập nhật",
+
+    "deleteProject": "Xóa dự án",
+    "deleteProjectDescription": "Lưu ý: Hành động này không thể hoàn tác!",
+    "deleteProjectWarning1": "Bạn sắp sửa xóa dự án",
+    "deleteProjectWarning2": "thuộc địa điểm",
+    "deleteProjectConfirmation": "Bạn có chắc chắn muốn xóa dự án này?",
+    "cancel": "Hủy",
+    "confirmDelete": "Tôi đã hiểu, xác nhận xóa"
   }
 }

@@ -11,10 +11,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui'
-import { IAuthority } from '@/types'
-import { DialogUpdateAuthority } from '@/components/app/dialog'
+import { IAssignedApprover } from '@/types'
+import { DialogDeleteAssignedApprover, DialogUpdateAssignedApprover } from '@/components/app/dialog'
 
-export const useAssignedApproverColumns = (): ColumnDef<IAuthority>[] => {
+export const useAssignedApproverColumns = (): ColumnDef<IAssignedApprover>[] => {
   const { t } = useTranslation(['assignedApprover'])
   return [
     {
@@ -51,7 +51,7 @@ export const useAssignedApproverColumns = (): ColumnDef<IAuthority>[] => {
       id: 'actions',
       header: 'Thao tác',
       cell: ({ row }) => {
-        const authority = row.original
+        const approver = row.original
         return (
           <div>
             <DropdownMenu>
@@ -64,7 +64,8 @@ export const useAssignedApproverColumns = (): ColumnDef<IAuthority>[] => {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {/* <DialogUpdateAuthority authority={authority} /> */}
+                <DialogUpdateAssignedApprover approver={approver} />
+                <DialogDeleteAssignedApprover approver={approver} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

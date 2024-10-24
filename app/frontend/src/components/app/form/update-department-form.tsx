@@ -14,21 +14,16 @@ import {
 } from '@/components/ui'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ICreateDepartment, IDepartment, IUpdateDepartment } from '@/types'
-import {
-  createDepartmentSchema,
-  TCreateDepartmentSchema,
-  TUpdateDepartmentSchema,
-  updateDepartmentSchema
-} from '@/schemas'
+import { IDepartment, IUpdateDepartment } from '@/types'
+import { TUpdateDepartmentSchema, updateDepartmentSchema } from '@/schemas'
 import { SelectSite } from '@/components/app/select'
 
-interface IFormCreateDepartmentProps {
+interface IFormUpdateDepartmentProps {
   department: IDepartment
   onSubmit: (data: IUpdateDepartment) => void
 }
 
-const UpdateDepartmentForm: React.FC<IFormCreateDepartmentProps> = ({ department, onSubmit }) => {
+const UpdateDepartmentForm: React.FC<IFormUpdateDepartmentProps> = ({ department, onSubmit }) => {
   const { t } = useTranslation(['department'])
   const [selectedSite, setSelectedSite] = useState<{ slug: string; name: string } | null>(null)
 
