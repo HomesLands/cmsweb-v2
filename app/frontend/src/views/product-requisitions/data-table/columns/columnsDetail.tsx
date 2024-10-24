@@ -23,7 +23,7 @@ export const useColumnsDetail = (): ColumnDef<IProductRequisitionInfo>[] => {
       ),
       cell: ({ row }) => {
         const { isExistProduct, product, temporaryProduct } = row.original
-        return isExistProduct ? <div>{product.code}</div> : <div>{temporaryProduct.name}</div>
+        return isExistProduct ? <div>{product.code}</div> : <div>{temporaryProduct?.name}</div>
       }
     },
     {
@@ -36,7 +36,7 @@ export const useColumnsDetail = (): ColumnDef<IProductRequisitionInfo>[] => {
         return isExistProduct ? (
           <div>{product.provider}</div>
         ) : (
-          <div>{temporaryProduct.provider}</div>
+          <div>{temporaryProduct?.provider}</div>
         )
       }
     },
@@ -50,7 +50,7 @@ export const useColumnsDetail = (): ColumnDef<IProductRequisitionInfo>[] => {
         return isExistProduct ? (
           <div>{product.unit.name}</div>
         ) : (
-          <div>{temporaryProduct.unit.name}</div>
+          <div>{temporaryProduct?.unit?.name}</div>
         )
       }
     },
