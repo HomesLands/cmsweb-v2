@@ -6,33 +6,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui'
 import { personalAccountInfoSchema, TPersonalAccountInfoSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useChangePassword, useUpdateUser, useUploadProfilePicture } from '@/hooks'
-import { DialogConfirmChangePassword, DialogUpdateUserGeneralInfo } from '@/components/app/dialog'
-import { IConfirmChangePassword, IUpdateUserGeneralInfo, IUserInfo } from '@/types'
+import { IConfirmChangePassword } from '@/types'
 import { useUserStore } from '@/stores'
 import { CardUserGeneralInfo, CardUserPasswordAndAuthentication } from '@/components/app/card'
 import { showToast } from '@/utils'
 
 export const PersonalAccountForm: React.FC = () => {
   const { userInfo, setUserInfo } = useUserStore()
-  const [password, setPassword] = useState<IConfirmChangePassword | null>(null)
-  const [openDialog, setOpenDialog] = useState(false)
-  const [openDialogChangePassword, setOpenDialogChangePassword] = useState(false)
   const { t } = useTranslation('account')
   const { t: tToast } = useTranslation('toast')
   const { mutate: uploadProfilePicture } = useUploadProfilePicture()
-  const { mutate: updateUser } = useUpdateUser()
-  const { mutate: changePassword } = useChangePassword()
-
-  // const handleUpdateGeneralInfo = (data: IUpdateUserGeneralInfo) => {
-  //   if (data) {
-  //     console.log(data)
-  //     updateUser(data, {
-  //       onSuccess: () => {
-  //         showToast(tToast('toast.updateUserSuccess'))
-  //       }
-  //     })
-  //   }
-  // }
 
   const handleUploadProfilePicture = (file: File) => {
     uploadProfilePicture(file, {
@@ -42,20 +25,6 @@ export const PersonalAccountForm: React.FC = () => {
       }
     })
   }
-
-  // const handleChangePassword = (data: IConfirmChangePassword) => {
-  //   setOpenDialogChangePassword(true)
-  //   setPassword(data)
-  // }
-
-  // const handleConfirmChangePassword = (data: IConfirmChangePassword) => {
-  //   setOpenDialogChangePassword(false)
-  //   changePassword(data, {
-  //     onSuccess: () => {
-  //       showToast(tToast('toast.changePasswordSuccess'))
-  //     }
-  //   })
-  // }
 
   const form = useForm<TPersonalAccountInfoSchema>({
     resolver: zodResolver(personalAccountInfoSchema),

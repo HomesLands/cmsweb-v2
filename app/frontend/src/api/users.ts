@@ -42,8 +42,8 @@ export async function uploadSignature(file: File) {
 }
 
 export async function updateUser(data: IUpdateUserGeneralInfo) {
-  // const response = await http.patch<IApiResponse<IUserInfo>>(`/users/update`, data)
-  // return response.data
+  const response = await http.patch<IApiResponse<IUserInfo>>(`/users/update`, data)
+  return response.data
 }
 
 export async function changePasswordApi(data: IConfirmChangePassword) {

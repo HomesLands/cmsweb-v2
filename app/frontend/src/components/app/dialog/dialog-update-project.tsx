@@ -13,16 +13,10 @@ import {
   ScrollArea
 } from '@/components/ui'
 
-import {
-  ICreateDepartment,
-  IDepartment,
-  IProject,
-  IUpdateDepartment,
-  IUpdateProject
-} from '@/types'
+import { IProject, IUpdateProject } from '@/types'
 import { showToast } from '@/utils'
-import { useUpdateDepartment, useUpdateProject } from '@/hooks'
-import { UpdateDepartmentForm, UpdateProjectForm } from '@/components/app/form'
+import { useUpdateProject } from '@/hooks'
+import { UpdateProjectForm } from '@/components/app/form'
 
 export default function DialogUpdateProject({ project }: { project: IProject }) {
   const { t } = useTranslation('projects')

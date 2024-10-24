@@ -88,4 +88,4 @@ const UpdateCompanyForm: React.FC<IFormEditProductProps> = ({ company, onSubmit 
   )
 }
 
-export default UpdateCompanyForm
+export { UpdateCompanyForm }

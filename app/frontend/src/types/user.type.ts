@@ -31,6 +31,10 @@ export interface IUserInfo {
     updatedAt: string
     slug: string
   }[]
+  dob: string
+  gender: string
+  phoneNumber: string
+  address: string
   userRoles: IUserRole[]
   signature: string
   createdAt: string
@@ -50,6 +54,10 @@ export interface IUpdateUserGeneralInfo {
   username: string
   company: string
   site: string
+  address: string
+  phoneNumber: string
+  dob: string
+  gender: string
 }
 
 export interface IConfirmChangePassword {

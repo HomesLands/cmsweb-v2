@@ -1,5 +1,5 @@
 import React from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -16,6 +16,7 @@ import { personalAccountInfoSchema, TPersonalAccountInfoSchema } from '@/schemas
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IUpdateUserGeneralInfo, IUserInfo } from '@/types'
+import { DatePicker } from '../picker' // Your updated CustomDatePicker
 
 interface IFormUpdateUserGeneralInfoProps {
   data?: IUserInfo
@@ -34,7 +35,11 @@ export const FormUpdateUserGeneralInfo: React.FC<IFormUpdateUserGeneralInfoProps
       fullname: data?.fullname || '',
       username: data?.username || '',
       company: data?.userDepartments[0]?.department?.site?.company?.name || '',
-      site: data?.userDepartments[0]?.department?.site?.name || ''
+      site: data?.userDepartments[0]?.department?.site?.name || '',
+      address: data?.address || '',
+      phoneNumber: data?.phoneNumber || '',
+      dob: data?.dob || '',
+      gender: data?.gender || ''
     }
   })
 
@@ -66,6 +71,69 @@ export const FormUpdateUserGeneralInfo: React.FC<IFormUpdateUserGeneralInfoProps
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t('account.username')}</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    phoneNumber: (
+      <FormField
+        control={form.control}
+        name="phoneNumber"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('account.phoneNumber')}</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    address: (
+      <FormField
+        control={form.control}
+        name="address"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('account.address')}</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    dob: (
+      <Controller
+        control={form.control}
+        name="dob"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('account.dob')}</FormLabel>
+            <FormControl>
+              <DatePicker
+                date={field.value ? new Date(field.value) : undefined} // Convert string to Date
+                onSelect={(selectedDate) => field.onChange(selectedDate)} // Pass selected date to form
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    gender: (
+      <FormField
+        control={form.control}
+        name="gender"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('account.gender')}</FormLabel>
             <FormControl>
               <Input {...field} />
             </FormControl>
@@ -110,7 +178,7 @@ export const FormUpdateUserGeneralInfo: React.FC<IFormUpdateUserGeneralInfoProps
     <div className="mt-3">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-2">
             {Object.keys(formFields).map((key) => (
               <React.Fragment key={key}>
                 {formFields[key as keyof typeof formFields]}

@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils'
 import { publicFileURL } from '@/constants'
 import { IUserInfo } from '@/types'
 import { DialogUpdateUserGeneralInfo } from '../dialog'
+import { DatePicker } from '../picker'
 
 interface CardUserGeneralInfoProps {
   handleUploadProfilePicture: (file: File) => void
@@ -29,6 +30,63 @@ export const CardUserGeneralInfo = ({ handleUploadProfilePicture }: CardUserGene
 
   const triggerFileInput = () => {
     fileInputRef.current?.click()
+  }
+
+  const formFields = {
+    fullname: (
+      <div className="flex flex-col gap-1">
+        <span className="text-sm font-beVietNam text-normal">{t('account.fullname')}</span>
+        <Input className="font-beVietNam" value={userInfo?.fullname} />
+      </div>
+    ),
+    username: (
+      <div className="flex flex-col gap-1">
+        <span className="text-sm font-beVietNam text-normal">{t('account.username')}</span>
+        <Input className="font-beVietNam" value={userInfo?.username} />
+      </div>
+    ),
+    address: (
+      <div className="flex flex-col gap-1">
+        <span className="text-sm font-beVietNam text-normal">{t('account.address')}</span>
+        <Input className="font-beVietNam" value={userInfo?.address} />
+      </div>
+    ),
+    phoneNumber: (
+      <div className="flex flex-col gap-1">
+        <span className="text-sm font-beVietNam text-normal">{t('account.phoneNumber')}</span>
+        <Input className="font-beVietNam" value={userInfo?.phoneNumber} />
+      </div>
+    ),
+    gender: (
+      <div className="flex flex-col gap-1">
+        <span className="text-sm font-beVietNam text-normal">{t('account.gender')}</span>
+        <Input className="font-beVietNam" value={userInfo?.gender} />
+      </div>
+    ),
+    dob: (
+      <div className="flex flex-col gap-1">
+        <span className="text-sm font-beVietNam text-normal">{t('account.dob')}</span>
+        <Input className="font-beVietNam" value={userInfo?.dob} />
+      </div>
+    ),
+    company: (
+      <div className="flex flex-col gap-1">
+        <span className="text-sm font-beVietNam text-normal">{t('account.company')}</span>
+        <Input
+          className="font-beVietNam"
+          value={userInfo?.userDepartments[0]?.department?.site?.company.name || 'N/A'}
+        />
+      </div>
+    ),
+    site: (
+      <div className="flex flex-col gap-1">
+        <span className="text-sm font-beVietNam text-normal">{t('account.site')}</span>
+        <Input
+          className="font-beVietNam"
+          value={userInfo?.userDepartments[0]?.department?.site?.name || 'N/A'}
+        />
+      </div>
+    )
   }
 
   return (
@@ -62,38 +120,11 @@ export const CardUserGeneralInfo = ({ handleUploadProfilePicture }: CardUserGene
             >
               <span className="font-semibold font-beVietNam text-md">{t('account.profile')}</span>
               <DialogUpdateUserGeneralInfo userInfo={userInfo as IUserInfo} />
-              {/* <Button
-                variant="outline"
-                className="flex items-center justify-center gap-1"
-                onClick={() => setOpenDialog(true)}
-              >
-                <UserRoundPen className="icon" />
-                <span className="text-normal">{t('account.edit')}</span>
-              </Button> */}
             </div>
             <div className="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2">
-              <div className="flex flex-col gap-1">
-                <span className="text-sm font-beVietNam text-normal">{t('account.fullname')}</span>
-                <Input className="font-beVietNam" value={userInfo?.fullname} />
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-sm font-beVietNam text-normal">{t('account.username')}</span>
-                <Input className="font-beVietNam" value={userInfo?.username} />
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-sm font-beVietNam text-normal">{t('account.company')}</span>
-                <Input
-                  className="font-beVietNam"
-                  value={userInfo?.userDepartments[0]?.department?.site?.company.name || 'N/A'}
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-sm font-beVietNam text-normal">{t('account.site')}</span>
-                <Input
-                  className="font-beVietNam"
-                  value={userInfo?.userDepartments[0]?.department?.site?.name || 'N/A'}
-                />
-              </div>
+              {Object.keys(formFields).map((key) => (
+                <div key={key}>{formFields[key as keyof typeof formFields]}</div>
+              ))}
             </div>
           </div>
         </CardContent>

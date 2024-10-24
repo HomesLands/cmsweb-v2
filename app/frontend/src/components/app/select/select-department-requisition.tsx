@@ -50,11 +50,15 @@ export const SelectDepartmentRequisition: FC<SelectDepartmentProps> = ({
         <SelectValue placeholder={t('productRequisition.selectDepartment')} />
       </SelectTrigger>
       <SelectContent>
-        {department.userDepartments.map((item) => (
-          <SelectItem key={item.department.slug} value={item.department.slug}>
-            {item.department.description}
-          </SelectItem>
-        ))}
+        {department?.userDepartments?.map(
+          (item) =>
+            item?.department &&
+            item.department.slug && (
+              <SelectItem key={item.department.slug} value={item.department.slug}>
+                {item.department.description || 'No Description'}
+              </SelectItem>
+            )
+        )}
       </SelectContent>
     </Select>
   )

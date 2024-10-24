@@ -46,9 +46,11 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
     requisition?.deadlineApproval ? new Date(requisition.deadlineApproval) : undefined
   )
   const [company, setCompany] = useState<string>(
-    userInfo?.userDepartments[0]?.department.site.company.name || ''
+    userInfo?.userDepartments?.[0]?.department?.site?.company?.name || ''
   )
-  const [site, setSite] = useState<string>(userInfo?.userDepartments[0]?.department.site.name || '')
+  const [site, setSite] = useState<string>(
+    userInfo?.userDepartments?.[0]?.department?.site?.name || ''
+  )
 
   const validateDate = (selectedDate: Date | undefined) => {
     if (!selectedDate) return false
@@ -65,18 +67,21 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
         ? format(new Date(requisition.deadlineApproval), 'yyyy-MM-dd HH:mm:ss')
         : undefined,
       company: {
-        slug: userInfo?.userDepartments[0].department.site.company.slug || '',
-        name: userInfo?.userDepartments[0].department.site.company.name || '',
-        logo: userInfo?.userDepartments[0].department.site.company.logo || ''
+        slug: userInfo?.userDepartments?.[0]?.department?.site?.company?.slug || '',
+        name: userInfo?.userDepartments?.[0]?.department?.site?.company?.name || '',
+        logo: userInfo?.userDepartments?.[0]?.department?.site?.company?.logo || ''
       },
+
       department: {
-        slug: userInfo?.userDepartments[0].department.slug || '',
-        name: userInfo?.userDepartments[0].department.description || ''
+        slug: userInfo?.userDepartments?.[0]?.department?.slug || '',
+        name: userInfo?.userDepartments?.[0]?.department?.description || ''
       },
+
       site: {
-        slug: userInfo?.userDepartments[0].department.site.slug || '',
-        name: userInfo?.userDepartments[0].department.site.name || ''
+        slug: userInfo?.userDepartments?.[0]?.department?.site?.slug || '',
+        name: userInfo?.userDepartments?.[0]?.department?.site?.name || ''
       },
+
       type: 'normal',
       requestProducts: [],
       project: {
@@ -258,7 +263,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
             <FormLabel>{t('productRequisition.departmentName')}</FormLabel>
             <FormControl>
               <SelectDepartmentRequisition
-                defaultValue={userInfo?.userDepartments[0]?.department.slug}
+                defaultValue={userInfo?.userDepartments[0]?.department?.slug}
                 department={{ userDepartments: userInfo?.userDepartments || [] }}
                 onChange={handleDepartmentChange} // Use the new handler
               />

@@ -16,6 +16,12 @@
     "fullnameDescription": "Họ và tên của bạn",
     "username": "Tên tài khoản",
     "usernameDescription": "Tên tài khoản của bạn",
+
+    "phoneNumber": "Số điện thoại",
+    "gender": "Giới tính",
+    "address": "Địa chỉ",
+    "dob": "Ngày sinh",
+
     "password": "Mật khẩu",
     "oldPassword": "Mật khẩu cũ",
     "enterOldPassword": "Nhập mật khẩu cũ",
