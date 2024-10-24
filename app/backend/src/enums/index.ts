@@ -51,3 +51,10 @@ export enum Extension {
   PDF = "pdf",
   WORD = "docx",
 }
+
+export enum NotificationType {
+  APPROVAL = "approval",
+  WARNING = "warning",
+  INFO = "info",
+  REMINDER = "reminder",
+}
