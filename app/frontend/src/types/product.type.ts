@@ -154,6 +154,7 @@ export interface IProductRequisitionInfo {
   isExistProduct: boolean
   requestQuantity: number
   product: IProductInfo
+  temporaryProduct?: IProductInfo
 }
 
 export interface IProductQuery extends IQuery {
