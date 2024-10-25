@@ -24,3 +24,4 @@ export * from "./rfid.entity";
 export * from "./temporary-product.entity";
 export * from "./resource.entity";
 export * from "./role-permission.entity";
+export * from "./notification.entity";

@@ -1,4 +1,5 @@
 export type TEnv = {
+  broker: string;
   port: number;
   dataSource: {
     hostMySql: string;
@@ -40,3 +41,4 @@ export * from "./approval-log.types";
 export * from "./user.type";
 export * from "./resource.type";
 export * from "./role-permission.type";
+export * from "./notification.type";

@@ -24,4 +24,5 @@ export const env: TEnv = {
   tag: process.env.TAG || "v1",
   swaggerEnpoint:
     process.env.SWAGGER_ENDPOINT || `http://localhost:${port}/api`,
+  broker: process.env.BROKER_URL || "localhost:9092",
 };
