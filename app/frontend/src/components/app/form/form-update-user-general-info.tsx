@@ -22,7 +22,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IUpdateUserGeneralInfo, IUserInfo } from '@/types'
 import { DatePicker } from '../picker' // Your updated CustomDatePicker
-import { SelectGender, SelectSite } from '../select'
+import { SelectGender } from '../select'
 import { format } from 'date-fns'
 
 interface IFormUpdateUserGeneralInfoProps {
@@ -108,14 +108,12 @@ export const FormUpdateUserGeneralInfo: React.FC<IFormUpdateUserGeneralInfoProps
             <FormLabel>{t('account.dob')}</FormLabel>
             <FormControl>
               <DatePicker
-                date={field.value ? new Date(field.value) : null} // Convert string to Date
+                date={field.value}
                 onSelect={(selectedDate) => {
-                  // Format the date to "DD/MM/YYYY" before updating the form
-                  field.onChange(selectedDate ? format(selectedDate, 'dd/MM/yyyy') : '')
+                  field.onChange(selectedDate)
                 }}
                 validateDate={(date) => {
-                  // Add logic to validate the date if necessary
-                  return true // Replace with your actual validation logic
+                  return true // Thay thế bằng logic xác thực thực tế của bạn
                 }}
               />
             </FormControl>
