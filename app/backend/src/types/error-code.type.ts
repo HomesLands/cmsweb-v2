@@ -128,6 +128,7 @@ export type TErrorCodeKey =
   | "INVALID_ADDRESS"
   | "INVALID_PHONENUMBER"
   | "ASSIGNED_USER_APPROVAL_NOT_FOUND"
+  | "NOTIFICATION_NOT_FOUND"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {

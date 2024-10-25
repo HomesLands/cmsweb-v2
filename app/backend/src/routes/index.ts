@@ -30,6 +30,7 @@ import { resourceRoute } from "./resource.route";
 import { rolePermissionRoute } from "./role-permission.route";
 import { databaseRoute } from "./database.route";
 import { env } from "@constants";
+import { notificationRoute } from "./notification.route";
 
 const baseApi: Router = Router();
 
@@ -85,6 +86,8 @@ export const registerRoutes = (app: Express) => {
   baseApi.use("/rolePermissions", rolePermissionRoute);
 
   baseApi.use("/database", databaseRoute);
+
+  baseApi.use("/notifications", notificationRoute);
 
   app.use(`/api/${env.tag}`, baseApi);
 

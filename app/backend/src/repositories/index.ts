@@ -22,3 +22,4 @@ export { default as warehouseRepository } from "./warehouse.repository";
 export { default as temporaryProductRepository } from "./temporary-product.repository";
 export { default as resourceRepository } from "./resource.repository";
 export { default as rolePermissionRepository } from "./role-permission.repository";
+export { default as notificationRepository } from "./notification.repository";

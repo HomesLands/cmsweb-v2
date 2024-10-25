@@ -58,6 +58,7 @@ import { StatusCodes } from "http-status-codes";
 import { env } from "@constants";
 import { Ability, MongoQuery } from "@casl/ability";
 import { Subjects } from "@lib/casl";
+import { producer, topicName } from "@configs/kafka.config";
 
 class ProductRequisitionFormService {
   public async getAllProductRequisitionForms(
@@ -283,6 +284,23 @@ class ProductRequisitionFormService {
     Object.assign(form, { requestProducts, userApprovals });
 
     const created = await productRequisitionFormRepository.createAndSave(form);
+
+    // Send message
+    await producer.connect();
+    await producer.send({
+      topic: `${topicName}.created`,
+      messages: [
+        {
+          value: JSON.stringify({
+            message: "Product requisition form has been created successfully",
+            userId: form.creator?.id,
+            url: "/product-requisitions",
+            type: topicName,
+          }),
+        },
+      ],
+    });
+    await producer.disconnect();
 
     const formDto = mapper.map(
       created,

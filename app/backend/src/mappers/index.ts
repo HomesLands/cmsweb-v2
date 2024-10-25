@@ -24,6 +24,7 @@ import { temporaryProductMapper } from "./temporary-product.mapper";
 import { resourceMapper } from "./resource.mapper";
 import { rolePermissionMapper } from "./role-permission.mapper";
 import { baseMapper } from "./base.mapper";
+import { notificationMapper } from "./notification.mapper";
 
 export const mapper = createMapper({
   strategyInitializer: classes(),
@@ -48,6 +49,7 @@ addProfile(mapper, userRoleMapper, extend(baseMapper(mapper)));
 addProfile(mapper, unitMapper, extend(baseMapper(mapper)));
 addProfile(mapper, warehouseMapper, extend(baseMapper(mapper)));
 addProfile(mapper, productMapper, extend(baseMapper(mapper)));
+addProfile(mapper, notificationMapper, extend(baseMapper(mapper)));
 addProfile(mapper, productWarehouseMapper, extend(baseMapper(mapper)));
 
 addProfile(mapper, assignedUserApprovalMapper, extend(baseMapper(mapper)));

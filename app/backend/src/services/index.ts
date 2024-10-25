@@ -24,3 +24,4 @@ export { default as resourceService } from "./resource.service";
 export { default as rolePermissionService } from "./role-permission.service";
 export { default as PDFService } from "./pdf.service";
 export { default as databaseService } from "./database.service";
+export { default as notificationService } from "./notification.service";

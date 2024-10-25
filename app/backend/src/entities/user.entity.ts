@@ -8,6 +8,7 @@ import {
   AssignedUserApproval,
   UserDepartment,
 } from "@entities";
+import { Notification } from "./notification.entity";
 
 @Entity("user_tbl")
 export class User extends Base {
@@ -49,6 +50,9 @@ export class User extends Base {
   // A user can have many roles
   @OneToMany(() => UserRole, (userRole) => userRole.user)
   userRoles?: UserRole[];
+
+  @OneToMany(() => Notification, (notificarion) => notificarion.user)
+  notificarions?: Notification[];
 
   // creator
   // a user can create many product requisition form

@@ -12,7 +12,6 @@ on:
 jobs:
   deploy:
     if: github.event.pull_request.merged
-    # runs-on: self-hosted
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -23,8 +22,8 @@ jobs:
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }} # Specify your SSH port here
+          key: ${{ secrets.SSH_PRIVATE_KEY_DEV }} # Add your private key here
           script: |
             cd cmsweb-v2/  # Change to your application directory on the remote host
             git pull origin main  # Pull latest changes
