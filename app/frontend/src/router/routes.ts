@@ -181,16 +181,16 @@ export const sidebarRoutes: ISidebarRoute[] = [
         permission: { authority: Authority.CREATE, resource: Resource.ASSIGNED_APPROVAL }
       }
     ]
-  },
-  {
-    title: 'sidebar.notifications',
-    path: ROUTE.NOTIFICATION,
-    icon: BellIcon,
-    children: [
-      {
-        title: 'sidebar.notifications',
-        path: ROUTE.NOTIFICATION
-      }
-    ]
   }
+  // {
+  //   title: 'sidebar.notifications',
+  //   path: ROUTE.NOTIFICATION,
+  //   icon: BellIcon,
+  //   children: [
+  //     {
+  //       title: 'sidebar.notifications',
+  //       path: ROUTE.NOTIFICATION
+  //     }
+  //   ]
+  // }
 ]

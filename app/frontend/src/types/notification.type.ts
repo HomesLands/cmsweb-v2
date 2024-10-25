@@ -1,7 +1,8 @@
 export interface INotification {
-  id: string
-  title: string
-  content: string
-  read: boolean
+  url: string
+  type: string
+  message: string
+  isRead: boolean
   createdAt: string
+  slug: string
 }
