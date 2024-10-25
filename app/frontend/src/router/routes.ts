@@ -7,7 +7,8 @@ import {
   UserCheckIcon,
   UsersIcon,
   WarehouseIcon,
-  ArchiveIcon
+  ArchiveIcon,
+  BellIcon
 } from 'lucide-react'
 
 import type { ISidebarRoute } from '@/types'
@@ -178,6 +179,17 @@ export const sidebarRoutes: ISidebarRoute[] = [
         title: 'sidebar.createAssignedApprover',
         path: ROUTE.ADD_ASSIGNED_APPROVER,
         permission: { authority: Authority.CREATE, resource: Resource.ASSIGNED_APPROVAL }
+      }
+    ]
+  },
+  {
+    title: 'sidebar.notifications',
+    path: ROUTE.NOTIFICATION,
+    icon: BellIcon,
+    children: [
+      {
+        title: 'sidebar.notifications',
+        path: ROUTE.NOTIFICATION
       }
     ]
   }

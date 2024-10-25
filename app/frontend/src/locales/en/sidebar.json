@@ -53,6 +53,9 @@
     "add": "Add new",
     "product-requisitions": "Product requisitions",
     "backups": "Backups",
-    "assigned-approvers": "Assigned approvers"
+    "assigned-approvers": "Assigned approvers",
+
+    "personalAccount": "Personal account",
+    "notifications": "Notifications"
   }
 }

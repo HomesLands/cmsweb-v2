@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react'
-import { Popover, PopoverContent, PopoverTrigger, Button, Label, ScrollArea } from '@/components/ui'
 import { BellIcon, ClockIcon, DotFilledIcon } from '@radix-ui/react-icons'
+import { NavLink } from 'react-router-dom'
+import { Popover, PopoverContent, PopoverTrigger, Button, Label, ScrollArea } from '@/components/ui'
 import { INotification } from '@/types'
 import { getNotification } from '@/api/notification'
+import { ROUTE } from '@/constants'
+import { useTranslation } from 'react-i18next'
 
 export function PopoverNotification() {
   const [notifications, setNotifications] = useState<INotification[]>([])
+  const { t } = useTranslation('notifications')
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
   useEffect(() => {
     async function fetchNotifications() {
@@ -27,37 +32,46 @@ export function PopoverNotification() {
   }
 
   return (
-    <Popover>
+    <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
           <BellIcon className="h-[1.1rem] w-[1.1rem]" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="mt-1 mr-2 md:w-[24rem]">
+      <PopoverContent className="mt-1 p-0 mr-2 md:w-[24rem]">
         <div className="grid">
-          <div className="space-y-2">
-            <Label className="text-lg font-bold leading-none">Thông báo</Label>
+          <div className="flex flex-row justify-between px-4 py-5 border-b">
+            <Label className="text-lg font-bold leading-none">
+              {t('notifications.notification')}
+            </Label>
+            <NavLink
+              to={ROUTE.NOTIFICATION}
+              className="text-sm text-primary"
+              onClick={() => setIsPopoverOpen(false)}
+            >
+              {t('notifications.viewAll')}
+            </NavLink>
           </div>
-          <ScrollArea className="mt-2 sm:max-w-[25rem] sm:max-h-[22rem]">
+          <ScrollArea className="my-3 px-2 sm:max-w-[25rem] sm:max-h-[28rem]">
             <div className="grid gap-1">
               {notifications.length > 0 ? (
                 notifications.map((notification) => (
                   <div key={notification.id}>
                     <div
                       key={notification.id}
-                      className={`relative grid items-center grid-cols-5 gap-2 rounded-md px-2 py-2 ${notification.read ? 'bg-gray-50' : ''}`}
+                      className="relative grid items-center grid-cols-5 gap-2 px-2 py-2 transition-all duration-200 border-b hover:bg-muted/35"
                     >
-                      <div className="flex relative justify-center items-center w-9 h-9 bg-blue-50 rounded-2xl">
-                        <BellIcon className="w-4 h-4 text-blue-700" />
+                      <div className="relative flex items-center justify-center w-9 h-9 bg-primary/5 rounded-2xl">
+                        <BellIcon className="w-4 h-4 text-primary" />
                         {!notification.read && (
-                          <DotFilledIcon className="absolute -top-1 -right-1 w-5 h-5 text-blue-600" />
+                          <DotFilledIcon className="absolute w-5 h-5 text-primary -top-1 -right-1" />
                         )}
                       </div>
 
                       <div className="col-span-4">
                         <span className="text-sm font-bold text-normal">{notification.title}</span>
                         <p className="text-xs text-gray-500">{notification.content}</p>
-                        <div className="flex flex-row gap-1 justify-start items-center mt-1">
+                        <div className="flex flex-row items-center justify-start gap-1 mt-1">
                           <ClockIcon className="w-2.5 h-2.5" />
                           <p className="text-[0.7rem] text-normal">
                             {formatDate(notification.createdAt)}
@@ -68,7 +82,7 @@ export function PopoverNotification() {
                   </div>
                 ))
               ) : (
-                <span className="text-sm text-gray-500">Không có thông báo nào</span>
+                <span className="text-sm text-gray-500">{t('notifications.noNotification')}</span>
               )}
             </div>
           </ScrollArea>

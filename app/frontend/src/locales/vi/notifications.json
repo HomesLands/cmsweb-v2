@@ -1,0 +1,27 @@
+{
+  "notifications": {
+    "title": "Danh sách thông báo",
+    "notification": "Thông báo",
+    "viewAll": "Xem tất cả",
+    "markAllAsRead": "Đánh dấu tất cả đã đọc",
+
+    "id": "ID",
+    "notificationTitle": "Tiêu đề",
+    "content": "Nội dung",
+    "createdAt": "Thời gian",
+    "actions": "Thao tác",
+
+    "noNotifications": "Không có thông báo",
+    "mark_all_as_read": "Đánh dấu tất cả đã đọc",
+    "mark_as_read": "Đánh dấu đã đọc",
+    "mark_as_unread": "Đánh dấu chưa đọc",
+    "delete": "Xóa",
+    "deleted": "Thông báo đã xóa",
+    "marked_as_read": "Thông báo đã đánh dấu đã đọc",
+    "marked_as_unread": "Thông báo đã đánh dấu chưa đọc",
+    "marked_all_as_read": "Tất cả thông báo đã đánh dấu đã đọc",
+    "marked_all_as_unread": "Tất cả thông báo đã đánh dấu chưa đọc",
+    "deleted_all": "Tất cả thông báo đã xóa",
+    "mark_as_read_confirmation": "Bạn có chắc chắn muốn đánh dấu thông báo này đã đọc không?"
+  }
+}

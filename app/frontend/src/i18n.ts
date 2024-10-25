@@ -23,6 +23,7 @@ import enResources from '@/locales/en/resources.json'
 import enWarehouse from '@/locales/en/warehouse.json'
 import enProducts from '@/locales/en/products.json'
 import enBackups from '@/locales/en/backups.json'
+import enNotifications from '@/locales/en/notifications.json'
 
 import viAuth from '@/locales/vi/auth.json'
 import viAccount from '@/locales/vi/account.json'
@@ -45,6 +46,8 @@ import viResources from '@/locales/vi/resources.json'
 import viWarehouse from '@/locales/vi/warehouse.json'
 import viProducts from '@/locales/vi/products.json'
 import viBackups from '@/locales/vi/backups.json'
+import viNotifications from '@/locales/vi/notifications.json'
+
 i18n
   .use(LanguageDetector) // Tự động phát hiện ngôn ngữ
   .use(initReactI18next) // Passes i18n down to react-i18next
@@ -71,7 +74,8 @@ i18n
         resources: enResources,
         warehouse: enWarehouse,
         products: enProducts,
-        backups: enBackups
+        backups: enBackups,
+        notifications: enNotifications
       },
       vi: {
         auth: viAuth,
@@ -94,7 +98,8 @@ i18n
         resources: viResources,
         warehouse: viWarehouse,
         products: viProducts,
-        backups: viBackups
+        backups: viBackups,
+        notifications: viNotifications
       }
     },
     lng: window.localStorage.getItem('i18nextLng') || 'vi',
@@ -112,7 +117,13 @@ i18n
       'department',
       'projects',
       'employees',
-      'products'
+      'products',
+      'warehouse',
+      'resources',
+      'companies',
+      'sites',
+      'assignedApprover',
+      'notifications'
     ], //Dùng để phân biệt các phần khác nhau của app
     defaultNS: 'auth' //Ngôn ngữ mặc định
   })
