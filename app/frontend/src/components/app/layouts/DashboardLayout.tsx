@@ -8,6 +8,7 @@ import { BreadCrumbs } from '@/components/app/breadcrumbs'
 import { DownloadProgress } from '@/components/app/progress'
 import { cn } from '@/lib/utils'
 import { useDownloadStore, useThemeStore } from '@/stores'
+import { ScrollArea } from '@/components/ui'
 
 const DashboardLayout = () => {
   const { getTheme } = useThemeStore()
@@ -37,13 +38,15 @@ const DashboardLayout = () => {
         </header>
 
         {/* Main Content (Outlet) */}
-        <main className="p-4 mt-12 transition-all duration-300">
-          <div className="py-3">
-            <BreadCrumbs />
-          </div>
-          <Outlet />
-          {isDownloading && <DownloadProgress progress={progress} fileName={fileName} />}
-        </main>
+        <ScrollArea className="w-full">
+          <main className="p-4 mt-12 transition-all duration-300">
+            <div className="py-3">
+              <BreadCrumbs />
+            </div>
+            <Outlet />
+            {isDownloading && <DownloadProgress progress={progress} fileName={fileName} />}
+          </main>
+        </ScrollArea>
       </div>
     </div>
   )

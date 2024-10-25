@@ -46,7 +46,7 @@ export default function DashboardSidebar() {
             </NavLink>
           </div>
           <nav
-            className={`h-screen px-3 pb-20 flex flex-col gap-2 text-sm font-medium overflow-y-auto ${isMinimized ? 'justify-start items-center' : 'items-start'}`}
+            className={`h-screen pb-20 flex flex-col gap-2 text-sm font-medium ${isMinimized ? 'justify-start items-center' : 'items-start'}`}
           >
             <SidebarDrawer />
           </nav>
