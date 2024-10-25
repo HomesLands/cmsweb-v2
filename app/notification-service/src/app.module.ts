@@ -12,16 +12,21 @@ import { UserModule } from 'user/user.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
+      isGlobal: true,
       load: [configuration],
-      envFilePath: ['.env.development.local'],
+      envFilePath: [
+        '.env.development.local',
+        '.env.development',
+        '.env.production',
+      ],
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '201102',
-      database: 'cmsweb_db_dev',
+      host: configuration().database.host,
+      port: configuration().database.port,
+      username: configuration().database.user,
+      password: configuration().database.password,
+      database: configuration().database.schema,
       entities: [User, Notification],
       synchronize: false,
     }),

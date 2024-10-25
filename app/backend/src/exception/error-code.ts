@@ -559,6 +559,11 @@ export const ErrorCodes: TErrorCode = {
     code: 1127,
     message: "Assigned user approval not found",
   },
+  NOTIFICATION_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1128,
+    message: "Notification not found",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]

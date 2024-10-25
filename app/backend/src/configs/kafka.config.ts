@@ -1,9 +1,10 @@
+import { env } from "@constants";
 import { Kafka } from "kafkajs";
 
 // Kafka producer Logic
 const kafka = new Kafka({
   clientId: "my-app",
-  brokers: ["localhost:9092"], // Update with your Kafka broker URL
+  brokers: [env.broker], // Update with your Kafka broker URL
 });
 
 export const producer = kafka.producer();
