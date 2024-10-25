@@ -57,5 +57,9 @@ export const ROUTE = {
   ASSIGNED_APPROVER: '/assigned-approvers',
   ADD_ASSIGNED_APPROVER: '/assigned-approvers/add',
 
-  BACKUP: '/backups'
+  // Database
+  BACKUP: '/backups',
+
+  // Notification
+  NOTIFICATION: '/notifications'
 }

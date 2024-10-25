@@ -15,3 +15,8 @@ export async function updateProject(data: IUpdateProject): Promise<IApiResponse<
   const response = await http.patch<IApiResponse<IProject>>(`/projects/${data.slug}`, data)
   return response.data
 }
+
+export async function deleteProject(slug: string): Promise<IApiResponse<IProject>> {
+  const response = await http.delete<IApiResponse<IProject>>(`/projects/${slug}`)
+  return response.data
+}

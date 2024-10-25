@@ -2,14 +2,25 @@ import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { KeyRound, UserRoundPen } from 'lucide-react'
 
-import { Card, CardContent, Input, Button } from '@/components/ui'
+import {
+  Card,
+  CardContent,
+  Input,
+  Button,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui'
 import { ProfilePicture } from '@/components/app/avatar'
 import { useThemeStore, useUserStore } from '@/stores'
-import { useUploadSignature, useUser } from '@/hooks/use-users'
+import { useUploadSignature } from '@/hooks/use-users'
 import { cn } from '@/lib/utils'
 import { publicFileURL } from '@/constants'
 import { IUserInfo } from '@/types'
 import { DialogUpdateUserGeneralInfo } from '../dialog'
+import { Gender } from '@/constants/gender'
 
 interface CardUserGeneralInfoProps {
   handleUploadProfilePicture: (file: File) => void
@@ -59,7 +70,11 @@ export const CardUserGeneralInfo = ({ handleUploadProfilePicture }: CardUserGene
     gender: (
       <div className="flex flex-col gap-1">
         <span className="text-sm font-beVietNam text-normal">{t('account.gender')}</span>
-        <Input className="font-beVietNam" value={userInfo?.gender} />
+        <Input
+          className="font-beVietNam"
+          value={userInfo?.gender ? t(`account.${userInfo.gender}`) : ''}
+          readOnly
+        />
       </div>
     ),
     dob: (
@@ -110,7 +125,7 @@ export const CardUserGeneralInfo = ({ handleUploadProfilePicture }: CardUserGene
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 gap-3 border rounded-md">
+          <div className="grid grid-cols-1 gap-3 rounded-md border">
             <div
               className={cn(
                 'flex justify-between items-center px-6 py-4 w-full',
@@ -130,7 +145,7 @@ export const CardUserGeneralInfo = ({ handleUploadProfilePicture }: CardUserGene
       </Card>
       <Card className="mt-6 border-none">
         <CardContent className="flex flex-col gap-6 p-0">
-          <div className="grid grid-cols-1 gap-3 border rounded-md">
+          <div className="grid grid-cols-1 gap-3 rounded-md border">
             <div
               className={cn(
                 'flex justify-between items-center px-6 py-4 w-full',
@@ -142,7 +157,7 @@ export const CardUserGeneralInfo = ({ handleUploadProfilePicture }: CardUserGene
                 <Button
                   variant="outline"
                   size="sm"
-                  className="flex items-center gap-1"
+                  className="flex gap-1 items-center"
                   onClick={triggerFileInput}
                 >
                   <KeyRound className="icon" />
@@ -152,7 +167,7 @@ export const CardUserGeneralInfo = ({ handleUploadProfilePicture }: CardUserGene
             </div>
             <div className="p-6">
               {userInfo?.signature ? (
-                <div className="w-full h-40 overflow-hidden border rounded-md">
+                <div className="overflow-hidden w-full h-40 rounded-md border">
                   <img
                     src={`${publicFileURL}/${userInfo.signature}`}
                     alt="User Signature"
@@ -161,10 +176,10 @@ export const CardUserGeneralInfo = ({ handleUploadProfilePicture }: CardUserGene
                 </div>
               ) : (
                 <div
-                  className="flex flex-col items-center justify-center w-full h-40 text-gray-400 transition-colors border rounded-md cursor-pointer hover:bg-gray-50"
+                  className="flex flex-col justify-center items-center w-full h-40 text-gray-400 rounded-md border transition-colors cursor-pointer hover:bg-gray-50"
                   onClick={triggerFileInput}
                 >
-                  <UserRoundPen className="w-12 h-12 mb-2" />
+                  <UserRoundPen className="mb-2 w-12 h-12" />
                   <span>{t('account.addSignature')}</span>
                 </div>
               )}

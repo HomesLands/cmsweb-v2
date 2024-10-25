@@ -19,6 +19,8 @@
 
     "phoneNumber": "Số điện thoại",
     "gender": "Giới tính",
+    "male": "Nam",
+    "female": "Nữ",
     "address": "Địa chỉ",
     "dob": "Ngày sinh",
 

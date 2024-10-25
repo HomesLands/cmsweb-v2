@@ -25,21 +25,29 @@ const generateYears = (start: number, end: number) => {
 }
 
 interface DatePickerProps {
-  date?: Date | null
-  onSelect: (date: Date | null) => void
-  validateDate: (date: Date) => boolean // Thêm validateDate
+  date: string | null | undefined
+  onSelect: (date: string | null) => void
+  validateDate: (date: Date) => boolean
 }
 
 export function DatePicker({ date, onSelect, validateDate }: DatePickerProps) {
-  const [month, setMonth] = React.useState<number>(date ? date.getMonth() : new Date().getMonth())
+  const [month, setMonth] = React.useState<number>(
+    date ? new Date(date.split('/').reverse().join('-')).getMonth() : new Date().getMonth()
+  )
   const [year, setYear] = React.useState<number>(
-    date ? date.getFullYear() : new Date().getFullYear()
+    date ? new Date(date.split('/').reverse().join('-')).getFullYear() : new Date().getFullYear()
   )
   const years = generateYears(1920, new Date().getFullYear()) // 100 years range
 
+  const parsedDate = React.useMemo(() => {
+    return date ? new Date(date.split('/').reverse().join('-')) : undefined
+  }, [date])
+
   const handleSelectDate = (selectedDate: Date | undefined) => {
     if (selectedDate && validateDate(selectedDate)) {
-      onSelect(selectedDate)
+      onSelect(format(selectedDate, 'dd/MM/yyyy'))
+    } else {
+      onSelect(null)
     }
   }
 
@@ -53,13 +61,17 @@ export function DatePicker({ date, onSelect, validateDate }: DatePickerProps) {
             !date && 'text-muted-foreground'
           )}
         >
-          <CalendarIcon className="w-4 h-4 mr-2" />
-          {date ? format(date, 'PPP') : <span>Chọn ngày</span>}
+          <CalendarIcon className="mr-2 w-4 h-4" />
+          {date ? (
+            format(new Date(date.split('/').reverse().join('-')), 'PPP')
+          ) : (
+            <span>Chọn ngày</span>
+          )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-4" align="start">
+      <PopoverContent className="p-4 w-auto" align="start">
         {/* Month and Year Selection */}
-        <div className="flex items-center justify-between mb-4 space-x-2">
+        <div className="flex justify-between items-center mb-4 space-x-2">
           <Select value={String(month)} onValueChange={(value) => setMonth(Number(value))}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Tháng" />
@@ -90,7 +102,7 @@ export function DatePicker({ date, onSelect, validateDate }: DatePickerProps) {
         {/* Calendar */}
         <Calendar
           mode="single"
-          selected={date ? date : undefined}
+          selected={parsedDate}
           onSelect={handleSelectDate}
           month={new Date(year, month)}
           initialFocus

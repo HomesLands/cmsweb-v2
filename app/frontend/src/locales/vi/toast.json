@@ -79,6 +79,8 @@
 
     "updateCompanyLogoSuccess": "Logo công ty được cập nhật thành công",
 
+    "updateAssignedApproverSuccess": "Người phê duyệt được cập nhật thành công",
+    "deleteAssignedApproverSuccess": "Người phê duyệt được xóa thành công",
     "assignedUserApprovalExisted": "Người dùng đã được phân công duyệt",
 
     "updateUserDepartmentSuccess": "Phòng ban của người dùng được cập nhật thành công",

@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui'
 import { IProject } from '@/types'
-import { DialogUpdateProject } from '@/components/app/dialog'
+import { DialogDeleteProject, DialogUpdateProject } from '@/components/app/dialog'
 
 export const useProjectColumns = (): ColumnDef<IProject>[] => {
   const { t } = useTranslation(['projects'])
@@ -64,6 +64,7 @@ export const useProjectColumns = (): ColumnDef<IProject>[] => {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
                 <DialogUpdateProject project={project} />
+                <DialogDeleteProject project={project} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

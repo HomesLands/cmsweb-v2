@@ -193,3 +193,9 @@ export const BackupPage = React.lazy(() =>
     default: module.Backups
   }))
 )
+
+export const NotificationPage = React.lazy(() =>
+  import('@/views/notifications').then((module) => ({
+    default: module.Notifications
+  }))
+)

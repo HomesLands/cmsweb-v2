@@ -38,7 +38,8 @@ import {
   CreateProductPage,
   WarehousePage,
   CreateEmployeePage,
-  BackupPage
+  BackupPage,
+  NotificationPage
 } from './loadable'
 
 export const router = createBrowserRouter([
@@ -346,6 +347,21 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <BackupPage />
+      }
+    ]
+  },
+  {
+    path: ROUTE.NOTIFICATION,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: (
+          <ProtectedElement
+            allowedAuthorities={[]}
+            element={<SuspenseElement component={NotificationPage} />}
+          />
+        )
       }
     ]
   }
