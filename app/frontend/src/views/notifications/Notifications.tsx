@@ -6,10 +6,14 @@ import { useNotification, usePagination, useProducts } from '@/hooks'
 import { useNotificationColumns } from './data-table'
 
 export default function Notification() {
-  //   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
+  const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
   const { t } = useTranslation('notifications')
 
-  const { data, isLoading } = useNotification()
+  const { data, isLoading } = useNotification({
+    page: pagination.pageIndex,
+    pageSize: pagination.pageSize,
+    order: 'DESC'
+  })
   console.log(data)
 
   return (
@@ -18,14 +22,14 @@ export default function Notification() {
         <ReaderIcon className="header-icon" />
         {t('notifications.title')}
       </Label>
-      <DataTable
+      {/* <DataTable
         isLoading={isLoading}
         columns={useNotificationColumns()}
-        data={data || []}
+        data={data?.result || []}
         pages={1}
         onPageChange={() => {}}
         onPageSizeChange={() => {}}
-      />
+      /> */}
     </div>
   )
 }
