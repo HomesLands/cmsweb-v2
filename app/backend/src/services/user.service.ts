@@ -10,6 +10,7 @@ import {
   TChangePasswordRequestDto,
   TPaginationOptionResponse,
   TQueryRequest,
+  TUpdateUser,
   TUploadUserAvatarRequestDto,
   TUploadUserSignRequestDto,
 } from "@types";
@@ -21,7 +22,7 @@ import { Subjects } from "@lib";
 import { StatusCodes } from "http-status-codes";
 import { parsePagination } from "@utils/pagination.util";
 import { plainToClass } from "class-transformer";
-import { ChangePasswordRequestDto } from "@dto/request";
+import { ChangePasswordRequestDto, UpdateUser } from "@dto/request";
 import { validate } from "class-validator";
 import { ValidationError } from "exception";
 import bcrypt from "bcryptjs";
@@ -186,6 +187,24 @@ class UserService {
     Object.assign(user, { password: newHashedPassword });
     const updatedUser = await userRepository.save(user);
 
+    const userDto = mapper.map(updatedUser, User, UserResponseDto);
+    return userDto;
+  }
+
+  public async updateUser(
+    userId: string,
+    plainData: TUpdateUser
+  ): Promise<UserResponseDto> {
+    const requestData = plainToClass(UpdateUser, plainData);
+
+    const errors = await validate(requestData);
+    if(errors.length > 0) throw new ValidationError(errors);
+
+    const user = await userRepository.findOneBy({ id: userId });
+    if(!user) throw new GlobalError(StatusCodes.FORBIDDEN);
+
+    Object.assign(user, requestData);
+    const updatedUser = await userRepository.save(user);
     const userDto = mapper.map(updatedUser, User, UserResponseDto);
     return userDto;
   }

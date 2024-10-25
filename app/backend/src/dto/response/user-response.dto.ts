@@ -14,6 +14,21 @@ export class UserResponseDto extends BaseResponseDto {
   username?: string;
 
   @AutoMap()
+  dob?: string;
+
+  @AutoMap()
+  email?: string;
+
+  @AutoMap()
+  gender?: string;
+
+  @AutoMap()
+  address?: string;
+
+  @AutoMap()
+  phoneNumber?: string;
+
+  @AutoMap()
   signature?: string;
 
   @AutoMap()

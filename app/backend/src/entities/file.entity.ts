@@ -1,5 +1,5 @@
 import { Entity, Column } from "typeorm";
-import { Base } from "@entities";
+import { Base } from "./base.entity";
 
 @Entity("file_tbl")
 export class File extends Base {

@@ -25,6 +25,22 @@ class SiteController {
    *       example:
    *         name: FirstSite
    *         company: company-slug-123
+   * 
+   *     UpdateSiteRequestDto:
+   *       type: object
+   *       required:
+   *         - name
+   *         - company
+   *       properties:
+   *         name:
+   *           type: string
+   *           description: sitename
+   *         company:
+   *           type: string
+   *           description: companySlug
+   *       example:
+   *         name: FirstSite
+   *         company: company-slug-123
    */
 
   /**
@@ -81,6 +97,68 @@ class SiteController {
         result: siteData,
       };
       res.status(StatusCodes.CREATED).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /sites/{slug}:
+   *   patch:
+   *     summary: Update site
+   *     tags: [Site]
+   *     parameters:
+   *       - in: path
+   *         name: slug
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: The site slug
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/UpdateSiteRequestDto'
+   *     responses:
+   *       201:
+   *         description: Updated successfully.
+   *         content:
+   *           application/json:
+   *             schema:
+   *       500:
+   *         description: Server error
+   *       1030:
+   *         description: Invalid site name
+   *       1043:
+   *         description: Company not found
+   *       1051:
+   *         description: Site not found
+   *       1058:
+   *         description: Invalid company slug
+   *
+   */
+
+  public async updateSite(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const slug = req.params.slug as string;
+      const requestData = req.body as TCreateSiteRequestDto;
+      const siteData = await siteService.updateSite(slug, requestData);
+
+      const response: TApiResponse<SiteResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "Update site successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result: siteData,
+      };
+      res.status(StatusCodes.OK).json(response);
     } catch (error) {
       next(error);
     }

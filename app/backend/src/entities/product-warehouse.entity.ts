@@ -1,12 +1,9 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { AutoMap } from "@automapper/classes";
-
-import {
-  Base,
-  Product,
-  RFID,
-  Warehouse
-} from "@entities";
+import { Warehouse } from "./warehouse.entity";
+import { RFID } from "./rfid.entity";
+import { Product } from "./product.entity";
+import { Base } from "./base.entity";
 
 @Index(["product", "warehouse"], {
   unique: true,

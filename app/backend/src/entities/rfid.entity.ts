@@ -1,8 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
-import {
-  Base,
-  ProductWarehouse,
-} from "@entities";
+import { Base } from "./base.entity";
+import { ProductWarehouse } from "./product-warehouse.entity";
 
 @Entity("rfid_tbl")
 export class RFID extends Base {

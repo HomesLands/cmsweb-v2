@@ -17,7 +17,7 @@ import { validate } from "class-validator";
 import { plainToClass } from "class-transformer";
 import fileService from "./file.service";
 
-class CompanyService {
+export class CompanyService {
   public async getAllCompanies(): Promise<CompanyResponseDto[]> {
     const companiesData = await companyRepository.find({
       relations: ["sites"],
@@ -35,10 +35,14 @@ class CompanyService {
   public async createCompany(
     plainData: TCreateCompanyRequestDto
   ): Promise<CompanyResponseDto> {
+    console.log({plainData})
     const requestData = plainToClass(CreateCompanyRequestDto, plainData);
+
+    console.log({requestData})
 
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
+    console.log({errors})
 
     const nameExist = await companyRepository.existsBy({
       name: requestData.name,
@@ -50,14 +54,18 @@ class CompanyService {
       CreateCompanyRequestDto,
       Company
     );
+    console.log({companyData})
     const createdCompanyData =
       await companyRepository.createAndSave(companyData);
+
+    console.log({createdCompanyData})
 
     const companyDto = mapper.map(
       createdCompanyData,
       Company,
       CompanyResponseDto
     );
+    console.log({companyDto})
     return companyDto;
   }
 

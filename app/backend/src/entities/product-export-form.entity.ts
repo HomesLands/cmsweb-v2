@@ -1,6 +1,6 @@
 import { Entity, Column, JoinColumn, OneToOne } from "typeorm";
-import { Base } from "@entities/base.entity";
-import { User } from "@entities/user.entity";
+import { Base } from "./base.entity";
+import { User } from "./user.entity";
 
 @Entity("product_export_form_tbl")
 export class ProductExportForm extends Base {

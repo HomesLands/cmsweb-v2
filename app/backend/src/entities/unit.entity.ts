@@ -1,10 +1,9 @@
 import { Entity, Column, OneToMany } from "typeorm";
-import { 
-  Base,
-  Product,
-  TemporaryProduct,
-} from "@entities";
+
 import { AutoMap } from "@automapper/classes";
+import { Base } from "./base.entity";
+import { Product } from "./product.entity";
+import { TemporaryProduct } from "./temporary-product.entity";
 
 @Entity("unit_tbl")
 export class Unit extends Base {

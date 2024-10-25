@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
-import { Base } from "@entities/base.entity";
+import { Base } from "./base.entity";
 import { AutoMap } from "@automapper/classes";
 import { ProductRequisitionForm } from "./product-requisition-form.entity";
 import { PurchaseProduct } from "./purchase-product.entity";

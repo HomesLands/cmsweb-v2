@@ -7,8 +7,12 @@ export const siteRoute: Router = Router();
 siteRoute.route("/")
   .get(siteController.getAllSites)
 
-// [POS] /api/v1/sites
+// [POST] /api/v1/sites
 siteRoute.route("/")
   .post(siteController.createSite);
+
+// [PATCH] /api/v1/sites/:slug
+siteRoute.route("/:slug")
+  .patch(siteController.updateSite);
 
 

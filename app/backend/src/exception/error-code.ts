@@ -564,6 +564,31 @@ export const ErrorCodes: TErrorCode = {
     code: 1127,
     message: "Can't create purchase form from this requisition form",
   },
+  PRODUCT_EXISTED_IN_THIS_WAREHOUSE: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1128,
+    message: "Product existed in this warehouse",
+  },
+  INVALID_USER_GENDER: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1129,
+    message: "Invalid user gender",
+  },
+  INVALID_USER_ADDRESS: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1130,
+    message: "Invalid user address",
+  },
+  INVALID_USER_PHONE_NUMBER: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1131,
+    message: "Invalid user phone number",
+  },
+  INVALID_USER_EMAIL: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1132,
+    message: "Invalid user email",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]

@@ -4,8 +4,8 @@ import { plainToClass } from "class-transformer";
 
 import { Site } from "@entities/site.entity";
 import { SiteResponseDto } from "@dto/response";
-import { CreateSiteRequestDto } from "@dto/request";
-import { TCreateSiteRequestDto } from "@types";
+import { CreateSiteRequestDto, UpdateSiteRequestDto } from "@dto/request";
+import { TCreateSiteRequestDto, TUpdateSiteRequestDto } from "@types";
 import { GlobalError, ErrorCodes, ValidationError } from "@exception";
 import { validate } from "class-validator";
 
@@ -41,6 +41,29 @@ class SiteService {
     siteData.company = company;
 
     const dataSiteCreated = await siteRepository.createAndSave(siteData);
+    
+    return mapper.map(dataSiteCreated, Site, SiteResponseDto);
+  }
+
+  public async updateSite(
+    slug: string,
+    plainData: TUpdateSiteRequestDto
+  ): Promise<SiteResponseDto> {
+    // Map plain object to request dto
+    const requestData = plainToClass(UpdateSiteRequestDto, plainData);
+
+    const errors = await validate(requestData);
+    if (errors.length > 0) throw new ValidationError(errors);
+
+    const site = await siteRepository.findOneBy({ slug });
+    if(!site) throw new GlobalError(ErrorCodes.SITE_NOT_FOUND);
+
+    const company = await companyRepository.findOneBy({ slug: requestData.company });
+    if(!company) throw new GlobalError(ErrorCodes.COMPANY_NOT_FOUND);
+
+    Object.assign(site, requestData, { company });
+
+    const dataSiteCreated = await siteRepository.save(site);
     
     return mapper.map(dataSiteCreated, Site, SiteResponseDto);
   }

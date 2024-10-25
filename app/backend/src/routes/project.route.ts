@@ -15,4 +15,8 @@ projectRoute.route("/")
 projectRoute.route("/:siteSlug")
   .get(projectController.getProjectsBySite)
 
+// [PATCH] /api/v1/projects/:slug
+projectRoute.route("/:slug")
+  .patch(projectController.updateProject)
+
 

@@ -30,6 +30,8 @@ import {
   UserDepartment,
   UserRole,
   Warehouse,
+  PurchaseProduct,
+  ProductPurchaseForm,
 } from "@entities";
 import { Action } from "@enums";
 import { join } from "path";
@@ -59,6 +61,8 @@ export type Subjects =
       | typeof UserDepartment
       | typeof UserRole
       | typeof Warehouse
+      | typeof PurchaseProduct
+      | typeof ProductPurchaseForm
     >
   | "all";
 // Type declaration for Subjects

@@ -1,12 +1,10 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, Unique } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, Unique } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 
-import { 
-  Base,
-  Site,
-  User,
-  UserApproval,
-} from "@entities";
+import { Base } from "./base.entity";
+import { Site } from "./site.entity";
+import { User } from "./user.entity";
+import { UserApproval } from "./user-approval.entity";
 
 @Entity("assigned_user_approval")
 export class AssignedUserApproval extends Base {

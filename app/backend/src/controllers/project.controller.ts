@@ -1,4 +1,4 @@
-import { TApiResponse } from "@types";
+import { TApiResponse, TUpdateProjectRequestDto } from "@types";
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import { projectService } from "@services";
@@ -11,6 +11,40 @@ class ProjectController {
    * components:
    *   schemas:
    *     CreateProjectRequestDto:
+   *       type: object
+   *       required:
+   *         - name
+   *         - startDate
+   *         - description
+   *         - fileDescription
+   *         - site
+   *       properties:
+   *         name:
+   *           type: string
+   *           description: projectname
+   *         startDate:
+   *           type: string
+   *           description: startDate
+   *         process:
+   *           type: number
+   *           description: processNumber
+   *         description:
+   *           type: string
+   *           description: descriptionProject
+   *         fileDescription:
+   *           type: string
+   *           description: fileDescriptionProject
+   *         site:
+   *           type: string
+   *           description: siteSlug
+   *       example:
+   *         name: FirstProject
+   *         startDate: 2024-09-15 10:25:45
+   *         description: project description
+   *         fileDescription: temp file description
+   *         site: 3Co-M1ZL4
+   * 
+   *     UpdateProjectRequestDto:
    *       type: object
    *       required:
    *         - name
@@ -186,6 +220,78 @@ class ProjectController {
       next(error);
     }
   }
+
+  /**
+   * @swagger
+   * /projects/{slug}:
+   *   patch:
+   *     summary: Update project
+   *     tags: [Project]
+   *     parameters:
+   *       - in: path
+   *         name: slug
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: The project slug
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/UpdateProjectRequestDto'
+   *     responses:
+   *       201:
+   *         description: Updated successfully.
+   *         content:
+   *           application/json:
+   *             schema:
+   *       500:
+   *         description: Server error
+   *       1033:
+   *         description: Invalid project name
+   *       1034:
+   *         description: Invalid project start date
+   *       1036:
+   *         description: Invalid project description
+   *       1037:
+   *         description: Invalid project file description
+   *       1051:
+   *         description: Site not found
+   *       1052:
+   *         description: Project not found
+   *       1059:
+   *         description: Invalid site slug
+   *
+   */
+  public async updateProject(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const slug = req.params.slug as string;
+      const requestData = req.body as TUpdateProjectRequestDto;
+      const projectData = await projectService.updateProject(
+        slug,
+        requestData
+      );
+
+      const response: TApiResponse<ProjectResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "Update project successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result: projectData,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
+
+  
 
 export default new ProjectController();

@@ -7,6 +7,7 @@ import {
   TChangePasswordRequestDto,
   TPaginationOptionResponse,
   TQueryRequest,
+  TUpdateUser,
   TUploadUserAvatarRequestDto,
   TUploadUserSignRequestDto,
 } from "@types";
@@ -44,6 +45,42 @@ class UserController {
    *         currentPassword: Pass@1234
    *         newPassword: NewPass@1234
    *         confirmPassword: NewPass@1234
+   * 
+   *     UpdateUserRequestDto:
+   *       type: object
+   *       required:
+   *         - fullname
+   *         - dob
+   *         - gender
+   *         - address
+   *         - phoneNumber
+   *         - email
+   *       properties:
+   *         fullname:
+   *           type: string
+   *           description: user fullname
+   *         dob:
+   *           type: string
+   *           description: user dob
+   *         gender:
+   *           type: string
+   *           description: user gender
+   *         address:
+   *           type: string
+   *           description: user address
+   *         phoneNumber:
+   *           type: string
+   *           description: user phone number
+   *         email:
+   *           type: string
+   *           description: user email
+   *       example:
+   *         fullname: Nguyễn Văn A
+   *         dob: 1999-10-12
+   *         gender: male
+   *         address: Linh Trung, Thủ Đức
+   *         phoneNumber: "0900321456"
+   *         email: "nguyenvana@gmail.com"
    */
 
   /**
@@ -337,6 +374,59 @@ class UserController {
         code: StatusCodes.OK,
         error: false,
         message: `User password has updated successfully`,
+        method: req.method,
+        path: req.originalUrl,
+        result,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /users:
+   *   patch:
+   *     summary: Update user
+   *     tags: [User]
+   *     requestBody:
+   *       require: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/UpdateUserRequestDto'
+   *     responses:
+   *       200:
+   *         description: User updated successfully
+   *       500:
+   *         description: Server error
+   *       1011:
+   *         description: Fullname is not valid
+   *       1039:
+   *         description: Invalid date format
+   *       1129:
+   *         description: Invalid user gender
+   *       1130:
+   *         description: Invalid user address
+   *       1131:
+   *         description: Invalid user phone number
+   *       1132:
+   *         description: Invalid user email
+   */
+  public async updateUser(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { userId = "" } = req;
+      const requestData = req.body as TUpdateUser;
+      const result = await userService.updateUser(userId, requestData);
+      const response: TApiResponse<UserResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: `User update successfully`,
         method: req.method,
         path: req.originalUrl,
         result,

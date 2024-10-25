@@ -7,7 +7,8 @@ const config = {
   HOST: env.dataSource.hostMySql,
   USER: env.dataSource.userMySql,
   PASSWORD: env.dataSource.passwordMySql,
-  DB: env.dataSource.databaseMySql,
+  DB: env.nodeEnv === "development" ? env.dataSource.databaseMySql : env.dataSource.databaseTestMySql,
+  // DB: env.dataSource.databaseTestMySql,
   pool: {
     max: 5,
     min: 0,
@@ -34,6 +35,7 @@ export async function initializeDataSource(
   retries = 5,
   delay = 3000 // ms
 ): Promise<void> {
+  console.log({database: env.nodeEnv})
   while (retries > 0) {
     try {
       await dataSource.initialize();

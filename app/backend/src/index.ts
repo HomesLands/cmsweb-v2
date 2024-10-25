@@ -19,8 +19,8 @@ import { logger } from "@lib";
 
 dotenv.config();
 
+const app: Express = express();
 (async () => {
-  const app: Express = express();
   const port: number | string = process.env.PORT || 3000;
 
   app.use(express.json());
@@ -64,10 +64,13 @@ dotenv.config();
   // Global error handling
   app.use(errorHandlerMiddleware.handler);
 
-  app.listen(port, () => {
-    logger.info(`[server]: Server is running at http://localhost:${port}`);
-    logger.info(
-      `[server]: Swagger is running at http://localhost:${port}/api/api-docs`
-    );
-  });
+  if (process.env.NODE_ENV !== 'test'){
+    app.listen(port, () => {
+      logger.info(`[server]: Server is running at http://localhost:${port}`);
+      logger.info(
+        `[server]: Swagger is running at http://localhost:${port}/api/api-docs`
+      );
+    });
+  }
 })();
+export default app;

@@ -7,6 +7,12 @@ import { Router } from "express";
 
 export const userRoute: Router = Router();
 
+// [PATCH] /api/v1/users
+userRoute.patch(
+  "/",
+  userController.updateUser
+);
+
 // [GET] /api/v1/users
 userRoute.get(
   "/",

@@ -2,7 +2,10 @@ import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 
 import { Base } from "./base.entity";
-import { ProductWarehouse, PurchaseProduct, RequestProduct, Unit } from "@entities";
+import { Unit } from "./unit.entity";
+import { RequestProduct } from "./request-product.entity";
+import { PurchaseProduct } from "./purchase-product.entity";
+import { ProductWarehouse } from "./product-warehouse.entity";
 
 @Entity("product_tbl")
 export class Product extends Base {

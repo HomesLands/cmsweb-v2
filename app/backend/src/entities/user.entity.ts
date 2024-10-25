@@ -1,13 +1,10 @@
 import { Entity, Column, OneToMany } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 import { Base } from "./base.entity";
-
-import {
-  UserRole,
-  ProductRequisitionForm,
-  AssignedUserApproval,
-  UserDepartment,
-} from "@entities";
+import { UserRole } from "./user-role.entity"
+import { ProductRequisitionForm } from "./product-requisition-form.entity";
+import { AssignedUserApproval } from "./assigned-user-approval.entity";
+import { UserDepartment } from "./user-department.entity";
 
 @Entity("user_tbl")
 export class User extends Base {
@@ -25,6 +22,10 @@ export class User extends Base {
   @AutoMap()
   @Column({ name: "dob_column", nullable: true })
   dob?: string;
+
+  @AutoMap()
+  @Column({ name: "email_column", nullable: true })
+  email?: string;
 
   @AutoMap()
   @Column({ name: "gender_column", nullable: true })

@@ -5,12 +5,14 @@ export type TEnv = {
     userMySql: string;
     passwordMySql: string;
     databaseMySql: string;
+    databaseTestMySql: string;
   };
   hashSalt: string;
   jwtSecret: string;
   passportSecret: string;
   duration: number;
   refreshableDuration: number;
+  nodeEnv: string;
 };
 
 export * from "./base.type";

@@ -1,5 +1,6 @@
 import { Entity, Column, OneToMany } from "typeorm";
-import { Base, Site } from "@entities";
+import { Base } from "./base.entity";
+import { Site } from "./site.entity";
 import { AutoMap } from "@automapper/classes";
 
 @Entity("company_tbl")
