@@ -1,83 +1,125 @@
 import React, { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { ReaderIcon } from '@radix-ui/react-icons'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { Label, Button, DataTable } from '@/components/ui'
-import { useProductRequisitionBySlug } from '@/hooks'
+import { useApproveProductRequisition, useRequisitionByUserApproval } from '@/hooks'
 
 import { useColumnsDetail, useColumnsApprovalLog } from './data-table'
-import { ApprovalLogStatus, IApproveProductRequisition, IProductInfo } from '@/types'
+import { ApprovalLogStatus, IProductInfo, ProductRequisitionRoleApproval } from '@/types'
 import { DialogApprovalRequisition } from '@/components/app/dialog'
 import { showToast } from '@/utils'
-import { approveProductRequisition } from '@/api'
-import { ApprovalAction, baseURL, RequisitionStatus } from '@/constants'
+import { ApprovalAction, baseURL, RequisitionStatus, UserApprovalStage } from '@/constants'
 
 const ApprovalProductRequisitionDetail: React.FC = () => {
   const navigate = useNavigate()
   const { t: tToast } = useTranslation('toast')
   const { t } = useTranslation(['productRequisition'])
   const { slug } = useParams<{ slug: string }>()
-  const { data } = useProductRequisitionBySlug(slug!)
+  const { data, refetch } = useRequisitionByUserApproval(slug!)
+  const { mutate: approveProductRequisition } = useApproveProductRequisition()
+
+  const { roleApproval } = data?.result || {}
 
   const columns = useColumnsDetail()
   const columnsApprovalLog = useColumnsApprovalLog()
   const [openDialog, setOpenDialog] = useState<'accept' | 'give_back' | 'cancel' | null>(null)
 
-  const buttonStates = useMemo(() => {
-    if (!data?.result) return {}
+  const queryClient = useQueryClient()
 
-    const { status, isRecalled } = data.result
+  const buttonStates = useMemo(() => {
+    if (!data?.result)
+      return {
+        acceptEnabled: false,
+        giveBackEnabled: false,
+        cancelEnabled: false,
+        showButtons: false,
+        roleApproval: undefined,
+        statusDisplay: ''
+      }
+
+    const { productRequisitionForm, roleApproval } = data.result
+    const { status, isRecalled } = productRequisitionForm
 
     let acceptEnabled = false
     let giveBackEnabled = false
     let cancelEnabled = false
     let showButtons = true
-    let approvalStage = 0
+    let statusDisplay = ''
 
-    if (status === RequisitionStatus.WAITING && !isRecalled) {
-      // Vừa tạo, đang chờ duyệt bước 1
-      approvalStage = 1
-      acceptEnabled = true
-      giveBackEnabled = true
-    } else if (status === RequisitionStatus.CANCEL && isRecalled) {
-      // Đã bị hoàn ở bước 1
-      showButtons = false
-    } else if (status === RequisitionStatus.ACCEPTED_STAGE_1 && !isRecalled) {
-      // Đã duyệt bước 1
-      approvalStage = 2
-      acceptEnabled = true
-      giveBackEnabled = true
-      cancelEnabled = true
-    } else if (status === RequisitionStatus.WAITING && isRecalled) {
-      // Đã bị hoàn ở bước 2
-      approvalStage = 2
-      acceptEnabled = true
-      giveBackEnabled = true
-      cancelEnabled = true
-    } else if (status === RequisitionStatus.ACCEPTED_STAGE_2 && !isRecalled) {
-      // Đã duyệt bước 2
-      approvalStage = 3
-      acceptEnabled = true
-      giveBackEnabled = true
-      cancelEnabled = true
-    } else if (status === RequisitionStatus.ACCEPTED_STAGE_1 && isRecalled) {
-      // Đã bị hoàn ở bước 3
-      approvalStage = 3
-      acceptEnabled = true
-      giveBackEnabled = true
-      cancelEnabled = true
-    } else if (status === RequisitionStatus.WAITING_EXPORT || status === RequisitionStatus.CANCEL) {
-      // Đã duyệt bước 3 hoặc Đã bị hủy
-      showButtons = false
+    switch (roleApproval) {
+      case UserApprovalStage.APPROVAL_STAGE_1:
+        if (status === RequisitionStatus.WAITING && !isRecalled) {
+          acceptEnabled = true
+          cancelEnabled = true
+          statusDisplay = 'Chờ duyệt'
+        } else if (status === RequisitionStatus.CANCEL && isRecalled) {
+          showButtons = false
+          statusDisplay = 'Đã hủy'
+        } else if (status === RequisitionStatus.ACCEPTED_STAGE_1 && !isRecalled) {
+          showButtons = false
+          statusDisplay = 'Đã duyệt'
+        }
+        break
+
+      case UserApprovalStage.APPROVAL_STAGE_2:
+        if (status === RequisitionStatus.ACCEPTED_STAGE_1 && !isRecalled) {
+          acceptEnabled = true
+          giveBackEnabled = true
+          cancelEnabled = true
+          statusDisplay = 'Chờ duyệt bước 2'
+        } else if (status === RequisitionStatus.ACCEPTED_STAGE_1 && isRecalled) {
+          acceptEnabled = true
+          giveBackEnabled = true
+          cancelEnabled = true
+          statusDisplay = 'Chờ duyệt bước 2 (hoàn lại từ bước trên)'
+        } else if (status === RequisitionStatus.ACCEPTED_STAGE_2) {
+          showButtons = false
+          statusDisplay = 'Đã duyệt'
+        } else if (status === RequisitionStatus.CANCEL && isRecalled) {
+          showButtons = false
+          statusDisplay = 'Hủy'
+        } else if (status === RequisitionStatus.WAITING && isRecalled) {
+          showButtons = false
+          statusDisplay = 'Bị hoàn lại để xem xét'
+        }
+        break
+
+      case UserApprovalStage.APPROVAL_STAGE_3:
+        if (status === RequisitionStatus.ACCEPTED_STAGE_2 && !isRecalled) {
+          acceptEnabled = true
+          giveBackEnabled = true
+          cancelEnabled = true
+          statusDisplay = 'Chờ duyệt bước 3'
+        } else if (status === RequisitionStatus.ACCEPTED_STAGE_1 && isRecalled) {
+          showButtons = false
+          statusDisplay = 'Đã bị hoàn để xem xét lại'
+        } else if (status === RequisitionStatus.WAITING_EXPORT) {
+          showButtons = false
+          statusDisplay = 'Đã duyệt'
+        } else if (status === RequisitionStatus.CANCEL && isRecalled) {
+          showButtons = false
+          statusDisplay = 'Hủy'
+        }
+        break
     }
 
-    return { acceptEnabled, giveBackEnabled, cancelEnabled, showButtons, approvalStage }
+    return {
+      acceptEnabled,
+      giveBackEnabled,
+      cancelEnabled,
+      showButtons,
+      roleApproval,
+      statusDisplay
+    }
   }, [data?.result])
 
   const userApprovals = useMemo(() => {
-    return Array.isArray(data?.result?.userApprovals) ? data.result.userApprovals : []
+    return Array.isArray(data?.result?.productRequisitionForm.userApprovals)
+      ? data.result.productRequisitionForm.userApprovals
+      : []
   }, [data])
 
   const sortedUserApprovals = useMemo(() => {
@@ -100,49 +142,32 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
   const handleGiveBack = () => setOpenDialog(ApprovalAction.GIVE_BACK)
   const handleCancel = () => setOpenDialog(ApprovalAction.CANCEL)
 
-  const queryClient = useQueryClient()
-
-  const mutation = useMutation({
-    mutationFn: async (data: IApproveProductRequisition) => {
-      return approveProductRequisition(data.formSlug, data.approvalLog)
-    },
-    onSuccess: (_, variables) => {
-      let toastMessage = ''
-
-      switch (variables.approvalLog.status) {
-        case ApprovalAction.ACCEPT:
-          toastMessage = tToast('toast.approveRequestSuccess')
-          break
-        case ApprovalAction.GIVE_BACK:
-          toastMessage = tToast('toast.giveBackRequestSuccess')
-          break
-        case ApprovalAction.CANCEL:
-          toastMessage = tToast('toast.cancelRequestSuccess')
-          break
-      }
-
-      showToast(toastMessage)
-
-      // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ['productRequisitionBySlug', slug] })
-    }
-  })
-
   const handleConfirm = (message: string, status: ApprovalLogStatus) => {
-    mutation.mutate({
-      formSlug: data?.result.slug as string,
-      approvalLog: {
-        status: status,
-        content: message
+    approveProductRequisition(
+      {
+        formSlug: data?.result.productRequisitionForm.slug as string,
+        approvalLog: {
+          status: status,
+          content: message
+        }
+      },
+      {
+        onSuccess: () => {
+          setOpenDialog(null)
+          showToast(tToast('toast.approveRequestSuccess'))
+          refetch()
+          queryClient.invalidateQueries({ queryKey: ['productRequisitionByApprover'] })
+        }
       }
-    })
-
-    setOpenDialog(null)
+    )
   }
 
   const getLogoUrl = () => {
-    if (data?.result?.creator.userDepartments[0].department.site.company.logo)
-      return `${baseURL}/files/${data?.result?.creator.userDepartments[0].department.site.company.logo}`
+    if (
+      data?.result?.productRequisitionForm.creator?.userDepartments[0]?.department?.site?.company
+        ?.logo
+    )
+      return `${baseURL}/files/${data?.result?.productRequisitionForm.creator.userDepartments[0].department.site.company.logo}`
   }
 
   return (
@@ -158,52 +183,20 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           </Button>
           {buttonStates.showButtons && (
             <>
-              {buttonStates.approvalStage === 1 ? (
-                <>
-                  <Button
-                    variant="outline"
-                    onClick={handleGiveBack}
-                    disabled={!buttonStates.giveBackEnabled}
-                    className="w-full sm:w-auto"
-                  >
-                    {t('productRequisition.giveBack')}
-                  </Button>
-                  <Button
-                    variant="default"
-                    onClick={handleAccept}
-                    disabled={!buttonStates.acceptEnabled}
-                    className="w-full sm:w-auto"
-                  >
-                    {t('productRequisition.accept')}
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button
-                    variant="destructive"
-                    onClick={handleCancel}
-                    disabled={!buttonStates.cancelEnabled}
-                    className="w-full sm:w-auto"
-                  >
-                    {t('productRequisition.cancel')}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={handleGiveBack}
-                    disabled={!buttonStates.giveBackEnabled}
-                    className="w-full sm:w-auto"
-                  >
-                    {t('productRequisition.giveBack')}
-                  </Button>
-                  <Button
-                    variant="default"
-                    onClick={handleAccept}
-                    disabled={!buttonStates.acceptEnabled}
-                    className="w-full sm:w-auto"
-                  >
-                    {t('productRequisition.accept')}
-                  </Button>
-                </>
+              {buttonStates.cancelEnabled && (
+                <Button variant="destructive" onClick={handleCancel} className="w-full sm:w-auto">
+                  {t('productRequisition.cancel')}
+                </Button>
+              )}
+              {buttonStates.giveBackEnabled && (
+                <Button variant="outline" onClick={handleGiveBack} className="w-full sm:w-auto">
+                  {t('productRequisition.giveBack')}
+                </Button>
+              )}
+              {buttonStates.acceptEnabled && (
+                <Button variant="default" onClick={handleAccept} className="w-full sm:w-auto">
+                  {t('productRequisition.accept')}
+                </Button>
               )}
             </>
           )}
@@ -236,29 +229,46 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
             <div className="grid grid-cols-1 gap-3 mb-4 text-sm sm:grid-cols-3 font-beVietNam">
               <div>
                 <strong>Mức ưu tiên: </strong>
-                <span className={data?.result?.type === 'urgent' ? 'text-red-600 font-bold' : ''}>
-                  {data?.result?.type === 'normal' ? 'Bình thường' : 'Cần gấp'}
+                <span
+                  className={
+                    data?.result?.productRequisitionForm.type === 'urgent'
+                      ? 'text-red-600 font-bold'
+                      : ''
+                  }
+                >
+                  {data?.result?.productRequisitionForm.type === 'normal'
+                    ? 'Bình thường'
+                    : 'Cần gấp'}
                 </span>
               </div>
               <div>
                 <strong>Mã phiếu yêu cầu: </strong>
-                {data?.result?.code}
+                {data?.result?.productRequisitionForm.code}
               </div>
               <div>
                 <strong>Người yêu cầu: </strong>
-                {data?.result?.creator.fullname}
+                {data?.result?.productRequisitionForm.creator.fullname}
               </div>
               <div>
                 <strong>Công trình sử dụng: </strong>
-                {data?.result?.creator.userDepartments[0].department.site.name}
+                {
+                  data?.result?.productRequisitionForm.creator.userDepartments[0].department.site
+                    .name
+                }
               </div>
               <div>
                 <strong>Dự án: </strong>
-                {data?.result?.project.name}
+                {data?.result?.productRequisitionForm.project.name}
               </div>
               <div>
                 <strong>Ghi chú: </strong>
-                {data?.result?.description}
+                {data?.result?.productRequisitionForm.description}
+              </div>
+              <div>
+                <strong>Trạng thái: </strong>
+                <span className={getStatusColor(buttonStates.statusDisplay)}>
+                  {buttonStates.statusDisplay}
+                </span>
               </div>
             </div>
           )}
@@ -267,7 +277,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           isLoading={false}
           columns={columns}
           data={
-            data?.result?.requestProducts?.map((item) => ({
+            data?.result?.productRequisitionForm.requestProducts?.map((item) => ({
               ...item,
               product: item.product || item.temporaryProduct || ({} as IProductInfo)
             })) || []
@@ -294,13 +304,29 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           openDialog={openDialog as ApprovalAction}
           setOpenDialog={setOpenDialog}
           onConfirm={handleConfirm}
-          status={data?.result?.status as RequisitionStatus}
-          isRecalled={data?.result?.isRecalled}
-          // roleApproval={roleApproval as ProductRequisitionRoleApproval}
+          roleApproval={roleApproval as ProductRequisitionRoleApproval}
         />
       </div>
     </div>
   )
+}
+
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case 'Chờ duyệt':
+    case 'Chờ duyệt bước 2':
+    case 'Chờ duyệt bước 3':
+      return 'text-yellow-600 font-bold'
+    case 'Đã duyệt':
+      return 'text-green-600 font-bold'
+    case 'Đã hủy':
+    case 'Hủy':
+    case 'Đã bị hoàn để xem xét lại':
+    case 'Bị hoàn lại để xem xét':
+      return 'text-red-600 font-bold'
+    default:
+      return ''
+  }
 }
 
 export default ApprovalProductRequisitionDetail

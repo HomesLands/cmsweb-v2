@@ -29,7 +29,7 @@ class UserApprovalController {
    * @swagger
    * /userApprovals:
    *   get:
-   *     summary: Get user approval for product requisition form
+   *     summary: Get user approvals for product requisition form
    *     tags: [UserApproval]
    *     parameters:
    *       - in: query
@@ -56,7 +56,7 @@ class UserApprovalController {
    *         example: 10
    *     responses:
    *       200:
-   *         description: User approval has been retrieved successfully.
+   *         description: User approval have been retrieved successfully.
    *       500:
    *         description: Server error
    */
@@ -72,6 +72,48 @@ class UserApprovalController {
       const response: TApiResponse<
         TPaginationOptionResponse<UserApprovalFormResponseDto[]>
       > = {
+        code: StatusCodes.OK,
+        error: false,
+        message: `User approval forms have been retrieved successfully`,
+        method: req.method,
+        path: req.originalUrl,
+        result: results,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /userApprovals/{slug}:
+   *   get:
+   *     summary: Get user approval for product requisition form
+   *     tags: [UserApproval]
+   *     parameters:
+   *       - in: path
+   *         name: slug
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: The slug of user approval
+   *         example: slug-123
+   *     responses:
+   *       200:
+   *         description: User approval has been retrieved successfully.
+   *       500:
+   *         description: Server error
+   */
+  public async getUserApproval(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { slug = "" } = req.params;
+      const results = await userApprovalService.getUserApproval(slug);
+      const response: TApiResponse<UserApprovalFormResponseDto> = {
         code: StatusCodes.OK,
         error: false,
         message: `User approval forms have been retrieved successfully`,

@@ -16,6 +16,7 @@ import {
   getProductRequisitionByCreator,
   getProductRequisitionBySlug,
   getProducts,
+  getRequisitionByUserApproval,
   resubmitProductRequisition,
   updateProduct,
   updateProductRequisitionGeneralInfo,
@@ -91,10 +92,19 @@ export const useProductRequisitionBySlug = (slug: string) => {
   })
 }
 
+//Get all product requisition for approver
 export const useProductRequisitionByApprover = (q: IProductQuery) => {
   return useQuery({
     queryKey: ['productRequisitionByApprover', JSON.stringify(q)],
     queryFn: () => getProductRequisitionByApprover(q)
+  })
+}
+
+//Get product requisition by slug for approver
+export const useRequisitionByUserApproval = (slug: string) => {
+  return useQuery({
+    queryKey: ['requisitionByUserApproval', slug],
+    queryFn: () => getRequisitionByUserApproval(slug)
   })
 }
 
@@ -157,10 +167,21 @@ export const useResubmitProductRequisition = (slug: string) => {
 }
 
 //Approve Product Requisition for Approver
+// ... other imports and hooks ...
+
 export const useApproveProductRequisition = () => {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (data: IApproveProductRequisition) =>
-      approveProductRequisition(data.formSlug, data.approvalLog)
+      approveProductRequisition(data.formSlug, data.approvalLog),
+    onSuccess: (data, variables) => {
+      // Invalidate the specific requisition query
+      queryClient.invalidateQueries({ queryKey: ['requisitionByUserApproval', variables.formSlug] })
+      // Invalidate the list of requisitions
+      queryClient.invalidateQueries({ queryKey: ['productRequisitionByApprover'] })
+      // Return the updated data
+      return data
+    }
   })
 }
 
