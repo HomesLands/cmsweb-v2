@@ -8,7 +8,12 @@ services:
       dockerfile: ../../.build/backend/Dockerfile # Adjusted to be relative to the context
     healthcheck:
       test:
-        ["CMD", "curl", "-f", "http://localhost:3000/api/v1/healthCheck/status"]
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://localhost:3000/api/${TAG}/healthCheck/status",
+        ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -27,9 +32,12 @@ services:
       REFRESHABLE_DURATION: ${REFRESHABLE_DURATION}
       SWAGGER_ENDPOINT: ${SWAGGER_ENDPOINT}
       TAG: ${TAG}
+      BROKER_URL: ${BROKER_URL}
       TZ: Asia/Ho_Chi_Minh
     depends_on:
       mysql_db:
+        condition: service_healthy
+      kafka:
         condition: service_healthy
 
   mysql_db:
@@ -69,6 +77,46 @@ services:
       timeout: 10s # Increase timeout for slower responses
       retries: 5
       start_period: 60s # Give the frontend app more time to become ready
+
+  kafka:
+    image: "bitnami/kafka:latest"
+    environment:
+      KAFKA_CFG_NODE_ID: 0
+      KAFKA_CFG_PROCESS_ROLES: controller,broker
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 0@kafka:9093
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "kafka-topics.sh",
+          "--list",
+          "--bootstrap-server",
+          "localhost:9092",
+        ]
+      interval: 30s # Time between each health check
+      timeout: 10s # Timeout for each health check
+      retries: 5 # Number of retries before marking the container as unhealthy
+
+  notification:
+    build:
+      context: ../app/notification-service
+      dockerfile: ../../.build/notification/Dockerfile # Adjusted to be relative to the context
+    environment:
+      HOST_MYSQL: ${HOST_MYSQL}
+      PORT_MYSQL: ${PORT_MYSQL}
+      USER_MYSQL: ${USER_MYSQL}
+      PASSWORD_MYSQL: ${PASSWORD_MYSQL}
+      DATABASE_MYSQL: ${DATABASE_MYSQL}
+      NODE_ENV: ${NODE_ENV}
+      BROKER_URL: ${BROKER_URL}
+      TZ: Asia/Ho_Chi_Minh
+    depends_on:
+      backend:
+        condition: service_healthy
 
 networks:
   default:
