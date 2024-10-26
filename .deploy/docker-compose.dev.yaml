@@ -114,9 +114,7 @@ services:
       BROKER_URL: ${BROKER_URL}
       TZ: Asia/Ho_Chi_Minh
     depends_on:
-      mysql_db:
-        condition: service_healthy
-      kafka:
+      backend:
         condition: service_healthy
 
 networks:
