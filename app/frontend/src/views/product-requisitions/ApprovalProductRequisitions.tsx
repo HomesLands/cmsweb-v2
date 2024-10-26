@@ -11,7 +11,6 @@ import { DataTableFilterOptions } from './data-table'
 
 const ApprovalProductRequisitions: React.FC = () => {
   const { t } = useTranslation(['productRequisition'])
-  const [, setSelectedRequisition] = useState<IRequisitionFormResponseForApprover | null>(null)
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
   const navigate = useNavigate()
 
@@ -37,7 +36,6 @@ const ApprovalProductRequisitions: React.FC = () => {
   }, [data?.result?.items])
 
   const handleRowClick = (requisition: IRequisitionFormResponseForApprover) => {
-    setSelectedRequisition(requisition)
     navigate(`/product-requisitions/approval/${requisition.productRequisitionForm.slug}`, {
       state: { selectedRequisition: requisition }
     })

@@ -12,7 +12,6 @@ import {
   ApprovalLogStatus,
   IApproveProductRequisition,
   IProductInfo,
-  IProductRequisitionFormCreate,
   IRequisitionFormResponseForApprover,
   ProductRequisitionRoleApproval
 } from '@/types'
@@ -20,7 +19,6 @@ import { DialogApprovalRequisition } from '@/components/app/dialog'
 import { showToast } from '@/utils'
 import { approveProductRequisition } from '@/api'
 import { ApprovalAction, baseURL, RequisitionStatus, UserApprovalStage } from '@/constants'
-import { useRequisitionStore } from '@/stores'
 
 const ApprovalProductRequisitionDetail: React.FC = () => {
   const navigate = useNavigate()
@@ -29,7 +27,6 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
   const { data } = useProductRequisitionBySlug(slug!)
   const location = useLocation()
-  const { getRequisition } = useRequisitionStore()
   const selectedRequisition = location.state?.selectedRequisition as
     | IRequisitionFormResponseForApprover
     | undefined
