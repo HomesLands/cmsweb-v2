@@ -30,8 +30,10 @@
     "update": "Cập nhật",
 
     "deleteCompany": "Xóa công ty",
-    "deleteCompanyDescription": "Bạn có chắc muốn xóa công ty này?",
-    "confirmDeleteCompany": "Tôi đã hiểu, xóa công ty",
-    "cancelDeleteCompany": "Hủy"
+    "deleteCompanyDescription": "Lưu ý: Hành động này không thể hoàn tác!",
+    "deleteCompanyWarning1": "Bạn sắp sửa xóa công ty",
+    "deleteCompanyConfirmation": "Bạn có chắc chắn muốn xóa công ty này?",
+    "confirmDelete": "Tôi đã hiểu, xóa công ty",
+    "cancel": "Hủy"
   }
 }
