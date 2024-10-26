@@ -8,7 +8,12 @@ services:
       dockerfile: ../../.build/backend/Dockerfile # Adjusted to be relative to the context
     healthcheck:
       test:
-        ["CMD", "curl", "-f", "http://localhost:3000/api/v1/healthCheck/status"]
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://localhost:3000/api/${TAG}/healthCheck/status",
+        ]
       interval: 5s
       timeout: 5s
       retries: 10
