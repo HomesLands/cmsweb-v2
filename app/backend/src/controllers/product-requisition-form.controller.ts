@@ -413,7 +413,7 @@ class ProductRequisitionFormController {
    * @swagger
    * /productRequisitionForms/{slug}:
    *   get:
-   *     summary: get productRequisitionForm by slug
+   *     summary: get product requisition form by slug
    *     tags: [ProductRequisitionForm]
    *     produces:
    *       - application/json

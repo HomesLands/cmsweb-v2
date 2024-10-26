@@ -38,15 +38,15 @@ const DashboardLayout = () => {
         </header>
 
         {/* Main Content (Outlet) */}
-        <ScrollArea className="w-full">
-          <main className="p-4 mt-12 transition-all duration-300">
-            <div className="py-3">
-              <BreadCrumbs />
-            </div>
-            <Outlet />
-            {isDownloading && <DownloadProgress progress={progress} fileName={fileName} />}
-          </main>
-        </ScrollArea>
+        {/* <ScrollArea className="w-full overflow-x-auto"> */}
+        <main className="p-4 mt-12 transition-all duration-300">
+          <div className="py-3">
+            <BreadCrumbs />
+          </div>
+          <Outlet />
+          {isDownloading && <DownloadProgress progress={progress} fileName={fileName} />}
+        </main>
+        {/* </ScrollArea> */}
       </div>
     </div>
   )

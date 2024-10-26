@@ -1,5 +1,5 @@
 import React from 'react'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 
@@ -22,6 +22,7 @@ const ProductRequisitionForm: React.FC = () => {
   const { t: tToast } = useTranslation('toast')
   const { currentStep, handleStepChange } = useMultiStep(1)
   const { setRequisition, clearRequisition, requisition } = useRequisitionStore()
+  const queryClient = useQueryClient()
 
   const mutation = useMutation({
     mutationFn: async (data: IFinalProductRequisition) => {
@@ -31,6 +32,9 @@ const ProductRequisitionForm: React.FC = () => {
       showToast(tToast('toast.requestSuccess'))
       clearRequisition()
       handleStepChange(4)
+      queryClient.invalidateQueries({
+        queryKey: ['notifications']
+      })
     }
   })
 
@@ -53,7 +57,6 @@ const ProductRequisitionForm: React.FC = () => {
   }
 
   const handleConfirmRequest = (data: IFinalProductRequisition) => {
-    console.log('data', data)
     if (data) {
       mutation.mutate(data)
     }

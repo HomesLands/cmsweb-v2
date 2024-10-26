@@ -34,7 +34,7 @@ export class ProductRequisitionForm extends Base {
     () => RequestProduct,
     (requestProduct) => requestProduct.productRequisitionForm,
     {
-      cascade: ["insert"],
+      cascade: ["insert", "update"],
     }
   )
   requestProducts?: RequestProduct[];
@@ -42,7 +42,10 @@ export class ProductRequisitionForm extends Base {
   // a product requisition form have many user approval
   @OneToMany(
     () => UserApproval,
-    (userApproval) => userApproval.productRequisitionForm
+    (userApproval) => userApproval.productRequisitionForm,
+    {
+      cascade: ["insert", "update"],
+    }
   )
   userApprovals?: UserApproval[];
 

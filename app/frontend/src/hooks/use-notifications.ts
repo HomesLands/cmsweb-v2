@@ -5,7 +5,7 @@ import { IQuery } from '@/types'
 
 export const useNotification = (q: IQuery) => {
   return useQuery({
-    queryKey: ['notifications'],
+    queryKey: ['notifications', JSON.stringify(q)],
     queryFn: () => getNotification(q),
     placeholderData: keepPreviousData
   })

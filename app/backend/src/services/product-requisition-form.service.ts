@@ -2,13 +2,12 @@ import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
 import moment from "moment";
 
-import { excelService, PDFService } from "@services";
+import { approvalLogService, excelService, PDFService } from "@services";
 import {
   productRequisitionFormRepository,
   userRepository,
   productRepository,
   userApprovalRepository,
-  approvalLogRepository,
   projectRepository,
   assignedUserApprovalRepository,
   unitRepository,
@@ -31,14 +30,12 @@ import {
   CreateProductRequisitionFormRequestDto,
   CreateRequestProductRequestDto,
   ApprovalProductRequisitionFormRequestDto,
-  CreateApprovalLogRequestDto,
   ResubmitProductRequisitionFormRequestDto,
   CreateTemporaryProductRequestDto,
   UpdateGeneralInformationProductRequisitionFormRequestDto,
 } from "@dto/request";
 import { mapper } from "@mappers";
 import {
-  ApprovalLog,
   ProductRequisitionForm,
   RequestProduct,
   UserApproval,
@@ -58,7 +55,8 @@ import { StatusCodes } from "http-status-codes";
 import { env } from "@constants";
 import { Ability, MongoQuery } from "@casl/ability";
 import { Subjects } from "@lib/casl";
-import { producer, topicName } from "@configs/kafka.config";
+import { topicName } from "@configs/kafka.config";
+import { productRequisitionFormProducer } from "producer";
 
 class ProductRequisitionFormService {
   public async getAllProductRequisitionForms(
@@ -286,21 +284,15 @@ class ProductRequisitionFormService {
     const created = await productRequisitionFormRepository.createAndSave(form);
 
     // Send message
-    await producer.connect();
-    await producer.send({
+    await productRequisitionFormProducer.publish({
       topic: `${topicName}.created`,
-      messages: [
-        {
-          value: JSON.stringify({
-            message: "Product requisition form has been created successfully",
-            userId: form.creator?.id,
-            url: "/product-requisitions",
-            type: topicName,
-          }),
-        },
-      ],
+      message: JSON.stringify({
+        message: "Product requisition form has been created successfully",
+        userId: form.creator?.id,
+        url: "/product-requisitions",
+        type: topicName,
+      }),
     });
-    await producer.disconnect();
 
     const formDto = mapper.map(
       created,
@@ -354,6 +346,7 @@ class ProductRequisitionFormService {
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
 
+    // Validate user approval
     const userApproval = await userApprovalRepository.findOne({
       where: {
         assignedUserApproval: {
@@ -374,9 +367,9 @@ class ProductRequisitionFormService {
         "approvalLogs",
       ],
     });
-
     if (!userApproval) throw new GlobalError(StatusCodes.FORBIDDEN);
 
+    // validate form
     let form = await productRequisitionFormRepository.findOne({
       where: {
         slug: requestData.formSlug,
@@ -396,7 +389,6 @@ class ProductRequisitionFormService {
 
     if (form.status === ProductRequisitionFormStatus.WAITING) {
       // form : waiting => approvalUser: approval_stage_1 > wait approval_stage_1 approve
-      //checking
       if (
         userApproval.assignedUserApproval?.roleApproval !==
         RoleApproval.APPROVAL_STAGE_1
@@ -405,7 +397,6 @@ class ProductRequisitionFormService {
       }
 
       // change status form
-      // if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
       if (requestData.approvalLog?.status === ApprovalLogStatus.ACCEPT) {
         form.status = ProductRequisitionFormStatus.ACCEPTED_STAGE_1;
         form.isRecalled = false;
@@ -417,13 +408,10 @@ class ProductRequisitionFormService {
       form = await productRequisitionFormRepository.save(form);
 
       // create approval log
-      const approvalLogData = mapper.map(
+      await approvalLogService.createApprovalLog(
         requestData.approvalLog,
-        CreateApprovalLogRequestDto,
-        ApprovalLog
+        userApproval
       );
-      approvalLogData.userApproval = userApproval;
-      await approvalLogRepository.createAndSave(approvalLogData);
 
       const formDto = mapper.map(
         form,
@@ -461,13 +449,10 @@ class ProductRequisitionFormService {
       form = await productRequisitionFormRepository.save(form);
 
       // create approval log
-      const approvalLogData = mapper.map(
+      await approvalLogService.createApprovalLog(
         requestData.approvalLog,
-        CreateApprovalLogRequestDto,
-        ApprovalLog
+        userApproval
       );
-      approvalLogData.userApproval = userApproval;
-      await approvalLogRepository.createAndSave(approvalLogData);
 
       const formDto = mapper.map(
         form,
@@ -504,13 +489,11 @@ class ProductRequisitionFormService {
       form = await productRequisitionFormRepository.save(form);
 
       // create approval log
-      const approvalLogData = mapper.map(
+      await approvalLogService.createApprovalLog(
         requestData.approvalLog,
-        CreateApprovalLogRequestDto,
-        ApprovalLog
+        userApproval
       );
-      approvalLogData.userApproval = userApproval;
-      await approvalLogRepository.createAndSave(approvalLogData);
+
       const formDto = mapper.map(
         form,
         ProductRequisitionForm,
