@@ -25,3 +25,8 @@ export async function updateCompany(data: IUpdateCompany) {
   const response = await http.patch<IApiResponse<ICompany>>(`/companies/${data.slug}`, data)
   return response.data
 }
+
+export async function deleteCompany(slug: string) {
+  const response = await http.delete<IApiResponse<ICompany>>(`/companies/${slug}`)
+  return response.data
+}

@@ -22,6 +22,7 @@ export interface IProductRequisitionFormInfo {
   code?: string
   type: ProductRequisitionType
   status: ProductRequisitionStatus
+  roleApproval?: string
   isRecalled: boolean
   deadlineApproval: string
   description: string
@@ -70,6 +71,12 @@ export interface IProductRequisitionFormInfo {
   }[]
   createdAt?: string
   updatedAt?: string
+}
+
+export interface IRequisitionByUserApproval {
+  approvalUserSlug: string
+  roleApproval: string
+  productRequisitionForm: IProductRequisitionFormInfo
 }
 
 export interface IProductRequisitionFormWithNewProductInfo {

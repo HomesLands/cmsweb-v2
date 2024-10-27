@@ -73,20 +73,22 @@ export function PopoverNotification() {
       </PopoverTrigger>
       <PopoverContent className="mt-1 p-0 mr-2 md:w-[24rem]">
         <div className="grid">
-          <div className="flex flex-row justify-between px-4 py-5 border-b">
+          <div className="flex flex-row justify-center px-4 py-5 border-b">
             <Label className="text-lg font-bold leading-none">
               {t('notifications.notification')}
             </Label>
-            <NavLink
-              to="/notification"
-              className="text-sm text-primary"
-              onClick={() => setIsPopoverOpen(false)}
-            >
-              {t('notifications.viewAll')}
-            </NavLink>
+            {data?.result?.items && data.result.items.length > 0 && (
+              <NavLink
+                to="/notification"
+                className="text-sm text-primary"
+                onClick={() => setIsPopoverOpen(false)}
+              >
+                {t('notifications.viewAll')}
+              </NavLink>
+            )}
           </div>
           <ScrollArea className="mb-3 sm:max-w-[25rem] sm:max-h-[28rem]">
-            <div className="grid gap-1">
+            <div className="grid">
               {isLoading ? (
                 <div className="flex justify-center items-center py-4">
                   <Loader2 className="w-6 h-6 animate-spin text-primary" />
@@ -99,7 +101,7 @@ export function PopoverNotification() {
                     className="cursor-pointer"
                   >
                     <div
-                      className={`relative grid items-center grid-cols-5 gap-2 px-2 py-2 transition-all ${item.isRead ? 'bg-muted' : ''} duration-200 border-b hover:bg-muted/35`}
+                      className={`relative grid items-center grid-cols-5 gap-2 px-2 py-2 transition-all ${item.isRead ? '' : 'bg-muted'} duration-200 border-b hover:bg-muted/35`}
                     >
                       <div className="flex relative justify-center items-center w-9 h-9 rounded-2xl bg-primary/5">
                         <BellIcon className="w-4 h-4 text-primary" />
@@ -120,7 +122,9 @@ export function PopoverNotification() {
                   </div>
                 ))
               ) : (
-                <span className="text-sm text-gray-500">{t('notifications.noNotification')}</span>
+                <span className="flex justify-center py-4 w-full text-sm text-gray-500">
+                  {t('notifications.noNotifications')}
+                </span>
               )}
             </div>
           </ScrollArea>

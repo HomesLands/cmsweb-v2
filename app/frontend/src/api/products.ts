@@ -11,6 +11,7 @@ import {
   IProductInfoUpdate,
   IProductQuery,
   IProductRequisitionFormInfo,
+  IRequisitionByUserApproval,
   IRequisitionFormResponseForApprover,
   IResubmitProductRequisition,
   IUnit,
@@ -93,6 +94,13 @@ export async function createProductRequisition(data: IFinalProductRequisition) {
 export async function getProductRequisitionBySlug(slug: string) {
   const response = await http.get<IApiResponse<IProductRequisitionFormInfo>>(
     `/productRequisitionForms/${slug}`
+  )
+  return response.data
+}
+
+export async function getRequisitionByUserApproval(userApprovalSlug: string) {
+  const response = await http.get<IApiResponse<IRequisitionByUserApproval>>(
+    `/userApprovals/${userApprovalSlug}`
   )
   return response.data
 }

@@ -36,9 +36,7 @@ const ApprovalProductRequisitions: React.FC = () => {
   }, [data?.result?.items])
 
   const handleRowClick = (requisition: IRequisitionFormResponseForApprover) => {
-    navigate(`/product-requisitions/approval/${requisition.productRequisitionForm.slug}`, {
-      state: { selectedRequisition: requisition }
-    })
+    navigate(`/product-requisitions/approval/${requisition.approvalUserSlug}`)
   }
 
   const columns = useColumnsRequisitionList()
