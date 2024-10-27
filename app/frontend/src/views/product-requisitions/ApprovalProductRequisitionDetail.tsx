@@ -55,6 +55,10 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           acceptEnabled = true
           cancelEnabled = true
           statusDisplay = 'Chờ duyệt'
+        } else if (status === RequisitionStatus.WAITING && isRecalled) {
+          acceptEnabled = true
+          cancelEnabled = true
+          statusDisplay = 'Chờ duyệt'
         } else if (status === RequisitionStatus.CANCEL && isRecalled) {
           showButtons = false
           statusDisplay = 'Đã hủy'

@@ -59,7 +59,7 @@ const getBadgeText = (
     return 'Đang chờ duyệt'
   }
   if (roleApproval === 'approval_stage_1' && status === RequisitionStatus.CANCEL && isRecalled) {
-    return 'Đã bị hoàn ở bước 1'
+    return 'Bị hoàn ở bước 1'
   }
   if (
     roleApproval === 'approval_stage_2' &&
@@ -79,9 +79,9 @@ const getBadgeText = (
   // Các trường hợp khác
   switch (status) {
     case RequisitionStatus.WAITING:
-      return isRecalled ? 'Đã bị hoàn ở bước 2' : 'Chờ duyệt bước 1'
+      return isRecalled ? 'Bị hoàn ở bước 2' : 'Chờ duyệt bước 1'
     case RequisitionStatus.ACCEPTED_STAGE_1:
-      return isRecalled ? 'Đã bị hoàn ở bước 3' : 'Đã duyệt bước 1'
+      return isRecalled ? 'Bị hoàn ở bước 3' : 'Đã duyệt bước 1'
     case RequisitionStatus.ACCEPTED_STAGE_2:
       return 'Đã duyệt bước 2'
     case RequisitionStatus.WAITING_EXPORT:
