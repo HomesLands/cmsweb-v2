@@ -11,6 +11,7 @@ import {
   TPaginationOptionResponse,
   TQueryRequest,
   TUpdateUserInfoRequestDto,
+  TUpdateUsernameRequestDto,
   TUploadUserAvatarRequestDto,
   TUploadUserSignRequestDto,
 } from "@types";
@@ -25,6 +26,7 @@ import { plainToClass } from "class-transformer";
 import {
   ChangePasswordRequestDto,
   UpdateUserInfoRequestDto,
+  UpdateUsernameRequestDto,
 } from "@dto/request";
 import { validate } from "class-validator";
 import { ValidationError } from "exception";
@@ -200,6 +202,7 @@ class UserService {
 
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
+
     const user = await userRepository.findOne({
       where: {
         id: requestData.userId,
@@ -208,6 +211,27 @@ class UserService {
     if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 
     Object.assign(user, requestData);
+    const updatedUser = await userRepository.save(user);
+
+    const userDto = mapper.map(updatedUser, User, UserResponseDto);
+    return userDto;
+  }
+
+  public async updateUsername(plainData: TUpdateUsernameRequestDto) {
+    // Check current password
+    const requestData = plainToClass(UpdateUsernameRequestDto, plainData);
+    const errors = await validate(requestData);
+    if (errors.length > 0) throw new ValidationError(errors);
+
+    const user = await userRepository.findOne({
+      where: {
+        id: requestData.userId,
+      },
+    });
+
+    if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
+
+    Object.assign(user, { username: requestData.username });
     const updatedUser = await userRepository.save(user);
 
     const userDto = mapper.map(updatedUser, User, UserResponseDto);

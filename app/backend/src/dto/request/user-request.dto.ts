@@ -1,7 +1,7 @@
 import { AutoMap } from "@automapper/classes";
 import { ErrorCodes } from "@exception/error-code";
 import { Expose } from "class-transformer";
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, MinLength } from "class-validator";
 
 export class ChangePasswordRequestDto {
   @IsNotEmpty({ message: "INVALID_PASSWORD" })
@@ -47,4 +47,14 @@ export class UpdateUserInfoRequestDto {
   @Expose()
   @AutoMap()
   fullname?: string;
+}
+
+export class UpdateUsernameRequestDto {
+  userId: string;
+
+  @IsNotEmpty({ message: "INVALID_USERNAME" })
+  @MinLength(1, { message: "INVALID_USERNAME" })
+  @Expose()
+  @AutoMap()
+  username?: string;
 }

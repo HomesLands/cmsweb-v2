@@ -8,6 +8,7 @@ import {
   TPaginationOptionResponse,
   TQueryRequest,
   TUpdateUserInfoRequestDto,
+  TUpdateUsernameRequestDto,
   TUploadUserAvatarRequestDto,
   TUploadUserSignRequestDto,
 } from "@types";
@@ -73,6 +74,17 @@ class UserController {
    *         address: 01 Linh Trung, TP Thủ Đức
    *         phoneNumber: "0987654321"
    *         fullname: John Doe
+   *
+   *     UpdateUsernameRequestDto:
+   *       type: object
+   *       required:
+   *         - username
+   *       properties:
+   *         username:
+   *           type: string
+   *           description: username
+   *       example:
+   *         username: username
    */
 
   /**
@@ -420,6 +432,51 @@ class UserController {
         code: StatusCodes.OK,
         error: false,
         message: `User info has updated successfully`,
+        method: req.method,
+        path: req.originalUrl,
+        result,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /users/username:
+   *   patch:
+   *     summary: Update username
+   *     tags: [User]
+   *     requestBody:
+   *       require: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/UpdateUsernameRequestDto'
+   *     responses:
+   *       200:
+   *         description: Username has updated successfully
+   *       500:
+   *         description: Server error
+   *       1003:
+   *         description: Username is not valid
+   */
+  public async updateUsername(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { userId = "" } = req;
+      const requestData = req.body as TUpdateUsernameRequestDto;
+      Object.assign(requestData, { userId });
+
+      const result = await userService.updateUsername(requestData);
+      const response: TApiResponse<UserResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: `Username has updated successfully`,
         method: req.method,
         path: req.originalUrl,
         result,

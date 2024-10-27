@@ -279,11 +279,6 @@ export const ErrorCodes: TErrorCode = {
     code: 1072,
     message: "Permission could not be found",
   },
-  USER_ROLE_EXIST: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1072,
-    message: "User role is existed",
-  },
   PERMISSION_EXIST: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1073,
@@ -564,6 +559,21 @@ export const ErrorCodes: TErrorCode = {
     code: 1128,
     message: "Notification not found",
   },
+  ROLE_PERMISSION_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1129,
+    message: "Role permission not found",
+  },
+  USER_ROLE_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1130,
+    message: "User role is existed",
+  },
+  ROLE_PERMISSION_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1131,
+    message: "Role permission is existed",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]
@@ -665,7 +675,7 @@ export const ErrorCodes: TErrorCode = {
   // Code range: [4300 - 4499]
   FOLDER_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 4100,
+    code: 4300,
     message: `Folder is not existed`,
   },
 } as const;

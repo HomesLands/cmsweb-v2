@@ -48,6 +48,7 @@ import {
   RoleApproval,
   ApprovalLogStatus,
   Action,
+  Topic,
 } from "@enums";
 import { parsePagination, PermissionUtils } from "@utils";
 import { In } from "typeorm";
@@ -55,7 +56,6 @@ import { StatusCodes } from "http-status-codes";
 import { env } from "@constants";
 import { Ability, MongoQuery } from "@casl/ability";
 import { Subjects } from "@lib/casl";
-import { topicName } from "@configs/kafka.config";
 import { productRequisitionFormProducer } from "producer";
 
 class ProductRequisitionFormService {
@@ -280,17 +280,27 @@ class ProductRequisitionFormService {
     });
 
     Object.assign(form, { requestProducts, userApprovals });
-
     const created = await productRequisitionFormRepository.createAndSave(form);
 
     // Send message
     await productRequisitionFormProducer.publish({
-      topic: `${topicName}.created`,
+      topic: `${Topic.PRODUCT_REQUISITION_FORM}`,
       message: JSON.stringify({
         message: "Product requisition form has been created successfully",
         userId: form.creator?.id,
         url: "/product-requisitions",
-        type: topicName,
+        type: `${Topic.PRODUCT_REQUISITION_FORM}.creation`,
+      }),
+    });
+
+    // Send message to remind first-stage approver approve form
+    await productRequisitionFormProducer.publish({
+      topic: `${Topic.PRODUCT_REQUISITION_FORM}`,
+      message: JSON.stringify({
+        message: "Product requisition form need to be approved",
+        userId: firstStageApprover.user?.id,
+        url: "/product-requisitions",
+        type: `${Topic.PRODUCT_REQUISITION_FORM}.approval`,
       }),
     });
 
@@ -359,10 +369,7 @@ class ProductRequisitionFormService {
         },
       },
       relations: [
-        "assignedUserApproval",
         "assignedUserApproval.user",
-        "productRequisitionForm",
-        "productRequisitionForm.requestProducts",
         "productRequisitionForm.requestProducts.product",
         "approvalLogs",
       ],
@@ -376,11 +383,8 @@ class ProductRequisitionFormService {
       },
       relations: [
         "creator",
-        "userApprovals",
-        "userApprovals.assignedUserApproval",
         "userApprovals.assignedUserApproval.user",
         "userApprovals.approvalLogs",
-        "requestProducts",
         "requestProducts.product.unit",
         "requestProducts.temporaryProduct.unit",
       ],
@@ -396,14 +400,35 @@ class ProductRequisitionFormService {
         throw new GlobalError(StatusCodes.FORBIDDEN);
       }
 
+      const message = {};
       // change status form
       if (requestData.approvalLog?.status === ApprovalLogStatus.ACCEPT) {
         form.status = ProductRequisitionFormStatus.ACCEPTED_STAGE_1;
         form.isRecalled = false;
+
+        // Construct message to send second-stage approver
+        const secondStageApprover = form.userApprovals?.find(
+          (item) =>
+            item.assignedUserApproval?.roleApproval ===
+            RoleApproval.APPROVAL_STAGE_2
+        );
+        Object.assign(message, {
+          message: "Product requisition form need to be approved",
+          userId: secondStageApprover?.assignedUserApproval?.user?.id,
+          url: "/product-requisitions/approval",
+          type: `${Topic.PRODUCT_REQUISITION_FORM}.approval`,
+        });
       } else {
         // give_back and cancel because give_back === cancel when form.status === waiting
         form.status = ProductRequisitionFormStatus.CANCEL;
         form.isRecalled = true;
+
+        Object.assign(message, {
+          message: "Product requisition has been canceled",
+          userId: form.creator?.id,
+          url: "/product-requisitions",
+          type: `${Topic.PRODUCT_REQUISITION_FORM}.cancel`,
+        });
       }
       form = await productRequisitionFormRepository.save(form);
 
@@ -412,6 +437,13 @@ class ProductRequisitionFormService {
         requestData.approvalLog,
         userApproval
       );
+
+      // Send message
+      if (message)
+        await productRequisitionFormProducer.publish({
+          topic: `${Topic.PRODUCT_REQUISITION_FORM}`,
+          message: JSON.stringify(message),
+        });
 
       const formDto = mapper.map(
         form,
@@ -430,21 +462,53 @@ class ProductRequisitionFormService {
         throw new GlobalError(StatusCodes.FORBIDDEN);
       }
 
-      // if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
+      const message = {};
       if (requestData.approvalLog?.status === ApprovalLogStatus.ACCEPT) {
-        // update status
         form.status = ProductRequisitionFormStatus.ACCEPTED_STAGE_2;
         form.isRecalled = false;
+
+        // Construct message to send third-stage approver
+        const thirdStageApprover = form.userApprovals?.find(
+          (item) =>
+            item.assignedUserApproval?.roleApproval ===
+            RoleApproval.APPROVAL_STAGE_3
+        );
+        Object.assign(message, {
+          message: "Product requisition form need to be approved",
+          userId: thirdStageApprover?.assignedUserApproval?.user?.id,
+          url: "/product-requisitions/approval",
+          type: `${Topic.PRODUCT_REQUISITION_FORM}.approval`,
+        });
       } else if (
-        // requestData.approvalLogStatus === ApprovalLogStatus.GIVE_BACK
-        requestData.approvalLog?.status === ApprovalLogStatus.GIVE_BACK
+        requestData.approvalLog?.status === ApprovalLogStatus.GIVE_BACK // Second-stage give back the form
       ) {
         form.status = ProductRequisitionFormStatus.WAITING;
         form.isRecalled = true;
+
+        // Message to send first-stage to approve the form
+        const firstStageApprover = form.userApprovals?.find(
+          (item) =>
+            item.assignedUserApproval?.roleApproval ===
+            RoleApproval.APPROVAL_STAGE_1
+        );
+        Object.assign(message, {
+          message: "Product requisition has been canceled and needs approval",
+          userId: firstStageApprover?.assignedUserApproval?.user?.id,
+          url: "/product-requisitions/approval",
+          type: `${Topic.PRODUCT_REQUISITION_FORM}.recall`,
+        });
       } else {
-        // CANCEL
+        //  Second-stage cancel the form
         form.status = ProductRequisitionFormStatus.CANCEL;
         form.isRecalled = true;
+
+        // Send messsage to form creator
+        Object.assign(message, {
+          message: "Product requisition has been canceled",
+          userId: form.creator?.id,
+          url: "/product-requisitions",
+          type: `${Topic.PRODUCT_REQUISITION_FORM}.cancel`,
+        });
       }
       form = await productRequisitionFormRepository.save(form);
 
@@ -453,6 +517,13 @@ class ProductRequisitionFormService {
         requestData.approvalLog,
         userApproval
       );
+
+      // Send message
+      if (message)
+        await productRequisitionFormProducer.publish({
+          topic: `${Topic.PRODUCT_REQUISITION_FORM}`,
+          message: JSON.stringify(message),
+        });
 
       const formDto = mapper.map(
         form,
@@ -471,20 +542,42 @@ class ProductRequisitionFormService {
         throw new GlobalError(StatusCodes.FORBIDDEN);
       }
 
-      // if (requestData.approvalLogStatus === ApprovalLogStatus.ACCEPT) {
+      const message = {};
+      // third-stage approver approve the form
       if (requestData.approvalLog?.status === ApprovalLogStatus.ACCEPT) {
         form.status = ProductRequisitionFormStatus.WAITING_EXPORT;
         form.isRecalled = false;
+        // Message for warehouse kepper
       } else if (
-        // requestData.approvalLogStatus === ApprovalLogStatus.GIVE_BACK
-        requestData.approvalLog?.status === ApprovalLogStatus.GIVE_BACK
+        requestData.approvalLog?.status === ApprovalLogStatus.GIVE_BACK //  third-stage approver give back the form
       ) {
         form.status = ProductRequisitionFormStatus.ACCEPTED_STAGE_1;
         form.isRecalled = true;
+
+        // Message to send sencond-stage to approve the form
+        const firstStageApprover = form.userApprovals?.find(
+          (item) =>
+            item.assignedUserApproval?.roleApproval ===
+            RoleApproval.APPROVAL_STAGE_2
+        );
+        Object.assign(message, {
+          message:
+            "Product requisition form has been recalled and needs approval",
+          userId: firstStageApprover?.assignedUserApproval?.user?.id,
+          url: "/product-requisitions/approval",
+          type: `${Topic.PRODUCT_REQUISITION_FORM}.recall`,
+        });
       } else {
-        // CANCEL
         form.status = ProductRequisitionFormStatus.CANCEL;
         form.isRecalled = true;
+
+        // Send messsage to form creator
+        Object.assign(message, {
+          message: "Product requisition has been canceled",
+          userId: form.creator?.id,
+          url: "/product-requisitions",
+          type: `${Topic.PRODUCT_REQUISITION_FORM}.cancel`,
+        });
       }
       form = await productRequisitionFormRepository.save(form);
 
@@ -493,6 +586,13 @@ class ProductRequisitionFormService {
         requestData.approvalLog,
         userApproval
       );
+
+      // Send message
+      if (message)
+        await productRequisitionFormProducer.publish({
+          topic: `${Topic.PRODUCT_REQUISITION_FORM}`,
+          message: JSON.stringify(message),
+        });
 
       const formDto = mapper.map(
         form,
