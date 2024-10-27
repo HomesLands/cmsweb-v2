@@ -548,13 +548,12 @@ class ProductRequisitionFormController {
   ): Promise<void> {
     try {
       const data = req.body as TResubmitProductRequisitionFormRequestDto;
-      const creatorId = req.userId as string;
       logger.info("ResubmitProductRequisitionFormRequest", { data });
 
       const result =
         await productRequisitionFormService.resubmitProductRequisitionForm(
           data,
-          creatorId
+          req.ability
         );
 
       const response: TApiResponse<ProductRequisitionFormResponseDto> = {

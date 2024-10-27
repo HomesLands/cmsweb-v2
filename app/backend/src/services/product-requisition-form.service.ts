@@ -322,11 +322,8 @@ class ProductRequisitionFormService {
       relations: [
         "project",
         "creator.userDepartments.department.site.company",
-        "userApprovals",
-        "userApprovals.assignedUserApproval",
         "userApprovals.assignedUserApproval.user",
         "userApprovals.approvalLogs",
-        "requestProducts",
         "requestProducts.product.unit",
         "requestProducts.temporaryProduct.unit",
       ],
@@ -609,7 +606,7 @@ class ProductRequisitionFormService {
 
   public async resubmitProductRequisitionForm(
     plainData: TResubmitProductRequisitionFormRequestDto,
-    creatorId: string
+    ability?: Ability<[Action, Subjects], MongoQuery>
   ): Promise<ProductRequisitionFormResponseDto> {
     const requestData = plainToClass(
       ResubmitProductRequisitionFormRequestDto,
@@ -625,29 +622,51 @@ class ProductRequisitionFormService {
       relations: [
         "project",
         "creator",
-        "userApprovals",
-        "userApprovals.assignedUserApproval",
         "userApprovals.assignedUserApproval.user",
         "userApprovals.approvalLogs",
-        "requestProducts",
         "requestProducts.product.unit",
         "requestProducts.temporaryProduct.unit",
       ],
     });
     if (!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
-    if (form.creator) {
-      if (form.creator.id !== creatorId)
-        throw new GlobalError(StatusCodes.FORBIDDEN);
-    } else {
+    if (!ability?.can(Action.UPDATE, form))
       throw new GlobalError(StatusCodes.FORBIDDEN);
-    }
 
-    form.status = ProductRequisitionFormStatus.WAITING;
-    form.isRecalled = false;
-    form.description = requestData.description;
-
+    Object.assign(form, {
+      status: ProductRequisitionFormStatus.WAITING,
+      isRecalled: false,
+      description: requestData.description,
+    });
     form = await productRequisitionFormRepository.save(form);
+
+    // Send messsage to form creator
+    await productRequisitionFormProducer.publish({
+      topic: Topic.PRODUCT_REQUISITION_FORM,
+      message: JSON.stringify({
+        message: "Product requisition has been submited",
+        userId: form.creator?.id,
+        url: "/product-requisitions",
+        type: `${Topic.PRODUCT_REQUISITION_FORM}.resubmit`,
+      }),
+    });
+
+    // Send messsage to form first-stage
+    const firstStageApprover = form.userApprovals?.find(
+      (item) =>
+        item.assignedUserApproval?.roleApproval ===
+        RoleApproval.APPROVAL_STAGE_1
+    );
+    await productRequisitionFormProducer.publish({
+      topic: Topic.PRODUCT_REQUISITION_FORM,
+      message: JSON.stringify({
+        message: "Product requisition need to be approved",
+        userId: firstStageApprover?.assignedUserApproval?.user?.id,
+        url: "/product-requisitions/approval",
+        type: `${Topic.PRODUCT_REQUISITION_FORM}.approval`,
+      }),
+    });
+
     const formDto = mapper.map(
       form,
       ProductRequisitionForm,
