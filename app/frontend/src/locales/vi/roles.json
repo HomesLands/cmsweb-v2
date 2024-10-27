@@ -30,6 +30,9 @@
     "cancel": "Hủy",
     "confirmDelete": "Tôi đã hiểu, xác nhận xóa",
 
+    "updatePermission": "Cập nhật quyền hạn",
+    "updatePermissionDescription": "Thay đổi thông tin bên dưới để cập nhật quyền hạn",
+    "update": "Cập nhật",
     "deleteRolePermission": "Xóa quyền của chức vụ"
   }
 }

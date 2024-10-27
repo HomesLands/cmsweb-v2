@@ -134,7 +134,6 @@ export const CardUserGeneralInfo = ({ handleUploadProfilePicture }: CardUserGene
               <span className="font-semibold font-beVietNam text-md">{t('account.profile')}</span>
               <div className="flex gap-2">
                 <DialogUpdateUserGeneralInfo userInfo={userInfo as IUserInfo} />
-                <DialogUpdateUsername userInfo={userInfo as IUserInfo} />
               </div>
             </div>
             <div className="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2">
