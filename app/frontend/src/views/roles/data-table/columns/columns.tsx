@@ -15,6 +15,7 @@ import { IRole } from '@/types'
 import {
   DialogAddRolePermission,
   DialogDeleteRole,
+  DialogDeleteRolePermission,
   DialogUpdateRole
 } from '@/components/app/dialog'
 
@@ -58,16 +59,16 @@ export const useRoleColumns = (): ColumnDef<IRole>[] => {
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="w-8 h-8 p-0">
+                <Button variant="ghost" className="p-0 w-8 h-8">
                   <span className="sr-only">Thao tác</span>
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DialogAddRolePermission role={role} />
-                <DropdownMenuSeparator />
                 <DialogUpdateRole role={role} />
                 <DialogDeleteRole role={role} />
+                <DialogDeleteRolePermission role={role} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

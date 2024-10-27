@@ -28,6 +28,8 @@
     "deleteRoleWarning": "Bạn sắp sửa xóa chức vụ",
     "deleteRoleConfirmation": "Bạn có chắc chắn muốn xóa không?",
     "cancel": "Hủy",
-    "confirmDelete": "Tôi đã hiểu, xác nhận xóa"
+    "confirmDelete": "Tôi đã hiểu, xác nhận xóa",
+
+    "deleteRolePermission": "Xóa quyền của chức vụ"
   }
 }
