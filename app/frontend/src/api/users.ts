@@ -52,3 +52,8 @@ export async function changePasswordApi(data: IConfirmChangePassword) {
   )
   return response
 }
+
+export async function updateUsername(data: { username: string }) {
+  const response = await http.patch<IApiResponse<IUserInfo>>(`/users/username`, data)
+  return response.data
+}

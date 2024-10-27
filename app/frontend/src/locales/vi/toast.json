@@ -42,6 +42,8 @@
     "updateUserSuccess": "Người dùng được cập nhật thành công",
     "invalidUserDepartmentExisted": "Người dùng đã tồn tại trong phòng ban",
 
+    "updateUsernameSuccess": "Tên tài khoản được cập nhật thành công",
+
     "createCompanySuccessfully": "Công ty được tạo thành công",
     "updateCompanySuccess": "Thông tin công ty được cập nhật thành công",
     "deleteCompanySuccess": "Công ty được xóa thành công",

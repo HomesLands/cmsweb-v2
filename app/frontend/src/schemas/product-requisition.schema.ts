@@ -176,15 +176,6 @@ export const personalAccountInfoSchema = z.object({
   site: z.string().min(1, 'Công trình không hợp lệ')
 })
 
-//Personal Account Info
-export const updateAccountInfoSchema = z.object({
-  fullname: z.string().min(1, 'Họ và tên không hợp lệ'),
-  address: z.string().min(1, 'Địa chỉ không hợp lệ'),
-  phoneNumber: z.string().min(1, 'Số điện thoại không hợp lệ'),
-  dob: z.string().min(1, 'Ngày sinh không hợp lệ'),
-  gender: z.string().min(1, 'Giới tính không hợp lệ')
-})
-
 export const passwordAndAuthenticationSchema = z
   .object({
     currentPassword: z.string().min(1, 'Mật khẩu cũ không hợp lệ'),
@@ -211,7 +202,6 @@ export type TUpdateProductRequisitionGeneralInfoSchema = z.infer<
 
 //Personal Account Info
 export type TPersonalAccountInfoSchema = z.infer<typeof personalAccountInfoSchema>
-export type TUpdateAccountInfoSchema = z.infer<typeof updateAccountInfoSchema>
 export type TPasswordAndAuthenticationSchema = z.infer<typeof passwordAndAuthenticationSchema>
 
 //Add New Product

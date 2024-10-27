@@ -28,7 +28,7 @@ export async function deleteRolePermission(
   data: TDeleteRolePermissionSchema
 ): Promise<IApiResponse<IRolePermission>> {
   const response = await http.delete<IApiResponse<IRolePermission>>(
-    `/rolePermissions/${data.rolePermissionSlug}/hello`
+    `/rolePermissions/${data.rolePermissionSlug}`
   )
   return response.data
 }

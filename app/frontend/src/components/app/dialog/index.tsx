@@ -44,3 +44,5 @@ export { default as DialogUpdateAssignedApprover } from './dialog-update-assigne
 export { default as DialogDeleteAssignedApprover } from './dialog-delete-assigned-approver'
 export { default as DialogDeleteCompany } from './dialog-delete-company'
 export { default as DialogDeleteRolePermission } from './dialog-delete-role-permission'
+export { default as DialogUpdateUserGeneralInfo } from './dialog-update-user-general-info'
+export { default as DialogUpdateUsername } from './dialog-update-username'
