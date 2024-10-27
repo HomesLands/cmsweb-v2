@@ -58,3 +58,7 @@ export enum NotificationType {
   INFO = "info",
   REMINDER = "reminder",
 }
+
+export enum Topic {
+  PRODUCT_REQUISITION_FORM = "product-requsition-form",
+}

@@ -36,8 +36,6 @@ class RoleService {
       ],
     });
 
-    console.log({ roles });
-
     const results = mapper.mapArray(roles, Role, RoleResponseDto);
     return {
       items: results,

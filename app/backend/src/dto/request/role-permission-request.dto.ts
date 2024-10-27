@@ -10,3 +10,7 @@ export class CreateRolePermissionRequestDto {
   @AutoMap()
   permissionSlug?: string;
 }
+
+export class UpdateRolePermissionRequestDto extends CreateRolePermissionRequestDto {
+  slug: string;
+}
