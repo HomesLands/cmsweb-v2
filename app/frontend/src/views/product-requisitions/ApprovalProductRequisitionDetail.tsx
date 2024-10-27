@@ -158,7 +158,22 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
       {
         onSuccess: () => {
           setOpenDialog(null)
-          showToast(tToast('toast.approveRequestSuccess'))
+
+          // Display toast based on the action type
+          switch (status) {
+            case 'accept':
+              showToast(tToast('toast.approveRequestSuccess'))
+              break
+            case 'give_back':
+              showToast(tToast('toast.giveBackRequestSuccess'))
+              break
+            case 'cancel':
+              showToast(tToast('toast.cancelRequestSuccess'))
+              break
+            default:
+              showToast(tToast('toast.requestActionSuccess'))
+          }
+
           refetch()
           queryClient.invalidateQueries({ queryKey: ['productRequisitionByApprover'] })
         }
