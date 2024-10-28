@@ -46,6 +46,7 @@ jobs:
 
       - name: Deploy with Docker Compose
         run: |
+          docker ps -a
           docker network create scoobydoo
           docker compose -f .deploy/docker-compose.dev.yaml down
           docker compose -f .deploy/docker-compose.dev.yaml up -d --build
