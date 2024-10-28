@@ -12,7 +12,9 @@ import { baseURL, ROUTE } from '@/constants'
 
 const ApprovalProductRequisitions: React.FC = () => {
   const { t } = useTranslation(['productRequisition'])
-  const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
+  const { pagination, handlePageChange, handlePageSizeChange } = usePagination({
+    isSearchParams: false
+  })
   const navigate = useNavigate()
 
   const { data, isLoading } = useProductRequisitionByApprover({

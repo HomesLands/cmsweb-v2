@@ -7,8 +7,7 @@ import {
   UserCheckIcon,
   UsersIcon,
   WarehouseIcon,
-  ArchiveIcon,
-  BellIcon
+  ArchiveIcon
 } from 'lucide-react'
 
 import type { ISidebarRoute } from '@/types'

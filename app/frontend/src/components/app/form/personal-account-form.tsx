@@ -34,8 +34,8 @@ export const PersonalAccountForm: React.FC = () => {
       phoneNumber: userInfo?.phoneNumber || '',
       dob: userInfo?.dob || '',
       gender: userInfo?.gender || '',
-      company: userInfo?.userDepartments[0]?.department?.site?.company.name || '',
-      site: userInfo?.userDepartments[0]?.department?.site?.name || ''
+      company: userInfo?.userDepartments?.[0]?.department?.site?.company?.name || '',
+      site: userInfo?.userDepartments?.[0]?.department?.site?.name || ''
     }
   })
 
@@ -48,8 +48,8 @@ export const PersonalAccountForm: React.FC = () => {
         phoneNumber: userInfo?.phoneNumber || '',
         dob: userInfo?.dob || '',
         gender: userInfo.gender || '',
-        company: userInfo?.userDepartments[0]?.department?.site?.company.name || '',
-        site: userInfo?.userDepartments[0]?.department?.site?.name || ''
+        company: userInfo?.userDepartments?.[0]?.department?.site?.company.name || '',
+        site: userInfo?.userDepartments?.[0]?.department?.site?.name || ''
       })
     }
   }, [userInfo, form])
