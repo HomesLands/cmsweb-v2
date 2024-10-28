@@ -23,7 +23,15 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Configure SSH for Deployment
+      - name: Copy Environment Configuration
+        env:
+          ENV_DEV: ${{ secrets.ENV_DEV }}
+          FE_ENV_DEV: ${{ secrets.FE_ENV_DEV }}
+        run: |
+          echo "$ENV_DEV" > .deploy/.env
+          echo "$FE_ENV_DEV" > app/frontend/.env
+
+      - name: Deploy with Docker Compose
         env:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
@@ -35,18 +43,6 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -p $SSH_PORT $REMOTE_HOST >> ~/.ssh/known_hosts
           export DOCKER_HOST="ssh://$REMOTE_USER@$REMOTE_HOST:$SSH_PORT"
-          echo "SSH Connection String: ssh://$REMOTE_USER@$REMOTE_HOST:$SSH_PORT"
-
-      - name: Copy Environment Configuration
-        env:
-          ENV_DEV: ${{ secrets.ENV_DEV }}
-          FE_ENV_DEV: ${{ secrets.FE_ENV_DEV }}
-        run: |
-          echo "$ENV_DEV" > .deploy/.env
-          echo "$FE_ENV_DEV" > app/frontend/.env
-
-      - name: Deploy with Docker Compose
-        run: |
           docker ps -a
           docker network create scoobydoo
           docker compose -f .deploy/docker-compose.dev.yaml down
