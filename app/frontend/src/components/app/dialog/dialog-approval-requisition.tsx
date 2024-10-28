@@ -35,6 +35,7 @@ export const DialogApprovalRequisition: React.FC<DialogApprovalRequisitionProps>
   onConfirm,
   roleApproval
 }) => {
+  console.log('openDialog', openDialog)
   const { t } = useTranslation(['productRequisition'])
   const form = useForm<z.infer<typeof approvalRequisitionSchema>>({
     resolver: zodResolver(approvalRequisitionSchema),
@@ -70,9 +71,7 @@ export const DialogApprovalRequisition: React.FC<DialogApprovalRequisitionProps>
             {openDialog === ApprovalAction.ACCEPT && t('productRequisition.acceptConfirmTitle')}
             {openDialog === ApprovalAction.GIVE_BACK &&
               t('productRequisition.giveBackConfirmTitle')}
-            {openDialog === ApprovalAction.CANCEL &&
-              roleApproval !== UserApprovalStage.APPROVAL_STAGE_1 &&
-              t('productRequisition.cancelConfirmTitle')}
+            {openDialog === ApprovalAction.CANCEL && t('productRequisition.cancelConfirmTitle')}
           </DialogTitle>
         </DialogHeader>
         <p>
@@ -81,9 +80,7 @@ export const DialogApprovalRequisition: React.FC<DialogApprovalRequisitionProps>
             (roleApproval === UserApprovalStage.APPROVAL_STAGE_1
               ? t('productRequisition.giveBackConfirmMessage')
               : t('productRequisition.giveBackConfirmMessage'))}
-          {openDialog === ApprovalAction.CANCEL &&
-            roleApproval !== UserApprovalStage.APPROVAL_STAGE_1 &&
-            t('productRequisition.cancelConfirmMessage')}
+          {openDialog === ApprovalAction.CANCEL && t('productRequisition.cancelConfirmMessage')}
         </p>
         <Form {...form}>
           <form onSubmit={handleConfirm} className="space-y-6">

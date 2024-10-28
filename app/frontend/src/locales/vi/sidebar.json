@@ -29,6 +29,7 @@
     "createEmployee": "Thêm nhân sự",
 
     "assignedApprover": "Người duyệt",
+    "assignedApproverList": "Danh sách người duyệt",
     "createAssignedApprover": "Tạo người duyệt",
     "createAssignedApprovers": "Tạo người duyệt",
 
@@ -65,6 +66,8 @@
     "assigned-approvers": "Người phê duyệt",
     "personal-account": "Tài khoản cá nhân",
 
-    "notifications": "Thông báo"
+    "notifications": "Thông báo",
+
+    "approval": "Duyệt"
   }
 }

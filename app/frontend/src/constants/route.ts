@@ -61,5 +61,5 @@ export const ROUTE = {
   BACKUP: '/backups',
 
   // Notification
-  NOTIFICATION: '/notifications'
+  NOTIFICATION: '/notification'
 }

@@ -1,12 +1,13 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { useTranslation } from 'react-i18next'
+import { format } from 'date-fns'
+import React from 'react'
 
 import { DataTableColumnHeader } from '@/components/ui'
 import { IUserApprovalInfo } from '@/types'
 import { ApprovalLogStatus, UserApprovalStage } from '@/constants'
-import { format } from 'date-fns'
 
-export const useColumnsApprovalLog = (): ColumnDef<IUserApprovalInfo>[] => {
+export const useColumnsApprovalLogStage1 = (): ColumnDef<IUserApprovalInfo>[] => {
   const { t } = useTranslation('productRequisition')
 
   return [
@@ -14,7 +15,11 @@ export const useColumnsApprovalLog = (): ColumnDef<IUserApprovalInfo>[] => {
       accessorKey: 'userFullname',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t('tableData.approverName')} />
-      )
+      ),
+      cell: ({ row }) => {
+        const userFullname = row.original.userFullname
+        return userFullname
+      }
     },
     {
       accessorKey: 'assignedUserApproval.roleApproval',
@@ -23,18 +28,34 @@ export const useColumnsApprovalLog = (): ColumnDef<IUserApprovalInfo>[] => {
       ),
       cell: ({ row }) => {
         const roleApproval = row.original.assignedUserApproval?.roleApproval
-        switch (roleApproval) {
-          case UserApprovalStage.APPROVAL_STAGE_1:
-            return t('roleApproval.approvalStage1')
-          case UserApprovalStage.APPROVAL_STAGE_2:
-            return t('roleApproval.approvalStage2')
-          case UserApprovalStage.APPROVAL_STAGE_3:
-            return t('roleApproval.approvalStage3')
-          default:
-            return ''
-        }
+        return t(`roleApproval.${roleApproval}`) || ''
       }
     },
+    {
+      accessorKey: 'approvalLogs',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('tableData.approvalContent')} />
+      ),
+      cell: ({ row }) => {
+        const approvalLogs = row.original.approvalLogs
+        if (approvalLogs && approvalLogs.length > 0) {
+          return (
+            <div className="space-y-2">
+              {approvalLogs.map((log) => (
+                <div key={log.slug} className="py-2 border-b">
+                  <div className="text-lg font-semibold">{log.content}</div>
+                  <div className="text-sm text-gray-500">
+                    {format(new Date(log.createdAt), 'HH:mm dd/MM/yyyy')}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )
+        }
+        return ''
+      }
+    },
+    // Thêm cột cho trạng thái nếu cần
     {
       accessorKey: 'status',
       header: ({ column }) => (
@@ -54,34 +75,6 @@ export const useColumnsApprovalLog = (): ColumnDef<IUserApprovalInfo>[] => {
           }
         }
         return t('status.waiting')
-      }
-    },
-    {
-      accessorKey: 'approvalLogs',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('tableData.approvalContent')} />
-      ),
-      cell: ({ row }) => {
-        const approvalLogs = row.original.approvalLogs
-        if (approvalLogs && approvalLogs.length > 0) {
-          const { content } = approvalLogs[0]
-          return `${content}`
-        }
-        return ''
-      }
-    },
-    {
-      accessorKey: 'createdAt',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('tableData.approvalTime')} />
-      ),
-      cell: ({ row }) => {
-        const approvalLogs = row.original.approvalLogs
-        if (approvalLogs && approvalLogs.length > 0) {
-          const { createdAt } = approvalLogs[0]
-          return format(new Date(createdAt), 'HH:mm dd/MM/yyyy')
-        }
-        return ''
       }
     }
   ]

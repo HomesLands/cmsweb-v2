@@ -11,6 +11,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui'
 import { IExportProductRequisitionFormRequest, IProductRequisitionFormInfo } from '@/types'
@@ -101,16 +102,16 @@ export const useWarehouseColumns = (): ColumnDef<IProductRequisitionFormInfo>[] 
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="p-0 w-8 h-8">
+                <Button variant="ghost" className="w-8 h-8 p-0">
                   <span className="sr-only">Thao tác</span>
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="flex flex-col justify-start">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                <DropdownMenuItem onClick={() => handleOpenViewDialog(requisition)}>
-                  {t('warehouse.detail')}
-                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DialogRequisitionDetail requisition={requisition} />
+                <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={() =>
                     handleExportPDFProductRequisition({
@@ -133,12 +134,6 @@ export const useWarehouseColumns = (): ColumnDef<IProductRequisitionFormInfo>[] 
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <DialogRequisitionDetail
-              openDialog={openViewDialog}
-              requisition={requisition}
-              component={null}
-              onOpenChange={onViewDialogOpenChange}
-            />
           </div>
         )
       }
