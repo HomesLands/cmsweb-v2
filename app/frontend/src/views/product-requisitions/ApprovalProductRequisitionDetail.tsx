@@ -12,6 +12,8 @@ import { DialogApprovalRequisition } from '@/components/app/dialog'
 import { showToast } from '@/utils'
 import { ApprovalAction, baseURL, RequisitionStatus, ROUTE, UserApprovalStage } from '@/constants'
 import i18next from 'i18next'
+import Timeline from '@/components/ui/timeline'
+import moment from 'moment'
 
 const ApprovalProductRequisitionDetail: React.FC = () => {
   const navigate = useNavigate()
@@ -187,6 +189,20 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
       return `${baseURL}/files/${data?.result?.productRequisitionForm.creator.userDepartments[0].department.site.company.logo}`
   }
 
+  const renderTimeline = () => {
+    return userApprovals
+      .flatMap((userApproval) =>
+        userApproval.approvalLogs.map((log) => ({
+          user: userApproval.assignedUserApproval.user.fullname,
+          role: userApproval.assignedUserApproval.roleApproval,
+          status: log.status,
+          content: log.content,
+          createdAt: new Date(log.createdAt).toISOString() // Format as a string
+        }))
+      )
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()) // Sort by timestamp
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-0">
@@ -310,7 +326,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           onPageSizeChange={() => {}}
         />
 
-        <span className="text-lg font-semibold font-beVietNam">
+        {/* <span className="text-lg font-semibold font-beVietNam">
           {t('productRequisition.approvalHistory')}
         </span>
 
@@ -321,7 +337,14 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           pages={1}
           onPageChange={() => {}}
           onPageSizeChange={() => {}}
-        />
+        /> */}
+
+        <span className="text-lg font-semibold font-beVietNam">
+          {t('productRequisition.approvalHistory')}
+        </span>
+
+        <Timeline items={renderTimeline()} />
+        {/* <Timeline /> */}
 
         <DialogApprovalRequisition
           openDialog={openDialog as ApprovalAction}

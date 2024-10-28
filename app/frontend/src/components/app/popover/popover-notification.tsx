@@ -78,7 +78,7 @@ export function PopoverNotification() {
               {t('notifications.notification')}
             </Label>
           </div>
-          <ScrollArea className="sm:max-w-[25rem] sm:max-h-[28rem]">
+          <ScrollArea className="pb-4 sm:max-w-[25rem] sm:max-h-[28rem]">
             <div className="grid">
               {isLoading ? (
                 <div className="flex items-center justify-center py-4">
@@ -119,7 +119,7 @@ export function PopoverNotification() {
               )}
             </div>
           </ScrollArea>
-          {data?.result?.items && data.result.items.length > 0 && (
+          {/* {data?.result?.items && data.result.items.length > 0 && (
             <div className="flex items-center justify-center py-4 ">
               <NavLink
                 to="/notification"
@@ -129,7 +129,7 @@ export function PopoverNotification() {
                 {t('notifications.viewAll')}
               </NavLink>
             </div>
-          )}
+          )} */}
         </div>
       </PopoverContent>
     </Popover>

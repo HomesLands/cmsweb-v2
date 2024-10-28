@@ -20,7 +20,7 @@ export default function DashboardSidebar() {
       >
         <Button
           variant="outline"
-          className="absolute flex items-center justify-center w-8 h-8 transition-all duration-300 rounded-full bottom-3 -right-4 text-normal hover:bg-primary hover:text-white"
+          className="absolute z-50 flex items-center justify-center w-8 h-8 transition-all duration-300 rounded-full bottom-3 -right-4 text-normal hover:bg-primary hover:text-white"
           onClick={toggleMinimized}
         >
           {isMinimized ? (

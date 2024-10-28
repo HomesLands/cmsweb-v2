@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontal } from 'lucide-react'
 import { format } from 'date-fns'
@@ -20,21 +19,11 @@ import { RequisitionTypeBadge } from '@/components/app/badge'
 import { DialogRequisitionDetail } from '@/components/app/dialog'
 import { RecalledStatusBadge } from '@/components/app/badge'
 import { ROUTE } from '@/constants'
+import { useTranslation } from 'react-i18next'
 
 export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitionFormInfo>[] => {
-  const [openViewDialog, setOpenViewDialog] = useState(false)
-  const [selectedRequisition, setSelectedRequisition] =
-    useState<IProductRequisitionFormInfo | null>(null)
   const navigate = useNavigate()
-
-  const handleOpenViewDialog = (requisition: IProductRequisitionFormInfo) => {
-    setOpenViewDialog(true)
-    setSelectedRequisition(requisition)
-  }
-
-  const onViewDialogOpenChange = () => {
-    setOpenViewDialog(false)
-  }
+  const { t } = useTranslation('productRequisition')
 
   const handleEditRequisition = (requisition: IProductRequisitionFormInfo) => {
     navigate(ROUTE.EDIT_PRODUCT_REQUISITIONS.replace(':slug', requisition.slug))
@@ -126,7 +115,7 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitio
           <>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="p-0 w-8 h-8">
+                <Button variant="ghost" className="w-8 h-8 p-0">
                   <span className="sr-only">Thao tác</span>
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
@@ -134,24 +123,14 @@ export const useColumnsRequisitionListCreator = (): ColumnDef<IProductRequisitio
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => handleOpenViewDialog(requisition)}>
-                  Xem chi tiết
-                </DropdownMenuItem>
+                <DialogRequisitionDetail requisition={requisition} />
                 {canEdit && (
                   <DropdownMenuItem onClick={() => handleEditRequisition(requisition)}>
-                    Sửa yêu cầu
+                    {t('requisitionEdit.requestEdit')}
                   </DropdownMenuItem>
                 )}
               </DropdownMenuContent>
             </DropdownMenu>
-            {selectedRequisition === requisition && openViewDialog && (
-              <DialogRequisitionDetail
-                openDialog={openViewDialog}
-                requisition={requisition}
-                component={null}
-                onOpenChange={onViewDialogOpenChange}
-              />
-            )}
           </>
         )
       }

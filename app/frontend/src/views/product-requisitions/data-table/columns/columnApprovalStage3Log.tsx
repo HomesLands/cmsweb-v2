@@ -1,12 +1,13 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { useTranslation } from 'react-i18next'
+import { format } from 'date-fns'
+import React from 'react'
 
 import { DataTableColumnHeader } from '@/components/ui'
 import { IUserApprovalInfo } from '@/types'
 import { ApprovalLogStatus, UserApprovalStage } from '@/constants'
-import { format } from 'date-fns'
 
-export const useColumnsApprovalLog = (): ColumnDef<IUserApprovalInfo>[] => {
+export const useColumnsApprovalLogStage3 = (): ColumnDef<IUserApprovalInfo>[] => {
   const { t } = useTranslation('productRequisition')
 
   return [
@@ -64,8 +65,18 @@ export const useColumnsApprovalLog = (): ColumnDef<IUserApprovalInfo>[] => {
       cell: ({ row }) => {
         const approvalLogs = row.original.approvalLogs
         if (approvalLogs && approvalLogs.length > 0) {
-          const { content } = approvalLogs[0]
-          return `${content}`
+          return (
+            <div className="space-y-2">
+              {approvalLogs.map((log) => (
+                <div key={log.slug}>
+                  <div className="text-lg font-semibold">{log.content}</div>
+                  <div className="text-sm text-gray-500">
+                    {format(new Date(log.createdAt), 'HH:mm dd/MM/yyyy')}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )
         }
         return ''
       }

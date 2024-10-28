@@ -170,7 +170,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
     permission: { authority: Authority.READ, resource: Resource.ASSIGNED_APPROVAL },
     children: [
       {
-        title: 'sidebar.assignedApprover',
+        title: 'sidebar.assignedApproverList',
         path: ROUTE.ASSIGNED_APPROVER,
         permission: { authority: Authority.READ, resource: Resource.ASSIGNED_APPROVAL }
       },
