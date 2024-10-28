@@ -6,6 +6,7 @@ import {
   getUserInfoPermission,
   getUsers,
   updateUser,
+  updateUsername,
   uploadProfilePicture,
   uploadSignature
 } from '@/api'
@@ -81,6 +82,24 @@ export const useChangePassword = () => {
     mutationFn: (data: IConfirmChangePassword) => changePasswordApi(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user-info'] })
+    }
+  })
+}
+
+export const useUpdateUsername = () => {
+  const queryClient = useQueryClient()
+  // const { refetch: refetchUserInfo } = useUser() // Get the refetch function from useUser
+  // const setUserInfo = useUserStore((state) => state.setUserInfo) // Get the setUserInfo function from the store
+
+  return useMutation({
+    mutationFn: (data: { username: string }) => updateUsername(data),
+    onSuccess: async () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] })
+      // const userInfoResponse = await refetchUserInfo() // Refetch user info
+
+      // if (userInfoResponse.data) {
+      //   setUserInfo(userInfoResponse.data) // Update the store with the latest user info
+      // }
     }
   })
 }

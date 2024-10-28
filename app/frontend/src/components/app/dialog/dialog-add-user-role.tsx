@@ -16,7 +16,7 @@ import { ICreateUserRole, IUserInfo } from '@/types'
 import { useCreateUserRole } from '@/hooks'
 import { showToast } from '@/utils'
 import { useState } from 'react'
-import { CirclePlus, SquarePen } from 'lucide-react'
+import { CirclePlus } from 'lucide-react'
 
 export function DialogAddUserRole({ user }: { user: IUserInfo | null }) {
   const { t } = useTranslation('employees')

@@ -7,7 +7,6 @@ import {
   DataTableColumnHeader,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui'
 import { IRole } from '@/types'
@@ -15,6 +14,7 @@ import { IRole } from '@/types'
 import {
   DialogAddRolePermission,
   DialogDeleteRole,
+  DialogDeleteRolePermission,
   DialogUpdateRole
 } from '@/components/app/dialog'
 
@@ -63,11 +63,11 @@ export const useRoleColumns = (): ColumnDef<IRole>[] => {
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="sm:max-w-[16rem]">
                 <DialogAddRolePermission role={role} />
-                <DropdownMenuSeparator />
                 <DialogUpdateRole role={role} />
                 <DialogDeleteRole role={role} />
+                <DialogDeleteRolePermission role={role} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

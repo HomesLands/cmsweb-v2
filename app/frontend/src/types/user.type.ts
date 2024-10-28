@@ -57,6 +57,10 @@ export interface IUpdateUserGeneralInfo {
   gender: string
 }
 
+export interface IUpdateUsername {
+  username: string
+}
+
 export interface IConfirmChangePassword {
   currentPassword: string
   newPassword: string

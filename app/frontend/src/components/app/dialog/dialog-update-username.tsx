@@ -13,22 +13,22 @@ import {
   ScrollArea
 } from '@/components/ui'
 
-import { FormUpdateUserGeneralInfo } from '@/components/app/form'
-import { IUpdateUserGeneralInfo, IUserInfo } from '@/types'
-import { useUpdateUser } from '@/hooks'
+import { UpdateUsernameForm } from '@/components/app/form'
+import { IUpdateUsername, IUserInfo } from '@/types'
+import { useUpdateUsername } from '@/hooks'
 import { showToast } from '@/utils'
 
-export default function DialogUpdateUserGeneralInfo({ userInfo }: { userInfo: IUserInfo }) {
+export default function DialogUpdateUsername({ userInfo }: { userInfo: IUserInfo }) {
   const { t } = useTranslation('account')
   const { t: tToast } = useTranslation('toast')
   const [isOpen, setIsOpen] = useState(false)
-  const { mutate: updateUserInfo } = useUpdateUser()
+  const { mutate: updateUsername } = useUpdateUsername()
 
-  const handleSubmit = (values: IUpdateUserGeneralInfo) => {
-    updateUserInfo(values, {
+  const handleSubmit = (values: IUpdateUsername) => {
+    updateUsername(values, {
       onSuccess: () => {
         setIsOpen(false)
-        showToast(tToast('toast.updateUserSuccess'))
+        showToast(tToast('toast.updateUsernameSuccess'))
       }
     })
   }
@@ -38,7 +38,7 @@ export default function DialogUpdateUserGeneralInfo({ userInfo }: { userInfo: IU
       <DialogTrigger asChild>
         <Button variant="outline" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
           <SquarePen className="icon" />
-          {t('account.edit')}
+          {t('account.editUsername')}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-[22rem] rounded-md sm:max-w-[64rem] p-0">
@@ -48,7 +48,7 @@ export default function DialogUpdateUserGeneralInfo({ userInfo }: { userInfo: IU
               <DialogTitle>{t('account.updateUserGeneralInfo')}</DialogTitle>
               <DialogDescription>{t('account.updateUserGeneralInfoDescription')}</DialogDescription>
             </DialogHeader>
-            <FormUpdateUserGeneralInfo onSubmit={handleSubmit} data={userInfo} />
+            <UpdateUsernameForm onSubmit={handleSubmit} data={userInfo} />
           </div>
         </ScrollArea>
       </DialogContent>

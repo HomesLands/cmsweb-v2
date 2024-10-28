@@ -37,5 +37,7 @@ export { default as UpdateEmployeeDepartmentForm } from './update-user-departmen
 export * from './update-department-form.tsx'
 export { default as UpdateCompanyForm } from './update-company-form.tsx'
 export { default as UpdateAssignedApproverForm } from './update-assigned-approver-form.tsx'
+export { default as DeleteRolePermissionForm } from './delete-role-permission-form.tsx'
+export { default as UpdateUsernameForm } from './update-username-form.tsx'
 export * from './update-project-form.tsx'
 // export { UpdatePermissionForm } from './update-permission-form.tsx'

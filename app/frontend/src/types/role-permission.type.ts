@@ -7,6 +7,13 @@ export interface ICreateRolePermission {
 }
 
 export interface IRolePermission {
+  slug: string
   role: IRole
   permission: IPermission
+}
+
+export interface IUpdateRolePermission {
+  rolePermissionSlug: string
+  roleSlug: string
+  permissionSlug: string
 }
