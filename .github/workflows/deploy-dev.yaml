@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy-dev
 
 on:
   pull_request_target:
@@ -17,7 +17,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Deploy to Remote Host using Docker
+      - name: Deploy dev
         uses: appleboy/ssh-action@v0.1.2
         with:
           host: ${{ secrets.REMOTE_HOST }}

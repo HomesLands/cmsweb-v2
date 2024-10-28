@@ -299,7 +299,7 @@ class ProductRequisitionFormService {
       message: JSON.stringify({
         message: "Product requisition form need to be approved",
         userId: firstStageApprover.user?.id,
-        url: "/product-requisitions",
+        url: "/product-requisitions/approval",
         type: `${Topic.PRODUCT_REQUISITION_FORM}.approval`,
       }),
     });

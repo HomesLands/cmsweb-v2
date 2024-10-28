@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { isAxiosError } from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
@@ -23,6 +23,7 @@ const Login: React.FC = () => {
   const { setToken, setRefreshToken, setExpireTime, setExpireTimeRefreshToken, setSlug } =
     useAuthStore()
   const { getTheme } = useThemeStore()
+  const { isAuthenticated } = useAuthStore()
 
   const { setUserRoles } = useUserInfoPermissionsStore()
   const { setUserInfo } = useUserStore()
@@ -51,17 +52,15 @@ const Login: React.FC = () => {
       setUserRoles(Array.isArray(userRoles) ? userRoles : []) // Handle roles being non-array safely
       setUserInfo(userInfo as IUserInfo)
 
-      navigate(ROUTE.HOME)
+      navigate(ROUTE.HOME, { replace: true })
       toast.success(t('login.loginSuccess'))
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.code === 'ECONNABORTED') {
-          // toast.error(t('login.loginFailed'))
           showToast(error.response?.data?.errorCode)
           return
         }
         if (error.code === 'ERR_NETWORK') {
-          // toast.error(t('login.serverError'))
           showErrorToast(error.response?.data?.errorCode)
           return
         }
@@ -71,6 +70,13 @@ const Login: React.FC = () => {
     }
   }
 
+  // Redirect if the user is already authenticated
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigate(ROUTE.HOME, { replace: true })
+    }
+  }, [isAuthenticated, navigate])
+
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-gray-100">
       <img src={LoginBackground} className="absolute top-0 left-0 w-full h-full sm:object-fill" />
@@ -78,7 +84,6 @@ const Login: React.FC = () => {
         <Card className="sm:min-w-[24rem] mx-auto border-none shadow-xl backdrop-blur-xl">
           <CardHeader>
             <CardTitle className={cn('text-2xl', getTheme() === 'light' ? 'text-black' : '')}>
-              {' '}
               {t('login.title')}{' '}
             </CardTitle>
             <CardDescription> {t('login.description')} </CardDescription>

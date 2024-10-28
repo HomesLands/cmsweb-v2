@@ -1,15 +1,14 @@
 import { useTranslation } from 'react-i18next'
 import { ReaderIcon } from '@radix-ui/react-icons'
 
-import { DataTable, Label } from '@/components/ui'
-import { useNotification, usePagination, useProducts } from '@/hooks'
-import { useNotificationColumns } from './data-table'
+import { Label } from '@/components/ui'
+import { useNotification, usePagination } from '@/hooks'
 
 export default function Notification() {
-  const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
+  const { pagination } = usePagination({ isSearchParams: false })
   const { t } = useTranslation('notifications')
 
-  const { data, isLoading } = useNotification({
+  const { data } = useNotification({
     page: pagination.pageIndex,
     pageSize: pagination.pageSize,
     order: 'DESC'

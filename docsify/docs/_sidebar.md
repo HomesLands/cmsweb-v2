@@ -7,3 +7,5 @@
 - Guide
 
   - [Deploy](deploy.md)
+
+  - [Setup](setup.md)
