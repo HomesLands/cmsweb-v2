@@ -2,39 +2,38 @@ import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { KeyRound, UserRoundPen } from 'lucide-react'
 
-import {
-  Card,
-  CardContent,
-  Input,
-  Button,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui'
+import { Card, CardContent, Input, Button } from '@/components/ui'
 import { ProfilePicture } from '@/components/app/avatar'
 import { useThemeStore, useUserStore } from '@/stores'
 import { useUploadSignature } from '@/hooks/use-users'
 import { cn } from '@/lib/utils'
 import { publicFileURL } from '@/constants'
 import { IUserInfo } from '@/types'
-import { DialogUpdateUserGeneralInfo, DialogUpdateUsername } from '@/components/app/dialog'
+import { DialogUpdateUserGeneralInfo } from '@/components/app/dialog'
+import { showToast } from '@/utils'
 
 interface CardUserGeneralInfoProps {
   handleUploadProfilePicture: (file: File) => void
 }
 
 export const CardUserGeneralInfo = ({ handleUploadProfilePicture }: CardUserGeneralInfoProps) => {
+  const { t: tToast } = useTranslation('toast')
   const { t } = useTranslation('account')
-  const { userInfo } = useUserStore()
+  const { userInfo, setUserInfo } = useUserStore()
   const { getTheme } = useThemeStore()
   const uploadSignatureMutation = useUploadSignature()
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleUploadSignature = (file: File) => {
-    uploadSignatureMutation.mutate(file)
+    uploadSignatureMutation.mutate(file, {
+      onSuccess(data) {
+        if (data?.result) {
+          showToast(tToast('toast.updateUserSuccess'))
+          setUserInfo(data.result)
+        }
+      }
+    })
   }
 
   const triggerFileInput = () => {
@@ -45,25 +44,25 @@ export const CardUserGeneralInfo = ({ handleUploadProfilePicture }: CardUserGene
     fullname: (
       <div className="flex flex-col gap-1">
         <span className="text-sm font-beVietNam text-normal">{t('account.fullname')}</span>
-        <Input className="font-beVietNam" value={userInfo?.fullname} />
+        <Input className="font-beVietNam" value={userInfo?.fullname} readOnly />
       </div>
     ),
     username: (
       <div className="flex flex-col gap-1">
         <span className="text-sm font-beVietNam text-normal">{t('account.username')}</span>
-        <Input className="font-beVietNam" value={userInfo?.username} />
+        <Input className="font-beVietNam" readOnly value={userInfo?.username} />
       </div>
     ),
     address: (
       <div className="flex flex-col gap-1">
         <span className="text-sm font-beVietNam text-normal">{t('account.address')}</span>
-        <Input className="font-beVietNam" value={userInfo?.address} />
+        <Input className="font-beVietNam" value={userInfo?.address} readOnly />
       </div>
     ),
     phoneNumber: (
       <div className="flex flex-col gap-1">
         <span className="text-sm font-beVietNam text-normal">{t('account.phoneNumber')}</span>
-        <Input className="font-beVietNam" value={userInfo?.phoneNumber} />
+        <Input className="font-beVietNam" value={userInfo?.phoneNumber} readOnly />
       </div>
     ),
     gender: (
@@ -79,7 +78,7 @@ export const CardUserGeneralInfo = ({ handleUploadProfilePicture }: CardUserGene
     dob: (
       <div className="flex flex-col gap-1">
         <span className="text-sm font-beVietNam text-normal">{t('account.dob')}</span>
-        <Input className="font-beVietNam" value={userInfo?.dob} />
+        <Input className="font-beVietNam" value={userInfo?.dob} readOnly />
       </div>
     ),
     company: (
@@ -87,7 +86,8 @@ export const CardUserGeneralInfo = ({ handleUploadProfilePicture }: CardUserGene
         <span className="text-sm font-beVietNam text-normal">{t('account.company')}</span>
         <Input
           className="font-beVietNam"
-          value={userInfo?.userDepartments[0]?.department?.site?.company.name || 'N/A'}
+          value={userInfo?.userDepartments?.[0]?.department?.site?.company?.name || 'N/A'}
+          readOnly
         />
       </div>
     ),
@@ -96,7 +96,8 @@ export const CardUserGeneralInfo = ({ handleUploadProfilePicture }: CardUserGene
         <span className="text-sm font-beVietNam text-normal">{t('account.site')}</span>
         <Input
           className="font-beVietNam"
-          value={userInfo?.userDepartments[0]?.department?.site?.name || 'N/A'}
+          value={userInfo?.userDepartments?.[0]?.department?.site?.name || 'N/A'}
+          readOnly
         />
       </div>
     )

@@ -73,7 +73,7 @@ export function PopoverNotification() {
       </PopoverTrigger>
       <PopoverContent className="mt-1 p-0 mr-2 md:w-[24rem]">
         <div className="grid">
-          <div className="flex flex-row justify-center px-4 py-5 border-b">
+          <div className="flex flex-row px-4 py-5 border-b">
             <Label className="text-lg font-bold leading-none">
               {t('notifications.notification')}
             </Label>
@@ -123,7 +123,7 @@ export function PopoverNotification() {
             <div className="flex items-center justify-center py-4 ">
               <NavLink
                 to="/notification"
-                className="text-sm text-primary"
+                className="text-[13px] text-primary"
                 onClick={() => setIsPopoverOpen(false)}
               >
                 {t('notifications.viewAll')}

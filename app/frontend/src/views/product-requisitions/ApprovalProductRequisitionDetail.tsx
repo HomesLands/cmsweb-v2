@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useQueryClient } from '@tanstack/react-query'
 import { ReaderIcon } from '@radix-ui/react-icons'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -27,8 +26,6 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
   const columns = useColumnsDetail()
   const columnsApprovalLog = useColumnsApprovalLog()
   const [openDialog, setOpenDialog] = useState<'accept' | 'give_back' | 'cancel' | null>(null)
-
-  // const queryClient = useQueryClient()
 
   const buttonStates = useMemo(() => {
     if (!data?.result)
@@ -254,7 +251,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           {data?.result && (
             <div className="grid grid-cols-1 gap-3 mb-4 text-sm sm:grid-cols-3 font-beVietNam">
               <div>
-                <strong>{t('productRequisition.priority')}</strong>
+                <strong>{t('productRequisition.priority')}:</strong>{' '}
                 <span
                   className={
                     data?.result?.productRequisitionForm.type === 'urgent'
