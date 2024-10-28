@@ -166,11 +166,15 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                     )}
                   >
                     <CalendarIcon className="w-4 h-4 mr-2" />
-                    {field.value ? field.value : <span>Chọn ngày và thời gian</span>}
+                    {field.value ? (
+                      field.value
+                    ) : (
+                      <span>{t('productRequisition.deadlineApprovalDescription')}</span>
+                    )}
                   </Button>
                 </FormControl>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
+              <PopoverContent className="flex flex-col items-center justify-center w-auto gap-1 p-2">
                 <Calendar
                   mode="single"
                   selected={date}

@@ -11,7 +11,8 @@ import { useColumnsDetail, useColumnsApprovalLog } from './data-table'
 import { ApprovalLogStatus, IProductInfo, ProductRequisitionRoleApproval } from '@/types'
 import { DialogApprovalRequisition } from '@/components/app/dialog'
 import { showToast } from '@/utils'
-import { ApprovalAction, baseURL, RequisitionStatus, UserApprovalStage } from '@/constants'
+import { ApprovalAction, baseURL, RequisitionStatus, ROUTE, UserApprovalStage } from '@/constants'
+import i18next from 'i18next'
 
 const ApprovalProductRequisitionDetail: React.FC = () => {
   const navigate = useNavigate()
@@ -27,7 +28,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
   const columnsApprovalLog = useColumnsApprovalLog()
   const [openDialog, setOpenDialog] = useState<'accept' | 'give_back' | 'cancel' | null>(null)
 
-  const queryClient = useQueryClient()
+  // const queryClient = useQueryClient()
 
   const buttonStates = useMemo(() => {
     if (!data?.result)
@@ -54,17 +55,17 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
         if (status === RequisitionStatus.WAITING && !isRecalled) {
           acceptEnabled = true
           cancelEnabled = true
-          statusDisplay = 'Chờ duyệt'
+          statusDisplay = t('productRequisition.waiting')
         } else if (status === RequisitionStatus.WAITING && isRecalled) {
           acceptEnabled = true
           cancelEnabled = true
-          statusDisplay = 'Chờ duyệt'
+          statusDisplay = t('productRequisition.waiting')
         } else if (status === RequisitionStatus.CANCEL && isRecalled) {
           showButtons = false
-          statusDisplay = 'Đã hủy'
+          statusDisplay = t('productRequisition.rejected')
         } else if (status === RequisitionStatus.ACCEPTED_STAGE_1 && !isRecalled) {
           showButtons = false
-          statusDisplay = 'Đã duyệt'
+          statusDisplay = t('productRequisition.accepted')
         }
         break
 
@@ -73,21 +74,21 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           acceptEnabled = true
           giveBackEnabled = true
           cancelEnabled = true
-          statusDisplay = 'Chờ duyệt bước 2'
+          statusDisplay = t('productRequisition.step2Waiting')
         } else if (status === RequisitionStatus.ACCEPTED_STAGE_1 && isRecalled) {
           acceptEnabled = true
           giveBackEnabled = true
           cancelEnabled = true
-          statusDisplay = 'Chờ duyệt bước 2 (hoàn lại từ bước trên)'
+          statusDisplay = t('productRequisition.step2WaitingGiveback')
         } else if (status === RequisitionStatus.ACCEPTED_STAGE_2) {
           showButtons = false
-          statusDisplay = 'Đã duyệt'
+          statusDisplay = t('productRequisition.accepted')
         } else if (status === RequisitionStatus.CANCEL && isRecalled) {
           showButtons = false
-          statusDisplay = 'Hủy'
+          statusDisplay = t('productRequisition.')
         } else if (status === RequisitionStatus.WAITING && isRecalled) {
           showButtons = false
-          statusDisplay = 'Bị hoàn lại để xem xét'
+          statusDisplay = t('productRequisition.giveback')
         }
         break
 
@@ -96,16 +97,16 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           acceptEnabled = true
           giveBackEnabled = true
           cancelEnabled = true
-          statusDisplay = 'Chờ duyệt bước 3'
+          statusDisplay = t('productRequisition.step3Waiting')
         } else if (status === RequisitionStatus.ACCEPTED_STAGE_1 && isRecalled) {
           showButtons = false
-          statusDisplay = 'Đã bị hoàn để xem xét lại'
+          statusDisplay = t('productRequisition.giveback')
         } else if (status === RequisitionStatus.WAITING_EXPORT) {
           showButtons = false
-          statusDisplay = 'Đã duyệt'
+          statusDisplay = t('productRequisition.accepted')
         } else if (status === RequisitionStatus.CANCEL && isRecalled) {
           showButtons = false
-          statusDisplay = 'Hủy'
+          statusDisplay = t('productRequisition.rejected')
         }
         break
     }
@@ -118,7 +119,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
       roleApproval,
       statusDisplay
     }
-  }, [data?.result])
+  }, [data?.result, t])
 
   const userApprovals = useMemo(() => {
     return Array.isArray(data?.result?.productRequisitionForm.userApprovals)
@@ -175,7 +176,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           }
 
           refetch()
-          queryClient.invalidateQueries({ queryKey: ['productRequisitionByApprover'] })
+          // queryClient.invalidateQueries({ queryKey: ['productRequisitionByApprover'] })
         }
       }
     )
@@ -191,13 +192,19 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-4 justify-between items-start sm:flex-row sm:items-center sm:gap-0">
-        <Label className="flex gap-1 items-center mb-2 font-semibold text-normal text-md font-beVietNam sm:mb-0">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-0">
+        <Label className="flex items-center gap-1 mb-2 font-semibold text-normal text-md font-beVietNam sm:mb-0">
           <ReaderIcon className="header-icon" />
           {t('requisitionDetail.requestDetail')}
         </Label>
-        <div className="flex flex-row gap-2 justify-end sm:gap-4">
-          <Button variant="outline" onClick={() => navigate(-1)} className="w-full sm:w-auto">
+        <div className="flex flex-row justify-end gap-2 sm:gap-4">
+          <Button
+            variant="outline"
+            onClick={() => {
+              navigate(`${ROUTE.APPROVAL_PRODUCT_REQUISITIONS}`)
+            }}
+            className="w-full sm:w-auto"
+          >
             {t('productRequisition.back')}
           </Button>
           {buttonStates.showButtons && (
@@ -222,23 +229,23 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
         </div>
       </div>
       <div className="mt-3">
-        <div className="flex flex-col gap-4 justify-center">
-          <div className="grid grid-cols-8 justify-between items-center py-2 mb-4 border-b-2">
-            <div className="col-span-1 w-full">
+        <div className="flex flex-col justify-center gap-4">
+          <div className="grid items-center justify-between grid-cols-8 py-2 mb-4 border-b-2">
+            <div className="w-full col-span-1">
               <img src={getLogoUrl()} className="w-10 sm:w-[4rem]" />
             </div>
 
             <span className="col-span-4 flex justify-end sm:justify-center sm:col-span-4 text-[0.5rem] font-extrabold text-center uppercase sm:text-2xl text-normal font-beVietNam">
               {t('productRequisition.confirmProductRequisitions')}
             </span>
-            <div className="flex col-span-3 justify-end sm:col-span-1">
+            <div className="flex justify-end col-span-3 sm:col-span-1">
               <div className="flex flex-col justify-end text-[0.25rem] sm:text-sm font-beVietNam">
                 <div className="flex flex-row gap-1 sm:p-1">
                   <span>KMH:</span>
                   <span>QR3-01/001</span>
                 </div>
                 <div className="flex flex-row gap-1 sm:p-1">
-                  <span>Lần ban hành:</span>
+                  <span>{t('productRequisition.issuedDate')}</span>
                   <span>1</span>
                 </div>
               </div>
@@ -247,7 +254,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           {data?.result && (
             <div className="grid grid-cols-1 gap-3 mb-4 text-sm sm:grid-cols-3 font-beVietNam">
               <div>
-                <strong>Mức ưu tiên: </strong>
+                <strong>{t('productRequisition.priority')}</strong>
                 <span
                   className={
                     data?.result?.productRequisitionForm.type === 'urgent'
@@ -256,35 +263,35 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
                   }
                 >
                   {data?.result?.productRequisitionForm.type === 'normal'
-                    ? 'Bình thường'
-                    : 'Cần gấp'}
+                    ? t('requestPriority.normal')
+                    : t('requestPriority.urgent')}
                 </span>
               </div>
               <div>
-                <strong>Mã phiếu yêu cầu: </strong>
+                <strong>{t('requisitionDetail.requestCode')}</strong>
                 {data?.result?.productRequisitionForm.code}
               </div>
               <div>
-                <strong>Người yêu cầu: </strong>
+                <strong>{t('requisitionDetail.requestCode')}</strong>
                 {data?.result?.productRequisitionForm.creator.fullname}
               </div>
               <div>
-                <strong>Công trình sử dụng: </strong>
+                <strong>{t('requisitionDetail.siteName')}</strong>
                 {
                   data?.result?.productRequisitionForm.creator.userDepartments[0].department.site
                     .name
                 }
               </div>
               <div>
-                <strong>Dự án: </strong>
+                <strong>{t('requisitionDetail.projectName')}</strong>
                 {data?.result?.productRequisitionForm.project.name}
               </div>
               <div>
-                <strong>Ghi chú: </strong>
+                <strong>{t('requisitionDetail.note')}</strong>
                 {data?.result?.productRequisitionForm.description}
               </div>
               <div>
-                <strong>Trạng thái: </strong>
+                <strong>{t('requisitionDetail.status')}</strong>
                 <span className={getStatusColor(buttonStates.statusDisplay)}>
                   {buttonStates.statusDisplay}
                 </span>
@@ -332,16 +339,16 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
 
 const getStatusColor = (status: string) => {
   switch (status) {
-    case 'Chờ duyệt':
-    case 'Chờ duyệt bước 2':
-    case 'Chờ duyệt bước 3':
+    case i18next.t('status.waiting'):
+    case i18next.t('status.waitingStep2'):
+    case i18next.t('status.waitingStep3'):
       return 'text-yellow-600 font-bold'
-    case 'Đã duyệt':
+    case i18next.t('status.approved'):
       return 'text-green-600 font-bold'
-    case 'Đã hủy':
-    case 'Hủy':
-    case 'Đã bị hoàn để xem xét lại':
-    case 'Bị hoàn lại để xem xét':
+    case i18next.t('status.cancelled'):
+    case i18next.t('status.cancel'):
+    case i18next.t('status.recalledForReview'):
+    case i18next.t('status.returnedForReview'):
       return 'text-red-600 font-bold'
     default:
       return ''
