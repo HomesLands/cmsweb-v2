@@ -43,8 +43,9 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -p $SSH_PORT $REMOTE_HOST >> ~/.ssh/known_hosts
           export DOCKER_HOST="ssh://$REMOTE_USER@$REMOTE_HOST:$SSH_PORT"
+          export DOCKER_BUILDKIT=1
+
           docker ps -a
-          docker network create scoobydoo
           docker compose -f .deploy/docker-compose.dev.yaml down
           docker compose -f .deploy/docker-compose.dev.yaml up -d --build
           docker image prune -f  # clean up none image after built
