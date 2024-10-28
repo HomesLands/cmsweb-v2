@@ -46,6 +46,7 @@ jobs:
 
       - name: Deploy with Docker Compose
         run: |
+          docker network create scoobydoo
           docker compose -f .deploy/docker-compose.dev.yaml down
           docker compose -f .deploy/docker-compose.dev.yaml up -d --build
           docker image prune -f  # clean up none image after built
