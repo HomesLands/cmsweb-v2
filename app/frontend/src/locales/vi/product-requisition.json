@@ -24,6 +24,7 @@
     "note": "Ghi chú",
     "noteDescription": "Nhập ghi chú",
     "priority": "Mức độ ưu tiên",
+    "selectPriority": "Chọn mức độ ưu tiên",
     "deadlineApproval": "Hạn duyệt",
     "deadlineApprovalDescription": "Chọn ngày hết hạn duyệt",
 
@@ -43,6 +44,16 @@
     "accept": "Duyệt",
     "reject": "Từ chối",
     "cancel": "Hủy",
+
+    "waiting": "Chờ duyệt",
+    "accepted": "Đã duyệt",
+    "rejected": "Đã hủy",
+    "givenBack": "Đã hoàn lại",
+    "step2Waiting": "Chờ duyệt bước 2",
+    "step2WaitingGiveback": "Chờ duyệt bước 2 (hoàn lại từ bước trên)",
+    "step3Waiting": "Chờ duyệt bước 3",
+
+    "issuedDate": "Lần ban hành",
 
     "approvalLog": "Nội dung duyệt",
     "acceptConfirmTitle": "Duyệt yêu cầu",
@@ -120,7 +131,15 @@
   },
   "requisitionDetail": {
     "requestDetail": "Chi tiết vật tư yêu cầu",
-    "requestDetailDescription": "Thông tin chi tiết của vật tư yêu cầu"
+    "requestDetailDescription": "Thông tin chi tiết của vật tư yêu cầu",
+    "requestCode": "Mã yêu cầu: ",
+    "requester": "Người yêu cầu: ",
+    "siteName": "Tên công trình: ",
+    "companyName": "Tên công ty: ",
+    "departmentName": "Tên phòng ban: ",
+    "projectName": "Tên dự án: ",
+    "note": "Ghi chú: ",
+    "status": "Trạng thái: "
   },
   "requisitionEdit": {
     "requestEdit": "Sửa yêu cầu vật tư",

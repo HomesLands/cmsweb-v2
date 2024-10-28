@@ -34,7 +34,7 @@ export const RequestPrioritySelect: FC<RequestPrioritySelectProps> = ({
   return (
     <Select onValueChange={handleValueChange} defaultValue={defaultValue} value={value}>
       <SelectTrigger>
-        <SelectValue placeholder={t('productRequisition.priority')} />
+        <SelectValue placeholder={t('productRequisition.selectPriority')} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>

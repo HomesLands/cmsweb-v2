@@ -37,7 +37,7 @@ export function PopoverNotification() {
   const handleNotificationClick = (url: string, slug: string) => {
     updateNotification(slug)
     setIsPopoverOpen(false)
-    navigate(`${baseURL}${url}`)
+    navigate(`${url}`)
   }
 
   const formatDate = (dateString: string) => {

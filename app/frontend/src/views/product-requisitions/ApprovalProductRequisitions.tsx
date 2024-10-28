@@ -8,6 +8,7 @@ import { useColumnsRequisitionList } from './data-table/columns/columns'
 import { usePagination, useProductRequisitionByApprover } from '@/hooks'
 import { IRequisitionFormResponseForApprover } from '@/types'
 import { DataTableFilterOptions } from './data-table'
+import { baseURL, ROUTE } from '@/constants'
 
 const ApprovalProductRequisitions: React.FC = () => {
   const { t } = useTranslation(['productRequisition'])
@@ -36,7 +37,7 @@ const ApprovalProductRequisitions: React.FC = () => {
   }, [data?.result?.items])
 
   const handleRowClick = (requisition: IRequisitionFormResponseForApprover) => {
-    navigate(`/product-requisitions/approval/${requisition.approvalUserSlug}`)
+    navigate(`${ROUTE.APPROVAL_PRODUCT_REQUISITIONS}/${requisition.approvalUserSlug}`)
   }
 
   const columns = useColumnsRequisitionList()
