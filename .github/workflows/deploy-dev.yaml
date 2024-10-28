@@ -41,8 +41,8 @@ jobs:
           ENV_DEV: ${{ secrets.ENV_DEV }}
           FE_ENV_DEV: ${{ secrets.FE_ENV_DEV }}
         run: |
-          cp $ENV_DEV .deploy/.env
-          cp $FE_ENV_DEV app/frontend/.env
+          echo "$ENV_DEV" > .deploy/.env
+          echo "$FE_ENV_DEV" > app/frontend/.env
 
       - name: Deploy with Docker Compose
         run: |
