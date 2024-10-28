@@ -34,7 +34,7 @@ jobs:
           echo "$SSH_PRIVATE_KEY_DEV" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -p $SSH_PORT $REMOTE_HOST >> ~/.ssh/known_hosts
-          export DOCKER_HOST="ssh://REMOTE_USER@$REMOTE_HOST:$SSH_PORT"
+          export DOCKER_HOST="ssh://$REMOTE_USER@$REMOTE_HOST:$SSH_PORT"
 
       - name: Copy Environment Configuration
         env:
