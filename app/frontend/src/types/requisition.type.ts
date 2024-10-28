@@ -1,4 +1,4 @@
-import { IProductRequisitionFormCreate, IProductRequisitionInfo } from './product.type'
+import { IProductRequisitionFormCreate, IProductRequisitionInfo } from './product-requisition.type'
 
 export interface IRequisitionStore {
   requisition: IProductRequisitionFormCreate | undefined

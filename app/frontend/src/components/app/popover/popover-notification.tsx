@@ -77,20 +77,11 @@ export function PopoverNotification() {
             <Label className="text-lg font-bold leading-none">
               {t('notifications.notification')}
             </Label>
-            {data?.result?.items && data.result.items.length > 0 && (
-              <NavLink
-                to="/notification"
-                className="text-sm text-primary"
-                onClick={() => setIsPopoverOpen(false)}
-              >
-                {t('notifications.viewAll')}
-              </NavLink>
-            )}
           </div>
-          <ScrollArea className="mb-3 sm:max-w-[25rem] sm:max-h-[28rem]">
+          <ScrollArea className="sm:max-w-[25rem] sm:max-h-[28rem]">
             <div className="grid">
               {isLoading ? (
-                <div className="flex justify-center items-center py-4">
+                <div className="flex items-center justify-center py-4">
                   <Loader2 className="w-6 h-6 animate-spin text-primary" />
                 </div>
               ) : data?.result?.items && data.result.items.length > 0 ? (
@@ -103,17 +94,17 @@ export function PopoverNotification() {
                     <div
                       className={`relative grid items-center grid-cols-5 gap-2 px-2 py-2 transition-all ${item.isRead ? '' : 'bg-muted'} duration-200 border-b hover:bg-muted/35`}
                     >
-                      <div className="flex relative justify-center items-center w-9 h-9 rounded-2xl bg-primary/5">
+                      <div className="relative flex items-center justify-center w-9 h-9 rounded-2xl bg-primary/5">
                         <BellIcon className="w-4 h-4 text-primary" />
                         {!item.isRead && (
-                          <DotFilledIcon className="absolute -top-1 -right-1 w-5 h-5 text-primary" />
+                          <DotFilledIcon className="absolute w-5 h-5 -top-1 -right-1 text-primary" />
                         )}
                       </div>
 
                       <div className="col-span-4">
                         <span className="text-sm font-bold text-normal">{item.type}</span>
                         <p className="text-xs text-gray-500">{item.message}</p>
-                        <div className="flex flex-row gap-1 justify-start items-center mt-1">
+                        <div className="flex flex-row items-center justify-start gap-1 mt-1">
                           <ClockIcon className="w-2.5 h-2.5" />
                           <p className="text-[0.7rem] text-normal">{formatDate(item.createdAt)}</p>
                         </div>
@@ -122,12 +113,23 @@ export function PopoverNotification() {
                   </div>
                 ))
               ) : (
-                <span className="flex justify-center py-4 w-full text-sm text-gray-500">
+                <span className="flex justify-center w-full py-4 text-sm text-gray-500">
                   {t('notifications.noNotifications')}
                 </span>
               )}
             </div>
           </ScrollArea>
+          {data?.result?.items && data.result.items.length > 0 && (
+            <div className="flex items-center justify-center py-4 ">
+              <NavLink
+                to="/notification"
+                className="text-sm text-primary"
+                onClick={() => setIsPopoverOpen(false)}
+              >
+                {t('notifications.viewAll')}
+              </NavLink>
+            </div>
+          )}
         </div>
       </PopoverContent>
     </Popover>

@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import toast from 'react-hot-toast'
 import { persist } from 'zustand/middleware'
 
 import { IProductRequisitionFormCreate, IProductRequisitionInfo, IRequisitionStore } from '@/types'

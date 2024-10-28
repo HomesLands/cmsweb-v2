@@ -8,7 +8,6 @@ import { BreadCrumbs } from '@/components/app/breadcrumbs'
 import { DownloadProgress } from '@/components/app/progress'
 import { cn } from '@/lib/utils'
 import { useDownloadStore, useThemeStore } from '@/stores'
-import { ScrollArea } from '@/components/ui'
 
 const DashboardLayout = () => {
   const { getTheme } = useThemeStore()

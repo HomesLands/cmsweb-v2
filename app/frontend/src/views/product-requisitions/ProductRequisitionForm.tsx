@@ -1,5 +1,4 @@
 import React from 'react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 
@@ -10,9 +9,8 @@ import {
   SearchProductForm,
   ConfirmProductForm
 } from '@/components/app/form'
-import { ProgressBar } from '@/components/app/progress/progress-bar'
-import { useMultiStep } from '@/hooks'
-import { createProductRequisition } from '@/api/products'
+import { ProgressBar } from '@/components/app/progress'
+import { useCreateProductRequisition, useMultiStep } from '@/hooks'
 import { showToast } from '@/utils'
 import { useRequisitionStore } from '@/stores'
 import { ROUTE } from '@/constants'
@@ -22,21 +20,7 @@ const ProductRequisitionForm: React.FC = () => {
   const { t: tToast } = useTranslation('toast')
   const { currentStep, handleStepChange } = useMultiStep(1)
   const { setRequisition, clearRequisition, requisition } = useRequisitionStore()
-  const queryClient = useQueryClient()
-
-  const mutation = useMutation({
-    mutationFn: async (data: IFinalProductRequisition) => {
-      return createProductRequisition(data)
-    },
-    onSuccess: () => {
-      showToast(tToast('toast.requestSuccess'))
-      clearRequisition()
-      handleStepChange(4)
-      queryClient.invalidateQueries({
-        queryKey: ['notifications']
-      })
-    }
-  })
+  const { mutate: createProductRequisition } = useCreateProductRequisition()
 
   const handleFormCreateSubmit = (data: IProductRequisitionFormCreate) => {
     const newRequisition: IProductRequisitionFormCreate = {
@@ -58,7 +42,13 @@ const ProductRequisitionForm: React.FC = () => {
 
   const handleConfirmRequest = (data: IFinalProductRequisition) => {
     if (data) {
-      mutation.mutate(data)
+      createProductRequisition(data, {
+        onSuccess: () => {
+          showToast(tToast('toast.requestSuccess'))
+          clearRequisition()
+          handleStepChange(4)
+        }
+      })
     }
   }
 
@@ -72,7 +62,7 @@ const ProductRequisitionForm: React.FC = () => {
 
   return (
     <div>
-      <div className="flex justify-center my-2 w-full">
+      <div className="flex justify-center w-full my-2">
         <div className="w-full md:w-4/5">
           <ProgressBar step={currentStep} />
         </div>
@@ -80,8 +70,8 @@ const ProductRequisitionForm: React.FC = () => {
       <div className="flex flex-col gap-4">
         {currentStep === 1 && (
           <Card>
-            <CardHeader className="flex flex-row justify-between items-center w-full border-b">
-              <div className="flex flex-col gap-2 items-start py-2">
+            <CardHeader className="flex flex-row items-center justify-between w-full border-b">
+              <div className="flex flex-col items-start gap-2 py-2">
                 <CardTitle>{t('productRequisition.createProductRequisitions')}</CardTitle>
                 <CardDescription>
                   {t('productRequisition.createProductRequisitionsDescription')}
@@ -95,8 +85,8 @@ const ProductRequisitionForm: React.FC = () => {
         )}
         {currentStep === 2 && (
           <Card>
-            <CardHeader className="flex flex-row justify-between items-center w-full border-b">
-              <div className="flex flex-col gap-2 items-start py-2">
+            <CardHeader className="flex flex-row items-center justify-between w-full border-b">
+              <div className="flex flex-col items-start gap-2 py-2">
                 <CardTitle>{t('productRequisition.addProductToRequest')}</CardTitle>
                 <CardDescription>
                   {t('productRequisition.addProductToRequestDescription')}
@@ -110,8 +100,8 @@ const ProductRequisitionForm: React.FC = () => {
         )}
         {currentStep === 3 && (
           <Card>
-            <CardHeader className="flex flex-row justify-between items-center w-full border-b">
-              <div className="flex flex-col gap-2 items-start py-2">
+            <CardHeader className="flex flex-row items-center justify-between w-full border-b">
+              <div className="flex flex-col items-start gap-2 py-2">
                 <CardTitle>{t('productRequisition.confirmProductRequisitions')}</CardTitle>
                 <CardDescription>
                   {t('productRequisition.confirmProductRequisitionsDescription')}
@@ -125,8 +115,8 @@ const ProductRequisitionForm: React.FC = () => {
         )}
         {currentStep === 4 && (
           <Card>
-            <CardHeader className="flex flex-row justify-between items-center w-full border-b">
-              <div className="flex flex-col gap-2 items-start py-2">
+            <CardHeader className="flex flex-row items-center justify-between w-full border-b">
+              <div className="flex flex-col items-start gap-2 py-2">
                 <CardTitle>{t('productRequisition.confirmProductRequisitionsSuccess')}</CardTitle>
               </div>
             </CardHeader>

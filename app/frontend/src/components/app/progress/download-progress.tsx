@@ -4,12 +4,12 @@ import { useTranslation } from 'react-i18next'
 import { Progress } from '@/components/ui/progress'
 import { FileIcon } from '@radix-ui/react-icons'
 
-interface DownloadProgressProps {
+interface IDownloadProgressProps {
   progress: number
   fileName: string
 }
 
-const DownloadProgress: React.FC<DownloadProgressProps> = ({ progress, fileName }) => {
+export default function DownloadProgress({ progress, fileName }: IDownloadProgressProps) {
   const { t } = useTranslation('warehouse')
   return (
     <div className="fixed z-50 rounded-lg shadow-lg right-4 bottom-4 w-72">
@@ -27,5 +27,3 @@ const DownloadProgress: React.FC<DownloadProgressProps> = ({ progress, fileName 
     </div>
   )
 }
-
-export default DownloadProgress
