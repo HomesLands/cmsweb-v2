@@ -31,7 +31,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-  Label
+  Label,
+  RequisitionTimeline
 } from '@/components/ui'
 import {
   productRequisitionGeneralInfoSchema,
@@ -52,8 +53,7 @@ import { useColumnsUpdateRequisition } from '@/views/product-requisitions/data-t
 import { useDebouncedInput, usePagination, useProducts } from '@/hooks'
 import {
   ProductRequisitionUpdateActionOptions,
-  useColumnsAddNewProductInRequisitionUpdate,
-  useColumnsApprovalLog
+  useColumnsAddNewProductInRequisitionUpdate
 } from '@/views/product-requisitions/data-table'
 import { DialogResubmitRequisition } from '@/components/app/dialog'
 
@@ -75,7 +75,7 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
   isLoading
 }) => {
   const { t } = useTranslation('productRequisition')
-  const isExistProduct = requisition?.requestProducts.some((product) => product.isExistProduct)
+  // const isExistProduct = requisition?.requestProducts.some((product) => product.isExistProduct)
   const { slug } = useParams()
   const [openDialog, setOpenDialog] = useState(false)
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination({
@@ -99,6 +99,24 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
     if (!selectedDate) return false
     const now = new Date()
     return selectedDate > now
+  }
+
+  const userApprovals = useMemo(() => {
+    return Array.isArray(requisition?.userApprovals) ? requisition.userApprovals : []
+  }, [requisition])
+
+  const renderTimeline = () => {
+    return userApprovals
+      .flatMap((userApproval) =>
+        userApproval.approvalLogs.map((log) => ({
+          user: userApproval.assignedUserApproval.user.fullname,
+          role: userApproval.assignedUserApproval.roleApproval,
+          status: log.status,
+          content: log.content,
+          createdAt: new Date(log.createdAt).toISOString() // Format as a string
+        }))
+      )
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()) // Sort by timestamp
   }
 
   const form = useForm<TProductRequisitionGeneralInfoSchema>({
@@ -151,14 +169,6 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
     }
   }, [requisition, form])
 
-  const handleEditProduct = (product: IUpdateProductRequisitionQuantity) => {
-    onUpdateProductSubmit(product)
-  }
-
-  const handleDeleteProduct = (requestProductSlug: string) => {
-    onDeleteProductSubmit(requestProductSlug)
-  }
-
   const handleUpdateGeneralInfo = (values: TProductRequisitionGeneralInfoSchema) => {
     const updatedValues: IUpdateProductRequisitionGeneralInfo = {
       slug: slug as string,
@@ -179,18 +189,7 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
     setOpenDialog(false)
   }
 
-  const columns =
-    useColumnsUpdateRequisition()
-    // isExistProduct,
-    // handleEditProduct,
-    // handleDeleteProduct
-  const userApprovalColumns = useColumnsApprovalLog()
-
-  const sortedUserApprovals = useMemo(() => {
-    return [...(requisition?.userApprovals || [])].sort((a, b) =>
-      a.assignedUserApproval.roleApproval.localeCompare(b.assignedUserApproval.roleApproval)
-    )
-  }, [requisition?.userApprovals])
+  const columns = useColumnsUpdateRequisition()
 
   const columnsAddNewProduct = useColumnsAddNewProductInRequisitionUpdate()
 
@@ -412,15 +411,7 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
                 </form>
               </Form>
               <div className="mt-6">
-                <h3 className="mb-2 font-semibold">{t('productRequisition.approvalHistory')}</h3>
-                <DataTable
-                  isLoading={false}
-                  data={sortedUserApprovals}
-                  columns={userApprovalColumns}
-                  pages={sortedUserApprovals.length}
-                  onPageChange={() => {}}
-                  onPageSizeChange={() => {}}
-                />
+                <RequisitionTimeline items={renderTimeline()} />
               </div>
             </CardContent>
           </Card>

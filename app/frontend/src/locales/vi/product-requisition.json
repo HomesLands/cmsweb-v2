@@ -9,6 +9,7 @@
     "createProductRequisitions": "Tạo yêu cầu vật tư",
     "createProductRequisitionsDescription": "Công cụ tạo yêu cầu vật tư",
     "requestCode": "Mã yêu cầu",
+    "createdAt": "Ngày tạo",
     "requester": "Người yêu cầu",
     "requesterDescription": "Nhập tên người yêu cầu",
     "companyName": "Tên công ty",
@@ -26,6 +27,7 @@
     "priority": "Mức độ ưu tiên",
     "selectPriority": "Chọn mức độ ưu tiên",
     "deadlineApproval": "Hạn duyệt",
+    "status": "Trạng thái",
     "deadlineApprovalDescription": "Chọn ngày hết hạn duyệt",
 
     "productInformation": "Thông tin vật tư",
@@ -52,6 +54,7 @@
     "step2Waiting": "Chờ duyệt bước 2",
     "step2WaitingGiveback": "Chờ duyệt bước 2 (hoàn lại từ bước trên)",
     "step3Waiting": "Chờ duyệt bước 3",
+    "noApprovalHistory": "Không có lịch sử duyệt",
 
     "issuedDate": "Lần ban hành",
 
@@ -141,6 +144,7 @@
     "requestDetail": "Chi tiết vật tư yêu cầu",
     "requestDetailDescription": "Thông tin chi tiết của vật tư yêu cầu",
     "requestCode": "Mã yêu cầu: ",
+    "createdAt": "Ngày tạo: ",
     "requester": "Người yêu cầu: ",
     "siteName": "Tên công trình: ",
     "companyName": "Tên công ty: ",

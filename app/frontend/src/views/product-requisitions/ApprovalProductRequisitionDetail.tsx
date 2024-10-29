@@ -1,19 +1,17 @@
 import React, { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import i18next from 'i18next'
 import { ReaderIcon } from '@radix-ui/react-icons'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { Label, Button, DataTable } from '@/components/ui'
+import { Label, Button, DataTable, RequisitionTimeline } from '@/components/ui'
 import { useApproveProductRequisition, useRequisitionByUserApproval } from '@/hooks'
 
-import { useColumnsDetail, useColumnsApprovalLog } from './data-table'
+import { useColumnsDetail } from './data-table'
 import { ApprovalLogStatus, IProductInfo, ProductRequisitionRoleApproval } from '@/types'
 import { DialogApprovalRequisition } from '@/components/app/dialog'
 import { showToast } from '@/utils'
 import { ApprovalAction, baseURL, RequisitionStatus, ROUTE, UserApprovalStage } from '@/constants'
-import i18next from 'i18next'
-import Timeline from '@/components/ui/timeline'
-import moment from 'moment'
 
 const ApprovalProductRequisitionDetail: React.FC = () => {
   const navigate = useNavigate()
@@ -26,7 +24,6 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
   const { roleApproval } = data?.result || {}
 
   const columns = useColumnsDetail()
-  const columnsApprovalLog = useColumnsApprovalLog()
   const [openDialog, setOpenDialog] = useState<'accept' | 'give_back' | 'cancel' | null>(null)
 
   const buttonStates = useMemo(() => {
@@ -126,21 +123,21 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
       : []
   }, [data])
 
-  const sortedUserApprovals = useMemo(() => {
-    const approvalOrder = {
-      approval_stage_1: 1,
-      approval_stage_2: 2,
-      approval_stage_3: 3
-    }
+  // const sortedUserApprovals = useMemo(() => {
+  //   const approvalOrder = {
+  //     approval_stage_1: 1,
+  //     approval_stage_2: 2,
+  //     approval_stage_3: 3
+  //   }
 
-    return [...userApprovals].sort((a, b) => {
-      const orderA =
-        approvalOrder[a.assignedUserApproval.roleApproval as keyof typeof approvalOrder] || 0
-      const orderB =
-        approvalOrder[b.assignedUserApproval.roleApproval as keyof typeof approvalOrder] || 0
-      return orderA - orderB
-    })
-  }, [userApprovals])
+  //   return [...userApprovals].sort((a, b) => {
+  //     const orderA =
+  //       approvalOrder[a.assignedUserApproval.roleApproval as keyof typeof approvalOrder] || 0
+  //     const orderB =
+  //       approvalOrder[b.assignedUserApproval.roleApproval as keyof typeof approvalOrder] || 0
+  //     return orderA - orderB
+  //   })
+  // }, [userApprovals])
 
   const handleAccept = () => setOpenDialog(ApprovalAction.ACCEPT)
   const handleGiveBack = () => setOpenDialog(ApprovalAction.GIVE_BACK)
@@ -245,10 +242,10 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
         <div className="flex flex-col justify-center gap-4">
           <div className="grid items-center justify-between grid-cols-8 py-2 mb-4 border-b-2">
             <div className="w-full col-span-1">
-              <img src={getLogoUrl()} className="w-10 sm:w-[4rem]" />
+              <img src={getLogoUrl()} className="w-12 sm:w-[6rem]" />
             </div>
 
-            <span className="col-span-4 flex justify-end sm:justify-center sm:col-span-4 text-[0.5rem] font-extrabold text-center uppercase sm:text-2xl text-normal font-beVietNam">
+            <span className="col-span-4 flex justify-end sm:justify-center sm:col-span-6 text-[0.5rem] font-extrabold text-center uppercase sm:text-2xl text-normal font-beVietNam">
               {t('productRequisition.confirmProductRequisitions')}
             </span>
             <div className="flex justify-end col-span-3 sm:col-span-1">
@@ -326,25 +323,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           onPageSizeChange={() => {}}
         />
 
-        {/* <span className="text-lg font-semibold font-beVietNam">
-          {t('productRequisition.approvalHistory')}
-        </span>
-
-        <DataTable
-          isLoading={false}
-          columns={columnsApprovalLog}
-          data={sortedUserApprovals}
-          pages={1}
-          onPageChange={() => {}}
-          onPageSizeChange={() => {}}
-        /> */}
-
-        <span className="text-lg font-semibold font-beVietNam">
-          {t('productRequisition.approvalHistory')}
-        </span>
-
-        <Timeline items={renderTimeline()} />
-        {/* <Timeline /> */}
+        <RequisitionTimeline items={renderTimeline()} />
 
         <DialogApprovalRequisition
           openDialog={openDialog as ApprovalAction}
