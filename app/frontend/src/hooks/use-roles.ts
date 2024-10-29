@@ -20,9 +20,11 @@ export const useCreateRole = () => {
 }
 
 export const useUpdateRole = () => {
+  const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (data: IUpdateRole) => {
-      return updateRole(data)
+    mutationFn: async (data: IUpdateRole) => updateRole(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['roles'] })
     }
   })
 }

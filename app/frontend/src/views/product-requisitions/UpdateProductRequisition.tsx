@@ -32,7 +32,7 @@ const UpdateProductRequisition: React.FC = () => {
 
   const { mutate: updateProduct } = useUpdateProductRequisitionQuantity(slug as string)
   const { mutate: deleteProduct } = useDeleteProductInRequisition(slug as string)
-  const { mutate: updateGeneralInfo } = useUpdateProductRequisitionGeneralInfo()
+  const { mutate: updateGeneralInfo } = useUpdateProductRequisitionGeneralInfo(slug as string)
   const { mutate: resubmit } = useResubmitProductRequisition(slug as string)
 
   const handleUpdateGeneralInfo = (data: IUpdateProductRequisitionGeneralInfo) => {
@@ -54,7 +54,6 @@ const UpdateProductRequisition: React.FC = () => {
         onError: (error) => {
           if (isAxiosError(error)) {
             const axiosError = error as AxiosError<IApiResponse<void>>
-            console.log('axiosError', axiosError.response?.data.code)
             if (axiosError.response?.data.code) showErrorToast(axiosError.response.data.code)
           }
         }

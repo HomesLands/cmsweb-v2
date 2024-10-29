@@ -101,10 +101,14 @@ export const useAddNewProductInRequisitionUpdate = (slug: string) => {
   })
 }
 
-export const useUpdateProductRequisitionGeneralInfo = () => {
+export const useUpdateProductRequisitionGeneralInfo = (slug: string) => {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (data: IUpdateProductRequisitionGeneralInfo) =>
-      updateProductRequisitionGeneralInfo(data)
+      updateProductRequisitionGeneralInfo(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['productRequisitionBySlug', slug] })
+    }
   })
 }
 

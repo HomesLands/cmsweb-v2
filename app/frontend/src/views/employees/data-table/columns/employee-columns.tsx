@@ -114,6 +114,7 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="flex flex-col justify-start" align="end">
                 <DropdownMenuLabel>{t('employees.actions')}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
                 <DialogUpdateUsername userInfo={user as IUserInfo} />
                 <DialogAddUserRole user={user} />
                 <DialogAddUserDepartment user={user} />

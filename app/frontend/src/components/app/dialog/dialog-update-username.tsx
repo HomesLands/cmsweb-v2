@@ -36,7 +36,7 @@ export default function DialogUpdateUsername({ userInfo }: { userInfo: IUserInfo
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
+        <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
           <SquarePen className="icon" />
           {t('account.editUsername')}
         </Button>
