@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import i18next from 'i18next'
 import { ReaderIcon } from '@radix-ui/react-icons'
@@ -14,11 +15,12 @@ import { showToast } from '@/utils'
 import { ApprovalAction, baseURL, RequisitionStatus, ROUTE, UserApprovalStage } from '@/constants'
 
 const ApprovalProductRequisitionDetail: React.FC = () => {
+  const queryClient = useQueryClient()
   const navigate = useNavigate()
   const { t: tToast } = useTranslation('toast')
   const { t } = useTranslation(['productRequisition'])
   const { slug } = useParams<{ slug: string }>()
-  const { data, refetch } = useRequisitionByUserApproval(slug!)
+  const { data } = useRequisitionByUserApproval(slug!)
   const { mutate: approveProductRequisition } = useApproveProductRequisition()
 
   const { roleApproval } = data?.result || {}
@@ -123,22 +125,6 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
       : []
   }, [data])
 
-  // const sortedUserApprovals = useMemo(() => {
-  //   const approvalOrder = {
-  //     approval_stage_1: 1,
-  //     approval_stage_2: 2,
-  //     approval_stage_3: 3
-  //   }
-
-  //   return [...userApprovals].sort((a, b) => {
-  //     const orderA =
-  //       approvalOrder[a.assignedUserApproval.roleApproval as keyof typeof approvalOrder] || 0
-  //     const orderB =
-  //       approvalOrder[b.assignedUserApproval.roleApproval as keyof typeof approvalOrder] || 0
-  //     return orderA - orderB
-  //   })
-  // }, [userApprovals])
-
   const handleAccept = () => setOpenDialog(ApprovalAction.ACCEPT)
   const handleGiveBack = () => setOpenDialog(ApprovalAction.GIVE_BACK)
   const handleCancel = () => setOpenDialog(ApprovalAction.CANCEL)
@@ -155,6 +141,9 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
       {
         onSuccess: () => {
           setOpenDialog(null)
+          queryClient.invalidateQueries({
+            queryKey: ['requisitionByUserApproval']
+          })
 
           // Display toast based on the action type
           switch (status) {
@@ -170,9 +159,6 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
             default:
               showToast(tToast('toast.requestActionSuccess'))
           }
-
-          refetch()
-          // queryClient.invalidateQueries({ queryKey: ['productRequisitionByApprover'] })
         }
       }
     )

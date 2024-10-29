@@ -1,14 +1,15 @@
 import { useTranslation } from 'react-i18next'
 import { ReaderIcon } from '@radix-ui/react-icons'
 
-import { Label } from '@/components/ui'
+import { DataTable, Label } from '@/components/ui'
 import { useNotification, usePagination } from '@/hooks'
+import { useNotificationColumns } from './data-table'
 
 export default function Notification() {
   const { pagination } = usePagination({ isSearchParams: false })
   const { t } = useTranslation('notifications')
 
-  const { data } = useNotification({
+  const { data, isLoading } = useNotification({
     page: pagination.pageIndex,
     pageSize: pagination.pageSize,
     order: 'DESC'
@@ -21,14 +22,14 @@ export default function Notification() {
         <ReaderIcon className="header-icon" />
         {t('notifications.title')}
       </Label>
-      {/* <DataTable
+      <DataTable
         isLoading={isLoading}
         columns={useNotificationColumns()}
-        data={data?.result || []}
+        data={data?.result.items || []}
         pages={1}
         onPageChange={() => {}}
         onPageSizeChange={() => {}}
-      /> */}
+      />
     </div>
   )
 }

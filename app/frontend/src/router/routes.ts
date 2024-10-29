@@ -12,6 +12,7 @@ import {
 
 import type { ISidebarRoute } from '@/types'
 import { Authority, Resource, ROUTE } from '@/constants'
+import { BellIcon } from '@radix-ui/react-icons'
 
 export const sidebarRoutes: ISidebarRoute[] = [
   {
@@ -181,15 +182,4 @@ export const sidebarRoutes: ISidebarRoute[] = [
       }
     ]
   }
-  // {
-  //   title: 'sidebar.notifications',
-  //   path: ROUTE.NOTIFICATION,
-  //   icon: BellIcon,
-  //   children: [
-  //     {
-  //       title: 'sidebar.notifications',
-  //       path: ROUTE.NOTIFICATION
-  //     }
-  //   ]
-  // }
 ]
