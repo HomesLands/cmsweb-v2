@@ -1,5 +1,6 @@
-import { useForm } from 'react-hook-form'
 import { useMemo } from 'react'
+import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import {
   FormField,
@@ -10,11 +11,11 @@ import {
   Input,
   Form,
   Textarea,
-  DataTable
+  DataTable,
+  RequisitionTimeline
 } from '@/components/ui'
 import { IProductRequisitionFormInfo } from '@/types'
-import { useColumnsApprovalLog, useColumnsDetail } from '@/views/product-requisitions/data-table'
-import { useTranslation } from 'react-i18next'
+import { useColumnsDetail } from '@/views/product-requisitions/data-table'
 
 interface IFormRequisitionDetailProps {
   data?: IProductRequisitionFormInfo
@@ -37,8 +38,25 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
   })
   const { t } = useTranslation('productRequisition')
 
+  const userApprovals = useMemo(() => {
+    return Array.isArray(data?.userApprovals) ? data.userApprovals : []
+  }, [data])
+
+  const renderTimeline = () => {
+    return userApprovals
+      .flatMap((userApproval) =>
+        userApproval.approvalLogs.map((log) => ({
+          user: userApproval.assignedUserApproval.user.fullname,
+          role: userApproval.assignedUserApproval.roleApproval,
+          status: log.status,
+          content: log.content,
+          createdAt: new Date(log.createdAt).toISOString() // Format as a string
+        }))
+      )
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()) // Sort by timestamp
+  }
+
   const columns = useColumnsDetail()
-  const userApprovalColumns = useColumnsApprovalLog()
   const statusInfo = useMemo(() => {
     if (!data) return { displayStatus: '', statusColor: '' }
 
@@ -79,12 +97,6 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
   form.setValue('displayStatus', statusInfo.displayStatus)
   form.setValue('statusColor', statusInfo.statusColor)
 
-  const sortedUserApprovals = useMemo(() => {
-    return [...(data?.userApprovals || [])].sort((a, b) =>
-      a.assignedUserApproval.roleApproval.localeCompare(b.assignedUserApproval.roleApproval)
-    )
-  }, [data?.userApprovals])
-
   return (
     <div className="mt-3 max-w-[90vw] sm:max-w-full">
       <Form {...form}>
@@ -95,7 +107,7 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
               name="createdAt"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Ngày tạo</FormLabel>
+                  <FormLabel>{t('productRequisition.createdAt')}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -125,7 +137,7 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
               name="code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mã yêu cầu vật tư</FormLabel>
+                  <FormLabel>{t('productRequisition.requestCode')}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -138,7 +150,7 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
               name="company"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Tên công ty</FormLabel>
+                  <FormLabel>{t('productRequisition.companyName')}</FormLabel>
                   <FormControl>
                     <Input {...field} readOnly />
                   </FormControl>
@@ -151,7 +163,7 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
               name="creator.fullname"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Người tạo</FormLabel>
+                  <FormLabel>{t('productRequisition.requester')}</FormLabel>
                   <FormControl>
                     <Input {...field} readOnly />
                   </FormControl>
@@ -166,7 +178,7 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
               name="project.name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Dự án</FormLabel>
+                  <FormLabel>{t('productRequisition.projectName')}</FormLabel>
                   <FormControl>
                     <Input {...field} readOnly />
                   </FormControl>
@@ -179,12 +191,16 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
               name="type"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Loại yêu cầu</FormLabel>
+                  <FormLabel>{t('productRequisition.priority')}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       readOnly
-                      value={field.value === 'normal' ? 'Bình thường' : 'Cần gấp'}
+                      value={
+                        field.value === 'normal'
+                          ? t('requestPriority.normal')
+                          : t('requestPriority.urgent')
+                      }
                       className={field.value === 'urgent' ? 'text-red-500' : ''}
                     />
                   </FormControl>
@@ -198,7 +214,7 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
               name="displayStatus"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Trạng thái</FormLabel>
+                  <FormLabel>{t('productRequisition.status')}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -217,7 +233,7 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mô tả</FormLabel>
+                  <FormLabel>{t('productRequisition.note')}</FormLabel>
                   <FormControl>
                     <Textarea {...field} />
                   </FormControl>
@@ -238,15 +254,7 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
               onPageChange={() => {}}
               onPageSizeChange={() => {}}
             />
-            <h3 className="mt-4 mb-2 text-lg font-semibold">Lịch sử duyệt</h3>
-            <DataTable
-              isLoading={false}
-              data={sortedUserApprovals}
-              columns={userApprovalColumns}
-              pages={sortedUserApprovals.length}
-              onPageChange={() => {}}
-              onPageSizeChange={() => {}}
-            />
+            <RequisitionTimeline items={renderTimeline()} />
           </div>
         </form>
       </Form>
