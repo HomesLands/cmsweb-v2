@@ -19,7 +19,15 @@ jobs:
 
       - name: Get latest tag
         id: set_tag
-        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        run: |
+          # Fetch all tags
+          git fetch --tags
+
+          # Get the latest tag (e.g., "v1.2.3")
+          LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
+
+          # Export the LATEST_TAG variable for the next step
+          echo "TAG=$LATEST_TAG" >> $GITHUB_ENV
 
       - name: Copy Environment Configuration
         env:
