@@ -30,15 +30,14 @@ jobs:
           echo "$ENV_PROD" > .deploy/.env
           echo "$FE_ENV_PROD" > app/frontend/.env
 
-          # Update or add the TAG variable in the .env file with the current tag
           if grep -q '^TAG=' .deploy/.env; then
-            sed -i "s/^TAG=.*/TAG=$TAG/" .deploy/.env
+            sed -i "s|^TAG=.*|TAG=$TAG|" .deploy/.env
           else
             echo "TAG=$TAG" >> .deploy/.env
           fi
 
           if grep -q '^VITE_TAG=' app/frontend/.env; then
-            sed -i "s/^VITE_TAG=.*/VITE_TAG=$TAG/" app/frontend/.env
+            sed -i "s|^VITE_TAG=.*|VITE_TAG=$TAG|" app/frontend/.env
           else
             echo "VITE_TAG=$TAG" >> app/frontend/.env
           fi
