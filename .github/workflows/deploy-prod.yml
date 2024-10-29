@@ -55,6 +55,9 @@ jobs:
           ssh-keyscan -p $SSH_PORT_PROD $REMOTE_HOST_PROD >> ~/.ssh/known_hosts
           export DOCKER_HOST="ssh://$REMOTE_USER_PROD@$REMOTE_HOST_PROD:$SSH_PORT_PROD"
 
+          cat .deploy/.env
+          cat app/frontend/.env
+
           docker ps -a
           # docker compose -f .deploy/docker-compose.dev.yaml down
           # docker compose -f .deploy/docker-compose.dev.yaml up -d --build
