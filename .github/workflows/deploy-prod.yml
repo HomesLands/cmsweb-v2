@@ -2,9 +2,8 @@ name: Deploy-prod
 
 on:
   push:
-    branches: ["main"]
-    # tags:
-    #   - "v*" # This triggers the workflow on any tag
+    tags:
+      - "v*" # This triggers the workflow on any tag
 
 jobs:
   deploy:
@@ -67,6 +66,6 @@ jobs:
           cat app/frontend/.env
 
           docker ps -a
-          # docker compose -f .deploy/docker-compose.dev.yaml down
-          # docker compose -f .deploy/docker-compose.dev.yaml up -d --build
-          # docker image prune -f  # clean up none image after built
+          docker compose -f .deploy/docker-compose.prod.yaml down
+          docker compose -f .deploy/docker-compose.prod.yaml up -d --build
+          docker image prune -f  # clean up none image after built
