@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { format } from 'date-fns'
@@ -45,10 +45,6 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
   const [date, setDate] = useState<Date | undefined>(
     requisition?.deadlineApproval ? new Date(requisition.deadlineApproval) : undefined
   )
-  const [company, setCompany] = useState<string>(
-    userInfo?.userDepartments[0]?.department.site.company.name || ''
-  )
-  const [site, setSite] = useState<string>(userInfo?.userDepartments[0]?.department.site.name || '')
 
   const validateDate = (selectedDate: Date | undefined) => {
     if (!selectedDate) return false
