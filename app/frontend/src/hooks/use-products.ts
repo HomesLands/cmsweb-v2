@@ -8,7 +8,6 @@ import {
   updateProduct
 } from '@/api/products'
 import { IApiProductInfoCreate, IProductInfoUpdate, IProductQuery } from '@/types'
-import { showToast } from '@/utils'
 
 export const useProducts = (q: IProductQuery) => {
   return useQuery({

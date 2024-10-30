@@ -29,13 +29,13 @@ export const useNotificationColumns = (): ColumnDef<INotification>[] => {
       }
     },
     {
-      accessorKey: 'title',
+      accessorKey: 'type',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t('notifications.notificationTitle')} />
       )
     },
     {
-      accessorKey: 'content',
+      accessorKey: 'message',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t('notifications.content')} />
       )

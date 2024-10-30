@@ -119,7 +119,7 @@ export function PopoverNotification() {
               )}
             </div>
           </ScrollArea>
-          {/* {data?.result?.items && data.result.items.length > 0 && (
+          {data?.result?.items && data.result.items.length > 0 && (
             <div className="flex items-center justify-center py-4 ">
               <NavLink
                 to="/notification"
@@ -129,7 +129,7 @@ export function PopoverNotification() {
                 {t('notifications.viewAll')}
               </NavLink>
             </div>
-          )} */}
+          )}
         </div>
       </PopoverContent>
     </Popover>

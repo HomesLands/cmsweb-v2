@@ -101,10 +101,14 @@ export const useAddNewProductInRequisitionUpdate = (slug: string) => {
   })
 }
 
-export const useUpdateProductRequisitionGeneralInfo = () => {
+export const useUpdateProductRequisitionGeneralInfo = (slug: string) => {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (data: IUpdateProductRequisitionGeneralInfo) =>
-      updateProductRequisitionGeneralInfo(data)
+      updateProductRequisitionGeneralInfo(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['productRequisitionBySlug', slug] })
+    }
   })
 }
 
@@ -126,10 +130,9 @@ export const useApproveProductRequisition = () => {
       approveProductRequisition(data.formSlug, data.approvalLog),
     onSuccess: (data, variables) => {
       // Invalidate the specific requisition query
-      queryClient.invalidateQueries({ queryKey: ['requisitionByUserApproval', variables.formSlug] })
-      // Invalidate the list of requisitions
-      queryClient.invalidateQueries({ queryKey: ['productRequisitionByApprover'] })
-      // Return the updated data
+      // queryClient.invalidateQueries({
+      //   queryKey: ['requisitionByUserApproval']
+      // })
       return data
     }
   })

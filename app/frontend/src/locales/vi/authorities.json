@@ -12,6 +12,13 @@
     "actions": "Thao tác",
     "editAuthority": "Chỉnh sửa",
     "editAuthorityDescription": "Thay đổi thông tin bên dưới để chỉnh sửa thẩm quyền",
-    "updateAuthority": "Cập nhật"
+    "updateAuthority": "Cập nhật",
+
+    "deleteAuthority": "Xóa thẩm quyền",
+    "deleteAuthorityDescription": "Lưu ý: Hành động này không thể hoàn tác!",
+    "deleteAuthorityWarning1": "Bạn sắp sửa xóa thẩm quyền",
+    "deleteAuthorityConfirmation": "Bạn có chắc chắn muốn xóa thẩm quyền này?",
+    "confirmDelete": "Tôi đã hiểu, xóa thẩm quyền",
+    "cancel": "Hủy"
   }
 }

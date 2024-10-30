@@ -68,14 +68,11 @@ interface IUpdateRequisitionFormProps {
 
 export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
   onResubmit,
-  onUpdateProductSubmit,
   onUpdateGeneralInfo,
-  onDeleteProductSubmit,
   requisition,
   isLoading
 }) => {
   const { t } = useTranslation('productRequisition')
-  // const isExistProduct = requisition?.requestProducts.some((product) => product.isExistProduct)
   const { slug } = useParams()
   const [openDialog, setOpenDialog] = useState(false)
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination({
@@ -253,11 +250,15 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
                     )}
                   >
                     <CalendarIcon className="w-4 h-4 mr-2" />
-                    {field.value ? field.value : <span>Chọn ngày và thời gian</span>}
+                    {field.value ? (
+                      field.value
+                    ) : (
+                      <span>{t('productRequisition.deadlineApprovalDescription')}</span>
+                    )}
                   </Button>
                 </FormControl>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
+              <PopoverContent className="flex flex-col items-center justify-center w-auto gap-1 p-2">
                 <Calendar
                   mode="single"
                   selected={date}

@@ -2,7 +2,6 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 
 import { createProject, deleteProject, getProjects, updateProject } from '@/api'
 import { ICreateProject, IUpdateProject } from '@/types'
-import { CreateProject } from '@/views/projects'
 
 export const useProjects = () => {
   return useQuery({

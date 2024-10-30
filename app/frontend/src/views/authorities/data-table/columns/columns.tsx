@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui'
 import { IAuthority } from '@/types'
-import { DialogUpdateAuthority } from '@/components/app/dialog'
+import { DialogDeleteAuthority, DialogUpdateAuthority } from '@/components/app/dialog'
 
 export const useAuthorityColumns = (): ColumnDef<IAuthority>[] => {
   const { t } = useTranslation(['authorities'])
@@ -59,6 +59,7 @@ export const useAuthorityColumns = (): ColumnDef<IAuthority>[] => {
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DialogUpdateAuthority authority={authority} />
+                <DialogDeleteAuthority authority={authority} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

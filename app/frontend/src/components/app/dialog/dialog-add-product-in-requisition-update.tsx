@@ -9,7 +9,11 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
 } from '@/components/ui'
 
 import { TAddNewProductRequestSchema } from '@/schemas'
@@ -49,9 +53,18 @@ export function DialogAddProductInRequisitionUpdate({ product }: { product: IPro
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
-          <PlusCircledIcon className="icon" />
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
+                <PlusCircledIcon className="icon" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t('tableData.addNewProduct')}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </DialogTrigger>
       <DialogContent className="max-w-[60rem]">
         <DialogHeader>
