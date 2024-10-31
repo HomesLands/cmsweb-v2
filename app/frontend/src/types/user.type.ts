@@ -58,6 +58,7 @@ export interface IUpdateUserGeneralInfo {
 }
 
 export interface IUpdateUsername {
+  slug: string // User slug
   username: string
 }
 

@@ -10,7 +10,7 @@ import {
   uploadProfilePicture,
   uploadSignature
 } from '@/api'
-import { IConfirmChangePassword, IQuery, IUpdateUserGeneralInfo } from '@/types'
+import { IConfirmChangePassword, IQuery, IUpdateUserGeneralInfo, IUpdateUsername } from '@/types'
 import { useUserStore } from '@/stores'
 
 export const useUsers = (q: IQuery) => {
@@ -87,16 +87,13 @@ export const useChangePassword = () => {
 }
 
 export const useUpdateUsername = () => {
-  const queryClient = useQueryClient()
   // const { refetch: refetchUserInfo } = useUser() // Get the refetch function from useUser
   // const setUserInfo = useUserStore((state) => state.setUserInfo) // Get the setUserInfo function from the store
 
   return useMutation({
-    mutationFn: (data: { username: string }) => updateUsername(data),
+    mutationFn: (data: IUpdateUsername) => updateUsername(data),
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: ['users'] })
       // const userInfoResponse = await refetchUserInfo() // Refetch user info
-
       // if (userInfoResponse.data) {
       //   setUserInfo(userInfoResponse.data) // Update the store with the latest user info
       // }

@@ -17,17 +17,21 @@ import { UpdateUsernameForm } from '@/components/app/form'
 import { IUpdateUsername, IUserInfo } from '@/types'
 import { useUpdateUsername } from '@/hooks'
 import { showToast } from '@/utils'
+import { useQueryClient } from '@tanstack/react-query'
 
 export default function DialogUpdateUsername({ userInfo }: { userInfo: IUserInfo }) {
   const { t } = useTranslation('account')
   const { t: tToast } = useTranslation('toast')
   const [isOpen, setIsOpen] = useState(false)
   const { mutate: updateUsername } = useUpdateUsername()
+  const queryClient = useQueryClient()
+  console.log(userInfo)
 
   const handleSubmit = (values: IUpdateUsername) => {
     updateUsername(values, {
       onSuccess: () => {
         setIsOpen(false)
+        queryClient.invalidateQueries({ queryKey: ['users'] })
         showToast(tToast('toast.updateUsernameSuccess'))
       }
     })
