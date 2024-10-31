@@ -17,6 +17,7 @@ export const updateAccountInfoSchema = z.object({
 })
 
 export const updateUsernameSchema = z.object({
+  slug: z.string().min(1),
   username: z.string().min(1, 'Tên đăng nhập không hợp lệ')
 })
 

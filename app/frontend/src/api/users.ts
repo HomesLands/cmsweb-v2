@@ -1,4 +1,10 @@
-import { IApiResponse, IConfirmChangePassword, IPaginationResponse, IQuery } from '@/types'
+import {
+  IApiResponse,
+  IConfirmChangePassword,
+  IPaginationResponse,
+  IQuery,
+  IUpdateUsername
+} from '@/types'
 import {
   IChangePasswordResponse,
   IUpdateUserGeneralInfo,
@@ -53,7 +59,7 @@ export async function changePasswordApi(data: IConfirmChangePassword) {
   return response
 }
 
-export async function updateUsername(data: { username: string }) {
-  const response = await http.patch<IApiResponse<IUserInfo>>(`/users/username`, data)
+export async function updateUsername(data: IUpdateUsername) {
+  const response = await http.patch<IApiResponse<IUserInfo>>(`/users/${data.slug}/username`, data)
   return response.data
 }

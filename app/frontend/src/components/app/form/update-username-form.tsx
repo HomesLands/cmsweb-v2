@@ -28,6 +28,7 @@ export default function FormUpdateUsername({ data, onSubmit }: IFormUpdateUserna
   const form = useForm<TUpdateUsernameSchema>({
     resolver: zodResolver(updateUsernameSchema),
     defaultValues: {
+      slug: data?.slug || '',
       username: data?.username || ''
     }
   })
