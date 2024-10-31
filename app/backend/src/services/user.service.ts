@@ -225,7 +225,7 @@ class UserService {
 
     const user = await userRepository.findOne({
       where: {
-        id: requestData.userId,
+        slug: requestData.userSlug,
       },
     });
 

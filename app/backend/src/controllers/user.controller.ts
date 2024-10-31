@@ -444,10 +444,18 @@ class UserController {
 
   /**
    * @swagger
-   * /users/username:
+   * /users/{slug}/username:
    *   patch:
    *     summary: Update username
    *     tags: [User]
+   *     parameters:
+   *       - in: path
+   *         name: slug
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: The slug of user
+   *         example: slug-123
    *     requestBody:
    *       require: true
    *       content:
@@ -468,9 +476,9 @@ class UserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { userId = "" } = req;
+      const { slug } = req.params;
       const requestData = req.body as TUpdateUsernameRequestDto;
-      Object.assign(requestData, { userId });
+      Object.assign(requestData, { userSlug: slug });
 
       const result = await userService.updateUsername(requestData);
       const response: TApiResponse<UserResponseDto> = {
