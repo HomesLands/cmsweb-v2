@@ -23,8 +23,8 @@ userRoute.get("/info", userController.getUser);
 // [PATCH] /api/v1/users/info
 userRoute.patch("/info", userController.updateUserInfo);
 
-// [PATCH] /api/v1/users/username
-userRoute.patch("/username", userController.updateUsername);
+// [PATCH] /api/v1/users/{slug}/username
+userRoute.patch("/:slug/username", userController.updateUsername);
 
 // [PATCH] /api/v1/users/signature
 userRoute.patch(
