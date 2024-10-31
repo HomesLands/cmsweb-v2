@@ -49,7 +49,10 @@ export class UpdateUserInfoRequestDto {
 }
 
 export class UpdateUsernameRequestDto {
-  userId: string;
+  @IsNotEmpty({ message: "INVALID_USER_SLUG" })
+  @Expose()
+  @AutoMap()
+  userSlug: string;
 
   @IsNotEmpty({ message: "INVALID_USERNAME" })
   @MinLength(1, { message: "INVALID_USERNAME" })

@@ -22,7 +22,7 @@ export type TUpdateUserInfoRequestDto = {
 
 export type TUpdateUsernameRequestDto = {
   username?: string;
-  userId?: string;
+  userSlug?: string;
 };
 
 export type TUploadUserAvatarRequestDto = TUploadUserSignRequestDto;
