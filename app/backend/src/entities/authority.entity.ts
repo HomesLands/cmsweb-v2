@@ -1,8 +1,7 @@
-import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from "typeorm";
-import { Base } from "@entities/base.entity";
+import { Entity, Column, OneToMany } from "typeorm";
+import { Base } from "./base.entity";
 import { Permission } from "./permission.entity";
 import { AutoMap } from "@automapper/classes";
-import { Resource } from "./resource.entity";
 
 @Entity("authority_tbl")
 export class Authority extends Base {

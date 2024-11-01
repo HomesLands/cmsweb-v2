@@ -237,6 +237,17 @@ class UserService {
     const userDto = mapper.map(updatedUser, User, UserResponseDto);
     return userDto;
   }
+
+  public async deleteUser(
+    slug: string
+  ): Promise<number> {
+    const user = await userRepository.findOneBy({ slug });
+
+    if(!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
+
+    const deleted = await userRepository.softDelete({ slug });
+    return deleted.affected || 0;
+  }
 }
 
 export default new UserService();

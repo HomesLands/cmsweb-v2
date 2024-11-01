@@ -1,9 +1,7 @@
 import { Entity, Column, OneToMany } from "typeorm";
 import { AutoMap } from "@automapper/classes";
-import { 
-  Base,
-  ProductWarehouse, 
-} from "@entities";
+import { Base } from "./base.entity";
+import { ProductWarehouse } from "./product-warehouse.entity";
 
 @Entity("warehouse_tbl")
 export class Warehouse extends Base {

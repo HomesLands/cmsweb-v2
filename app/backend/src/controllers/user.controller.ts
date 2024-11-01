@@ -494,6 +494,50 @@ class UserController {
       next(error);
     }
   }
+
+  /**
+   * @swagger
+   * /users/{slug}:
+   *   delete:
+   *     summary: Delete user
+   *     tags: [User]
+   *     parameters:
+   *       - in: path
+   *         name: slug
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: The slug of user
+   *         example: slug-123
+   *     responses:
+   *       200:
+   *         description: Username has updated successfully
+   *       500:
+   *         description: Server error
+   *       1004:
+   *         description: User not found
+   */
+  public async deleteUser(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { slug } = req.params;
+      const result = await userService.deleteUser(slug);
+      const response: TApiResponse<string> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "The user deleted successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result: `${result} rows affected`,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new UserController();

@@ -28,6 +28,7 @@ import { productWarehouseRoute } from "./product-warehouse.route";
 import { fileRoute } from "./file.route";
 import { resourceRoute } from "./resource.route";
 import { rolePermissionRoute } from "./role-permission.route";
+import { productPurchaseFormRoute } from "./product-purchase-form.route";
 import { databaseRoute } from "./database.route";
 import { env } from "@constants";
 import { notificationRoute } from "./notification.route";
@@ -42,6 +43,8 @@ export const registerRoutes = (app: Express) => {
   baseApi.use("/users", userRoute);
 
   baseApi.use("/files", fileRoute);
+
+  baseApi.use("/productPurchaseForms", productPurchaseFormRoute);
 
   baseApi.use("/products", productRoute);
 

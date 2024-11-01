@@ -1,6 +1,8 @@
 import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from "typeorm";
-import { Base, Site, ProductRequisitionForm } from "@entities";
 import { AutoMap } from "@automapper/classes";
+import { Base } from "./base.entity";
+import { ProductRequisitionForm } from "./product-requisition-form.entity";
+import { Site } from "./site.entity";
 
 @Entity("project_tbl")
 export class Project extends Base {

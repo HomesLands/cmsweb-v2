@@ -73,6 +73,8 @@ class ProductWarehouseController {
    *         description: Error when update product quantity
    *       1100:
    *         description: Invalid warehouse slug
+   *       1128:
+   *         description: Product existed in this warehouse
    *
    */
 

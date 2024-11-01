@@ -742,6 +742,50 @@ class ProductRequisitionFormController {
       next(error);
     }
   }
+
+  /**
+   * @swagger
+   * /productRequisitionForms/{slug}:
+   *   delete:
+   *     summary: Delete product requisition form
+   *     tags: [ProductRequisitionForm]
+   *     parameters:
+   *       - in: path
+   *         name: slug
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: The slug of form
+   *         example: slug-123
+   *     responses:
+   *       200:
+   *         description: Product requisition form has been deleted successfully
+   *       500:
+   *         description: Server error
+   *       1046:
+   *         description: Form not found
+   */
+  public async deleteProductRequisitionForm(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { slug } = req.params;
+      const result = await productRequisitionFormService.deleteProductRequisitionForm(slug);
+      const response: TApiResponse<string> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "The form deleted successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result: `${result} rows affected`,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new ProductRequisitionFormController();

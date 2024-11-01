@@ -41,5 +41,7 @@ export * from "./approval-log.types";
 export * from "./user.type";
 export * from "./resource.type";
 export * from "./role-permission.type";
+export * from "./purchase-product.type";
+export * from "./product-purchase-form.type";
 export * from "./notification.type";
 export * from "./producer.type";

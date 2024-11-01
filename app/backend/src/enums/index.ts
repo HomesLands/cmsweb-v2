@@ -1,6 +1,14 @@
 export enum Gender {
   MALE = "male",
   FEMALE = "female",
+  OTHER = "other",
+}
+
+export enum ProductPurchaseFormStatus {
+  WAITING = "waiting", // storekeeper create
+  PURCHASING = "purchasing", // shopper confirm purchase with this form
+  IMPORTING = "importing",
+  DONE = "done",  // completed import
 }
 
 export enum ProductRequisitionFormStatus {

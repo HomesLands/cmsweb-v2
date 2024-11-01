@@ -1,7 +1,9 @@
 import { Entity, Column, ManyToOne, JoinColumn } from "typeorm";
-import { ProductRequisitionForm } from "@entities/product-requisition-form.entity";
-import { Product, Base, TemporaryProduct } from "@entities";
 import { AutoMap } from "@automapper/classes";
+import { Base } from "./base.entity";
+import { ProductRequisitionForm } from "./product-requisition-form.entity";
+import { Product } from "./product.entity";
+import { TemporaryProduct } from "./temporary-product.entity";
 
 @Entity("request_product_tbl")
 export class RequestProduct extends Base {

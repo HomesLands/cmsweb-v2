@@ -1,5 +1,5 @@
 import { Entity, Column, OneToMany } from "typeorm";
-import { Base } from "@entities/base.entity";
+import { Base } from "./base.entity";
 import { UserRole } from "./user-role.entity";
 import { AutoMap } from "@automapper/classes";
 import { RolePermission } from "./role-permission.entity";

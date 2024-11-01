@@ -6,13 +6,13 @@ import { ProductRequisitionForm } from "@entities";
 
 export const productRequisitionFormRoute: Router = Router();
 
-// [GET] /api/v1/productRequisitionForms/exportPdf/:slug
+// [GET] /api/v1/productRequisitionForms/:slug/exportPdf
 productRequisitionFormRoute.get(
   "/:slug/exportPdf",
   productRequisitionFormController.exportPdf
 );
 
-// [GET] /api/v1/productRequisitionForms/exportExcel/:slug
+// [GET] /api/v1/productRequisitionForms/:slug/exportExcel
 productRequisitionFormRoute.get(
   "/:slug/exportExcel",
   productRequisitionFormController.exportExcel
@@ -54,7 +54,7 @@ productRequisitionFormRoute.patch(
 // [GET] /api/v1/productRequisitionForms/:slug
 productRequisitionFormRoute.get(
   "/:slug",
-  authMiddleware.hasPermission(Action.READ, ProductRequisitionForm),
+  // authMiddleware.hasPermission(Action.READ, ProductRequisitionForm),
   productRequisitionFormController.getProductRequisitionFormBySlug
 );
 
@@ -63,4 +63,10 @@ productRequisitionFormRoute.patch(
   "/:slug",
   authMiddleware.hasPermission(Action.UPDATE, ProductRequisitionForm),
   productRequisitionFormController.updateGeneralInformationForm
+);
+
+// [DELETE] /api/v1/productRequisitionForms/:slug
+productRequisitionFormRoute.delete(
+  "/:slug",
+  productRequisitionFormController.deleteProductRequisitionForm
 );

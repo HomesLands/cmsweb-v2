@@ -146,7 +146,7 @@ class ResourceService {
 
     Object.assign(resource, { name: requestData.name });
 
-    const updatedResource = await resourceRepository.createAndSave(resource);
+    const updatedResource = await resourceRepository.save(resource);
     return mapper.map(updatedResource, Resource, ResourceResponseDto);
   }
 }
