@@ -1,5 +1,8 @@
 import { AutoMap } from "@automapper/classes";
-import { ProductRequisitionFormResponseDto, SiteResponseDto } from "@dto/response";
+import {
+  ProductRequisitionFormResponseDto,
+  SiteResponseDto,
+} from "@dto/response";
 import { BaseResponseDto } from "./base-response.dto";
 
 export class ProjectResponseDto extends BaseResponseDto {
@@ -11,6 +14,9 @@ export class ProjectResponseDto extends BaseResponseDto {
 
   @AutoMap()
   description?: string;
+
+  @AutoMap()
+  fileDescription?: string;
 
   @AutoMap()
   slug?: string;

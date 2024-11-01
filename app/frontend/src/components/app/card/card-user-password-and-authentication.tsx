@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -16,15 +17,16 @@ import { useForm } from 'react-hook-form'
 import { passwordAndAuthenticationSchema, TPasswordAndAuthenticationSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IConfirmChangePassword } from '@/types'
+import { DialogConfirmChangePassword } from '../dialog'
+import { useChangePassword } from '@/hooks'
+import { showToast } from '@/utils'
 
-interface CardUserPasswordAndAuthenticationProps {
-  handleChangePassword: (data: IConfirmChangePassword) => void
-}
-
-export const CardUserPasswordAndAuthentication = ({
-  handleChangePassword
-}: CardUserPasswordAndAuthenticationProps) => {
+export const CardUserPasswordAndAuthentication = () => {
   const { t } = useTranslation('account')
+  const [password, setPassword] = useState<IConfirmChangePassword | null>(null)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const { t: tToast } = useTranslation('toast')
+  const { mutate: changePassword } = useChangePassword()
 
   const form = useForm<TPasswordAndAuthenticationSchema>({
     resolver: zodResolver(passwordAndAuthenticationSchema),
@@ -36,18 +38,31 @@ export const CardUserPasswordAndAuthentication = ({
   })
 
   const handleSubmit = (values: TPasswordAndAuthenticationSchema) => {
-    handleChangePassword(values)
-    form.reset({
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: ''
-    })
+    setPassword(values)
+    setIsDialogOpen(true)
+  }
+
+  const handleConfirmChangePassword = () => {
+    if (password) {
+      changePassword(password, {
+        onSuccess: () => {
+          showToast(tToast('toast.changePasswordSuccess'))
+        }
+      })
+      setIsDialogOpen(false)
+      setPassword(null)
+      form.reset({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      })
+    }
   }
 
   return (
     <Card className="border-none">
-      <CardContent className="flex flex-col gap-">
-        <div className="grid grid-cols-1 gap-3 mt-3 rounded-md border">
+      <CardContent className="flex flex-col gap-6 p-0">
+        <div className="grid grid-cols-1 gap-3 py-5 mt-3 border rounded-md">
           <div className="grid grid-cols-1 px-6 py-2">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
@@ -100,6 +115,14 @@ export const CardUserPasswordAndAuthentication = ({
                 </div>
               </form>
             </Form>
+            {password && (
+              <DialogConfirmChangePassword
+                password={password}
+                isOpen={isDialogOpen}
+                onConfirm={handleConfirmChangePassword}
+                onClose={() => setIsDialogOpen(false)}
+              />
+            )}
           </div>
         </div>
       </CardContent>

@@ -10,3 +10,10 @@ export interface ICreateAuthority {
   nameNormalize: string
   description: string
 }
+
+export interface IUpdateAuthority {
+  slug: string
+  nameNormalize: string
+  nameDisplay: string
+  description: string
+}

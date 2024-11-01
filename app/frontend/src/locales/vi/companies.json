@@ -4,6 +4,7 @@
     "slug": "Mã công ty",
     "name": "Tên công ty",
     "director": "Người đại diện",
+    "logo": "Logo",
     "directorSlug": "Mã người đại diện",
     "address": "Địa chỉ",
     "phone": "Số điện thoại",
@@ -16,6 +17,23 @@
     "confirmCreateCompany": "Tạo công ty",
     "cancelCreateCompany": "Hủy",
     "confirm": "Xác nhận",
-    "confirmCreateCompanyDescription": "Dữ liệu về công ty sẽ được tạo!"
+    "confirmCreateCompanyDescription": "Dữ liệu về công ty sẽ được tạo!",
+
+    "updateLogo": "Cập nhật logo",
+    "updateLogoDescription": "Cập nhật logo cho công ty",
+    "currentLogo": "Logo hiện tại",
+    "changeLogo": "Thay đổi logo",
+    "addLogo": "Thêm logo",
+
+    "updateCompany": "Cập nhật công ty",
+    "updateCompanyDescription": "Thay đổi các thông tin bên dưới để cập nhật tên công ty",
+    "update": "Cập nhật",
+
+    "deleteCompany": "Xóa công ty",
+    "deleteCompanyDescription": "Lưu ý: Hành động này không thể hoàn tác!",
+    "deleteCompanyWarning1": "Bạn sắp sửa xóa công ty",
+    "deleteCompanyConfirmation": "Bạn có chắc chắn muốn xóa công ty này?",
+    "confirmDelete": "Tôi đã hiểu, xóa công ty",
+    "cancel": "Hủy"
   }
 }

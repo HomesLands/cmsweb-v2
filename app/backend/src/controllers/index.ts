@@ -24,3 +24,4 @@ export { default as resourceController } from "./resource.controller";
 export { default as rolePermissionController } from "./role-permission.controller";
 export { default as productPurchaseFormController } from "./product-purchase-from.controller";
 export { default as databaseController } from "./database.controller";
+export { default as notificationController } from "./notification.controller";

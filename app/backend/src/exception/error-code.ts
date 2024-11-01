@@ -279,11 +279,6 @@ export const ErrorCodes: TErrorCode = {
     code: 1072,
     message: "Permission could not be found",
   },
-  USER_ROLE_EXIST: {
-    httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 1072,
-    message: "User role is existed",
-  },
   PERMISSION_EXIST: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
     code: 1073,
@@ -589,6 +584,71 @@ export const ErrorCodes: TErrorCode = {
     code: 1132,
     message: "Invalid user email",
   },
+  WORKSHEET_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1133,
+    message: "Worksheet not found",
+  },
+  USER_DEPARTMENT_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1134,
+    message: "User department not found",
+  },
+  INVALID_USER_DEPARTMENT_SLUG: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1135,
+    message: "User department slug invalid",
+  },
+  USER_ROLE_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1136,
+    message: "User role not found",
+  },
+  INVALID_DOB: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1137,
+    message: "Date of birth invalid",
+  },
+  INVALID_GENDER: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1138,
+    message: "Gender invalid",
+  },
+  INVALID_ADDRESS: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1139,
+    message: "Address invalid",
+  },
+  INVALID_PHONENUMBER: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1140,
+    message: "Phone number invalid",
+  },
+  ASSIGNED_USER_APPROVAL_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1141,
+    message: "Assigned user approval not found",
+  },
+  NOTIFICATION_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1142,
+    message: "Notification not found",
+  },
+  ROLE_PERMISSION_NOT_FOUND: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1143,
+    message: "Role permission not found",
+  },
+  USER_ROLE_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1144,
+    message: "User role is existed",
+  },
+  ROLE_PERMISSION_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1145,
+    message: "Role permission is existed",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]
@@ -680,12 +740,17 @@ export const ErrorCodes: TErrorCode = {
     code: 4100,
     message: `Duplicate entry`,
   },
+  EXPORT_DB_ERROR: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 4101,
+    message: `Error when export database`,
+  },
 
   // System error
   // Code range: [4300 - 4499]
   FOLDER_NOT_FOUND: {
     httpStatusCode: StatusCodes.BAD_REQUEST,
-    code: 4100,
+    code: 4300,
     message: `Folder is not existed`,
   },
 } as const;

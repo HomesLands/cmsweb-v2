@@ -109,7 +109,7 @@ const TimePickerInput = React.forwardRef<HTMLInputElement, TimePickerInputProps>
           e.preventDefault()
           onChange?.(e)
         }}
-        type="tel"
+        type="number"
         inputMode="decimal"
         onKeyDown={(e) => {
           onKeyDown?.(e)

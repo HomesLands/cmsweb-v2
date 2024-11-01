@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator
 } from '@/components/ui'
 import { IProductInfo } from '@/types'
+import { DialogUpdateProduct, DialogDeleteProduct } from '@/components/app/dialog'
 
 export const useProductColumns = (): ColumnDef<IProductInfo>[] => {
   const { t } = useTranslation('products')
@@ -43,19 +44,22 @@ export const useProductColumns = (): ColumnDef<IProductInfo>[] => {
     },
     {
       id: t('employees.actions'),
-      cell: () => {
+      cell: ({ row }) => {
+        const product = row.original
         return (
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="p-0 w-8 h-8">
+                <Button variant="ghost" className="w-8 h-8 p-0">
                   <span className="sr-only">Open menu</span>
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="flex flex-col justify-start" align="end">
-                <DropdownMenuLabel>{t('employees.actions')}</DropdownMenuLabel>
+                <DropdownMenuLabel>{t('products.actions')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                <DialogUpdateProduct product={product} />
+                <DialogDeleteProduct product={product} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

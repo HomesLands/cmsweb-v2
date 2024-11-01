@@ -14,6 +14,10 @@ export const productRequisitionSchema = z.object({
     name: z.string().min(1, 'Tên công ty không hợp lệ'),
     logo: z.string().min(1, 'Logo công ty không hợp lệ')
   }),
+  department: z.object({
+    slug: z.string().min(1, 'Mã bộ phận không hợp lệ'),
+    name: z.string().min(1, 'Tên bộ phận không hợp lệ')
+  }),
   site: z.object({
     slug: z.string().min(1, 'Mã công trình không hợp lệ'),
     name: z.string().min(1, 'Tên công trình không hợp lệ')
@@ -89,14 +93,14 @@ export const updateProductRequisitionGeneralInfoSchema = z.object({
 })
 
 export const addNewProductSchema = z.object({
-  code: z.optional(z.string()),
-  slug: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
+  code: z.string().min(1, 'Mã sản phẩm không hợp lệ'),
   name: z.string().min(1, 'Tên sản phẩm không hợp lệ'),
   provider: z.string().min(1, 'Nhà cung cấp không hợp lệ'),
-  unit: z.string().min(1, 'Đơn vị không hợp lệ'),
-  requestQuantity: z.string().min(1, 'Số lượng không hợp lệ'),
-  description: z.string().min(1, 'Mô tả không hợp lệ'),
-  status: z.string().min(1, 'Trạng thái không hợp lệ')
+  unit: z.object({
+    slug: z.string().min(1, 'Mã đơn vị không hợp lệ'),
+    name: z.string().min(1, 'Tên đơn vị không hợp lệ')
+  }),
+  description: z.string().min(1, 'Mô tả không hợp lệ')
 })
 
 export const addNewProductRequestSchema = z.object({
@@ -163,9 +167,13 @@ export const resubmitRequisitionSchema = z.object({
 //Personal Account Info
 export const personalAccountInfoSchema = z.object({
   fullname: z.string().min(1, 'Họ và tên không hợp lệ'),
-  username: z.string().min(1, 'Tên người dùng không hợp lệ'),
-  company: z.string().min(1, 'Tên công ty không hợp lệ'),
-  site: z.string().min(1, 'Tên công trình không hợp lệ')
+  username: z.string().min(1, 'Tên đăng nhập không hợp lệ'),
+  address: z.string().min(1, 'Địa chỉ không hợp lệ'),
+  phoneNumber: z.string().min(1, 'Số điện thoại không hợp lệ'),
+  dob: z.string().min(1, 'Ngày sinh không hợp lệ'),
+  gender: z.string().min(1, 'Giới tính không hợp lệ'),
+  company: z.string().min(1, 'Công ty không hợp lệ'),
+  site: z.string().min(1, 'Công trình không hợp lệ')
 })
 
 export const passwordAndAuthenticationSchema = z
@@ -195,3 +203,6 @@ export type TUpdateProductRequisitionGeneralInfoSchema = z.infer<
 //Personal Account Info
 export type TPersonalAccountInfoSchema = z.infer<typeof personalAccountInfoSchema>
 export type TPasswordAndAuthenticationSchema = z.infer<typeof passwordAndAuthenticationSchema>
+
+//Add New Product
+export type TAddNewProductSchema = z.infer<typeof addNewProductSchema>

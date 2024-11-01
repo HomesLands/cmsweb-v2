@@ -9,8 +9,14 @@ import {
   departmentRepository,
 } from "@repositories";
 import { UserDepartmentResponseDto } from "@dto/response";
-import { CreateUserDepartmentRequestDto } from "@dto/request";
-import { TCreateUserDepartmentRequestDto } from "@types";
+import {
+  CreateUserDepartmentRequestDto,
+  UpdateUserDepartmentRequestDto,
+} from "@dto/request";
+import {
+  TCreateUserDepartmentRequestDto,
+  TUpdateUserDepartmentRequestDto,
+} from "@types";
 import { GlobalError, ErrorCodes, ValidationError } from "@exception";
 
 class UserDepartmentService {
@@ -70,6 +76,49 @@ class UserDepartmentService {
       UserDepartment,
       UserDepartmentResponseDto
     );
+  }
+
+  public async changeDepartment(plainData: TUpdateUserDepartmentRequestDto) {
+    const requestData = plainToClass(UpdateUserDepartmentRequestDto, plainData);
+    const validator = await validate(requestData);
+    if (validator.length > 0) throw new ValidationError(validator);
+
+    const userDepartment = await userDepartmentRepository.findOne({
+      where: { slug: requestData.slug },
+    });
+    if (!userDepartment)
+      throw new GlobalError(ErrorCodes.USER_DEPARTMENT_NOT_FOUND);
+
+    const department = await departmentRepository.findOne({
+      where: {
+        slug: requestData.department,
+      },
+    });
+
+    if (!department) throw new GlobalError(ErrorCodes.DEPARTMENT_NOT_FOUND);
+
+    // Update department
+    Object.assign(userDepartment, { department });
+    const updatedUserDepartment =
+      await userDepartmentRepository.save(userDepartment);
+
+    return mapper.map(
+      updatedUserDepartment,
+      UserDepartment,
+      UserDepartmentResponseDto
+    );
+  }
+
+  public async deleteUserDepartment(slug: string): Promise<number> {
+    const userDepartment = await userDepartmentRepository.findOne({
+      where: { slug },
+    });
+    if (!userDepartment)
+      throw new GlobalError(ErrorCodes.USER_DEPARTMENT_NOT_FOUND);
+
+    const deleted = await userDepartmentRepository.softDelete({ slug });
+    console.log({ deleted });
+    return 1;
   }
 }
 

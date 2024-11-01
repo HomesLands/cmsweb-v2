@@ -1,4 +1,4 @@
-import { TriangleAlert } from 'lucide-react'
+import { SquarePen, TriangleAlert } from 'lucide-react'
 
 import {
   Button,
@@ -12,34 +12,38 @@ import {
 } from '@/components/ui'
 
 import { IRequestProductInfo, IRequestProductInfoUpdate } from '@/types'
-
-interface DialogDeleteProductInRequisitionUpdateProps {
-  handleDeleteProduct: (requestProductSlug: string) => void
-  openDialog: boolean
-  product: IRequestProductInfoUpdate | null
-  component: React.ReactNode
-  onOpenChange: () => void
-}
+import { useDeleteProductInRequisition } from '@/hooks'
+import { useParams } from 'react-router'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export function DialogDeleteProductInRequisitionUpdate({
-  handleDeleteProduct,
-  openDialog,
-  product,
-  component,
-  onOpenChange
-}: DialogDeleteProductInRequisitionUpdateProps) {
-  console.log(product)
+  product
+}: {
+  product: IRequestProductInfoUpdate | null
+}) {
+  const { t } = useTranslation('productRequisition')
+  const { slug } = useParams()
+  const { mutate: deleteProduct } = useDeleteProductInRequisition(slug as string)
+  const [isOpen, setIsOpen] = useState(false)
+
   const handleSubmit = (data: IRequestProductInfo) => {
-    handleDeleteProduct(data.slug)
-    onOpenChange()
+    setIsOpen(false)
+    deleteProduct(data.slug)
+    // handleDeleteProduct(data.slug)
   }
 
   const productName = product?.product?.name || product?.temporaryProduct?.name || 'Không xác định'
   const productCode = product?.product?.code || product?.temporaryProduct?.code || 'Không xác định'
 
   return (
-    <Dialog open={openDialog} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>{component}</DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild className="flex justify-start w-full">
+        <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
+          <SquarePen className="icon" />
+          {t('productRequisition.deleteProduct')}
+        </Button>
+      </DialogTrigger>
       <DialogContent className="max-w-[36rem] font-beVietNam">
         <DialogHeader>
           <DialogTitle className="pb-6 text-destructive">
@@ -58,7 +62,7 @@ export function DialogDeleteProductInRequisitionUpdate({
           </div>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="outline" onClick={onOpenChange}>
+          <Button variant="outline" onClick={() => setIsOpen}>
             Hủy
           </Button>
           <Button variant="destructive" onClick={() => product && handleSubmit(product)}>

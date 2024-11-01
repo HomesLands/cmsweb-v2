@@ -31,21 +31,11 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
     searchTerm: debouncedInputValue
   })
 
-  const { updateProductToRequisition, deleteProductToRequisition } = useRequisitionStore()
-
-  const handleEditProduct = (product: IProductRequisitionInfo) => {
-    updateProductToRequisition(product, product.requestQuantity)
-  }
-
-  const handleDeleteProduct = (product: IProductRequisitionInfo) => {
-    deleteProductToRequisition(product)
-  }
-
   const handleNext = () => {
     onSubmit()
   }
 
-  const columns = useColumnsResult(handleEditProduct, handleDeleteProduct)
+  const columns = useColumnsResult()
 
   return (
     <div className="flex flex-col w-full gap-4 mt-3">
@@ -59,7 +49,7 @@ export const SearchProductForm: React.FC<IFormAddProductProps> = ({ onBack, onSu
         actionOptions={ProductActionOptions}
         inputValue={inputValue}
         onInputChange={setInputValue}
-        hidenInput={false} // default true
+        hiddenInput={false} // default true
       />
 
       <div className="flex flex-col gap-2">

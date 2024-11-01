@@ -51,8 +51,15 @@ export const ROUTE = {
 
   // Emoloyee
   EMPLOYEE: '/employees',
+  ADD_EMPLOYEE: '/employees/add',
 
   // Assigned approver
   ASSIGNED_APPROVER: '/assigned-approvers',
-  ADD_ASSIGNED_APPROVER: '/assigned-approvers/add'
+  ADD_ASSIGNED_APPROVER: '/assigned-approvers/add',
+
+  // Database
+  BACKUP: '/backups',
+
+  // Notification
+  NOTIFICATION: '/notification'
 }

@@ -7,9 +7,6 @@ import { ProductRequisitionStatusBadge } from '@/components/app/badge'
 import { RequisitionTypeBadge } from '@/components/app/badge'
 
 export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseForApprover>[] => {
-  const formatDate = (date: Date) => {
-    return format(date, 'HH:mm dd/MM/yyyy')
-  }
   return [
     {
       accessorKey: 'productRequisitionForm.code',
@@ -28,7 +25,15 @@ export const useColumnsRequisitionList = (): ColumnDef<IRequisitionFormResponseF
       header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày tạo" />,
       cell: ({ row }) => {
         const { createdAt } = row.original
-        return <div>{formatDate(new Date(createdAt))}</div>
+        return createdAt ? format(createdAt, 'HH:mm dd/MM/yyyy') : 'Không có'
+      }
+    },
+    {
+      accessorKey: 'deadlineApproval',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Thời hạn duyệt" />,
+      cell: ({ row }) => {
+        const { deadlineApproval } = row.original.productRequisitionForm
+        return deadlineApproval ? format(deadlineApproval, 'HH:mm dd/MM/yyyy') : 'Không có'
       }
     },
     {

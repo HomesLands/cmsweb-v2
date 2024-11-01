@@ -8,11 +8,13 @@ import { useColumnsRequisitionList } from './data-table/columns/columns'
 import { usePagination, useProductRequisitionByApprover } from '@/hooks'
 import { IRequisitionFormResponseForApprover } from '@/types'
 import { DataTableFilterOptions } from './data-table'
+import { baseURL, ROUTE } from '@/constants'
 
 const ApprovalProductRequisitions: React.FC = () => {
   const { t } = useTranslation(['productRequisition'])
-  const [, setSelectedRequisition] = useState<IRequisitionFormResponseForApprover | null>(null)
-  const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
+  const { pagination, handlePageChange, handlePageSizeChange } = usePagination({
+    isSearchParams: false
+  })
   const navigate = useNavigate()
 
   const { data, isLoading } = useProductRequisitionByApprover({
@@ -20,8 +22,6 @@ const ApprovalProductRequisitions: React.FC = () => {
     pageSize: pagination.pageSize,
     order: 'DESC'
   })
-
-  console.log('data in approval', data)
 
   const tableData: IRequisitionFormResponseForApprover[] = useMemo(() => {
     return (
@@ -39,10 +39,7 @@ const ApprovalProductRequisitions: React.FC = () => {
   }, [data?.result?.items])
 
   const handleRowClick = (requisition: IRequisitionFormResponseForApprover) => {
-    setSelectedRequisition(requisition)
-    navigate(`/product-requisitions/approval/${requisition.productRequisitionForm.slug}`, {
-      state: { selectedRequisition: requisition }
-    })
+    navigate(`${ROUTE.APPROVAL_PRODUCT_REQUISITIONS}/${requisition.approvalUserSlug}`)
   }
 
   const columns = useColumnsRequisitionList()

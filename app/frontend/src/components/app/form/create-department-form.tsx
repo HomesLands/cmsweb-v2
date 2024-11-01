@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
 
 import {
   FormField,
@@ -11,13 +10,11 @@ import {
   FormMessage,
   Input,
   Form,
-  Button,
-  Select
+  Button
 } from '@/components/ui'
-import { createCompanySchema, TCreateCompanySchema } from '@/schemas'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ICompany, ICreateCompany, ICreateDepartment } from '@/types'
+import { ICreateDepartment } from '@/types'
 import { createDepartmentSchema, TCreateDepartmentSchema } from '@/schemas'
 import { SelectSite } from '@/components/app/select'
 
@@ -44,7 +41,6 @@ export const CreateDepartmentForm: React.FC<IFormCreateDepartmentProps> = ({ onS
       values.site = selectedSite.slug
       values.siteName = selectedSite.name
     }
-    console.log(values)
     onSubmit(values)
     form.reset()
     setSelectedSite(null)

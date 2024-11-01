@@ -16,7 +16,7 @@ import {
 import { createPermissionSchema, TCreatePermissionSchema } from '@/schemas'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SelectAuthority, SelectResource, SelectRole } from '../select'
+import { SelectAuthority, SelectResource } from '../select'
 
 interface IFormCreatePermissionProps {
   onSubmit: (data: TCreatePermissionSchema) => void

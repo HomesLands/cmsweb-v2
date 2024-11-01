@@ -34,7 +34,6 @@ export async function initializeDataSource(
   retries = 5,
   delay = 3000 // ms
 ): Promise<void> {
-  console.log({database: env.nodeEnv})
   while (retries > 0) {
     try {
       await dataSource.initialize();

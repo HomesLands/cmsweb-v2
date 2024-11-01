@@ -36,7 +36,10 @@ import {
   CreateResourcePage,
   ProductPage,
   CreateProductPage,
-  WarehousePage
+  WarehousePage,
+  CreateEmployeePage,
+  BackupPage,
+  NotificationPage
 } from './loadable'
 
 export const router = createBrowserRouter([
@@ -128,6 +131,15 @@ export const router = createBrowserRouter([
           <ProtectedElement
             allowedAuthorities={[Authority.READ_USER]}
             element={<SuspenseElement component={EmployeePage} />}
+          />
+        )
+      },
+      {
+        path: 'add',
+        element: (
+          <ProtectedElement
+            allowedAuthorities={[Authority.READ_USER]}
+            element={<SuspenseElement component={CreateEmployeePage} />}
           />
         )
       }
@@ -325,6 +337,31 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <WarehousePage />
+      }
+    ]
+  },
+  {
+    path: ROUTE.BACKUP,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: <BackupPage />
+      }
+    ]
+  },
+  {
+    path: ROUTE.NOTIFICATION,
+    element: <SuspenseElement component={DashboardLayout} />,
+    children: [
+      {
+        index: true,
+        element: (
+          <ProtectedElement
+            allowedAuthorities={[]}
+            element={<SuspenseElement component={NotificationPage} />}
+          />
+        )
       }
     ]
   }

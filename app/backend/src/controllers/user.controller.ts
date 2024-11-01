@@ -7,7 +7,8 @@ import {
   TChangePasswordRequestDto,
   TPaginationOptionResponse,
   TQueryRequest,
-  TUpdateUser,
+  TUpdateUserInfoRequestDto,
+  TUpdateUsernameRequestDto,
   TUploadUserAvatarRequestDto,
   TUploadUserSignRequestDto,
 } from "@types";
@@ -45,42 +46,45 @@ class UserController {
    *         currentPassword: Pass@1234
    *         newPassword: NewPass@1234
    *         confirmPassword: NewPass@1234
-   * 
-   *     UpdateUserRequestDto:
+   *
+   *     UpdateUserInfoRequestDto:
    *       type: object
    *       required:
-   *         - fullname
    *         - dob
    *         - gender
    *         - address
    *         - phoneNumber
-   *         - email
+   *         - fullname
    *       properties:
-   *         fullname:
-   *           type: string
-   *           description: user fullname
    *         dob:
    *           type: string
-   *           description: user dob
+   *           description: dob
    *         gender:
    *           type: string
-   *           description: user gender
-   *         address:
-   *           type: string
-   *           description: user address
+   *           description: gender
    *         phoneNumber:
    *           type: string
-   *           description: user phone number
-   *         email:
+   *           description: Phone number
+   *         fullname:
    *           type: string
-   *           description: user email
+   *           description: fullname
    *       example:
-   *         fullname: Nguyễn Văn A
-   *         dob: 1999-10-12
+   *         dob: 01/01/1999
    *         gender: male
-   *         address: Linh Trung, Thủ Đức
-   *         phoneNumber: "0900321456"
-   *         email: "nguyenvana@gmail.com"
+   *         address: 01 Linh Trung, TP Thủ Đức
+   *         phoneNumber: "0987654321"
+   *         fullname: John Doe
+   *
+   *     UpdateUsernameRequestDto:
+   *       type: object
+   *       required:
+   *         - username
+   *       properties:
+   *         username:
+   *           type: string
+   *           description: username
+   *       example:
+   *         username: username
    */
 
   /**
@@ -307,6 +311,7 @@ class UserController {
    *       1108:
    *         description: Error get file from request
    */
+
   public async uploadUserAvatar(
     req: Request,
     res: Response,
@@ -386,47 +391,100 @@ class UserController {
 
   /**
    * @swagger
-   * /users:
+   * /users/info:
    *   patch:
-   *     summary: Update user
+   *     summary: Update user info
    *     tags: [User]
    *     requestBody:
    *       require: true
    *       content:
    *         application/json:
    *           schema:
-   *              $ref: '#/components/schemas/UpdateUserRequestDto'
+   *              $ref: '#/components/schemas/UpdateUserInfoRequestDto'
    *     responses:
    *       200:
-   *         description: User updated successfully
+   *         description: User info has updated successfully
    *       500:
    *         description: Server error
-   *       1011:
-   *         description: Fullname is not valid
-   *       1039:
-   *         description: Invalid date format
-   *       1129:
-   *         description: Invalid user gender
-   *       1130:
-   *         description: Invalid user address
-   *       1131:
-   *         description: Invalid user phone number
-   *       1132:
-   *         description: Invalid user email
+   *       1008:
+   *         description: Password is not valid
+   *       1113:
+   *         description: New password invalid
+   *       1114:
+   *         description: Confirm password invalid
+   *       1115:
+   *         description: Password does not match
+   *       1116:
+   *         description: Confirm password does not match
    */
-  public async updateUser(
+  public async updateUserInfo(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
       const { userId = "" } = req;
-      const requestData = req.body as TUpdateUser;
-      const result = await userService.updateUser(userId, requestData);
+      const requestData = req.body as TUpdateUserInfoRequestDto;
+      Object.assign(requestData, { userId });
+
+      const result = await userService.updateUserInfo(requestData);
       const response: TApiResponse<UserResponseDto> = {
         code: StatusCodes.OK,
         error: false,
-        message: `User update successfully`,
+        message: `User info has updated successfully`,
+        method: req.method,
+        path: req.originalUrl,
+        result,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /users/{slug}/username:
+   *   patch:
+   *     summary: Update username
+   *     tags: [User]
+   *     parameters:
+   *       - in: path
+   *         name: slug
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: The slug of user
+   *         example: slug-123
+   *     requestBody:
+   *       require: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *              $ref: '#/components/schemas/UpdateUsernameRequestDto'
+   *     responses:
+   *       200:
+   *         description: Username has updated successfully
+   *       500:
+   *         description: Server error
+   *       1003:
+   *         description: Username is not valid
+   */
+  public async updateUsername(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { slug } = req.params;
+      const requestData = req.body as TUpdateUsernameRequestDto;
+      Object.assign(requestData, { userSlug: slug });
+
+      const result = await userService.updateUsername(requestData);
+      const response: TApiResponse<UserResponseDto> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: `Username has updated successfully`,
         method: req.method,
         path: req.originalUrl,
         result,

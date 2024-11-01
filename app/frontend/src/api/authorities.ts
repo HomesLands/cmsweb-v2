@@ -1,4 +1,11 @@
-import { IApiResponse, IAuthority, ICreateAuthority, IPaginationResponse, IQuery } from '@/types'
+import {
+  IApiResponse,
+  IAuthority,
+  ICreateAuthority,
+  IPaginationResponse,
+  IQuery,
+  IUpdateAuthority
+} from '@/types'
 import { http } from '@/utils'
 
 export async function getAuthorities(
@@ -12,5 +19,15 @@ export async function getAuthorities(
 
 export async function createAuthority(values: ICreateAuthority): Promise<IApiResponse<IAuthority>> {
   const response = await http.post<IApiResponse<IAuthority>>('/authorities', values)
+  return response.data
+}
+
+export async function updateAuthority(data: IUpdateAuthority): Promise<IApiResponse<IAuthority>> {
+  const response = await http.patch<IApiResponse<IAuthority>>(`/authorities/${data.slug}`, data)
+  return response.data
+}
+
+export async function deleteAuthority(slug: string): Promise<IApiResponse<IAuthority>> {
+  const response = await http.delete<IApiResponse<IAuthority>>(`/authorities/${slug}`)
   return response.data
 }

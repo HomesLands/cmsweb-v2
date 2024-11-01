@@ -7,12 +7,6 @@ import { Router } from "express";
 
 export const userRoute: Router = Router();
 
-// [PATCH] /api/v1/users
-userRoute.patch(
-  "/",
-  userController.updateUser
-);
-
 // [GET] /api/v1/users
 userRoute.get(
   "/",
@@ -25,6 +19,12 @@ userRoute.get("/info/permissions", userController.getUserPermissions);
 
 // [GET] /api/v1/users/info
 userRoute.get("/info", userController.getUser);
+
+// [PATCH] /api/v1/users/info
+userRoute.patch("/info", userController.updateUserInfo);
+
+// [PATCH] /api/v1/users/{slug}/username
+userRoute.patch("/:slug/username", userController.updateUsername);
 
 // [PATCH] /api/v1/users/signature
 userRoute.patch(

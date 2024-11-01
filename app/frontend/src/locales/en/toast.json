@@ -1,21 +1,23 @@
 {
   "toast": {
-    "requestFailed": "Please add product to requisition",
+    "notAddProductToRequisition": "Please add product to requisition",
+    "requestFailed": "An error occurred",
     "requestSuccess": "Request created successfully",
-    "requestError": "Request created failed",
+    "requisitionSetSuccess": "Request created successfully!",
+    "requestError": "Request creation failed",
     "confirmSuccess": "Request confirmed successfully",
-    "confirmError": "Request confirmed failed",
+    "confirmError": "Request confirmation failed",
     "updateRequestSuccess": "Request updated successfully",
-    "deleteProductSuccess": "Product deleted successfully",
-    "addNewProductSuccess": "Product added successfully",
+    "deleteProductSuccess": "Product deleted successfully!",
+    "addNewProductSuccess": "Product added successfully!",
     "resubmitSuccess": "Request resubmitted successfully",
-    "approveRequestSuccess": "Approve request successfully",
-    "approveRequestError": "Approve request failed",
-    "giveBackRequestSuccess": "Give back request successfully",
-    "giveBackRequestError": "Give back request failed",
-    "cancelRequestSuccess": "Cancel request successfully",
-    "cancelRequestError": "Cancel request failed",
-    "productAlreadyExists": "Product already exists in requisition",
+    "approveRequestSuccess": "Request approved successfully",
+    "approveRequestError": "Request approval failed",
+    "giveBackRequestSuccess": "Request returned successfully",
+    "giveBackRequestError": "Request return failed",
+    "cancelRequestSuccess": "Request canceled successfully",
+    "cancelRequestError": "Request cancellation failed",
+    "productAlreadyExists": "Product already exists in the requisition",
     "invalidEmail": "Invalid email",
     "pathNotFound": "Path not found",
     "invalidUsername": "Invalid username",
@@ -31,16 +33,66 @@
     "sessionExpired": "Session expired",
     "accessDenied": "Access denied",
     "loginFailed": "Username or password is incorrect",
-    "logoutSuccess": "Logout successfully",
+    "productRequisitionExisted": "Product already exists in requisition",
+
+    "createProductSuccess": "Product created successfully",
+    "codeProductExisted": "Product code already exists",
+
+    "logoutSuccess": "Logout successful",
     "updateUserSuccess": "User updated successfully",
+    "invalidUserDepartmentExisted": "User already exists in the department",
+
+    "updateUsernameSuccess": "Username updated successfully",
 
     "createCompanySuccessfully": "Company created successfully",
+    "updateCompanySuccess": "Company updated successfully",
+    "deleteCompanySuccess": "Company deleted successfully",
+
     "createSiteSuccessfully": "Site created successfully",
+    "updateSiteSuccess": "Site updated successfully",
+    "deleteSiteSuccess": "Site deleted successfully",
+
     "createDepartmentSuccessfully": "Department created successfully",
+    "updateDepartmentSuccess": "Department updated successfully",
+    "deleteDepartmentSuccess": "Department deleted successfully",
+
     "createProjectSuccessfully": "Project created successfully",
+    "updateProjectSuccess": "Project updated successfully",
+    "deleteProjectSuccess": "Project deleted successfully",
 
     "addRoleSuccess": "Role added successfully",
+    "deleteUserRoleSuccess": "Role deleted successfully",
+
     "addDepartmentSuccess": "Department added successfully",
-    "changePasswordSuccess": "Password changed successfully"
+    "changePasswordSuccess": "Password changed successfully",
+
+    "exportPDFSuccess": "PDF exported successfully",
+    "exportExcelSuccess": "Excel exported successfully",
+
+    "updateProductSuccess": "Product updated successfully",
+    "backupDatabaseSuccess": "Database backup successful",
+
+    "addRolePermissionSuccess": "Permission added successfully",
+    "updateRolePermission": "Permission updated successfully",
+    "deleteRolePermissionSuccess": "Permission deleted successfully",
+
+    "updateRoleSuccess": "Role updated successfully",
+    "deleteRoleSuccess": "Role deleted successfully",
+
+    "updateAuthoritySuccess": "Authority updated successfully",
+    "updateResourceSuccess": "Resource updated successfully",
+    "deleteAuthoritySuccess": "Authority deleted successfully",
+
+    "updateCompanyLogoSuccess": "Company logo updated successfully",
+
+    "updateAssignedApproverSuccess": "Assigned approver updated successfully",
+    "deleteAssignedApproverSuccess": "Assigned approver deleted successfully",
+    "assignedUserApprovalExisted": "User already assigned for approval",
+
+    "updateUserDepartmentSuccess": "User department updated successfully",
+    "deleteUserDepartmentSuccess": "User department deleted successfully",
+
+    "updatePermissionSuccess": "Permission updated successfully",
+    "deletePermissionSuccess": "Permission deleted successfully"
   }
 }

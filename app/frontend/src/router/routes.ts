@@ -1,23 +1,24 @@
 import {
   Building2Icon,
   Component,
+  FileTextIcon,
   FolderOpenIcon,
   MapPinIcon,
-  ShoppingBasketIcon,
   UserCheckIcon,
   UsersIcon,
-  WarehouseIcon
+  WarehouseIcon,
+  ArchiveIcon
 } from 'lucide-react'
-import { ArchiveIcon } from '@radix-ui/react-icons'
 
 import type { ISidebarRoute } from '@/types'
 import { Authority, Resource, ROUTE } from '@/constants'
+import { BellIcon } from '@radix-ui/react-icons'
 
 export const sidebarRoutes: ISidebarRoute[] = [
   {
     title: 'sidebar.products',
     path: ROUTE.PRODUCT,
-    icon: ShoppingBasketIcon,
+    icon: ArchiveIcon,
     permission: { authority: Authority.VIEW, resource: Resource.PRODUCT },
     children: [
       {
@@ -53,7 +54,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
   {
     title: 'sidebar.productRequisitions',
     path: ROUTE.PRODUCT_REQUISITIONS,
-    icon: ArchiveIcon,
+    icon: FileTextIcon,
     permission: { authority: Authority.VIEW, resource: Resource.PRODUCT_REQUISITION_FORM },
     children: [
       {
@@ -80,9 +81,14 @@ export const sidebarRoutes: ISidebarRoute[] = [
     permission: { authority: Authority.READ, resource: Resource.USER },
     children: [
       {
-        title: 'sidebar.employees',
+        title: 'sidebar.employeeList',
         path: ROUTE.EMPLOYEE,
         permission: { authority: Authority.READ, resource: Resource.USER }
+      },
+      {
+        title: 'sidebar.createEmployee',
+        path: ROUTE.ADD_EMPLOYEE,
+        permission: { authority: Authority.CREATE, resource: Resource.USER }
       }
     ]
   },
@@ -93,7 +99,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
     permission: { authority: Authority.READ, resource: Resource.COMPANY },
     children: [
       {
-        title: 'sidebar.companies',
+        title: 'sidebar.companyList',
         path: ROUTE.COMPANY,
         permission: { authority: Authority.READ, resource: Resource.COMPANY }
       },
@@ -111,7 +117,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
     permission: { authority: Authority.READ, resource: Resource.SITE },
     children: [
       {
-        title: 'sidebar.sites',
+        title: 'sidebar.siteList',
         path: ROUTE.SITE,
         permission: { authority: Authority.READ, resource: Resource.SITE }
       },
@@ -129,7 +135,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
     permission: { authority: Authority.READ, resource: Resource.DEPARTMENT },
     children: [
       {
-        title: 'sidebar.departments',
+        title: 'sidebar.departmentList',
         path: ROUTE.DEPARTMENT,
         permission: { authority: Authority.READ, resource: Resource.DEPARTMENT }
       },
@@ -147,7 +153,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
     permission: { authority: Authority.READ, resource: Resource.PROJECT },
     children: [
       {
-        title: 'sidebar.projects',
+        title: 'sidebar.projectList',
         path: ROUTE.PROJECT,
         permission: { authority: Authority.READ, resource: Resource.PROJECT }
       },
@@ -165,7 +171,7 @@ export const sidebarRoutes: ISidebarRoute[] = [
     permission: { authority: Authority.READ, resource: Resource.ASSIGNED_APPROVAL },
     children: [
       {
-        title: 'sidebar.assignedApprover',
+        title: 'sidebar.assignedApproverList',
         path: ROUTE.ASSIGNED_APPROVER,
         permission: { authority: Authority.READ, resource: Resource.ASSIGNED_APPROVAL }
       },
@@ -173,19 +179,6 @@ export const sidebarRoutes: ISidebarRoute[] = [
         title: 'sidebar.createAssignedApprover',
         path: ROUTE.ADD_ASSIGNED_APPROVER,
         permission: { authority: Authority.CREATE, resource: Resource.ASSIGNED_APPROVAL }
-      }
-    ]
-  },
-  {
-    title: 'sidebar.warehouses',
-    path: ROUTE.WAREHOUSE,
-    icon: WarehouseIcon,
-    permission: { authority: Authority.READ, resource: Resource.WAREHOUSE },
-    children: [
-      {
-        title: 'sidebar.warehouses',
-        path: ROUTE.WAREHOUSE,
-        permission: { authority: Authority.READ, resource: Resource.WAREHOUSE }
       }
     ]
   }

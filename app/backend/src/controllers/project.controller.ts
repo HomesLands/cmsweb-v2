@@ -43,7 +43,7 @@ class ProjectController {
    *         description: project description
    *         fileDescription: temp file description
    *         site: 3Co-M1ZL4
-   * 
+   *
    *     UpdateProjectRequestDto:
    *       type: object
    *       required:
@@ -224,6 +224,50 @@ class ProjectController {
   /**
    * @swagger
    * /projects/{slug}:
+   *   delete:
+   *     summary: Delete project
+   *     tags: [Project]
+   *     parameters:
+   *       - in: path
+   *         name: slug
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: The slug of project
+   *         example: slug-123
+   *     responses:
+   *       200:
+   *         description: Project deleted successfully.
+   *       500:
+   *         description: Server error
+   *
+   */
+  public async deleteProject(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { slug } = req.params;
+      const result = await projectService.deleteProject(slug);
+
+      const response: TApiResponse<string> = {
+        code: StatusCodes.OK,
+        error: false,
+        message: "Project has been deleted successfully",
+        method: req.method,
+        path: req.originalUrl,
+        result: `${result} rows effected`,
+      };
+      res.status(StatusCodes.OK).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /projects/{slug}:
    *   patch:
    *     summary: Update project
    *     tags: [Project]
@@ -233,7 +277,8 @@ class ProjectController {
    *         schema:
    *           type: string
    *         required: true
-   *         description: The project slug
+   *         description: The slug of project
+   *         example: slug-123
    *     requestBody:
    *       required: true
    *       content:
@@ -241,13 +286,12 @@ class ProjectController {
    *           schema:
    *              $ref: '#/components/schemas/UpdateProjectRequestDto'
    *     responses:
-   *       201:
-   *         description: Updated successfully.
-   *         content:
-   *           application/json:
-   *             schema:
+   *       200:
+   *         description: Project updated successfully.
    *       500:
    *         description: Server error
+   *       1052:
+   *         description: Project not found
    *       1033:
    *         description: Invalid project name
    *       1034:
@@ -258,10 +302,6 @@ class ProjectController {
    *         description: Invalid project file description
    *       1051:
    *         description: Site not found
-   *       1052:
-   *         description: Project not found
-   *       1059:
-   *         description: Invalid site slug
    *
    */
   public async updateProject(
@@ -270,20 +310,19 @@ class ProjectController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const slug = req.params.slug as string;
+      const { slug } = req.params;
       const requestData = req.body as TUpdateProjectRequestDto;
-      const projectData = await projectService.updateProject(
-        slug,
-        requestData
-      );
+      Object.assign(requestData, { slug });
+
+      const result = await projectService.updateProject(requestData);
 
       const response: TApiResponse<ProjectResponseDto> = {
         code: StatusCodes.OK,
         error: false,
-        message: "Update project successfully",
+        message: "Project has been updated successfully",
         method: req.method,
         path: req.originalUrl,
-        result: projectData,
+        result,
       };
       res.status(StatusCodes.OK).json(response);
     } catch (error) {

@@ -30,6 +30,8 @@ import { resourceRoute } from "./resource.route";
 import { rolePermissionRoute } from "./role-permission.route";
 import { productPurchaseFormRoute } from "./product-purchase-form.route";
 import { databaseRoute } from "./database.route";
+import { env } from "@constants";
+import { notificationRoute } from "./notification.route";
 
 const baseApi: Router = Router();
 
@@ -88,7 +90,9 @@ export const registerRoutes = (app: Express) => {
 
   baseApi.use("/database", databaseRoute);
 
-  app.use("/api/v1", baseApi);
+  baseApi.use("/notifications", notificationRoute);
+
+  app.use(`/api/${env.tag}`, baseApi);
 
   app.options("*", (req: Request, res: Response) => res.status(StatusCodes.OK));
 

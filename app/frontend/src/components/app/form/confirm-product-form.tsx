@@ -21,18 +21,9 @@ interface IConfirmProductFormProps {
 export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfirm, onBack }) => {
   const { t } = useTranslation('productRequisition')
 
-  const { requisition, getRequisition, updateProductToRequisition, deleteProductToRequisition } =
-    useRequisitionStore()
+  const { requisition, getRequisition } = useRequisitionStore()
 
-  const handleEditProduct = (product: IProductRequisitionInfo) => {
-    updateProductToRequisition(product, product.requestQuantity)
-  }
-
-  const handleDeleteProduct = (product: IProductRequisitionInfo) => {
-    deleteProductToRequisition(product)
-  }
-
-  const columns = useColumnsConfirm(handleEditProduct, handleDeleteProduct)
+  const columns = useColumnsConfirm()
 
   const transformRequisitionToApiFormat = (requisition: IProductRequisitionFormCreate) => {
     return {
@@ -41,6 +32,7 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
       type: requisition.type,
       deadlineApproval: requisition.deadlineApproval,
       description: requisition.note || '',
+      departmentSlug: requisition.department.slug,
       requestProducts: requisition.requestProducts.map((product) => ({
         product: product.product.slug,
         requestQuantity: product.requestQuantity,
@@ -75,21 +67,21 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
 
   return (
     <div className="mt-3">
-      <div className="flex flex-col gap-4 justify-center">
-        <div className="grid grid-cols-6 justify-between items-center py-3 mb-4 border-b-2">
-          <div className="col-span-1 w-full">
-            <img src={getLogoUrl()} className="w-28" />
+      <div className="flex flex-col justify-center gap-4">
+        <div className="grid items-center justify-between grid-cols-8 py-2 mb-4 border-b-2 sm:grid-cols-6">
+          <div className="w-full col-span-1">
+            <img src={getLogoUrl()} className="w-10 sm:w-[4rem]" />
           </div>
-          <span className="col-span-4 text-2xl font-extrabold text-center uppercase text-normal font-beVietNam">
+          <span className="col-span-4 flex justify-end sm:justify-center sm:col-span-4 text-[0.5rem] font-extrabold text-center uppercase sm:text-2xl text-normal font-beVietNam">
             {t('productRequisition.confirmProductRequisitions')}
           </span>
-          <div className="col-span-1">
-            <div className="flex flex-col text-xs font-beVietNam">
-              <div className="flex flex-row gap-1 p-1">
+          <div className="flex justify-end col-span-3 sm:col-span-1">
+            <div className="flex flex-col justify-end text-[0.25rem] sm:text-sm font-beVietNam">
+              <div className="flex flex-row gap-1 sm:p-1">
                 <span>KMH:</span>
                 <span>QR3-01/001</span>
               </div>
-              <div className="flex flex-row gap-1 p-1">
+              <div className="flex flex-row gap-1 sm:p-1">
                 <span>Lần ban hành:</span>
                 <span>1</span>
               </div>
@@ -97,9 +89,9 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
           </div>
         </div>
         {getRequisition() && (
-          <div className="grid grid-cols-3 gap-3 mb-4 text-sm font-beVietNam">
+          <div className="grid grid-cols-1 gap-3 mb-4 text-sm sm:grid-cols-3 font-beVietNam">
             <div>
-              <strong>Mức yêu tiên: </strong>
+              <strong>Mức ưu tiên: </strong>
               <span className={requisition?.type === 'urgent' ? 'text-red-600 font-bold' : ''}>
                 {requisition?.type === 'normal' ? 'Bình thường' : 'Cần gấp'}
               </span>
@@ -140,7 +132,7 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
         onPageSizeChange={() => {}}
       />
 
-      <div className="flex gap-2 justify-end mt-4 w-full">
+      <div className="flex justify-end w-full gap-2 mt-4">
         <Button variant="outline" onClick={onBack}>
           {t('productRequisition.back')}
         </Button>

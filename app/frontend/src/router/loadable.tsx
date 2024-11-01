@@ -26,6 +26,11 @@ export const EmployeePage = React.lazy(() =>
     default: module.Employees
   }))
 )
+export const CreateEmployeePage = React.lazy(() =>
+  import('@/views/employees').then((module) => ({
+    default: module.CreateEmployee
+  }))
+)
 export const ProjectPage = React.lazy(() =>
   import('@/views/projects').then((module) => ({
     default: module.Projects
@@ -180,5 +185,17 @@ export const CreateProductPage = React.lazy(() =>
 export const WarehousePage = React.lazy(() =>
   import('@/views/warehouse').then((module) => ({
     default: module.Warehouse
+  }))
+)
+
+export const BackupPage = React.lazy(() =>
+  import('@/views/backups').then((module) => ({
+    default: module.Backups
+  }))
+)
+
+export const NotificationPage = React.lazy(() =>
+  import('@/views/notifications').then((module) => ({
+    default: module.Notifications
   }))
 )

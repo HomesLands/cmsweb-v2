@@ -13,7 +13,7 @@
             <tr class="">
                 <td class="border border-black px-4 py-2 w-1/4" rowspan="2">
                     <div class="flex items-center flex-col justify-center">
-                        <img src="http://localhost:3000/api/v1/files/<%= companyLogo  %>" alt="logo" class="w-20">
+                        <img src="<%= requestUrl %>/api/<%= tag %>/files/<%= companyLogo  %>" alt="logo" class="w-20">
                     </div>
                 </td>
                 <td rowspan="2" class="border border-black px-4 py-2 uppercase text-center font-bold text-xl">
@@ -80,7 +80,7 @@
                     <span class="font-bold italic capitalize text-sm"><%= item.title  %></span>
                     <div class="flex items-center flex-col justify-center">
                         <img 
-                            src="<%= requestUrl %>/api/v1/files/<%= item.signature %>" 
+                            src="<%= requestUrl %>/api/<%= tag %>/files/<%= item.signature %>" 
                             alt="<%= companyLogo %>" `
                             class="w-32" />
                     </div>

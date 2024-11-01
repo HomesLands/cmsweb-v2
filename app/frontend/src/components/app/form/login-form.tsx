@@ -16,6 +16,7 @@ import { loginSChema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslation } from 'react-i18next'
 import { ButtonLoading } from '@/components/app/loading'
+import { useThemeStore } from '@/stores'
 
 interface IFormRegisterProps {
   onSubmit: (data: z.infer<typeof loginSChema>) => void
@@ -24,6 +25,7 @@ interface IFormRegisterProps {
 
 export const LoginForm: React.FC<IFormRegisterProps> = ({ onSubmit, isLoading }) => {
   const { t } = useTranslation(['auth'])
+  const { getTheme } = useThemeStore()
   const form = useForm<z.infer<typeof loginSChema>>({
     resolver: zodResolver(loginSChema),
     defaultValues: {

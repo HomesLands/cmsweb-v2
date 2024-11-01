@@ -30,11 +30,11 @@ const getBadgeText = (status: ProductRequisitionStatus, isRecalled: boolean): st
       case 'cancel':
         return 'Đã bị hủy'
       case 'waiting':
-        return 'Đã bị hoàn ở bước 2'
+        return 'Bị hoàn ở bước 2'
       case 'accepted_stage_1':
-        return 'Đã bị hoàn ở bước 3'
+        return 'Bị hoàn ở bước 3'
       default:
-        return 'Đã bị hoàn'
+        return 'Bị hoàn'
     }
   }
   switch (status) {

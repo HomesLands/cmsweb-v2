@@ -1,17 +1,22 @@
 import { ColumnDef } from '@tanstack/react-table'
+import { MoreHorizontal } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import {
   Button,
   DataTableColumnHeader,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui'
 import { IRole } from '@/types'
-import { MoreHorizontal } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
-import { DialogAddRolePermission } from '@/components/app/dialog'
+
+import {
+  DialogAddRolePermission,
+  DialogDeleteRole,
+  DialogDeleteRolePermission,
+  DialogUpdateRole
+} from '@/components/app/dialog'
 
 export const useRoleColumns = (): ColumnDef<IRole>[] => {
   const { t } = useTranslation('roles')
@@ -40,7 +45,7 @@ export const useRoleColumns = (): ColumnDef<IRole>[] => {
         const permissions: JSX.Element[] = rolePermissions.map((item) => {
           return <div>{`(${item?.permission.authority}, ${item?.permission.resource})`}</div>
         })
-        return <div className="font-bold flex flex-col gap-1">{permissions}</div>
+        return <div className="flex flex-col gap-1 font-bold">{permissions}</div>
       }
     },
 
@@ -58,9 +63,11 @@ export const useRoleColumns = (): ColumnDef<IRole>[] => {
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>{t('roles.edit')}</DropdownMenuItem>
+              <DropdownMenuContent align="end" className="sm:max-w-[16rem]">
                 <DialogAddRolePermission role={role} />
+                <DialogUpdateRole role={role} />
+                <DialogDeleteRole role={role} />
+                <DialogDeleteRolePermission role={role} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

@@ -31,7 +31,7 @@ export function ModeToggle() {
           <span className="sr-only">Open settings</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="mt-1 mr-2 w-56">
+      <DropdownMenuContent className="w-56 mt-1 mr-2">
         <DropdownMenuLabel>{t('setting.settings')}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <div className="flex flex-col gap-2 p-2">
@@ -42,11 +42,11 @@ export function ModeToggle() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="en">
-                <img src={USFlag} className="inline-block mr-2 w-4" alt="English" />
+                <img src={USFlag} className="inline-block w-4 mr-2" alt="English" />
                 <span className="text-xs">English</span>
               </SelectItem>
               <SelectItem value="vi">
-                <img src={VIFlag} className="inline-block mr-2 w-4" alt="Tiếng Việt" />
+                <img src={VIFlag} className="inline-block w-4 mr-2" alt="Tiếng Việt" />
                 <span className="text-xs">Tiếng Việt</span>
               </SelectItem>
             </SelectContent>
@@ -64,16 +64,12 @@ export function ModeToggle() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="light">
-                <Sun className="inline-block mr-2 w-4 h-4" />
+                <Sun className="inline-block w-4 h-4 mr-2" />
                 <span className="text-xs">{t('setting.light')}</span>
               </SelectItem>
               <SelectItem value="dark">
-                <Moon className="inline-block mr-2 w-4 h-4" />
+                <Moon className="inline-block w-4 h-4 mr-2" />
                 <span className="text-xs">{t('setting.dark')}</span>
-              </SelectItem>
-              <SelectItem value="system">
-                <span className="inline-block mr-2">🖥️</span>
-                <span className="text-xs">{t('setting.system')}</span>
               </SelectItem>
             </SelectContent>
           </Select>

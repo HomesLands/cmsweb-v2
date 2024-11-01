@@ -4,8 +4,21 @@
     "createAuthority": "Tạo thẩm quyền",
     "CreateAuthorityDescription": "Tạo thêm một thẩm quyền mới",
     "nameNormalize": "Mã chuẩn hóa",
+    "nameDisplay": "Tên hiển thị",
     "description": "Mô tả",
     "slug": "Mã thẩm quyền",
-    "createAuthoritySuccessfully": "Tạo thẩm quyền thành công"
+    "createAuthoritySuccessfully": "Tạo thẩm quyền thành công",
+
+    "actions": "Thao tác",
+    "editAuthority": "Chỉnh sửa",
+    "editAuthorityDescription": "Thay đổi thông tin bên dưới để chỉnh sửa thẩm quyền",
+    "updateAuthority": "Cập nhật",
+
+    "deleteAuthority": "Xóa thẩm quyền",
+    "deleteAuthorityDescription": "Lưu ý: Hành động này không thể hoàn tác!",
+    "deleteAuthorityWarning1": "Bạn sắp sửa xóa thẩm quyền",
+    "deleteAuthorityConfirmation": "Bạn có chắc chắn muốn xóa thẩm quyền này?",
+    "confirmDelete": "Tôi đã hiểu, xóa thẩm quyền",
+    "cancel": "Hủy"
   }
 }

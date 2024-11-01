@@ -1,4 +1,5 @@
 export type TEnv = {
+  broker: string;
   port: number;
   dataSource: {
     hostMySql: string;
@@ -11,7 +12,8 @@ export type TEnv = {
   passportSecret: string;
   duration: number;
   refreshableDuration: number;
-  nodeEnv: string;
+  tag: string;
+  swaggerEnpoint: string;
 };
 
 export * from "./base.type";
@@ -41,3 +43,5 @@ export * from "./resource.type";
 export * from "./role-permission.type";
 export * from "./purchase-product.type";
 export * from "./product-purchase-form.type";
+export * from "./notification.type";
+export * from "./producer.type";

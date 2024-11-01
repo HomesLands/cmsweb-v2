@@ -9,13 +9,13 @@ export const productRequisitionFormRoute: Router = Router();
 // [GET] /api/v1/productRequisitionForms/:slug/exportPdf
 productRequisitionFormRoute.get(
   "/:slug/exportPdf",
-  productRequisitionFormController.exportPdfProductRequisitionFormBySlug
+  productRequisitionFormController.exportPdf
 );
 
 // [GET] /api/v1/productRequisitionForms/:slug/exportExcel
 productRequisitionFormRoute.get(
   "/:slug/exportExcel",
-  productRequisitionFormController.exportExcelProductRequisitionFormBySlug
+  productRequisitionFormController.exportExcel
 );
 
 // [GET] /api/v1/productRequisitionForms/completedApproval

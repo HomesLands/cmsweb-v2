@@ -1,0 +1,35 @@
+{
+  "products": {
+    "list": "Danh sách vật tư",
+    "create": "Tạo vật tư",
+
+    "code": "Mã vật tư",
+    "name": "Tên vật tư",
+    "quantity": "Số lượng",
+    "provider": "Nhà cung cấp",
+    "unit": "Đơn vị",
+    "description": "Mô tả",
+    "status": "Trạng thái",
+    "actions": "Thao tác",
+    "edit": "Chỉnh sửa",
+    "editTitle": "Chỉnh sửa vật tư",
+    "editDescription": "Nhập đầy đủ thông tin vào các trường để cập nhật vật tư",
+
+    "delete": "Xóa vật tư",
+    "update": "Cập nhật",
+    "add": "Thêm",
+    "addProductTitle": "Thêm vật tư",
+    "addProductDescription": "Nhập đầy đủ thông tin vào các trường để tạo vật tư mới",
+    "confirmProductTitle": "Xác nhận tạo vật tư",
+    "confirmProductDescription": "Bạn có chắc chắn muốn tạo vật tư này không?",
+    "confirmProductCreate": "Tôi đã hiểu, tạo vật tư",
+    "confirmProductCancel": "Hủy",
+
+    "deleteProductTitle": "Xác nhận xóa vật tư",
+    "deleteProductDescription": "Lưu ý: Thao tác này không thể hoàn tác",
+    "deleteProductWarning": "Bạn sắp sửa xóa vật tư",
+    "deleteProductConfirmation": "Bạn có chắc chắn muốn xóa không?",
+    "cancel": "Hủy",
+    "confirmDelete": "Tôi đã hiểu, xóa vật tư"
+  }
+}

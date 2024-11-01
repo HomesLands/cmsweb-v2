@@ -1,29 +1,19 @@
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-  Button,
-  DataTableActionOptionsProps
-} from '@/components/ui'
-import { ChevronDown } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 import { PlusCircledIcon } from '@radix-ui/react-icons'
-import { useTranslation } from 'react-i18next'
-import { IProductRequisitionFormInfo } from '@/types'
 
-export default function ProductRequisitionActionOptions({
-  table
-}: DataTableActionOptionsProps<IProductRequisitionFormInfo>) {
+import { Button } from '@/components/ui'
+import { ROUTE } from '@/constants'
+
+export default function ProductRequisitionActionOptions() {
   const { t } = useTranslation('productRequisition')
-  const { t: tTablePaging } = useTranslation('tableData')
   return (
-    <div className="flex items-center gap-2">
-      <DropdownMenu>
+    <div className="flex gap-2 items-center">
+      {/* <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="ml-auto text-[0.8rem]">
             {tTablePaging('tablePaging.chooseColumn')}
-            <ChevronDown className="w-4 h-4 ml-2" />
+            <ChevronDown className="ml-2 w-4 h-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="">
@@ -41,8 +31,8 @@ export default function ProductRequisitionActionOptions({
               </DropdownMenuCheckboxItem>
             ))}
         </DropdownMenuContent>
-      </DropdownMenu>
-      <NavLink to="/product-requisitions/add">
+      </DropdownMenu> */}
+      <NavLink to={ROUTE.ADD_PRODUCT_REQUISITIONS}>
         <Button variant="outline" className="flex gap-1 font-beVietNam text-[0.8rem]">
           <PlusCircledIcon className="icon" />
           {t('productRequisition.createProductRequisitions')}

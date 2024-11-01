@@ -18,7 +18,7 @@ import {
 } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IProductRequisitionInfo } from '@/types'
-import { SelectUnit } from '../select/unit-select'
+import { SelectUnit } from '@/components/app/select'
 
 interface IFormEditProductProps {
   data?: IProductRequisitionInfo
@@ -54,7 +54,6 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
       requestQuantity: Number(values.requestQuantity),
       slug: data?.slug || ''
     }
-    console.log('completeData', completeData)
     onSubmit(completeData)
   }
 
@@ -64,7 +63,7 @@ export const EditProductRequisitionForm: React.FC<IFormEditProductProps> = ({ da
     <div className="mt-3">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-1">
             {productCode && (
               <FormField
                 control={form.control}

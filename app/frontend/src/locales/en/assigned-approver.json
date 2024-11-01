@@ -9,6 +9,7 @@
     "site": "Site",
 
     "add": "Add approver",
+
     "createAssignedApprover": "Create assigned approver",
     "createAssignedApproverDescription": "Create assigned approvers",
     "selectFormType": "Select form type",

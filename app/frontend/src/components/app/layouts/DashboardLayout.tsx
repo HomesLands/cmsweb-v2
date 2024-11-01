@@ -3,14 +3,15 @@ import { Outlet } from 'react-router-dom'
 import { HeaderDropdown, ModeToggle } from '@/components/app/dropdown'
 import { SidebarDrawerMobile } from '@/components/app/drawer'
 import { PopoverNotification } from '@/components/app/popover'
-
-import { useThemeStore } from '@/stores'
+import { DashboardSidebar } from '@/components/app/sidebar'
+import { BreadCrumbs } from '@/components/app/breadcrumbs'
+import { DownloadProgress } from '@/components/app/progress'
 import { cn } from '@/lib/utils'
-import { DashboardSidebar } from '../sidebar'
-import { BreadCrumbs } from '../breadcrumbs'
+import { useDownloadStore, useThemeStore } from '@/stores'
 
 const DashboardLayout = () => {
   const { getTheme } = useThemeStore()
+  const { progress, fileName, isDownloading } = useDownloadStore()
 
   return (
     <div className="box-border flex h-screen">
@@ -28,8 +29,7 @@ const DashboardLayout = () => {
           )}
         >
           <SidebarDrawerMobile />
-          <div className="flex flex-row gap-1 justify-end items-center h-14">
-            {/* <SelectLanguage /> */}
+          <div className="flex flex-row items-center justify-end gap-1 h-14">
             <PopoverNotification />
             <ModeToggle />
             <HeaderDropdown />
@@ -37,12 +37,15 @@ const DashboardLayout = () => {
         </header>
 
         {/* Main Content (Outlet) */}
+        {/* <ScrollArea className="w-full overflow-x-auto"> */}
         <main className="p-4 mt-12 transition-all duration-300">
           <div className="py-3">
             <BreadCrumbs />
           </div>
           <Outlet />
+          {isDownloading && <DownloadProgress progress={progress} fileName={fileName} />}
         </main>
+        {/* </ScrollArea> */}
       </div>
     </div>
   )

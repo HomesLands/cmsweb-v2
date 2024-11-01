@@ -66,29 +66,37 @@ class ProjectService {
   }
 
   public async updateProject(
-    slug: string,
     plainData: TUpdateProjectRequestDto
   ): Promise<ProjectResponseDto> {
-    // Map plain object to request dto
     const requestData = plainToClass(UpdateProjectRequestDto, plainData);
 
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
 
-    const project = await projectRepository.findOneBy({ slug });
-    if(!project) throw new GlobalError(ErrorCodes.PROJECT_NOT_FOUND);
+    const project = await projectRepository.findOneBy({
+      slug: requestData.slug,
+    });
+    if (!project) throw new GlobalError(ErrorCodes.PROJECT_NOT_FOUND);
 
     const site = await siteRepository.findOneBy({ slug: requestData.site });
     if (!site) {
       throw new GlobalError(ErrorCodes.SITE_NOT_FOUND);
     }
 
-    Object.assign(project, requestData, { site });
+    Object.assign(project, { ...requestData, site });
+    const updated = await projectRepository.save(project);
 
-    const projectDataUpdated =
-      await projectRepository.save(project);
+    return mapper.map(updated, Project, ProjectResponseDto);
+  }
 
-    return mapper.map(projectDataUpdated, Project, ProjectResponseDto);
+  public async deleteProject(slug: string): Promise<number> {
+    const project = await projectRepository.findOneBy({
+      slug,
+    });
+    if (!project) throw new GlobalError(ErrorCodes.PROJECT_NOT_FOUND);
+
+    const deleted = await projectRepository.softDelete({ slug });
+    return deleted.affected || 0;
   }
 }
 

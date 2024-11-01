@@ -1,10 +1,10 @@
-import { Button, DataTableActionOptionsProps } from '@/components/ui'
+import { Button } from '@/components/ui'
 import { useTranslation } from 'react-i18next'
-import { IResource } from '@/types'
 import { useNavigate } from 'react-router'
 import { ROUTE } from '@/constants'
+import { PlusCircledIcon } from '@radix-ui/react-icons'
 
-export default function ResourceActionOptions({ table }: DataTableActionOptionsProps<IResource>) {
+export default function ResourceActionOptions() {
   const navigate = useNavigate()
 
   const { t } = useTranslation('sidebar')
@@ -12,9 +12,10 @@ export default function ResourceActionOptions({ table }: DataTableActionOptionsP
     <>
       <Button
         variant="outline"
-        className="h-8 text-sm"
+        className="h-10 text-sm text-muted-foreground"
         onClick={() => navigate(ROUTE.ADD_RESOURCE)}
       >
+        <PlusCircledIcon className="w-4 h-4" />
         {t('sidebar.createResource')}
       </Button>
     </>

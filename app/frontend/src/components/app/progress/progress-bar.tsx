@@ -5,7 +5,7 @@ interface ProgressBarProps {
   step: number
 }
 
-export function ProgressBar({ step }: ProgressBarProps) {
+export default function ProgressBar({ step }: ProgressBarProps) {
   const { t } = useTranslation('productRequisition')
   const currentStep = step
   return (

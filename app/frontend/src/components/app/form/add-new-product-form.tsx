@@ -1,5 +1,6 @@
-import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import {
   FormField,
@@ -9,29 +10,133 @@ import {
   FormMessage,
   Input,
   Form,
-  Button
+  Button,
+  Textarea
 } from '@/components/ui'
-import { addNewProductSchema } from '@/schemas'
+import { addNewProductSchema, TAddNewProductSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { SelectUnit } from '@/components/app/select'
+import { IProductInfoCreate } from '@/types'
+import React from 'react'
 
 interface IFormAddNewProductProps {
-  onSubmit: (data: z.infer<typeof addNewProductSchema>) => void
+  onSubmit: (data: IProductInfoCreate, ref: React.RefObject<HTMLFormElement>) => void
+  resetForm: boolean
+  setResetForm: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const AddNewProductForm: React.FC<IFormAddNewProductProps> = ({ onSubmit }) => {
-  const form = useForm<z.infer<typeof addNewProductSchema>>({
+export const AddNewProductForm: React.FC<IFormAddNewProductProps> = ({
+  onSubmit,
+  resetForm,
+  setResetForm
+}) => {
+  const { t } = useTranslation('products')
+  const form = useForm<TAddNewProductSchema>({
     resolver: zodResolver(addNewProductSchema),
     defaultValues: {
       code: '',
       name: '',
       provider: '',
-      unit: '',
+      unit: { name: '', slug: '' },
       description: ''
     }
   })
 
-  const handleSubmit = (values: z.infer<typeof addNewProductSchema>) => {
-    onSubmit(values)
+  React.useEffect(() => {
+    if (resetForm) {
+      form.reset()
+      setResetForm(false)
+    }
+  }, [resetForm, form, setResetForm])
+
+  const handleSubmit = (values: TAddNewProductSchema) => {
+    const formRef = form.formState.submitCount > 0 ? form.formState.submitCount : null
+    onSubmit(values, { current: formRef as unknown as HTMLFormElement })
+  }
+
+  const formFields = {
+    code: (
+      <FormField
+        control={form.control}
+        name="code"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('products.code')}</FormLabel>
+            <FormControl>
+              <Input placeholder={t('products.code')} {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    name: (
+      <FormField
+        control={form.control}
+        name="name"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('products.name')}</FormLabel>
+            <FormControl>
+              <Input placeholder={t('products.name')} {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    provider: (
+      <FormField
+        control={form.control}
+        name="provider"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('products.provider')}</FormLabel>
+            <FormControl>
+              <Input placeholder={t('products.provider')} {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    unit: (
+      <FormField
+        control={form.control}
+        name="unit"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('products.unit')}</FormLabel>
+            <FormControl>
+              <SelectUnit
+                onChange={(value) =>
+                  field.onChange({ name: value?.label || '', slug: value?.value || '' })
+                }
+                defaultValue={
+                  field.value ? { value: field.value.slug, label: field.value.name } : undefined
+                }
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    description: (
+      <FormField
+        control={form.control}
+        name="description"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('products.description')}</FormLabel>
+            <FormControl>
+              <Textarea placeholder={t('products.description')} {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    )
   }
 
   return (
@@ -39,89 +144,18 @@ export const AddNewProductForm: React.FC<IFormAddNewProductProps> = ({ onSubmit 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="grid grid-cols-2 gap-2">
-            <FormField
-              control={form.control}
-              name="code"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Mã vật tư</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Nhập mã vật tư" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tên vật tư</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Nhập tên vật tư" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <FormField
-              control={form.control}
-              name="provider"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>=Nhà cung cấp</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Nhập tên model" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="unit"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Đơn vị</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Nhập đơn vị" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="requestQuantity"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Số lượng</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Nhập số lượng" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Mô tả</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Nhập mô tả" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {Object.keys(formFields).map((key) => (
+              <React.Fragment key={key}>
+                {key === 'description' ? (
+                  <div className="col-span-2">{formFields[key as keyof typeof formFields]}</div>
+                ) : (
+                  formFields[key as keyof typeof formFields]
+                )}
+              </React.Fragment>
+            ))}
           </div>
           <div className="flex justify-end w-full">
-            <Button type="submit">Thêm</Button>
+            <Button type="submit">{t('products.add')}</Button>
           </div>
         </form>
       </Form>

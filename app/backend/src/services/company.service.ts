@@ -4,11 +4,13 @@ import { mapper } from "@mappers";
 import { Company } from "@entities";
 import {
   TCreateCompanyRequestDto,
+  TUpdateCompanyRequestDto,
   TUploadCompanyLogoRequestDto,
   // TUpdateCompanyRequestDto
 } from "@types";
 import {
   CreateCompanyRequestDto,
+  UpdateCompanyRequestDto,
   // UpdateCompanyRequestDto
 } from "@dto/request";
 import { ErrorCodes, GlobalError, ValidationError } from "@exception";
@@ -61,34 +63,25 @@ export class CompanyService {
     return companyDto;
   }
 
-  // public async updateCompany(
-  //   slug: string,
-  //   plainData: TUpdateCompanyRequestDto
-  // ): Promise<CompanyResponseDto> {
-  //   const requestData = plainToClass(UpdateCompanyRequestDto, plainData);
+  public async updateCompany(
+    plainData: TUpdateCompanyRequestDto
+  ): Promise<CompanyResponseDto> {
+    const requestData = plainToClass(UpdateCompanyRequestDto, plainData);
 
-  //   const errors = await validate(requestData);
-  //   if (errors.length > 0) throw new ValidationError(errors);
+    const errors = await validate(requestData);
+    if (errors.length > 0) throw new ValidationError(errors);
 
-  //   // const nameExist = await companyRepository.existsBy({
-  //   //   name: requestData.name,
-  //   // });
-  //   // if (nameExist) throw new GlobalError(ErrorCodes.COMPANY_NAME_EXIST);
+    const company = await companyRepository.findOneBy({
+      slug: requestData.slug,
+    });
+    if (!company) throw new GlobalError(ErrorCodes.COMPANY_NOT_FOUND);
 
-  //   const company = await companyRepository.findOneBy({ slug });
-  //   if (!company) throw new GlobalError(ErrorCodes.COMPANY_NOT_FOUND);
+    Object.assign(company, { name: requestData.name });
+    const updatedCompany = await companyRepository.save(company);
 
-  //   const director = await userRepository.findOneBy({
-  //     slug: requestData.director,
-  //   });
-  //   if (!director) throw new GlobalError(ErrorCodes.COMPANY_DIRECTOR_NOT_FOUND);
-
-  //   Object.assign(company, { name: requestData.name, director });
-  //   const updatedCompany = await companyRepository.save(company);
-
-  //   const companyDto = mapper.map(updatedCompany, Company, CompanyResponseDto);
-  //   return companyDto;
-  // }
+    const companyDto = mapper.map(updatedCompany, Company, CompanyResponseDto);
+    return companyDto;
+  }
 
   public async uploadCompanyLogo(
     requestData: TUploadCompanyLogoRequestDto
@@ -112,6 +105,16 @@ export class CompanyService {
 
     const companyDto = mapper.map(updatedCompany, Company, CompanyResponseDto);
     return companyDto;
+  }
+
+  public async deleteCompany(slug: string): Promise<number> {
+    const company = await companyRepository.findOneBy({
+      slug,
+    });
+    if (!company) throw new GlobalError(ErrorCodes.COMPANY_NOT_FOUND);
+
+    const deleted = await companyRepository.softDelete({ slug });
+    return deleted.affected || 0;
   }
 }
 

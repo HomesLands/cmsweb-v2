@@ -19,11 +19,10 @@ import {
   DialogUpdateProductRequisition
 } from '@/components/app/dialog'
 
-export const useColumnsUpdateRequisition = (
-  isExistProduct: boolean,
-  handleEditProduct: (product: IUpdateProductRequisitionQuantity) => void,
-  handleDeleteProduct: (requestProductSlug: string) => void
-): ColumnDef<IRequestProductInfoUpdate>[] => {
+export const useColumnsUpdateRequisition = () // isExistProduct: boolean,
+// handleEditProduct: (product: IUpdateProductRequisitionQuantity) => void,
+// handleDeleteProduct: (requestProductSlug: string) => void
+: ColumnDef<IRequestProductInfoUpdate>[] => {
   const [selectedProduct, setSelectedProduct] = useState<IRequestProductInfoUpdate>()
   const [openEdit, setOpenEdit] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
@@ -47,12 +46,12 @@ export const useColumnsUpdateRequisition = (
   }
 
   const handleConfirmEditProduct = (data: IUpdateProductRequisitionQuantity) => {
-    handleEditProduct(data)
+    // handleEditProduct(data)
     setOpenEdit(false)
   }
 
   const handleConfirmDeleteProduct = (requestProductSlug: string) => {
-    handleDeleteProduct(requestProductSlug)
+    // handleDeleteProduct(requestProductSlug)
     setOpenDelete(false)
   }
 
@@ -95,41 +94,39 @@ export const useColumnsUpdateRequisition = (
       accessorKey: 'actions',
       header: 'Thao tác',
       cell: ({ row }) => {
-        const rowData = row.original
+        const product = row.original
         return (
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="p-0 w-8 h-8">
+                <Button variant="ghost" className="w-8 h-8 p-0">
                   <span className="sr-only">Actions</span>
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="flex flex-col justify-start w-full">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => handleEdit(rowData)}>
-                  Chỉnh sửa thông tin
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleDelete(rowData)}>
+                <DialogUpdateProductRequisition
+                  // handleEditProduct={handleConfirmEditProduct}
+                  // isExistProduct={isExistProduct}
+                  // openDialog={openEdit}
+                  product={product as IRequestProductInfoUpdate}
+                  // component={null}
+                  // onOpenChange={onOpenEditChange}
+                />
+                <DialogDeleteProductInRequisitionUpdate
+                  // handleDeleteProduct={handleConfirmDeleteProduct}
+                  // openDialog={openDelete}
+                  product={product as IRequestProductInfoUpdate}
+                  // component={null}
+                  // onOpenChange={onOpenDeleteChange}
+                />
+                {/* <DropdownMenuItem onClick={() => handleDelete(rowData)}>
                   Xóa vật tư
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
               </DropdownMenuContent>
             </DropdownMenu>
-            <DialogUpdateProductRequisition
-              handleEditProduct={handleConfirmEditProduct}
-              openDialog={openEdit}
-              requisition={selectedProduct as IRequestProductInfoUpdate}
-              component={null}
-              onOpenChange={onOpenEditChange}
-            />
-            <DialogDeleteProductInRequisitionUpdate
-              handleDeleteProduct={handleConfirmDeleteProduct}
-              openDialog={openDelete}
-              product={rowData}
-              component={null}
-              onOpenChange={onOpenDeleteChange}
-            />
           </div>
         )
       }

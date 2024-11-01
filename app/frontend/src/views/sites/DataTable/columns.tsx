@@ -12,6 +12,8 @@ import {
 import { ISite } from '@/types'
 import { MoreHorizontal } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { DialogUpdateSite } from '@/components/app/dialog'
+import { DialogDeleteSite } from '@/components/app/dialog'
 
 export const useSiteColumns = (): ColumnDef<ISite>[] => {
   const { t } = useTranslation(['sites'])
@@ -40,20 +42,20 @@ export const useSiteColumns = (): ColumnDef<ISite>[] => {
       id: 'actions',
       header: 'Thao tác',
       cell: ({ row }) => {
-        const requisition = row.original
+        const site = row.original
         return (
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="p-0 w-8 h-8">
+                <Button variant="ghost" className="w-8 h-8 p-0">
                   <span className="sr-only">Thao tác</span>
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                <DropdownMenuItem>Chỉnh sửa</DropdownMenuItem>
-                <DropdownMenuItem>Xóa</DropdownMenuItem>
+                <DialogUpdateSite site={site} />
+                <DialogDeleteSite site={site} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

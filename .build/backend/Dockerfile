@@ -17,7 +17,8 @@ RUN apt-get update && apt-get install -y \
     libasound2 \
     libatspi2.0-0 \
     libgtk-3-0 \
-    libxshmfence1
+    libxshmfence1 \
+    default-mysql-client
 
 # Step 3: Copy package.json and package-lock.json to the working directory
 COPY package*.json ./

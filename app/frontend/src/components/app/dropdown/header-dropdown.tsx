@@ -32,7 +32,7 @@ export function HeaderDropdown() {
     setLogout()
     removeUserInfo()
     clearUserRoles()
-    navigate(ROUTE.LOGIN)
+    navigate(ROUTE.LOGIN, { replace: true })
     showToast(t('logout.logoutSuccess'))
   }
 
@@ -57,18 +57,18 @@ export function HeaderDropdown() {
             {t('userInfo.hello')} {userInfo?.fullname}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="cursor-pointer">
-            <div
-              className="flex gap-2 items-center"
-              onClick={() => navigate(ROUTE.PERSONAL_ACCOUNT)}
-            >
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => navigate(ROUTE.PERSONAL_ACCOUNT)}
+          >
+            <div className="flex gap-2 items-center">
               <UserIcon className="icon" />
               <span className="text-normal">{tAccount('account.title')}</span>
             </div>
           </DropdownMenuItem>
           {hasRequiredRole(Role.ADMIN) && (
-            <DropdownMenuItem className="cursor-pointer">
-              <div className="flex gap-2 items-center" onClick={() => navigate(ROUTE.ADMIN)}>
+            <DropdownMenuItem className="cursor-pointer" onClick={() => navigate(ROUTE.ADMIN)}>
+              <div className="flex gap-2 items-center">
                 <UserCogIcon className="icon" />
                 <span className="text-normal">{tAccount('account.administration')}</span>
               </div>

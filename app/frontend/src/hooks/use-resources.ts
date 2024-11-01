@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { createResource, getResources } from '@/api'
 import { ICreateResource, IQuery } from '@/types'
@@ -16,5 +16,13 @@ export const useCreateResource = () => {
     mutationFn: async (data: ICreateResource) => {
       return createResource(data)
     }
+  })
+}
+
+export const useUpdateResource = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (data: ICreateResource) => createResource(data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['resources'] })
   })
 }

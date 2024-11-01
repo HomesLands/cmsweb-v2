@@ -1,15 +1,11 @@
 import React from 'react'
 
-import { ReaderIcon } from '@radix-ui/react-icons'
-
-import { DataTable, Label } from '@/components/ui'
+import { DataTable } from '@/components/ui'
 import { usePagination, useUsers } from '@/hooks'
 import { useEmployeeColumns } from './data-table'
-import { useTranslation } from 'react-i18next'
 
 const Employees: React.FC = () => {
   const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
-  const { t } = useTranslation('employees')
 
   const { data, isLoading } = useUsers({
     page: pagination.pageIndex,
@@ -18,11 +14,7 @@ const Employees: React.FC = () => {
   })
 
   return (
-    <div className="flex flex-col gap-4 mt-2">
-      <Label className="flex gap-1 items-center font-semibold text-normal text-md font-beVietNam">
-        <ReaderIcon className="header-icon" />
-        {t('employees.list')}
-      </Label>
+    <div className="flex flex-col gap-4">
       <DataTable
         isLoading={isLoading}
         columns={useEmployeeColumns()}

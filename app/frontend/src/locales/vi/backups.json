@@ -1,0 +1,18 @@
+{
+  "backups": {
+    "title": "Sao lưu cơ sở dữ liệu",
+    "description": "Bạn có thể tiến hành sao lưu tại đây. Quá trình có thể mất một thời gian tùy thuộc vào lượng dữ liệu (đặc biệt là tệp đính kèm) bạn có.",
+    "warning": "Bản sao lưu mới sẽ ghi đè lên bản sao lưu trước đó",
+    "button": {
+      "default": "Tiến hành sao lưu",
+      "loading": "Đang tiến hành sao lưu..."
+    },
+    "confirmDialog": {
+      "title": "Xác nhận sao lưu cơ sở dữ liệu",
+      "warning": "Lưu ý: Hành động này có thể mất thời gian và không thể hủy bỏ!",
+      "description": "Bạn sắp tiến hành sao lưu cơ sở dữ liệu. Quá trình này có thể mất một thời gian tùy thuộc vào lượng dữ liệu.",
+      "cancel": "Hủy",
+      "confirm": "Tôi đã hiểu, tiến hành sao lưu"
+    }
+  }
+}

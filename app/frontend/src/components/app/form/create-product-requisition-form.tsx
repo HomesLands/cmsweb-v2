@@ -21,7 +21,11 @@ import {
   Calendar
 } from '@/components/ui'
 import { productRequisitionSchema, TProductRequisitionSchema } from '@/schemas'
-import { SelectProject, RequestPrioritySelect } from '@/components/app/select'
+import {
+  SelectProject,
+  RequestPrioritySelect,
+  SelectDepartmentRequisition
+} from '@/components/app/select'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { generateProductRequisitionCode } from '@/utils'
@@ -57,17 +61,23 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
         ? format(new Date(requisition.deadlineApproval), 'yyyy-MM-dd HH:mm:ss')
         : undefined,
       company: {
-        slug: userInfo?.userDepartments[0]?.department?.site?.company?.slug || '',
-        name: userInfo?.userDepartments[0]?.department?.site?.company?.name || '',
-        logo: userInfo?.userDepartments[0]?.department?.site?.company?.logo || ''
+        slug: userInfo?.userDepartments?.[0]?.department?.site?.company?.slug || '',
+        name: userInfo?.userDepartments?.[0]?.department?.site?.company?.name || '',
+        logo: userInfo?.userDepartments?.[0]?.department?.site?.company?.logo || ''
       },
+
+      department: {
+        slug: userInfo?.userDepartments?.[0]?.department?.slug || '',
+        name: userInfo?.userDepartments?.[0]?.department?.description || ''
+      },
+
       site: {
-        slug: userInfo?.userDepartments[0]?.department?.site?.slug || '',
-        name: userInfo?.userDepartments[0]?.department?.site?.name || ''
+        slug: userInfo?.userDepartments?.[0]?.department?.site?.slug || '',
+        name: userInfo?.userDepartments?.[0]?.department?.site?.name || ''
       },
+
       type: 'normal',
       requestProducts: [],
-      // userApprovals: [],
       project: {
         slug: requisition?.project.slug || '',
         name: requisition?.project.name || ''
@@ -76,8 +86,23 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
     }
   })
 
+  const handleDepartmentChange = (slug: string, name: string) => {
+    const selectedDepartment = userInfo?.userDepartments.find(
+      (item) => item.department?.slug === slug
+    )
+    if (selectedDepartment?.department) {
+      const { site } = selectedDepartment.department
+      form.setValue('department', { slug, name }) // Cập nhật department trong form
+      form.setValue('company', {
+        slug: site.company.slug,
+        name: site.company.name,
+        logo: site.company.logo
+      }) // Cập nhật company
+      form.setValue('site', { slug: site.slug, name: site.name }) // Cập nhật site
+    }
+  }
+
   const handleSubmit = (values: TProductRequisitionSchema) => {
-    console.log('values', values)
     onSubmit(values)
   }
 
@@ -137,11 +162,15 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                     )}
                   >
                     <CalendarIcon className="w-4 h-4 mr-2" />
-                    {field.value ? field.value : <span>Chọn ngày và thời gian</span>}
+                    {field.value ? (
+                      field.value
+                    ) : (
+                      <span>{t('productRequisition.deadlineApprovalDescription')}</span>
+                    )}
                   </Button>
                 </FormControl>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
+              <PopoverContent className="flex flex-col items-center justify-center w-auto gap-1 p-2">
                 <Calendar
                   mode="single"
                   selected={date}
@@ -162,7 +191,6 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
                       }
                     }
                   }}
-                  initialFocus
                   disabled={(date) => date < new Date()}
                 />
                 <DateTimePicker
@@ -224,6 +252,25 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
             <FormLabel>{t('productRequisition.constructionSite')}</FormLabel>
             <FormControl>
               <Input readOnly {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    department: (
+      <FormField
+        control={form.control}
+        name="department"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('productRequisition.departmentName')}</FormLabel>
+            <FormControl>
+              <SelectDepartmentRequisition
+                defaultValue={userInfo?.userDepartments[0]?.department?.slug}
+                department={{ userDepartments: userInfo?.userDepartments || [] }}
+                onChange={handleDepartmentChange} // Use the new handler
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

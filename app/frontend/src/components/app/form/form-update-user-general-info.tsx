@@ -1,5 +1,5 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useState } from 'react'
+import { useForm, Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -12,107 +12,152 @@ import {
   Form,
   Button
 } from '@/components/ui'
-import { personalAccountInfoSchema, TPersonalAccountInfoSchema } from '@/schemas'
+import {
+  personalAccountInfoSchema,
+  TPersonalAccountInfoSchema,
+  TUpdateAccountInfoSchema,
+  updateAccountInfoSchema
+} from '@/schemas'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IUpdateUserGeneralInfo, IUserInfo } from '@/types'
+import { DatePicker } from '../picker' // Your updated CustomDatePicker
+import { SelectGender } from '../select'
+import { format } from 'date-fns'
 
 interface IFormUpdateUserGeneralInfoProps {
   data?: IUserInfo
   onSubmit: (data: IUpdateUserGeneralInfo) => void
-  onCancel: () => void // Add this line
 }
 
 export const FormUpdateUserGeneralInfo: React.FC<IFormUpdateUserGeneralInfoProps> = ({
   data,
-  onSubmit,
-  onCancel
+  onSubmit
 }) => {
   const { t } = useTranslation('account')
-  // const isEditMode = !!data
 
-  const form = useForm<TPersonalAccountInfoSchema>({
-    resolver: zodResolver(personalAccountInfoSchema),
+  const form = useForm<TUpdateAccountInfoSchema>({
+    resolver: zodResolver(updateAccountInfoSchema),
     defaultValues: {
       fullname: data?.fullname || '',
-      username: data?.username || '',
-      company: data?.userDepartments[0]?.department?.site?.company?.name || '',
-      site: data?.userDepartments[0]?.department?.site?.name || ''
-      //   signature: data?.signature || '',
+      phoneNumber: data?.phoneNumber || '',
+      address: data?.address || '',
+      dob: data?.dob || '',
+      gender: data?.gender || ''
     }
   })
 
-  const handleSubmit = (values: TPersonalAccountInfoSchema) => {
+  const handleSubmit = (values: TUpdateAccountInfoSchema) => {
+    // Log form values
+    console.log('Form Values:', values)
     onSubmit(values)
-    onCancel()
+  }
+
+  const formFields = {
+    fullname: (
+      <FormField
+        control={form.control}
+        name="fullname"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('account.fullname')}</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    phoneNumber: (
+      <FormField
+        control={form.control}
+        name="phoneNumber"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('account.phoneNumber')}</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    address: (
+      <FormField
+        control={form.control}
+        name="address"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('account.address')}</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+    dob: (
+      <FormField
+        control={form.control}
+        name="dob"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('account.dob')}</FormLabel>
+            <FormControl>
+              <DatePicker
+                date={field.value}
+                onSelect={(selectedDate) => {
+                  field.onChange(selectedDate)
+                }}
+                validateDate={(date) => {
+                  return true // Thay thế bằng logic xác thực thực tế của bạn
+                }}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    ),
+
+    gender: (
+      <FormField
+        control={form.control}
+        name="gender"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t('account.gender')}</FormLabel>
+            <FormControl>
+              <SelectGender
+                value={field.value} // Truyền giá trị hiện tại từ form
+                onChange={(selectedValue) => {
+                  // Cập nhật giá trị trong form
+                  form.setValue('gender', selectedValue)
+                }}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    )
   }
 
   return (
     <div className="mt-3">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-          <div className="grid grid-cols-3 gap-2">
-            <FormField
-              control={form.control}
-              name="fullname"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('account.fullname')}</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('account.username')}</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="company"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('account.company')}</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="site"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('account.site')}</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      value={field.value || ''}
-                      //   onChange={(e) => field.onChange(e.target.value)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <div className="grid grid-cols-1 gap-2">
+            {Object.keys(formFields).map((key) => (
+              <React.Fragment key={key}>
+                {formFields[key as keyof typeof formFields]}
+              </React.Fragment>
+            ))}
           </div>
           <div className="flex justify-end w-full">
-            <Button variant="outline" className="mr-2" type="button" onClick={onCancel}>
-              {t('account.cancel')}
-            </Button>
             <Button type="submit">{t('account.update')}</Button>
           </div>
         </form>

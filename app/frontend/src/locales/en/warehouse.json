@@ -1,6 +1,15 @@
 {
   "warehouse": {
     "list": "Warehouse",
-    "add": "Add warehouse"
+    "add": "Add warehouse",
+    "slug": "Slug",
+    "creator": "Creator",
+    "createdAt": "Created At",
+    "company": "Company",
+    "detail": "Detail",
+    "downloading": "Downloading your file...",
+    "pdfExport": "Export PDF",
+    "excelExport": "Export Excel",
+    "approvedRequisitionList": "Approved Requisition List"
   }
 }

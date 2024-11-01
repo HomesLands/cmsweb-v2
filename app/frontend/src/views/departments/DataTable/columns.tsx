@@ -7,11 +7,12 @@ import {
   DataTableColumnHeader,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui'
 import { IDepartment } from '@/types'
+import { DialogDeleteDepartment, DialogUpdateDepartment } from '@/components/app/dialog'
 
 export const useDepartmentColumns = (): ColumnDef<IDepartment>[] => {
   const { t } = useTranslation(['department'])
@@ -27,6 +28,10 @@ export const useDepartmentColumns = (): ColumnDef<IDepartment>[] => {
       )
     },
     {
+      accessorKey: 'site.name',
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('department.site')} />
+    },
+    {
       accessorKey: 'description',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t('department.description')} />
@@ -36,20 +41,21 @@ export const useDepartmentColumns = (): ColumnDef<IDepartment>[] => {
       id: 'actions',
       header: 'Thao tác',
       cell: ({ row }) => {
-        const company = row.original
+        const department = row.original
         return (
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="p-0 w-8 h-8">
+                <Button variant="ghost" className="w-8 h-8 p-0">
                   <span className="sr-only">Thao tác</span>
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                <DropdownMenuItem>Chỉnh sửa</DropdownMenuItem>
-                <DropdownMenuItem>Xóa</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DialogUpdateDepartment department={department} />
+                <DialogDeleteDepartment department={department} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

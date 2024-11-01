@@ -1,17 +1,21 @@
 {
   "productRequisition": {
+    "selectDepartment": "Lựa chọn phòng ban",
     "list": "Danh sách duyệt yêu cầu vật tư",
     "listDescription": "Danh sách duyệt yêu cầu vật tư",
-    "listEmployee": "Danh sách duyệt yêu cầu vật tư",
+    "listEmployee": "Danh sách yêu cầu vật tư đã tạo",
     "listEmployeeDescription": "Danh sách yêu cầu vật tư đã tạo",
     "create": "Tạo yêu cầu vật tư",
     "createProductRequisitions": "Tạo yêu cầu vật tư",
     "createProductRequisitionsDescription": "Công cụ tạo yêu cầu vật tư",
     "requestCode": "Mã yêu cầu",
+    "createdAt": "Ngày tạo",
     "requester": "Người yêu cầu",
     "requesterDescription": "Nhập tên người yêu cầu",
     "companyName": "Tên công ty",
     "companyNameDescription": "Chọn công ty",
+    "departmentName": "Tên phòng ban",
+    "departmentNameDescription": "Chọn phòng ban",
     "projectName": "Tên dự án",
     "projectNameDescription": "Chọn dự án",
     "constructionSite": "Tên công trình",
@@ -21,11 +25,16 @@
     "note": "Ghi chú",
     "noteDescription": "Nhập ghi chú",
     "priority": "Mức độ ưu tiên",
+    "selectPriority": "Chọn mức độ ưu tiên",
     "deadlineApproval": "Hạn duyệt",
+    "status": "Trạng thái",
     "deadlineApprovalDescription": "Chọn ngày hết hạn duyệt",
 
     "productInformation": "Thông tin vật tư",
     "productInformationDescription": "Xác nhận thông tin vật tư",
+
+    "confirmProductRequisitionsSuccess": "Xác nhận thành công",
+    "confirmProductRequisitionsSuccessDescription": "Phiếu yêu cầu đã được gửi đi. Bạn có thể xem danh sách",
 
     "back": "Trở lại",
     "next": "Tiếp theo",
@@ -37,6 +46,17 @@
     "accept": "Duyệt",
     "reject": "Từ chối",
     "cancel": "Hủy",
+
+    "waiting": "Chờ duyệt",
+    "accepted": "Đã duyệt",
+    "give_back": "Đã hoàn lại",
+    "rejected": "Đã hủy",
+    "step2Waiting": "Chờ duyệt bước 2",
+    "step2WaitingGiveback": "Chờ duyệt bước 2 (hoàn lại từ bước trên)",
+    "step3Waiting": "Chờ duyệt bước 3",
+    "noApprovalHistory": "Không có lịch sử duyệt",
+
+    "issuedDate": "Lần ban hành",
 
     "approvalLog": "Nội dung duyệt",
     "acceptConfirmTitle": "Duyệt yêu cầu",
@@ -62,19 +82,30 @@
     "confirmProductRequisitions": "Xác nhận yêu cầu vật tư",
     "confirmProductRequisitionsDescription": "Thông tin chi tiết của yêu cầu vật tư",
 
-    "productRequisitionList": "Danh sách vật trước yêu cầu",
-    "confirmProductRequisitionsSuccessDescription": "Phiếu yêu cầu đã được gửi đi. Bạn có thể xem danh sách",
+    "productRequisitionList": "Danh sách vật tư yêu cầu",
     "here": "tại đây",
     "updateProductRequisition": "Cập nhật yêu cầu vật tư",
     "update": "Cập nhật",
     "resubmit": "Gửi lại",
+
     "approvalHistory": "Lịch sử duyệt",
+    "approvalStage1": "Duyệt cấp 1",
+    "approvalStage2": "Duyệt cấp 2",
+    "approvalStage3": "Duyệt cấp 3",
+    "approvalContent": "Nội dung duyệt: ",
+    "open": "Hiển thị",
+    "close": "Đóng",
+
     "updateProduct": "Cập nhật vật tư",
+
+    "deleteProduct": "Xóa vật tư",
 
     "updateGeneralInfo": "Cập nhật thông tin chung",
     "generalInfo": "Thông tin chung",
     "productList": "Danh sách vật tư",
     "addProduct": "Thêm vật tư",
+
+    "viewDetail": "Xem chi tiết",
 
     "resubmitConfirmTitle": "Gửi lại yêu cầu",
     "descriptionInputLabel": "Nội dung",
@@ -113,7 +144,16 @@
   },
   "requisitionDetail": {
     "requestDetail": "Chi tiết vật tư yêu cầu",
-    "requestDetailDescription": "Thông tin chi tiết của vật tư yêu cầu"
+    "requestDetailDescription": "Thông tin chi tiết của vật tư yêu cầu",
+    "requestCode": "Mã yêu cầu: ",
+    "createdAt": "Ngày tạo: ",
+    "requester": "Người yêu cầu: ",
+    "siteName": "Tên công trình: ",
+    "companyName": "Tên công ty: ",
+    "departmentName": "Tên phòng ban: ",
+    "projectName": "Tên dự án: ",
+    "note": "Ghi chú: ",
+    "status": "Trạng thái: "
   },
   "requisitionEdit": {
     "requestEdit": "Sửa yêu cầu vật tư",

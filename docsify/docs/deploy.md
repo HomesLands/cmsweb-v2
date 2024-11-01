@@ -1,191 +1,126 @@
 # Deploy
 
-Similar to [GitBook](https://www.gitbook.com), you can deploy files to GitHub Pages, GitLab Pages or VPS.
+- We can deploy in both development and production modes. Here, we will show you how to deploy in development and production modes using Nginx Proxy Manager.
+- In this project, we use GitHub Actions to implement CI/CD for automation purposes.
 
-## GitHub Pages
+## Development mode
 
-There are three places to populate your docs for your GitHub repository:
+This is our GitHub Actions file for dev:
 
-- `docs/` folder
-- main branch
-- gh-pages branch
-
-It is recommended that you save your files to the `./docs` subfolder of the `main` branch of your repository. Then select `main branch /docs folder` as your GitHub Pages source in your repository's settings page.
-
-![GitHub Pages](_images/deploy-github-pages.png)
-
-!> You can also save files in the root directory and select `main branch`.
-You'll need to place a `.nojekyll` file in the deploy location (such as `/docs` or the gh-pages branch)
-
-## GitLab Pages
-
-If you are deploying your master branch, create a `.gitlab-ci.yml` with the following script:
-
-?> The `.public` workaround is so `cp` doesn't also copy `public/` to itself in an infinite loop.
-
-```YAML
-pages:
-  stage: deploy
-  script:
-  - mkdir .public
-  - cp -r * .public
-  - mv .public public
-  artifacts:
-    paths:
-    - public
-  only:
-  - master
-```
-
-!> You can replace script with `- cp -r docs/. public`, if `./docs` is your Docsify subfolder.
-
-## Firebase Hosting
-
-!> You'll need to install the Firebase CLI using `npm i -g firebase-tools` after signing into the [Firebase Console](https://console.firebase.google.com) using a Google Account.
-
-Using a terminal, determine and navigate to the directory for your Firebase Project. This could be `~/Projects/Docs`, etc. From there, run `firebase init` and choose `Hosting` from the menu (use **space** to select, **arrow keys** to change options and **enter** to confirm). Follow the setup instructions.
-
-Your `firebase.json` file should look similar to this (I changed the deployment directory from `public` to `site`):
-
-```json
-{
-  "hosting": {
-    "public": "site",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
-  }
-}
-```
-
-Once finished, build the starting template by running `docsify init ./site` (replacing site with the deployment directory you determined when running `firebase init` - public by default). Add/edit the documentation, then run `firebase deploy` from the root project directory.
-
-## VPS
-
-Use the following nginx config.
-
-```nginx
-server {
-  listen 80;
-  server_name  your.domain.com;
-
-  location / {
-    alias /path/to/dir/of/docs/;
-    index index.html;
-  }
-}
-```
-
-## Netlify
-
-1.  Login to your [Netlify](https://www.netlify.com/) account.
-2.  In the [dashboard](https://app.netlify.com/) page, click **New site from Git**.
-3.  Choose a repository where you store your docs, leave the **Build Command** area blank, and fill in the Publish directory area with the directory of your `index.html`. For example, it should be docs if you populated it at `docs/index.html`.
-
-### HTML5 router
-
-When using the HTML5 router, you need to set up redirect rules that redirect all requests to your `index.html`. It's pretty simple when you're using Netlify. Just create a file named `_redirects` in the docs directory, add this snippet to the file, and you're all set:
-
-```sh
-/*    /index.html   200
-```
-
-## Vercel
-
-1. Install [Vercel CLI](https://vercel.com/download), `npm i -g vercel`
-2. Change directory to your docsify website, for example `cd docs`
-3. Deploy with a single command, `vercel`
-
-## AWS Amplify
-
-1. Set the routerMode in the Docsify project `index.html` to _history_ mode.
-
-```html
-<script>
-  window.$docsify = {
-    loadSidebar: true,
-    routerMode: "history",
-  };
-</script>
-```
-
-2. Login to your [AWS Console](https://aws.amazon.com).
-3. Go to the [AWS Amplify Dashboard](https://aws.amazon.com/amplify).
-4. Choose the **Deploy** route to setup your project.
-5. When prompted, keep the build settings empty if you're serving your docs within the root directory. If you're serving your docs from a different directory, customise your amplify.yml
+- `deploy-dev.yaml` file
 
 ```yml
-version: 0.1
-frontend:
-  phases:
-    build:
-      commands:
-        - echo "Nothing to build"
-  artifacts:
-    baseDirectory: /docs
-    files:
-      - "**/*"
-  cache:
-    paths: []
+name: Deploy-dev
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, closed]
+  workflow_run:
+    workflows: ["Build and Test"] # Trigger after 'Build and Test' workflow succeeds
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: github.event.pull_request.merged
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy dev
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          port: ${{ secrets.SSH_PORT }} # Specify your SSH port here
+          key: ${{ secrets.SSH_PRIVATE_KEY_DEV }} # Add your private key here
+          script: |
+            cd cmsweb-v2/  # Change to your application directory on the remote host
+            git pull origin main  # Pull latest changes
+            docker compose -f .deploy/docker-compose.dev.yaml down
+            docker compose -f .deploy/docker-compose.dev.yaml up -d --build
+            docker image prune -f  # clean up none image after built
 ```
 
-6. Add the following Redirect rules in their displayed order. Note that the second record is a PNG image where you can change it with any image format you are using.
+As you can see, we need to add the following secrets: `secrets.REMOTE_HOST`, `secrets.REMOTE_USER`, `secrets.SSH_PORT`, `secrets.SSH_PRIVATE_KEY_DEV` o allow GitHub Actions to authenticate and connect to your server remotely.
 
-| Source address | Target address | Type          |
-| -------------- | -------------- | ------------- |
-| /<\*>.md       | /<\*>.md       | 200 (Rewrite) |
-| /<\*>.png      | /<\*>.png      | 200 (Rewrite) |
-| /<\*>          | /index.html    | 200 (Rewrite) |
+### Add secrets in Github Actions
 
-## Stormkit
+1. Go to your GitHub repository.
+2. In the repository, click on Settings.
+3. In the left sidebar, select Secrets and variables > Actions.
+4. Click New repository secret.
+5. Add a name for your secret (e.g., `REMOTE_HOST`, `REMOTE_USER`) in the Name field.
+6. Add the secret value in the Secret field.
+7. Click Add secret.
 
-1.  Login to your [Stormkit](https://www.stormkit.io) account.
-2.  Using the user interface, import your docsify project from one of the three supported Git providers (GitHub, GitLab, or Bitbucket).
-3.  Navigate to the project’s production environment in Stormkit or create a new environment if needed.
-4.  Verify the build command in your Stormkit configuration. By default, Stormkit CI will run `npm run build` but you can specify a custom build command on this page.
-5.  Set output folder to `docs`
-6.  Click the “Deploy Now” button to deploy your site.
+### How to run Github Actions
 
-Read more in the [Stormkit Documentation](https://stormkit.io/docs).
+- In this project, we use the GitHub fork feature. This means that if you want to contribute to our project, you need to fork this project to your repository.
 
-## Docker
+- When you create a pull request from your repository to ours, `build-and-test.yaml` will run automatically to check for errors in your pull request.
 
-- Create docsify files
+- If your pull request passes, we will merge the code. After that, `deploy-dev.yaml` will run automatically..
 
-  You need prepare the initial files instead of making them inside the container.
-  See the [Quickstart](https://docsify.js.org/#/quickstart) section for instructions on how to create these files manually or using [docsify-cli](https://github.com/docsifyjs/docsify-cli).
+## Production mode
 
-  ```sh
-  index.html
-  README.md
-  ```
+This is our GitHub Actions file for dev:
 
-- Create Dockerfile
+- `deploy-prod.yaml` file
 
-  ```Dockerfile
-    FROM node:latest
-    LABEL description="A demo Dockerfile for build Docsify."
-    WORKDIR /docs
-    RUN npm install -g docsify-cli@latest
-    EXPOSE 3000/tcp
-    ENTRYPOINT docsify serve .
+```yml
+name: Deploy-prod
 
-  ```
+on:
+  push:
+    tags:
+      - "v*" # This triggers the workflow on any tag
 
-  The current directory structure should be this:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-  ```sh
-   index.html
-   README.md
-   Dockerfile
-  ```
+      - name: Verify SSH Key Exists
+        run: |
+          if [ -z "${{ secrets.SSH_PRIVATE_KEY_PROD }}" ]; then
+            echo "SSH_PRIVATE_KEY_PROD is not set"
+          else
+            echo "SSH_PRIVATE_KEY_PROD is set"
+          fi
 
-- Build docker image
+      - name: Set tag as environment variable
+        id: set_tag
+        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
-  ```sh
-  docker build -f Dockerfile -t docsify/demo .
-  ```
+      - name: Deploy production
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: ${{ secrets.REMOTE_HOST_PROD }}
+          username: ${{ secrets.REMOTE_USER_PROD }}
+          port: ${{ secrets.SSH_PORT_PROD }} # Specify your SSH port here
+          key: ${{ secrets.SSH_PRIVATE_KEY_PROD }} # Add your private key here
+          script: |
+            cd workspace/cmsweb-v2/  # Change to your application directory on the remote host
 
-- Run docker image
+            # Update or add the TAG variable in the .env file with the current tag
+            if grep -q '^TAG=' .deploy/.env; then
+              sed -i "s/^TAG=.*/TAG=${{ env.TAG }}/" .deploy/.env
+            else
+              echo "TAG=${{ env.TAG }}" >> .deploy/.env
+            fi
 
-  ```sh
-  docker run -itp 3000:3000 --name=docsify -v $(pwd):/docs docsify/demo
-  ```
+            git pull origin main  # Pull latest changes
+
+            docker compose -f .deploy/docker-compose.prod.yaml down
+
+            docker compose -f .deploy/docker-compose.prod.yaml up -d --build
+
+            docker image prune -f  # clean up none image after built
+```
+
+In production mode, GitHub Actions wil run when we pushlish a new release.

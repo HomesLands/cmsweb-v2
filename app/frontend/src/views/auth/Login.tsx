@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { isAxiosError } from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
@@ -13,14 +13,18 @@ import { LoginBackground } from '@/assets/images'
 import { LoginForm } from '@/components/app/form'
 import { useLogin, useUser, useUserInfoPermission } from '@/hooks'
 import { IApiResponse, ILoginResponse, IUserInfo } from '@/types'
-import { useAuthStore, useUserInfoPermissionsStore, useUserStore } from '@/stores'
+import { useAuthStore, useThemeStore, useUserInfoPermissionsStore, useUserStore } from '@/stores'
 import { ROUTE } from '@/constants'
 import { showErrorToast, showToast } from '@/utils'
+import { cn } from '@/lib/utils'
 
 const Login: React.FC = () => {
   const { t } = useTranslation(['auth'])
   const { setToken, setRefreshToken, setExpireTime, setExpireTimeRefreshToken, setSlug } =
     useAuthStore()
+  const { getTheme } = useThemeStore()
+  const { isAuthenticated } = useAuthStore()
+
   const { setUserRoles } = useUserInfoPermissionsStore()
   const { setUserInfo } = useUserStore()
   const navigate = useNavigate()
@@ -48,17 +52,15 @@ const Login: React.FC = () => {
       setUserRoles(Array.isArray(userRoles) ? userRoles : []) // Handle roles being non-array safely
       setUserInfo(userInfo as IUserInfo)
 
-      navigate(ROUTE.HOME)
+      navigate(ROUTE.HOME, { replace: true })
       toast.success(t('login.loginSuccess'))
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.code === 'ECONNABORTED') {
-          // toast.error(t('login.loginFailed'))
           showToast(error.response?.data?.errorCode)
           return
         }
         if (error.code === 'ERR_NETWORK') {
-          // toast.error(t('login.serverError'))
           showErrorToast(error.response?.data?.errorCode)
           return
         }
@@ -68,13 +70,22 @@ const Login: React.FC = () => {
     }
   }
 
+  // Redirect if the user is already authenticated
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigate(ROUTE.HOME, { replace: true })
+    }
+  }, [isAuthenticated, navigate])
+
   return (
-    <div className="flex relative justify-center items-center min-h-screen bg-gray-100">
-      <img src={LoginBackground} className="object-fill absolute top-0 left-0 w-full h-full" />
-      <div className="flex relative z-10 justify-center items-center w-full h-full">
-        <Card className="min-w-[24rem] mx-auto border-none shadow-xl backdrop-blur-xl">
+    <div className="relative flex items-center justify-center min-h-screen bg-gray-100">
+      <img src={LoginBackground} className="absolute top-0 left-0 w-full h-full sm:object-fill" />
+      <div className="relative z-10 flex items-center justify-center w-full h-full">
+        <Card className="sm:min-w-[24rem] mx-auto border-none shadow-xl backdrop-blur-xl">
           <CardHeader>
-            <CardTitle className="text-2xl"> {t('login.title')} </CardTitle>
+            <CardTitle className={cn('text-2xl', getTheme() === 'light' ? 'text-black' : '')}>
+              {t('login.title')}{' '}
+            </CardTitle>
             <CardDescription> {t('login.description')} </CardDescription>
           </CardHeader>
           <CardContent>

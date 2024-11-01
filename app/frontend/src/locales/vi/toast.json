@@ -3,12 +3,13 @@
     "notAddProductToRequisition": "Vui lòng thêm vật tư vào yêu cầu",
     "requestFailed": "Đã có lỗi xảy ra",
     "requestSuccess": "Yêu cầu được tạo thành công",
+    "requisitionSetSuccess": "Yêu cầu được tạo thành công!",
     "requestError": "Yêu cầu được tạo thất bại",
     "confirmSuccess": "Yêu cầu được xác nhận gửi thành công",
     "confirmError": "Yêu cầu được xác nhận gửi thất bại",
     "updateRequestSuccess": "Yêu cầu được cập nhật thành công",
-    "deleteProductSuccess": "Vật tư được xóa thành công",
-    "addNewProductSuccess": "Vật tư được thêm thành công",
+    "deleteProductSuccess": "Vật tư được xóa thành công!",
+    "addNewProductSuccess": "Vật tư được thêm thành công!",
     "resubmitSuccess": "Yêu cầu được gửi lại thành công",
     "approveRequestSuccess": "Yêu cầu được duyệt thành công",
     "approveRequestError": "Yêu cầu được duyệt thất bại",
@@ -32,16 +33,66 @@
     "sessionExpired": "Phiên đăng nhập đã hết hạn",
     "accessDenied": "Bạn không có quyền truy cập trang này",
     "loginFailed": "Tên đăng nhập hoặc mật khẩu không chính xác",
+    "productRequisitionExisted": "Vật tư đã tồn tại trong yêu cầu",
+
+    "createProductSuccess": "Vật tư được tạo thành công",
+    "codeProductExisted": "Mã vật tư đã tồn tại",
+
     "logoutSuccess": "Đăng xuất thành công",
     "updateUserSuccess": "Người dùng được cập nhật thành công",
+    "invalidUserDepartmentExisted": "Người dùng đã tồn tại trong phòng ban",
+
+    "updateUsernameSuccess": "Tên tài khoản được cập nhật thành công",
 
     "createCompanySuccessfully": "Công ty được tạo thành công",
+    "updateCompanySuccess": "Thông tin công ty được cập nhật thành công",
+    "deleteCompanySuccess": "Công ty được xóa thành công",
+
     "createSiteSuccessfully": "Địa điểm được tạo thành công",
+    "updateSiteSuccess": "Địa điểm được cập nhật thành công",
+    "deleteSiteSuccess": "Địa điểm được xóa thành công",
+
     "createDepartmentSuccessfully": "Phòng ban được tạo thành công",
+    "updateDepartmentSuccess": "Phòng ban được cập nhật thành công",
+    "deleteDepartmentSuccess": "Phòng ban được xóa thành công",
+
     "createProjectSuccessfully": "Dự án được tạo thành công",
+    "updateProjectSuccess": "Dự án được cập nhật thành công",
+    "deleteProjectSuccess": "Dự án được xóa thành công",
 
     "addRoleSuccess": "Chức vụ được thêm thành công",
+    "deleteUserRoleSuccess": "Chức vụ được xóa thành công",
+
     "addDepartmentSuccess": "Phòng ban được thêm thành công",
-    "changePasswordSuccess": "Mật khẩu được thay đổi thành công"
+    "changePasswordSuccess": "Mật khẩu được thay đổi thành công",
+
+    "exportPDFSuccess": "Xuất PDF thành công",
+    "exportExcelSuccess": "Xuất Excel thành công",
+
+    "updateProductSuccess": "Vật tư được cập nhật thành công",
+    "backupDatabaseSuccess": "Sao lưu cơ sở dữ liệu thành công",
+
+    "addRolePermissionSuccess": "Quyền được thêm thành công",
+    "updateRolePermission": "Quyền được cập nhật thành công",
+    "deleteRolePermissionSuccess": "Quyền được xóa thành công",
+
+    "updateRoleSuccess": "Chức vụ được cập nhật thành công",
+    "deleteRoleSuccess": "Chức vụ được xóa thành công",
+
+    "updateAuthoritySuccess": "Thẩm quyền được cập nhật thành công",
+    "updateResourceSuccess": "Tài nguyên được cập nhật thành công",
+    "deleteAuthoritySuccess": "Thẩm quyền được xóa thành công",
+
+    "updateCompanyLogoSuccess": "Logo công ty được cập nhật thành công",
+
+    "updateAssignedApproverSuccess": "Người phê duyệt được cập nhật thành công",
+    "deleteAssignedApproverSuccess": "Người phê duyệt được xóa thành công",
+    "assignedUserApprovalExisted": "Người dùng đã được phân công duyệt",
+
+    "updateUserDepartmentSuccess": "Phòng ban của người dùng được cập nhật thành công",
+    "deleteUserDepartmentSuccess": "Phòng ban của người dùng được xóa thành công",
+
+    "updatePermissionSuccess": "Quyền được cập nhật thành công",
+    "deletePermissionSuccess": "Quyền được xóa thành công"
   }
 }

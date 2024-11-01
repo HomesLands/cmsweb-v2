@@ -11,38 +11,22 @@ import {
   DropdownMenuLabel,
   UserAvatar,
   DropdownMenuSeparator,
-  DropdownMenuItem,
   Badge
 } from '@/components/ui'
 import { IUserInfo } from '@/types'
 
 import { baseURL } from '@/constants'
-import { DialogAddUserRole, DialogAddUserDepartment } from '@/components/app/dialog'
-import { useState } from 'react'
+import {
+  DialogAddUserRole,
+  DialogAddUserDepartment,
+  DialogUpdateUserDepartment,
+  DialogDeleteUserDepartment,
+  DialogUpdateUsername
+} from '@/components/app/dialog'
+import DialogDeleteUserRole from '@/components/app/dialog/dialog-delete-user-role'
 
 export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
   const { t } = useTranslation('employees')
-  const [selectedUser, setSelectedUser] = useState<IUserInfo | null>(null)
-  const [openDialogAddUserRole, setOpenDialogAddUserRole] = useState(false)
-  const [openDialogAddUserDepartment, setOpenDialogAddUserDepartment] = useState(false)
-
-  const handleOpenDialogAddUserRole = (user: IUserInfo) => {
-    setSelectedUser(user)
-    setOpenDialogAddUserRole(true)
-  }
-
-  const handleCloseDialogAddUserRole = () => {
-    setOpenDialogAddUserRole(false)
-  }
-
-  const handleOpenDialogAddUserDepartment = (user: IUserInfo) => {
-    setSelectedUser(user)
-    setOpenDialogAddUserDepartment(true)
-  }
-
-  const handleCloseDialogAddUserDepartment = () => {
-    setOpenDialogAddUserDepartment(false)
-  }
 
   return [
     {
@@ -59,6 +43,12 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
       header: ({ column }) => <DataTableColumnHeader column={column} title={t('employees.slug')} />
     },
     {
+      accessorKey: 'username',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('employees.username')} />
+      )
+    },
+    {
       accessorKey: 'fullname',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t('employees.fullname')} />
@@ -66,9 +56,7 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
     },
     {
       accessorKey: 'userRoles',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('employees.userRoles')} />
-      ),
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('employees.role')} />,
       cell: ({ row }) => {
         const { userRoles } = row.original
         return (
@@ -76,7 +64,7 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
             {userRoles &&
               userRoles.map((item) => {
                 return (
-                  <div className="w-fit font-normal">
+                  <div className="font-normal w-fit">
                     {item?.role?.nameDisplay} ({item?.role?.nameNormalize})
                   </div>
                 )
@@ -88,7 +76,7 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
     {
       accessorKey: 'userDepartments',
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={t('employees.userDepartments')} />
+        <DataTableColumnHeader column={column} title={t('employees.department')} />
       ),
       cell: ({ row }) => {
         const { userDepartments } = row.original
@@ -96,10 +84,12 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
           <div className="flex flex-col gap-3">
             {userDepartments &&
               userDepartments.map((item) => {
-                return (
-                  <Badge className="w-fit font-normal bg-green-500 hover:bg-green-500">
-                    {item?.department.description}
+                return item?.department?.description ? (
+                  <Badge className="font-normal bg-green-500 w-fit hover:bg-green-500">
+                    {item?.department?.description}
                   </Badge>
+                ) : (
+                  <div></div>
                 )
               })}
           </div>
@@ -110,11 +100,14 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
       id: t('employees.actions'),
       cell: ({ row }) => {
         const user = row.original
+        const hasDepartment = user?.userDepartments?.[0]?.department
+        const hasRole = user?.userRoles
+
         return (
           <div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="p-0 w-8 h-8">
+                <Button variant="ghost" className="w-8 h-8 p-0">
                   <span className="sr-only">Open menu</span>
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
@@ -122,26 +115,14 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
               <DropdownMenuContent className="flex flex-col justify-start" align="end">
                 <DropdownMenuLabel>{t('employees.actions')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => handleOpenDialogAddUserRole(user)}>
-                  {t('employees.addRole')}
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleOpenDialogAddUserDepartment(user)}>
-                  {t('employees.addDepartment')}
-                </DropdownMenuItem>
+                <DialogUpdateUsername userInfo={user as IUserInfo} />
+                <DialogAddUserRole user={user} />
+                <DialogAddUserDepartment user={user} />
+                {hasDepartment && <DialogUpdateUserDepartment user={user} />}
+                {hasDepartment && <DialogDeleteUserDepartment user={user} />}
+                {hasRole && <DialogDeleteUserRole user={user} />}
               </DropdownMenuContent>
             </DropdownMenu>
-            <DialogAddUserRole
-              user={selectedUser}
-              open={openDialogAddUserRole}
-              onOpenChange={handleCloseDialogAddUserRole}
-              component={null}
-            />
-            <DialogAddUserDepartment
-              user={selectedUser}
-              open={openDialogAddUserDepartment}
-              onOpenChange={handleCloseDialogAddUserDepartment}
-              component={null}
-            />
           </div>
         )
       }

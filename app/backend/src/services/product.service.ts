@@ -1,5 +1,11 @@
+import { Workbook } from "exceljs";
 import { mapper } from "@mappers";
-import { TPaginationOptionResponse, TProductQueryRequest, TUpdateProductRequestDto } from "@types";
+import {
+  TPaginationOptionResponse,
+  TProductQueryRequest,
+  TUpdateProductRequestDto,
+  TUploadProductRequestDto,
+} from "@types";
 import { ProductResponseDto } from "@dto/response";
 import { productRepository, unitRepository } from "@repositories";
 import { Product } from "@entities/product.entity";
@@ -10,6 +16,7 @@ import { GlobalError, ErrorCodes, ValidationError } from "@exception";
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
 import { FindOperator, Like } from "typeorm";
+import { parsePagination } from "@utils/pagination.util";
 
 class ProductService {
   public async getAllProducts(
@@ -26,18 +33,8 @@ class ProductService {
     });
 
     // Parse and validate pagination parameters
-    let pageSize =
-      typeof options.pageSize === "string"
-        ? parseInt(options.pageSize, 10)
-        : options.pageSize;
-    let page =
-      typeof options.page === "string"
-        ? parseInt(options.page, 10)
-        : options.page;
+    const { page, pageSize } = parsePagination(options);
 
-    // Ensure page and pageSize are positive numbers
-    if (isNaN(page) || page <= 0) page = 1;
-    if (isNaN(pageSize) || pageSize <= 0) pageSize = 10; // Default pageSize if invalid
     // Calculate pagination details
     const totalPages = Math.ceil(totalProducts / pageSize);
 
@@ -45,9 +42,7 @@ class ProductService {
       take: pageSize,
       skip: (page - 1) * pageSize,
       order: { createdAt: options.order },
-      relations: [
-        "unit",
-      ],
+      relations: ["unit"],
       where: searchConditions,
     });
 
@@ -80,7 +75,7 @@ class ProductService {
     }
 
     const unit = await unitRepository.findOneBy({ slug: requestData.unit });
-    if(!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
+    if (!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
 
     const productData = mapper.map(
       requestData,
@@ -103,11 +98,11 @@ class ProductService {
     if (errors.length > 0) throw new ValidationError(errors);
 
     let product = await productRepository.findOneBy({ slug: requestData.slug });
-    if(!product) throw new GlobalError(ErrorCodes.PRODUCT_NOT_FOUND);
+    if (!product) throw new GlobalError(ErrorCodes.PRODUCT_NOT_FOUND);
 
     const unit = await unitRepository.findOneBy({ slug: requestData.unit });
-    if(!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
-    
+    if (!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
+
     Object.assign(product, requestData);
     product.unit = unit;
 
@@ -115,6 +110,84 @@ class ProductService {
 
     const productDto = mapper.map(product, Product, ProductResponseDto);
     return productDto;
+  }
+
+  public async uploadProduct(
+    plainData: TUploadProductRequestDto
+  ): Promise<number> {
+    const workbook = new Workbook();
+    if (!plainData.file?.buffer)
+      throw new GlobalError(ErrorCodes.FILE_NOT_FOUND);
+
+    await workbook.xlsx.load(plainData.file.buffer);
+
+    if (workbook.worksheets.length <= 0)
+      throw new GlobalError(ErrorCodes.WORKSHEET_NOT_FOUND);
+
+    const products: TCreateProductRequestDto[] = [];
+    const uniqueNames = new Set<string>();
+
+    const worksheet = workbook.worksheets[0];
+    worksheet?.eachRow((row, rowNumber) => {
+      if (rowNumber > 1) {
+        const codeCell = row.findCell(2);
+        const providerCell = row.findCell(3);
+        const nameCell = row.findCell(6);
+        const unitCell = row.findCell(9);
+        const descriptionCell = row.findCell(12);
+
+        if (!codeCell?.value)
+          throw new GlobalError(ErrorCodes.INVALID_PRODUCT_CODE);
+        if (!nameCell?.value)
+          throw new GlobalError(ErrorCodes.INVALID_PRODUCT_NAME);
+        if (!unitCell?.value)
+          throw new GlobalError(ErrorCodes.INVALID_UNIT_NAME);
+        if (!providerCell?.value)
+          throw new GlobalError(ErrorCodes.INVALID_PRODUCT_PROVIDER);
+
+        if (!uniqueNames.has(nameCell.value.toString())) {
+          products.push({
+            name: nameCell.value.toString(),
+            code: codeCell.value.toString(),
+            description: descriptionCell?.value?.toString() || "",
+            unit: unitCell?.value?.toString().toLowerCase(),
+            provider: providerCell.value.toString(),
+          });
+          uniqueNames.add(nameCell.value.toString());
+        }
+      }
+    });
+
+    const requestProducts: Product[] = await Promise.all(
+      products.map(async (item) => {
+        const existUnit = await unitRepository.findOne({
+          where: {
+            name: item.unit,
+          },
+        });
+        const unit =
+          existUnit ||
+          (await unitRepository.createAndSave({
+            name: item.unit,
+          }));
+        return { ...item, unit } as Product;
+      })
+    );
+
+    const createdProducts =
+      await productRepository.bulkCreateAndSave(requestProducts);
+
+    return createdProducts.length;
+  }
+
+  public async deleteProduct(slug: string): Promise<number> {
+    const product = await productRepository.findOneBy({
+      slug,
+    });
+    if (!product) throw new GlobalError(ErrorCodes.PRODUCT_NOT_FOUND);
+
+    const deleted = await productRepository.softDelete({ slug });
+    return deleted.affected || 0;
   }
 }
 

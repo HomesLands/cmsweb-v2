@@ -16,6 +16,14 @@
     "fullnameDescription": "Họ và tên của bạn",
     "username": "Tên tài khoản",
     "usernameDescription": "Tên tài khoản của bạn",
+
+    "phoneNumber": "Số điện thoại",
+    "gender": "Giới tính",
+    "male": "Nam",
+    "female": "Nữ",
+    "address": "Địa chỉ",
+    "dob": "Ngày sinh",
+
     "password": "Mật khẩu",
     "oldPassword": "Mật khẩu cũ",
     "enterOldPassword": "Nhập mật khẩu cũ",
@@ -42,6 +50,8 @@
     "delete": "Xóa",
     "deleteAccount": "Xóa tài khoản",
     "deleteAccountMessage": "Bạn có chắc chắn muốn xóa tài khoản của mình? Hành động này không thể hoàn tác.",
-    "administration": "Administration"
+    "administration": "Administration",
+
+    "editUsername": "Chỉnh sửa tên tài khoản"
   }
 }

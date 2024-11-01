@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -11,46 +12,41 @@ import {
 } from '@/components/ui'
 
 import { IProductRequisitionInfo } from '@/types'
-import { EditProductRequisitionForm } from '../form/edit-product-requisition-form'
-
-interface DialogRequisitionDetailProps {
-  handleEditProduct: (product: IProductRequisitionInfo) => void
-  openDialog: boolean
-  requisition?: IProductRequisitionInfo | null
-  component: React.ReactNode
-  onOpenChange: () => void
-}
+import { EditProductRequisitionForm } from '@/components/app/form'
+import { useRequisitionStore } from '@/stores'
+import { useState } from 'react'
 
 export function DialogEditProductRequisition({
-  handleEditProduct,
-  openDialog,
-  requisition,
-  component,
-  onOpenChange
-}: DialogRequisitionDetailProps) {
-  const { t } = useTranslation('productRequisition')
+  product
+}: {
+  product: IProductRequisitionInfo | null
+}) {
+  const { t } = useTranslation('tableData')
+  const { updateProductToRequisition } = useRequisitionStore()
+  const [isOpen, setIsOpen] = useState(false)
 
   const handleConfirm = (data: IProductRequisitionInfo) => {
-    handleEditProduct(data)
-    onOpenChange()
+    updateProductToRequisition(data, data.requestQuantity)
+    setIsOpen(false)
   }
 
   return (
-    <Dialog open={openDialog} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>{component}</DialogTrigger>
-      <DialogContent className="max-w-[64rem] p-0">
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger className="flex justify-start w-full" asChild>
+        <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
+          {t('tableData.editProduct')}
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="rounded-md max-w-[20rem] sm:max-w-[60rem]">
         <ScrollArea className="max-h-[80vh]">
-          <div className="p-6">
-            <DialogHeader>
-              <DialogTitle>{t('productRequisition.productInformation')}</DialogTitle>
-              <DialogDescription>
-                {requisition?.isExistProduct
-                  ? t('productRequisition.existingProductDescription')
-                  : t('productRequisition.newProductDescription')}
-              </DialogDescription>
-            </DialogHeader>
-            <EditProductRequisitionForm onSubmit={handleConfirm} data={requisition || undefined} />
-          </div>
+          <DialogHeader>
+            <DialogTitle>{t('tableData.editProduct')}</DialogTitle>
+            <DialogDescription>{t('tableData.editProductDescription')}</DialogDescription>
+          </DialogHeader>
+          <EditProductRequisitionForm
+            data={product || undefined}
+            onSubmit={(data: IProductRequisitionInfo) => handleConfirm(data)}
+          />
         </ScrollArea>
       </DialogContent>
     </Dialog>

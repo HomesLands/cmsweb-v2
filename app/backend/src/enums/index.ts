@@ -53,3 +53,20 @@ export enum Action {
   DELETE = "delete",
   VIEW = "view",
 }
+
+export enum Extension {
+  EXCEL = "xlsx",
+  PDF = "pdf",
+  WORD = "docx",
+}
+
+export enum NotificationType {
+  APPROVAL = "approval",
+  WARNING = "warning",
+  INFO = "info",
+  REMINDER = "reminder",
+}
+
+export enum Topic {
+  PRODUCT_REQUISITION_FORM = "product-requsition-form",
+}

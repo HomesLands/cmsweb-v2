@@ -1,31 +1,34 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
-import { useSites } from '@/hooks'
-// import { useAuthorityColumns } from '../authorities/DataTable/columns'
+import { useGetApprovedProductRequisition, usePagination } from '@/hooks'
 import { useWarehouseColumns } from './DataTable/columns'
+import { ReaderIcon } from '@radix-ui/react-icons'
 
 const Warehouse: React.FC = () => {
+  const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
   const { t } = useTranslation(['warehouse'])
-  // const { pagination, handlePageChange, handlePageSizeChange } = usePagination()
-
-  const { data: sites, isLoading } = useSites()
+  const { data: approvedProductRequisition, isLoading: isLoadingApprovedProductRequisition } =
+    useGetApprovedProductRequisition({
+      page: pagination.pageIndex,
+      pageSize: pagination.pageSize,
+      order: 'DESC'
+    })
 
   return (
     <div className="flex flex-col gap-4 mt-2">
-      <Label className="flex gap-1 items-center font-semibold text-normal text-md font-beVietNam">
+      <Label className="flex items-center gap-1 font-semibold text-normal text-md font-beVietNam">
         <ReaderIcon className="header-icon" />
-        {t('warehouse.list')}
+        {t('warehouse.approvedRequisitionList')}
       </Label>
       <DataTable
         columns={useWarehouseColumns()}
-        data={sites?.result || []}
-        pages={1}
-        onPageChange={() => {}}
-        onPageSizeChange={() => {}}
-        isLoading={isLoading}
+        data={approvedProductRequisition?.result.items || []}
+        pages={approvedProductRequisition?.result?.totalPages || 0}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
+        isLoading={isLoadingApprovedProductRequisition}
       />
     </div>
   )

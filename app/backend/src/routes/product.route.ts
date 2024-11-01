@@ -1,12 +1,23 @@
+import { upload } from "@configs";
 import { productController } from "@controllers";
 import { Router } from "express";
 export const productRoute: Router = Router();
 
 // [GET] /api/v1/products
-productRoute.route("/").get(productController.getAllProducts);
+productRoute.get("/", productController.getAllProducts);
 
 // [GET] /api/v1/products
-productRoute.route("/").post(productController.createProduct);
+productRoute.post("/", productController.createProduct);
 
 // [PATCH] /api/v1/products
-productRoute.route("/").patch(productController.updateProduct);
+productRoute.patch("/", productController.updateProduct);
+
+// [POST] /api/v1/products/upload
+productRoute.post(
+  "/upload",
+  upload.single("file"),
+  productController.uploadProduct
+);
+
+// [DELETE] /api/v1/products/{slug}
+productRoute.route("/:slug").delete(productController.deleteProduct);

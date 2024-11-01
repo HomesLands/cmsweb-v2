@@ -4,6 +4,9 @@
     "fullname": "Họ và tên",
     "slug": "Slug",
     "role": "Chức vụ",
-    "actions": "Thao tác"
+    "actions": "Thao tác",
+
+    "selectUser": "Chọn người dùng",
+    "selectPermission": "Chọn quyền"
   }
 }

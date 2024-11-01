@@ -4,15 +4,13 @@ import { siteController } from "@controllers";
 export const siteRoute: Router = Router();
 
 // [GET] /api/v1/sites
-siteRoute.route("/")
-  .get(siteController.getAllSites)
+siteRoute.get("/", siteController.getAllSites);
 
 // [POST] /api/v1/sites
-siteRoute.route("/")
-  .post(siteController.createSite);
+siteRoute.post("/", siteController.createSite);
 
-// [PATCH] /api/v1/sites/:slug
-siteRoute.route("/:slug")
-  .patch(siteController.updateSite);
+// [PATCH] /api/v1/sites/{slug}
+siteRoute.patch("/:slug", siteController.updateSite);
 
-
+// [DELETE] /api/v1/sites/{slug}
+siteRoute.delete("/:slug", siteController.deleteSite);

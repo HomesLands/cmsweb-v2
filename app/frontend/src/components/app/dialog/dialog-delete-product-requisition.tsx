@@ -11,60 +11,61 @@ import {
   DialogTrigger
 } from '@/components/ui'
 
-import { IProductRequisitionInfo, IRequestProductInfo } from '@/types'
-
-interface DialogDeleteProductRequisitionProps {
-  handleDeleteProduct: (product: IProductRequisitionInfo) => void
-  openDialog: boolean
-  product: IProductRequisitionInfo | null
-  component: React.ReactNode
-  onOpenChange: () => void
-}
+import { IProductRequisitionInfo } from '@/types'
+import { useRequisitionStore } from '@/stores'
+import { useTranslation } from 'react-i18next'
+import { useState } from 'react'
 
 export function DialogDeleteProductRequisition({
-  handleDeleteProduct,
-  openDialog,
-  product,
-  component,
-  onOpenChange
-}: DialogDeleteProductRequisitionProps) {
+  product
+}: {
+  product: IProductRequisitionInfo | null
+}) {
+  const { t } = useTranslation('tableData')
+  const { deleteProductToRequisition } = useRequisitionStore()
+  const [isOpen, setIsOpen] = useState(false)
+
   const handleSubmit = (data: IProductRequisitionInfo) => {
-    const completeData: IProductRequisitionInfo = {
-      ...data
-    }
-    handleDeleteProduct(completeData)
-    onOpenChange()
+    deleteProductToRequisition(data)
+    setIsOpen(false)
   }
 
   return (
-    <Dialog open={openDialog} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>{component}</DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger className="flex justify-start w-full" asChild>
+        <DialogTrigger asChild>
+          <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
+            {t('tableData.deleteProduct')}
+          </Button>
+        </DialogTrigger>
+      </DialogTrigger>
 
-      <DialogContent className="max-w-[32rem] font-beVietNam">
+      <DialogContent className="max-w-[22rem] rounded-md sm:max-w-[32rem] font-beVietNam">
         <DialogHeader>
           <DialogTitle className="pb-4 border-b border-destructive text-destructive">
-            <div className="flex gap-2 items-center">
+            <div className="flex items-center gap-2">
               <TriangleAlert className="w-6 h-6" />
-              Xóa vật tư
+              {t('tableData.deleteProduct')}
             </div>
           </DialogTitle>
           <DialogDescription className="p-2 bg-red-100 rounded-md text-destructive">
-            Lưu ý: Hành động này không thể hoàn tác!
+            {t('tableData.deleteProductDescription')}
           </DialogDescription>
 
           <div className="py-4 text-sm text-gray-500">
-            Bạn sắp sửa xóa vật tư <span className="font-bold">{product?.product.name}</span> với mã
-            vật tư <span className="font-bold">{product?.product.code}</span>.
+            {t('tableData.deleteProductWarning1')}{' '}
+            <span className="font-bold">{product?.product.name}</span>.
             <br />
-            Hành động này không thể hoàn tác. Dữ liệu về vật tư sẽ bị xóa khỏi yêu cầu vật tư!
+            <br />
+            {t('tableData.deleteProductConfirmation')}
           </div>
         </DialogHeader>
-        <DialogFooter>
-          <Button variant="outline" onClick={onOpenChange}>
-            Hủy
+        <DialogFooter className="flex flex-row justify-center gap-2">
+          <Button variant="outline" onClick={() => setIsOpen}>
+            {t('tableData.cancel')}
           </Button>
           <Button variant="destructive" onClick={() => product && handleSubmit(product)}>
-            Tôi đã hiểu, xóa vật tư này
+            {t('tableData.confirmDelete')}
           </Button>
         </DialogFooter>
       </DialogContent>

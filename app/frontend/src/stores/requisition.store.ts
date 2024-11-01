@@ -1,9 +1,9 @@
 import { create } from 'zustand'
-import toast from 'react-hot-toast'
 import { persist } from 'zustand/middleware'
 
 import { IProductRequisitionFormCreate, IProductRequisitionInfo, IRequisitionStore } from '@/types'
 import { showToast, showErrorToast } from '@/utils'
+import i18next from 'i18next'
 
 export const useRequisitionStore = create<IRequisitionStore>()(
   persist(
@@ -17,7 +17,7 @@ export const useRequisitionStore = create<IRequisitionStore>()(
             requestProducts: state.requisition?.requestProducts ?? []
           }
         }))
-        showToast('Tạo phiếu yêu cầu thành công!')
+        showToast(i18next.t('toast.requisitionSetSuccess', { ns: 'toast' }))
       },
       updateRequisition: (updatedFields: Partial<IProductRequisitionFormCreate>) => {
         set((state) => ({
@@ -33,7 +33,6 @@ export const useRequisitionStore = create<IRequisitionStore>()(
       clearRequisition: () => set({ requisition: undefined }),
       addProductToRequisition: (product: IProductRequisitionInfo) => {
         const currentRequisition = get().requisition
-        console.log('product', product)
         if (currentRequisition) {
           const productExists = currentRequisition.requestProducts.some(
             (p) => p.product.slug === product.product.slug
@@ -57,7 +56,7 @@ export const useRequisitionStore = create<IRequisitionStore>()(
                 ]
               }
             })
-            toast.success('Đã thêm vật tư vào phiếu yêu cầu!')
+            showToast(i18next.t('toast.addNewProductSuccess', { ns: 'toast' }))
           }
         }
       },

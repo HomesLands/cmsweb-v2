@@ -1,17 +1,17 @@
 import { ColumnDef } from '@tanstack/react-table'
+import { MoreHorizontal } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import {
   Button,
   DataTableColumnHeader,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui'
 import { IPermission } from '@/types'
-import { MoreHorizontal } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
+import { DialogDeletePermission, DialogUpdatePermission } from '@/components/app/dialog'
 
 export const usePermissionColumns = (): ColumnDef<IPermission>[] => {
   const { t } = useTranslation(['permissions'])
@@ -50,7 +50,7 @@ export const usePermissionColumns = (): ColumnDef<IPermission>[] => {
       cell: ({ row }) => {
         const { requiredOwner } = row.original
         return (
-          <div className="text-red-400 font-bold">{requiredOwner ? 'Yêu cầu chủ sở hữu' : ''}</div>
+          <div className="font-bold text-red-400">{requiredOwner ? 'Yêu cầu chủ sở hữu' : ''}</div>
         )
       }
     },
@@ -58,6 +58,7 @@ export const usePermissionColumns = (): ColumnDef<IPermission>[] => {
       id: 'actions',
       header: 'Thao tác',
       cell: ({ row }) => {
+        const permission = row.original
         return (
           <div>
             <DropdownMenu>
@@ -69,8 +70,8 @@ export const usePermissionColumns = (): ColumnDef<IPermission>[] => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
-                <DropdownMenuItem>Chỉnh sửa</DropdownMenuItem>
-                <DropdownMenuItem>Xóa</DropdownMenuItem>
+                <DialogUpdatePermission permission={permission} />
+                <DialogDeletePermission permission={permission} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

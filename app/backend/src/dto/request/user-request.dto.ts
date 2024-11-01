@@ -1,9 +1,6 @@
 import { AutoMap } from "@automapper/classes";
 import { Expose } from "class-transformer";
-import { IsEmail, IsEnum, IsNotEmpty } from "class-validator";
-
-import { Gender } from "@enums";
-import { IsDateStringWithMessage } from "@decorator";
+import { IsNotEmpty, MinLength } from "class-validator";
 
 export class ChangePasswordRequestDto {
   @IsNotEmpty({ message: "INVALID_PASSWORD" })
@@ -22,37 +19,44 @@ export class ChangePasswordRequestDto {
   confirmPassword: string;
 }
 
-export class UpdateUser {
+export class UpdateUserInfoRequestDto {
+  userId: string;
+
+  @IsNotEmpty({ message: "INVALID_DOB" })
+  @Expose()
+  @AutoMap()
+  dob?: string;
+
+  @IsNotEmpty({ message: "INVALID_GENDER" })
+  @Expose()
+  @AutoMap()
+  gender?: string;
+
+  @IsNotEmpty({ message: "INVALID_ADDRESS" })
+  @Expose()
+  @AutoMap()
+  address?: string;
+
+  @IsNotEmpty({ message: "INVALID_PHONENUMBER" })
+  @Expose()
+  @AutoMap()
+  phoneNumber?: string;
+
   @IsNotEmpty({ message: "INVALID_FULLNAME" })
   @Expose()
   @AutoMap()
-  fullname: string;
+  fullname?: string;
+}
 
-  @IsNotEmpty({ message: "INVALID_USER_EMAIL" })
-  @IsEmail({}, { message: "INVALID_USER_EMAIL" })
+export class UpdateUsernameRequestDto {
+  @IsNotEmpty({ message: "INVALID_USER_SLUG" })
   @Expose()
   @AutoMap()
-  email: string;
+  userSlug: string;
 
-  @IsNotEmpty()
-  @IsDateStringWithMessage({ message: "INVALID_DATE_FORMAT" })
+  @IsNotEmpty({ message: "INVALID_USERNAME" })
+  @MinLength(1, { message: "INVALID_USERNAME" })
   @Expose()
   @AutoMap()
-  dob: string;
-
-  @IsNotEmpty({ message: "INVALID_USER_GENDER" })
-  @IsEnum(Gender, { message: "INVALID_USER_GENDER" })
-  @Expose()
-  @AutoMap()
-  gender: string;
-
-  @IsNotEmpty({ message: "INVALID_USER_ADDRESS" })
-  @Expose()
-  @AutoMap()
-  address: string;
-
-  @IsNotEmpty({ message: "INVALID_USER_PHONE_NUMBER" })
-  @Expose()
-  @AutoMap()
-  phoneNumber: string;
+  username?: string;
 }

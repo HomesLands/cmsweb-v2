@@ -1,10 +1,14 @@
 import { Entity, Column, OneToMany } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 import { Base } from "./base.entity";
-import { UserRole } from "./user-role.entity"
-import { ProductRequisitionForm } from "./product-requisition-form.entity";
-import { AssignedUserApproval } from "./assigned-user-approval.entity";
-import { UserDepartment } from "./user-department.entity";
+
+import {
+  UserRole,
+  ProductRequisitionForm,
+  AssignedUserApproval,
+  UserDepartment,
+} from "@entities";
+import { Notification } from "./notification.entity";
 
 @Entity("user_tbl")
 export class User extends Base {
@@ -50,6 +54,9 @@ export class User extends Base {
   // A user can have many roles
   @OneToMany(() => UserRole, (userRole) => userRole.user)
   userRoles?: UserRole[];
+
+  @OneToMany(() => Notification, (notificarion) => notificarion.user)
+  notificarions?: Notification[];
 
   // creator
   // a user can create many product requisition form

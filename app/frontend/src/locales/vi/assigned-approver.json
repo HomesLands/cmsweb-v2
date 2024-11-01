@@ -16,6 +16,24 @@
     "selectSite": "Chọn địa điểm",
     "selectUser": "Chọn người phê duyệt",
     "createAssignedApproverSuccessfully": "Tạo người phê duyệt thành công",
-    "createAssignedApproverFailed": "Tạo người phê duyệt thất bại"
+    "createAssignedApproverFailed": "Tạo người phê duyệt thất bại",
+    "formType": "Loại yêu cầu",
+    "roleApproval": "Cấp duyệt",
+    "fullname": "Người duyệt",
+    "site": "Địa điểm",
+    "company": "Công ty",
+
+    "updateAssignedApprover": "Cập nhật người phê duyệt",
+    "updateAssignedApproverDescription": "Hoàn thành các bước sau để cập nhật người phê duyệt",
+    "update": "Cập nhật",
+
+    "deleteAssignedApprover": "Xóa người phê duyệt",
+    "deleteAssignedApproverDescription": "Lưu ý: Hành động này không thể hoàn tác!",
+    "deleteAssignedApproverWarning1": "Bạn sắp sửa xóa quyền phê duyệt",
+    "deleteAssignedApproverWarning2": "thuộc loại",
+    "deleteAssignedApproverWarning3": "của nhân viên",
+    "deleteAssignedApproverConfirmation": "Bạn có chắc chắn muốn xóa người phê duyệt này?",
+    "cancel": "Hủy",
+    "confirmDelete": "Tôi đã hiểu, xác nhận xóa"
   }
 }

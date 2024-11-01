@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { PinLeftIcon, PinRightIcon } from '@radix-ui/react-icons'
 
-import { TbeLogo } from '@/assets/images'
+import { CMSLogo } from '@/assets/images'
 import { Button } from '@/components/ui'
 import { useLayoutStore } from '@/stores'
 import { SidebarDrawer } from '../drawer'
@@ -20,7 +20,7 @@ export default function DashboardSidebar() {
       >
         <Button
           variant="outline"
-          className="flex absolute bottom-3 -right-4 justify-center items-center w-8 h-8 rounded-full transition-all duration-300 text-normal hover:bg-primary hover:text-white"
+          className="absolute z-50 flex items-center justify-center w-8 h-8 transition-all duration-300 rounded-full bottom-3 -right-4 text-normal hover:bg-primary hover:text-white"
           onClick={toggleMinimized}
         >
           {isMinimized ? (
@@ -36,19 +36,17 @@ export default function DashboardSidebar() {
 
         <div className="flex-1">
           <div
-            className={`flex h-14 items-center border-b px-4 ${isMinimized ? 'justify-center text-normal' : 'lg:px-6'}`}
+            className={`flex h-14 items-center border-b px-4 ${isMinimized ? 'justify-center text-normal' : ''}`}
           >
-            <NavLink to={'/'} className="flex gap-2 items-center font-semibold whitespace-nowrap">
-              <img src={TbeLogo} height={28} width={28} />
-              <span
-                className={`border-l border-muted-foreground px-2 whitespace-nowrap text-lg font-extrabold ${isMinimized ? 'hidden' : 'block'}`}
-              >
-                TBE CMS
-              </span>
+            <NavLink
+              to={'/'}
+              className={`${isMinimized ? 'flex items-center gap-2 font-semibold h-1/2 whitespace-nowrap' : ''}`}
+            >
+              <img src={CMSLogo} className={`${isMinimized ? 'w-full' : 'w-16'}`} />
             </NavLink>
           </div>
           <nav
-            className={`px-3 flex flex-col gap-2 text-sm font-medium overflow-y-auto ${isMinimized ? 'justify-center items-center' : 'items-start'}`}
+            className={`h-screen pb-20 flex flex-col gap-2 text-sm font-medium ${isMinimized ? 'justify-start items-center' : 'items-start'}`}
           >
             <SidebarDrawer />
           </nav>

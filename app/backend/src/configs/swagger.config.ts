@@ -2,23 +2,17 @@ import { Application } from "express";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 import { env } from "@constants";
-import { isDevEnvironment } from "heppers";
 
 const getServers = (): {
   description: string;
   url: string;
 }[] => {
-  const servers = [];
-  if (isDevEnvironment())
-    servers.push({
-      description: "development",
-      url: `http://localhost:${env.port}/api/v1`,
-    });
-  else
-    servers.push({
-      description: "production",
-      url: "https://tbecms.cmsiot.net/api/v1",
-    });
+  const servers = [
+    {
+      description: "Base URL",
+      url: `${env.swaggerEnpoint}/${env.tag}`,
+    },
+  ];
   return servers;
 };
 
@@ -28,7 +22,7 @@ export const registerSwagger = (app: Application) => {
       openapi: "3.0.0",
       info: {
         title: "CMS API Documentation",
-        version: "1.0.0",
+        version: env.tag,
         description:
           "CMSWeb for Warehouse Management System is a comprehensive, web-based content management solution designed specifically to optimize warehouse operations. It streamlines the management of inventory, order processing, and real-time data tracking, providing users with an intuitive interface for efficient workflow control.",
       },

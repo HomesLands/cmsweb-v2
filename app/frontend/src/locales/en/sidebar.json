@@ -25,6 +25,7 @@
     "employees": "Employees",
 
     "assignedApprover": "Assigned approver",
+    "assignedApproverList": "Assigned approver list",
     "createAssignedApprover": "Create assigned approver",
     "createAssignedApprovers": "Create assigned approver",
 
@@ -46,6 +47,17 @@
 
     "resources": "Resources",
     "createResource": "Create resource",
-    "createResources": "Create resource"
+    "createResources": "Create resource",
+    "backup": "Backup",
+    "personal-account": "Personal account",
+    "admin": "Admin",
+    "add": "Add new",
+    "product-requisitions": "Product requisitions",
+    "backups": "Backups",
+    "assigned-approvers": "Assigned approvers",
+
+    "personalAccount": "Personal account",
+    "notifications": "Notifications",
+    "approval": "Approval"
   }
 }

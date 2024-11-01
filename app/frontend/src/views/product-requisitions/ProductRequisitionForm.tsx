@@ -1,5 +1,4 @@
 import React from 'react'
-import { useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 
@@ -10,34 +9,23 @@ import {
   SearchProductForm,
   ConfirmProductForm
 } from '@/components/app/form'
-import { ProgressBar } from '@/components/app/progress/progress-bar'
-import { useMultiStep } from '@/hooks'
-import { createProductRequisition } from '@/api/products'
+import { ProgressBar } from '@/components/app/progress'
+import { useCreateProductRequisition, useMultiStep } from '@/hooks'
 import { showToast } from '@/utils'
 import { useRequisitionStore } from '@/stores'
+import { ROUTE } from '@/constants'
 
 const ProductRequisitionForm: React.FC = () => {
   const { t } = useTranslation('productRequisition')
   const { t: tToast } = useTranslation('toast')
   const { currentStep, handleStepChange } = useMultiStep(1)
   const { setRequisition, clearRequisition, requisition } = useRequisitionStore()
-
-  const mutation = useMutation({
-    mutationFn: async (data: IFinalProductRequisition) => {
-      return createProductRequisition(data)
-    },
-    onSuccess: () => {
-      showToast(tToast('toast.requestSuccess'))
-      clearRequisition()
-      handleStepChange(4)
-    }
-  })
+  const { mutate: createProductRequisition } = useCreateProductRequisition()
 
   const handleFormCreateSubmit = (data: IProductRequisitionFormCreate) => {
     const newRequisition: IProductRequisitionFormCreate = {
       ...data
     }
-    // updateRequisition(newRequisition)
     setRequisition(newRequisition)
     handleStepChange(2)
   }
@@ -52,9 +40,14 @@ const ProductRequisitionForm: React.FC = () => {
   }
 
   const handleConfirmRequest = (data: IFinalProductRequisition) => {
-    console.log('data', data)
     if (data) {
-      mutation.mutate(data)
+      createProductRequisition(data, {
+        onSuccess: () => {
+          showToast(tToast('toast.requestSuccess'))
+          clearRequisition()
+          handleStepChange(4)
+        }
+      })
     }
   }
 
@@ -124,21 +117,18 @@ const ProductRequisitionForm: React.FC = () => {
             <CardHeader className="flex flex-row items-center justify-between w-full border-b">
               <div className="flex flex-col items-start gap-2 py-2">
                 <CardTitle>{t('productRequisition.confirmProductRequisitionsSuccess')}</CardTitle>
-                <CardDescription>
-                  {t('productRequisition.confirmProductRequisitionsSuccessDescription')}
-                </CardDescription>
               </div>
             </CardHeader>
             <CardContent className="flex flex-col mt-3 text-normal">
-              <div className="flex flex-row gap-1">
-                <p>{t('productRequisition.confirmProductRequisitionsSuccessDescription')}</p>
+              <p>
+                {t('productRequisition.confirmProductRequisitionsSuccessDescription')}{' '}
                 <NavLink
-                  to="/product-requisitions"
+                  to={ROUTE.PRODUCT_REQUISITIONS}
                   className="text-blue-500 transition-all duration-300 hover:underline"
                 >
                   {t('productRequisition.here')}
                 </NavLink>
-              </div>
+              </p>
             </CardContent>
           </Card>
         )}

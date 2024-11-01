@@ -3,13 +3,36 @@
     "list": "Danh sách chức vụ",
     "createRole": "Tạo chức vụ",
     "CreateRoleDescription": "Tạo thêm một chức vụ mới",
-    "nameNormalize": "Mã chuẩn hóa",
+    "slug": "Mã chức vụ",
+    "nameNormalize": "Tên chuẩn hóa",
+    "nameDisplay": "Tên hiển thị",
     "description": "Mô tả",
     "createRoleSuccessfully": "Tạo chức vụ thành công",
-    "nameDisplay": "Tên hiển thị",
+
     "actions": "Thao tác",
     "edit": "Chỉnh sửa chức vụ",
-    "permissions": "Quyền hạn"
+    "permissions": "Quyền hạn",
+    "editRole": "Chỉnh sửa chức vụ",
+    "addPermission": "Thêm quyền hạn",
+    "addPermissionDescription": "Nhập đầy đủ thông tin bên dưới để thêm quyền hạn",
+
+    "selectRole": "Chọn chức vụ",
+    "selectPermission": "Chọn quyền hạn",
+
+    "editRoleDescription": "Thay đổi thông tin bên dưới để chỉnh sửa quyền hạn",
+
+    "updateRole": "Cập nhật chức vụ",
+
+    "delete": "Xóa chức vụ",
+    "deleteRoleDescription": "Lưu ý: Thao tác này không thể hoàn tác",
+    "deleteRoleWarning": "Bạn sắp sửa xóa chức vụ",
+    "deleteRoleConfirmation": "Bạn có chắc chắn muốn xóa không?",
+    "cancel": "Hủy",
+    "confirmDelete": "Tôi đã hiểu, xác nhận xóa",
+
+    "updatePermission": "Cập nhật quyền hạn",
+    "updatePermissionDescription": "Thay đổi thông tin bên dưới để cập nhật quyền hạn",
+    "update": "Cập nhật",
+    "deleteRolePermission": "Xóa quyền của chức vụ"
   }
-   
 }

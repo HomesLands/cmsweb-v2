@@ -10,7 +10,8 @@ import {
   TChangePasswordRequestDto,
   TPaginationOptionResponse,
   TQueryRequest,
-  TUpdateUser,
+  TUpdateUserInfoRequestDto,
+  TUpdateUsernameRequestDto,
   TUploadUserAvatarRequestDto,
   TUploadUserSignRequestDto,
 } from "@types";
@@ -22,7 +23,11 @@ import { Subjects } from "@lib";
 import { StatusCodes } from "http-status-codes";
 import { parsePagination } from "@utils/pagination.util";
 import { plainToClass } from "class-transformer";
-import { ChangePasswordRequestDto, UpdateUser } from "@dto/request";
+import {
+  ChangePasswordRequestDto,
+  UpdateUserInfoRequestDto,
+  UpdateUsernameRequestDto,
+} from "@dto/request";
 import { validate } from "class-validator";
 import { ValidationError } from "exception";
 import bcrypt from "bcryptjs";
@@ -71,7 +76,6 @@ class UserService {
       relations: ["userDepartments.department.site.company"],
     });
 
-    console.log({ user });
     if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 
     const results = mapper.map(user, User, UserResponseDto);
@@ -128,7 +132,6 @@ class UserService {
   public async uploadUserAvatar(
     requestData: TUploadUserAvatarRequestDto
   ): Promise<UserResponseDto> {
-    console.log({ requestData });
     const user = await userRepository.findOne({
       where: {
         id: requestData.userId,
@@ -191,20 +194,46 @@ class UserService {
     return userDto;
   }
 
-  public async updateUser(
-    userId: string,
-    plainData: TUpdateUser
+  public async updateUserInfo(
+    plainData: TUpdateUserInfoRequestDto
   ): Promise<UserResponseDto> {
-    const requestData = plainToClass(UpdateUser, plainData);
+    // Check current password
+    const requestData = plainToClass(UpdateUserInfoRequestDto, plainData);
 
     const errors = await validate(requestData);
-    if(errors.length > 0) throw new ValidationError(errors);
+    if (errors.length > 0) throw new ValidationError(errors);
 
-    const user = await userRepository.findOneBy({ id: userId });
-    if(!user) throw new GlobalError(StatusCodes.FORBIDDEN);
+    const user = await userRepository.findOne({
+      where: {
+        id: requestData.userId,
+      },
+    });
+    if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
 
     Object.assign(user, requestData);
     const updatedUser = await userRepository.save(user);
+
+    const userDto = mapper.map(updatedUser, User, UserResponseDto);
+    return userDto;
+  }
+
+  public async updateUsername(plainData: TUpdateUsernameRequestDto) {
+    // Check current password
+    const requestData = plainToClass(UpdateUsernameRequestDto, plainData);
+    const errors = await validate(requestData);
+    if (errors.length > 0) throw new ValidationError(errors);
+
+    const user = await userRepository.findOne({
+      where: {
+        slug: requestData.userSlug,
+      },
+    });
+
+    if (!user) throw new GlobalError(ErrorCodes.USER_NOT_FOUND);
+
+    Object.assign(user, { username: requestData.username });
+    const updatedUser = await userRepository.save(user);
+
     const userDto = mapper.map(updatedUser, User, UserResponseDto);
     return userDto;
   }
