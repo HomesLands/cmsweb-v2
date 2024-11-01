@@ -35,14 +35,10 @@ export class CompanyService {
   public async createCompany(
     plainData: TCreateCompanyRequestDto
   ): Promise<CompanyResponseDto> {
-    console.log({plainData})
     const requestData = plainToClass(CreateCompanyRequestDto, plainData);
-
-    console.log({requestData})
 
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
-    console.log({errors})
 
     const nameExist = await companyRepository.existsBy({
       name: requestData.name,
@@ -54,18 +50,14 @@ export class CompanyService {
       CreateCompanyRequestDto,
       Company
     );
-    console.log({companyData})
     const createdCompanyData =
       await companyRepository.createAndSave(companyData);
-
-    console.log({createdCompanyData})
 
     const companyDto = mapper.map(
       createdCompanyData,
       Company,
       CompanyResponseDto
     );
-    console.log({companyDto})
     return companyDto;
   }
 
@@ -101,18 +93,22 @@ export class CompanyService {
   public async uploadCompanyLogo(
     requestData: TUploadCompanyLogoRequestDto
   ): Promise<CompanyResponseDto> {
+    console.log({requestData})
     const company = await companyRepository.findOneBy({
       slug: requestData.slug,
     });
+    console.log({company})
     if (!company) throw new GlobalError(ErrorCodes.COMPANY_NOT_FOUND);
 
     const file = await fileService.uploadFile(requestData.file);
+    console.log({file})
 
     const oldFile = company.logo;
     if (oldFile) await fileService.removeFileByName(oldFile);
 
-    Object.assign(company, { logo: `${file.name}.${file.extension}` });
+    // Object.assign(company, { logo: `${file.name}.${file.extension}` });
     const updatedCompany = await companyRepository.save(company);
+    console.log({updatedCompany})
 
     const companyDto = mapper.map(updatedCompany, Company, CompanyResponseDto);
     return companyDto;

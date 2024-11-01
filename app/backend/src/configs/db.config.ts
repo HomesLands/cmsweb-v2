@@ -7,8 +7,7 @@ const config = {
   HOST: env.dataSource.hostMySql,
   USER: env.dataSource.userMySql,
   PASSWORD: env.dataSource.passwordMySql,
-  DB: env.nodeEnv === "development" ? env.dataSource.databaseMySql : env.dataSource.databaseTestMySql,
-  // DB: env.dataSource.databaseTestMySql,
+  DB: env.dataSource.databaseMySql,
   pool: {
     max: 5,
     min: 0,

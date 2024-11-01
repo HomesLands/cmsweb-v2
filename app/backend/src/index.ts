@@ -64,13 +64,10 @@ const app: Express = express();
   // Global error handling
   app.use(errorHandlerMiddleware.handler);
 
-  if (process.env.NODE_ENV !== 'test'){
-    app.listen(port, () => {
-      logger.info(`[server]: Server is running at http://localhost:${port}`);
-      logger.info(
-        `[server]: Swagger is running at http://localhost:${port}/api/api-docs`
-      );
-    });
-  }
+  app.listen(port, () => {
+    logger.info(`[server]: Server is running at http://localhost:${port}`);
+    logger.info(
+      `[server]: Swagger is running at http://localhost:${port}/api/api-docs`
+    );
+  });
 })();
-export default app;

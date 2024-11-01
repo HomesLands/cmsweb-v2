@@ -134,6 +134,144 @@ class ProductPurchaseFormService {
     return formDto;
   }
 
+  public async createProductPurchaseFormWithoutProductRequisitionFormTest(
+    plainData: TCreateProductPurchaseFormWithoutProductRequisitionFormRequestDto
+  ): Promise<ProductPurchaseFormResponseDto> {
+    const requestData = await this.validateAndMapRequestData(plainData);
+    await this.checkForExistingCode(requestData.code);
+    
+    const purchaseProducts = await this.processPurchaseProducts(requestData.purchaseProducts);
+    
+    return this.createProductPurchaseForm(requestData, purchaseProducts);
+  }
+  
+  // 1. Hàm kiểm tra dữ liệu đầu vào và mapping
+  private async validateAndMapRequestData(
+    plainData: TCreateProductPurchaseFormWithoutProductRequisitionFormRequestDto
+  ): Promise<CreateProductPurchaseFormWithoutProductRequisitionFormRequestDto> {
+    const requestData = plainToClass(
+      CreateProductPurchaseFormWithoutProductRequisitionFormRequestDto,
+      plainData
+    );
+    const errors = await validate(requestData);
+    if (errors.length > 0) throw new ValidationError(errors);
+    return requestData;
+  }
+  
+  // 2. Hàm kiểm tra mã `code` tồn tại
+  private async checkForExistingCode(code: string): Promise<void> {
+    const codeExisted = await productPurchaseFormRepository.existsBy({ code });
+    if (codeExisted) throw new GlobalError(ErrorCodes.PRODUCT_PURCHASE_FORM_CODE_EXISTED);
+  }
+  
+  // 3. Hàm xử lý các sản phẩm (product hoặc temporary product)
+  private async processPurchaseProducts(
+    purchaseProducts: Array<CreatePurchaseProductWithoutRequisitionFormRequestDto>
+  ): Promise<PurchaseProduct[]> {
+    const results: PurchaseProduct[] = [];
+  
+    for (const purchaseProduct of purchaseProducts) {
+      if (purchaseProduct.product) {
+        const existingProduct = await this.findAndMapProduct(purchaseProduct);
+        if (existingProduct) {
+          results.push(existingProduct);
+          continue;
+        }
+      }
+  
+      if (purchaseProduct.temporaryProduct) {
+        const existingTempProduct = await this.findAndMapTemporaryProduct(purchaseProduct);
+        if (existingTempProduct) {
+          results.push(existingTempProduct);
+          continue;
+        }
+      }
+  
+      const newTempProduct = await this.createTemporaryProduct(purchaseProduct);
+      results.push(newTempProduct);
+    }
+  
+    return results;
+  }
+  
+  // 4. Hàm tìm và map `product`
+  private async findAndMapProduct(
+    purchaseProductDto: CreatePurchaseProductWithoutRequisitionFormRequestDto
+  ): Promise<PurchaseProduct | null> {
+    const product = await productRepository.findOneBy({ slug: purchaseProductDto.product });
+    if (!product) return null;
+  
+    const purchaseProductMapper = mapper.map(
+      purchaseProductDto,
+      CreatePurchaseProductWithoutRequisitionFormRequestDto,
+      PurchaseProduct
+    );
+    Object.assign(purchaseProductMapper, { product });
+    return purchaseProductMapper;
+  }
+  
+  // 5. Hàm tìm và map `temporaryProduct`
+  private async findAndMapTemporaryProduct(
+    purchaseProductDto: CreatePurchaseProductWithoutRequisitionFormRequestDto
+  ): Promise<PurchaseProduct | null> {
+    const temporaryProduct = await temporaryProductRepository.findOneBy({
+      slug: purchaseProductDto.temporaryProduct,
+    });
+    if (!temporaryProduct) return null;
+  
+    const purchaseProductMapper = mapper.map(
+      purchaseProductDto,
+      CreatePurchaseProductWithoutRequisitionFormRequestDto,
+      PurchaseProduct
+    );
+    Object.assign(purchaseProductMapper, { temporaryProduct, isExistProduct: false });
+    return purchaseProductMapper;
+  }
+  
+  // 6. Hàm tạo `temporaryProduct` mới
+  private async createTemporaryProduct(
+    purchaseProductDto: CreatePurchaseProductWithoutRequisitionFormRequestDto
+  ): Promise<PurchaseProduct> {
+    const unit = await unitRepository.findOneBy({ slug: purchaseProductDto.unit });
+    if (!unit) throw new GlobalError(ErrorCodes.UNIT_NOT_FOUND);
+  
+    const temporaryProductMapper = mapper.map(
+      purchaseProductDto,
+      CreateTemporaryProductRequestDto,
+      TemporaryProduct
+    );
+    Object.assign(temporaryProductMapper, { unit });
+  
+    const purchaseProductMapper = mapper.map(
+      purchaseProductDto,
+      CreatePurchaseProductWithoutRequisitionFormRequestDto,
+      PurchaseProduct
+    );
+    Object.assign(purchaseProductMapper, { isExistProduct: false, temporaryProduct: temporaryProductMapper });
+    return purchaseProductMapper;
+  }
+  
+  // 7. Hàm tạo `ProductPurchaseForm`
+  private async createProductPurchaseForm(
+    requestData: CreateProductPurchaseFormWithoutProductRequisitionFormRequestDto,
+    purchaseProducts: PurchaseProduct[]
+  ): Promise<ProductPurchaseFormResponseDto> {
+    const formMapper = mapper.map(
+      requestData,
+      CreateProductPurchaseFormWithoutProductRequisitionFormRequestDto,
+      ProductPurchaseForm
+    );
+    Object.assign(formMapper, {
+      status: ProductPurchaseFormStatus.WAITING,
+      purchaseProducts,
+    });
+    const form = await productPurchaseFormRepository.createAndSave(formMapper);
+  
+    const formDto = mapper.map(form, ProductPurchaseForm, ProductPurchaseFormResponseDto);
+    return formDto;
+  }
+  
+
   // create from a product requisition form
   public async createProductPurchaseFormFromProductRequisitionForm(
     plainData: TCreateProductPurchaseFormFromProductRequisitionFormRequestDto

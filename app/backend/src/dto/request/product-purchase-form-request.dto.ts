@@ -10,7 +10,7 @@ export class CreateProductPurchaseFormWithoutProductRequisitionFormRequestDto {
   @IsNotEmpty({ message: "INVALID_FORM_CODE" })
   @Expose()
   @AutoMap()
-  code?: string;
+  code: string;
 
   @IsOptional()
   @Expose()

@@ -5,7 +5,6 @@ export type TEnv = {
     userMySql: string;
     passwordMySql: string;
     databaseMySql: string;
-    databaseTestMySql: string;
   };
   hashSalt: string;
   jwtSecret: string;
