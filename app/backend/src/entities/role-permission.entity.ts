@@ -1,5 +1,5 @@
 import { Entity, ManyToOne, JoinColumn } from "typeorm";
-import { Base } from "@entities/base.entity";
+import { Base } from "./base.entity";
 import { Role } from "./role.entity";
 import { AutoMap } from "@automapper/classes";
 import { Permission } from "./permission.entity";

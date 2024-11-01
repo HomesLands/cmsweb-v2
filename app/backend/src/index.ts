@@ -19,8 +19,8 @@ import { logger } from "@lib";
 
 dotenv.config();
 
+const app: Express = express();
 (async () => {
-  const app: Express = express();
   const port: number | string = process.env.PORT || 3000;
 
   app.use(express.json());

@@ -26,3 +26,12 @@ export type TUpdateUsernameRequestDto = {
 };
 
 export type TUploadUserAvatarRequestDto = TUploadUserSignRequestDto;
+
+export type TUpdateUser = {
+  fullname?: string;
+  dob?: string;
+  gender?: string;
+  address?: string;
+  phoneNumber?: string;
+  email?: string;
+}

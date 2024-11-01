@@ -1,5 +1,6 @@
 import { Entity, Column, ManyToOne, JoinColumn } from "typeorm";
-import { Base, UserApproval } from "@entities";
+import { Base } from "./base.entity";
+import { UserApproval } from "./user-approval.entity";
 import { AutoMap } from "@automapper/classes";
 
 @Entity("approval_log_tbl")

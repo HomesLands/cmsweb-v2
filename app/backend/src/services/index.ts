@@ -22,6 +22,7 @@ export { default as productWarehouseService } from "./product-warehouse.service"
 export { default as excelService } from "./excel.service";
 export { default as resourceService } from "./resource.service";
 export { default as rolePermissionService } from "./role-permission.service";
+export { default as productPurchaseFormService } from "./product-purchase-form.service";
 export { default as PDFService } from "./pdf.service";
 export { default as databaseService } from "./database.service";
 export { default as notificationService } from "./notification.service";

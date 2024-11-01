@@ -1,6 +1,10 @@
 import { Entity, Column, OneToMany, ManyToOne, JoinColumn } from "typeorm";
-import { AssignedUserApproval, Base, Company, Department, Project } from "@entities";
 import { AutoMap } from "@automapper/classes";
+import { Base } from "./base.entity";
+import { Company } from "./company.entity";
+import { Department } from "./department.entity";
+import { Project } from "./project.entity";
+import { AssignedUserApproval } from "./assigned-user-approval.entity";
 
 @Entity("site_tbl")
 export class Site extends Base {

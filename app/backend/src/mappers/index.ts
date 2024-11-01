@@ -23,6 +23,8 @@ import { productWarehouseMapper } from "./product-warehouse.mapper";
 import { temporaryProductMapper } from "./temporary-product.mapper";
 import { resourceMapper } from "./resource.mapper";
 import { rolePermissionMapper } from "./role-permission.mapper";
+import { productPurchaseFormMapper } from "./product-purchase-form.mapper";
+import { purchaseProductMapper } from "./purchase-product.mapper";
 import { baseMapper } from "./base.mapper";
 import { notificationMapper } from "./notification.mapper";
 
@@ -68,3 +70,5 @@ addProfile(
 );
 addProfile(mapper, userApprovalMapper, extend(baseMapper(mapper)));
 addProfile(mapper, approvalLogMapper, extend(baseMapper(mapper)));
+addProfile(mapper, productPurchaseFormMapper, extend(baseMapper(mapper)));
+addProfile(mapper, purchaseProductMapper, extend(baseMapper(mapper)));

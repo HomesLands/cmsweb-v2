@@ -1,9 +1,8 @@
 import { Entity, JoinColumn, ManyToOne } from "typeorm";
-import {
-  Base,
-  Department,
-  User
-} from "@entities";
+import { Base } from "./base.entity";
+import { Department } from "./department.entity";
+import { User } from "./user.entity";
+
 @Entity("user_department_tbl")
 export class UserDepartment extends Base {
   @ManyToOne(() => Department,

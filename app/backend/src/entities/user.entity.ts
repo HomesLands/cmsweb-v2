@@ -28,6 +28,10 @@ export class User extends Base {
   dob?: string;
 
   @AutoMap()
+  @Column({ name: "email_column", nullable: true })
+  email?: string;
+
+  @AutoMap()
   @Column({ name: "gender_column", nullable: true })
   gender?: string; // Gender in enums
 

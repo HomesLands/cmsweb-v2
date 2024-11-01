@@ -1,13 +1,85 @@
 {
+  "preset": "ts-jest",
+  "verbose": true,
+  "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
   "coverageDirectory": "./coverage",
-  "testMatch": ["<rootDir>/src/__tests__/**/*.test.ts"],  
+  "testMatch": ["<rootDir>/src/__tests__/**/*.test.ts"], 
+  "transform": {
+    "^.+\\.(ts|tsx)$": ["ts-jest", {
+      "tsconfig": "./tsconfig.json",
+      "isolatedModules": true,
+      "diagnostics": {
+        "ignoreCodes": [151001]
+      }
+    }]
+  },
+  // "globals": {
+  //   "ts-jest": {
+  //       "tsconfig": "./tsconfig.json",
+  //       "diagnostics": {
+  //         "ignoreCodes": [151001]
+  //       }
+  //   }
+  // },
   "resetMocks": true,
   "clearMocks": true,
   "collectCoverage": true,
   "coverageProvider": "v8",
   "coverageReporters": ["clover"],
+  "moduleDirectories": ["node_modules", "src"],
   "moduleNameMapper": {
-    "^@/(.*)$": "<rootDir>/src/$1"
+    "^@controllers/(.*)$": "<rootDir>/src/controllers/$1",
+    "^@controllers$": "<rootDir>/src/controllers/index",
+
+    "^@entities/(.*)$": "<rootDir>/src/entities/$1",
+    "^@entities$": "<rootDir>/src/entities/index",
+
+    "^@services/(.*)$": "<rootDir>/src/services/$1",
+    "^@services$": "<rootDir>/src/services/index",
+
+    "^@middlewares/(.*)$": "<rootDir>/src/middlewares/$1",
+    "^@middlewares$": "<rootDir>/src/middlewares/index",
+
+    "^@routes/(.*)$": "<rootDir>/src/routes/$1",
+    "^@routes$": "<rootDir>/src/routes/index",
+
+    "^@configs/(.*)$": "<rootDir>/src/configs/$1",
+    "^@configs$": "<rootDir>/src/configs/index",
+
+    "^@repositories/(.*)$": "<rootDir>/src/repositories/$1",
+    "^@repositories$": "<rootDir>/src/repositories/index",
+
+    "^@exception/(.*)$": "<rootDir>/src/exception/$1",
+    "^@exception$": "<rootDir>/src/exception/index",
+
+    "^@lib/(.*)$": "<rootDir>/src/lib/$1",
+    "^@lib$": "<rootDir>/src/lib/index",
+
+    "^@types/(.*)$": "<rootDir>/src/types/$1",
+    "^@types$": "<rootDir>/src/types/index",
+
+    "^@mappers/(.*)$": "<rootDir>/src/mappers/$1",
+    "^@mappers$": "<rootDir>/src/mappers/index",
+
+    "^@utils/(.*)$": "<rootDir>/src/utils/$1",
+    "^@utils$": "<rootDir>/src/utils/index",
+
+    "^@constants$": "<rootDir>/src/constants/index",
+
+    "^@enums/(.*)$": "<rootDir>/src/enums/$1",
+    "^@enums$": "<rootDir>/src/enums/index",
+
+    "^@dto/(.*)$": "<rootDir>/src/dto/$1",
+
+    "^@decorator/(.*)$": "<rootDir>/src/decorator/$1",
+    "^@decorator$": "<rootDir>/src/decorator/index",
+
+    "^@__tests__/(.*)$": "<rootDir>/src/__tests__/$1"
   },
-  "testEnvironment": "node"
+  "testEnvironment": "node",
+  "setupFilesAfterEnv": ["<rootDir>/src/__tests__/setup.ts"]
 }

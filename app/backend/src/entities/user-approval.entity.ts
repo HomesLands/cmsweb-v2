@@ -1,10 +1,8 @@
 import { Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
-import { 
-  Base, 
-  ProductRequisitionForm, 
-  ApprovalLog,
-  AssignedUserApproval, 
-} from "@entities";
+import { Base } from "./base.entity";
+import { AssignedUserApproval } from "./assigned-user-approval.entity";
+import { ProductRequisitionForm } from "./product-requisition-form.entity";
+import { ApprovalLog } from "./approval-log.entity";
 
 @Entity("user_approval_tbl")
 export class UserApproval extends Base {

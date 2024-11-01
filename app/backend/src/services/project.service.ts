@@ -22,6 +22,22 @@ class ProjectService {
     return projectsDto;
   }
 
+  public async getProjectBySite( siteSlug: string ): Promise<ProjectResponseDto[]>{
+    const projectsData = await projectRepository.find({
+      where: {
+        site: {
+          slug: siteSlug
+        }
+      },
+    });
+    const projectsDto: ProjectResponseDto[] = mapper.mapArray(
+      projectsData,
+      Project,
+      ProjectResponseDto
+    );
+    return projectsDto;
+  }
+
   public async createProject(
     plainData: TCreateProjectRequestDto
   ): Promise<ProjectResponseDto> {

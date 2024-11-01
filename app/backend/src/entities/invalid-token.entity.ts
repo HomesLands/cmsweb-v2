@@ -1,5 +1,5 @@
 import { Entity, Column } from "typeorm";
-import { Base } from "@entities/base.entity";
+import { Base } from "./base.entity";
 
 @Entity("invalid_token_tbl")
 export class InvalidToken extends Base {
