@@ -21,9 +21,10 @@ import {
   DialogAddUserDepartment,
   DialogUpdateUserDepartment,
   DialogDeleteUserDepartment,
-  DialogUpdateUsername
+  DialogUpdateUsername,
+  DialogDeleteUser,
+  DialogDeleteUserRole
 } from '@/components/app/dialog'
-import DialogDeleteUserRole from '@/components/app/dialog/dialog-delete-user-role'
 
 export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
   const { t } = useTranslation('employees')
@@ -121,6 +122,7 @@ export const useEmployeeColumns = (): ColumnDef<IUserInfo>[] => {
                 {hasDepartment && <DialogUpdateUserDepartment user={user} />}
                 {hasDepartment && <DialogDeleteUserDepartment user={user} />}
                 {hasRole && <DialogDeleteUserRole user={user} />}
+                <DialogDeleteUser userInfo={user} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

@@ -63,3 +63,8 @@ export async function updateUsername(data: IUpdateUsername) {
   const response = await http.patch<IApiResponse<IUserInfo>>(`/users/${data.slug}/username`, data)
   return response.data
 }
+
+export async function deleteUser(slug: string) {
+  const response = await http.delete<IApiResponse<IUserInfo>>(`/users/${slug}`)
+  return response.data
+}
