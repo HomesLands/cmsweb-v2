@@ -64,3 +64,9 @@ productRequisitionFormRoute.patch(
   authMiddleware.hasPermission(Action.UPDATE, ProductRequisitionForm),
   productRequisitionFormController.updateGeneralInformationForm
 );
+
+// [DELETE] /api/v1/productRequisitionForms/:slug
+productRequisitionFormRoute.delete(
+  "/:slug",
+  productRequisitionFormController.deleteProductRequisitionForm
+);

@@ -12,6 +12,8 @@ import {
   assignedUserApprovalRepository,
   unitRepository,
   departmentRepository,
+  requestProductRepository,
+  approvalLogRepository,
 } from "@repositories";
 import {
   TCreateProductRequisitionFormRequestDto,
@@ -968,6 +970,48 @@ class ProductRequisitionFormService {
       filename: form.code,
       buffer: pdf,
     };
+  }
+
+  public async deleteProductRequisitionForm(
+    slug: string
+  ): Promise<ProductRequisitionFormResponseDto>{
+    const form = await productRequisitionFormRepository.findOne({
+      where: {
+        slug
+      }, 
+      relations: [
+        "project",
+        "creator.userDepartments.department.site.company",
+        "userApprovals.assignedUserApproval.user",
+        "userApprovals.approvalLogs",
+        "requestProducts.product.unit",
+        "requestProducts.temporaryProduct.unit",
+      ],
+    });
+    if(!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
+    
+    await Promise.all([
+      form.userApprovals && await Promise.all(
+        form.userApprovals.map(async (userApproval) => {
+          // Xóa các approvalLogs của product
+          if (userApproval.approvalLogs) {
+            await Promise.all(
+              userApproval.approvalLogs.map(approvalLog => approvalLogRepository.softRemove(approvalLog))
+            );
+          }
+          // Xóa product
+          await userApprovalRepository.softRemove(userApproval);
+        })
+      ),
+      form.requestProducts && Promise.all(
+        form.requestProducts.map((product) => requestProductRepository.softRemove(product))
+      ),
+    ]);
+
+    await productRequisitionFormRepository.softRemove(form);
+
+    const formDto = mapper.map(form, ProductRequisitionForm, ProductRequisitionFormResponseDto);
+    return formDto;
   }
 }
 

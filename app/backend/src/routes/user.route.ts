@@ -42,3 +42,6 @@ userRoute.patch(
 
 // [PATCH] /api/v1/users/signature
 userRoute.patch("/changePassword", userController.changePassword);
+
+// [DELETE] /api/v1/users/:slug
+userRoute.delete("/:slug", userController.deleteUser);
