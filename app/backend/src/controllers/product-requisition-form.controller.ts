@@ -773,13 +773,13 @@ class ProductRequisitionFormController {
     try {
       const { slug } = req.params;
       const result = await productRequisitionFormService.deleteProductRequisitionForm(slug);
-      const response: TApiResponse<ProductRequisitionFormResponseDto> = {
+      const response: TApiResponse<string> = {
         code: StatusCodes.OK,
         error: false,
-        message: `Product requisition form has been deleted successfully`,
+        message: "The form deleted successfully",
         method: req.method,
         path: req.originalUrl,
-        result,
+        result: `${result} rows affected`,
       };
       res.status(StatusCodes.OK).json(response);
     } catch (error) {

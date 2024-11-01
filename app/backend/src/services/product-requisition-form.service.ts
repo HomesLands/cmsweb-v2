@@ -974,7 +974,7 @@ class ProductRequisitionFormService {
 
   public async deleteProductRequisitionForm(
     slug: string
-  ): Promise<ProductRequisitionFormResponseDto>{
+  ): Promise<number>{
     const form = await productRequisitionFormRepository.findOne({
       where: {
         slug
@@ -1008,10 +1008,8 @@ class ProductRequisitionFormService {
       ),
     ]);
 
-    await productRequisitionFormRepository.softRemove(form);
-
-    const formDto = mapper.map(form, ProductRequisitionForm, ProductRequisitionFormResponseDto);
-    return formDto;
+    const deleted = await productRequisitionFormRepository.softDelete({ slug });
+    return deleted.affected || 0;
   }
 }
 

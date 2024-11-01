@@ -525,13 +525,13 @@ class UserController {
     try {
       const { slug } = req.params;
       const result = await userService.deleteUser(slug);
-      const response: TApiResponse<UserResponseDto> = {
+      const response: TApiResponse<string> = {
         code: StatusCodes.OK,
         error: false,
-        message: `User has been deleted successfully`,
+        message: "The user deleted successfully",
         method: req.method,
         path: req.originalUrl,
-        result,
+        result: `${result} rows affected`,
       };
       res.status(StatusCodes.OK).json(response);
     } catch (error) {
