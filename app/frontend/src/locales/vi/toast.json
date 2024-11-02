@@ -40,6 +40,7 @@
 
     "logoutSuccess": "Đăng xuất thành công",
     "updateUserSuccess": "Người dùng được cập nhật thành công",
+    "deleteUserSuccess": "Người dùng được xóa thành công",
     "invalidUserDepartmentExisted": "Người dùng đã tồn tại trong phòng ban",
 
     "updateUsernameSuccess": "Tên tài khoản được cập nhật thành công",

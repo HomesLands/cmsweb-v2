@@ -2,6 +2,7 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 
 import {
   changePasswordApi,
+  deleteUser,
   getUser,
   getUserInfoPermission,
   getUsers,
@@ -97,6 +98,16 @@ export const useUpdateUsername = () => {
       // if (userInfoResponse.data) {
       //   setUserInfo(userInfoResponse.data) // Update the store with the latest user info
       // }
+    }
+  })
+}
+
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (slug: string) => deleteUser(slug),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] })
     }
   })
 }
