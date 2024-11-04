@@ -21,10 +21,15 @@ export class CreateProductRequisitionFormRequestDto {
   @AutoMap()
   code?: string;
 
+  // @IsNotEmpty({ message: "INVALID_PROJECT_SLUG" })
+  // @Expose()
+  // @AutoMap()
+  // project?: string;
+
   @IsNotEmpty({ message: "INVALID_PROJECT_SLUG" })
   @Expose()
   @AutoMap()
-  project?: string;
+  projectName?: string;
 
   @IsNotEmpty({ message: "INVALID_TYPE_PRODUCT_REQUISITION_FORM" })
   @IsEnum(ProductRequisitionFormType, {
@@ -85,10 +90,15 @@ export class ResubmitProductRequisitionFormRequestDto {
 }
 
 export class UpdateGeneralInformationProductRequisitionFormRequestDto {
-  @IsNotEmpty({ message: "INVALID_PROJECT_SLUG" })
+  // @IsNotEmpty({ message: "INVALID_PROJECT_SLUG" })
+  // @Expose()
+  // @AutoMap()
+  // project?: string;
+
+  @IsNotEmpty({ message: "INVALID_PROJECT_NAME" })
   @Expose()
   @AutoMap()
-  project?: string;
+  projectName?: string;
 
   @IsNotEmpty({ message: "INVALID_TYPE_PRODUCT_REQUISITION_FORM" })
   @IsEnum(ProductRequisitionFormType, {
