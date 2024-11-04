@@ -60,7 +60,7 @@ class ProductRequisitionFormController {
    *       type: object
    *       required:
    *         - code
-   *         - project
+   *         - projectName
    *         - type
    *         - deadlineApproval
    *         - description
@@ -70,9 +70,9 @@ class ProductRequisitionFormController {
    *         code:
    *           type: string
    *           description: The code for the requisition form.
-   *         project:
+   *         projectName:
    *           type: string
-   *           description: The slug of the project.
+   *           description: The name of the project.
    *         type:
    *           type: string
    *           description: The type of form.
@@ -92,7 +92,7 @@ class ProductRequisitionFormController {
    *             $ref: '#/components/schemas/CreateRequestProductDto'
    *       example:
    *         code: YCVT123
-   *         project: project-789
+   *         projectName: project-789
    *         deadlineApproval: 2024-09-12 20:45:15
    *         type: urgent
    *         description: Ý kiến người tạo
@@ -161,14 +161,14 @@ class ProductRequisitionFormController {
    *     UpdateGeneralInformationProductRequisitionFormRequestDto:
    *       type: object
    *       required:
-   *         - project
+   *         - projectName
    *         - type
    *         - deadlineApproval
    *         - description
    *       properties:
-   *         project:
+   *         projectName:
    *           type: string
-   *           description: Project slug
+   *           description: Project name
    *         type:
    *           type: string
    *           description: Type of product requisition form, it can be normal or urgent
@@ -179,7 +179,7 @@ class ProductRequisitionFormController {
    *           type: string
    *           description: Description for product requisition form
    *       example:
-   *         project: project-slug-123
+   *         projectName: project-123
    *         type: normal
    *         deadlineApproval: 2024-09-15 10:25:45
    *         description: Đã chỉnh sửa

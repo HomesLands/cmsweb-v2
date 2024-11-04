@@ -32,10 +32,10 @@ export const productRequisitionFormMapper: MappingProfile = (
     mapper,
     ProductRequisitionForm,
     ProductRequisitionFormResponseDto,
-    forMember(
-      (destination) => destination.project,
-      mapWith(ProjectResponseDto, Project, (source) => source.project)
-    ),
+    // forMember(
+    //   (destination) => destination.project,
+    //   mapWith(ProjectResponseDto, Project, (source) => source.project)
+    // ),
     forMember(
       (destination) => destination.creator,
       mapWith(UserResponseDto, User, (source) => source.creator)
