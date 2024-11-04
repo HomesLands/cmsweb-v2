@@ -35,6 +35,10 @@ export class ProductRequisitionForm extends Base {
   @AutoMap()
   description?: string;
 
+  @Column({ name: "project_name_column", nullable: true })
+  @AutoMap()
+  projectName?: string;
+
   // a ProductRequisition have many request product
   @OneToMany(
     () => RequestProduct,
@@ -59,7 +63,11 @@ export class ProductRequisitionForm extends Base {
   @JoinColumn({ name: "creator_column" })
   creator?: User;
 
-  @ManyToOne(() => Project, (project) => project.productRequisitionForms)
+  @ManyToOne(
+    () => Project, 
+    (project) => project.productRequisitionForms,
+    { nullable: true }
+  )
   @JoinColumn({ name: "project_column" })
   project?: Project;
 

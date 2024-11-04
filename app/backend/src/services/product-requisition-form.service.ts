@@ -219,10 +219,10 @@ class ProductRequisitionFormService {
     if (!(firstStageApprover && secondStageApprover && thirdStageApprover))
       throw new GlobalError(ErrorCodes.MISSING_USER_APPROVAL);
 
-    const project = await projectRepository.findOneBy({
-      slug: requestData.project,
-    });
-    if (!project) throw new GlobalError(ErrorCodes.PROJECT_NOT_FOUND);
+    // const project = await projectRepository.findOneBy({
+    //   slug: requestData.project,
+    // });
+    // if (!project) throw new GlobalError(ErrorCodes.PROJECT_NOT_FOUND);
 
     // Create product requisition form
     const form = mapper.map(
@@ -232,7 +232,7 @@ class ProductRequisitionFormService {
     );
     Object.assign(form, {
       status: ProductRequisitionFormStatus.WAITING,
-      project,
+      // project,
       creator,
     });
 
@@ -686,6 +686,7 @@ class ProductRequisitionFormService {
       UpdateGeneralInformationProductRequisitionFormRequestDto,
       plainData
     );
+    console.log({requestData})
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
 
@@ -697,8 +698,8 @@ class ProductRequisitionFormService {
     });
     if (!form) throw new GlobalError(ErrorCodes.FORM_NOT_FOUND);
 
-    if (!ability?.can(Action.UPDATE, form))
-      throw new GlobalError(StatusCodes.FORBIDDEN);
+    // if (!ability?.can(Action.UPDATE, form))
+    //   throw new GlobalError(StatusCodes.FORBIDDEN);
 
     const isPermitEdit: boolean =
       PermissionUtils.isPermitEditProductRequisitionForm(
@@ -707,14 +708,14 @@ class ProductRequisitionFormService {
       );
     if (!isPermitEdit) throw new GlobalError(StatusCodes.FORBIDDEN);
 
-    const project = await projectRepository.findOneBy({
-      slug: requestData.project,
-    });
-    if (!project) throw new GlobalError(ErrorCodes.PROJECT_NOT_FOUND);
+    // const project = await projectRepository.findOneBy({
+    //   slug: requestData.project,
+    // });
+    // if (!project) throw new GlobalError(ErrorCodes.PROJECT_NOT_FOUND);
 
     Object.assign(form, {
       ...requestData,
-      project,
+      // project,
     });
     const updatedForm = await productRequisitionFormRepository.save(form);
     const formDto = mapper.map(

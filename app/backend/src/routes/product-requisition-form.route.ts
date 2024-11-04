@@ -54,7 +54,7 @@ productRequisitionFormRoute.patch(
 // [GET] /api/v1/productRequisitionForms/:slug
 productRequisitionFormRoute.get(
   "/:slug",
-  // authMiddleware.hasPermission(Action.READ, ProductRequisitionForm),
+  authMiddleware.hasPermission(Action.READ, ProductRequisitionForm),
   productRequisitionFormController.getProductRequisitionFormBySlug
 );
 

@@ -26,8 +26,11 @@ export class ProductRequisitionFormResponseDto extends BaseResponseDto {
   @AutoMap()
   description?: boolean;
 
-  @AutoMap(() => ProjectResponseDto)
-  project?: ProjectResponseDto;
+  // @AutoMap(() => ProjectResponseDto)
+  // project?: ProjectResponseDto;
+
+  @AutoMap()
+  projectName?: string;
   
   @AutoMap(() => UserResponseDto)
   creator?: UserResponseDto;
