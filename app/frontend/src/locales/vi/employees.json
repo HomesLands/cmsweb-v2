@@ -42,7 +42,6 @@
     "deleteUserDescription": "Lưu ý: Hành động này không thể hoàn tác!",
     "deleteUserWarning": "Bạn sắp sửa xóa nhân viên",
     "deleteUserConfirmation": "Bạn chắc chắn muốn xóa?",
-    "deleteUserSuccess": "Nhân viên đã được xóa thành công!",
 
     "createUser": "Tạo nhân sự",
     "username": "Tên đăng nhập",

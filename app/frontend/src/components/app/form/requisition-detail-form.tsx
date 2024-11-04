@@ -254,10 +254,10 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
               onPageChange={() => {}}
               onPageSizeChange={() => {}}
             />
-            <RequisitionTimeline items={renderTimeline()} />
           </div>
         </form>
       </Form>
+      <RequisitionTimeline items={renderTimeline()} />
     </div>
   )
 }

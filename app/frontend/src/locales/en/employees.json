@@ -41,6 +41,11 @@
     "deleteUserRoleWarning1": "You are about to delete the role of the employee",
     "deleteUserRoleConfirmation": "Please select the role you want to delete (only select one role)",
 
+    "deleteUser": "Delete employee",
+    "deleteUserDescription": "Note: This action cannot be undone!",
+    "deleteUserWarning": "You are about to delete the employee",
+    "deleteUserConfirmation": "Are you sure you want to delete?",
+
     "gender": "Gender",
     "genderDescription": "Select gender",
     "male": "Male",

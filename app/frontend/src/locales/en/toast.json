@@ -40,6 +40,7 @@
 
     "logoutSuccess": "Logout successful",
     "updateUserSuccess": "User updated successfully",
+    "deleteUserSuccess": "User deleted successfully",
     "invalidUserDepartmentExisted": "User already exists in the department",
 
     "updateUsernameSuccess": "Username updated successfully",

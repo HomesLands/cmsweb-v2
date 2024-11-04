@@ -1,10 +1,10 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
+import { ReaderIcon } from '@radix-ui/react-icons'
 
 import { DataTable, Label } from '@/components/ui'
 import { useCompanies } from '@/hooks'
 import { useCompanyColumns } from './data-table'
-import { ReaderIcon } from '@radix-ui/react-icons'
-import { useTranslation } from 'react-i18next'
 
 const Companies: React.FC = () => {
   const { data: companies, isLoading } = useCompanies()
