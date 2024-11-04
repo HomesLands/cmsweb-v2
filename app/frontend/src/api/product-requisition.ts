@@ -41,7 +41,6 @@ export async function getProductRequisitionByApprover(params: IProductQuery) {
 }
 
 export async function createProductRequisition(data: IFinalProductRequisition) {
-  console.log('product requisition', data)
   const response = await http.post<IApiResponse<IProductInfo>>('/productRequisitionForms', data)
   return response.data
 }
@@ -123,7 +122,7 @@ export async function updateProductRequisitionGeneralInfo(
     {
       type: data.type,
       deadlineApproval: data.deadlineApproval,
-      project: data.project.slug,
+      projectName: data.project.slug,
       description: data.description
     }
   )

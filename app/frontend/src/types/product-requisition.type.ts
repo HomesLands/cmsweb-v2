@@ -60,7 +60,7 @@ export interface IProductRequisitionFormCreate {
 
 export interface IFinalProductRequisition {
   code?: string
-  project: string //Project slug
+  projectName: string //Project name
   type: 'normal' | 'urgent'
   description: string
   deadlineApproval: string
