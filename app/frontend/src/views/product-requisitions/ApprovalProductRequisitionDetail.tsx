@@ -280,7 +280,7 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
               </div>
               <div>
                 <strong>{t('requisitionDetail.projectName')}</strong>
-                {data?.result?.productRequisitionForm.project.name}
+                {data?.result?.productRequisitionForm.projectName}
               </div>
               <div>
                 <strong>{t('requisitionDetail.note')}</strong>

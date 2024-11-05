@@ -17,7 +17,7 @@
     "departmentName": "Department name",
     "departmentNameDescription": "Select department",
     "projectName": "Project name",
-    "projectNameDescription": "Choose project",
+    "projectNameDescription": "Enter project name",
     "constructionSite": "Construction site",
     "constructionSiteDescription": "Choose construction site",
     "approver": "Approver",

@@ -29,7 +29,7 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
       creator: data?.creator || '',
       description: data?.description || '',
       company: data?.creator?.userDepartments[0]?.department?.site?.company?.name || '',
-      project: data?.project || '',
+      project: data?.projectName || '',
       type: data?.type || '',
       requestProducts: data?.requestProducts || [],
       displayStatus: '',
@@ -175,7 +175,7 @@ export const RequisitionDetailForm: React.FC<IFormRequisitionDetailProps> = ({ d
           <div className="grid grid-cols-2 gap-2">
             <FormField
               control={form.control}
-              name="project.name"
+              name="project"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t('productRequisition.projectName')}</FormLabel>

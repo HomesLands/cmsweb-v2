@@ -49,10 +49,11 @@ export interface IProductRequisitionFormCreate {
     slug: string
     name: string
   }
-  project: {
-    slug: string
-    name: string
-  }
+  projectName: string
+  // project: {
+  //   slug: string
+  //   name: string
+  // }
   type: ProductRequisitionType
   requestProducts: IProductRequisitionInfo[]
   note?: string
@@ -60,7 +61,7 @@ export interface IProductRequisitionFormCreate {
 
 export interface IFinalProductRequisition {
   code?: string
-  project: string //Project slug
+  projectName: string //Project name
   type: 'normal' | 'urgent'
   description: string
   deadlineApproval: string
@@ -117,14 +118,15 @@ export interface IProductRequisitionFormInfo {
   isRecalled: boolean
   deadlineApproval: string
   description: string
-  project: {
-    name: string
-    startDate: string
-    description: string
-    createdAt: string
-    updatedAt: string
-    slug: string
-  }
+  projectName: string
+  // project: {
+  //   name: string
+  //   startDate: string
+  //   description: string
+  //   createdAt: string
+  //   updatedAt: string
+  //   slug: string
+  // }
   creator: IUserInfo
   requestProducts: {
     requestQuantity: number
@@ -259,10 +261,11 @@ export interface IUpdateProductRequisitionQuantity {
 
 export interface IUpdateProductRequisitionGeneralInfo {
   slug: string
-  project: {
-    slug: string
-    name: string
-  }
+  projectName: string
+  // project: {
+  //   slug: string
+  //   name: string
+  // }
   type: ProductRequisitionType
   deadlineApproval: string
   description: string

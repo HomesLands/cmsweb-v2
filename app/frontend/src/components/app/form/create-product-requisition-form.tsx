@@ -78,10 +78,11 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
 
       type: 'normal',
       requestProducts: [],
-      project: {
-        slug: requisition?.project.slug || '',
-        name: requisition?.project.name || ''
-      },
+      projectName: requisition?.projectName || '',
+      // project: {
+      //   slug: requisition?.project.slug || '',
+      //   name: requisition?.project.name || ''
+      // },
       note: requisition?.note || ''
     }
   })
@@ -262,7 +263,7 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
       <FormField
         control={form.control}
         name="department"
-        render={({ field }) => (
+        render={() => (
           <FormItem>
             <FormLabel>{t('productRequisition.departmentName')}</FormLabel>
             <FormControl>
@@ -277,18 +278,23 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
         )}
       />
     ),
-    project: (
+    projectName: (
       <FormField
         control={form.control}
-        name="project"
+        name="projectName"
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t('productRequisition.projectName')}</FormLabel>
             <FormControl>
-              <SelectProject
+              <Input
+                placeholder={t('productRequisition.projectNameDescription')}
+                defaultValue={requisition?.projectName}
+                {...field}
+              />
+              {/* <SelectProject
                 defaultValue={requisition?.project.slug}
                 onChange={(slug: string, name: string) => field.onChange({ slug, name })}
-              />
+              /> */}
             </FormControl>
             <FormMessage />
           </FormItem>
