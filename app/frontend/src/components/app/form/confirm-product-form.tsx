@@ -28,7 +28,7 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
   const transformRequisitionToApiFormat = (requisition: IProductRequisitionFormCreate) => {
     return {
       code: requisition.code,
-      projectName: requisition.project.name,
+      projectName: requisition.projectName,
       type: requisition.type,
       deadlineApproval: requisition.deadlineApproval,
       description: requisition.note || '',
@@ -114,7 +114,7 @@ export const ConfirmProductForm: React.FC<IConfirmProductFormProps> = ({ onConfi
             </div>
             <div>
               <strong>Dự án: </strong>
-              {requisition?.project.name}
+              {requisition?.projectName}
             </div>
             <div>
               <strong>Ghi chú: </strong>

@@ -122,7 +122,7 @@ export async function updateProductRequisitionGeneralInfo(
     {
       type: data.type,
       deadlineApproval: data.deadlineApproval,
-      projectName: data.project.slug,
+      projectName: data.projectName,
       description: data.description
     }
   )

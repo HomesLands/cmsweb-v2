@@ -22,10 +22,11 @@ export const productRequisitionSchema = z.object({
     slug: z.string().min(1, 'Mã công trình không hợp lệ'),
     name: z.string().min(1, 'Tên công trình không hợp lệ')
   }),
-  project: z.object({
-    slug: z.string().min(1, 'Mã dự án không hợp lệ'),
-    name: z.string().min(1, 'Tên dự án không hợp lệ')
-  }),
+  projectName: z.string().min(1, 'Tên dự án không hợp lệ'),
+  // project: z.object({
+  //   slug: z.string().min(1, 'Mã dự án không hợp lệ'),
+  //   name: z.string().min(1, 'Tên dự án không hợp lệ')
+  // }),
   type: z.enum(['normal', 'urgent']),
   requestProducts: z.array(
     z.object({
@@ -67,10 +68,11 @@ export const productRequisitionGeneralInfoSchema = z.object({
     slug: z.string().min(1, 'Mã công trình không hợp lệ'),
     name: z.string().min(1, 'Tên công trình không hợp lệ')
   }),
-  project: z.object({
-    slug: z.string().min(1, 'Mã dự án không hợp lệ'),
-    name: z.string().min(1, 'Tên dự án không hợp lệ')
-  }),
+  projectName: z.string().min(1, 'Tên dự án không hợp lệ'),
+  // project: z.object({
+  //   slug: z.string().min(1, 'Mã dự án không hợp lệ'),
+  //   name: z.string().min(1, 'Tên dự án không hợp lệ')
+  // }),
   type: z.enum(['normal', 'urgent']),
   note: z.string().min(1, 'Ghi chú không hợp lệ')
 })

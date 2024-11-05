@@ -131,10 +131,11 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
         name: requisition?.creator.userDepartments[0]?.department?.site?.name || ''
       },
       type: requisition?.type || 'normal',
-      project: {
-        slug: requisition?.project.slug || '',
-        name: requisition?.project.name || ''
-      },
+      projectName: requisition?.projectName || '',
+      // project: {
+      //   slug: requisition?.project.slug || '',
+      //   name: requisition?.project.name || ''
+      // },
       note: requisition?.description || ''
     }
   })
@@ -156,10 +157,11 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
           name: requisition.creator.userDepartments[0]?.department?.site?.name || ''
         },
         type: requisition.type || 'normal',
-        project: {
-          slug: requisition.project.slug || '',
-          name: requisition.project.name || ''
-        },
+        projectName: requisition.projectName || '',
+        // project: {
+        //   slug: requisition.project.slug || '',
+        //   name: requisition.project.name || ''
+        // },
         note: requisition.description || ''
       })
       setDate(requisition.deadlineApproval ? new Date(requisition.deadlineApproval) : undefined)
@@ -171,7 +173,7 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
       slug: slug as string,
       type: values.type,
       deadlineApproval: values.deadlineApproval,
-      project: values.project,
+      projectName: values.projectName,
       description: values.note
     }
     onUpdateGeneralInfo(updatedValues)
@@ -347,19 +349,24 @@ export const UpdateRequisitionForm: React.FC<IUpdateRequisitionFormProps> = ({
         )}
       />
     ),
-    project: (
+    projectName: (
       <FormField
         control={form.control}
-        name="project"
+        name="projectName"
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t('productRequisition.projectName')}</FormLabel>
             <FormControl>
-              <SelectProject
+              <Input
+                placeholder={t('productRequisition.projectNameDescription')}
+                defaultValue={requisition?.projectName}
+                {...field}
+              />
+              {/* <SelectProject
                 defaultValue={form.getValues('project').slug}
                 value={field.value.slug} // Add this line
                 onChange={(slug: string, name: string) => field.onChange({ slug, name })}
-              />
+              /> */}
             </FormControl>
             <FormMessage />
           </FormItem>
