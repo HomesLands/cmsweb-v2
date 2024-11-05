@@ -137,6 +137,13 @@ export async function resubmitProductRequisition(data: IResubmitProductRequisiti
   return response.data
 }
 
+export async function deleteProductRequisitionForm(formSlug: string) {
+  const response = await http.delete<IApiResponse<IProductRequisitionFormInfo>>(
+    `/productRequisitionForms/${formSlug}`
+  )
+  return response.data
+}
+
 export async function getApprovedProductRequisition(params: IProductQuery) {
   const response = await http.get<IApiResponse<IPaginationResponse<IProductRequisitionFormInfo>>>(
     '/productRequisitionForms/completedApproval',

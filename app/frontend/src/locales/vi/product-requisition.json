@@ -110,7 +110,12 @@
     "resubmitConfirmTitle": "Gửi lại yêu cầu",
     "descriptionInputLabel": "Nội dung",
     "descriptionInputPlaceholder": "Nhập nội dung",
-    "resubmitConfirmMessage": "Bạn có chắc chắn muốn gửi lại yêu cầu này?"
+    "resubmitConfirmMessage": "Bạn có chắc chắn muốn gửi lại yêu cầu này?",
+
+    "deleteProductRequisition": "Xóa yêu cầu vật tư",
+    "deleteProductRequisitionDescription": "Lưu ý: Hành động này không thể hoàn tác!",
+    "deleteProductRequisitionConfirmation": "Bạn có chắc chắn muốn xóa yêu cầu vật tư này?",
+    "confirmDelete": "Đã hiểu, xác nhận xóa"
   },
   "roleApproval": {
     "approvalLevel": "Cấp duyệt",

@@ -11,7 +11,7 @@ import {
 } from '@/components/ui'
 import { IProductRequisitionInfo } from '@/types'
 import { DialogEditProductRequisition } from '@/components/app/dialog'
-import { DialogDeleteProductRequisition } from '@/components/app/dialog'
+import { DialogDeleteProductInRequisition } from '@/components/app/dialog'
 
 export const useColumnsConfirm = (): ColumnDef<IProductRequisitionInfo>[] => {
   return [
@@ -65,7 +65,7 @@ export const useColumnsConfirm = (): ColumnDef<IProductRequisitionInfo>[] => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DialogEditProductRequisition product={product} />
-                <DialogDeleteProductRequisition product={product} />
+                <DialogDeleteProductInRequisition product={product} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
