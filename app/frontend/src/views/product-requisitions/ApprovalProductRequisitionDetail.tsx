@@ -10,9 +10,17 @@ import { useApproveProductRequisition, useRequisitionByUserApproval } from '@/ho
 
 import { useColumnsDetail } from './data-table'
 import { ApprovalLogStatus, IProductInfo, ProductRequisitionRoleApproval } from '@/types'
-import { DialogApprovalRequisition } from '@/components/app/dialog'
-import { showToast } from '@/utils'
-import { ApprovalAction, baseURL, RequisitionStatus, ROUTE, UserApprovalStage } from '@/constants'
+import { DialogApprovalRequisition, DialogDeleteProductRequisition } from '@/components/app/dialog'
+import { showToast, hasRequiredPermissions } from '@/utils'
+import {
+  ApprovalAction,
+  Authority,
+  baseURL,
+  RequisitionStatus,
+  Resource,
+  ROUTE,
+  UserApprovalStage
+} from '@/constants'
 
 const ApprovalProductRequisitionDetail: React.FC = () => {
   const queryClient = useQueryClient()
@@ -22,7 +30,6 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
   const { data } = useRequisitionByUserApproval(slug!)
   const { mutate: approveProductRequisition } = useApproveProductRequisition()
-
   const { roleApproval } = data?.result || {}
 
   const columns = useColumnsDetail()
@@ -203,6 +210,10 @@ const ApprovalProductRequisitionDetail: React.FC = () => {
           >
             {t('productRequisition.back')}
           </Button>
+          {hasRequiredPermissions({
+            authority: Authority.DELETE,
+            resource: Resource.PRODUCT_REQUISITION_FORM
+          }) && <DialogDeleteProductRequisition requisition={data?.result || null} />}
           {buttonStates.showButtons && (
             <>
               {buttonStates.cancelEnabled && (

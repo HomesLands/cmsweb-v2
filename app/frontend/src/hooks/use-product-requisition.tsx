@@ -6,6 +6,7 @@ import {
   approveProductRequisition,
   createProductRequisition,
   deleteProductRequisition,
+  deleteProductRequisitionForm,
   exportExcelProductRequisition,
   exportPDFProductRequisition,
   getAllProductRequisition,
@@ -145,6 +146,12 @@ export const useCreateProductRequisition = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['allProductRequisition'] })
     }
+  })
+}
+
+export const useDeleteProductRequisition = () => {
+  return useMutation({
+    mutationFn: (formSlug: string) => deleteProductRequisitionForm(formSlug)
   })
 }
 

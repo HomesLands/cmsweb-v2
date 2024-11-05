@@ -11,7 +11,7 @@ import {
 } from '@/components/ui'
 import { IProductRequisitionInfo } from '@/types'
 import { DialogEditProductRequisition } from '@/components/app/dialog'
-import { DialogDeleteProductRequisition } from '@/components/app/dialog/dialog-delete-product-requisition'
+import { DialogDeleteProductInRequisition } from '@/components/app/dialog/dialog-delete-product-in-requisition'
 
 export const useColumnsResult = (): ColumnDef<IProductRequisitionInfo>[] => {
   return [
@@ -61,7 +61,7 @@ export const useColumnsResult = (): ColumnDef<IProductRequisitionInfo>[] => {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="flex flex-col justify-start" align="end">
                 <DialogEditProductRequisition product={product} />
-                <DialogDeleteProductRequisition product={product} />
+                <DialogDeleteProductInRequisition product={product} />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

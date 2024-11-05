@@ -35,6 +35,7 @@
     "loginFailed": "Tên đăng nhập hoặc mật khẩu không chính xác",
     "productRequisitionExisted": "Vật tư đã tồn tại trong yêu cầu",
 
+    "deleteProductRequisitionSuccess": "Yêu cầu vật tư được xóa thành công",
     "createProductSuccess": "Vật tư được tạo thành công",
     "codeProductExisted": "Mã vật tư đã tồn tại",
 

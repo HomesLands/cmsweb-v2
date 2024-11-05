@@ -88,7 +88,12 @@
     "resubmitConfirmTitle": "Resubmit requisition",
     "descriptionInputLabel": "Description",
     "descriptionInputPlaceholder": "Enter description",
-    "resubmitConfirmMessage": "Are you sure you want to resubmit this requisition?"
+    "resubmitConfirmMessage": "Are you sure you want to resubmit this requisition?",
+
+    "deleteProductRequisition": "Delete product requisition",
+    "deleteProductRequisitionDescription": "Note: This action cannot be undone!",
+    "deleteProductRequisitionConfirmation": "Are you sure you want to delete?",
+    "confirmDelete": "I understand, confirm delete"
   },
   "roleApproval": {
     "approvalLevel": "Approval level",

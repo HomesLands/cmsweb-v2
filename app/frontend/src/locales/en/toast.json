@@ -35,6 +35,7 @@
     "loginFailed": "Username or password is incorrect",
     "productRequisitionExisted": "Product already exists in requisition",
 
+    "deleteProductRequisitionSuccess": "Product requisition deleted successfully",
     "createProductSuccess": "Product created successfully",
     "codeProductExisted": "Product code already exists",
 

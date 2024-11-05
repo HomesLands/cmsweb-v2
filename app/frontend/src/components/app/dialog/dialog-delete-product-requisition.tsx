@@ -1,4 +1,8 @@
-import { TriangleAlert } from 'lucide-react'
+import { useState } from 'react'
+import { AxiosError, isAxiosError } from 'axios'
+import { useNavigate } from 'react-router'
+import { useTranslation } from 'react-i18next'
+import { Trash2, TriangleAlert } from 'lucide-react'
 
 import {
   Button,
@@ -11,31 +15,47 @@ import {
   DialogTrigger
 } from '@/components/ui'
 
-import { IProductRequisitionInfo } from '@/types'
-import { useRequisitionStore } from '@/stores'
-import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { IApiResponse, IRequisitionByUserApproval } from '@/types'
 
-export function DialogDeleteProductRequisition({
-  product
+import { useDeleteProductRequisition } from '@/hooks'
+import { showErrorToast, showToast } from '@/utils'
+
+import { ROUTE } from '@/constants'
+
+export default function DialogDeleteProductRequisition({
+  requisition // IRequisitionByUserApproval
 }: {
-  product: IProductRequisitionInfo | null
+  requisition: IRequisitionByUserApproval | null
 }) {
-  const { t } = useTranslation('tableData')
-  const { deleteProductToRequisition } = useRequisitionStore()
+  const { t } = useTranslation('productRequisition')
+  const { t: tToast } = useTranslation('toast')
+  const { mutate: deleteProductRequisition } = useDeleteProductRequisition()
   const [isOpen, setIsOpen] = useState(false)
+  const navigate = useNavigate()
 
-  const handleSubmit = (data: IProductRequisitionInfo) => {
-    deleteProductToRequisition(data)
-    setIsOpen(false)
+  const handleSubmit = (formSlug: string) => {
+    deleteProductRequisition(formSlug, {
+      onSuccess: () => {
+        setIsOpen(false)
+        showToast(tToast('toast.deleteProductRequisitionSuccess'))
+        navigate(ROUTE.PRODUCT_REQUISITIONS, { replace: true })
+      },
+      onError: (error) => {
+        if (isAxiosError(error)) {
+          const axiosError = error as AxiosError<IApiResponse<void>>
+          if (axiosError.response?.data.code) showErrorToast(axiosError.response.data.code)
+        }
+      }
+    })
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger className="flex justify-start w-full" asChild>
         <DialogTrigger asChild>
-          <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
-            {t('tableData.deleteProduct')}
+          <Button variant="destructive" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
+            <Trash2 className="icon" />
+            {t('productRequisition.deleteProductRequisition')}
           </Button>
         </DialogTrigger>
       </DialogTrigger>
@@ -45,27 +65,28 @@ export function DialogDeleteProductRequisition({
           <DialogTitle className="pb-4 border-b border-destructive text-destructive">
             <div className="flex items-center gap-2">
               <TriangleAlert className="w-6 h-6" />
-              {t('tableData.deleteProduct')}
+              {t('productRequisition.deleteProductRequisition')}
             </div>
           </DialogTitle>
           <DialogDescription className="p-2 bg-red-100 rounded-md text-destructive">
-            {t('tableData.deleteProductDescription')}
+            {t('productRequisition.deleteProductRequisitionDescription')}
           </DialogDescription>
 
           <div className="py-4 text-sm text-gray-500">
-            {t('tableData.deleteProductWarning1')}{' '}
-            <span className="font-bold">{product?.product.name}</span>.
-            <br />
-            <br />
-            {t('tableData.deleteProductConfirmation')}
+            {t('productRequisition.deleteProductRequisitionConfirmation')}
           </div>
         </DialogHeader>
         <DialogFooter className="flex flex-row justify-center gap-2">
-          <Button variant="outline" onClick={() => setIsOpen}>
-            {t('tableData.cancel')}
+          <Button variant="outline" onClick={() => setIsOpen(false)}>
+            {t('productRequisition.cancel')}
           </Button>
-          <Button variant="destructive" onClick={() => product && handleSubmit(product)}>
-            {t('tableData.confirmDelete')}
+          <Button
+            variant="destructive"
+            onClick={() =>
+              requisition && handleSubmit(requisition.productRequisitionForm.slug || '')
+            }
+          >
+            {t('productRequisition.confirmDelete')}
           </Button>
         </DialogFooter>
       </DialogContent>
