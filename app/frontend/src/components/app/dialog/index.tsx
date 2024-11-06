@@ -50,3 +50,4 @@ export { default as DialogUpdateUserGeneralInfo } from './dialog-update-user-gen
 export { default as DialogUpdateUsername } from './dialog-update-username'
 export { default as DialogDeleteUser } from './dialog-delete-user'
 export { default as DialogDeleteProductRequisition } from './dialog-delete-product-requisition'
+export { default as DialogCreateProject } from './dialog-create-project'

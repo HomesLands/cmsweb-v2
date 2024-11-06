@@ -36,12 +36,10 @@ export default function DialogDeleteProduct({ product }: { product: IProductInfo
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger className="flex justify-start w-full" asChild>
-        <DialogTrigger asChild>
-          <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
-            <Trash2 className="icon" />
-            {t('products.delete')}
-          </Button>
-        </DialogTrigger>
+        <Button variant="ghost" className="gap-1 text-sm" onClick={() => setIsOpen(true)}>
+          <Trash2 className="icon" />
+          {t('products.delete')}
+        </Button>
       </DialogTrigger>
 
       <DialogContent className="max-w-[22rem] rounded-md sm:max-w-[32rem] font-beVietNam">

@@ -33,7 +33,7 @@ export function DialogConfirmCreateProject({
 
   return (
     <Dialog open={openDialog} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[32rem] font-beVietNam">
+      <DialogContent className="max-w-[32rem]">
         <DialogHeader>
           <DialogTitle className="pb-4 border-b border-primary text-primary">
             <div className="flex gap-2 items-center">
