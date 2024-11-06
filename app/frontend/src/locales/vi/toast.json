@@ -42,7 +42,7 @@
     "logoutSuccess": "Đăng xuất thành công",
     "updateUserSuccess": "Người dùng được cập nhật thành công",
     "deleteUserSuccess": "Người dùng được xóa thành công",
-    "invalidUserDepartmentExisted": "Người dùng đã tồn tại trong phòng ban",
+    "invalidUserDepartmentExisted": "Người dùng đã tồn tại trong Bộ phận",
 
     "updateUsernameSuccess": "Tên tài khoản được cập nhật thành công",
 
@@ -54,9 +54,9 @@
     "updateSiteSuccess": "Địa điểm được cập nhật thành công",
     "deleteSiteSuccess": "Địa điểm được xóa thành công",
 
-    "createDepartmentSuccessfully": "Phòng ban được tạo thành công",
-    "updateDepartmentSuccess": "Phòng ban được cập nhật thành công",
-    "deleteDepartmentSuccess": "Phòng ban được xóa thành công",
+    "createDepartmentSuccessfully": "Bộ phận được tạo thành công",
+    "updateDepartmentSuccess": "Bộ phận được cập nhật thành công",
+    "deleteDepartmentSuccess": "Bộ phận được xóa thành công",
 
     "createProjectSuccessfully": "Dự án được tạo thành công",
     "updateProjectSuccess": "Dự án được cập nhật thành công",
@@ -65,7 +65,7 @@
     "addRoleSuccess": "Chức vụ được thêm thành công",
     "deleteUserRoleSuccess": "Chức vụ được xóa thành công",
 
-    "addDepartmentSuccess": "Phòng ban được thêm thành công",
+    "addDepartmentSuccess": "Bộ phận được thêm thành công",
     "changePasswordSuccess": "Mật khẩu được thay đổi thành công",
 
     "exportPDFSuccess": "Xuất PDF thành công",
@@ -91,8 +91,8 @@
     "deleteAssignedApproverSuccess": "Người phê duyệt được xóa thành công",
     "assignedUserApprovalExisted": "Người dùng đã được phân công duyệt",
 
-    "updateUserDepartmentSuccess": "Phòng ban của người dùng được cập nhật thành công",
-    "deleteUserDepartmentSuccess": "Phòng ban của người dùng được xóa thành công",
+    "updateUserDepartmentSuccess": "Bộ phận của người dùng được cập nhật thành công",
+    "deleteUserDepartmentSuccess": "Bộ phận của người dùng được xóa thành công",
 
     "updatePermissionSuccess": "Quyền được cập nhật thành công",
     "deletePermissionSuccess": "Quyền được xóa thành công"
