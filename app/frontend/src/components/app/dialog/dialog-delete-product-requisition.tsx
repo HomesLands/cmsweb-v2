@@ -38,7 +38,7 @@ export default function DialogDeleteProductRequisition({
       onSuccess: () => {
         setIsOpen(false)
         showToast(tToast('toast.deleteProductRequisitionSuccess'))
-        navigate(ROUTE.PRODUCT_REQUISITIONS, { replace: true })
+        navigate(ROUTE.APPROVAL_PRODUCT_REQUISITIONS, { replace: true })
       },
       onError: (error) => {
         if (isAxiosError(error)) {
