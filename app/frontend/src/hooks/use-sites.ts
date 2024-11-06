@@ -3,11 +3,15 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 import { createSite, deleteSite, getSites, updateSite } from '@/api'
 import { ICreateSite, IUpdateSite } from '@/types'
 
-export const useSites = () => {
+export const useSites = (enabled: boolean) => {
   return useQuery({
     queryKey: ['sites'],
     queryFn: () => getSites(),
-    placeholderData: keepPreviousData
+    placeholderData: keepPreviousData,
+    enabled,
+    refetchOnMount: false, // Không tự động refetch khi component mount
+    refetchOnWindowFocus: false, // Không tự động refetch khi window focus
+    staleTime: 0 // Luôn coi dữ liệu là stale để có thể refetch
   })
 }
 

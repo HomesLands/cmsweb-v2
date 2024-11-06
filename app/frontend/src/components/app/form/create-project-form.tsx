@@ -33,6 +33,7 @@ interface IFormCreateProjectProps {
 export const CreateProjectForm: React.FC<IFormCreateProjectProps> = ({ onSubmit }) => {
   const { t } = useTranslation(['projects'])
   const [selectedSite, setSelectedSite] = useState<{ slug: string; name: string } | null>(null)
+  const [siteSelectEnabled, setSiteSelectEnabled] = useState(false)
   const [date, setDate] = useState<Date | undefined>(undefined)
 
   const form = useForm<TCreateProjectSchema>({
@@ -52,7 +53,6 @@ export const CreateProjectForm: React.FC<IFormCreateProjectProps> = ({ onSubmit 
       values.site = selectedSite.slug
       values.siteName = selectedSite.name
     }
-    console.log(values)
     onSubmit(values)
     form.reset()
     setSelectedSite(null)
@@ -68,10 +68,11 @@ export const CreateProjectForm: React.FC<IFormCreateProjectProps> = ({ onSubmit 
             <FormLabel>{t('projects.site')}</FormLabel>
             <FormControl>
               <SelectSite
+                onClick={() => setSiteSelectEnabled(true)}
                 onChange={(slug, name) => {
                   field.onChange(slug)
                   setSelectedSite({ slug, name })
-                  form.setValue('siteName', name) // Add this line
+                  form.setValue('siteName', name)
                 }}
                 defaultValue={field.value}
               />
@@ -113,12 +114,12 @@ export const CreateProjectForm: React.FC<IFormCreateProjectProps> = ({ onSubmit 
                       !field.value && 'text-muted-foreground'
                     )}
                   >
-                    <CalendarIcon className="mr-2 w-4 h-4" />
+                    <CalendarIcon className="w-4 h-4 mr-2" />
                     {field.value ? field.value : <span>{t('projects.chooseDateAndTime')}</span>}
                   </Button>
                 </FormControl>
               </PopoverTrigger>
-              <PopoverContent className="p-0 w-auto">
+              <PopoverContent className="w-auto p-0">
                 <Calendar
                   mode="single"
                   selected={date}

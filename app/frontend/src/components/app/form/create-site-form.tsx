@@ -11,26 +11,23 @@ import {
   FormMessage,
   Input,
   Form,
-  Button,
-  Select
+  Button
 } from '@/components/ui'
-import { createCompanySchema, TCreateCompanySchema } from '@/schemas'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ICompany, ICreateCompany, ICreateSite } from '@/types'
+import { ICreateSite } from '@/types'
 import { createSiteSchema, TCreateSiteSchema } from '@/schemas/sites.schema'
 import { SelectCompany } from '../select'
 
-interface IFormCreateSiteProps {
-  onSubmit: (data: ICreateSite) => void
+interface ICreateSiteFormProps {
+  onSubmitCreateSite: (data: ICreateSite) => void
 }
 
-export const CreateSiteForm: React.FC<IFormCreateSiteProps> = ({ onSubmit }) => {
+export const CreateSiteForm: React.FC<ICreateSiteFormProps> = ({ onSubmitCreateSite }) => {
   const { t } = useTranslation(['sites'])
   const [selectedCompany, setSelectedCompany] = useState<{ slug: string; name: string } | null>(
     null
   )
-
   const form = useForm<TCreateSiteSchema>({
     resolver: zodResolver(createSiteSchema),
     defaultValues: {
@@ -45,8 +42,7 @@ export const CreateSiteForm: React.FC<IFormCreateSiteProps> = ({ onSubmit }) => 
       values.company = selectedCompany.slug
       values.companyName = selectedCompany.name
     }
-    console.log(values)
-    onSubmit(values)
+    onSubmitCreateSite(values)
     form.reset()
     setSelectedCompany(null)
   }

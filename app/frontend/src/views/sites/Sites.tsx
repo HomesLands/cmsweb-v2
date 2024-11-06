@@ -9,7 +9,7 @@ import { useSiteColumns } from './DataTable/columns'
 const Sites: React.FC = () => {
   const { t } = useTranslation(['sites'])
 
-  const { data: sites, isLoading } = useSites()
+  const { data: sites, isLoading } = useSites(true)
 
   return (
     <div className="flex flex-col gap-4 mt-2">

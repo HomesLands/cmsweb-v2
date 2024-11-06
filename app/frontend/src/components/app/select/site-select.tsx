@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -13,13 +13,16 @@ import {
 import { useSites } from '@/hooks'
 
 interface SelectSiteProps {
+  onClick?: () => void
   onChange: (slug: string, name: string) => void
   defaultValue?: string
 }
 
-export const SelectSite: FC<SelectSiteProps> = ({ onChange, defaultValue }) => {
+export const SelectSite: FC<SelectSiteProps> = ({ onClick, onChange, defaultValue }) => {
   const { t } = useTranslation('productRequisition')
-  const { data: sites } = useSites()
+  const [isOpen, setIsOpen] = useState(false)
+
+  const { data: sites, refetch } = useSites(isOpen)
 
   const siteList = sites?.result
 
@@ -34,8 +37,20 @@ export const SelectSite: FC<SelectSiteProps> = ({ onChange, defaultValue }) => {
     }
   }
 
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open)
+    if (open) {
+      refetch()
+      if (onClick) onClick()
+    }
+  }
+
   return (
-    <Select onValueChange={handleValueChange} defaultValue={defaultValue}>
+    <Select
+      onValueChange={handleValueChange}
+      onOpenChange={handleOpenChange}
+      defaultValue={defaultValue}
+    >
       <SelectTrigger>
         <SelectValue placeholder={t('productRequisition.constructionSiteDescription')} />
       </SelectTrigger>
