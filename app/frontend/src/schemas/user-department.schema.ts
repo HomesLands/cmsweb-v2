@@ -12,8 +12,8 @@ export const createUserDepartmentSchema = z.object({
 })
 
 export const updateUserDepartmentSchema = z.object({
-  slug: z.string().min(1, 'Mã phòng ban không được để trống'),
-  department: z.string().min(1, 'Phòng ban không được để trống')
+  slug: z.string().min(1, 'Mã Bộ phận không được để trống'),
+  department: z.string().min(1, 'Bộ phận không được để trống')
 })
 
 export type TCreateUserDepartmentSchema = z.infer<typeof createUserDepartmentSchema>
