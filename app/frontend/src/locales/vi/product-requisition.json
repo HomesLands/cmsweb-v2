@@ -1,6 +1,6 @@
 {
   "productRequisition": {
-    "selectDepartment": "Lựa chọn Bộ phận",
+    "selectDepartment": "Lựa chọn bộ phận",
     "list": "Danh sách duyệt yêu cầu vật tư",
     "listDescription": "Danh sách duyệt yêu cầu vật tư",
     "listEmployee": "Danh sách yêu cầu vật tư đã tạo",
@@ -14,8 +14,8 @@
     "requesterDescription": "Nhập tên người yêu cầu",
     "companyName": "Tên công ty",
     "companyNameDescription": "Chọn công ty",
-    "departmentName": "Tên Bộ phận",
-    "departmentNameDescription": "Chọn Bộ phận",
+    "departmentName": "Tên bộ phận",
+    "departmentNameDescription": "Chọn bộ phận",
     "projectName": "Tên dự án",
     "projectNameDescription": "Nhập tên dự án",
     "constructionSite": "Tên công trình",
@@ -155,7 +155,7 @@
     "requester": "Người yêu cầu: ",
     "siteName": "Tên công trình: ",
     "companyName": "Tên công ty: ",
-    "departmentName": "Tên Bộ phận: ",
+    "departmentName": "Tên bộ phận: ",
     "projectName": "Tên dự án: ",
     "note": "Ghi chú: ",
     "status": "Trạng thái: "
