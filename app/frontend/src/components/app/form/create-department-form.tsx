@@ -53,7 +53,7 @@ export const CreateDepartmentForm: React.FC<IFormCreateDepartmentProps> = ({ onS
         name="site"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t('department.name')}</FormLabel>
+            <FormLabel>{t('department.siteName')}</FormLabel>
             <FormControl>
               <SelectSite
                 onChange={(slug, name) => {

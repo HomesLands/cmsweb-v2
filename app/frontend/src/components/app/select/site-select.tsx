@@ -52,11 +52,11 @@ export const SelectSite: FC<SelectSiteProps> = ({ onClick, onChange, defaultValu
       defaultValue={defaultValue}
     >
       <SelectTrigger>
-        <SelectValue placeholder={t('productRequisition.constructionSiteDescription')} />
+        <SelectValue placeholder={t('productRequisition.selectSiteDescription')} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>{t('productRequisition.constructionSite')}</SelectLabel>
+          <SelectLabel>{t('productRequisition.siteName')}</SelectLabel>
           {Array.isArray(siteList) &&
             siteList.map((site) => (
               <SelectItem key={site.slug} value={site.slug}>

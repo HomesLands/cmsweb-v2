@@ -5,6 +5,8 @@
     "createDescription": "Điền đầy đủ thông tin bên dưới để tạo bộ phận mới",
     "nameNormalize": "Mã chuẩn hóa",
     "nameNormalizeDescription": "Nhập mã chuẩn hóa",
+    "siteName": "Tên địa chỉ công trình",
+    "selectSite": "Chọn địa chỉ công trình",
     "name": "Tên bộ phận",
     "slug": "Mã bộ phận",
     "company": "Công ty",
