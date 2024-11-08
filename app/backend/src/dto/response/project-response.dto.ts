@@ -23,7 +23,4 @@ export class ProjectResponseDto extends BaseResponseDto {
 
   @AutoMap(() => SiteResponseDto)
   site?: SiteResponseDto;
-
-  @AutoMap(() => [ProductRequisitionFormResponseDto])
-  productRequisitionFormResponseDto?: ProductRequisitionFormResponseDto[];
 }
