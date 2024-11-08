@@ -11,7 +11,7 @@ import { validate } from "class-validator";
 class ProjectService {
   public async getAllProjects(): Promise<ProjectResponseDto[]> {
     const projectsData = await projectRepository.find({
-      relations: ["productRequisitionForms", "site"],
+      relations: ["site"],
     });
 
     const projectsDto: ProjectResponseDto[] = mapper.mapArray(
@@ -22,12 +22,14 @@ class ProjectService {
     return projectsDto;
   }
 
-  public async getProjectBySite( siteSlug: string ): Promise<ProjectResponseDto[]>{
+  public async getProjectBySite(
+    siteSlug: string
+  ): Promise<ProjectResponseDto[]> {
     const projectsData = await projectRepository.find({
       where: {
         site: {
-          slug: siteSlug
-        }
+          slug: siteSlug,
+        },
       },
     });
     const projectsDto: ProjectResponseDto[] = mapper.mapArray(
