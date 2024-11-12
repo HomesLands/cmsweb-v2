@@ -77,7 +77,7 @@ services:
       context: ../docsify
       dockerfile: ../.build/docsify/Dockerfile # Adjusted to be relative to the context
     healthcheck:
-      test: ["CMD", "nc", "-z", "localhost", "3001"] # TCP check on port 3001
+      test: ["CMD", "curl", "-f", "http://localhost:3001"]
       interval: 10s # Increase interval between health checks
       timeout: 10s # Increase timeout for slower responses
       retries: 5

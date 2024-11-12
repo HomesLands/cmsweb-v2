@@ -27,7 +27,7 @@ class DepartmentController {
    *           type: string
    *           description: siteSlug
    *       example:
-   *         nameNormalize: PROJECT_DEPARTMENT
+   *         nameNormalize: PROJECT
    *         description: Phòng dự án
    *         site: site-slug-123
    *

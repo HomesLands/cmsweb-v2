@@ -9,7 +9,7 @@ import {
   CreateDepartmentRequestDto,
   UpdateDepartmentRequestDto,
 } from "@dto/request";
-import { TUpdateDepartmentRequestDto } from "@types";
+import { TCreateDepartmentRequestDto } from "@types";
 import { GlobalError, ErrorCodes, ValidationError } from "@exception";
 
 class DepartmentService {
@@ -27,10 +27,10 @@ class DepartmentService {
   }
 
   public async createDepartment(
-    plainData: TUpdateDepartmentRequestDto
+    plainData: TCreateDepartmentRequestDto
   ): Promise<DepartmentResponseDto> {
     // Map plain object to request dto
-    const requestData = plainToClass(UpdateDepartmentRequestDto, plainData);
+    const requestData = plainToClass(CreateDepartmentRequestDto, plainData);
 
     const errors = await validate(requestData);
     if (errors.length > 0) throw new ValidationError(errors);
