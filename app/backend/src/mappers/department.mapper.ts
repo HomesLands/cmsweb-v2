@@ -3,9 +3,8 @@ import {
   Mapper,
   createMap,
   forMember,
-  mapFrom,
-  extend,
   mapWith,
+  mapFrom,
 } from "@automapper/core";
 import {
   DepartmentResponseDto,
@@ -14,7 +13,6 @@ import {
 } from "@dto/response";
 import { CreateDepartmentRequestDto } from "@dto/request";
 import { Department, Site, UserDepartment } from "@entities";
-import { baseMapper } from "./base.mapper";
 
 // Define the mapping profile
 export const departmentMapper: MappingProfile = (mapper: Mapper) => {
@@ -38,5 +36,18 @@ export const departmentMapper: MappingProfile = (mapper: Mapper) => {
   );
 
   // Map request object to entity
-  createMap(mapper, CreateDepartmentRequestDto, Department);
+  createMap(
+    mapper,
+    CreateDepartmentRequestDto,
+    Department,
+    forMember(
+      (destination) => destination.nameNormalize,
+      mapFrom((source) =>
+        source.nameNormalize
+          ?.replace(" ", "_")
+          ?.concat("_DEPARTMENT")
+          ?.toUpperCase()
+      )
+    )
+  );
 };
