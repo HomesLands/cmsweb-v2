@@ -19,7 +19,7 @@
     "projectName": "Project name",
     "projectNameDescription": "Enter project name",
     "constructionSite": "Construction site",
-    "constructionSiteDescription": "Choose construction site",
+    "selectSiteDescription": "Choose site",
     "approver": "Approver",
     "approverDescription": "Enter approver name",
     "note": "Note",
