@@ -244,21 +244,21 @@ export const CreateProductRequisitionForm: React.FC<IFormCreateProductProps> = (
         )}
       />
     ),
-    site: (
-      <FormField
-        control={form.control}
-        name="site.name"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{t('productRequisition.constructionSite')}</FormLabel>
-            <FormControl>
-              <Input readOnly {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    ),
+    // site: (
+    //   <FormField
+    //     control={form.control}
+    //     name="site.name"
+    //     render={({ field }) => (
+    //       <FormItem>
+    //         <FormLabel>{t('productRequisition.constructionSite')}</FormLabel>
+    //         <FormControl>
+    //           <Input readOnly {...field} />
+    //         </FormControl>
+    //         <FormMessage />
+    //       </FormItem>
+    //     )}
+    //   />
+    // ),
     department: (
       <FormField
         control={form.control}
