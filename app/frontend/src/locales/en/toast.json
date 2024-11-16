@@ -50,6 +50,7 @@
     "resourceNotFound": "Resource not found",
     "resourceExisted": "Resource already exists",
     "invalidPhoneNumber": "Invalid phone number",
+    "invalidQuantityUserApproval": "Invalid quantity user approval",
     "assignUserApprovalNotFound": "Assigned user approval not found",
 
     "deleteProductRequisitionSuccess": "Product requisition deleted successfully",

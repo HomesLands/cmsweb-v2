@@ -50,6 +50,7 @@
     "resourceNotFound": "Không tìm thấy tài nguyên",
     "resourceExisted": "Tài nguyên đã tồn tại",
     "invalidPhoneNumber": "Số điện thoại không hợp lệ",
+    "invalidQuantityUserApproval": "Số lượng người phê duyệt không hợp lệ",
     "assignUserApprovalNotFound": "Không tìm thấy người phê duyệt đã gán",
 
     "deleteProductRequisitionSuccess": "Yêu cầu vật tư được xóa thành công",
