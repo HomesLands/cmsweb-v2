@@ -649,6 +649,11 @@ export const ErrorCodes: TErrorCode = {
     code: 1145,
     message: "Role permission is existed",
   },
+  NAME_NORMALIZE_EXIST: {
+    httpStatusCode: StatusCodes.BAD_REQUEST,
+    code: 1146,
+    message: "Name normalize is existed",
+  },
 
   // AuthenticationErrors
   // Code range: [4000 - 4099]
