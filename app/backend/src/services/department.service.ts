@@ -101,7 +101,7 @@ class DepartmentService {
         throw new GlobalError(ErrorCodes.NAME_NORMALIZE_EXIST);
     }
 
-    Object.assign(department, { ...requestData, site });
+    Object.assign(department, { ...updateDeaprtmentRequest, site });
     const updated = await departmentRepository.save(department);
 
     return mapper.map(updated, Department, DepartmentResponseDto);
