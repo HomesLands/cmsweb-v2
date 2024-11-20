@@ -45,6 +45,13 @@ class DepartmentService {
     );
     departmentData.site = site;
 
+    const isExistNameNormalize = await departmentRepository.findOne({
+      where: { nameNormalize: departmentData.nameNormalize },
+    });
+
+    if (isExistNameNormalize)
+      throw new GlobalError(ErrorCodes.NAME_NORMALIZE_EXIST);
+
     const dataDepartmentCreated =
       await departmentRepository.createAndSave(departmentData);
 
@@ -78,6 +85,21 @@ class DepartmentService {
       where: { slug: requestData.site },
     });
     if (!site) throw new GlobalError(ErrorCodes.SITE_NOT_FOUND);
+
+    // Map request to normal request
+    const updateDeaprtmentRequest = mapper.map(
+      requestData,
+      UpdateDepartmentRequestDto,
+      UpdateDepartmentRequestDto
+    );
+    // Check if nameNormalize is changed
+    if (updateDeaprtmentRequest.nameNormalize !== department.nameNormalize) {
+      const isExistNameNormalize = await departmentRepository.findOne({
+        where: { nameNormalize: updateDeaprtmentRequest.nameNormalize },
+      });
+      if (isExistNameNormalize)
+        throw new GlobalError(ErrorCodes.NAME_NORMALIZE_EXIST);
+    }
 
     Object.assign(department, { ...requestData, site });
     const updated = await departmentRepository.save(department);

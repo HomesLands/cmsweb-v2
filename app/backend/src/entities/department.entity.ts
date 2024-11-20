@@ -7,7 +7,7 @@ import { UserDepartment } from "./user-department.entity";
 
 @Entity("department_tbl")
 export class Department extends Base {
-  @Column({ name: "name_normalize_column", unique: true })
+  @Column({ name: "name_normalize_column" })
   @AutoMap()
   nameNormalize?: string;
 
@@ -15,8 +15,10 @@ export class Department extends Base {
   @AutoMap()
   description?: string;
 
-  @OneToMany(() => UserDepartment, 
-    (userDepartment) => userDepartment.department)
+  @OneToMany(
+    () => UserDepartment,
+    (userDepartment) => userDepartment.department
+  )
   userDepartments?: UserDepartment[];
 
   @ManyToOne(() => Site, (site) => site.departments)

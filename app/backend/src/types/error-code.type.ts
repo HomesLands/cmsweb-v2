@@ -146,6 +146,7 @@ export type TErrorCodeKey =
   | "NOTIFICATION_NOT_FOUND"
   | "ROLE_PERMISSION_NOT_FOUND"
   | "ROLE_PERMISSION_EXIST"
+  | "NAME_NORMALIZE_EXIST"
   | "EXP_NOT_EXIST";
 
 export type TErrorCodeValue = {

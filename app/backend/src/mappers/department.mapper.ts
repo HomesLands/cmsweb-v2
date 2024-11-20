@@ -11,7 +11,10 @@ import {
   SiteResponseDto,
   UserDepartmentResponseDto,
 } from "@dto/response";
-import { CreateDepartmentRequestDto } from "@dto/request";
+import {
+  CreateDepartmentRequestDto,
+  UpdateDepartmentRequestDto,
+} from "@dto/request";
 import { Department, Site, UserDepartment } from "@entities";
 
 // Define the mapping profile
@@ -32,6 +35,10 @@ export const departmentMapper: MappingProfile = (mapper: Mapper) => {
     forMember(
       (destination) => destination.site,
       mapWith(SiteResponseDto, Site, (source) => source.site)
+    ),
+    forMember(
+      (d) => d.nameNormalize,
+      mapFrom((s) => s.nameNormalize?.replace("_DEPARTMENT", ""))
     )
   );
 
@@ -48,6 +55,21 @@ export const departmentMapper: MappingProfile = (mapper: Mapper) => {
           ?.concat("_DEPARTMENT")
           ?.toUpperCase()
       )
+    )
+  );
+
+  createMap(
+    mapper,
+    UpdateDepartmentRequestDto,
+    UpdateDepartmentRequestDto,
+    forMember(
+      (destination) => destination.nameNormalize,
+      mapFrom((source) => {
+        return source.nameNormalize
+          ?.replace(" ", "_")
+          ?.concat("_DEPARTMENT")
+          ?.toUpperCase();
+      })
     )
   );
 };
